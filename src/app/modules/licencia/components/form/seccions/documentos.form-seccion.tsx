@@ -13,11 +13,13 @@ import { UploadOutlined } from '@ant-design/icons';
 import { ITipoLicencia } from 'app/shared/utils/types.util';
 
 export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
-  const { tipoLicencia } = props;
+  const { tipoLicencia, tipoIndividuo } = props;
 
   const [isCremacion, setIsCremacion] = useState(false);
+  const [isFetal, setIsFetal] = useState(false);
   useEffect(() => {
     setIsCremacion(tipoLicencia === 'Cremación');
+    setIsFetal(tipoIndividuo === 'Fetal');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tipoLicencia]);
 
@@ -57,6 +59,33 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
       </Form.Item>
+      {isFetal && !isCremacion && (
+        <>
+          <Form.Item
+            label='Documentos de la Madre'
+            name='fileDocumentosMadre'
+            valuePropName='fileList'
+            rules={[{ required: true }]}
+            getValueFromEvent={normFile}
+          >
+            <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item
+            label='Otros Documentos'
+            name='fileOtrosDocumentos'
+            valuePropName='fileList'
+            rules={[{ required: true }]}
+            getValueFromEvent={normFile}
+          >
+            <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+        </>
+      )}
 
       {isCremacion && (
         <>
@@ -91,12 +120,6 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
           </Form.Item>
-
-          <Form.Item label='Acta Notarial' name='fileActaNotarial' valuePropName='fileList' getValueFromEvent={normFile}>
-            <Upload name='fileActaNotarial' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
         </>
       )}
 
@@ -104,7 +127,6 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
         label='Acta Notarial del Fiscal'
         name='fileActaNotarialFiscal'
         valuePropName='fileList'
-        rules={[{ required: true }]}
         getValueFromEvent={normFile}
       >
         <Upload name='fileActaNotarialFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
