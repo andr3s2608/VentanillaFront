@@ -10,7 +10,7 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 export const GeneralInfoFormSeccion = () => {
   return (
     <>
-      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true }]}>
+      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true, max: 9 }]}>
         <Input allowClear placeholder='Número de Certificado' autoComplete='off' />
       </Form.Item>
 
@@ -26,9 +26,9 @@ export const GeneralInfoFormSeccion = () => {
 
       <Form.Item label='Sexo' name='sex' initialValue='M' rules={[{ required: true }]}>
         <Radio.Group>
-          <Radio value='M'>Masculino</Radio>
-          <Radio value='F'>Femenino</Radio>
-          <Radio value=' '>Ignorado</Radio>
+          <Radio value='M'>MASCULINO</Radio>
+          <Radio value='F'>FEMENINO</Radio>
+          <Radio value=' '>INDETERMINADO</Radio>
         </Radio.Group>
       </Form.Item>
     </>

@@ -29,3 +29,8 @@ button:focus {
   outline: 0;
   outline: none;
 }
+
+input,
+select {
+  text-transform: uppercase !important;
+}

@@ -12,9 +12,9 @@ import { clearStorage } from 'app/shared/tools/storage.tool';
 import { store } from 'app/redux/app.reducers';
 import { Loading } from 'app/redux/ui/ui.actions';
 
-// Desestructuración
-const { CancelToken } = axios;
-const { source } = CancelToken;
+// Cancelar request
+const cancelRequest = axios.CancelToken.source();
+let source: any;
 
 // Constantes
 const http: AxiosInstance = axios.create({
@@ -22,7 +22,7 @@ const http: AxiosInstance = axios.create({
     'Content-Type': 'application/json; charset=UTF-8',
     'Access-Control-Allow-Origin': '*'
   },
-  cancelToken: source().token
+  cancelToken: cancelRequest.token
 });
 
 /**
@@ -58,13 +58,18 @@ const extract_data = <T>(response: AxiosResponse): T => {
 };
 
 const handle_error = (reject: any): Promise<Error> => {
-  const errorStatus = reject.status;
-  const errorMessageService = reject.message ? reject.message : null;
-  const errorMessageServer = !errorMessageService && reject.error ? reject.error.message || reject.error.exception : null;
-  const errorMessageDefault = 'Por favor intente de nuevo más tarde o póngase en contacto con soporte técnico.';
-  const message = errorMessageService || errorMessageServer || errorMessageDefault;
+  const response = reject?.response;
+  const data = response?.data;
+  const status = response?.status;
 
-  switch (errorStatus) {
+  const errorMessageDefault = 'Por favor intente de nuevo más tarde o póngase en contacto con soporte técnico.';
+  const message = data?.message || errorMessageDefault;
+
+  if (reject?.message === 'Cancel') {
+    return Promise.reject(reject?.message);
+  }
+
+  switch (status) {
     case 0:
       clearStorage();
       warningMessage({ content: message });
@@ -133,11 +138,14 @@ const post = async <T>({
       showLoading(true);
     }
 
-    if (cancel) {
-      source().cancel();
+    if (cancel && !!source) {
+      source.cancel('Cancel');
+      source = undefined;
     }
 
-    return http.post(endpoint + url, payload, options);
+    const { CancelToken } = axios;
+    source = CancelToken.source();
+    return http.post(endpoint + url, payload, { ...options, cancelToken: source.token });
   } else {
     return Promise.reject();
   }
@@ -167,11 +175,14 @@ const put = async <T>({
       showLoading(true);
     }
 
-    if (cancel) {
-      source().cancel();
+    if (cancel && !!source) {
+      source.cancel('Cancel');
+      source = undefined;
     }
 
-    return http.put(endpoint + url, payload, options);
+    const { CancelToken } = axios;
+    source = CancelToken.source();
+    return http.put(endpoint + url, payload, { ...options, cancelToken: source.token });
   } else {
     return Promise.reject();
   }
@@ -187,11 +198,14 @@ const get = <T>({ endpoint, url, loading = true, options, cancel }: ISettingsSer
     showLoading(true);
   }
 
-  if (cancel) {
-    source().cancel();
+  if (cancel && !!source) {
+    source.cancel('Cancel');
+    source = undefined;
   }
 
-  return http.get(endpoint + url, options);
+  const { CancelToken } = axios;
+  source = CancelToken.source();
+  return http.get(endpoint + url, { ...options, cancelToken: source.token });
 };
 
 /**
@@ -212,11 +226,14 @@ const deleted = async <T>({ endpoint, url, loading = true, options, configMessag
       showLoading(true);
     }
 
-    if (cancel) {
-      source().cancel();
+    if (cancel && !!source) {
+      source.cancel('Cancel');
+      source = undefined;
     }
 
-    return http.delete(endpoint + url, options);
+    const { CancelToken } = axios;
+    source = CancelToken.source();
+    return http.delete(endpoint + url, { ...options, cancelToken: source.token });
   } else {
     return Promise.reject();
   }

@@ -122,11 +122,11 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         rules={[{ required: true }]}
       >
         <Radio.Group onChange={onChangeLugarCementerio}>
-          <Radio value='Dentro de Bogotá'>Dentro de Bogotá</Radio>
+          <Radio value='Dentro de Bogotá'>DENTRO DE BOGOTÁ</Radio>
           <br />
-          <Radio value='Fuera de Bogotá'>Fuera de Bogotá</Radio>
+          <Radio value='Fuera de Bogotá'>FUERA DE BOGOTÁ</Radio>
           <br />
-          <Radio value='Fuera del País'>Fuera del País</Radio>
+          <Radio value='Fuera del País'>FUERA DEL PAÍS</Radio>
         </Radio.Group>
       </Form.Item>
 

@@ -130,7 +130,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           <Step title='Información General' description='Datos Certificación del fallecimiento.' />
           <Step title='Información del Fallecido' description='Datos personales e información del fallecido.' />
           <Step title='Información Solicitante' description='Datos del fallecimiento, Solicitud y otros datos.' />
-          <Step title='Información Certificado' description='Datos del cementerio y quien certifica la muerte.' />
+          <Step title='Información Certificado' description='Datos de Quien Certifica la defunción - Medico.' />
           <Step title='Documentos Requeridos' description='Documentos de soporte pdf.' />
         </Steps>
 
@@ -174,7 +174,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Segundo Apellido' name='secondSurname'>
               <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Nacionalidad' name='nationalidad' rules={[{ required: true, type: 'array' }]}>
+            <Form.Item
+              label='Nacionalidad'
+              name='nationalidad'
+              initialValue={['1e05f64f-5e41-4252-862c-5505dbc3931c']}
+              rules={[{ required: true, type: 'array' }]}
+            >
               <SelectComponent
                 options={l_paises}
                 mode='multiple'
@@ -186,19 +191,24 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]}>
               <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
             </Form.Item>
-            <Form.Item label='Tipo Identificación' name='IDType' rules={[{ required: true }]}>
+            <Form.Item
+              label='Tipo Identificación'
+              name='IDType'
+              initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+              rules={[{ required: true }]}
+            >
               <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true }]}>
+            <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true, max: 25 }]}>
               <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Estado Civil' name='civilStatus'>
+            <Form.Item label='Estado Civil' name='civilStatus' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
               <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevel'>
+            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Etnia' name='etnia'>
+            <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
             <Form.Item
@@ -213,10 +223,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 rules={[{ required: true, message: 'Edad es un campo obligatorio.' }]}
                 style={{ display: 'inline-block', width: 'calc(50% - 6px)' }}
               >
-                <InputNumber className='w-100' min={0} placeholder='#' />
+                <InputNumber className='w-100' min={0} maxLength={3} placeholder='#' />
               </Form.Item>
               <Form.Item
                 name='unitAge'
+                initialValue='d8ac47ec-9713-40b0-b3a7-7957ad0ec2b5'
                 rules={[{ required: true, message: 'Unidad de Medida Edad es un campo obligatorio.' }]}
                 style={{ display: 'inline-block', width: 'calc(50% - 6px)', marginLeft: 12 }}
               >
@@ -230,6 +241,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
             <Form.Item label='Régimen' name='regime' initialValue='848c6d53-6bda-4596-a889-8fdb0292f9e4'>
               <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+
+            <Form.Item
+              label='Tipo de Muerte'
+              name='deathType'
+              initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
+              rules={[{ required: true }]}
+            >
+              <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
             {/* TODO: [2021-06-12] Definir los roles del usuario, es solo visible para funcionarios. */}
@@ -277,7 +297,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       'regime',
                       'knownIDType',
                       'knownIDNumber',
-                      'knownName'
+                      'knownName',
+                      'deathType'
                     ])
                   }
                 >
@@ -288,15 +309,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            <Form.Item
-              label='Tipo de Muerte'
-              name='deathType'
-              initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
-              rules={[{ required: true }]}
-            >
-              <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-
             {isCremacion && (
               <>
                 <Divider orientation='right'>Datos Autorización de Cremación</Divider>
@@ -323,6 +335,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     <Form.Item label='Tipo Documento Autorizador' name='authIDType' rules={[{ required: true }]}>
                       <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
                     </Form.Item>
+
+                    <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
+                      <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+                    </Form.Item>
+
                     <Form.Item label='Primer Nombre Autorizador' name='authName' rules={[{ required: true }]}>
                       <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
                     </Form.Item>
@@ -342,17 +359,21 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       rules={[{ required: true }]}
                     >
                       <Radio.Group onChange={onChangeParentesco}>
-                        <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                        <br />
-                        <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                        <Radio value='Padre / Madre'>Padre / Madre</Radio>
                         <br />
                         <Radio value='Hermano/a'>Hermano/a</Radio>
                         <br />
                         <Radio value='Hijo/a'>Hijo/a</Radio>
                         <br />
-                        <Radio value='Nieto/a'>Nieto/a</Radio>
+                        <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
                         <br />
-                        <Radio value='Padre / Madre'>Padre / Madre</Radio>
+                        <Radio value='Tío/a'>Tío/a</Radio>
+                        <br />
+                        <Radio value='Sobrino/a'>Sobrino/a</Radio>
+                        <br />
+                        <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                        <br />
+                        <Radio value='Nieto/a'>Nieto/a</Radio>
                         <br />
                         <Radio value='Otro'>Otro</Radio>
                       </Radio.Group>
@@ -373,6 +394,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             )}
 
             <SolicitudInfoFormSeccion form={form} />
+            <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
@@ -385,8 +407,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   onClick={() =>
                     onNextStep([
                       ...KeyFormSolicitudInfo,
-                      'deathType',
+                      ...KeyFormCementerio,
                       'authIDType',
+                      'mauthIDNumber',
                       'authName',
                       'authSecondName',
                       'authSurname',
@@ -403,7 +426,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
             <MedicalSignatureFormSeccion form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -411,11 +433,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() => onNextStep([...KeyFormMedicalSignature, ...KeyFormCementerio])}
-                >
+                <Button type='primary' htmlType='button' onClick={() => onNextStep([...KeyFormMedicalSignature])}>
                   Siguiente
                 </Button>
               </div>
@@ -423,7 +441,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
-            <DocumentosFormSeccion tipoLicencia={tipoLicencia} />
+            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Individual' />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
