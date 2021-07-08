@@ -14,3 +14,4 @@ steps:
       api_location: 'api'
     env:
       azure_static_web_apps_api_token: $(deployment_token)
+      REACT_APP_REDIRECT_TO: $(REACT_APP_REDIRECT_TO)
