@@ -78,7 +78,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
           </Form.Item>
 
-          <Form.Item label='Número Identificación' name='instNumIdent' rules={[{ required: true }]}>
+          <Form.Item
+            label='Número Identificación'
+            initialValue={defaultValues.identification}
+            name='instNumIdent'
+            rules={[{ required: true }]}
+          >
             <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
           </Form.Item>
 
@@ -98,38 +103,53 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           >
             <Input allowClear placeholder='Número de Protocolo' autoComplete='off' />
           </Form.Item>
-        </div>
-      )}
-      <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-      <Form.Item
-        label='Número Acta de Levantamiento'
-        name='instNumActaLevantamiento'
-        rules={[{ required: isMedicinaLegal, max: 10 }]}
-      >
-        <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
-      </Form.Item>
-      <Form.Item label='Fecha de Acta' name='instFechaActa' rules={[{ required: isMedicinaLegal }]}>
-        <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-      </Form.Item>
-      <Form.Item label='Seccional Fiscalía' name='instSeccionalFiscalia' rules={[{ required: isMedicinaLegal, max: 20 }]}>
-        <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
-      </Form.Item>
 
-      {!datofiscal && (
-        <>
-          <Form.Item label='Nombres y Apellidos del Fiscal' name='instNombreFiscal' rules={[{ required: isMedicinaLegal }]}>
-            <Input allowClear placeholder='Nombres y apellidos completos' autoComplete='off' />
+          <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
+          <Form.Item
+            label='Número Acta de Levantamiento'
+            name='instNumActaLevantamiento'
+            rules={[{ required: isMedicinaLegal, max: 10 }]}
+          >
+            <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
           </Form.Item>
+          <Form.Item label='Fecha de Acta' name='instFechaActa' rules={[{ required: isMedicinaLegal }]}>
+            <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+          </Form.Item>
+          <Form.Item label='Seccional Fiscalía' name='instSeccionalFiscalia' rules={[{ required: isMedicinaLegal, max: 20 }]}>
+            <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
+          </Form.Item>
+
           <Form.Item label='No. Fiscal' name='instNoFiscal' rules={[{ required: isMedicinaLegal, max: 5 }]}>
             <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
           </Form.Item>
-          <Form.Item label='No. Oficio Medicina Legal' name='instNoOficioMedicinaLegal' rules={[{ required: isMedicinaLegal }]}>
-            <Input allowClear type='tel' placeholder='No. Oficio Medicina Legal' autoComplete='off' />
-          </Form.Item>
-          <Form.Item label='Año Oficio Medicina Legal' name='instYearOficioMedicinaLegal' rules={[{ required: isMedicinaLegal }]}>
-            <DatepickerComponent picker='year' dateDisabledType='before' dateFormatType='year' placeholder='-- Elija un año --' />
-          </Form.Item>
-        </>
+          {!datofiscal && (
+            <>
+              <Form.Item label='Nombres y Apellidos del Fiscal' name='instNombreFiscal' rules={[{ required: isMedicinaLegal }]}>
+                <Input allowClear placeholder='Nombres y apellidos completos' autoComplete='off' />
+              </Form.Item>
+
+              <Form.Item
+                label='No. Oficio Medicina Legal'
+                name='instNoOficioMedicinaLegal'
+                rules={[{ required: isMedicinaLegal }]}
+              >
+                <Input allowClear type='tel' placeholder='No. Oficio Medicina Legal' autoComplete='off' />
+              </Form.Item>
+              <Form.Item
+                label='Año Oficio Medicina Legal'
+                name='instYearOficioMedicinaLegal'
+                rules={[{ required: isMedicinaLegal }]}
+              >
+                <DatepickerComponent
+                  picker='year'
+                  dateDisabledType='before'
+                  dateFormatType='year'
+                  placeholder='-- Elija un año --'
+                />
+              </Form.Item>
+            </>
+          )}
+        </div>
       )}
     </>
   );

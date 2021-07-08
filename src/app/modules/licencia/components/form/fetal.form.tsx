@@ -175,8 +175,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion />
-            <DeathInstituteFormSeccion form={form} datofiscal={true} />
             <LugarDefuncionFormSeccion form={form} />
+            <DeathInstituteFormSeccion form={form} datofiscal={true} />
+            <Divider orientation='right'> Tipo de Muerte </Divider>
+            <Form.Item
+              label='Tipo de Muerte'
+              name='deathType'
+              initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
+              rules={[{ required: true }]}
+            >
+              <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-end'>
