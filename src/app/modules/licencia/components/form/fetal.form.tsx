@@ -36,6 +36,7 @@ import {
   IMunicipio,
   IUpz
 } from 'app/services/dominio.service';
+import Divider from 'antd/es/divider';
 
 const { Step } = Steps;
 
@@ -174,6 +175,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion />
+            <DeathInstituteFormSeccion form={form} datofiscal={true} />
             <LugarDefuncionFormSeccion form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -190,6 +192,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
+            <Divider orientation='right'> INFORMACION DE LA MADRE</Divider>
             <Form.Item
               label='Tipo Identificación'
               name='IDType'
@@ -230,6 +233,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
+            <Form.Item label='Estado Civil' name='civilStatus' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
+              <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
+              <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+            <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
+              <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+            <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
             <Form.Item label='País de Residencia' name='pais' rules={[{ required: true }]}>
               <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
             </Form.Item>
@@ -280,17 +293,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Barrio de Residencia' name='barrio' rules={[{ required: isBogota }]}>
               <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
             </Form.Item>
-
-            <Form.Item label='Estado Civil' name='civilStatus' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
-              <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
-              <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-            <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
-              <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
@@ -327,7 +329,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            <Form.Item
+            {/*  <Form.Item
               label='Tipo de Muerte'
               name='deathType'
               initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
@@ -336,7 +338,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
-            <DeathInstituteFormSeccion form={form} />
+            <DeathInstituteFormSeccion form={form} /> */}
             <SolicitudInfoFormSeccion form={form} />
 
             <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
