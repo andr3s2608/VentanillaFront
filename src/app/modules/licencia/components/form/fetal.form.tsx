@@ -37,6 +37,8 @@ import {
   IUpz
 } from 'app/services/dominio.service';
 import Divider from 'antd/es/divider';
+import Alert from 'antd/es/alert';
+import Radio, { RadioChangeEvent } from 'antd/es/radio';
 
 const { Step } = Steps;
 
@@ -140,7 +142,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const resp = await dominioService.get_barrio_by_upz(value);
     setLBarrios(resp);
   };
-
+  const onChangeParentesco = (e: RadioChangeEvent) => {
+    form.resetFields(['authOtherParentesco']);
+    //setIsOtherParentesco(e.target.value === 'Otro');
+  };
   //#endregion
 
   return (
@@ -348,6 +353,64 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
 
             <DeathInstituteFormSeccion form={form} /> */}
+
+            <div className='fadeInRight'>
+              <Divider orientation='right'> Datos Del Familiar Que Autorización la Cremación </Divider>
+              <Form.Item {...layoutWrapper}>
+                <Alert
+                  message='Diligencie la información del familiar o persona que autoriza la cremación.'
+                  type='warning'
+                  showIcon
+                />
+              </Form.Item>
+
+              <Form.Item label='Tipo Documento Autorizador' name='authIDType' rules={[{ required: true }]}>
+                <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+              </Form.Item>
+
+              <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
+                <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+              </Form.Item>
+
+              <Form.Item label='Primer Nombre Autorizador' name='authName' rules={[{ required: true }]}>
+                <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Segundo Nombre Autorizador' name='authSecondName'>
+                <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Primer Apellido Autorizador' name='authSurname' rules={[{ required: true }]}>
+                <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Segundo Apellido Autorizador' name='authSecondSurname'>
+                <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+              </Form.Item>
+              <Form.Item
+                label='Parentesco'
+                name='authParentesco'
+                initialValue='Cónyuge (Compañero/a Permanente)'
+                rules={[{ required: true }]}
+              >
+                <Radio.Group onChange={onChangeParentesco}>
+                  <Radio value='Padre / Madre'>Padre / Madre</Radio>
+                  <br />
+                  <Radio value='Hermano/a'>Hermano/a</Radio>
+                  <br />
+                  <Radio value='Hijo/a'>Hijo/a</Radio>
+                  <br />
+                  <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
+                  <br />
+                  <Radio value='Tío/a'>Tío/a</Radio>
+                  <br />
+                  <Radio value='Sobrino/a'>Sobrino/a</Radio>
+                  <br />
+                  <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                  <br />
+                  <Radio value='Nieto/a'>Nieto/a</Radio>
+                  <br />
+                  <Radio value='Otro'>Otro</Radio>
+                </Radio.Group>
+              </Form.Item>
+            </div>
             <SolicitudInfoFormSeccion form={form} />
 
             <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
