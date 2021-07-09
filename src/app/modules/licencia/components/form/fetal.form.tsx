@@ -355,7 +355,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             <DeathInstituteFormSeccion form={form} /> */}
 
             <div className='fadeInRight'>
-              <Divider orientation='right'> Datos Del Familiar Que Autorización la Cremación </Divider>
+              <Divider orientation='right'> Datos Del Familiar Que Autoriza la Cremación </Divider>
               <Form.Item {...layoutWrapper}>
                 <Alert
                   message='Diligencie la información del familiar o persona que autoriza la cremación.'
