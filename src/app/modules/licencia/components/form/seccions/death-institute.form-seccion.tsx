@@ -37,7 +37,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   const defaultValues = {
     identity: 'a7a1b90b-8f29-4509-8220-a95f567e6fcb',
     businessName: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES',
-    protocolnumber: '343452020',
     identification: '8001508610'
   };
 
@@ -99,7 +98,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             label='Número de Protocolo Medicina Legal'
             name='instNumProtocolo'
             rules={[{ required: isMedicinaLegal, max: 10 }]}
-            initialValue={defaultValues.protocolnumber}
           >
             <Input allowClear placeholder='Número de Protocolo' autoComplete='off' />
           </Form.Item>

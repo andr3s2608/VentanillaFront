@@ -364,7 +364,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 />
               </Form.Item>
 
-              <Form.Item label='Tipo Documento Autorizador' name='authIDType' rules={[{ required: true }]}>
+              <Form.Item
+                label='Tipo Documento Autorizador'
+                name='authIDType'
+                initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+                rules={[{ required: true }]}
+              >
                 <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
               </Form.Item>
 
