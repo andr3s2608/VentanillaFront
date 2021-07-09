@@ -311,7 +311,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
             {isCremacion && (
               <>
-                <Divider orientation='right'>Datos Del Familiar Que Autorización la Cremación</Divider>
+                <Divider orientation='right'>Datos Del Familiar Que Autoriza la Cremación</Divider>
 
                 {/*   <Form.Item label='¿Tiene Autorización de Cremación?' valuePropName='checked'>
                   <Switch
