@@ -39,6 +39,8 @@ import {
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
+import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
+import { FetalFormCremacion } from './fetalCremacion.form';
 
 const { Step } = Steps;
 
@@ -181,7 +183,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion />
             <LugarDefuncionFormSeccion form={form} />
-            <DeathInstituteFormSeccion form={form} datofiscal={true} />
+            <DeathInstituteFormSeccion form={form} datofiscal={true} required={false} />
             <Divider orientation='right'> Tipo de Muerte </Divider>
             <Form.Item
               label='Tipo de Muerte'
@@ -353,69 +355,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
 
             <DeathInstituteFormSeccion form={form} /> */}
+            <FetalFormCremacion tipoLicencia='Cremación' />
 
-            <div className='fadeInRight'>
-              <Divider orientation='right'> Datos Del Familiar Que Autoriza la Cremación </Divider>
-              <Form.Item {...layoutWrapper}>
-                <Alert
-                  message='Diligencie la información del familiar o persona que autoriza la cremación.'
-                  type='warning'
-                  showIcon
-                />
-              </Form.Item>
-
-              <Form.Item
-                label='Tipo Documento Autorizador'
-                name='authIDType'
-                initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
-                rules={[{ required: true }]}
-              >
-                <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
-              </Form.Item>
-
-              <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
-                <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
-              </Form.Item>
-
-              <Form.Item label='Primer Nombre Autorizador' name='authName' rules={[{ required: true }]}>
-                <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Segundo Nombre Autorizador' name='authSecondName'>
-                <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Primer Apellido Autorizador' name='authSurname' rules={[{ required: true }]}>
-                <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Segundo Apellido Autorizador' name='authSecondSurname'>
-                <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
-              </Form.Item>
-              <Form.Item
-                label='Parentesco'
-                name='authParentesco'
-                initialValue='Cónyuge (Compañero/a Permanente)'
-                rules={[{ required: true }]}
-              >
-                <Radio.Group onChange={onChangeParentesco}>
-                  <Radio value='Padre / Madre'>Padre / Madre</Radio>
-                  <br />
-                  <Radio value='Hermano/a'>Hermano/a</Radio>
-                  <br />
-                  <Radio value='Hijo/a'>Hijo/a</Radio>
-                  <br />
-                  <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                  <br />
-                  <Radio value='Tío/a'>Tío/a</Radio>
-                  <br />
-                  <Radio value='Sobrino/a'>Sobrino/a</Radio>
-                  <br />
-                  <Radio value='Abuelo/a'>Abuelo/a</Radio>
-                  <br />
-                  <Radio value='Nieto/a'>Nieto/a</Radio>
-                  <br />
-                  <Radio value='Otro'>Otro</Radio>
-                </Radio.Group>
-              </Form.Item>
-            </div>
             <SolicitudInfoFormSeccion form={form} />
 
             <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
