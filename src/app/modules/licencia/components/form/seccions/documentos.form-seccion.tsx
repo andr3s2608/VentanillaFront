@@ -59,38 +59,37 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
       </Form.Item>
-      {isFetal && !isCremacion && (
-        <>
-          <Form.Item
-            label='Documentos de la Madre'
-            name='fileDocumentosMadre'
-            valuePropName='fileList'
-            rules={[{ required: true }]}
-            getValueFromEvent={normFile}
-          >
-            <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
 
-          <Form.Item
-            label='Otros Documentos'
-            name='fileOtrosDocumentos'
-            valuePropName='fileList'
-            rules={[{ required: true }]}
-            getValueFromEvent={normFile}
-          >
-            <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
-        </>
-      )}
+      {/* {!isCremacion && <></>} */}
+
+      <Form.Item
+        label='Otros Documentos'
+        name='fileOtrosDocumentos'
+        valuePropName='fileList'
+        rules={[{ required: true }]}
+        getValueFromEvent={normFile}
+      >
+        <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+        </Upload>
+      </Form.Item>
 
       {isCremacion && (
         <>
           <Form.Item
-            label='Autorización de cremación'
+            label='Autorizacion de cremacion del familiar'
+            name='fileAuthCCFamiliar'
+            valuePropName='fileList'
+            rules={[{ required: true }]}
+            getValueFromEvent={normFile}
+          >
+            <Upload name='fileAuthCCFamiliar' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item
+            label='Documento del familiar'
             name='fileAuthCremacion'
             valuePropName='fileList'
             rules={[{ required: true }]}
@@ -102,21 +101,30 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
           </Form.Item>
 
           <Form.Item
-            label='Documento de Quien Autoriza'
-            name='fileAuthCCFamiliar'
+            label='Autorizacion del fiscal para cremar'
+            name='fileOficioIdentificacion'
             valuePropName='fileList'
-            extra={
-              <Alert
-                className='mt-2'
-                message='Cedula de ciudadana del familiar o persona quien autoriza la cremación.'
-                type='info'
-                showIcon
-              />
-            }
-            rules={[{ required: true }]}
+            // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
             getValueFromEvent={normFile}
           >
-            <Upload name='fileAuthCCFamiliar' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+            <Upload
+              name='fileOficioIdentificacion'
+              maxCount={1}
+              beforeUpload={() => false}
+              listType='text'
+              accept='application/pdf'
+            >
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item
+            label='Oficio de medicina legal al fiscal para cremar'
+            name='fileOrdenAuthFiscal'
+            valuePropName='fileList'
+            getValueFromEvent={normFile}
+          >
+            <Upload name='fileOrdenAuthFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
           </Form.Item>
@@ -130,69 +138,6 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
         getValueFromEvent={normFile}
       >
         <Upload name='fileActaNotarialFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
-
-      <Form.Item
-        label='Declaración Juramentada'
-        name='fileDeclaracionJuramentada'
-        valuePropName='fileList'
-        getValueFromEvent={normFile}
-      >
-        <Upload
-          name='fileDeclaracionJuramentada'
-          maxCount={1}
-          beforeUpload={() => false}
-          listType='text'
-          accept='application/pdf'
-        >
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
-
-      <Form.Item label='Certificaciones' name='fileCertificaciones' valuePropName='fileList' getValueFromEvent={normFile}>
-        <Upload name='fileCertificaciones' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
-
-      <Form.Item
-        label='Oficio de Identificación Fehaciente'
-        name='fileOficioIdentificacion'
-        valuePropName='fileList'
-        extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
-        getValueFromEvent={normFile}
-      >
-        <Upload name='fileOficioIdentificacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
-
-      <Form.Item
-        label='Orden de Autorización del Fiscal'
-        name='fileOrdenAuthFiscal'
-        valuePropName='fileList'
-        getValueFromEvent={normFile}
-      >
-        <Upload name='fileOrdenAuthFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
-
-      <Form.Item
-        label='Oficio de Medicina Legal al Fiscal'
-        name='fileOficioMedicinaLegalFiscal'
-        valuePropName='fileList'
-        getValueFromEvent={normFile}
-      >
-        <Upload
-          name='fileOficioMedicinaLegalFiscal'
-          maxCount={1}
-          beforeUpload={() => false}
-          listType='text'
-          accept='application/pdf'
-        >
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
       </Form.Item>
