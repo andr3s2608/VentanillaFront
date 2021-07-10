@@ -259,7 +259,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
             <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
-            <Form.Item label='País de Residencia' name='pais' rules={[{ required: true }]}>
+            <Form.Item label='País de Residencia' name='pais' initialValue={idColombia} rules={[{ required: true }]}>
               <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
             </Form.Item>
 
