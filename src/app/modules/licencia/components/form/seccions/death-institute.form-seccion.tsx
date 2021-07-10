@@ -12,10 +12,11 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import { AutorizacionCremacion } from './autorizacionCremacion';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(true);
-  const { datofiscal } = props;
+  const { datofiscal, required } = props;
   //#region Listados
 
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
@@ -106,18 +107,18 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Número Acta de Levantamiento'
             name='instNumActaLevantamiento'
-            rules={[{ required: isMedicinaLegal, max: 10 }]}
+            rules={[{ required: required, max: 10 }]}
           >
             <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
           </Form.Item>
-          <Form.Item label='Fecha de Acta' name='instFechaActa' rules={[{ required: isMedicinaLegal }]}>
+          <Form.Item label='Fecha de Acta' name='instFechaActa' rules={[{ required: required }]}>
             <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
           </Form.Item>
-          <Form.Item label='Seccional Fiscalía' name='instSeccionalFiscalia' rules={[{ required: isMedicinaLegal, max: 20 }]}>
+          <Form.Item label='Seccional Fiscalía' name='instSeccionalFiscalia' rules={[{ required: required, max: 20 }]}>
             <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
           </Form.Item>
 
-          <Form.Item label='No. Fiscal' name='instNoFiscal' rules={[{ required: isMedicinaLegal, max: 5 }]}>
+          <Form.Item label='No. Fiscal' name='instNoFiscal' rules={[{ required: required, max: 5 }]}>
             <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
           </Form.Item>
           {!datofiscal && (
@@ -147,6 +148,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
+          <AutorizacionCremacion />
         </div>
       )}
     </>
@@ -171,4 +173,5 @@ export const KeysForm = [
 interface IDeathInstituteProps<T> {
   form: FormInstance<T>;
   datofiscal?: boolean;
+  required: boolean;
 }
