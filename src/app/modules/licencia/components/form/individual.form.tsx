@@ -33,6 +33,7 @@ import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
 
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 const { Step } = Steps;
 
@@ -146,7 +147,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion />
             <LugarDefuncionFormSeccion form={form} />
-            <DeathInstituteFormSeccion form={form} datofiscal={true} />
+            <DeathInstituteFormSeccion form={form} datofiscal={true} required={true} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-end'>
@@ -383,6 +384,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         <Radio value='Otro'>Otro</Radio>
                       </Radio.Group>
                     </Form.Item>
+
                     {isOtherParentesco && (
                       <Form.Item
                         className='fadeInRight'
@@ -393,6 +395,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
                       </Form.Item>
                     )}
+
+                    <AutorizacionCremacion />
                   </div>
                 )}
               </>
