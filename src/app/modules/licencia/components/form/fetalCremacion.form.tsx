@@ -157,7 +157,7 @@ export const FetalFormCremacion: React.FC<ITipoLicencia> = (props) => {
       </Form.Item>
 
       <Form.Item
-        label='Tipo Documento Autorizador'
+        label='Tipo Documento'
         name='authIDType'
         initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
         rules={[{ required: true }]}
@@ -169,16 +169,16 @@ export const FetalFormCremacion: React.FC<ITipoLicencia> = (props) => {
         <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
       </Form.Item>
 
-      <Form.Item label='Primer Nombre Autorizador' name='authName' rules={[{ required: true }]}>
+      <Form.Item label='Primer Nombre' name='authName' rules={[{ required: true }]}>
         <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Segundo Nombre Autorizador' name='authSecondName'>
+      <Form.Item label='Segundo Nombre' name='authSecondName'>
         <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Primer Apellido Autorizador' name='authSurname' rules={[{ required: true }]}>
+      <Form.Item label='Primer Apellido' name='authSurname' rules={[{ required: true }]}>
         <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Segundo Apellido Autorizador' name='authSecondSurname'>
+      <Form.Item label='Segundo Apellido' name='authSecondSurname'>
         <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
       </Form.Item>
       <Form.Item
