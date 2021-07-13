@@ -39,8 +39,7 @@ import {
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
-import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
-import { FetalFormCremacion } from './fetalCremacion.form';
+import { FamilarFetalCremacion } from './familarCremacion';
 
 const { Step } = Steps;
 
@@ -56,12 +55,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
     IDominio[][]
   >([]);
+  const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
 
   const getListas = useCallback(
     async () => {
-      const [departamentos, localidades, ...resp] = await Promise.all([
+      const [departamentos, localidades, listMunicipio, ...resp] = await Promise.all([
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
+        dominioService.get_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_type(ETipoDominio['Tipo Documento']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Pais),
@@ -72,6 +73,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
       setListas(resp);
+      setLMunicipios(listMunicipio);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -102,10 +104,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [l_areas, setLAreas] = useState<IUpz[]>([]);
   const [l_barrios, setLBarrios] = useState<IBarrio[]>([]);
 
-  const [isColombia, setIsColombia] = useState(false);
-  const [isBogota, setIsBogota] = useState(false);
+  const [isColombia, setIsColombia] = useState(true);
+  const [isBogota, setIsBogota] = useState(true);
 
   const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
+  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const onChangePais = (value: string) => {
     form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
     setIsColombia(value === idColombia);
@@ -124,7 +127,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     setLBarrios([]);
   };
 
-  const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const onChangeMunicipio = (value: string) => {
     form.resetFields(['localidad', 'area', 'barrio']);
     setIsBogota(value === idBogota);
@@ -148,6 +150,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     form.resetFields(['authOtherParentesco']);
     //setIsOtherParentesco(e.target.value === 'Otro');
   };
+
   //#endregion
 
   return (
@@ -183,7 +186,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion />
             <LugarDefuncionFormSeccion form={form} />
-            <DeathInstituteFormSeccion form={form} datofiscal={true} required={false} />
+            <DeathInstituteFormSeccion form={form} datofiscal={true} required={false} tipoLicencia={tipoLicencia} />
             <Divider orientation='right'> Tipo de Muerte </Divider>
             <Form.Item
               label='Tipo de Muerte'
@@ -237,7 +240,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item
               label='Nacionalidad de la Madre'
               name='nationalidad'
-              initialValue={['1e05f64f-5e41-4252-862c-5505dbc3931c']}
+              initialValue={[idColombia]}
               rules={[{ required: true, type: 'array' }]}
             >
               <SelectComponent
@@ -258,12 +261,18 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
+
             <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
             <Form.Item label='País de Residencia' name='pais' initialValue={idColombia} rules={[{ required: true }]}>
               <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
             </Form.Item>
 
-            <Form.Item label='Departamento de Residencia' name='departamento' rules={[{ required: isColombia }]}>
+            <Form.Item
+              label='Departamento de Residencia'
+              initialValue={idDepartamentoBogota}
+              name='departamento'
+              rules={[{ required: isColombia }]}
+            >
               <SelectComponent
                 options={l_departamentos}
                 optionPropkey='idDepartamento'
@@ -273,18 +282,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Ciudad de Residencia' name='ciudad' rules={[{ required: true }]}>
-              {isColombia ? (
+            {isColombia ? (
+              <Form.Item label='Ciudad de Residencia' initialValue={idBogota} name='ciudad' rules={[{ required: true }]}>
                 <SelectComponent
                   options={l_municipios}
                   optionPropkey='idMunicipio'
                   optionPropLabel='descripcion'
                   onChange={onChangeMunicipio}
                 />
-              ) : (
+              </Form.Item>
+            ) : (
+              <Form.Item label='Ciudad de Residencia' name='ciudad' rules={[{ required: true }]}>
                 <Input allowClear placeholder='Ciudad' autoComplete='off' />
-              )}
-            </Form.Item>
+              </Form.Item>
+            )}
 
             <Form.Item label='Localidad de Residencia' name='localidad' rules={[{ required: isBogota }]}>
               <SelectComponent
@@ -355,7 +366,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
 
             <DeathInstituteFormSeccion form={form} /> */}
-            <FetalFormCremacion tipoLicencia='Cremación' />
+            <FamilarFetalCremacion tipoLicencia='Cremación' />
 
             <SolicitudInfoFormSeccion form={form} />
 

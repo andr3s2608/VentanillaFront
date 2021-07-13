@@ -15,11 +15,20 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 // Servicios
 import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
 
+interface municiopioDepartament {
+  municipio: string;
+  departament: string;
+}
+
 export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (props) => {
   const { form, tipoLicencia } = props;
 
   //#region Listados
 
+  const [isMunicipio, setMunicipio] = useState<municiopioDepartament>({
+    municipio: '',
+    departament: ''
+  });
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
     [[], [], []]
@@ -45,7 +54,8 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   //#endregion
   //#region Acciones del formulario
-
+  const cota = 'b5c40416-db96-4d1d-a5bd-da0ce61930e7';
+  const cundinamarca = '1029c7b3-e8c7-46e6-8275-3e568e06e03c';
   const [lugar, setLugar] = useState<TypeLugarCementerio>('Dentro de Bogotá');
   const onChangeLugarCementerio = (e: RadioChangeEvent) => {
     form.resetFields(['cementerioBogota', 'cementerioDepartamento', 'cementerioMunicipio', 'cementerioPais', 'cementerioCiudad']);
@@ -57,6 +67,15 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     form.resetFields(['cementerioMunicipio']);
     const resp = await dominioService.get_municipios_by_departamento(value);
     setLMunicipios(resp);
+  };
+
+  const onChangeMunicipio = async (value: string) => {
+    const departament = form.getFieldValue('cementerioDepartamento');
+
+    setMunicipio({
+      departament: departament,
+      municipio: value
+    });
   };
 
   //#endregion
@@ -75,8 +94,18 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               />
             </Form.Item>
             <Form.Item label='Municipio' name='cementerioMunicipio' rules={[{ required: true }]}>
-              <SelectComponent options={l_municipios} optionPropkey='idMunicipio' optionPropLabel='descripcion' />
+              <SelectComponent
+                options={l_municipios}
+                optionPropkey='idMunicipio'
+                onChange={onChangeMunicipio}
+                optionPropLabel='descripcion'
+              />
             </Form.Item>
+            {isMunicipio.departament === cundinamarca && isMunicipio.municipio === cota && (
+              <Form.Item label='Otro sitio' name='otro' rules={[{ required: true }]}>
+                <Input allowClear placeholder='Otro Sitio' autoComplete='off' />
+              </Form.Item>
+            )}
           </div>
         );
 
