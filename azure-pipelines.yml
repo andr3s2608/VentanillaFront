@@ -6,7 +6,7 @@ pool:
 
 variables:
   - name: REACT_APP_REDIRECT_TO
-    value: REACT_APP_REDIRECT_TO
+    value: https://ambitious-sand-025fb710f.azurestaticapps.net/
 steps:
   - checkout: self
     submodules: true
