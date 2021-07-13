@@ -314,15 +314,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               <>
                 <Divider orientation='right'>Datos Del Familiar Que Autoriza la Cremación</Divider>
 
-                {/*   <Form.Item label='¿Tiene Autorización de Cremación?' valuePropName='checked'>
-                  <Switch
-                    checkedChildren='Si'
-                    unCheckedChildren='No'
-                    checked={hasCremacionAuth}
-                    onChange={onChangeCremacionAuth}
-                  />
-                </Form.Item>
- */}
                 {hasCremacionAuth && (
                   <div className='fadeInRight'>
                     <Form.Item {...layoutWrapper}>
