@@ -13,10 +13,11 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { AutorizacionCremacion } from './autorizacionCremacion';
+import { TypeLicencia } from 'app/shared/utils/types.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(true);
-  const { datofiscal, required } = props;
+  const { datofiscal, required, tipoLicencia } = props;
   //#region Listados
 
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
@@ -148,7 +149,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
-          <AutorizacionCremacion />
+          {tipoLicencia === 'Cremación' && <AutorizacionCremacion />}
         </div>
       )}
     </>
@@ -174,4 +175,5 @@ interface IDeathInstituteProps<T> {
   form: FormInstance<T>;
   datofiscal?: boolean;
   required: boolean;
+  tipoLicencia: TypeLicencia;
 }

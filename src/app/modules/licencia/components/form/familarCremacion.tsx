@@ -39,11 +39,10 @@ import {
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
-import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 const { Step } = Steps;
 
-export const FetalFormCremacion: React.FC<ITipoLicencia> = (props) => {
+export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
   const { tipoLicencia } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
