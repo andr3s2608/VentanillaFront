@@ -3,11 +3,15 @@ name: Dev build and Deploy
 trigger:
   - dev
 
+variables:
+  group: Secrets
+
 pool:
   vmImage: ubuntu-latest
 
 steps:
   - checkout: self
+    submodules: true
     displayName: Checkout code
 
   - task: Bash@3
