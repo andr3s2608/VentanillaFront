@@ -5,8 +5,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - name: REACT_APP_REDIRECT_TO
-    value: REACT_APP_REDIRECT_TO
+REACT_APP_REDIRECT_TO: $(REACT_APP_REDIRECT_TO)
 
 steps:
   - checkout: self
