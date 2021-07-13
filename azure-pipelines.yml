@@ -14,6 +14,11 @@ steps:
     submodules: true
     displayName: Checkout code
 
+  - task: CmdLine@2
+    inputs:
+      script: |
+        echo $(REACT_APP_REDIRECT_TO)
+
   - task: Bash@3
     displayName: Build
     inputs:
