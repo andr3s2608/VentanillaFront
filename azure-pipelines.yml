@@ -12,7 +12,7 @@ variables:
 
 steps:
   - checkout: self
-    submodules: true
+    displayName: Checkout code
 
   - task: Bash@3
     displayName: Build
@@ -25,6 +25,7 @@ steps:
       REACT_APP_REDIRECT_TO: $(REACT_APP_REDIRECT_TO)
 
   - task: AzureStaticWebApp@0
+    displayName: Deploy
     inputs:
       app_location: '/'
       output_location: 'build'
