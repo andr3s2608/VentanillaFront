@@ -441,7 +441,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
-            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Individual' />
+            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

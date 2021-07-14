@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // Antd
-import Form from 'antd/es/form';
+import Form, { FormInstance } from 'antd/es/form';
 import Alert from 'antd/es/alert';
 import Upload from 'antd/es/upload';
 import Button from 'antd/es/button';
@@ -10,10 +10,10 @@ import Button from 'antd/es/button';
 import { UploadOutlined } from '@ant-design/icons';
 
 // Utilidades
-import { ITipoLicencia } from 'app/shared/utils/types.util';
+import { ITipoLicencia, TypeIndividuo, TypeLicencia } from 'app/shared/utils/types.util';
 
-export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
-  const { tipoLicencia, tipoIndividuo } = props;
+export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
+  const { tipoLicencia, tipoIndividuo, form } = props;
 
   const [isCremacion, setIsCremacion] = useState(false);
   const [isFetal, setIsFetal] = useState(false);
@@ -31,6 +31,16 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
     }
     return e && e.fileList;
   };
+
+  let validateRequired: boolean = false;
+  const validateForm = () => {
+    const instType = form.getFieldValue('instType');
+    if (tipoLicencia === 'Inhumación' && instType !== 'Otros') {
+      validateRequired = true;
+    }
+  };
+
+  validateForm();
 
   //#endregion
 
@@ -62,13 +72,7 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
 
       {/* {!isCremacion && <></>} */}
 
-      <Form.Item
-        label='Otros Documentos'
-        name='fileOtrosDocumentos'
-        valuePropName='fileList'
-        rules={[{ required: true }]}
-        getValueFromEvent={normFile}
-      >
+      <Form.Item label='Otros Documentos' name='fileOtrosDocumentos' valuePropName='fileList' getValueFromEvent={normFile}>
         <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
@@ -136,6 +140,7 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
         name='fileActaNotarialFiscal'
         valuePropName='fileList'
         getValueFromEvent={normFile}
+        rules={[{ required: validateRequired }]}
       >
         <Upload name='fileActaNotarialFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
@@ -144,3 +149,9 @@ export const DocumentosFormSeccion: React.FC<ITipoLicencia> = (props) => {
     </>
   );
 };
+
+interface IDocumentForm<T> {
+  form: FormInstance<T>;
+  tipoLicencia: TypeLicencia;
+  tipoIndividuo?: TypeIndividuo;
+}
