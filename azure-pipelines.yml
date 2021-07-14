@@ -1,5 +1,10 @@
+name: Dev build and Deploy
+
 trigger:
-- dev
+  - dev
+
+variables:
+  group: Secrets
 
 pool:
   vmImage: ubuntu-latest
@@ -7,11 +12,23 @@ pool:
 steps:
   - checkout: self
     submodules: true
+    displayName: Checkout code
+
+  - task: Bash@3
+    displayName: Build
+    inputs:
+      targetType: 'inline'
+      script: |        
+        npm install 
+        npm run build
+    env:
+      REACT_APP_REDIRECT_TO: $(REACT_APP_REDIRECT_TO)
+
   - task: AzureStaticWebApp@0
+    displayName: Deploy
     inputs:
       app_location: '/'
       output_location: 'build'
       api_location: 'api'
     env:
       azure_static_web_apps_api_token: $(deployment_token)
-      REACT_APP_REDIRECT_TO: $(REACT_APP_REDIRECT_TO)
