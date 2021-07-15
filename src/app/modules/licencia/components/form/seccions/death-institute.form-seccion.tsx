@@ -16,7 +16,7 @@ import { AutorizacionCremacion } from './autorizacionCremacion';
 import { TypeLicencia } from 'app/shared/utils/types.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(true);
+  const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(false);
   const { datofiscal, required, tipoLicencia } = props;
   //#region Listados
 
@@ -43,7 +43,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   };
 
   //#endregion
-
   const onChangeTipoInst = (e: RadioChangeEvent) => {
     props.form.resetFields([
       'instNumProtocolo',
@@ -61,7 +60,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
-      <Form.Item label='Tipo de Institución' name='instType' initialValue='Medicina Legal' rules={[{ required: true }]}>
+      <Form.Item label='Tipo de Institución' name='instType' initialValue='Otros' rules={[{ required: true }]}>
         <Radio.Group onChange={onChangeTipoInst}>
           <Radio value='Medicina Legal'>MEDICINA LEGAL</Radio>
           <Radio value='Otros'>OTROS</Radio>
@@ -149,7 +148,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
-          {tipoLicencia === 'Cremación' && <AutorizacionCremacion />}
         </div>
       )}
     </>
