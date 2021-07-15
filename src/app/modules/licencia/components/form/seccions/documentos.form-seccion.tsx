@@ -15,6 +15,7 @@ import { ITipoLicencia, TypeIndividuo, TypeLicencia } from 'app/shared/utils/typ
 export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   const { tipoLicencia, tipoIndividuo, form } = props;
 
+  let labelDocument = 'Documento del fallecido';
   const [isCremacion, setIsCremacion] = useState(false);
   const [isFetal, setIsFetal] = useState(false);
   useEffect(() => {
@@ -45,6 +46,10 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
   validateForm();
 
+  if (tipoLicencia === 'Cremación' && tipoIndividuo === 'Fetal') {
+    labelDocument = 'Documento de la Madre';
+  }
+
   //#endregion
 
   return (
@@ -62,7 +67,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
       </Form.Item>
 
       <Form.Item
-        label='Documento del fallecido'
+        label={labelDocument}
         name='fileCCFallecido'
         valuePropName='fileList'
         rules={[{ required: true }]}
