@@ -47,7 +47,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const { tipoLicencia } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
-
   //#region Listados
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
@@ -56,13 +55,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     IDominio[][]
   >([]);
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
+  const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+  const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
+  const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
 
   const getListas = useCallback(
     async () => {
-      const [departamentos, localidades, listMunicipio, ...resp] = await Promise.all([
+      const [departamentos, localidades, listMunicipio, upzLocalidad, ...resp] = await Promise.all([
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
         dominioService.get_municipios_by_departamento(idDepartamentoBogota),
+        dominioService.get_upz_by_localidad(idlocalidad),
         dominioService.get_type(ETipoDominio['Tipo Documento']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Pais),
@@ -74,6 +77,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLLocalidades(localidades);
       setListas(resp);
       setLMunicipios(listMunicipio);
+      setLAreas(upzLocalidad);
+      onChangeArea(idupz);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -178,7 +183,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           form={form}
           className='mb-4 w-100'
           {...layoutItems}
-          style={{ maxWidth: 700 }}
+          style={{ maxWidth: 800 }}
           layout='horizontal'
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
@@ -297,7 +302,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </Form.Item>
             )}
 
-            <Form.Item label='Localidad de Residencia' name='localidad' rules={[{ required: isBogota }]}>
+            <Form.Item
+              label='Localidad de Residencia'
+              initialValue={idlocalidad}
+              name='localidad'
+              rules={[{ required: isBogota }]}
+            >
               <SelectComponent
                 options={l_localidades}
                 optionPropkey='idLocalidad'
@@ -307,7 +317,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Área de Residencia' name='area' rules={[{ required: isBogota }]}>
+            <Form.Item label='Área de Residencia' initialValue={idupz} name='area' rules={[{ required: isBogota }]}>
               <SelectComponent
                 options={l_areas}
                 optionPropkey='idUpz'
@@ -317,7 +327,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Barrio de Residencia' name='barrio' rules={[{ required: isBogota }]}>
+            <Form.Item label='Barrio de Residencia' initialValue={idbarrio} name='barrio' rules={[{ required: isBogota }]}>
               <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
             </Form.Item>
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>

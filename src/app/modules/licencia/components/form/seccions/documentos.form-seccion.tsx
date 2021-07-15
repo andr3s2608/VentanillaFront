@@ -32,11 +32,14 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
     return e && e.fileList;
   };
 
+  const instType = form.getFieldValue('instType');
   let validateRequired: boolean = false;
   const validateForm = () => {
-    const instType = form.getFieldValue('instType');
     if (tipoLicencia === 'Inhumación' && instType !== 'Otros') {
       validateRequired = true;
+      if (tipoIndividuo === 'Fetal') {
+        validateRequired = false;
+      }
     }
   };
 
@@ -103,49 +106,60 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
           </Form.Item>
+          {instType !== 'Otros' && (
+            <>
+              <Form.Item
+                label='Autorizacion del fiscal para cremar'
+                name='fileOficioIdentificacion'
+                valuePropName='fileList'
+                // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
+                getValueFromEvent={normFile}
+              >
+                <Upload
+                  name='fileOficioIdentificacion'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
 
-          <Form.Item
-            label='Autorizacion del fiscal para cremar'
-            name='fileOficioIdentificacion'
-            valuePropName='fileList'
-            // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
-            getValueFromEvent={normFile}
-          >
-            <Upload
-              name='fileOficioIdentificacion'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
-
-          <Form.Item
-            label='Oficio de medicina legal al fiscal para cremar'
-            name='fileOrdenAuthFiscal'
-            valuePropName='fileList'
-            getValueFromEvent={normFile}
-          >
-            <Upload name='fileOrdenAuthFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
+              <Form.Item
+                label='Oficio de medicina legal al fiscal para cremar'
+                name='fileOrdenAuthFiscal'
+                valuePropName='fileList'
+                getValueFromEvent={normFile}
+              >
+                <Upload
+                  name='fileOrdenAuthFiscal'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
+            </>
+          )}
         </>
       )}
 
-      <Form.Item
-        label='Acta Notarial del Fiscal'
-        name='fileActaNotarialFiscal'
-        valuePropName='fileList'
-        getValueFromEvent={normFile}
-        rules={[{ required: validateRequired }]}
-      >
-        <Upload name='fileActaNotarialFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
+      {instType !== 'Otros' && (
+        <Form.Item
+          label='Acta Notarial del Fiscal'
+          name='fileActaNotarialFiscal'
+          valuePropName='fileList'
+          getValueFromEvent={normFile}
+          rules={[{ required: validateRequired }]}
+        >
+          <Upload name='fileActaNotarialFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+            <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+          </Upload>
+        </Form.Item>
+      )}
     </>
   );
 };

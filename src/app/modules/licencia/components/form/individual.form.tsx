@@ -139,7 +139,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           form={form}
           className='mb-4 w-100'
           {...layoutItems}
-          style={{ maxWidth: 700 }}
+          style={{ maxWidth: 800 }}
           layout='horizontal'
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
