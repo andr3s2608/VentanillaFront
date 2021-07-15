@@ -8,6 +8,7 @@ import Divider from 'antd/es/divider';
 
 // Utilidades
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { AutorizacionCremacion } from './autorizacionCremacion';
 
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();

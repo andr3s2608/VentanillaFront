@@ -39,6 +39,7 @@ import {
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
+import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 const { Step } = Steps;
 
@@ -206,6 +207,8 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           <Radio value='Otro'>Otro</Radio>
         </Radio.Group>
       </Form.Item>
+
+      <AutorizacionCremacion />
     </div>
   );
 };
