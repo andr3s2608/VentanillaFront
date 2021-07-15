@@ -24,6 +24,7 @@ import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from
 import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
 import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
+import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 // Servicios
 import {
@@ -39,7 +40,6 @@ import {
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
-import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 const { Step } = Steps;
 
@@ -207,7 +207,6 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           <Radio value='Otro'>Otro</Radio>
         </Radio.Group>
       </Form.Item>
-
       <AutorizacionCremacion />
     </div>
   );
