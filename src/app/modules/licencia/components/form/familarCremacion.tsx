@@ -24,6 +24,7 @@ import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from
 import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
 import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
+import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 // Servicios
 import {
@@ -206,6 +207,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           <Radio value='Otro'>Otro</Radio>
         </Radio.Group>
       </Form.Item>
+      <AutorizacionCremacion />
     </div>
   );
 };

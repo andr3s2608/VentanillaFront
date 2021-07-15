@@ -139,7 +139,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           form={form}
           className='mb-4 w-100'
           {...layoutItems}
-          style={{ maxWidth: 700 }}
+          style={{ maxWidth: 800 }}
           layout='horizontal'
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
@@ -441,7 +441,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
-            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Individual' />
+            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
