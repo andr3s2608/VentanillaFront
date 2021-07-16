@@ -46,7 +46,10 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
   validateForm();
 
-  if (tipoLicencia === 'Cremación' && tipoIndividuo === 'Fetal') {
+  if (
+    (tipoLicencia === 'Inhumación' && tipoIndividuo === 'Fetal') ||
+    (tipoLicencia === 'Cremación' && tipoIndividuo === 'Fetal')
+  ) {
     labelDocument = 'Documento de la Madre';
   }
 
