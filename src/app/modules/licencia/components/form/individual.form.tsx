@@ -212,34 +212,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item
-              label={
-                <>
-                  <span className='text-danger mr-1'>*</span> Edad
-                </>
-              }
-            >
-              <Form.Item
-                name='age'
-                rules={[{ required: true, message: 'Edad es un campo obligatorio.' }]}
-                style={{ display: 'inline-block', width: 'calc(50% - 6px)' }}
-              >
-                <InputNumber className='w-100' min={0} maxLength={3} placeholder='#' />
-              </Form.Item>
-              <Form.Item
-                name='unitAge'
-                initialValue='d8ac47ec-9713-40b0-b3a7-7957ad0ec2b5'
-                rules={[{ required: true, message: 'Unidad de Medida Edad es un campo obligatorio.' }]}
-                style={{ display: 'inline-block', width: 'calc(50% - 6px)', marginLeft: 12 }}
-              >
-                <SelectComponent
-                  options={l_unidad_medida_edad}
-                  placeholder='-- Unidad de Medida Edad --'
-                  optionPropkey='id'
-                  optionPropLabel='descripcion'
-                />
-              </Form.Item>
-            </Form.Item>
+
             <Form.Item label='Régimen' name='regime' initialValue='848c6d53-6bda-4596-a889-8fdb0292f9e4'>
               <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
