@@ -207,7 +207,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           <Radio value='Otro'>Otro</Radio>
         </Radio.Group>
       </Form.Item>
-      <AutorizacionCremacion />
+      <AutorizacionCremacion tipoLicencia={tipoLicencia} />
     </div>
   );
 };

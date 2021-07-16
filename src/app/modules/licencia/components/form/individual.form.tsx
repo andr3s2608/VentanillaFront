@@ -387,7 +387,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       </Form.Item>
                     )}
 
-                    <AutorizacionCremacion />
+                    <AutorizacionCremacion tipoLicencia={tipoLicencia} />
                   </div>
                 )}
               </>
