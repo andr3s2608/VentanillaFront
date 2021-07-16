@@ -120,6 +120,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                 label='Autorizacion del fiscal para cremar'
                 name='fileOficioIdentificacion'
                 valuePropName='fileList'
+                rules={[{ required: true }]}
                 // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
                 getValueFromEvent={normFile}
               >
@@ -138,6 +139,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                 label='Oficio de medicina legal al fiscal para cremar'
                 name='fileOrdenAuthFiscal'
                 valuePropName='fileList'
+                rules={[{ required: true }]}
                 getValueFromEvent={normFile}
               >
                 <Upload
