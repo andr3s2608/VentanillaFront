@@ -7,9 +7,8 @@ import Alert from 'antd/es/alert';
 import Steps from 'antd/es/steps';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import Button from 'antd/es/button';
-import Switch from 'antd/es/switch';
 import Divider from 'antd/es/divider';
-import InputNumber from 'antd/es/input-number';
+import moment from 'moment';
 
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -35,6 +34,11 @@ import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
+//redux
+import { SetGrid } from 'app/redux/Grid/grid.actions';
+import { store } from 'app/redux/app.reducers';
+
+
 const { Step } = Steps;
 
 export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
@@ -45,7 +49,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //#region Listados
 
   const [
-    [l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_unidad_medida_edad, l_regimen, l_tipo_muerte],
+    [l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte],
     setListas
   ] = useState<IDominio[][]>([]);
 
@@ -77,7 +81,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
+
+    const { dateOfBirth, date } = values;
+
+    values.processType = 'Individual Cremación';
+    values.id = 1;
+    values.idlicencia = 3456;
+    values.date = moment(date).format('YYYY-MM-DD');
+    values.date = moment(dateOfBirth).format('YYYY-MM-DD');
+    values.stateProcess = 'Pendiente'
+
+
     console.log(values);
+    store.dispatch(SetGrid(values));
     /* const resp = await personaService.add_persona_vacuna_exterior(values);
     if (resp) {
       setCurrent(0);

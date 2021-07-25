@@ -366,17 +366,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            {/*  <Form.Item
-              label='Tipo de Muerte'
-              name='deathType'
-              initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
-              rules={[{ required: true }]}
-            >
-              <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-
-            <DeathInstituteFormSeccion form={form} /> */}
-            <FamilarFetalCremacion tipoLicencia='Cremación' />
+            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} />}
 
             <SolicitudInfoFormSeccion form={form} />
 
