@@ -17,7 +17,8 @@ const projectInfo = {
         { name: 'Licencia Cremación - Individual', path: '/tramites-servicios/licencia/cremacion-individual' },
         { name: 'Licencia Cremación - Fetal', path: '/tramites-servicios/licencia/cremacion-fetal' },
         { name: 'Licencia Inhumación - Individual', path: '/tramites-servicios/licencia/inhumacion-individual' },
-        { name: 'Licencia Inhumación - Fetal', path: '/tramites-servicios/licencia/inhumacion-fetal' }
+        { name: 'Licencia Inhumación - Fetal', path: '/tramites-servicios/licencia/inhumacion-fetal' },
+        { name: 'Maestro', path: '/tramites-servicios' }
       ]
     }
   ]
