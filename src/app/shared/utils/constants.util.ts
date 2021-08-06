@@ -14,6 +14,8 @@ const projectInfo = {
     {
       name: 'Licencias',
       children: [
+        { name: 'Registro Natural', path: '/registro/Natural' },
+        { name: 'Registro Juridico', path: '/registro/Juridico' },
         { name: 'Licencia Cremación - Individual', path: '/tramites-servicios/licencia/cremacion-individual' },
         { name: 'Licencia Cremación - Fetal', path: '/tramites-servicios/licencia/cremacion-fetal' },
         { name: 'Licencia Inhumación - Individual', path: '/tramites-servicios/licencia/inhumacion-individual' },

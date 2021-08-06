@@ -15,6 +15,7 @@ const LicenciaInhumacionFetalPage = lazy(() => import('./pages/inhumacion-fetal/
 const MaestroPage = lazy(() => import('./pages/GridTipoLicencia/GridTipoLicencia.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
+
   {
     path: `${licenciaPath}/cremacion-individual`,
     component: LicenciaCremacionIndividualPage
