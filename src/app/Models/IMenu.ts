@@ -1,7 +1,3 @@
-export interface IMenu {
-  menuPadre: Menu[];
-}
-
 export interface Menu {
   idMenu: string;
   idMenuRoot: null | string;
@@ -10,5 +6,5 @@ export interface Menu {
   path: string;
   order: number;
   icon: null;
-  menuHijo?: Menu[];
+  menuHijo: Menu[];
 }

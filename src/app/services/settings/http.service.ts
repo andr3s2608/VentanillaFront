@@ -19,7 +19,7 @@ let source: any;
 // Constantes
 const http: AxiosInstance = axios.create({
   headers: {
-    'Content-Type': 'application/json; charset=UTF-8',
+    'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*'
   },
   cancelToken: cancelRequest.token

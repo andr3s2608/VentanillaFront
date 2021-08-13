@@ -1,24 +1,21 @@
-import { IMenu, Menu } from '../../Models/IMenu';
+import { Menu } from '../../Models/IMenu';
 export class MapperMenu {
-  static mapMenu(menu: IMenu[]): any[] {
+  static mapMenu(menu: Menu[]): any[] {
     let menuPatch: any[] = [];
-    menu.forEach((item: IMenu) => {
-      item.menuPadre.forEach((menu: Menu) => {
-        console.log(menu);
-        /* const children = menu.menuHijo.map((children: Menu) => {
-          return {
-            name: children.titulo,
-            describe: children.description,
-            icon: children.icon,
-            patch: children.path
-          };
-        }); */
-        const json = {
+    menu.forEach((item: Menu) => {
+      const children = item.menuHijo.map((menu: Menu) => {
+        return {
           name: menu.titulo,
-          children: {}
+          describe: menu.description,
+          icon: menu.icon,
+          path: menu.path
         };
-        menuPatch.push(json);
       });
+      const json = {
+        name: item.titulo,
+        children
+      };
+      menuPatch.push(json);
     });
     return menuPatch;
   }

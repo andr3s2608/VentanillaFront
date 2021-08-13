@@ -27,7 +27,7 @@ import { projectInfo } from 'app/shared/utils/constants.util';
 // Imágenes & Documentos
 import LogoNegativo from '../../assets/images/brand/logo_alcaldia.png';
 import { ApiService } from 'app/services/Apis.service';
-import { MapperMenu } from 'app/shared/utils/MapperMenu'
+import { MapperMenu } from 'app/shared/utils/MapperMenu';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 // Fragmentos
@@ -49,10 +49,8 @@ export const ModuleLayout = (props: { logout: () => void }) => {
   const getListas = useCallback(
     async () => {
       const myMenu = await api.GetMenuUser();
-      console.log(myMenu);
-      /* const menu = MapperMenu.mapMenu(myMenu);
-      console.log(myMenu, menu)
-      dispatch(SetApplicationMenu(menu)); */
+      const menu = MapperMenu.mapMenu(myMenu);
+      dispatch(SetApplicationMenu(menu));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -60,11 +58,6 @@ export const ModuleLayout = (props: { logout: () => void }) => {
 
   useEffect(() => {
     getListas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    dispatch(SetApplicationMenu(projectInfo.menu));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
