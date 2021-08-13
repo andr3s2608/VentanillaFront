@@ -27,7 +27,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     }, []);
 
     const defaultValues = {
-        identity: 'a7a1b90b-8f29-4509-8220-a95f567e6fcb',
+        identity: '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
         identification: ''
     };
 
