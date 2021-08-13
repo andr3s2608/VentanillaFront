@@ -15,6 +15,7 @@ import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { GetEtnia, GetSexo, personaNatural } from 'app/services/Apis.service';
 
 
 
@@ -26,7 +27,8 @@ const RegistroPage: React.FC<any> = (props) => {
     const { name, userName } = authProvider.getAccount();
     const [form] = Form.useForm<any>();
     const [isColombia, setIsColombia] = useState(true);
-
+    const [sex, setSex] = useState<[]>([]);
+    const [etniastate, setEtnia] = useState<[]>([]);
     const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
     const [[l_departamentos_colombia, l_paises,], setListas] = useState<
         [IDepartamento[], IDominio[]]
@@ -48,6 +50,21 @@ const RegistroPage: React.FC<any> = (props) => {
         []
     );
 
+    const getListas2 = useCallback(
+
+
+        async () => {
+            const [etnia, sexo] = await Promise.all([
+                GetEtnia(),
+                GetSexo()
+            ]);
+            setEtnia(etnia);
+            setSex(sexo);
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
+
     const onChangePais = (value: string) => {
         setIsColombia(value === idColombia);
         props.form.setFieldsValue({ state: undefined, city: undefined });
@@ -60,6 +77,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
     useEffect(() => {
         getListas();
+        getListas2();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -67,8 +85,48 @@ const RegistroPage: React.FC<any> = (props) => {
     const goBack = () => {
         history.goBack();
     }
-    const onSubmit = () => { }
+
+    const onSubmit = async (value: any) => {
+
+        const { confirEmail, email } = value;
+
+        if (confirEmail === email) {
+            const data = {
+                primerNombre: value.name,
+                segundoNombre: value.secondName,
+                primerApellido: value.surname,
+                segundoApellido: value.secondSurname,
+                tipoDocumento: value.instTipoIdent, //listado tipos de documentos
+                numeroIdentificacion: value.instNumIdent,
+                telefonoFijo: value.phone,
+                telefonoCelular: value.phonecell,
+                email: value.email,
+                nacionalidad: value.country, //listado de paises
+                departamento: value.state, //listado de departamentos
+                ciudadNacimientoOtro: null,
+                ciudadNacimiento: null, //listado municipios
+                departamentoResidencia: null, //listado departamentos
+                ciudadResidencia: null, //listado municipios
+                direccionResidencia: null,
+                fechaNacimiento: null,
+                sexo: value.sex, //listado sexo
+                genero: value.gender, //lista quemada
+                orientacionSexual: value.sexual_orientation, //lista quemada
+                etnia: value.ethnicity, //listado etnia
+                estadoCivil: value.estadoCivil, //lista quemada
+                nivelEducativo: value.levelEducation //listado nivel educativo
+
+            };
+
+            await personaNatural(data);
+
+        }
+
+    }
+
     const onSubmitFailed = () => { }
+
+
     return (
         <div className='fadeInTop container-fluid'>
             <PageHeaderComponent
@@ -140,42 +198,37 @@ const RegistroPage: React.FC<any> = (props) => {
                     <Form.Item
                         label='Sexo'
                         name='sex'
-                        initialValue={idDepartamentoBogota}
-                        rules={[{ required: isColombia }]}
+
+                        rules={[{ required: true }]}
                     >
                         <SelectComponent
-                            options={l_departamentos_colombia}
-                            optionPropkey='idDepartamento'
-                            optionPropLabel='descripcion'
-                            onChange={onChangeDepartamento}
+                            options={sex}
+                            optionPropkey='descripcionSexo'
+                            optionPropLabel='descripcionSexo'
                             disabled={!isColombia}
                         />
                     </Form.Item>
                     <Form.Item
                         label='Genero'
                         name='gender'
-                        initialValue={idDepartamentoBogota}
-                        rules={[{ required: isColombia }]}
+                        rules={[{ required: true }]}
                     >
                         <SelectComponent
-                            options={l_departamentos_colombia}
-                            optionPropkey='idDepartamento'
-                            optionPropLabel='descripcion'
-                            onChange={onChangeDepartamento}
+                            options={sex}
+                            optionPropkey='descripcionSexo'
+                            optionPropLabel='descripcionSexo'
                             disabled={!isColombia}
                         />
                     </Form.Item>
                     <Form.Item
                         label='Orientacion sexual'
                         name='sexual_orientation'
-                        initialValue={idDepartamentoBogota}
-                        rules={[{ required: isColombia }]}
+                        rules={[{ required: true }]}
                     >
                         <SelectComponent
-                            options={l_departamentos_colombia}
-                            optionPropkey='idDepartamento'
-                            optionPropLabel='descripcion'
-                            onChange={onChangeDepartamento}
+                            options={sex}
+                            optionPropkey='descripcionSexo'
+                            optionPropLabel='descripcionSexo'
                             disabled={!isColombia}
                         />
                     </Form.Item>
@@ -183,20 +236,18 @@ const RegistroPage: React.FC<any> = (props) => {
                     <Form.Item
                         label='Etnia'
                         name='ethnicity'
-                        initialValue={idDepartamentoBogota}
-                        rules={[{ required: isColombia }]}
+                        rules={[{ required: true }]}
                     >
                         <SelectComponent
-                            options={l_departamentos_colombia}
-                            optionPropkey='idDepartamento'
-                            optionPropLabel='descripcion'
-                            onChange={onChangeDepartamento}
+                            options={etniastate}
+                            optionPropkey='nombre'
+                            optionPropLabel='nombre'
                             disabled={!isColombia}
                         />
                     </Form.Item>
                     <Form.Item
                         label='Estado Civil'
-                        name='ethnicity'
+                        name='estadoCivil'
                         initialValue={idDepartamentoBogota}
                         rules={[{ required: isColombia }]}
                     >
@@ -204,18 +255,16 @@ const RegistroPage: React.FC<any> = (props) => {
                             options={l_departamentos_colombia}
                             optionPropkey='idDepartamento'
                             optionPropLabel='descripcion'
-                            onChange={onChangeDepartamento}
                             disabled={!isColombia}
                         />
                     </Form.Item>
                     <Form.Item
                         label='Nivel Educativo'
                         name='levelEducation'
-                        initialValue={idDepartamentoBogota}
-                        rules={[{ required: isColombia }]}
+                        rules={[{ required: true }]}
                     >
                         <SelectComponent
-                            options={l_departamentos_colombia}
+                            options={[]}
                             optionPropkey='idDepartamento'
                             optionPropLabel='descripcion'
                             onChange={onChangeDepartamento}

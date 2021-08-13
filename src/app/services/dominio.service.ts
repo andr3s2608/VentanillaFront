@@ -2,7 +2,7 @@ import { environments } from '../../environments/environments';
 import { get } from './settings/http.service';
 
 class DominioService {
-  private endpoint = environments.endpoint;
+  private endpoint = environments.endpointV1;
 
   get_type = (tipoDominio: ETipoDominio) =>
     get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}` });

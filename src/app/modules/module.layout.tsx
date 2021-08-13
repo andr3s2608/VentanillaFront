@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 // Redux
@@ -26,6 +26,8 @@ import { projectInfo } from 'app/shared/utils/constants.util';
 
 // Imágenes & Documentos
 import LogoNegativo from '../../assets/images/brand/logo_alcaldia.png';
+import { GetMenuUser } from 'app/services/Apis.service';
+import { MapperMenu } from 'app/shared/utils/MapperMenu'
 
 // Fragmentos
 const { Content } = Layout;
@@ -41,6 +43,23 @@ export const ModuleLayout = (props: { logout: () => void }) => {
 
   //#endregion
   //#region Application settings menu
+
+  const getListas = useCallback(
+    async () => {
+      const myMenu = await GetMenuUser();
+      console.log(myMenu);
+      /* const menu = MapperMenu.mapMenu(myMenu);
+      console.log(myMenu, menu)
+      dispatch(SetApplicationMenu(menu)); */
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     dispatch(SetApplicationMenu(projectInfo.menu));
