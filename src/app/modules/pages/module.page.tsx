@@ -7,22 +7,25 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ModalComponent } from 'app/shared/components/modal.component';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
-import { GetRoles } from 'app/services/Apis.service';
+import { ApiService } from 'app/services/Apis.service';
 import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/Models/IRoles';
+
 
 const ModulePage = () => {
 
   const history = useHistory();
   const [roles, setroles] = useState<IRoles[]>()
   const { name, userName } = authProvider.getAccount();
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
 
   const onPersonNatural = () => history.push('/registro/Natural');
   const onPersonJuridica = () => history.push('/registro/Juridico');
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await GetRoles();
+      const mysRoles = await api.GetRoles();
 
       setroles(mysRoles);
 

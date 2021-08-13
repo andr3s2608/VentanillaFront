@@ -37,3 +37,42 @@ const regExp = {
 };
 
 export { projectInfo, regExp };
+export const direcionOrienta = ['ESTE', 'SUR'];
+
+export const nomesclatura = [
+  { key: 'AK', value: 'AK - Avenida Carrera' },
+  { key: 'AC', value: 'AC - Avenida Calle' },
+  { key: 'CL', value: 'CL - Calle' },
+  { key: 'DG', value: 'DG - Diagonal' },
+  { key: 'KR', value: 'KR - Carrera' },
+  { key: 'TV', value: 'TV - Transversal' }
+];
+
+export const letras = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z'
+];

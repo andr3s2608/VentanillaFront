@@ -2,7 +2,7 @@
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 
 // Utilidades
-import { projectInfo } from 'app/shared/utils/constants.util';
+import { direcionOrienta, nomesclatura, projectInfo } from 'app/shared/utils/constants.util';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
@@ -15,7 +15,7 @@ import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
-import { GetEtnia, GetSexo, personaNatural } from 'app/services/Apis.service';
+import { ApiService } from 'app/services/Apis.service';
 
 
 
@@ -33,6 +33,9 @@ const RegistroPage: React.FC<any> = (props) => {
     const [[l_departamentos_colombia, l_paises,], setListas] = useState<
         [IDepartamento[], IDominio[]]
     >([[], []]);
+
+    const { accountIdentifier } = authProvider.getAccount();
+    const api = new ApiService(accountIdentifier);
 
     const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
     const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
@@ -52,11 +55,10 @@ const RegistroPage: React.FC<any> = (props) => {
 
     const getListas2 = useCallback(
 
-
         async () => {
             const [etnia, sexo] = await Promise.all([
-                GetEtnia(),
-                GetSexo()
+                api.GetEtnia(),
+                api.GetSexo()
             ]);
             setEtnia(etnia);
             setSex(sexo);
@@ -91,6 +93,8 @@ const RegistroPage: React.FC<any> = (props) => {
         const { confirEmail, email } = value;
 
         if (confirEmail === email) {
+            const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+            const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
             const data = {
                 primerNombre: value.name,
                 segundoNombre: value.secondName,
@@ -107,7 +111,7 @@ const RegistroPage: React.FC<any> = (props) => {
                 ciudadNacimiento: null, //listado municipios
                 departamentoResidencia: null, //listado departamentos
                 ciudadResidencia: null, //listado municipios
-                direccionResidencia: null,
+                direccionResidencia: direcion,
                 fechaNacimiento: null,
                 sexo: value.sex, //listado sexo
                 genero: value.gender, //lista quemada
@@ -118,7 +122,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
             };
 
-            await personaNatural(data);
+            await api.personaNatural(data);
 
         }
 
@@ -190,10 +194,102 @@ const RegistroPage: React.FC<any> = (props) => {
                         type="info"
                     />
 
+                    <Form.Item
+                        label='Via Ppla'
+                        name='ppla'
+                        rules={[{ required: true }]}
+                    >
+                        <SelectComponent
+                            options={nomesclatura}
+                            optionPropkey='key'
+                            optionPropLabel='value'
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='Num'
+                        name='Num1'
+                        rules={[{ required: true }]}
+                    >
+                        <Input allowClear placeholder='' autoComplete='off' />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='letra'
+                        name='letra1'
+                    >
+                        <SelectComponent
+                            options={nomesclatura}
+                            optionPropkey='key'
+                            optionPropLabel='value'
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='Bis'
+                        name='Bis'
+                    >
+                        <SelectComponent
+                            options={[{ key: 'Bis', value: 'Bis' }]}
+                            optionPropkey='key'
+                            optionPropLabel='value'
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='Card'
+                        name='card1'
+                    >
+                        <SelectComponent
+                            options={direcionOrienta}
+                            optionPropkey='key'
+                            optionPropLabel='value'
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label='Num'
+                        name='Num2'
+                        rules={[{ required: true }]}
+                    >
+                        <Input allowClear placeholder='' autoComplete='off' />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='letra'
+                        name='letra2'
+                    >
+                        <SelectComponent
+                            options={nomesclatura}
+                            optionPropkey='key'
+                            optionPropLabel='value'
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='Placa'
+                        name='placa'
+                        rules={[{ required: true }]}
+                    >
+                        <Input allowClear placeholder='' autoComplete='off' />
+                    </Form.Item>
+
+                    <Form.Item
+                        label='Card'
+                        name='card2'
+                    >
+                        <SelectComponent
+                            options={direcionOrienta}
+                            optionPropkey='key'
+                            optionPropLabel='value'
+                        />
+                    </Form.Item>
+
                     <h4 className='app-subtitle mt-3'>Datos Demográficos.</h4>
                     <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true, max: 25 }]}>
                         <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
                     </Form.Item>
+
+
 
                     <Form.Item
                         label='Sexo'

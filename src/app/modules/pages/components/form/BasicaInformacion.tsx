@@ -73,10 +73,10 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             <Form.Item label='Telefono Celular' name='phonecell' rules={[{ required: true }]}>
                 <Input allowClear placeholder='Telefono Celular' type="number" autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Correo electronico' name='email' rules={[{ required: true }]}>
+            <Form.Item label='Correo electronico' name='email' rules={[{ required: true, type: 'email' }]}>
                 <Input allowClear placeholder='email@exaple.com' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Confirmar Correo Electronico' name='confirEmail' rules={[{ required: true }]}>
+            <Form.Item label='Confirmar Correo Electronico' name='confirEmail' rules={[{ required: true, type: 'email' }]}>
                 <Input allowClear placeholder='email@exaple.com' autoComplete='off' />
             </Form.Item>
         </>

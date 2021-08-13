@@ -6,20 +6,23 @@ import { IResponse } from 'app/Models/IResponse';
 import { IRoles } from 'app/Models/IRoles';
 import { IMenu } from 'app/Models/IMenu';
 
-const { accountIdentifier } = authProvider.getAccount();
-const endpoint = environments.endpointV2;
+export class ApiService {
+  endpoint = environments.endpointV2;
+  private oid = '';
+  constructor(oid$: string) {
+    this.oid = oid$;
+  }
+  personaNatural = (tipoDominio: IPersonaNatural) =>
+    post<IPersonaNatural>({ endpoint: this.endpoint, url: `Persona/AddPersonaNatural` });
 
-export const personaNatural = (tipoDominio: IPersonaNatural) =>
-  post<IPersonaNatural>({ endpoint: endpoint, url: `Persona/AddPersonaNatural` });
+  personaJuridica = (tipoDominio: IPersonaNatural) =>
+    post<IPersonaNatural>({ endpoint: this.endpoint, url: `Persona/AddPersonaJuridica` });
 
-export const personaJuridica = (tipoDominio: IPersonaNatural) =>
-  post<IPersonaNatural>({ endpoint: endpoint, url: `Persona/AddPersonaJuridica` });
+  GetMenuUser = () => get<IMenu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${this.oid}` });
 
-export const GetMenuUser = () =>
-  get<IMenu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${accountIdentifier}` });
+  GetRoles = () => get<IRoles[]>({ endpoint: environments.security, url: `Security/GetRoleByIdUser/${this.oid}` });
 
-export const GetRoles = () =>
-  get<IRoles[]>({ endpoint: environments.security, url: `Security/GetRoleByIdUser/${accountIdentifier}` });
+  GetSexo = () => get<[]>({ endpoint: environments.endpointV1, url: 'Sexo/GetSexo' });
 
-export const GetSexo = () => get<[]>({ endpoint: environments.endpointV1, url: 'Sexo/GetSexo' });
-export const GetEtnia = () => get<[]>({ endpoint: environments.endpointV1, url: 'Etnia/GetEtnia' });
+  GetEtnia = () => get<[]>({ endpoint: environments.endpointV1, url: 'Etnia/GetEtnia' });
+}

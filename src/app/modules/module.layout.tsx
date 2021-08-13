@@ -26,27 +26,29 @@ import { projectInfo } from 'app/shared/utils/constants.util';
 
 // Imágenes & Documentos
 import LogoNegativo from '../../assets/images/brand/logo_alcaldia.png';
-import { GetMenuUser } from 'app/services/Apis.service';
+import { ApiService } from 'app/services/Apis.service';
 import { MapperMenu } from 'app/shared/utils/MapperMenu'
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 // Fragmentos
 const { Content } = Layout;
 
 export const ModuleLayout = (props: { logout: () => void }) => {
   //#region Redux settings
-
+  const { accountIdentifier } = authProvider.getAccount();
   const { loading, sidenav }: UIState = useSelector<AppState, UIState>((state) => state.ui);
 
   const dispatch = useDispatch();
-
   const toggleSidenav = () => dispatch(ToggleSideNav(!sidenav));
+
+  const api = new ApiService(accountIdentifier);
 
   //#endregion
   //#region Application settings menu
 
   const getListas = useCallback(
     async () => {
-      const myMenu = await GetMenuUser();
+      const myMenu = await api.GetMenuUser();
       console.log(myMenu);
       /* const menu = MapperMenu.mapMenu(myMenu);
       console.log(myMenu, menu)
