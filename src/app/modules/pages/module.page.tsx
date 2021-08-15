@@ -27,16 +27,12 @@ const ModulePage = () => {
 
       setroles(mysRoles);
 
-      if (mysRoles?.length) {
-        console.log(roles);
-        history.push('/tramites-servicios');
-      }
-      if (mysRoles.length === 0) {
+      /* if (mysRoles.length === 0) {
         await api.PostRolesUser({
           idUser: accountIdentifier,
           idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
         });
-      }
+      } */
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -47,6 +43,8 @@ const ModulePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onCancel = (): void => {};
+
   return (
     <div className='fadeInTop container-fluid'>
       {roles?.length === 0 ? (
@@ -55,6 +53,8 @@ const ModulePage = () => {
           title={`Registro ventanilla única`}
           cancelButtonProps={{ hidden: true }}
           okButtonProps={{ hidden: true }}
+          onCancel={onCancel}
+          closable={false}
         >
           <PageHeaderComponent
             title={''}
