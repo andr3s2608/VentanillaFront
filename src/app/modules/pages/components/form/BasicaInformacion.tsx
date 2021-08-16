@@ -3,18 +3,26 @@ import Input from 'antd/es/input';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
-import { layoutItems } from 'app/shared/utils/form-layout.util';
 import React, { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const BasicaInformacion: React.FC<any> = (props) => {
+  const { accountIdentifier } = authProvider.getAccount();
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
+  const api = new ApiService(accountIdentifier);
+
   const getListas = useCallback(
     async () => {
-      const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      setListaTipoDocumento(resp);
+      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const tipoDocumento = await api.getTipoDocumeto();
+      const listDocument = tipoDocumento.map((res: any) => {
+        return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
+      });
+      setListaTipoDocumento(listDocument);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -26,16 +34,12 @@ export const BasicaInformacion: React.FC<any> = (props) => {
   }, []);
 
   const defaultValues = {
-    identity: '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
+    identity: 1,
     identification: ''
   };
 
   return (
     <>
-      {/*   <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true, max: 25 }]}>
-                <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
-            </Form.Item> */}
-
       <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]}>
         <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
       </Form.Item>

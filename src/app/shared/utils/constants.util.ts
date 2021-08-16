@@ -76,3 +76,11 @@ export const letras = [
   { key: 'Y' },
   { key: 'Z' }
 ];
+
+export const EstadoCivil = [
+  { key: '1', name: 'Soltero' },
+  { key: '2', name: 'Casado' },
+  { key: '3', name: 'Union marital de hecho' },
+  { key: '4', name: 'Divorciado' },
+  { key: '5', name: 'Viudo' }
+];

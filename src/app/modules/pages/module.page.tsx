@@ -47,7 +47,7 @@ const ModulePage = () => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      {roles?.length === 0 ? (
+      {roles?.length ? (
         <ModalComponent
           visible={true}
           title={`Registro ventanilla única`}

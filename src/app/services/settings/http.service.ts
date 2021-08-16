@@ -126,12 +126,15 @@ const post = async <T>({
   loading = true,
   options,
   configMessage,
-  cancel
+  cancel,
+  confirmModal
 }: ISettingsService): Promise<T> => {
-  const confirm = await confirmMessage({
-    content: '¿Está seguro de guardar la información?',
-    ...configMessage
-  });
+  const confirm = confirmModal
+    ? await confirmMessage({
+        content: '¿Está seguro de guardar la información?',
+        ...configMessage
+      })
+    : false;
 
   if (confirm) {
     if (loading) {
@@ -258,6 +261,8 @@ interface ISettingsService {
   options?: AxiosRequestConfig;
   /** Cancelar la petición anterior. */
   cancel?: boolean;
+  /**Cancelar confirmacion de accion */
+  confirmModal?: boolean;
 }
 
 //#endregion
