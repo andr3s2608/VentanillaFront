@@ -4,11 +4,76 @@ import { PageHeaderComponent } from 'app/shared/components/page-header.component
 // Utilidades
 import { projectInfo } from 'app/shared/utils/constants.util';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ModalComponent } from 'app/shared/components/modal.component';
+import Button from 'antd/es/button';
+import { useHistory } from 'react-router';
+import { ApiService } from 'app/services/Apis.service';
+import { useCallback, useEffect, useState } from 'react';
+import { IRoles } from 'app/Models/IRoles';
 
 const ModulePage = () => {
+  const history = useHistory();
+  const [roles, setroles] = useState<IRoles[]>();
   const { name, userName } = authProvider.getAccount();
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
+  const onPersonNatural = () => history.push('/registro/Natural');
+  const onPersonJuridica = () => history.push('/registro/Juridico');
+
+  const getListas = useCallback(
+    async () => {
+      const mysRoles = await api.GetRoles();
+
+      setroles(mysRoles);
+
+      if (mysRoles?.length) {
+        console.log(roles);
+        history.push('/tramites-servicios');
+      }
+      if (mysRoles.length === 0) {
+        await api.PostRolesUser({
+          idUser: accountIdentifier,
+          idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className='fadeInTop container-fluid'>
+      {roles?.length === 0 ? (
+        <ModalComponent
+          visible={true}
+          title={`Registro ventanilla única`}
+          cancelButtonProps={{ hidden: true }}
+          okButtonProps={{ hidden: true }}
+        >
+          <PageHeaderComponent
+            title={''}
+            subTitle={`Tenga en cuenta, que para realizar de nuestros trámites en línea, es obligatorio diligenciar previamente el
+          REGISTRO DEL CIUDADANO (persona natural o jurídica),
+          el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
+            backIcon={null}
+          />
+          <div className='d-flex justify-content-between'>
+            <Button type='primary' htmlType='button' onClick={onPersonNatural}>
+              Registro persona natural
+            </Button>
+            <Button type='primary' htmlType='submit' onClick={onPersonJuridica}>
+              Registro persona juridica
+            </Button>
+          </div>
+        </ModalComponent>
+      ) : null}
+
       <PageHeaderComponent
         title={`¡Bienvenido/a ${name || userName}!`}
         subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}

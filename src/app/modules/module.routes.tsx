@@ -12,6 +12,9 @@ import { LicenciaRoutes } from 'app/modules/licencia/licencia.routes';
 
 // Pages
 const HomePage = lazy(() => import('./pages/module.page'));
+const RegistroNaturalPage = lazy(() => import('./pages/registro-persona'));
+const RegistroJuridicoPage = lazy(() => import('./pages/registro-juridico'));
+
 
 export const ModuleRoutes = () => {
   const routesSetting: IRouteProps[] = [...LicenciaRoutes];
@@ -20,6 +23,8 @@ export const ModuleRoutes = () => {
     <Suspense fallback={<Spin className='fadeIn app-loading' tip='Cargando Componentes...' />}>
       <Switch>
         <Route path='/' exact component={HomePage} />
+        <Route path='/registro/Natural' exact component={RegistroNaturalPage} />
+        <Route path='/registro/Juridico' exact component={RegistroJuridicoPage} />
         {routesSetting.map((i, idx) => (
           <AccessRoute key={idx} exact {...i} />
         ))}

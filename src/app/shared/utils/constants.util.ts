@@ -14,6 +14,8 @@ const projectInfo = {
     {
       name: 'Licencias',
       children: [
+        { name: 'Registro Natural', path: '/registro/Natural' },
+        { name: 'Registro Juridico', path: '/registro/Juridico' },
         { name: 'Licencia Cremación - Individual', path: '/tramites-servicios/licencia/cremacion-individual' },
         { name: 'Licencia Cremación - Fetal', path: '/tramites-servicios/licencia/cremacion-fetal' },
         { name: 'Licencia Inhumación - Individual', path: '/tramites-servicios/licencia/inhumacion-individual' },
@@ -35,3 +37,42 @@ const regExp = {
 };
 
 export { projectInfo, regExp };
+export const direcionOrienta = [{ key: 'ESTE' }, { key: 'SUR' }];
+
+export const nomesclatura = [
+  { key: 'AK', value: 'AK - Avenida Carrera' },
+  { key: 'AC', value: 'AC - Avenida Calle' },
+  { key: 'CL', value: 'CL - Calle' },
+  { key: 'DG', value: 'DG - Diagonal' },
+  { key: 'KR', value: 'KR - Carrera' },
+  { key: 'TV', value: 'TV - Transversal' }
+];
+
+export const letras = [
+  { key: 'A' },
+  { key: 'B' },
+  { key: 'C' },
+  { key: 'D' },
+  { key: 'E' },
+  { key: 'F' },
+  { key: 'G' },
+  { key: 'H' },
+  { key: 'I' },
+  { key: 'J' },
+  { key: 'K' },
+  { key: 'L' },
+  { key: 'M' },
+  { key: 'N' },
+  { key: 'O' },
+  { key: 'P' },
+  { key: 'Q' },
+  { key: 'R' },
+  { key: 'S' },
+  { key: 'T' },
+  { key: 'U' },
+  { key: 'V' },
+  { key: 'W' },
+  { key: 'X' },
+  { key: 'Y' },
+  { key: 'Z' }
+];

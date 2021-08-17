@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 // Redux
@@ -26,24 +26,38 @@ import { projectInfo } from 'app/shared/utils/constants.util';
 
 // Imágenes & Documentos
 import LogoNegativo from '../../assets/images/brand/logo_alcaldia.png';
+import { ApiService } from 'app/services/Apis.service';
+import { MapperMenu } from 'app/shared/utils/MapperMenu';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 // Fragmentos
 const { Content } = Layout;
 
 export const ModuleLayout = (props: { logout: () => void }) => {
   //#region Redux settings
-
+  const { accountIdentifier } = authProvider.getAccount();
   const { loading, sidenav }: UIState = useSelector<AppState, UIState>((state) => state.ui);
 
   const dispatch = useDispatch();
-
   const toggleSidenav = () => dispatch(ToggleSideNav(!sidenav));
+
+  const api = new ApiService(accountIdentifier);
 
   //#endregion
   //#region Application settings menu
 
+  const getListas = useCallback(
+    async () => {
+      const myMenu = await api.GetMenuUser();
+      const menu = MapperMenu.mapMenu(myMenu);
+      dispatch(SetApplicationMenu(menu));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
   useEffect(() => {
-    dispatch(SetApplicationMenu(projectInfo.menu));
+    getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
