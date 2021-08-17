@@ -127,14 +127,14 @@ const post = async <T>({
   options,
   configMessage,
   cancel,
-  confirmModal
+  confirmModal = true
 }: ISettingsService): Promise<T> => {
   const confirm = confirmModal
     ? await confirmMessage({
         content: '¿Está seguro de guardar la información?',
         ...configMessage
       })
-    : false;
+    : await true;
 
   if (confirm) {
     if (loading) {

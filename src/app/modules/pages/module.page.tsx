@@ -10,6 +10,9 @@ import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
 import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/Models/IRoles';
+import { MapperMenu } from 'app/shared/utils/MapperMenu';
+import { SetApplicationMenu } from 'app/redux/application/application.actions';
+import { useDispatch } from 'react-redux';
 
 const ModulePage = () => {
   const history = useHistory();
@@ -24,19 +27,12 @@ const ModulePage = () => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
-
       setroles(mysRoles);
-
-      /* if (mysRoles.length === 0) {
-        await api.PostRolesUser({
-          idUser: accountIdentifier,
-          idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-        });
-      } */
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+  //const getMenu = UpdateMenu();
 
   useEffect(() => {
     getListas();
@@ -47,7 +43,7 @@ const ModulePage = () => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      {roles?.length ? (
+      {roles?.length === 0 ? (
         <ModalComponent
           visible={true}
           title={`Registro ventanilla única`}

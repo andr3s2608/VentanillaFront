@@ -21,34 +21,24 @@ const { TabPane } = Tabs;
 
 const RegistroPage: React.FC<any> = (props) => {
   const history = useHistory();
-  const { name, userName, accountIdentifier } = authProvider.getAccount();
+  const { accountIdentifier } = authProvider.getAccount();
   const [form] = Form.useForm<any>();
   const [isColombia, setIsColombia] = useState(true);
 
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], IDominio[]]>([[], []]);
 
-  const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-
   const api = new ApiService(accountIdentifier);
-
-  const onChangePais = (value: string) => {
-    setIsColombia(value === idColombia);
-    props.form.setFieldsValue({ state: undefined, city: undefined });
-  };
-  const onChangeDepartamento = async (value: string) => {
-    props.form.setFieldsValue({ city: undefined });
-    const resp = await dominioService.get_municipios_by_departamento(value);
-    setLMunicipios(resp);
-  };
 
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
   const getListas = useCallback(
     async () => {
-      const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      setListaTipoDocumento(resp);
+      const tipoDocumento = await api.getTipoDocumeto();
+      const listDocument = tipoDocumento.map((res: any) => {
+        return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
+      });
+      setListaTipoDocumento(listDocument);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -63,7 +53,7 @@ const RegistroPage: React.FC<any> = (props) => {
     history.goBack();
   };
   const defaultValues = {
-    identity: 'a7a1b90b-8f29-4509-8220-a95f567e6fcb',
+    identity: 1,
     identification: ''
   };
   const onSubmit = async (value: any) => {
@@ -72,17 +62,27 @@ const RegistroPage: React.FC<any> = (props) => {
       segundoNombre: value.secondName,
       primerApellido: value.surname,
       segundoApellido: value.secondSurname,
-      tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-      numeroIdentificacion: value.instNumIdent,
+      tipoDocumento: value.TipoIdent, //listado tipos de documentos
+      numeroIdentificacion: value.nit,
       telefonoFijo: value.phone,
       telefonoCelular: value.phonecell,
       email: value.email,
-      tipoDocumentoRepresentanteLegal: null, //listado tipos de documentos
-      numeroDocumentoRepresentanteLegal: null,
+      tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
+      numeroDocumentoRepresentanteLegal: value.instNumIdent,
       nombreRazonSocial: value.razonsocial
     };
 
-    await api.personaJuridica(json);
+    const resApi = await api.personaJuridica(json);
+    if (typeof resApi === 'number') {
+      await api.PostRolesUser({
+        idUser: accountIdentifier,
+        idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+      });
+      history.push('/');
+    }
+    if (typeof resApi === 'object') {
+      console.log('error');
+    }
   };
   const onSubmitFailed = () => {};
   return (
@@ -111,12 +111,7 @@ const RegistroPage: React.FC<any> = (props) => {
             <Input allowClear placeholder='Razón Social' autoComplete='off' />
           </Form.Item>
 
-          <Form.Item
-            label='Tipo Identificación'
-            initialValue={defaultValues.identity}
-            name='instTipoIdent'
-            rules={[{ required: true }]}
-          >
+          <Form.Item label='Tipo Identificación' initialValue={5} name='TipoIdent' rules={[{ required: true }]}>
             <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
           </Form.Item>
 

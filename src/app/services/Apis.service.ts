@@ -16,7 +16,7 @@ export class ApiService {
     post<IPersonaNatural>({ endpoint: environments.shared, url: `v2/Persona/AddPersonaNatural`, payload: tipoDominio });
 
   personaJuridica = (tipoDominio: IPersonaNatural) =>
-    post<IPersonaNatural>({ endpoint: this.endpoint, url: `Persona/AddPersonaJuridica`, payload: tipoDominio });
+    post<IPersonaNatural>({ endpoint: this.endpoint, url: `v2/Persona/AddPersonaJuridica`, payload: tipoDominio });
 
   GetMenuUser = () => get<Menu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${this.oid}` });
 

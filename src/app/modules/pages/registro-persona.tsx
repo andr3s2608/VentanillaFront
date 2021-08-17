@@ -118,7 +118,6 @@ const RegistroPage: React.FC<any> = (props) => {
         estadoCivil: value.estadoCivil, //lista quemada
         nivelEducativo: value.levelEducation //listado nivel educativo
       };
-
       const resApi = await api.personaNatural(data);
       if (typeof resApi === 'number') {
         await api.PostRolesUser({
@@ -130,10 +129,6 @@ const RegistroPage: React.FC<any> = (props) => {
       if (typeof resApi === 'object') {
         console.log('error');
       }
-    }
-
-    if (confirEmail !== email) {
-      console.log('email');
     }
   };
 
