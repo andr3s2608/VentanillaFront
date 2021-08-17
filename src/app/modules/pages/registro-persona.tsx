@@ -99,7 +99,7 @@ const RegistroPage: React.FC<any> = (props) => {
         primerApellido: value.surname,
         segundoApellido: value.secondSurname ?? '',
         tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-        numeroIdentificacion: value.instNumIdent,
+        numeroIdentificacion: Number(value.instNumIdent),
         telefonoFijo: value.phone ?? '',
         telefonoCelular: value.phonecell,
         email: value.email,

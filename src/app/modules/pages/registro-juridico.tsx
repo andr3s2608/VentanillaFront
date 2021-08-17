@@ -63,12 +63,12 @@ const RegistroPage: React.FC<any> = (props) => {
       primerApellido: value.surname,
       segundoApellido: value.secondSurname,
       tipoDocumento: value.TipoIdent, //listado tipos de documentos
-      numeroIdentificacion: value.nit,
+      numeroIdentificacion: Number(value.nit),
       telefonoFijo: value.phone,
       telefonoCelular: value.phonecell,
       email: value.email,
       tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
-      numeroDocumentoRepresentanteLegal: value.instNumIdent,
+      numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
       nombreRazonSocial: value.razonsocial
     };
 

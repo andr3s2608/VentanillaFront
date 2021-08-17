@@ -35,14 +35,14 @@ const { Content } = Layout;
 
 export const ModuleLayout = (props: { logout: () => void }) => {
   //#region Redux settings
-  const { accountIdentifier } = authProvider.getAccount();
+  const { accountIdentifier, idToken } = authProvider.getAccount();
   const { loading, sidenav }: UIState = useSelector<AppState, UIState>((state) => state.ui);
 
   const dispatch = useDispatch();
   const toggleSidenav = () => dispatch(ToggleSideNav(!sidenav));
 
   const api = new ApiService(accountIdentifier);
-
+  const email = idToken.emails;
   //#endregion
   //#region Application settings menu
 
@@ -51,6 +51,10 @@ export const ModuleLayout = (props: { logout: () => void }) => {
       const myMenu = await api.GetMenuUser();
       const menu = MapperMenu.mapMenu(myMenu);
       dispatch(SetApplicationMenu(menu));
+      await api.AddUser({
+        oid: accountIdentifier,
+        email: email[0]
+      });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

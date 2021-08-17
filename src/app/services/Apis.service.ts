@@ -21,6 +21,8 @@ export class ApiService {
   GetMenuUser = () => get<Menu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${this.oid}` });
 
   GetRoles = () => get<IRoles[]>({ endpoint: environments.security, url: `Security/GetRoleByIdUser/${this.oid}` });
+  AddUser = (payload: any) =>
+    post<any>({ endpoint: environments.security, url: `Security/AddUser`, payload, confirmModal: false });
 
   PostRolesUser = (payload: any) =>
     post({ endpoint: environments.security, url: 'Security/AddUserRole', payload, confirmModal: false });
