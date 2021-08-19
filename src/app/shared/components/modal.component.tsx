@@ -52,7 +52,7 @@ export const ModalComponent: React.FC<ModalProps> = (props) => {
             setDisabled(true);
           }}
         >
-          {title}
+          <h3>{title}</h3>
         </div>
       }
       keyboard={false}

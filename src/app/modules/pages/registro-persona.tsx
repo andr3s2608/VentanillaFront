@@ -16,6 +16,8 @@ import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
+import { EstadoCivil } from 'app/shared/utils/constants.util';
+import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 
 const { TabPane } = Tabs;
 
@@ -26,20 +28,21 @@ const RegistroPage: React.FC<any> = (props) => {
   const [isColombia, setIsColombia] = useState(true);
   const [sex, setSex] = useState<[]>([]);
   const [etniastate, setEtnia] = useState<[]>([]);
+  const [nivelEducativo, setNivelEducativo] = useState<[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], IDominio[]]>([[], []]);
+  const [[l_departamentos_colombia, l_paises], setListas] = useState<[[], []]>([[], []]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
-  const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+  const idColombia = '170';
+  const idDepartamentoBogota = '3';
   const getListas = useCallback(
     async () => {
       const [municipios, ...resp] = await Promise.all([
-        dominioService.get_municipios_by_departamento(idDepartamentoBogota),
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_type(ETipoDominio.Pais)
+        api.getMunicipio(idDepartamentoBogota),
+        api.getDepartament(),
+        api.getPaises()
       ]);
       setLMunicipios(municipios);
       setListas(resp);
@@ -50,9 +53,10 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const getListas2 = useCallback(
     async () => {
-      const [etnia, sexo] = await Promise.all([api.GetEtnia(), api.GetSexo()]);
+      const [etnia, sexo, educacion] = await Promise.all([api.GetEtnia(), api.GetSexo(), api.GetNivelEducativo()]);
       setEtnia(etnia);
       setSex(sexo);
+      setNivelEducativo(educacion);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -60,11 +64,16 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const onChangePais = (value: string) => {
     setIsColombia(value === idColombia);
-    props.form.setFieldsValue({ state: undefined, city: undefined });
+
+    if (isColombia) {
+      form.setFieldsValue({ state: 3, city: 179 });
+    }
+
+    form.setFieldsValue({ state: undefined, city: undefined, cityLive: undefined });
   };
   const onChangeDepartamento = async (value: string) => {
-    props.form.setFieldsValue({ city: undefined });
-    const resp = await dominioService.get_municipios_by_departamento(value);
+    form.setFieldsValue({ city: undefined });
+    const resp = await api.getMunicipio(value);
     setLMunicipios(resp);
   };
 
@@ -86,22 +95,22 @@ const RegistroPage: React.FC<any> = (props) => {
       const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
       const data = {
         primerNombre: value.name,
-        segundoNombre: value.secondName,
+        segundoNombre: value.secondName ?? '',
         primerApellido: value.surname,
-        segundoApellido: value.secondSurname,
+        segundoApellido: value.secondSurname ?? '',
         tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-        numeroIdentificacion: value.instNumIdent,
-        telefonoFijo: value.phone,
+        numeroIdentificacion: Number(value.instNumIdent),
+        telefonoFijo: value.phone ?? '',
         telefonoCelular: value.phonecell,
         email: value.email,
         nacionalidad: value.country, //listado de paises
         departamento: value.state, //listado de departamentos
-        ciudadNacimientoOtro: null,
-        ciudadNacimiento: null, //listado municipios
-        departamentoResidencia: null, //listado departamentos
-        ciudadResidencia: null, //listado municipios
+        ciudadNacimientoOtro: !isColombia ? value.cityLive : '',
+        ciudadNacimiento: isColombia ? value.cityLive : 0, //listado municipios
+        departamentoResidencia: value.state, //listado departamentos
+        ciudadResidencia: value.city, //listado municipios
         direccionResidencia: direcion,
-        fechaNacimiento: null,
+        fechaNacimiento: value.date,
         sexo: value.sex, //listado sexo
         genero: value.gender, //lista quemada
         orientacionSexual: value.sexual_orientation, //lista quemada
@@ -109,8 +118,17 @@ const RegistroPage: React.FC<any> = (props) => {
         estadoCivil: value.estadoCivil, //lista quemada
         nivelEducativo: value.levelEducation //listado nivel educativo
       };
-
-      await api.personaNatural(data);
+      const resApi = await api.personaNatural(data);
+      if (typeof resApi === 'number') {
+        await api.PostRolesUser({
+          idUser: accountIdentifier,
+          idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+        });
+        history.push('/');
+      }
+      if (typeof resApi === 'object') {
+        console.log('error');
+      }
     }
   };
 
@@ -138,38 +156,67 @@ const RegistroPage: React.FC<any> = (props) => {
         >
           <BasicaInformacion form={form} />
           <h4 className='app-subtitle mt-3'>Datos Geográficos.</h4>
-          <Form.Item label='País' name='country' initialValue={idColombia} rules={[{ required: true }]}>
-            <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
-          </Form.Item>
-
-          <Form.Item
-            label='Departamento Defunción'
-            name='state'
-            initialValue={idDepartamentoBogota}
-            rules={[{ required: isColombia }]}
-          >
-            <SelectComponent
-              options={l_departamentos_colombia}
-              optionPropkey='idDepartamento'
-              optionPropLabel='descripcion'
-              onChange={onChangeDepartamento}
-              disabled={!isColombia}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label='Municipio Defunción'
-            name='city'
-            initialValue='31211657-3386-420a-8620-f9c07a8ca491'
-            rules={[{ required: isColombia }]}
-          >
-            <SelectComponent
-              options={l_municipios}
-              optionPropkey='idMunicipio'
-              optionPropLabel='descripcion'
-              disabled={!isColombia}
-            />
-          </Form.Item>
+          {isColombia ? (
+            <>
+              <Form.Item label='Nacionalidad' name='country' initialValue={idColombia} rules={[{ required: true }]}>
+                <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' onChange={onChangePais} />
+              </Form.Item>
+              <Form.Item label='Departamento de nacimiento' name='stateLive' initialValue={3} rules={[{ required: isColombia }]}>
+                <SelectComponent
+                  options={l_departamentos_colombia}
+                  optionPropkey='idDepartamento'
+                  optionPropLabel='descripcion'
+                  onChange={onChangeDepartamento}
+                  disabled={!isColombia}
+                />
+              </Form.Item>
+              <Form.Item label='Ciudad de nacimiento' name='cityLive' initialValue={149} rules={[{ required: isColombia }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  disabled={!isColombia}
+                />
+              </Form.Item>
+              <Form.Item label='Departamento de residencia' name='state' initialValue={3} rules={[{ required: isColombia }]}>
+                <SelectComponent
+                  options={l_departamentos_colombia}
+                  optionPropkey='idDepartamento'
+                  optionPropLabel='descripcion'
+                  onChange={onChangeDepartamento}
+                  disabled={!isColombia}
+                />
+              </Form.Item>
+              <Form.Item label='Ciudad de residencia' name='city' initialValue={149} rules={[{ required: isColombia }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  disabled={!isColombia}
+                />
+              </Form.Item>
+            </>
+          ) : (
+            <>
+              <Form.Item label='Nacionalidad' name='country' initialValue={idColombia} rules={[{ required: true }]}>
+                <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' onChange={onChangePais} />
+              </Form.Item>
+              <Form.Item label='Ciudad de nacimiento' name='cityLive' initialValue={''} rules={[{ required: true }]}>
+                <Input allowClear placeholder='' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Departamento de residencia' name='state' rules={[{ required: true }]}>
+                <SelectComponent
+                  options={l_departamentos_colombia}
+                  optionPropkey='idDepartamento'
+                  optionPropLabel='descripcion'
+                  onChange={onChangeDepartamento}
+                />
+              </Form.Item>
+              <Form.Item label='Ciudad de residencia' name='city' rules={[{ required: true }]}>
+                <SelectComponent options={l_municipios} optionPropkey='idMunicipio' optionPropLabel='descripcion' />
+              </Form.Item>
+            </>
+          )}
           <Alert
             message='Información!'
             description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
@@ -178,97 +225,57 @@ const RegistroPage: React.FC<any> = (props) => {
                                 estandarizar la dirección para el resto de ciudades.'
             type='info'
           />
-
           <Form.Item label='Via Ppla' name='ppla' rules={[{ required: true }]}>
             <SelectComponent options={nomesclatura} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
-
           <Form.Item label='Num' name='Num1' rules={[{ required: true }]}>
             <Input allowClear placeholder='' autoComplete='off' />
           </Form.Item>
-
           <Form.Item label='letra' name='letra1'>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
-
           <Form.Item label='Bis' name='Bis'>
             <SelectComponent options={[{ key: 'Bis', value: 'Bis' }]} optionPropkey='key' optionPropLabel='value' />
           </Form.Item>
-
           <Form.Item label='Card' name='card1'>
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Num' name='Num2' rules={[{ required: true }]}>
             <Input allowClear placeholder='' autoComplete='off' />
           </Form.Item>
-
           <Form.Item label='letra' name='letra2'>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
-
           <Form.Item label='Placa' name='placa' rules={[{ required: true }]}>
             <Input allowClear placeholder='' autoComplete='off' />
           </Form.Item>
-
           <Form.Item label='Card' name='card2'>
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
 
           <h4 className='app-subtitle mt-3'>Datos Demográficos.</h4>
-          <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true, max: 25 }]}>
-            <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
-          </Form.Item>
 
+          <Form.Item label='Fecha Nacimiento' name='date' rules={[{ required: true }]}>
+            <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+          </Form.Item>
           <Form.Item label='Sexo' name='sex' rules={[{ required: true }]}>
-            <SelectComponent
-              options={sex}
-              optionPropkey='descripcionSexo'
-              optionPropLabel='descripcionSexo'
-              disabled={!isColombia}
-            />
+            <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
           </Form.Item>
           <Form.Item label='Genero' name='gender' rules={[{ required: true }]}>
-            <SelectComponent
-              options={sex}
-              optionPropkey='descripcionSexo'
-              optionPropLabel='descripcionSexo'
-              disabled={!isColombia}
-            />
+            <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
           </Form.Item>
           <Form.Item label='Orientacion sexual' name='sexual_orientation' rules={[{ required: true }]}>
-            <SelectComponent
-              options={sex}
-              optionPropkey='descripcionSexo'
-              optionPropLabel='descripcionSexo'
-              disabled={!isColombia}
-            />
+            <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
           </Form.Item>
-
           <Form.Item label='Etnia' name='ethnicity' rules={[{ required: true }]}>
-            <SelectComponent options={etniastate} optionPropkey='nombre' optionPropLabel='nombre' disabled={!isColombia} />
+            <SelectComponent options={etniastate} optionPropkey='idEtnia' optionPropLabel='nombre' />
           </Form.Item>
-          <Form.Item
-            label='Estado Civil'
-            name='estadoCivil'
-            initialValue={idDepartamentoBogota}
-            rules={[{ required: isColombia }]}
-          >
-            <SelectComponent
-              options={l_departamentos_colombia}
-              optionPropkey='idDepartamento'
-              optionPropLabel='descripcion'
-              disabled={!isColombia}
-            />
+          <Form.Item label='Estado Civil' name='estadoCivil' rules={[{ required: true }]}>
+            <SelectComponent options={EstadoCivil} optionPropkey='key' optionPropLabel='name' />
           </Form.Item>
           <Form.Item label='Nivel Educativo' name='levelEducation' rules={[{ required: false }]}>
-            <SelectComponent
-              options={[]}
-              optionPropkey='idDepartamento'
-              optionPropLabel='descripcion'
-              onChange={onChangeDepartamento}
-            />
+            <SelectComponent options={nivelEducativo} optionPropkey='idNivelEducativo' optionPropLabel='nombre' />
           </Form.Item>
-
           <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
             <div className='d-flex justify-content-between'>
               <Button type='dashed' htmlType='button' onClick={goBack}>

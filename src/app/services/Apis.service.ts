@@ -7,24 +7,38 @@ import { IRoles } from 'app/Models/IRoles';
 import { Menu } from 'app/Models/IMenu';
 
 export class ApiService {
-  endpoint = environments.endpointV2;
+  endpoint = environments.shared;
   private oid = '';
   constructor(oid$: string) {
     this.oid = oid$;
   }
   personaNatural = (tipoDominio: IPersonaNatural) =>
-    post<IPersonaNatural>({ endpoint: this.endpoint, url: `Persona/AddPersonaNatural`, payload: tipoDominio });
+    post<IPersonaNatural>({ endpoint: environments.shared, url: `v2/Persona/AddPersonaNatural`, payload: tipoDominio });
 
   personaJuridica = (tipoDominio: IPersonaNatural) =>
-    post<IPersonaNatural>({ endpoint: this.endpoint, url: `Persona/AddPersonaJuridica`, payload: tipoDominio });
+    post<IPersonaNatural>({ endpoint: this.endpoint, url: `v2/Persona/AddPersonaJuridica`, payload: tipoDominio });
 
   GetMenuUser = () => get<Menu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${this.oid}` });
 
   GetRoles = () => get<IRoles[]>({ endpoint: environments.security, url: `Security/GetRoleByIdUser/${this.oid}` });
+  AddUser = (payload: any) =>
+    post<any>({ endpoint: environments.security, url: `Security/AddUser`, payload, confirmModal: false });
 
-  PostRolesUser = (payload: any) => post({ endpoint: environments.security, url: 'Security/AddUserRole', payload });
+  PostRolesUser = (payload: any) =>
+    post({ endpoint: environments.security, url: 'Security/AddUserRole', payload, confirmModal: false });
 
-  GetSexo = () => get<[]>({ endpoint: environments.endpointV1, url: 'Sexo/GetSexo' });
+  GetSexo = () => get<[]>({ endpoint: environments.shared, url: 'v1/Sexo/GetSexo' });
 
-  GetEtnia = () => get<[]>({ endpoint: environments.endpointV1, url: 'Etnia/GetEtnia' });
+  GetEtnia = () => get<[]>({ endpoint: environments.shared, url: 'v1/Etnia/GetEtnia' });
+
+  getTipoDocumeto = () => get<[]>({ endpoint: environments.shared, url: 'v1/TipoIdentificacion/GetTipoIdentificacion' });
+
+  getPaises = () => get<[]>({ endpoint: environments.shared, url: 'v1/Pais/GetPais' });
+
+  getDepartament = () => get<[]>({ endpoint: environments.shared, url: 'v1/Departamento/GetAllDepartamento' });
+
+  getMunicipio = (id: string) =>
+    get<[]>({ endpoint: environments.shared, url: `v1/Municipio/GetMunicipioByIdDepartamento/${id}` });
+
+  GetNivelEducativo = () => get<[]>({ endpoint: environments.shared, url: 'v1/NivelEducativo/GetNivelEducativo' });
 }
