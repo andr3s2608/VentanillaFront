@@ -38,7 +38,6 @@ import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import { store } from 'app/redux/app.reducers';
 
-
 const { Step } = Steps;
 
 export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
@@ -61,7 +60,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Etnia),
-        dominioService.get_type(ETipoDominio['Unidad de Medida Edad']),
         dominioService.get_type(ETipoDominio.Regimen),
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
@@ -89,8 +87,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     values.idlicencia = 3456;
     values.date = moment(date).format('YYYY-MM-DD');
     values.date = moment(dateOfBirth).format('YYYY-MM-DD');
-    values.stateProcess = 'Pendiente'
-
+    values.stateProcess = 'Pendiente';
 
     console.log(values);
     store.dispatch(SetGrid(values));
