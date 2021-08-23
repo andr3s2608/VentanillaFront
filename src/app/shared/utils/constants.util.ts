@@ -5,6 +5,8 @@ const projectInfo = {
   description:
     'La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía, la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los principios de seguridad de la información.',
   version: 'v.1.0.0.',
+  descriptionaditional:
+    ' Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el REGISTRO DEL CIUDADANO (persona natural o jurídica), el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de sus trámites en línea, podrá escribirnos al correo electrónico contactenos@saludcapital.gov.co.',
   versionYear: 2021,
   developTo: 'La Secretaria Distrital de Salud',
   recommendedBrowsers: 'Navegadores Web recomendados: Chrome 43 o superior, Firefox 38 o superior, Safari 8 o superior.',

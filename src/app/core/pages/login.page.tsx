@@ -20,13 +20,13 @@ export const LoginPage = ({ login }: { login: () => void }) => {
         <title>{projectInfo.name}</title>
         <meta name='description' content={projectInfo.description} />
       </Helmet>
-
       <img className='d-block mb-5 mx-auto' src={Logo} width='200' alt='Logo Secretaria Distrital de Salud' />
       <h2 className='m-0'>¡Bienvenido a {projectInfo.name}!</h2>
       <h4 className='font-weight-light' style={{ opacity: 0.85 }}>
         {projectInfo.fullname}
       </h4>
       <p style={{ maxWidth: 1000 }}>{projectInfo.description}</p>
+      <p style={{ maxWidth: 1000 }}>{projectInfo.descriptionaditional}</p>
       <Button
         className='py-4 px-sm-5 my-3 text-left d-flex justify-content-between align-items-center'
         type='primary'
