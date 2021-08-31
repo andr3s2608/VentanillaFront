@@ -38,7 +38,7 @@ export class ApiService {
 
   getPaises = () => get<[]>({ endpoint: environments.shared, url: 'v1/Pais/GetPais' });
 
-  getDepartament = () => get<[]>({ endpoint: environments.shared, url: 'v1/Departamento/GetAllDepartamento' });
+  getDepartament = () => get<[]>({ endpoint: environments.shared, url: 'v1/Departamento/GetDepartamento' });
 
   getMunicipio = (id: string) =>
     get<[]>({ endpoint: environments.shared, url: `v1/Municipio/GetMunicipioByIdDepartamento/${id}` });
