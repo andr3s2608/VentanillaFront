@@ -1,21 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 // Antd
 import Form from 'antd/es/form';
 import Input from 'antd/es/input';
 import Steps from 'antd/es/steps';
 import Button from 'antd/es/button';
-
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-
 // Hooks
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
-
 // Utilidades
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { ITipoLicencia } from 'app/shared/utils/types.util';
-
 // Secciones del formulario
 import { GeneralInfoFormSeccion, KeysForm as KeyFormGeneralInfo } from './seccions/general-info.form-seccion';
 import { LugarDefuncionFormSeccion, KeysForm as KeyFormLugarDefuncion } from './seccions/lugar-defuncion.form-seccion';
@@ -37,9 +32,13 @@ import {
   IUpz
 } from 'app/services/dominio.service';
 import Divider from 'antd/es/divider';
-import Alert from 'antd/es/alert';
-import Radio, { RadioChangeEvent } from 'antd/es/radio';
+import { RadioChangeEvent } from 'antd/es/radio';
 import { FamilarFetalCremacion } from './familarCremacion';
+import { DocumentosSoporte, IRegistroLicencia } from 'app/Models/IRegistroLicencia';
+import moment from 'moment';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ApiService } from 'app/services/Apis.service';
+import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 
 const { Step } = Steps;
 
@@ -54,10 +53,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
     IDominio[][]
   >([]);
+  const [estado, setEstado] = useState<IEstadoSolicitud>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
   const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
   const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
 
   const getListas = useCallback(
     async () => {
@@ -73,12 +75,15 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
+      const reqEstado = await api.GetEstadoSolicitud(accountIdentifier);
+      console.log(reqEstado);
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
       setListas(resp);
       setLMunicipios(listMunicipio);
       setLAreas(upzLocalidad);
       onChangeArea(idupz);
+      //setEstado(reqEstado[0]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -93,15 +98,152 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
-    console.log(values);
-    /* const resp = await personaService.add_persona_vacuna_exterior(values);
-    if (resp) {
+    const formatDate = 'MM-DD-YYYY';
+    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+    const json: IRegistroLicencia<any> = {
+      solicitud: {
+        numeroCertificado: values.certificado,
+        fechaDefuncion: moment(values.date).format(formatDate),
+        sinEstablecer: values.check,
+        hora: moment(values.time).format('LT'),
+        idSexo: values.sex,
+        estadoSolicitud: estadoSolicitud,
+        idPersonaVentanilla: 0, //numero de usuario registrado
+        idUsuarioSeguridad: accountIdentifier,
+        idTramite: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e',
+        idTipoMuerte: values.deathType,
+        idDatosCementerio: values.cementerioBogota,
+        idInstitucionCertificaFallecimiento: '',
+        persona: '',
+        lugarDefuncion: {
+          idPais: values.country,
+          idDepartamento: values.state,
+          idMunicipio: values.city,
+          idAreaDefuncion: values.areaDef,
+          idSitioDefuncion: values.sitDef
+        },
+        ubicacionPersona: {
+          idPaisResidencia: values.pais,
+          idDepartamentoResidencia: values.departamento,
+          idCiudadResidencia: values.ciudad,
+          idLocalidadResidencia: values.localidad,
+          idAreaResidencia: values.area,
+          idBarrioResidencia: values.barrio
+        },
+        datosCementerio: {
+          enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+          fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+          fueraPais: values.cementerioLugar === 'Fuera del País',
+          cementerio: values.cementerioBogota,
+          otroSitio: values.otro,
+          ciudad: values.cementerioCiudad,
+          idPais: values.cementerioPais,
+          idDepartamento: values.cementerioDepartamento,
+          idMunicipio: values.cementerioMunicipio
+        },
+        institucionCertificaFallecimiento: {
+          tipoIdentificacion: values.instTipoIdent,
+          numeroIdentificacion: values.instNumIdent,
+          razonSocial: values.instRazonSocial,
+          numeroProtocolo: values.instNumProtocolo,
+          numeroActaLevantamiento: values.instNumActaLevantamiento,
+          fechaActa: moment(values.instFechaActa).format(formatDate),
+          seccionalFiscalia: values.instSeccionalFiscalia,
+          noFiscal: values.instNoFiscal,
+          idTipoInstitucion: values.instType
+        },
+        documentosSoporte: generateFormFiel(values.instType)
+      }
+    };
+    console.log(values, json);
+
+    const resp = await api.postLicencia(json);
+    console.log(resp);
+    /*  if (resp) {
       setCurrent(0);
       form.resetFields();
     } */
   };
 
   const onSubmitFailed = () => setStatus('error');
+
+  const generateFormFiel = (tipoInstitucion: string): DocumentosSoporte[] => {
+    let data: DocumentosSoporte[] = [];
+    if (tipoInstitucion) {
+      data = [
+        {
+          idTipoDocumentoSoporte: 'Certificado Defunción',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Documento de la Madre',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Otros Documentos',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Autorizacion de cremacion del familiar',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Documento del familiar',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        }
+      ];
+    }
+    if (tipoInstitucion) {
+      data = [
+        {
+          idTipoDocumentoSoporte: 'Certificado Defunción',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Documento de la Madre',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Otros Documentos',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Autorizacion de cremacion del familiar',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Documento del familiar',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Autorizacion del fiscal para cremar',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Oficio de medicina legal al fiscal para cremar',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        },
+        {
+          idTipoDocumentoSoporte: 'Acta Notarial del Fiscal',
+          fechaRegistro: moment(new Date()).format('L'),
+          idUsuario: accountIdentifier
+        }
+      ];
+    }
+    return data;
+  };
 
   //#region Eventos formulario
 

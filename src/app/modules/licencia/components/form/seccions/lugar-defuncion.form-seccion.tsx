@@ -80,7 +80,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       <Form.Item
         label='Municipio Defunción'
         name='city'
-        initialValue='31211657-3386-420a-8620-f9c07a8ca491'
+        initialValue='31b870aa-6cd0-4128-96db-1f08afad7cdd'
         rules={[{ required: isColombia }]}
       >
         <SelectComponent

@@ -54,16 +54,22 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       'instNoOficioMedicinaLegal',
       'instYearOficioMedicinaLegal'
     ]);
+
     setIsMedicinaLegal(e.target.value === 'Medicina Legal');
   };
 
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
-      <Form.Item label='Tipo de Institución' name='instType' initialValue='Otros' rules={[{ required: true }]}>
+      <Form.Item
+        label='Tipo de Institución'
+        name='instType'
+        initialValue='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'
+        rules={[{ required: true }]}
+      >
         <Radio.Group onChange={onChangeTipoInst}>
-          <Radio value='Medicina Legal'>MEDICINA LEGAL</Radio>
-          <Radio value='Otros'>OTROS</Radio>
+          <Radio value='04e0913b-5d86-4c48-8904-0f504fedb3fd'>MEDICINA LEGAL</Radio>
+          <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
         </Radio.Group>
       </Form.Item>
       {/* TODO: [2021-06-11] Hacer la validación solicitada por el usuario en el archivo de work. */}

@@ -5,13 +5,16 @@ import { IPersonaNatural } from 'app/Models/IPersonaNatural';
 import { IResponse } from 'app/Models/IResponse';
 import { IRoles } from 'app/Models/IRoles';
 import { Menu } from 'app/Models/IMenu';
+import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 
 export class ApiService {
   endpoint = environments.shared;
   private oid = '';
+
   constructor(oid$: string) {
     this.oid = oid$;
   }
+
   personaNatural = (tipoDominio: IPersonaNatural) =>
     post<IPersonaNatural>({ endpoint: environments.shared, url: `v2/Persona/AddPersonaNatural`, payload: tipoDominio });
 
@@ -41,4 +44,7 @@ export class ApiService {
     get<[]>({ endpoint: environments.shared, url: `v1/Municipio/GetMunicipioByIdDepartamento/${id}` });
 
   GetNivelEducativo = () => get<[]>({ endpoint: environments.shared, url: 'v1/NivelEducativo/GetNivelEducativo' });
+  //
+  postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload });
+  GetEstadoSolicitud = (oid: any) => get({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${oid}` });
 }

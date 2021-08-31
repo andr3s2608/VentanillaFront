@@ -14,6 +14,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
 import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
+import { validateClaimsRequest } from 'msal/lib-commonjs/AuthenticationParameters';
 
 interface municiopioDepartament {
   municipio: string;
