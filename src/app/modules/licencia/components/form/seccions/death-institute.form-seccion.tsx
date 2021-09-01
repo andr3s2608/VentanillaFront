@@ -17,7 +17,7 @@ import { TypeLicencia } from 'app/shared/utils/types.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(false);
-  const { datofiscal, required, tipoLicencia } = props;
+  const { datofiscal, required } = props;
   //#region Listados
 
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
@@ -55,7 +55,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       'instYearOficioMedicinaLegal'
     ]);
 
-    setIsMedicinaLegal(e.target.value === 'Medicina Legal');
+    setIsMedicinaLegal(e.target.value === '04e0913b-5d86-4c48-8904-0f504fedb3fd');
   };
 
   return (

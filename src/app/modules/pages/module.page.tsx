@@ -10,9 +10,6 @@ import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
 import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/Models/IRoles';
-import { MapperMenu } from 'app/shared/utils/MapperMenu';
-import { SetApplicationMenu } from 'app/redux/application/application.actions';
-import { useDispatch } from 'react-redux';
 
 const ModulePage = () => {
   const history = useHistory();
