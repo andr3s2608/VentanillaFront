@@ -105,16 +105,73 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         numeroCertificado: values.certificado,
         fechaDefuncion: moment(values.date).format(formatDate),
         sinEstablecer: values.check,
-        hora: moment(values.time).format('LT'),
+        hora: values.check === true ? null : moment(values.time).format('LT'),
         idSexo: values.sex,
         estadoSolicitud: estadoSolicitud,
         idPersonaVentanilla: 0, //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
         idTramite: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e',
         idTipoMuerte: values.deathType,
-        idDatosCementerio: values.cementerioBogota,
-        idInstitucionCertificaFallecimiento: '',
-        persona: '',
+        persona: [
+          //madre
+          {
+            tipoIdentificacion: values.IDType,
+            numeroIdentificacion: values.IDNumber,
+            primerNombre: values.namemother,
+            segundoNombre: values.secondNamemother,
+            primerApellido: values.surnamemother,
+            segundoApellido: values.secondSurnamemother,
+            fechaNacimiento: null,
+            nacionalidad: values.nationalidadmother[0],
+            otroParentesco: null,
+            idEstadoCivil: values.civilStatusmother,
+            idNivelEducativo: values.educationLevelmother,
+            idEtnia: values.etniamother,
+            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+          },
+          //authorizador cremacion
+          {
+            tipoIdentificacion: values.authIDType,
+            numeroIdentificacion: values.mauthIDNumber,
+            primerNombre: values.authName,
+            segundoNombre: values.authSecondName,
+            primerApellido: values.authSurname,
+            segundoApellido: values.authSecondSurname,
+            fechaNacimiento: null,
+            nacionalidad: '00000000-0000-0000-0000-000000000000',
+            otroParentesco: null, //lista parentesco
+            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+            idEtnia: '00000000-0000-0000-0000-000000000000',
+            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+          },
+          //certifica la defuncion
+          {
+            tipoIdentificacion: values.medicalSignatureIDType,
+            numeroIdentificacion: values.medicalSignatureIDNumber,
+            primerNombre: values.medicalSignatureName,
+            segundoNombre: values.medicalSignatureSecondName,
+            primerApellido: values.medicalSignatureSurname,
+            segundoApellido: values.medicalSignatureSecondSurname,
+            fechaNacimiento: null,
+            nacionalidad: '00000000-0000-0000-0000-000000000000',
+            otroParentesco: null,
+            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+            idEtnia: '00000000-0000-0000-0000-000000000000',
+            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+            idTipoProfesional: values.medicalSignatureProfesionalType
+          }
+        ],
         lugarDefuncion: {
           idPais: values.country,
           idDepartamento: values.state,
@@ -151,8 +208,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           seccionalFiscalia: values.instSeccionalFiscalia,
           noFiscal: values.instNoFiscal,
           idTipoInstitucion: values.instType
-        },
-        documentosSoporte: generateFormFiel(values.instType)
+        }
+        // documentosSoporte: generateFormFiel(values.instType)
       }
     };
     console.log(values, json);
@@ -371,22 +428,22 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
 
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]}>
+            <Form.Item label='Primer Nombre' name='namemother' rules={[{ required: true }]}>
               <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Nombre' name='secondName'>
+            <Form.Item label='Segundo Nombre' name='secondNamemother'>
               <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]}>
+            <Form.Item label='Primer Apellido' name='surnamemother' rules={[{ required: true }]}>
               <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Apellido' name='secondSurname'>
+            <Form.Item label='Segundo Apellido' name='secondSurnamemother'>
               <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
             </Form.Item>
 
             <Form.Item
               label='Nacionalidad de la Madre'
-              name='nationalidad'
+              name='nationalidadmother'
               initialValue={[idColombia]}
               rules={[{ required: true, type: 'array' }]}
             >
@@ -399,13 +456,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Estado Civil' name='civilStatus' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
+            <Form.Item label='Estado Civil' name='civilStatusmother' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
               <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
+            <Form.Item label='Nivel Educativo' name='educationLevelmother' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
+            <Form.Item label='Etnia' name='etniamother' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 

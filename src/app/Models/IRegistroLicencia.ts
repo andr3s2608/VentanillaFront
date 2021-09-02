@@ -6,21 +6,19 @@ export interface Solicitud<T> {
   numeroCertificado: string;
   fechaDefuncion: string;
   sinEstablecer: boolean;
-  hora: string;
+  hora: string | null;
   idSexo: string;
   estadoSolicitud: string | undefined;
   idPersonaVentanilla: number;
   idUsuarioSeguridad: string;
   idTramite: string;
   idTipoMuerte: string;
-  idDatosCementerio: string;
-  idInstitucionCertificaFallecimiento: string;
   persona: T;
   lugarDefuncion: LugarDefuncion;
   ubicacionPersona: UbicacionPersona;
   datosCementerio: DatosCementerio;
   institucionCertificaFallecimiento: InstitucionCertificaFallecimiento;
-  documentosSoporte: DocumentosSoporte[];
+  //documentosSoporte: DocumentosSoporte[];
 }
 
 export interface DatosCementerio {
