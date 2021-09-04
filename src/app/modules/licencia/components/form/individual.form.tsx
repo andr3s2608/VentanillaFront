@@ -37,6 +37,9 @@ import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 //redux
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import { store } from 'app/redux/app.reducers';
+import { IRegistroLicencia } from 'app/Models/IRegistroLicencia';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ApiService } from 'app/services/Apis.service';
 
 const { Step } = Steps;
 
@@ -44,7 +47,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const { tipoLicencia } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
-
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
   //#region Listados
 
   const [
@@ -82,7 +86,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     const { dateOfBirth, date } = values;
 
-    values.processType = 'Individual Cremación';
+    /*  values.processType = 'Individual Cremación';
     values.id = 1;
     values.idlicencia = 3456;
     values.date = moment(date).format('YYYY-MM-DD');
@@ -90,7 +94,125 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     values.stateProcess = 'Pendiente';
 
     console.log(values);
-    store.dispatch(SetGrid(values));
+    store.dispatch(SetGrid(values)); */
+    const formatDate = 'MM-DD-YYYY';
+    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+    console.log(values);
+    const json: IRegistroLicencia<any> = {
+      solicitud: {
+        numeroCertificado: values.certificado,
+        fechaDefuncion: moment(values.date).format(formatDate),
+        sinEstablecer: values.check,
+        hora: values.check === true ? null : moment(values.time).format('LT'),
+        idSexo: values.sex,
+        estadoSolicitud: estadoSolicitud,
+        idPersonaVentanilla: 0, //numero de usuario registrado
+        idUsuarioSeguridad: accountIdentifier,
+        idTramite: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e',
+        idTipoMuerte: values.deathType,
+        persona: [
+          //madre
+          {
+            tipoIdentificacion: values.IDType,
+            numeroIdentificacion: values.IDNumber,
+            primerNombre: values.name,
+            segundoNombre: values.secondName,
+            primerApellido: values.surname,
+            segundoApellido: values.secondSurname,
+            fechaNacimiento: null,
+            nacionalidad: values.nationalidad[0],
+            otroParentesco: null,
+            idEstadoCivil: values.civilStatus,
+            idNivelEducativo: values.educationLevel,
+            idEtnia: values.etnia,
+            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+          },
+          //authorizador cremacion
+          /*  {
+            tipoIdentificacion: values.authIDType,
+            numeroIdentificacion: values.mauthIDNumber,
+            primerNombre: values.authName,
+            segundoNombre: values.authSecondName,
+            primerApellido: values.authSurname,
+            segundoApellido: values.authSecondSurname,
+            fechaNacimiento: null,
+            nacionalidad: '00000000-0000-0000-0000-000000000000',
+            otroParentesco: null, //lista parentesco
+            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+            idEtnia: '00000000-0000-0000-0000-000000000000',
+            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+          }, */
+          //certifica la defuncion
+          {
+            tipoIdentificacion: values.medicalSignatureIDType,
+            numeroIdentificacion: values.medicalSignatureIDNumber,
+            primerNombre: values.medicalSignatureName,
+            segundoNombre: values.medicalSignatureSecondName,
+            primerApellido: values.medicalSignatureSurname,
+            segundoApellido: values.medicalSignatureSecondSurname,
+            fechaNacimiento: null,
+            nacionalidad: '00000000-0000-0000-0000-000000000000',
+            otroParentesco: null,
+            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+            idEtnia: '00000000-0000-0000-0000-000000000000',
+            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+            idTipoProfesional: values.medicalSignatureProfesionalType
+          }
+        ],
+        lugarDefuncion: {
+          idPais: values.country,
+          idDepartamento: values.state,
+          idMunicipio: values.city,
+          idAreaDefuncion: values.areaDef,
+          idSitioDefuncion: values.sitDef
+        },
+        ubicacionPersona: {
+          idPaisResidencia: values.pais,
+          idDepartamentoResidencia: values.departamento,
+          idCiudadResidencia: values.ciudad,
+          idLocalidadResidencia: values.localidad,
+          idAreaResidencia: values.area,
+          idBarrioResidencia: values.barrio
+        },
+        datosCementerio: {
+          enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+          fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+          fueraPais: values.cementerioLugar === 'Fuera del País',
+          cementerio: values.cementerioBogota,
+          otroSitio: values.otro,
+          ciudad: values.cementerioCiudad,
+          idPais: values.cementerioPais,
+          idDepartamento: values.cementerioDepartamento,
+          idMunicipio: values.cementerioMunicipio
+        },
+        institucionCertificaFallecimiento: {
+          tipoIdentificacion: values.instTipoIdent,
+          numeroIdentificacion: values.instNumIdent,
+          razonSocial: values.instRazonSocial,
+          numeroProtocolo: values.instNumProtocolo,
+          numeroActaLevantamiento: values.instNumActaLevantamiento,
+          fechaActa: moment(values.instFechaActa).format(formatDate),
+          seccionalFiscalia: values.instSeccionalFiscalia,
+          noFiscal: values.instNoFiscal,
+          idTipoInstitucion: values.instType
+        }
+        // documentosSoporte: generateFormFiel(values.instType)
+      }
+    };
+    console.log(values, json);
+    const resp = await api.postLicencia(json);
+    console.log(resp);
     /* const resp = await personaService.add_persona_vacuna_exterior(values);
     if (resp) {
       setCurrent(0);

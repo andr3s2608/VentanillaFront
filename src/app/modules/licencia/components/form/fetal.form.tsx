@@ -100,6 +100,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
