@@ -24,6 +24,7 @@ export class ApiService {
   GetMenuUser = () => get<Menu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${this.oid}` });
 
   GetRoles = () => get<IRoles[]>({ endpoint: environments.security, url: `Security/GetRoleByIdUser/${this.oid}` });
+
   AddUser = (payload: any) =>
     post<any>({ endpoint: environments.security, url: `Security/AddUser`, payload, confirmModal: false });
 
@@ -44,7 +45,29 @@ export class ApiService {
     get<[]>({ endpoint: environments.shared, url: `v1/Municipio/GetMunicipioByIdDepartamento/${id}` });
 
   GetNivelEducativo = () => get<[]>({ endpoint: environments.shared, url: 'v1/NivelEducativo/GetNivelEducativo' });
-  //
+
   postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload });
+
+  uploadFiles = (payload: any) =>
+    post({
+      endpoint: environments.blob,
+      url: `Storage/AddFile`,
+      payload,
+      options: {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      },
+      confirmModal: false
+    });
+
   GetEstadoSolicitud = (oid: any) => get({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${oid}` });
+
+  AddSupportDocuments = (payload: any[]) =>
+    post({
+      endpoint: environments.inhcremacion,
+      url: 'SupportDocuments/AddSupportDocuments',
+      payload,
+      confirmModal: false
+    });
 }

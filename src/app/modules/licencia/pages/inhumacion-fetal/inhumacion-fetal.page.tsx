@@ -28,7 +28,7 @@ const InhumacionFetalPage = () => {
           </div>
         </TabPane>
         <TabPane tab='Registro' key='2'>
-          <FetalForm tipoLicencia='Inhumación' />
+          <FetalForm tipoLicencia='Inhumación' tramite='ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' />
         </TabPane>
       </Tabs>
     </div>

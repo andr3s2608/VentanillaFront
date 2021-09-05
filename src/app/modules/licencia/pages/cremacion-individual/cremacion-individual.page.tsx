@@ -28,7 +28,7 @@ const CremacionIndividualPage = () => {
           </div>
         </TabPane>
         <TabPane tab='Registro' key='2'>
-          <IndividualForm tipoLicencia='Cremación' />
+          <IndividualForm tipoLicencia='Cremación' tramite='e69bda86-2572-45db-90dc-b40be14fe020' />
         </TabPane>
       </Tabs>
     </div>

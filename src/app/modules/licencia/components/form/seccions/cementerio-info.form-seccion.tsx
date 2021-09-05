@@ -89,7 +89,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
             <Form.Item label='Departamento de Colombia' name='cementerioDepartamento' rules={[{ required: true }]}>
               <SelectComponent
                 options={l_departamentos_colombia.filter((i) => i.descripcion !== 'BOGOTÁ D.C.')}
-                optionPropkey='idDepartamento'
+                optionPropkey='descripcion'
                 optionPropLabel='descripcion'
                 onChange={onChangeDepartamento}
               />
@@ -97,7 +97,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
             <Form.Item label='Municipio' name='cementerioMunicipio' rules={[{ required: true }]}>
               <SelectComponent
                 options={l_municipios}
-                optionPropkey='idMunicipio'
+                optionPropkey='descripcion'
                 onChange={onChangeMunicipio}
                 optionPropLabel='descripcion'
               />
@@ -116,7 +116,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
             <Form.Item label='País' name='cementerioPais' rules={[{ required: true }]}>
               <SelectComponent
                 options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
-                optionPropkey='id'
+                optionPropkey='descripcion  '
                 optionPropLabel='descripcion'
               />
             </Form.Item>
@@ -134,7 +134,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
             name='cementerioBogota'
             rules={[{ required: true }]}
           >
-            <SelectComponent options={l_cementerios} optionPropkey='NROIDENT' optionPropLabel='RAZON_S' />
+            <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
           </Form.Item>
         );
     }

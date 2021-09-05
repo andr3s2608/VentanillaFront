@@ -28,7 +28,7 @@ const CremacionFetalPage = () => {
           </div>
         </TabPane>
         <TabPane tab='Registro' key='2'>
-          <FetalForm tipoLicencia='Cremación' />
+          <FetalForm tipoLicencia='Cremación' tramite='f4c4f874-1322-48ec-b8a8-3b0cac6fca8e' />
         </TabPane>
       </Tabs>
     </div>

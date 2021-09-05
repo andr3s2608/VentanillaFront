@@ -40,17 +40,18 @@ import { store } from 'app/redux/app.reducers';
 import { IRegistroLicencia } from 'app/Models/IRegistroLicencia';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
+import { TypeDocument } from './seccions/TypeDocument';
 
 const { Step } = Steps;
 
 export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
-  const { tipoLicencia } = props;
+  const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   //#region Listados
-
+  console.log(TypeDocument);
   const [
     [l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte],
     setListas
@@ -84,20 +85,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const onSubmit = async (values: any) => {
     setStatus(undefined);
 
-    const { dateOfBirth, date } = values;
-
-    /*  values.processType = 'Individual Cremación';
-    values.id = 1;
-    values.idlicencia = 3456;
-    values.date = moment(date).format('YYYY-MM-DD');
-    values.date = moment(dateOfBirth).format('YYYY-MM-DD');
-    values.stateProcess = 'Pendiente';
-
-    console.log(values);
-    store.dispatch(SetGrid(values)); */
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-    console.log(values);
+
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -108,7 +98,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         estadoSolicitud: estadoSolicitud,
         idPersonaVentanilla: 0, //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
-        idTramite: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e',
+        idTramite: tramite,
         idTipoMuerte: values.deathType,
         persona: [
           //madre
@@ -210,16 +200,71 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-    console.log(values, json);
-    const resp = await api.postLicencia(json);
-    console.log(resp);
-    /* const resp = await personaService.add_persona_vacuna_exterior(values);
-    if (resp) {
-      setCurrent(0);
-      form.resetFields();
-    } */
-  };
 
+    const resp = await api.postLicencia(json);
+    if (resp) {
+      const formData = new FormData();
+      const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
+      const supportDocuments: any[] = [];
+      const [files, names] = generateListFiles(values);
+
+      files.forEach((item: any, i: number) => {
+        const name = names[i];
+
+        formData.append('file', item);
+        formData.append('nameFile', name);
+
+        TypeDocument.forEach((item: any) => {
+          if (item.key === name.toString()) {
+            supportDocuments.push({
+              idSolicitud: resp,
+              idTipoDocumentoSoporte: item.value,
+              path: `${accountIdentifier}/${name}`,
+              idUsuario: accountIdentifier
+            });
+          }
+        });
+      });
+
+      formData.append('containerName', container);
+      formData.append('oid', accountIdentifier);
+      await api.uploadFiles(formData);
+      await api.AddSupportDocuments(supportDocuments);
+
+      //form.resetFields();
+    }
+  };
+  const generateListFiles = (values: any) => {
+    const Objs = [];
+
+    const {
+      fileCertificadoDefuncion,
+      fileCCFallecido,
+      fileOtrosDocumentos,
+      fileAuthCCFamiliar,
+      fileAuthCremacion,
+      fileOficioIdentificacion,
+      fileOrdenAuthFiscal,
+      fileActaNotarialFiscal
+    } = values;
+
+    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
+    Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
+    Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
+    Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
+    Objs.push({ file: fileAuthCremacion, name: 'Documento_del_familiar' });
+    Objs.push({ file: fileOficioIdentificacion, name: 'Autorizacion_del_fiscal_para_cremar' });
+    Objs.push({ file: fileOrdenAuthFiscal, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
+    Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
+
+    const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
+    const files: Blob[] = filesName.map((item) => {
+      const [file] = item.file;
+      return file.originFileObj;
+    });
+    const names: string[] = filesName.map((item) => item.name);
+    return [files, names];
+  };
   const onSubmitFailed = () => setStatus('error');
 
   //#region Eventos formulario

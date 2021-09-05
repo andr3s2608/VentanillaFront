@@ -11,7 +11,7 @@ export interface Solicitud<T> {
   estadoSolicitud: string | undefined;
   idPersonaVentanilla: number;
   idUsuarioSeguridad: string;
-  idTramite: string;
+  idTramite?: string;
   idTipoMuerte: string;
   persona: T;
   lugarDefuncion: LugarDefuncion;
