@@ -7,10 +7,10 @@ function SetGrid(data: IItemDataSource): GridTypes {
   };
 }
 
-function ResetApplication(): GridTypes {
+function ResetGrid(): GridTypes {
   return {
     type: GRID_RESET
   };
 }
 
-export { SetGrid, ResetApplication };
+export { SetGrid, ResetGrid };

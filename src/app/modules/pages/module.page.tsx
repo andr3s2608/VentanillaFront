@@ -10,6 +10,8 @@ import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
 import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/Models/IRoles';
+import { store } from 'app/redux/app.reducers';
+import { ResetGrid } from 'app/redux/Grid/grid.actions';
 
 const ModulePage = () => {
   const history = useHistory();
@@ -29,6 +31,7 @@ const ModulePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
   //const getMenu = UpdateMenu();
 
   useEffect(() => {

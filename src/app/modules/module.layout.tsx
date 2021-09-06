@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetApplicationMenu } from 'app/redux/application/application.actions';
 import { ToggleSideNav } from 'app/redux/ui/ui.actions';
-import { AppState } from 'app/redux/app.reducers';
+import { AppState, store } from 'app/redux/app.reducers';
 import { UIState } from 'app/redux/ui/ui.reducer';
 
 // Antd
@@ -29,6 +29,7 @@ import LogoNegativo from '../../assets/images/brand/logo_alcaldia.png';
 import { ApiService } from 'app/services/Apis.service';
 import { MapperMenu } from 'app/shared/utils/MapperMenu';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ResetGrid } from 'app/redux/Grid/grid.actions';
 
 // Fragmentos
 const { Content } = Layout;
@@ -65,6 +66,13 @@ export const ModuleLayout = (props: { logout: () => void }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  store.subscribe(() => {
+    const { grid } = store.getState();
+    if (grid.dataSource.length >= 1) {
+      store.dispatch(ResetGrid());
+      getListas();
+    }
+  });
   //#endregion
 
   const classLayout = sidenav ? 'app-layout-content' : '';

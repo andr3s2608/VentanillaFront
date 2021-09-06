@@ -18,6 +18,8 @@ import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
 import { EstadoCivil } from 'app/shared/utils/constants.util';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
+import { store } from 'app/redux/app.reducers';
+import { SetGrid } from 'app/redux/Grid/grid.actions';
 
 const { TabPane } = Tabs;
 
@@ -124,6 +126,8 @@ const RegistroPage: React.FC<any> = (props) => {
           idUser: accountIdentifier,
           idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
         });
+        localStorage.setItem(accountIdentifier, resApi.toString());
+        store.dispatch(SetGrid({ key: 'relaodMenu' }));
         history.push('/');
       }
       if (typeof resApi === 'object') {

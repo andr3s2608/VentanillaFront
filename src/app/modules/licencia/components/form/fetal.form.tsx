@@ -40,10 +40,12 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 import { TypeDocument } from './seccions/TypeDocument';
+import { useHistory } from 'react-router';
 
 const { Step } = Steps;
 
 export const FetalForm: React.FC<ITipoLicencia> = (props) => {
+  const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
@@ -76,7 +78,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
-      await api.GetEstadoSolicitud(accountIdentifier);
 
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
@@ -98,9 +99,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   //#endregion
 
   const onSubmit = async (values: any) => {
+    const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
-    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -110,7 +112,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         hora: values.check === true ? null : moment(values.time).format('LT'),
         idSexo: values.sex,
         estadoSolicitud: estadoSolicitud,
-        idPersonaVentanilla: 0, //numero de usuario registrado
+        idPersonaVentanilla: Number(idPersonaVentanilla), //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite?.toString(),
         idTipoMuerte: values.deathType,
@@ -250,6 +252,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       form.resetFields();
     }
+    history.push('/tramites-servicios');
   };
 
   const onSubmitFailed = () => setStatus('error');

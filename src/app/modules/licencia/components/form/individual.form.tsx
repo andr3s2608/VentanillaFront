@@ -35,23 +35,24 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 //redux
-import { SetGrid } from 'app/redux/Grid/grid.actions';
-import { store } from 'app/redux/app.reducers';
+
 import { IRegistroLicencia } from 'app/Models/IRegistroLicencia';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
+import { useHistory } from 'react-router';
 
 const { Step } = Steps;
 
 export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
+  const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   //#region Listados
-  console.log(TypeDocument);
+
   const [
     [l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte],
     setListas
@@ -84,7 +85,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
-
+    const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
 
@@ -96,7 +97,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         hora: values.check === true ? null : moment(values.time).format('LT'),
         idSexo: values.sex,
         estadoSolicitud: estadoSolicitud,
-        idPersonaVentanilla: 0, //numero de usuario registrado
+        idPersonaVentanilla: Number(idPersonaVentanilla), //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite,
         idTipoMuerte: values.deathType,
@@ -233,6 +234,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       //form.resetFields();
     }
+    history.push('/tramites-servicios');
   };
   const generateListFiles = (values: any) => {
     const Objs = [];

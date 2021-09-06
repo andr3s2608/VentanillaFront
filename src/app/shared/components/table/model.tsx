@@ -1,32 +1,23 @@
 export const structureColumns = [
   {
-    title: 'ID Trámite',
-    dataIndex: 'IDNumber',
-    key: 'IDNumber'
-  },
-  {
     title: 'Tipo Trámite',
-    dataIndex: 'processType',
-    key: 'processType'
+    dataIndex: 'codigoTramite',
+    key: 'codigoTramite'
   },
   {
     title: 'Fecha Radicación',
-    dataIndex: 'date',
-    key: 'date'
+    dataIndex: 'fechaSolicitud',
+    key: 'fechaSolicitud'
   },
   {
     title: 'Numero Licencia',
-    dataIndex: 'cementerioBogota',
-    key: 'cementerioBogota'
+    dataIndex: 'numeroCertificado',
+    key: 'numeroCertificado'
   },
-  {
-    title: 'Fecha ',
-    dataIndex: 'dateOfBirth',
-    key: 'dateOfBirth'
-  },
+
   {
     title: 'Estado',
-    dataIndex: 'state',
-    key: 'state'
+    dataIndex: 'estadoSolicitud',
+    key: 'estadoSolicitud'
   }
 ];

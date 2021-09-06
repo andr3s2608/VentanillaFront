@@ -1,19 +1,33 @@
 import Tabs from 'antd/es/tabs';
-import { AppState } from 'app/redux/app.reducers';
-import { IItemDataSource } from 'app/redux/Grid/grid.types';
+import { ApiService } from 'app/services/Apis.service';
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { Gridview } from 'app/shared/components/table';
-import { useSelector } from 'react-redux';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const { TabPane } = Tabs;
 
 const GridTipoLicencia: React.FC<any> = (props: any) => {
+  const [grid, setGrid] = useState<any[]>([]);
 
-  let dataSource = useSelector<AppState, IItemDataSource[]>((state) => state.grid.dataSource ?? returStorageLocal());
-  if (dataSource.length === 0) {
-    dataSource = returStorageLocal();
-    console.log(dataSource)
-  }
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
+  const getListas = useCallback(
+    async () => {
+      const resp = await api.GetEstadoSolicitud();
+
+      setGrid(resp);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent title='Maestro detalle' subTitle='Consulte el trámite de los certificados.' />
@@ -28,20 +42,11 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
             beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui
             sapiente accusamus tattooed echo park.
           </div>
-          <Gridview data={dataSource} />
+          <Gridview data={grid} />
         </TabPane>
       </Tabs>
     </div>
   );
 };
-
-const returStorageLocal = (): IItemDataSource[] => {
-  const storage: string = localStorage.getItem('grid') ?? '';
-  if (storage !== '') {
-    const data: IItemDataSource[] = JSON.parse(storage);
-    return data;
-  }
-  return [];
-}
 
 export default GridTipoLicencia;

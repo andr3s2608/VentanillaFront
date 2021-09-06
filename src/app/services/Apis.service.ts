@@ -61,7 +61,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  GetEstadoSolicitud = (oid: any) => get({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${oid}` });
+  GetEstadoSolicitud = () => get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${this.oid}` });
 
   AddSupportDocuments = (payload: any[]) =>
     post({
