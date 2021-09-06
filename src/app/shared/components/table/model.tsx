@@ -1,3 +1,4 @@
+import { Button, Modal } from 'antd';
 export const structureColumns = [
   {
     title: 'Tipo Trámite',
@@ -19,5 +20,48 @@ export const structureColumns = [
     title: 'Estado',
     dataIndex: 'estadoSolicitud',
     key: 'estadoSolicitud'
+  },
+  {
+    title: 'Acciones',
+    key: 'operation',
+
+    render: () => <Button type='primary'>Ver</Button>
+  }
+];
+
+export const dataFake = [
+  {
+    fecha: '05-09-2021',
+    usuario: 900700675,
+    estado: 'Registro de Tramine usuario esterno',
+    observacion: 'Registro de tramite SST usuario externo'
+  },
+  {
+    fecha: '06-09-2021',
+    usuario: 'klramirez',
+    estado: 'Aprobado validador documento',
+    observacion: 'Validacion de documentos por parte del validador de documentos'
+  }
+];
+export const columnFake = [
+  {
+    title: 'Fecha Seguimiento',
+    dataIndex: 'fecha',
+    key: 'fecha'
+  },
+  {
+    title: 'Usuario',
+    dataIndex: 'usuario',
+    key: 'usuario'
+  },
+  {
+    title: 'Estado',
+    dataIndex: 'estado',
+    key: 'estado'
+  },
+  {
+    title: 'Observacion',
+    dataIndex: 'observacion',
+    key: 'observacion'
   }
 ];
