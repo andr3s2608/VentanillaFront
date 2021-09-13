@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
@@ -8,16 +8,37 @@ import Divider from 'antd/es/divider';
 
 // Utilidades
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { AutorizacionCremacion } from './autorizacionCremacion';
+import { ApiService } from 'app/services/Apis.service';
+import { IinformatioUser } from 'app/Models/IInformatioUser';
 
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
+  const [user, setUser] = useState<IinformatioUser>();
+
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
 
   const [isOtherParentesco, setIsOtherParentesco] = useState(false);
   const onChangeParentesco = (e: RadioChangeEvent) => {
     props.form.resetFields(['solicitudOtherParentesco']);
     setIsOtherParentesco(e.target.value === 'Otro');
   };
+
+  const getListas = useCallback(
+    async () => {
+      const idUser = localStorage.getItem(accountIdentifier) ?? '';
+      const resp = await api.GetInformationUser(idUser);
+
+      setUser(resp);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* NOTE: [2021-06-12] Se debe conectar un servicio para cargar el tipo de usuario autenticado y colocar la información segun el usuario autenticado. */
   /* TODO: [2021-06-12] Determinar si es usuario cliente o funcionario. */
@@ -70,16 +91,16 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
         ) : (
           <>
             <Form.Item label='Razón Social' name='solicitudRazonSocial'>
-              <span className='ant-form-text'>FUNERARIA LA PAZ</span>
+              <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
             </Form.Item>
-            <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
+            {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'>
-              <span className='ant-form-text'>CÉDULA DE CIUDADANÍA (CC): 9876543210</span>
+              <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
             <Form.Item label='Nombres y Apellidos del Tramitador' name='solicitudIDTramitador'>
-              <span className='ant-form-text'>JUAN FELIPE RODRIGUEZ ALDANA</span>
+              <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
           </>
         )}

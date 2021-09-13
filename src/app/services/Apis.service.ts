@@ -6,6 +6,7 @@ import { IResponse } from 'app/Models/IResponse';
 import { IRoles } from 'app/Models/IRoles';
 import { Menu } from 'app/Models/IMenu';
 import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
+import { IinformatioUser } from 'app/Models/IInformatioUser';
 
 export class ApiService {
   endpoint = environments.shared;
@@ -70,4 +71,7 @@ export class ApiService {
       payload,
       confirmModal: false
     });
+
+  GetInformationUser = (userId: string) =>
+    get<IinformatioUser>({ endpoint: environments.shared, url: `v2/Persona/GetInfoUserById/${userId}` });
 }
