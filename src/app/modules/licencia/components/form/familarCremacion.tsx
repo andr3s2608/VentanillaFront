@@ -40,6 +40,8 @@ import {
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 const { Step } = Steps;
 
@@ -48,17 +50,21 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
   //#region Listados
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
+  const [user, setUser] = useState<any>();
   const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
     IDominio[][]
   >([]);
 
   const getListas = useCallback(
     async () => {
-      const [departamentos, localidades, ...resp] = await Promise.all([
+      const [userres, departamentos, localidades, ...resp] = await Promise.all([
+        api.getCodeUser(),
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
         dominioService.get_type(ETipoDominio['Tipo Documento']),
@@ -68,6 +74,8 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
+
+      setUser(userres);
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
       setListas(resp);

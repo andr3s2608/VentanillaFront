@@ -51,6 +51,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [user, setUser] = useState<any>();
   //#region Listados
 
   const [
@@ -70,6 +71,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
 
+      const userres = await api.getCodeUser();
+      setUser(userres);
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,7 +100,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         hora: values.check === true ? null : moment(values.time).format('LT'),
         idSexo: values.sex,
         estadoSolicitud: estadoSolicitud,
-        idPersonaVentanilla: Number(idPersonaVentanilla), //numero de usuario registrado
+        idPersonaVentanilla: Number(user), //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite,
         idTipoMuerte: values.deathType,

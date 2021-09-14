@@ -36,14 +36,14 @@ const { Content } = Layout;
 
 export const ModuleLayout = (props: { logout: () => void }) => {
   //#region Redux settings
-  const { accountIdentifier, idToken } = authProvider.getAccount();
+  const { accountIdentifier, idTokenClaims } = authProvider.getAccount();
   const { loading, sidenav }: UIState = useSelector<AppState, UIState>((state) => state.ui);
 
   const dispatch = useDispatch();
   const toggleSidenav = () => dispatch(ToggleSideNav(!sidenav));
 
   const api = new ApiService(accountIdentifier);
-  const email = idToken.emails;
+  const email = idTokenClaims.emails;
   //#endregion
   //#region Application settings menu
 

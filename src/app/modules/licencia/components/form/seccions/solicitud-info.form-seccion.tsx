@@ -26,7 +26,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
 
   const getListas = useCallback(
     async () => {
-      const idUser = localStorage.getItem(accountIdentifier) ?? '';
+      const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);
 
       setUser(resp);

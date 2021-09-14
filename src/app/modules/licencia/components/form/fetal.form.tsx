@@ -57,6 +57,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     IDominio[][]
   >([]);
   const [estado, setEstado] = useState<IEstadoSolicitud>();
+  const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
   const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
@@ -66,7 +67,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const [departamentos, localidades, listMunicipio, upzLocalidad, ...resp] = await Promise.all([
+      const [userRes, departamentos, localidades, listMunicipio, upzLocalidad, ...resp] = await Promise.all([
+        api.getCodeUser(),
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
         dominioService.get_municipios_by_departamento(idDepartamentoBogota),
@@ -79,6 +81,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
 
+      setUser(userRes);
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
       setListas(resp);
@@ -112,7 +115,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         hora: values.check === true ? null : moment(values.time).format('LT'),
         idSexo: values.sex,
         estadoSolicitud: estadoSolicitud,
-        idPersonaVentanilla: Number(idPersonaVentanilla), //numero de usuario registrado
+        idPersonaVentanilla: Number(user), //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite?.toString(),
         idTipoMuerte: values.deathType,
