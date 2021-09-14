@@ -1,8 +1,11 @@
 import { Button, Modal } from 'antd';
 import Table from 'antd/es/table';
-import { useState } from 'react';
+import { IRoles } from 'app/Models/IRoles';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { useCallback, useEffect, useState } from 'react';
 import { columnFake, dataFake, structureColumns } from './model';
-
+import { CheckOutlined, EyeOutlined, FilePdfOutlined } from '@ant-design/icons';
 interface IDataSource {
   data: Array<any>;
 }
@@ -10,6 +13,25 @@ interface IDataSource {
 export const Gridview = (props: IDataSource) => {
   const { data } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [roles, setroles] = useState<IRoles[]>([]);
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
+  const getListas = useCallback(
+    async () => {
+      const mysRoles = await api.GetRoles();
+      setroles(mysRoles);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  //const getMenu = UpdateMenu();
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const structureColumns = [
     {
@@ -34,14 +56,34 @@ export const Gridview = (props: IDataSource) => {
       key: 'solicitud'
     },
     {
+      title: 'PDF',
+      dataIndex: 'pdf',
+      key: 'pdf',
+      render: () => <FilePdfOutlined style={{ fontSize: '30px' }} />
+    },
+    {
       title: 'Acciones',
       key: 'operation',
 
-      render: () => (
-        <Button type='primary' onClick={showModal}>
-          Ver
-        </Button>
-      )
+      render: () => {
+        const [permiso] = roles;
+        console.log(permiso);
+        return permiso.rol === 'Ciudadano' ? (
+          <Button type='primary' onClick={showModal} icon={<EyeOutlined />}>
+            Ver
+          </Button>
+        ) : permiso.rol === 'Funcionario' ? (
+          <>
+            <Button type='primary' onClick={showModal} icon={<EyeOutlined />}>
+              Ver
+            </Button>
+
+            <Button type='primary' style={{ marginLeft: '5px' }} onClick={showModal} icon={<CheckOutlined />}>
+              Validar Informacion
+            </Button>
+          </>
+        ) : null;
+      }
     }
   ];
 
