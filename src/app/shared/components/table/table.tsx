@@ -6,11 +6,14 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { useCallback, useEffect, useState } from 'react';
 import { columnFake, dataFake, structureColumns } from './model';
 import { CheckOutlined, EyeOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { keys } from 'app/shared/tools/storage.tool';
+import { useHistory } from 'react-router';
 interface IDataSource {
   data: Array<any>;
 }
 
 export const Gridview = (props: IDataSource) => {
+  const history = useHistory();
   const { data } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [roles, setroles] = useState<IRoles[]>([]);
@@ -63,11 +66,11 @@ export const Gridview = (props: IDataSource) => {
     },
     {
       title: 'Acciones',
-      key: 'operation',
+      key: 'Acciones',
 
-      render: () => {
+      render: (_: any, row: any, index: any) => {
         const [permiso] = roles;
-        console.log(permiso);
+
         return permiso.rol === 'Ciudadano' ? (
           <Button type='primary' onClick={showModal} icon={<EyeOutlined />}>
             Ver
@@ -78,7 +81,12 @@ export const Gridview = (props: IDataSource) => {
               Ver
             </Button>
 
-            <Button type='primary' style={{ marginLeft: '5px' }} onClick={showModal} icon={<CheckOutlined />}>
+            <Button
+              type='primary'
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ marginLeft: '5px' }}
+              icon={<CheckOutlined />}
+            >
               Validar Informacion
             </Button>
           </>
@@ -93,6 +101,30 @@ export const Gridview = (props: IDataSource) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
+    const data = await api.getLicencia(idSolicitud);
+    const { idTramite } = data[0];
+
+    switch (idTramite) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        //inhumacion indivual
+        history.push('/');
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        //inhumacion fetal
+        history.push('/');
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        //cremacion individual
+        history.push('/');
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        //cremacionfetal
+        history.push('/');
+        break;
+    }
   };
 
   return (

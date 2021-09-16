@@ -75,6 +75,19 @@ export class ApiService {
   GetInformationUser = (userId: string) =>
     get<IinformatioUser>({ endpoint: environments.shared, url: `v2/Persona/GetInfoUserById/${userId}` });
 
-  //https://wa-aeu-sds-dev-inhcremacion.azurewebsites.net/api/Request/GetCodeVentanillaByIdUser/F216FAC2-605D-4C6D-A25B-9802FCF8EA42
+  GetAllLicencias = () =>
+    get<any>({
+      endpoint: environments.inhcremacion,
+      url: 'Request/GetAllRequest'
+    });
+
   getCodeUser = () => get<any>({ endpoint: environments.inhcremacion, url: `Request/GetCodeVentanillaByIdUser/${this.oid}` });
+
+  getLicencia = (solicitud: string) =>
+    get<any>({
+      endpoint: environments.inhcremacion,
+      url: `Request/GetRequestById/${solicitud}`
+    });
+
+  UpdataLicencia = () => {};
 }

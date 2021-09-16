@@ -1,4 +1,5 @@
 import Tabs from 'antd/es/tabs';
+import { IRoles } from 'app/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { Gridview } from 'app/shared/components/table';
@@ -9,15 +10,16 @@ const { TabPane } = Tabs;
 
 const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
+  const [roles, setroles] = useState<IRoles[]>([]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
   const getListas = useCallback(
     async () => {
-      const resp = await api.GetEstadoSolicitud();
-
-      setGrid(resp);
+      const mysRoles = await api.GetRoles();
+      setroles(mysRoles);
+      GetValidateRol();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -27,6 +29,18 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const GetValidateRol = async () => {
+    const [permiso] = roles;
+    if (permiso.rol === 'Ciudadano') {
+      const resp = await api.GetEstadoSolicitud();
+      setGrid(resp);
+    }
+    if (permiso.rol === 'Funcionario') {
+      const resp = await api.GetAllLicencias();
+      setGrid(resp);
+    }
+  };
 
   return (
     <div className='fadeInTop container-fluid'>
