@@ -17,9 +17,15 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      setroles(mysRoles);
-      GetValidateRol();
+      await api.GetRoles().then(
+        async (res) => {
+          setroles(res)
+          console.log(res);
+          await GetValidateRol(res)
+        }
+      );
+      ;
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -27,16 +33,18 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getListas();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const GetValidateRol = async () => {
-    const [permiso] = roles;
-    if (permiso.rol === 'Ciudadano') {
+  const GetValidateRol = async (toRoles: IRoles[]) => {
+    const [permiso] = roles.length > 0 ? roles : toRoles;
+    console.log(roles, toRoles);
+    if (permiso?.rol === 'Ciudadano') {
       const resp = await api.GetEstadoSolicitud();
       setGrid(resp);
     }
-    if (permiso.rol === 'Funcionario') {
+    if (permiso?.rol === 'Funcionario') {
       const resp = await api.GetAllLicencias();
       setGrid(resp);
     }

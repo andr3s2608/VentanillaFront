@@ -8,24 +8,26 @@ import Divider from 'antd/es/divider';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import Switch from 'antd/es/switch';
 import React, { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
 
-export const GeneralInfoFormSeccion = () => {
+export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const [isHora, setIsHora] = useState<boolean>(true);
-
+  const date = obj?.date !== undefined ? moment(obj.date) : null;
+  const time = obj?.time !== undefined ? moment(obj.time) : null;
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
 
   return (
     <>
-      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true, max: 9 }]}>
+      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true, max: 9 }]} initialValue={obj.certificado}>
         <Input allowClear placeholder='Número de Certificado' autoComplete='off' />
       </Form.Item>
 
       <Divider orientation='right'>Información General</Divider>
 
-      <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]}>
-        <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+      <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
+        <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
       </Form.Item>
 
       <Form.Item label='Sin Establecer' name='check'>
@@ -33,12 +35,12 @@ export const GeneralInfoFormSeccion = () => {
       </Form.Item>
 
       {isHora && (
-        <Form.Item label='Hora' name='time' rules={[{ required: isHora }]}>
-          <DatepickerComponent picker='time' dateDisabledType='default' dateFormatType='time' />
+        <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time} >
+          <DatepickerComponent picker='time' dateDisabledType='default' dateFormatType='time' value={time} />
         </Form.Item>
       )}
 
-      <Form.Item label='Sexo' name='sex' initialValue='259cf2da-6175-4dba-bd55-62723adf0dfa' rules={[{ required: true }]}>
+      <Form.Item label='Sexo' name='sex' initialValue={obj?.sex ? obj?.sex : '259cf2da-6175-4dba-bd55-62723adf0dfa'} rules={[{ required: true }]}>
         <Radio.Group>
           <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
           <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>

@@ -41,6 +41,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
+import { EditInhumacion } from './edit/Inhumacion';
 
 const { Step } = Steps;
 
@@ -106,6 +107,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
+    console.log(values);
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -635,9 +637,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
             {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} />}
 
-            <SolicitudInfoFormSeccion form={form} />
+            <SolicitudInfoFormSeccion obj={{}} form={form} />
 
-            <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
+            <CementerioInfoFormSeccion obj={{}} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
@@ -670,7 +672,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion form={form} />
+            <MedicalSignatureFormSeccion obj={{}} form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

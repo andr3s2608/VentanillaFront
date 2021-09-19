@@ -14,6 +14,8 @@ import { IinformatioUser } from 'app/Models/IInformatioUser';
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
   const [user, setUser] = useState<IinformatioUser>();
+  const { obj } = props;
+
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -90,16 +92,21 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
           </>
         ) : (
           <>
-            <Form.Item label='Razón Social' name='solicitudRazonSocial'>
+            <Form.Item label='Razón Social' name='solicitudRazonSocial'
+              initialValue={obj?.solicitudRazonSocial ? obj?.solicitudRazonSocial : true}>
               <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
             </Form.Item>
             {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item> */}
-            <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'>
+            <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'
+              initialValue={obj?.solicitudIDTramitador ? obj?.solicitudIDTramitador : true}
+            >
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombres y Apellidos del Tramitador' name='solicitudIDTramitador'>
+            <Form.Item label='Nombres y Apellidos del Tramitador'
+              initialValue={obj?.solicitudIDTramitador ? obj?.solicitudIDTramitador : true}
+              name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
           </>
@@ -113,4 +120,5 @@ export const KeysForm = ['solicitudParentesco', 'solicitudOtherParentesco'];
 
 interface ISolicitudInfoProps<T> {
   form: FormInstance<T>;
+  obj: any;
 }

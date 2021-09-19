@@ -41,6 +41,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
+import { EditInhumacion } from './edit/Inhumacion';
 
 const { Step } = Steps;
 
@@ -52,6 +53,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
+  //create o edit
+  const objJosn: any = EditInhumacion();
+  const edit = objJosn?.idTramite ? true : false;
+  //form.setFieldsValue(objJosn);
   //#region Listados
 
   const [
@@ -91,7 +96,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-
+    console.log(JSON.stringify(values));
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -125,24 +130,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
           },
           //authorizador cremacion
-          /*  {
-            tipoIdentificacion: values.authIDType,
-            numeroIdentificacion: values.mauthIDNumber,
-            primerNombre: values.authName,
-            segundoNombre: values.authSecondName,
-            primerApellido: values.authSurname,
-            segundoApellido: values.authSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null, //lista parentesco
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          }, */
+
           //certifica la defuncion
           {
             tipoIdentificacion: values.medicalSignatureIDType,
@@ -205,38 +193,45 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       }
     };
 
-    const resp = await api.postLicencia(json);
-    if (resp) {
-      const formData = new FormData();
-      const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
-      const supportDocuments: any[] = [];
-      const [files, names] = generateListFiles(values);
-
-      files.forEach((item: any, i: number) => {
-        const name = names[i];
-
-        formData.append('file', item);
-        formData.append('nameFile', name);
-
-        TypeDocument.forEach((item: any) => {
-          if (item.key === name.toString()) {
-            supportDocuments.push({
-              idSolicitud: resp,
-              idTipoDocumentoSoporte: item.value,
-              path: `${accountIdentifier}/${name}`,
-              idUsuario: accountIdentifier
-            });
-          }
-        });
-      });
-
-      formData.append('containerName', container);
-      formData.append('oid', accountIdentifier);
-      await api.uploadFiles(formData);
-      await api.AddSupportDocuments(supportDocuments);
-
-      //form.resetFields();
+    if (edit) {
+      localStorage.removeItem('register')
+      console.log(edit);
     }
+    if (!edit) {
+      const resp = await api.postLicencia(json);
+      if (resp) {
+        const formData = new FormData();
+        const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
+        const supportDocuments: any[] = [];
+        const [files, names] = generateListFiles(values);
+
+        files.forEach((item: any, i: number) => {
+          const name = names[i];
+
+          formData.append('file', item);
+          formData.append('nameFile', name);
+
+          TypeDocument.forEach((item: any) => {
+            if (item.key === name.toString()) {
+              supportDocuments.push({
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}`,
+                idUsuario: accountIdentifier
+              });
+            }
+          });
+        });
+
+        formData.append('containerName', container);
+        formData.append('oid', accountIdentifier);
+        await api.uploadFiles(formData);
+        await api.AddSupportDocuments(supportDocuments);
+
+        //form.resetFields();
+      }
+    }
+
     history.push('/tramites-servicios');
   };
   const generateListFiles = (values: any) => {
@@ -252,6 +247,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       fileOrdenAuthFiscal,
       fileActaNotarialFiscal
     } = values;
+
 
     Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
     Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
@@ -300,6 +296,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setIsOtherParentesco(e.target.value === 'Otro');
   };
 
+  console.log(objJosn);
+  //edit 
+
+  const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn.dateOfBirth) : null;
   //#endregion
 
   return (
@@ -330,7 +330,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion />
+            <GeneralInfoFormSeccion obj={objJosn} />
             <LugarDefuncionFormSeccion form={form} />
             <DeathInstituteFormSeccion form={form} datofiscal={true} required={true} tipoLicencia={tipoLicencia} />
 
@@ -348,22 +348,22 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]}>
+            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn.surname} >
               <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Nombre' name='secondName'>
+            <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn.secondName}>
               <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]}>
+            <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]} initialValue={objJosn.surname}>
               <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Apellido' name='secondSurname'>
+            <Form.Item label='Segundo Apellido' name='secondSurname' initialValue={objJosn.secondSurname}>
               <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
             </Form.Item>
             <Form.Item
               label='Nacionalidad'
               name='nationalidad'
-              initialValue={['1e05f64f-5e41-4252-862c-5505dbc3931c']}
+              initialValue={[objJosn.nacionalidad ? objJosn.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
               rules={[{ required: true, type: 'array' }]}
             >
               <SelectComponent
@@ -374,38 +374,38 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 optionPropLabel='descripcion'
               />
             </Form.Item>
-            <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]}>
-              <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+            <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]} initialValue={date}>
+              <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
             </Form.Item>
             <Form.Item
               label='Tipo Identificación'
               name='IDType'
-              initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+              initialValue={objJosn?.IDType ? objJosn?.IDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
               rules={[{ required: true }]}
             >
               <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true, max: 25 }]}>
+            <Form.Item label='Número de Identificación' name='IDNumber' initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null} rules={[{ required: true, max: 25 }]}>
               <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Estado Civil' name='civilStatus' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
+            <Form.Item label='Estado Civil' name='civilStatus' initialValue={objJosn?.civilStatus ? objJosn?.civilStatus : '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}>
               <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
+            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue={objJosn?.educationLevel ? objJosn?.educationLevel : '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}>
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Etnia' name='etnia' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
+            <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ? objJosn?.etnia : '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
-            <Form.Item label='Régimen' name='regime' initialValue='848c6d53-6bda-4596-a889-8fdb0292f9e4'>
+            <Form.Item label='Régimen' name='regime' initialValue={objJosn?.etnia ? objJosn?.etnia : '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
               <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
             <Form.Item
               label='Tipo de Muerte'
               name='deathType'
-              initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
+              initialValue={objJosn?.deathType ? objJosn?.deathType : '475c280d-67af-47b0-a8bc-de420f6ac740'}
               rules={[{ required: true }]}
             >
               <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
@@ -485,32 +485,40 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     <Form.Item
                       label='Tipo Documento'
                       name='authIDType'
-                      initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+                      initialValue={objJosn?.authIDType ? objJosn?.authIDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                       rules={[{ required: true }]}
                     >
                       <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
                     </Form.Item>
 
-                    <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
+                    <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]} initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}>
                       <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
                     </Form.Item>
 
-                    <Form.Item label='Primer Nombre' name='authName' rules={[{ required: true }]}>
+                    <Form.Item label='Primer Nombre' name='authName'
+                      initialValue={objJosn?.authName ? objJosn?.authName : null}
+                      rules={[{ required: true }]}>
                       <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
                     </Form.Item>
-                    <Form.Item label='Segundo Nombre' name='authSecondName'>
+                    <Form.Item label='Segundo Nombre'
+                      initialValue={objJosn?.authSecondName ? objJosn?.authSecondName : null}
+                      name='authSecondName'>
                       <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
                     </Form.Item>
-                    <Form.Item label='Primer Apellido' name='authSurname' rules={[{ required: true }]}>
+                    <Form.Item label='Primer Apellido'
+                      initialValue={objJosn?.authSurname ? objJosn?.authSurname : null}
+                      name='authSurname' rules={[{ required: true }]}>
                       <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
                     </Form.Item>
-                    <Form.Item label='Segundo Apellido' name='authSecondSurname'>
+                    <Form.Item label='Segundo Apellido'
+                      initialValue={objJosn?.authSecondSurname ? objJosn?.authSecondSurname : null}
+                      name='authSecondSurname'>
                       <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
                     </Form.Item>
                     <Form.Item
                       label='Parentesco'
+                      initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
                       name='authParentesco'
-                      initialValue='Cónyuge (Compañero/a Permanente)'
                       rules={[{ required: true }]}
                     >
                       <Radio.Group onChange={onChangeParentesco}>
@@ -539,6 +547,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         className='fadeInRight'
                         label='Otro... ¿Cúal?'
                         name='authOtherParentesco'
+                        initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : true}
                         rules={[{ required: true }]}
                       >
                         <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
@@ -551,8 +560,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               </>
             )}
 
-            <SolicitudInfoFormSeccion form={form} />
-            <CementerioInfoFormSeccion form={form} tipoLicencia={tipoLicencia} />
+            <SolicitudInfoFormSeccion form={form} obj={objJosn} />
+            <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
@@ -584,7 +593,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion form={form} />
+            <MedicalSignatureFormSeccion obj={objJosn} form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
