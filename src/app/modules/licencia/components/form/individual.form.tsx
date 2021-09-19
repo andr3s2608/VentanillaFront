@@ -56,7 +56,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //create o edit
   const objJosn: any = EditInhumacion();
   const edit = objJosn?.idTramite ? true : false;
-  //form.setFieldsValue(objJosn);
+  //form.setFieldsValue(objJosn?);
   //#region Listados
 
   const [
@@ -194,7 +194,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     };
 
     if (edit) {
-      localStorage.removeItem('register')
+      localStorage.removeItem('')
       console.log(edit);
     }
     if (!edit) {
@@ -299,7 +299,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   console.log(objJosn);
   //edit 
 
-  const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn.dateOfBirth) : null;
+  const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
   //#endregion
 
   return (
@@ -348,22 +348,22 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn.surname} >
+            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.surname} >
               <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn.secondName}>
+            <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn?.secondName}>
               <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]} initialValue={objJosn.surname}>
+            <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]} initialValue={objJosn?.surname}>
               <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Apellido' name='secondSurname' initialValue={objJosn.secondSurname}>
+            <Form.Item label='Segundo Apellido' name='secondSurname' initialValue={objJosn?.secondSurname}>
               <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
             </Form.Item>
             <Form.Item
               label='Nacionalidad'
               name='nationalidad'
-              initialValue={[objJosn.nacionalidad ? objJosn.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
+              initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
               rules={[{ required: true, type: 'array' }]}
             >
               <SelectComponent

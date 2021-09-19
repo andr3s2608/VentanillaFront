@@ -12,15 +12,15 @@ import moment from 'moment';
 
 export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const [isHora, setIsHora] = useState<boolean>(true);
-  const date = obj?.date !== undefined ? moment(obj.date) : null;
-  const time = obj?.time !== undefined ? moment(obj.time) : null;
+  const date = obj?.date !== undefined ? moment(obj?.date) : null;
+  const time = obj?.time !== undefined ? moment(obj?.time) : null;
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
 
   return (
     <>
-      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true, max: 9 }]} initialValue={obj.certificado}>
+      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true, max: 9 }]} initialValue={obj?.certificado}>
         <Input allowClear placeholder='Número de Certificado' autoComplete='off' />
       </Form.Item>
 
