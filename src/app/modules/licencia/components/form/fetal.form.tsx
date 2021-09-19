@@ -108,6 +108,113 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
     console.log(values);
+    let persona: any[] = [];
+    if (tipoLicencia === 'Inhumación') {
+      persona = [
+        //madre
+        {
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: values.IDNumber,
+          primerNombre: values.namemother,
+          segundoNombre: values.secondNamemother,
+          primerApellido: values.surnamemother,
+          segundoApellido: values.secondSurnamemother,
+          fechaNacimiento: null,
+          nacionalidad: values.nationalidadmother[0],
+          otroParentesco: null,
+          idEstadoCivil: values.civilStatusmother,
+          idNivelEducativo: values.educationLevelmother,
+          idEtnia: values.etniamother,
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+
+        //certifica la defuncion
+        {
+          tipoIdentificacion: values.medicalSignatureIDType,
+          numeroIdentificacion: values.medicalSignatureIDNumber,
+          primerNombre: values.medicalSignatureName,
+          segundoNombre: values.medicalSignatureSecondName,
+          primerApellido: values.medicalSignatureSurname,
+          segundoApellido: values.medicalSignatureSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null,
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+          idTipoProfesional: values.medicalSignatureProfesionalType
+        }
+      ]
+    }
+    if (tipoLicencia === 'Cremación') {
+      persona = [
+        //madre
+        {
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: values.IDNumber,
+          primerNombre: values.namemother,
+          segundoNombre: values.secondNamemother,
+          primerApellido: values.surnamemother,
+          segundoApellido: values.secondSurnamemother,
+          fechaNacimiento: null,
+          nacionalidad: values.nationalidadmother[0],
+          otroParentesco: null,
+          idEstadoCivil: values.civilStatusmother,
+          idNivelEducativo: values.educationLevelmother,
+          idEtnia: values.etniamother,
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+        //authorizador cremacion
+        {
+          tipoIdentificacion: values.authIDType,
+          numeroIdentificacion: values.mauthIDNumber,
+          primerNombre: values.authName,
+          segundoNombre: values.authSecondName,
+          primerApellido: values.authSurname,
+          segundoApellido: values.authSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null, //lista parentesco
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+        //certifica la defuncion
+        {
+          tipoIdentificacion: values.medicalSignatureIDType,
+          numeroIdentificacion: values.medicalSignatureIDNumber,
+          primerNombre: values.medicalSignatureName,
+          segundoNombre: values.medicalSignatureSecondName,
+          primerApellido: values.medicalSignatureSurname,
+          segundoApellido: values.medicalSignatureSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null,
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+          idTipoProfesional: values.medicalSignatureProfesionalType
+        }
+      ]
+    }
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -121,66 +228,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite?.toString(),
         idTipoMuerte: values.deathType,
-        persona: [
-          //madre
-          {
-            tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
-            primerNombre: values.namemother,
-            segundoNombre: values.secondNamemother,
-            primerApellido: values.surnamemother,
-            segundoApellido: values.secondSurnamemother,
-            fechaNacimiento: null,
-            nacionalidad: values.nationalidadmother[0],
-            otroParentesco: null,
-            idEstadoCivil: values.civilStatusmother,
-            idNivelEducativo: values.educationLevelmother,
-            idEtnia: values.etniamother,
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
-          //authorizador cremacion
-          {
-            tipoIdentificacion: values.authIDType,
-            numeroIdentificacion: values.mauthIDNumber,
-            primerNombre: values.authName,
-            segundoNombre: values.authSecondName,
-            primerApellido: values.authSurname,
-            segundoApellido: values.authSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null, //lista parentesco
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
-          //certifica la defuncion
-          {
-            tipoIdentificacion: values.medicalSignatureIDType,
-            numeroIdentificacion: values.medicalSignatureIDNumber,
-            primerNombre: values.medicalSignatureName,
-            segundoNombre: values.medicalSignatureSecondName,
-            primerApellido: values.medicalSignatureSurname,
-            segundoApellido: values.medicalSignatureSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null,
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
-            idTipoProfesional: values.medicalSignatureProfesionalType
-          }
-        ],
+        persona,
         lugarDefuncion: {
           idPais: values.country,
           idDepartamento: values.state,
