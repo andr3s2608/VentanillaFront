@@ -53,6 +53,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
+  const [supports, setSupports] = useState<any[]>([]);
   //create o edit
   const objJosn: any = EditInhumacion();
   const edit = objJosn?.idTramite ? true : false;
@@ -79,6 +80,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const userres = await api.getCodeUser();
       setUser(userres);
       setListas(resp);
+
+      if (edit) {
+        const support = await api.getSupportDocuments(objJosn?.idSolicitud);
+        setSupports(support);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -196,6 +202,45 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     if (edit) {
       localStorage.removeItem('')
       console.log(edit);
+      const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
+      const formData = new FormData();
+
+      const resp = await api.putLicencia(json.solicitud);
+      localStorage.removeItem('register');
+
+      const [files, names] = generateListFiles(values);
+      const supportDocumentsEdit: any[] = [];
+
+      files.forEach((item: any, i: number) => {
+        const name = names[i];
+
+
+        formData.append('file', item);
+        formData.append('nameFile', name);
+
+        TypeDocument.forEach((item: any) => {
+          if (item.key === name.toString()) {
+            const [support] = supports.filter(p => p.path.includes(item.name));
+            supportDocumentsEdit.push({
+              idDocumentoSoporte: support.idDocumentoSoporte,
+              idSolicitud: resp,
+              idTipoDocumentoSoporte: item.value,
+              path: `${accountIdentifier}/${name}`,
+              idUsuario: accountIdentifier,
+              fechaModificacion: new Date()
+            });
+          }
+        });
+      });
+      console.log(supportDocumentsEdit);
+      formData.append('containerName', container);
+      formData.append('oid', accountIdentifier);
+
+      if (supportDocumentsEdit.length) {
+        await api.uploadFiles(formData);
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
+      }
+
     }
     if (!edit) {
       const resp = await api.postLicencia(json);

@@ -6,6 +6,7 @@ export const EditFetal = (): any => {
     if (data) {
         const json = JSON.parse(data);
         const [obj] = json;
+        localStorage.removeItem("register");
         return formatObjJson(obj);
     }
     return {

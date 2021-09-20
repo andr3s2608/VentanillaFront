@@ -5,6 +5,7 @@ export const EditInhumacion = () => {
     if (data) {
         const json = JSON.parse(data);
         const [obj] = json;
+        localStorage.removeItem("register");
         return formatObjJson(obj);
     }
     return {
@@ -18,7 +19,8 @@ export const EditInhumacion = () => {
 const formatObjJson = (obj: any) => {
 
     const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio } = obj;
-    const [fallecido, certicador] = persona;
+    const [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
+    const [certicador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
     const jsonDt = {
         idTramite: obj.idTramite,
         certificado: obj.numeroCertificado,
@@ -26,6 +28,7 @@ const formatObjJson = (obj: any) => {
         time: obj.hora,
         check: obj.sinEstablecer,
         sex: obj.idSexo,
+        idSolicitud: obj.idSolicitud,
 
         country: lugarDefuncion.idPais,
         state: lugarDefuncion.idDepartamento,
@@ -42,6 +45,11 @@ const formatObjJson = (obj: any) => {
         instFechaActa: institucionCertificaFallecimiento.fechaActa,
         instSeccionalFiscalia: institucionCertificaFallecimiento.seccionalFiscalia,
         instNoFiscal: institucionCertificaFallecimiento.noFiscal,
+
+        idLugarDefuncion: lugarDefuncion.idLugarDefuncion,
+        idUbicacionPersona: ubicacionPersona.idUbicacionPersona,
+        idDatosCementerio: datosCementerio.idDatosCementerio,
+        idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
 
         name: fallecido.primerNombre,
         secondName: fallecido.segundoNombre,
@@ -72,6 +80,7 @@ const formatObjJson = (obj: any) => {
         cementerioCiudad: datosCementerio.ciudad,
         otro: datosCementerio.otroSitio,
 
+        idmedico: certicador.idPersona,
         medicalSignatureIDType: certicador.tipoIdentificacion,
         medicalSignatureIDNumber: certicador.numeroIdentificacion,
         medicalSignatureIDExpedition: certicador.idLugarExpedicion,
@@ -100,3 +109,4 @@ const formatObjJson = (obj: any) => {
     return jsonDt;
 
 }
+const isPerson = (personas: any[], key: string) => personas.filter(m => m.idTipoPersona === key);
