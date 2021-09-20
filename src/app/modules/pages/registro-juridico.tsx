@@ -75,7 +75,13 @@ const RegistroPage: React.FC<any> = (props) => {
     };
 
     const resApi = await api.personaJuridica(json);
+    console.log(resApi);
     if (typeof resApi === 'number') {
+      await api.putUser({
+        oid: accountIdentifier,
+        idPersonaVentanilla: resApi,
+      });
+
       await api.PostRolesUser({
         idUser: accountIdentifier,
         idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
@@ -84,11 +90,9 @@ const RegistroPage: React.FC<any> = (props) => {
       store.dispatch(SetGrid({ key: 'relaodMenu' }));
       history.push('/');
     }
-    if (typeof resApi === 'object') {
-      console.log('error');
-    }
+
   };
-  const onSubmitFailed = () => {};
+  const onSubmitFailed = () => { };
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent

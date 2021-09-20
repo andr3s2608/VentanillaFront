@@ -1,5 +1,5 @@
 import { environments } from '../../environments/environments';
-import { get, post } from './settings/http.service';
+import { get, post, put } from './settings/http.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IPersonaNatural } from 'app/Models/IPersonaNatural';
 import { IResponse } from 'app/Models/IResponse';
@@ -48,6 +48,7 @@ export class ApiService {
   GetNivelEducativo = () => get<[]>({ endpoint: environments.shared, url: 'v1/NivelEducativo/GetNivelEducativo' });
 
   postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload });
+  putLicencia = (payload: any) => put({ endpoint: environments.inhcremacion, url: 'Request/UpdateRequest', payload });
 
   uploadFiles = (payload: any) =>
     post({
@@ -71,6 +72,16 @@ export class ApiService {
       payload,
       confirmModal: false
     });
+  UpdateSupportDocuments = (payload: any[]) =>
+    post({
+      endpoint: environments.inhcremacion,
+      url: 'SupportDocuments/UpdateSuport',
+      payload,
+      confirmModal: false
+    });
+
+  getSupportDocuments = (solicitud: string) =>
+    get<any>({ endpoint: environments.inhcremacion, url: `SupportDocuments/GetAllSuportByRequestId/${solicitud}` });
 
   GetInformationUser = (userId: string) =>
     get<IinformatioUser>({ endpoint: environments.shared, url: `v2/Persona/GetInfoUserById/${userId}` });
@@ -81,13 +92,16 @@ export class ApiService {
       url: 'Request/GetAllRequest'
     });
 
-  getCodeUser = () => get<any>({ endpoint: environments.inhcremacion, url: `Request/GetCodeVentanillaByIdUser/${this.oid}` });
+  getCodeUser = () => get<any>({ endpoint: environments.security, url: `Security/GetCodeVentanillaByIdUser/${this.oid}` });
 
   getLicencia = (solicitud: string) =>
     get<any>({
       endpoint: environments.inhcremacion,
       url: `Request/GetRequestById/${solicitud}`
     });
+
+  //https://wa-aeu-sds-dev-tsecurity.azurewebsites.net/api/v2/Security/UpdateUser
+  putUser = (payload: any) => put<any>({ endpoint: environments.security, url: 'Security/UpdateUser', payload });
 
   UpdataLicencia = () => {};
 }

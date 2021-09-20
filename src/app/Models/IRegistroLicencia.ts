@@ -3,6 +3,7 @@ export interface IRegistroLicencia<T> {
 }
 
 export interface Solicitud<T> {
+  idSolicitud?: string;
   numeroCertificado: string;
   fechaDefuncion: string;
   sinEstablecer: boolean;
@@ -22,6 +23,7 @@ export interface Solicitud<T> {
 }
 
 export interface DatosCementerio {
+  idDatosCementerio?: string;
   enBogota: boolean;
   fueraBogota: boolean;
   fueraPais: boolean;
@@ -43,6 +45,7 @@ export interface DocumentosSoporte {
 }
 
 export interface InstitucionCertificaFallecimiento {
+  idInstitucionCertificaFallecimiento?: string;
   tipoIdentificacion: string;
   numeroIdentificacion: string;
   razonSocial: string;
@@ -55,6 +58,7 @@ export interface InstitucionCertificaFallecimiento {
 }
 
 export interface LugarDefuncion {
+  idLugarDefuncion?: string;
   idPais: string;
   idDepartamento: string;
   idMunicipio: string;
@@ -86,6 +90,7 @@ export interface Persona {
 }
 
 export interface UbicacionPersona {
+  idUbicacionPersona?: string;
   idPaisResidencia: string;
   idDepartamentoResidencia: string;
   idCiudadResidencia: string;

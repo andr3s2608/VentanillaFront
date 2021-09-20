@@ -93,7 +93,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
-    console.log(values);
+
     /* const resp = await personaService.add_persona_vacuna_exterior(values);
     if (resp) {
       setCurrent(0);

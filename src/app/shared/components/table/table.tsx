@@ -71,11 +71,11 @@ export const Gridview = (props: IDataSource) => {
       render: (_: any, row: any, index: any) => {
         const [permiso] = roles;
 
-        return permiso.rol === 'Ciudadano' ? (
+        return permiso.rol === 'Funcionario' ? (
           <Button key={index} type='primary' onClick={showModal} icon={<EyeOutlined />}>
             Ver
           </Button>
-        ) : permiso.rol === 'Funcionario' ? (
+        ) : permiso.rol === 'Ciudadano' ? (
           <>
             <Button type='primary' key={`ver-${index}`} onClick={showModal} icon={<EyeOutlined />}>
               Ver

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
-import Alert from 'antd/es/alert';
 import Upload from 'antd/es/upload';
 import Button from 'antd/es/button';
 
 // Antd Iconos
-import { UploadOutlined } from '@ant-design/icons';
+import { EyeOutlined, UploadOutlined } from '@ant-design/icons';
 
 // Utilidades
 import { ITipoLicencia, TypeIndividuo, TypeLicencia } from 'app/shared/utils/types.util';
+import { environments } from 'environments/environments';
 
 export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   const { tipoLicencia, tipoIndividuo, form } = props;
@@ -53,6 +53,15 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
     labelDocument = 'Documento de la Madre';
   }
 
+  const { obj, files } = props;
+  const isEdit = obj?.idTramite !== undefined;
+
+  const onEventFile = (fileString: string) => {
+    const [file]: any = files?.filter(p => p.path.includes(fileString));
+    const url = `${environments.blob}${file?.path}`;
+    window.open(url, "descarga");
+  }
+
   //#endregion
 
   return (
@@ -61,9 +70,12 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
         label='Certificado Defunción'
         name='fileCertificadoDefuncion'
         valuePropName='fileList'
-        rules={[{ required: true }]}
+        rules={[{ required: isEdit ? false : true }]}
         getValueFromEvent={normFile}
       >
+        {files?.length ? (
+          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Certificado_Defunción')} />
+        ) : null}
         <Upload name='fileCertificadoDefuncion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
@@ -73,9 +85,12 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
         label={labelDocument}
         name='fileCCFallecido'
         valuePropName='fileList'
-        rules={[{ required: true }]}
+        rules={[{ required: isEdit ? false : true }]}
         getValueFromEvent={normFile}
       >
+        {files?.length ? (
+          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_fallecido')} />
+        ) : null}
         <Upload name='fileCCFallecido' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
@@ -84,6 +99,9 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
       {/* {!isCremacion && <></>} */}
 
       <Form.Item label='Otros Documentos' name='fileOtrosDocumentos' valuePropName='fileList' getValueFromEvent={normFile}>
+        {files?.length ? (
+          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Otros_Documentos')} />
+        ) : null}
         <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
@@ -95,9 +113,12 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
             label='Autorizacion de cremacion del familiar'
             name='fileAuthCCFamiliar'
             valuePropName='fileList'
-            rules={[{ required: true }]}
+            rules={[{ required: isEdit ? false : true }]}
             getValueFromEvent={normFile}
           >
+            {files?.length ? (
+              <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Autorizacion_de_cremacion_del_familiar')} />
+            ) : null}
             <Upload name='fileAuthCCFamiliar' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
@@ -107,9 +128,12 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
             label='Documento del familiar'
             name='fileAuthCremacion'
             valuePropName='fileList'
-            rules={[{ required: true }]}
+            rules={[{ required: isEdit ? false : true }]}
             getValueFromEvent={normFile}
           >
+            {files?.length ? (
+              <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_familiar')} />
+            ) : null}
             <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
@@ -120,10 +144,13 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                 label='Autorizacion del fiscal para cremar'
                 name='fileOficioIdentificacion'
                 valuePropName='fileList'
-                rules={[{ required: true }]}
+                rules={[{ required: isEdit ? false : true }]}
                 // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
                 getValueFromEvent={normFile}
               >
+                {files?.length ? (
+                  <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Autorizacion_del_fiscal_para_cremar')} />
+                ) : null}
                 <Upload
                   name='fileOficioIdentificacion'
                   maxCount={1}
@@ -139,9 +166,12 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                 label='Oficio de medicina legal al fiscal para cremar'
                 name='fileOrdenAuthFiscal'
                 valuePropName='fileList'
-                rules={[{ required: true }]}
+                rules={[{ required: isEdit ? false : true }]}
                 getValueFromEvent={normFile}
               >
+                {files?.length ? (
+                  <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Oficio_de_medicina_legal_al_fiscal_para_cremar')} />
+                ) : null}
                 <Upload
                   name='fileOrdenAuthFiscal'
                   maxCount={1}
@@ -163,8 +193,11 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
           name='fileActaNotarialFiscal'
           valuePropName='fileList'
           getValueFromEvent={normFile}
-          rules={[{ required: validateRequired }]}
+          rules={[{ required: isEdit ? false : validateRequired }]}
         >
+          {files?.length ? (
+            <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Acta_Notarial_del_Fiscal')} />
+          ) : null}
           <Upload name='fileActaNotarialFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
             <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
           </Upload>
@@ -178,4 +211,6 @@ interface IDocumentForm<T> {
   form: FormInstance<T>;
   tipoLicencia: TypeLicencia;
   tipoIndividuo?: TypeIndividuo;
+  obj: any;
+  files?: any[];
 }

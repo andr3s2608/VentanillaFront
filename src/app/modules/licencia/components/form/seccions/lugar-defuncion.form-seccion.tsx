@@ -54,18 +54,20 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
     setLMunicipios(resp);
   };
 
+  const { obj } = props;
+
   return (
     <>
       <Divider orientation='right'>Lugar de Defunción</Divider>
 
-      <Form.Item label='País' name='country' initialValue={idColombia} rules={[{ required: true }]}>
+      <Form.Item label='País' name='country' initialValue={obj?.country ? obj?.country : idColombia} rules={[{ required: true }]} >
         <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
       </Form.Item>
 
       <Form.Item
         label='Departamento Defunción'
         name='state'
-        initialValue={idDepartamentoBogota}
+        initialValue={obj?.state ? obj?.state : idDepartamentoBogota}
         rules={[{ required: isColombia }]}
       >
         <SelectComponent
@@ -80,7 +82,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       <Form.Item
         label='Municipio Defunción'
         name='city'
-        initialValue='31211657-3386-420a-8620-f9c07a8ca491'
+        initialValue={obj?.city ? obj?.city : '31211657-3386-420a-8620-f9c07a8ca491'}
         rules={[{ required: isColombia }]}
       >
         <SelectComponent
@@ -94,7 +96,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       <Form.Item
         label='Área Defunción'
         name='areaDef'
-        initialValue='dcb9985a-6e4f-45b6-ab53-c8105d0b9cc3'
+        initialValue={obj?.areaDef ? obj?.areaDef : 'dcb9985a-6e4f-45b6-ab53-c8105d0b9cc3'}
         rules={[{ required: true }]}
       >
         <SelectComponent options={l_area_defuncion} optionPropkey='id' optionPropLabel='descripcion' />
@@ -103,7 +105,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       <Form.Item
         label='Sitio Defunción'
         name='sitDef'
-        initialValue='00a1b1f5-a286-495d-88fe-119406111e32'
+        initialValue={obj?.sitDef ? obj?.sitDef : '00a1b1f5-a286-495d-88fe-119406111e32'}
         rules={[{ required: true }]}
       >
         <SelectComponent options={l_sitio_defuncion} optionPropkey='id' optionPropLabel='descripcion' />
@@ -116,4 +118,5 @@ export const KeysForm = ['state', 'city', 'country', 'areaDef', 'sitDef'];
 
 interface ILugarDefuncionProps<T> {
   form: FormInstance<T>;
+  obj: any;
 }

@@ -14,12 +14,14 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { AutorizacionCremacion } from './autorizacionCremacion';
 import { TypeLicencia } from 'app/shared/utils/types.util';
+import moment from 'moment';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(false);
+  const { obj } = props;
+  const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
+  const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
   //#region Listados
-
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
   const getListas = useCallback(
@@ -41,6 +43,9 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     businessName: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES',
     identification: '8001508610'
   };
+
+
+  const fechaActa = moment(obj?.instFechaActa);
 
   //#endregion
   const onChangeTipoInst = (e: RadioChangeEvent) => {
@@ -64,7 +69,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       <Form.Item
         label='Tipo de Institución'
         name='instType'
-        initialValue='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'
+        initialValue={obj?.instType ? '04e0913b-5d86-4c48-8904-0f504fedb3fd' : '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}
         rules={[{ required: true }]}
       >
         <Radio.Group onChange={onChangeTipoInst}>
@@ -77,8 +82,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
         <div className='fadeInLeft'>
           <Form.Item
             label='Tipo Identificación'
-            initialValue={defaultValues.identity}
             name='instTipoIdent'
+            initialValue={obj?.instTipoIdent ? obj?.instTipoIdent : defaultValues.identity}
             rules={[{ required: true }]}
           >
             <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
@@ -86,8 +91,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <Form.Item
             label='Número Identificación'
-            initialValue={defaultValues.identification}
             name='instNumIdent'
+            initialValue={obj?.instNumIdent ? obj?.instNumIdent : defaultValues.identification}
             rules={[{ required: true }]}
           >
             <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
@@ -95,7 +100,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <Form.Item
             label='Razón Social'
-            initialValue={defaultValues.businessName}
+            initialValue={obj?.instRazonSocial ?? defaultValues.businessName}
             name='instRazonSocial'
             rules={[{ required: true }]}
           >
@@ -104,36 +109,50 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Número de Protocolo Medicina Legal'
             name='instNumProtocolo'
+            initialValue={obj?.instNumProtocolo}
             rules={[{ required: isMedicinaLegal, max: 10 }]}
           >
-            <Input allowClear placeholder='Número de Protocolo' autoComplete='off' />
+            <Input allowClear placeholder='Número de Protocolo' autoComplete='off'
+            />
           </Form.Item>
 
           <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
           <Form.Item
             label='Número Acta de Levantamiento'
             name='instNumActaLevantamiento'
+            initialValue={obj?.instNumActaLevantamiento}
             rules={[{ required: required, max: 10 }]}
           >
             <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
           </Form.Item>
-          <Form.Item label='Fecha de Acta' name='instFechaActa' rules={[{ required: required }]}>
+          <Form.Item label='Fecha de Acta' name='instFechaActa'
+            initialValue={fechaActa}
+            rules={[{ required: required }]}>
             <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
           </Form.Item>
-          <Form.Item label='Seccional Fiscalía' name='instSeccionalFiscalia' rules={[{ required: required, max: 20 }]}>
+          <Form.Item label='Seccional Fiscalía'
+            initialValue={obj?.instSeccionalFiscalia}
+            name='instSeccionalFiscalia' rules={[{ required: required, max: 20 }]}>
             <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
           </Form.Item>
 
-          <Form.Item label='No. Fiscal' name='instNoFiscal' rules={[{ required: required, max: 5 }]}>
+          <Form.Item label='No. Fiscal' name='instNoFiscal'
+            initialValue={obj?.instNoFiscal}
+            rules={[{ required: required, max: 5 }]}>
             <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
           </Form.Item>
+
+
           {!datofiscal && (
             <>
-              <Form.Item label='Nombres y Apellidos del Fiscal' name='instNombreFiscal' rules={[{ required: isMedicinaLegal }]}>
+              <Form.Item label='Nombres y Apellidos del Fiscal'
+                initialValue={obj?.instNombreFiscal}
+                name='instNombreFiscal' rules={[{ required: isMedicinaLegal }]}>
                 <Input allowClear placeholder='Nombres y apellidos completos' autoComplete='off' />
               </Form.Item>
 
               <Form.Item
+                initialValue={obj?.instNoOficioMedicinaLegal}
                 label='No. Oficio Medicina Legal'
                 name='instNoOficioMedicinaLegal'
                 rules={[{ required: isMedicinaLegal }]}
@@ -143,6 +162,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               <Form.Item
                 label='Año Oficio Medicina Legal'
                 name='instYearOficioMedicinaLegal'
+                initialValue={obj?.instYearOficioMedicinaLegal}
                 rules={[{ required: isMedicinaLegal }]}
               >
                 <DatepickerComponent
@@ -180,4 +200,5 @@ interface IDeathInstituteProps<T> {
   datofiscal?: boolean;
   required: boolean;
   tipoLicencia: TypeLicencia;
+  obj: any;
 }

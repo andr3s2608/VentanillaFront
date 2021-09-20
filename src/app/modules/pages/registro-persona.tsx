@@ -136,7 +136,7 @@ const RegistroPage: React.FC<any> = (props) => {
     }
   };
 
-  const onSubmitFailed = () => {};
+  const onSubmitFailed = () => { };
 
   return (
     <div className='fadeInTop container-fluid'>

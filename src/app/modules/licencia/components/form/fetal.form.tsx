@@ -42,6 +42,7 @@ import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
+import { EditFetal } from './edit/fetal';
 
 const { Step } = Steps;
 
@@ -58,6 +59,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     IDominio[][]
   >([]);
   const [estado, setEstado] = useState<IEstadoSolicitud>();
+  const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
@@ -65,6 +67,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const obj: any = EditFetal();
+  console.log(obj);
+
+  const isEdit = obj?.idTramite !== undefined;
 
   const getListas = useCallback(
     async () => {
@@ -89,6 +95,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLMunicipios(listMunicipio);
       setLAreas(upzLocalidad);
       onChangeArea(idupz);
+      if (isEdit) {
+        const support = await api.getSupportDocuments(obj?.idSolicitud);
+        setSupports(support);
+      }
       //setEstado(reqEstado[0]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,12 +117,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
-    console.log(values);
+
     let persona: any[] = [];
     if (tipoLicencia === 'Inhumación') {
       persona = [
         //madre
         {
+          idPersona: obj?.idMadre,
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: values.IDNumber,
           primerNombre: values.namemother,
@@ -133,6 +144,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
         //certifica la defuncion
         {
+          idPersona: obj?.idmedico,
           tipoIdentificacion: values.medicalSignatureIDType,
           numeroIdentificacion: values.medicalSignatureIDNumber,
           primerNombre: values.medicalSignatureName,
@@ -146,7 +158,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idNivelEducativo: '00000000-0000-0000-0000-000000000000',
           idEtnia: '00000000-0000-0000-0000-000000000000',
           idRegimen: '00000000-0000-0000-0000-000000000000',
-          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idTipoPersona: 'd8b0250b-2991-42a0-a672-8e3e45985500',
           idParentesco: '00000000-0000-0000-0000-000000000000',
           idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
           idTipoProfesional: values.medicalSignatureProfesionalType
@@ -157,6 +169,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       persona = [
         //madre
         {
+          idPersona: obj?.idMadre,
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: values.IDNumber,
           primerNombre: values.namemother,
@@ -176,6 +189,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         },
         //authorizador cremacion
         {
+          //idPersona: '',
           tipoIdentificacion: values.authIDType,
           numeroIdentificacion: values.mauthIDNumber,
           primerNombre: values.authName,
@@ -195,6 +209,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         },
         //certifica la defuncion
         {
+          idPersona: obj?.idmedico,
           tipoIdentificacion: values.medicalSignatureIDType,
           numeroIdentificacion: values.medicalSignatureIDNumber,
           primerNombre: values.medicalSignatureName,
@@ -208,7 +223,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idNivelEducativo: '00000000-0000-0000-0000-000000000000',
           idEtnia: '00000000-0000-0000-0000-000000000000',
           idRegimen: '00000000-0000-0000-0000-000000000000',
-          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idTipoPersona: 'd8b0250b-2991-42a0-a672-8e3e45985500',
           idParentesco: '00000000-0000-0000-0000-000000000000',
           idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
           idTipoProfesional: values.medicalSignatureProfesionalType
@@ -218,6 +233,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
+        idSolicitud: obj?.idSolicitud,
         numeroCertificado: values.certificado,
         fechaDefuncion: moment(values.date).format(formatDate),
         sinEstablecer: values.check,
@@ -230,6 +246,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         idTipoMuerte: values.deathType,
         persona,
         lugarDefuncion: {
+          idLugarDefuncion: obj?.idLugarDefuncion,
           idPais: values.country,
           idDepartamento: values.state,
           idMunicipio: values.city,
@@ -237,6 +254,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idSitioDefuncion: values.sitDef
         },
         ubicacionPersona: {
+          idUbicacionPersona: obj?.idUbicacionPersona,
           idPaisResidencia: values.pais,
           idDepartamentoResidencia: values.departamento,
           idCiudadResidencia: values.ciudad,
@@ -245,6 +263,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idBarrioResidencia: values.barrio
         },
         datosCementerio: {
+          idDatosCementerio: obj?.idDatosCementerio,
           enBogota: values.cementerioLugar === 'Dentro de Bogotá',
           fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
           fueraPais: values.cementerioLugar === 'Fuera del País',
@@ -256,6 +275,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idMunicipio: values.cementerioMunicipio
         },
         institucionCertificaFallecimiento: {
+          idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
           tipoIdentificacion: values.instTipoIdent,
           numeroIdentificacion: values.instNumIdent,
           razonSocial: values.instRazonSocial,
@@ -269,41 +289,84 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+    const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
+    const formData = new FormData();
+    const supportDocuments: any[] = [];
+    if (isEdit) {
 
-    const resp = await api.postLicencia(json);
-
-    if (resp) {
-      const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
-      const formData = new FormData();
-      const supportDocuments: any[] = [];
+      const resp = await api.putLicencia(json.solicitud);
+      localStorage.removeItem('register');
 
       const [files, names] = generateListFiles(values);
+      const supportDocumentsEdit: any[] = [];
 
       files.forEach((item: any, i: number) => {
         const name = names[i];
+
 
         formData.append('file', item);
         formData.append('nameFile', name);
 
         TypeDocument.forEach((item: any) => {
           if (item.key === name.toString()) {
-            supportDocuments.push({
+            const [support] = supports.filter(p => p.path.includes(item.name));
+            supportDocumentsEdit.push({
+              idDocumentoSoporte: support.idDocumentoSoporte,
               idSolicitud: resp,
               idTipoDocumentoSoporte: item.value,
               path: `${accountIdentifier}/${name}`,
-              idUsuario: accountIdentifier
+              idUsuario: accountIdentifier,
+              fechaModificacion: new Date()
             });
           }
         });
       });
-
+      console.log(supportDocumentsEdit);
       formData.append('containerName', container);
       formData.append('oid', accountIdentifier);
 
-      await api.uploadFiles(formData);
-      await api.AddSupportDocuments(supportDocuments);
+      if (supportDocumentsEdit.length) {
+        await api.uploadFiles(formData);
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
+      }
 
-      form.resetFields();
+    }
+
+    if (!isEdit) {
+
+      const resp = await api.postLicencia(json);
+
+      if (resp) {
+
+
+        const [files, names] = generateListFiles(values);
+
+        files.forEach((item: any, i: number) => {
+          const name = names[i];
+
+          formData.append('file', item);
+          formData.append('nameFile', name);
+
+          TypeDocument.forEach((item: any) => {
+            if (item.key === name.toString()) {
+              supportDocuments.push({
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}`,
+                idUsuario: accountIdentifier
+              });
+            }
+          });
+        });
+
+        formData.append('containerName', container);
+        formData.append('oid', accountIdentifier);
+
+        await api.uploadFiles(formData);
+        await api.AddSupportDocuments(supportDocuments);
+
+        form.resetFields();
+      }
     }
     history.push('/tramites-servicios');
   };
@@ -473,6 +536,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     //setIsOtherParentesco(e.target.value === 'Otro');
   };
 
+
   //#endregion
 
   return (
@@ -506,9 +570,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion />
-            <LugarDefuncionFormSeccion form={form} />
-            <DeathInstituteFormSeccion form={form} datofiscal={true} required={false} tipoLicencia={tipoLicencia} />
+            <GeneralInfoFormSeccion obj={obj} />
+            <LugarDefuncionFormSeccion form={form} obj={obj} />
+            <DeathInstituteFormSeccion obj={obj} form={form} datofiscal={true} required={false} tipoLicencia={tipoLicencia} />
             <Divider orientation='right'> Tipo de Muerte </Divider>
             <Form.Item
               label='Tipo de Muerte'
@@ -538,31 +602,41 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               label='Tipo Identificación'
               name='IDType'
               rules={[{ required: true }]}
-              initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+              initialValue={obj?.IDType ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
             >
               <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true, max: 25 }]}>
+            <Form.Item label='Número de Identificación'
+              initialValue={obj?.IDNumber} name='IDNumber' rules={[{ required: true, max: 25 }]}>
               <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
 
-            <Form.Item label='Primer Nombre' name='namemother' rules={[{ required: true }]}>
+            <Form.Item label='Primer Nombre' name='namemother'
+              initialValue={obj?.namemother}
+              rules={[{ required: true }]}>
               <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Nombre' name='secondNamemother'>
+            <Form.Item label='Segundo Nombre' name='secondNamemother'
+              initialValue={obj?.secondNamemother}
+            >
               <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Primer Apellido' name='surnamemother' rules={[{ required: true }]}>
+            <Form.Item label='Primer Apellido' name='surnamemother'
+
+              initialValue={obj?.surnamemother}
+              rules={[{ required: true }]}>
               <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Segundo Apellido' name='secondSurnamemother'>
+            <Form.Item label='Segundo Apellido' name='secondSurnamemother'
+              initialValue={obj?.surnamemother}
+            >
               <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
             </Form.Item>
 
             <Form.Item
               label='Nacionalidad de la Madre'
               name='nationalidadmother'
-              initialValue={[idColombia]}
+              initialValue={obj?.nationalidadmother ?? [idColombia]}
               rules={[{ required: true, type: 'array' }]}
             >
               <SelectComponent
@@ -574,24 +648,24 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Estado Civil' name='civilStatusmother' initialValue='4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'>
+            <Form.Item label='Estado Civil' name='civilStatusmother' initialValue={obj?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}>
               <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevelmother' initialValue='07ebd0bb-2b00-4a2b-8db5-4582eee1d285'>
+            <Form.Item label='Nivel Educativo' name='educationLevelmother' initialValue={obj?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}>
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Etnia' name='etniamother' initialValue='60875c52-9b2a-4836-8bc7-2f3648f41f57'>
+            <Form.Item label='Etnia' name='etniamother' initialValue={obj?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
             <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
-            <Form.Item label='País de Residencia' name='pais' initialValue={idColombia} rules={[{ required: true }]}>
+            <Form.Item label='País de Residencia' name='pais' initialValue={obj?.residencia ?? idColombia} rules={[{ required: true }]}>
               <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
             </Form.Item>
 
             <Form.Item
               label='Departamento de Residencia'
-              initialValue={idDepartamentoBogota}
+              initialValue={obj?.idDepartamentoResidencia ?? idDepartamentoBogota}
               name='departamento'
               rules={[{ required: isColombia }]}
             >
@@ -605,7 +679,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
 
             {isColombia ? (
-              <Form.Item label='Ciudad de Residencia' initialValue={idBogota} name='ciudad' rules={[{ required: true }]}>
+              <Form.Item label='Ciudad de Residencia' initialValue={obj?.idCiudadResidencia ?? idBogota} name='ciudad' rules={[{ required: true }]}>
                 <SelectComponent
                   options={l_municipios}
                   optionPropkey='idMunicipio'
@@ -614,14 +688,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 />
               </Form.Item>
             ) : (
-              <Form.Item label='Ciudad de Residencia' name='ciudad' rules={[{ required: true }]}>
+              <Form.Item label='Ciudad de Residencia' name='ciudad' initialValue={obj?.idCiudadResidencia} rules={[{ required: true }]}>
                 <Input allowClear placeholder='Ciudad' autoComplete='off' />
               </Form.Item>
             )}
 
             <Form.Item
               label='Localidad de Residencia'
-              initialValue={idlocalidad}
+              initialValue={obj?.idLocalidadResidencia ?? idlocalidad}
               name='localidad'
               rules={[{ required: isBogota }]}
             >
@@ -634,7 +708,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Área de Residencia' initialValue={idupz} name='area' rules={[{ required: isBogota }]}>
+            <Form.Item label='Área de Residencia' initialValue={obj?.idAreaResidencia ?? idupz} name='area' rules={[{ required: isBogota }]}>
               <SelectComponent
                 options={l_areas}
                 optionPropkey='idUpz'
@@ -644,7 +718,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               />
             </Form.Item>
 
-            <Form.Item label='Barrio de Residencia' initialValue={idbarrio} name='barrio' rules={[{ required: isBogota }]}>
+            <Form.Item label='Barrio de Residencia' initialValue={obj?.idBarrioResidencia ?? idbarrio} name='barrio' rules={[{ required: isBogota }]}>
               <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
             </Form.Item>
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -685,9 +759,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
             {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} />}
 
-            <SolicitudInfoFormSeccion obj={{}} form={form} />
+            <SolicitudInfoFormSeccion obj={obj} form={form} />
 
-            <CementerioInfoFormSeccion obj={{}} form={form} tipoLicencia={tipoLicencia} />
+            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
@@ -720,7 +794,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion obj={{}} form={form} />
+            <MedicalSignatureFormSeccion obj={obj} form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
@@ -735,7 +809,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
-            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
+            <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

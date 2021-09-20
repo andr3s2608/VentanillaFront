@@ -1,7 +1,8 @@
-export const EditInhumacion = () => {
+import { IRegistroLicencia } from "app/Models/IRegistroLicencia";
+
+export const EditFetal = (): any => {
 
     const data = localStorage.getItem('register');
-
     if (data) {
         const json = JSON.parse(data);
         const [obj] = json;
@@ -18,9 +19,11 @@ export const EditInhumacion = () => {
 const formatObjJson = (obj: any) => {
 
     const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio } = obj;
-    const [fallecido, certicador] = persona;
+    const [madre] = esMadre(persona);
+    const [certicador] = esMedico(persona);
     const jsonDt = {
         idTramite: obj.idTramite,
+        idSolicitud: obj.idSolicitud,
         certificado: obj.numeroCertificado,
         date: obj.fechaDefuncion,
         time: obj.hora,
@@ -43,19 +46,26 @@ const formatObjJson = (obj: any) => {
         instSeccionalFiscalia: institucionCertificaFallecimiento.seccionalFiscalia,
         instNoFiscal: institucionCertificaFallecimiento.noFiscal,
 
-        name: fallecido.primerNombre,
-        secondName: fallecido.segundoNombre,
-        surname: fallecido.primerApellido,
-        secondSurname: fallecido.segundoApellido,
-        nationalidad: [fallecido.nacionalidad],
-        dateOfBirth: fallecido.fechaNacimiento,
-        IDType: fallecido.tipoIdentificacion,
-        IDNumber: fallecido.numeroIdentificacion,
-        civilStatus: fallecido.idEstadoCivil,
-        educationLevel: fallecido.idNivelEducativo,
-        etnia: fallecido.idEtnia,
-        regime: fallecido.idRegimen, //falta
-        deathType: fallecido.idTipoMuerte,
+        idLugarDefuncion: lugarDefuncion.idLugarDefuncion,
+        idUbicacionPersona: ubicacionPersona.idUbicacionPersona,
+        idDatosCementerio: datosCementerio.idDatosCementerio,
+        idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
+
+        //instNoFiscal:institucionCertificaFallecimiento.
+        idMadre: madre.idPersona,
+        namemother: madre.primerNombre,
+        secondNamemother: madre.segundoNombre,
+        surnamemother: madre.primerApellido,
+        secondSurnamemother: madre.segundoApellido,
+        nationalidadmother: [madre.nacionalidad],
+        dateOfBirth: madre.fechaNacimiento,
+        IDType: madre.tipoIdentificacion,
+        IDNumber: madre.numeroIdentificacion,
+        civilStatus: madre.idEstadoCivil,
+        educationLevel: madre.idNivelEducativo,
+        etnia: madre.idEtnia,
+        regime: madre.idRegimen, //falta
+        deathType: madre.idTipoMuerte,
 
         residencia: ubicacionPersona.idPaisResidencia,
         idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,
@@ -72,6 +82,7 @@ const formatObjJson = (obj: any) => {
         cementerioCiudad: datosCementerio.ciudad,
         otro: datosCementerio.otroSitio,
 
+        idmedico: certicador.idPersona,
         medicalSignatureIDType: certicador.tipoIdentificacion,
         medicalSignatureIDNumber: certicador.numeroIdentificacion,
         medicalSignatureIDExpedition: certicador.idLugarExpedicion,
@@ -80,7 +91,6 @@ const formatObjJson = (obj: any) => {
         medicalSignatureSurname: certicador.primerApellido,
         medicalSignatureSecondSurname: certicador.segundoApellido,
         medicalSignatureProfesionalType: certicador.idTipoProfesional,
-
         isLugar: () => {
             const { enBogota, fueraBogota, fueraPais } = datosCementerio;
             let value: string = '';
@@ -100,3 +110,6 @@ const formatObjJson = (obj: any) => {
     return jsonDt;
 
 }
+const esMadre = (personas: any[]) => personas.filter(m => m.idTipoPersona === '342d934b-c316-46cb-a4f3-3aac5845d246');
+const esMedico = (personas: any[]) => personas.filter(m => m.idTipoPersona === 'd8b0250b-2991-42a0-a672-8e3e45985500');
+

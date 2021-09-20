@@ -23,13 +23,14 @@ interface municiopioDepartament {
 
 export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (props) => {
   const { form, tipoLicencia } = props;
-
+  const { obj } = props;
   //#region Listados
 
   const [isMunicipio, setMunicipio] = useState<municiopioDepartament>({
     municipio: '',
     departament: ''
   });
+
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
     [[], [], []]
@@ -57,7 +58,14 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   //#region Acciones del formulario
   const cota = 'b5c40416-db96-4d1d-a5bd-da0ce61930e7';
   const cundinamarca = '1029c7b3-e8c7-46e6-8275-3e568e06e03c';
-  const [lugar, setLugar] = useState<TypeLugarCementerio>('Dentro de Bogotá');
+
+
+  console.log(obj);
+  const lugarCementerio = obj?.isLugar();
+
+  const [lugar, setLugar] = useState<TypeLugarCementerio>(lugarCementerio);
+
+
   const onChangeLugarCementerio = (e: RadioChangeEvent) => {
     form.resetFields(['cementerioBogota', 'cementerioDepartamento', 'cementerioMunicipio', 'cementerioPais', 'cementerioCiudad']);
     setLMunicipios([]);
@@ -78,7 +86,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       municipio: value
     });
   };
-  const { obj } = props;
+
   //#endregion
 
   const renderForm = (_lugar: TypeLugarCementerio) => {
@@ -158,7 +166,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         className='mb-4'
         label='Lugar del cementerio'
         name='cementerioLugar'
-        initialValue={obj?.cementerioLugar ? obj?.cementerioLugar : 'Dentro de Bogotá'}
+        initialValue={obj?.isLugar() ?? 'Dentro de Bogotá'}
         rules={[{ required: true }]}
       >
         <Radio.Group onChange={onChangeLugarCementerio}>

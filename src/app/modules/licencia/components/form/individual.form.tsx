@@ -96,7 +96,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-    console.log(JSON.stringify(values));
+
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -331,8 +331,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion obj={objJosn} />
-            <LugarDefuncionFormSeccion form={form} />
-            <DeathInstituteFormSeccion form={form} datofiscal={true} required={true} tipoLicencia={tipoLicencia} />
+            <LugarDefuncionFormSeccion form={form} obj={objJosn} />
+            <DeathInstituteFormSeccion obj={objJosn} form={form} datofiscal={true} required={true} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-end'>
@@ -348,7 +348,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.surname} >
+            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.name} >
               <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
             </Form.Item>
             <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn?.secondName}>
@@ -388,24 +388,24 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Número de Identificación' name='IDNumber' initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null} rules={[{ required: true, max: 25 }]}>
               <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Estado Civil' name='civilStatus' initialValue={objJosn?.civilStatus ? objJosn?.civilStatus : '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}>
+            <Form.Item label='Estado Civil' name='civilStatus' initialValue={objJosn?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}>
               <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue={objJosn?.educationLevel ? objJosn?.educationLevel : '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}>
+            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue={objJosn?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}>
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ? objJosn?.etnia : '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
+            <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
-            <Form.Item label='Régimen' name='regime' initialValue={objJosn?.etnia ? objJosn?.etnia : '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
+            <Form.Item label='Régimen' name='regime' initialValue={objJosn?.regime ?? '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
               <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
             <Form.Item
               label='Tipo de Muerte'
               name='deathType'
-              initialValue={objJosn?.deathType ? objJosn?.deathType : '475c280d-67af-47b0-a8bc-de420f6ac740'}
+              initialValue={objJosn?.deathType ?? '475c280d-67af-47b0-a8bc-de420f6ac740'}
               rules={[{ required: true }]}
             >
               <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
@@ -608,7 +608,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
-            <DocumentosFormSeccion tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
+            <DocumentosFormSeccion obj={objJosn} tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

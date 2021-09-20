@@ -20,7 +20,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       await api.GetRoles().then(
         async (res) => {
           setroles(res)
-          console.log(res);
+
           await GetValidateRol(res)
         }
       );
@@ -39,7 +39,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
   const GetValidateRol = async (toRoles: IRoles[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
-    console.log(roles, toRoles);
+
     if (permiso?.rol === 'Ciudadano') {
       const resp = await api.GetEstadoSolicitud();
       setGrid(resp);
