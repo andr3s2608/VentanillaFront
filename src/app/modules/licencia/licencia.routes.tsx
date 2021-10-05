@@ -6,6 +6,7 @@ import { IRouteProps } from 'app/shared/components/router/access.route';
 /** Path principal del modulo. */
 export const licenciaPath = '/tramites-servicios/licencia';
 export const tramiteServicePath = '/tramites-servicios';
+export const tramiteServiceReport = '/reportes/rayosx';
 
 // LazyLoad Pages
 const LicenciaCremacionIndividualPage = lazy(() => import('./pages/cremacion-individual/cremacion-individual.page'));
@@ -13,9 +14,9 @@ const LicenciaInhumacionIndividualPage = lazy(() => import('./pages/inhumacion-i
 const LicenciaCremacionFetalPage = lazy(() => import('./pages/cremacion-fetal/cremacion-fetal.page'));
 const LicenciaInhumacionFetalPage = lazy(() => import('./pages/inhumacion-fetal/inhumacion-fetal.page'));
 const MaestroPage = lazy(() => import('./pages/GridTipoLicencia/GridTipoLicencia.page'));
+const ReportPage = lazy(() => import('./pages/report/report.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
-
   {
     path: `${licenciaPath}/cremacion-individual`,
     component: LicenciaCremacionIndividualPage
@@ -35,5 +36,9 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${tramiteServicePath}`,
     component: MaestroPage
+  },
+  {
+    path: `${tramiteServiceReport}`,
+    component: ReportPage
   }
 ];
