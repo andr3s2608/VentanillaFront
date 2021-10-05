@@ -4,7 +4,7 @@ const ReportPage = () => {
   return (
     <div className='fadeInTop px-4 my-5'>
       <div className='container'>
-        <PageHeaderComponent title='Reporte Rayos x' subTitle='Tablero de control de vacunados en el exterior.' />
+        <PageHeaderComponent title='Reporte Rayos x' subTitle='Tablero de control reporte rayox x.' />
       </div>
       <iframe
         className='w-100 vh-100 border-0'
