@@ -4,10 +4,10 @@ import { IRoles } from 'app/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { useCallback, useEffect, useState } from 'react';
-import { columnFake, dataFake, structureColumns } from './model';
+import { columnFake, dataFake } from './model';
 import { CheckOutlined, EyeOutlined, FilePdfOutlined } from '@ant-design/icons';
-import { keys } from 'app/shared/tools/storage.tool';
 import { useHistory } from 'react-router';
+
 interface IDataSource {
   data: Array<any>;
 }
@@ -71,11 +71,11 @@ export const Gridview = (props: IDataSource) => {
       render: (_: any, row: any, index: any) => {
         const [permiso] = roles;
 
-        return permiso.rol === 'Funcionario' ? (
+        return permiso.rol === 'Ciudadano' ? (
           <Button key={index} type='primary' onClick={showModal} icon={<EyeOutlined />}>
             Ver
           </Button>
-        ) : permiso.rol === 'Ciudadano' ? (
+        ) : permiso.rol === 'Funcionario' ? (
           <>
             <Button type='primary' key={`ver-${index}`} onClick={showModal} icon={<EyeOutlined />}>
               Ver

@@ -130,13 +130,13 @@ const RegistroPage: React.FC<any> = (props) => {
         store.dispatch(SetGrid({ key: 'relaodMenu' }));
         history.push('/');
       }
-      if (typeof resApi === 'object') {
+      /* if (typeof resApi === 'object') {
         console.log('error');
-      }
+      } */
     }
   };
 
-  const onSubmitFailed = () => { };
+  const onSubmitFailed = () => {};
 
   return (
     <div className='fadeInTop container-fluid'>

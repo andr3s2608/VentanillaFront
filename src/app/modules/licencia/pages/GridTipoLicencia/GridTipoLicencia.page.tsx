@@ -17,15 +17,10 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
   const getListas = useCallback(
     async () => {
-      await api.GetRoles().then(
-        async (res) => {
-          setroles(res)
-
-          await GetValidateRol(res)
-        }
-      );
-      ;
-
+      await api.GetRoles().then(async (res) => {
+        setroles(res);
+        await GetValidateRol(res);
+      });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

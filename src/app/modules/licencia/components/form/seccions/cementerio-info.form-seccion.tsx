@@ -60,7 +60,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   const cundinamarca = '1029c7b3-e8c7-46e6-8275-3e568e06e03c';
 
 
-  console.log(obj);
   const lugarCementerio = obj?.isLugar();
 
   const [lugar, setLugar] = useState<TypeLugarCementerio>(lugarCementerio);

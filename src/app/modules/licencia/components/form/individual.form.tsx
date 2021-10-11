@@ -200,8 +200,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     };
 
     if (edit) {
-      localStorage.removeItem('')
-      console.log(edit);
+      localStorage.removeItem('');
+
       const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
       const formData = new FormData();
 
@@ -214,13 +214,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       files.forEach((item: any, i: number) => {
         const name = names[i];
 
-
         formData.append('file', item);
         formData.append('nameFile', name);
 
         TypeDocument.forEach((item: any) => {
           if (item.key === name.toString()) {
-            const [support] = supports.filter(p => p.path.includes(item.name));
+            const [support] = supports.filter((p) => p.path.includes(item.name));
             supportDocumentsEdit.push({
               idDocumentoSoporte: support.idDocumentoSoporte,
               idSolicitud: resp,
@@ -232,7 +231,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           }
         });
       });
-      console.log(supportDocumentsEdit);
+
       formData.append('containerName', container);
       formData.append('oid', accountIdentifier);
 
@@ -240,7 +239,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         await api.uploadFiles(formData);
         await api.UpdateSupportDocuments(supportDocumentsEdit);
       }
-
     }
     if (!edit) {
       const resp = await api.postLicencia(json);
@@ -293,7 +291,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       fileActaNotarialFiscal
     } = values;
 
-
     Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
     Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
     Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
@@ -341,8 +338,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setIsOtherParentesco(e.target.value === 'Otro');
   };
 
-  console.log(objJosn);
-  //edit 
+  //edit
 
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
   //#endregion
@@ -393,7 +389,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.name} >
+            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.name}>
               <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
             </Form.Item>
             <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn?.secondName}>
@@ -430,13 +426,26 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             >
               <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Número de Identificación' name='IDNumber' initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null} rules={[{ required: true, max: 25 }]}>
+            <Form.Item
+              label='Número de Identificación'
+              name='IDNumber'
+              initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
+              rules={[{ required: true, max: 25 }]}
+            >
               <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
-            <Form.Item label='Estado Civil' name='civilStatus' initialValue={objJosn?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}>
+            <Form.Item
+              label='Estado Civil'
+              name='civilStatus'
+              initialValue={objJosn?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}
+            >
               <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Nivel Educativo' name='educationLevel' initialValue={objJosn?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}>
+            <Form.Item
+              label='Nivel Educativo'
+              name='educationLevel'
+              initialValue={objJosn?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}
+            >
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
             <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
@@ -536,28 +545,43 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
                     </Form.Item>
 
-                    <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]} initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}>
+                    <Form.Item
+                      label='Número de Identificación'
+                      name='mauthIDNumber'
+                      rules={[{ required: true, max: 20 }]}
+                      initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
+                    >
                       <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
                     </Form.Item>
 
-                    <Form.Item label='Primer Nombre' name='authName'
+                    <Form.Item
+                      label='Primer Nombre'
+                      name='authName'
                       initialValue={objJosn?.authName ? objJosn?.authName : null}
-                      rules={[{ required: true }]}>
+                      rules={[{ required: true }]}
+                    >
                       <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
                     </Form.Item>
-                    <Form.Item label='Segundo Nombre'
+                    <Form.Item
+                      label='Segundo Nombre'
                       initialValue={objJosn?.authSecondName ? objJosn?.authSecondName : null}
-                      name='authSecondName'>
+                      name='authSecondName'
+                    >
                       <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
                     </Form.Item>
-                    <Form.Item label='Primer Apellido'
+                    <Form.Item
+                      label='Primer Apellido'
                       initialValue={objJosn?.authSurname ? objJosn?.authSurname : null}
-                      name='authSurname' rules={[{ required: true }]}>
+                      name='authSurname'
+                      rules={[{ required: true }]}
+                    >
                       <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
                     </Form.Item>
-                    <Form.Item label='Segundo Apellido'
+                    <Form.Item
+                      label='Segundo Apellido'
                       initialValue={objJosn?.authSecondSurname ? objJosn?.authSecondSurname : null}
-                      name='authSecondSurname'>
+                      name='authSecondSurname'
+                    >
                       <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
                     </Form.Item>
                     <Form.Item

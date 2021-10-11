@@ -75,7 +75,7 @@ const RegistroPage: React.FC<any> = (props) => {
     };
 
     const resApi = await api.personaJuridica(json);
-    console.log(resApi);
+
     if (typeof resApi === 'number') {
       await api.putUser({
         oid: accountIdentifier,
