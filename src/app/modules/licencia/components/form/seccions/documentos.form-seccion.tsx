@@ -61,6 +61,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
     const path = tipoLicencia === "Cremación" ? "cremacion" : "inhumacion"
     const type = tipoIndividuo === "Fetal" ? 'fetal' : 'individual'
+    console.log(files);
 
     const [file]: any = files?.filter(p => p.path.includes(fileString));
     if (file?.path !== undefined) {
@@ -73,6 +74,11 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
         okType: 'default'
       });
     }
+  }
+
+  const isFileViwerDisabled = (fileString: string) => {
+    const [file]: any = files?.filter(p => p.path.includes(fileString));
+    return file === undefined;
   }
 
   //#endregion
@@ -89,7 +95,8 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
             valuePropName='fileList'
             rules={[{ required: false }]}
           >
-            <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Certificado_Defunción')} />
+            <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Certificado_Defunción')}
+              disabled={isFileViwerDisabled('Certificado_Defunción')} />
           </Form.Item>
         ) : null
       }
@@ -115,7 +122,8 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
           valuePropName='fileList'
           rules={[{ required: false }]}
         >
-          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_fallecido')} />
+          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_fallecido')}
+            disabled={isFileViwerDisabled('Documento_del_fallecido')} />
         </Form.Item>
       ) : null}
 
@@ -137,7 +145,8 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
       {files?.length ? (
         <Form.Item label='Ver Otros Documentos' name='fileOtrosDocumentos' valuePropName='fileList' >
-          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Otros_Documentos')} />
+          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Otros_Documentos')}
+            disabled={isFileViwerDisabled('Otros_Documentos')} />
         </Form.Item>
 
       ) : null}
@@ -158,7 +167,9 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
               valuePropName='fileList'
               rules={[{ required: false }]}
             >
-              <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Autorizacion_de_cremacion_del_familiar')} />
+              <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle'
+                disabled={isFileViwerDisabled('Autorizacion_de_cremacion_del_familiar')}
+                onClick={() => onEventFile('Autorizacion_de_cremacion_del_familiar')} />
             </Form.Item>
 
           ) : null}
@@ -182,7 +193,9 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
               valuePropName='fileList'
               rules={[{ required: isEdit ? false : true }]}
               getValueFromEvent={normFile}
-            ><Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_familiar')} />
+            ><Button type="default" shape="round"
+              disabled={isFileViwerDisabled('Documento_del_familiar')}
+              style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_familiar')} />
             </Form.Item>
 
           ) : null}
@@ -212,7 +225,9 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                   rules={[{ required: isEdit ? false : true }]}
                   // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
                   getValueFromEvent={normFile}
-                > <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Autorizacion_del_fiscal_para_cremar')} />
+                > <Button type="default" shape="round"
+                  disabled={isFileViwerDisabled('Autorizacion_del_fiscal_para_cremar')}
+                  style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Autorizacion_del_fiscal_para_cremar')} />
 
                 </Form.Item>
 
@@ -244,7 +259,10 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                   valuePropName='fileList'
                   rules={[{ required: isEdit ? false : true }]}
                   getValueFromEvent={normFile}
-                > <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Oficio_de_medicina_legal_al_fiscal_para_cremar')} />
+                > <Button type="default" shape="round"
+                  disabled={isFileViwerDisabled('Oficio_de_medicina_legal_al_fiscal_para_cremar')}
+                  style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle'
+                  onClick={() => onEventFile('Oficio_de_medicina_legal_al_fiscal_para_cremar')} />
                 </Form.Item>
 
               ) : null}
@@ -281,7 +299,9 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
               valuePropName='fileList'
               getValueFromEvent={normFile}
               rules={[{ required: isEdit ? false : validateRequired }]}
-            ><Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Acta_Notarial_del_Fiscal')} />
+            ><Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />}
+              disabled={isFileViwerDisabled('Acta_Notarial_del_Fiscal')}
+              size='middle' onClick={() => onEventFile('Acta_Notarial_del_Fiscal')} />
             </Form.Item>
 
           ) : null}
