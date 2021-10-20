@@ -17,7 +17,7 @@ const CremacionIndividualPage = () => {
       />
 
       <Tabs>
-        <TabPane tab='Certificados' key='1'>
+        {/*  <TabPane tab='Certificados' key='1'>
           <div className='card card-body py-5 mb-4 fadeInTop'>
             Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table
             craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl
@@ -26,8 +26,8 @@ const CremacionIndividualPage = () => {
             beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui
             sapiente accusamus tattooed echo park.
           </div>
-        </TabPane>
-        <TabPane tab='Registro' key='2'>
+        </TabPane> */}
+        <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Cremación' tramite='e69bda86-2572-45db-90dc-b40be14fe020' />
         </TabPane>
       </Tabs>
