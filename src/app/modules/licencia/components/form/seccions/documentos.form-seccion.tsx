@@ -58,9 +58,13 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   const isEdit = obj?.idTramite !== undefined;
 
   const onEventFile = async (fileString: string) => {
+
+    const path = tipoLicencia === "Cremación" ? "cremacion" : "inhumacion"
+    const type = tipoIndividuo === "Fetal" ? 'fetal' : 'individual'
+
     const [file]: any = files?.filter(p => p.path.includes(fileString));
     if (file?.path !== undefined) {
-      const url = `${environments.blob}Storage/GetBlob/${tipoLicencia}/${file?.path}.pdf`;
+      const url = `${environments.blob}Storage/GetBlob/${path}${type}/${file?.path}.pdf`;
       window.open(url, "descarga");
     }
     if (file?.path === undefined) {
@@ -84,11 +88,8 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
             name='fileCertificadoDefuncion'
             valuePropName='fileList'
             rules={[{ required: false }]}
-
           >
             <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Certificado_Defunción')} />
-
-
           </Form.Item>
         ) : null
       }
@@ -126,7 +127,6 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
         rules={[{ required: isEdit ? false : true }]}
         getValueFromEvent={normFile}
       >
-
         <Upload name='fileCCFallecido' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
