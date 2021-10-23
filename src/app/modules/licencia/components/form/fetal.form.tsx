@@ -115,6 +115,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   //#endregion
 
   const onSubmit = async (values: any) => {
+
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
@@ -300,7 +301,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       const resp = await api.putLicencia(json.solicitud);
       localStorage.removeItem('register');
 
-      const [files, names] = generateListFiles(values);
+      const [files, names] = generateListFiles(values, container);
       const supportDocumentsEdit: any[] = [];
 
       files.forEach((item: any, i: number) => {
@@ -334,18 +335,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     if (!isEdit) {
+      debugger
       const resp = await api.postLicencia(json);
 
       if (resp) {
-        const [files, names] = generateListFiles(values);
+        const [files, names] = generateListFiles(values, container);
 
-        files.forEach((item: any, i: number) => {
+        files.forEach((file: any, i: number) => {
           const name = names[i];
 
-          formData.append('file', item);
+          formData.append('file', file);
           formData.append('nameFile', name);
 
           TypeDocument.forEach((item: any) => {
+
             if (item.key === name.toString()) {
               supportDocuments.push({
                 idSolicitud: resp,
@@ -371,7 +374,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmitFailed = () => setStatus('error');
 
-  const generateListFiles = (values: any) => {
+  const generateListFiles = (values: any, container: string) => {
     const Objs = [];
 
     const {
@@ -384,9 +387,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       fileOrdenAuthFiscal,
       fileActaNotarialFiscal
     } = values;
-
+    const NameDoc = container.indexOf("fatal") ? "Documento_de_la_Madre" : "Documento_del_fallecido";
     Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defunción' });
-    Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
+    Objs.push({ file: fileCCFallecido, name: NameDoc });
     Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
     Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
     Objs.push({ file: fileAuthCremacion, name: 'Documento_del_familiar' });
@@ -565,6 +568,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           layout='horizontal'
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
+
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion obj={obj} />

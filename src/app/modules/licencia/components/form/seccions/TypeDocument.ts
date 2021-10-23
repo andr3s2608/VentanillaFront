@@ -1,5 +1,5 @@
 export const TypeDocument = [
-  { key: 'Certificado_Defuncion', value: '19a11490-261c-4114-9152-23c2b991cb36' },
+  { key: 'Certificado_Defunción', value: '19a11490-261c-4114-9152-23c2b991cb36' },
   { key: 'Documento_de_la_Madre', value: 'd2d3aba7-3b92-446a-aa8c-80a75de246a7' },
   { key: 'Otros_Documentos', value: 'abe33c1d-9370-4189-9e81-597e5b643481' },
   { key: 'Acta_Notarial_del_Fiscal', value: '79320af6-943c-43bf-87d1-847b625f6203' },

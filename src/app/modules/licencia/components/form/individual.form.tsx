@@ -305,6 +305,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
 
     const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
+
     const files: Blob[] = filesName.map((item) => {
       const [file] = item.file;
       return file.originFileObj;

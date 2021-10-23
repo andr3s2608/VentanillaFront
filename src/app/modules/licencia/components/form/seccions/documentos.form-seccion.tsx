@@ -17,6 +17,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   const { tipoLicencia, tipoIndividuo, form } = props;
 
   let labelDocument = 'Documento del fallecido';
+  let nameFileType = 'Documento_del_fallecido';
   const [isCremacion, setIsCremacion] = useState(false);
   const [isFetal, setIsFetal] = useState(false);
 
@@ -53,11 +54,12 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
     (tipoLicencia === 'Cremación' && tipoIndividuo === 'Fetal')
   ) {
     labelDocument = 'Documento de la Madre';
+    nameFileType = 'Documento_de_la_Madre';
   }
 
   const { obj, files } = props;
   const isEdit = obj?.idTramite !== undefined;
-  console.log(obj, isEdit);
+
 
   const onEventFile = async (fileString: string) => {
 
@@ -119,13 +121,13 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
       {files?.length ? (
         <Form.Item
-          label='Ver Documento del fallecido'
+          label={labelDocument}
           name='fileCCFallecido'
           valuePropName='fileList'
           rules={[{ required: false }]}
         >
-          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_fallecido')}
-            disabled={isFileViwerDisabled('Documento_del_fallecido')} >Documento_del_fallecido.pdf</Button>
+          <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile(nameFileType)}
+            disabled={isFileViwerDisabled(nameFileType)} >{`${nameFileType}.pdf`}</Button>
         </Form.Item>
       ) : null}
 
