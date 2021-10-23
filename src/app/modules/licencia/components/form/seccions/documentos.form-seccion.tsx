@@ -9,9 +9,9 @@ import Button from 'antd/es/button';
 import { EyeOutlined, UploadOutlined } from '@ant-design/icons';
 
 // Utilidades
-import { ITipoLicencia, TypeIndividuo, TypeLicencia } from 'app/shared/utils/types.util';
+import { TypeIndividuo, TypeLicencia } from 'app/shared/utils/types.util';
 import { environments } from 'environments/environments';
-import { confirmMessage, infoMessage } from 'app/services/settings/message.service';
+import { infoMessage } from 'app/services/settings/message.service';
 
 export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   const { tipoLicencia, tipoIndividuo, form } = props;
@@ -19,6 +19,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   let labelDocument = 'Documento del fallecido';
   const [isCremacion, setIsCremacion] = useState(false);
   const [isFetal, setIsFetal] = useState(false);
+
   useEffect(() => {
     setIsCremacion(tipoLicencia === 'Cremación');
     setIsFetal(tipoIndividuo === 'Fetal');
@@ -61,7 +62,6 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
     const path = tipoLicencia === "Cremación" ? "cremacion" : "inhumacion"
     const type = tipoIndividuo === "Fetal" ? 'fetal' : 'individual'
-    console.log(files);
 
     const [file]: any = files?.filter(p => p.path.includes(fileString));
     if (file?.path !== undefined) {
@@ -96,8 +96,9 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
             rules={[{ required: false }]}
           >
             <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Certificado_Defunción')}
-              disabled={isFileViwerDisabled('Certificado_Defunción')} />
+              disabled={isFileViwerDisabled('Certificado_Defunción')} >Certificado_Defunción.pdf</Button>
           </Form.Item>
+
         ) : null
       }
 
@@ -123,7 +124,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
           rules={[{ required: false }]}
         >
           <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Documento_del_fallecido')}
-            disabled={isFileViwerDisabled('Documento_del_fallecido')} />
+            disabled={isFileViwerDisabled('Documento_del_fallecido')} >Documento_del_fallecido.pdf</Button>
         </Form.Item>
       ) : null}
 
@@ -146,7 +147,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
       {files?.length ? (
         <Form.Item label='Ver Otros Documentos' name='fileOtrosDocumentos' valuePropName='fileList' >
           <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle' onClick={() => onEventFile('Otros_Documentos')}
-            disabled={isFileViwerDisabled('Otros_Documentos')} />
+            disabled={isFileViwerDisabled('Otros_Documentos')}>Otros_Documentos.pdf</Button>
         </Form.Item>
 
       ) : null}
@@ -165,7 +166,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
               label='Ver Autorizacion de cremacion del familiar'
               name='fileAuthCCFamiliar'
               valuePropName='fileList'
-              rules={[{ required: false }]}
+              rules={[{ required: isEdit ? false : true }]}
             >
               <Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />} size='middle'
                 disabled={isFileViwerDisabled('Autorizacion_de_cremacion_del_familiar')}
@@ -301,7 +302,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
               rules={[{ required: isEdit ? false : validateRequired }]}
             ><Button type="default" shape="round" style={{ marginRight: '10px' }} icon={<EyeOutlined />}
               disabled={isFileViwerDisabled('Acta_Notarial_del_Fiscal')}
-              size='middle' onClick={() => onEventFile('Acta_Notarial_del_Fiscal')} />
+              size='middle' onClick={() => onEventFile('Acta_Notarial_del_Fiscal')} >Acta_Notarial_del_Fiscal</Button>
             </Form.Item>
 
           ) : null}
