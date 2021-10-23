@@ -107,6 +107,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   useEffect(() => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      localStorage.removeItem('register');
+    }
   }, []);
 
   //#endregion
@@ -291,7 +294,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
     const formData = new FormData();
     const supportDocuments: any[] = [];
+
     if (isEdit) {
+
       const resp = await api.putLicencia(json.solicitud);
       localStorage.removeItem('register');
 

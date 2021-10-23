@@ -57,6 +57,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
   const { obj, files } = props;
   const isEdit = obj?.idTramite !== undefined;
+  console.log(obj, isEdit);
 
   const onEventFile = async (fileString: string) => {
 

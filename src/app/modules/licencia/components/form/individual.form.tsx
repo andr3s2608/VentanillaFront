@@ -93,6 +93,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   useEffect(() => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      localStorage.removeItem('register');
+    }
   }, []);
 
   //#endregion
@@ -242,6 +245,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
     if (!edit) {
       const resp = await api.postLicencia(json);
+      localStorage.removeItem("register");
       if (resp) {
         const formData = new FormData();
         const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
