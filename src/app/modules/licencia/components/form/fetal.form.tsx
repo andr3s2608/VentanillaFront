@@ -863,7 +863,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
             <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
 
-            {permiso?.rol !== 'Funcionario' ? (
+            {permiso?.rol === 'Funcionario' ? (
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                 <div className='d-flex justify-content-between'>
                   <Button type='dashed' htmlType='button' onClick={onPrevStep}>
@@ -876,7 +876,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </Form.Item>
             ) : null}
           </div>
-          {permiso?.rol === 'Funcionario' ? (
+          {permiso?.rol !== 'Funcionario' ? (
             <div className={`d-none fadeInRight ${current === 5 && 'd-block'}`}>
               <ValidationFuntional />
             </div>
