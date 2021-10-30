@@ -66,7 +66,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         label='Número Identificación'
         initialValue={defaultValues.identification}
         name='instNumIdent'
-        rules={[{ required: true }]}
+        rules={[{ required: true, max: 15 }]}
       >
         <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
       </Form.Item>

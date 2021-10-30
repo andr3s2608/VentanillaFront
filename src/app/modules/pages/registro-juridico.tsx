@@ -61,12 +61,12 @@ const RegistroPage: React.FC<any> = (props) => {
   const onSubmit = async (value: any) => {
     const json = {
       primerNombre: value.name,
-      segundoNombre: value.secondName,
+      segundoNombre: value.secondName ?? '',
       primerApellido: value.surname,
-      segundoApellido: value.secondSurname,
+      segundoApellido: value.secondSurname ?? '',
       tipoDocumento: value.TipoIdent, //listado tipos de documentos
       numeroIdentificacion: Number(value.nit),
-      telefonoFijo: value.phone,
+      telefonoFijo: value.phone ?? 0,
       telefonoCelular: value.phonecell,
       email: value.email,
       tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
@@ -79,7 +79,7 @@ const RegistroPage: React.FC<any> = (props) => {
     if (typeof resApi === 'number') {
       await api.putUser({
         oid: accountIdentifier,
-        idPersonaVentanilla: resApi,
+        idPersonaVentanilla: resApi
       });
 
       await api.PostRolesUser({
@@ -90,9 +90,8 @@ const RegistroPage: React.FC<any> = (props) => {
       store.dispatch(SetGrid({ key: 'relaodMenu' }));
       history.push('/');
     }
-
   };
-  const onSubmitFailed = () => { };
+  const onSubmitFailed = () => {};
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
@@ -123,7 +122,7 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
           </Form.Item>
 
-          <Form.Item label='NIT' initialValue={defaultValues.identification} name='nit' rules={[{ required: true }]}>
+          <Form.Item label='NIT' initialValue={defaultValues.identification} name='nit' rules={[{ required: true, max: 15 }]}>
             <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
           </Form.Item>
 

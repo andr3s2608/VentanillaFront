@@ -43,6 +43,8 @@ import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { EditFetal } from './edit/fetal';
+import { ValidationFuntional } from './seccions/validationfuntional';
+import { IRoles } from 'app/Models/IRoles';
 
 const { Step } = Steps;
 
@@ -55,6 +57,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
+  const [roles, setroles] = useState<IRoles[]>([]);
   const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
     IDominio[][]
   >([]);
@@ -86,6 +89,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
+      const mysRoles = await api.GetRoles();
+      setroles(mysRoles);
 
       setUser(userRes);
       setLDepartamentos(departamentos);
@@ -109,13 +114,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       localStorage.removeItem('register');
-    }
+    };
   }, []);
 
   //#endregion
 
   const onSubmit = async (values: any) => {
-
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
@@ -297,9 +301,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const supportDocuments: any[] = [];
 
     if (isEdit) {
-
+      debugger;
       const resp = await api.putLicencia(json.solicitud);
-      localStorage.removeItem('register');
 
       const [files, names] = generateListFiles(values, container);
       const supportDocumentsEdit: any[] = [];
@@ -312,15 +315,25 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
         TypeDocument.forEach((item: any) => {
           if (item.key === name.toString()) {
-            const [support] = supports.filter((p) => p.path.includes(item.name));
-            supportDocumentsEdit.push({
-              idDocumentoSoporte: support.idDocumentoSoporte,
-              idSolicitud: resp,
-              idTipoDocumentoSoporte: item.value,
-              path: `${accountIdentifier}/${name}`,
-              idUsuario: accountIdentifier,
-              fechaModificacion: new Date()
-            });
+            const [support] = supports.filter((p) => p.path.includes(item.key));
+
+            if (support !== undefined) {
+              supportDocumentsEdit.push({
+                idDocumentoSoporte: support.idDocumentoSoporte,
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}`,
+                idUsuario: accountIdentifier,
+                fechaModificacion: new Date()
+              });
+            } else {
+              supportDocumentsEdit.push({
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}`,
+                idUsuario: accountIdentifier
+              });
+            }
           }
         });
       });
@@ -332,10 +345,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         await api.uploadFiles(formData);
         await api.UpdateSupportDocuments(supportDocumentsEdit);
       }
+      localStorage.removeItem('register');
     }
 
     if (!isEdit) {
-      debugger
+      debugger;
       const resp = await api.postLicencia(json);
 
       if (resp) {
@@ -348,7 +362,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           formData.append('nameFile', name);
 
           TypeDocument.forEach((item: any) => {
-
             if (item.key === name.toString()) {
               supportDocuments.push({
                 idSolicitud: resp,
@@ -387,7 +400,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       fileOrdenAuthFiscal,
       fileActaNotarialFiscal
     } = values;
-    const NameDoc = container.indexOf("fatal") ? "Documento_de_la_Madre" : "Documento_del_fallecido";
+    const NameDoc = container.indexOf('fatal') ? 'Documento_de_la_Madre' : 'Documento_del_fallecido';
     Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defunción' });
     Objs.push({ file: fileCCFallecido, name: NameDoc });
     Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
@@ -537,6 +550,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     //setIsOtherParentesco(e.target.value === 'Otro');
   };
 
+  const [permiso] = roles;
+  console.log(roles, permiso);
+
   //#endregion
 
   return (
@@ -558,6 +574,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           />
           <Step title='Información Certificado' description='Datos de Quien Certifica la defunción - Medico' />
           <Step title='Documentos Requeridos' description='Documentos de soporte pdf.' />
+          {permiso?.rol === 'Funcionario' ? (
+            <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
+          ) : null}
         </Steps>
 
         <Form
@@ -568,7 +587,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           layout='horizontal'
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
-
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion obj={obj} />
@@ -845,17 +863,24 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
             <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
 
-            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-              <div className='d-flex justify-content-between'>
-                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                  Volver atrás
-                </Button>
-                <Button type='primary' htmlType='submit'>
-                  Guardar
-                </Button>
-              </div>
-            </Form.Item>
+            {permiso?.rol !== 'Funcionario' ? (
+              <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                <div className='d-flex justify-content-between'>
+                  <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                    Volver atrás
+                  </Button>
+                  <Button type='primary' htmlType='submit'>
+                    Guardar
+                  </Button>
+                </div>
+              </Form.Item>
+            ) : null}
           </div>
+          {permiso?.rol === 'Funcionario' ? (
+            <div className={`d-none fadeInRight ${current === 5 && 'd-block'}`}>
+              <ValidationFuntional />
+            </div>
+          ) : null}
         </Form>
       </div>
     </div>

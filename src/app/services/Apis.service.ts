@@ -73,7 +73,7 @@ export class ApiService {
       confirmModal: false
     });
   UpdateSupportDocuments = (payload: any[]) =>
-    post({
+    put({
       endpoint: environments.inhcremacion,
       url: 'SupportDocuments/UpdateSuport',
       payload,
