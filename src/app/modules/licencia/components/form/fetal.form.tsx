@@ -601,7 +601,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           />
           <Step title='Información Certificado' description='Datos de Quien Certifica la defunción - Medico' />
           <Step title='Documentos Requeridos' description='Documentos de soporte pdf.' />
-          {permiso?.rol === 'Funcionario' ? (
+          {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
         </Steps>
@@ -890,9 +890,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
             <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
 
-            {permiso?.rol !== 'Funcionario' ? <Actions /> : null}
+            {!isEdit ? <Actions /> : null}
           </div>
-          {permiso?.rol === 'Funcionario' ? (
+          {isEdit ? (
             <div className={`d-none fadeInRight ${current === 5 && 'd-block'}`}>
               {
                 <>

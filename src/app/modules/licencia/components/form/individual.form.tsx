@@ -42,6 +42,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
+import { ValidationFuntional } from './seccions/validationfuntional';
 
 const { Step } = Steps;
 
@@ -54,6 +55,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
   const [supports, setSupports] = useState<any[]>([]);
+  const [type, setType] = useState<[]>([]);
   //create o edit
   const objJosn: any = EditInhumacion();
   const edit = objJosn?.idTramite ? true : false;
@@ -83,7 +85,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       if (edit) {
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
+        const typeList = await api.GetAllTypeValidation();
         setSupports(support);
+        setType(typeList);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +99,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       localStorage.removeItem('register');
-    }
+    };
   }, []);
 
   //#endregion
@@ -245,7 +249,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
     if (!edit) {
       const resp = await api.postLicencia(json);
-      localStorage.removeItem("register");
+      localStorage.removeItem('register');
       if (resp) {
         const formData = new FormData();
         const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
@@ -344,7 +348,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   //edit
-
+  const Actions = () => (
+    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+      <div className='d-flex justify-content-between'>
+        <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+          Volver atrás
+        </Button>
+        <Button type='primary' htmlType='submit'>
+          Guardar
+        </Button>
+      </div>
+    </Form.Item>
+  );
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
   //#endregion
 
@@ -683,18 +698,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
           <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
             <DocumentosFormSeccion obj={objJosn} tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
-
-            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-              <div className='d-flex justify-content-between'>
-                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                  Volver atrás
-                </Button>
-                <Button type='primary' htmlType='submit'>
-                  Guardar
-                </Button>
-              </div>
-            </Form.Item>
+            {!edit ? <Actions /> : null}
           </div>
+          {edit ? (
+            <div className={`d-none fadeInRight ${current === 5 && 'd-block'}`}>
+              {
+                <>
+                  <ValidationFuntional idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
+                  <Actions />
+                </>
+              }
+            </div>
+          ) : null}
         </Form>
       </div>
     </div>
