@@ -35,6 +35,9 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   useEffect(() => {
     getListas();
+    if (obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+      setIsMedicinaLegal(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,7 +46,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     businessName: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES',
     identification: '8001508610'
   };
-
 
   const fechaActa = moment(obj?.instFechaActa);
 
@@ -66,13 +68,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
-      <Form.Item
-        label='Tipo de Institución'
-        name='instType'
-        initialValue={obj?.instType ? '04e0913b-5d86-4c48-8904-0f504fedb3fd' : '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}
-        rules={[{ required: true }]}
-      >
-        <Radio.Group onChange={onChangeTipoInst}>
+      <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]}>
+        <Radio.Group onChange={onChangeTipoInst} defaultValue={obj?.instType}>
           <Radio value='04e0913b-5d86-4c48-8904-0f504fedb3fd'>MEDICINA LEGAL</Radio>
           <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
         </Radio.Group>
@@ -112,8 +109,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             initialValue={obj?.instNumProtocolo}
             rules={[{ required: isMedicinaLegal, max: 10 }]}
           >
-            <Input allowClear placeholder='Número de Protocolo' autoComplete='off'
-            />
+            <Input allowClear placeholder='Número de Protocolo' autoComplete='off' />
           </Form.Item>
 
           <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
@@ -125,29 +121,35 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           >
             <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
           </Form.Item>
-          <Form.Item label='Fecha de Acta' name='instFechaActa'
-            initialValue={fechaActa}
-            rules={[{ required: required }]}>
+          <Form.Item label='Fecha de Acta' name='instFechaActa' initialValue={fechaActa} rules={[{ required: required }]}>
             <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
           </Form.Item>
-          <Form.Item label='Seccional Fiscalía'
+          <Form.Item
+            label='Seccional Fiscalía'
             initialValue={obj?.instSeccionalFiscalia}
-            name='instSeccionalFiscalia' rules={[{ required: required, max: 20 }]}>
+            name='instSeccionalFiscalia'
+            rules={[{ required: required, max: 20 }]}
+          >
             <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
           </Form.Item>
 
-          <Form.Item label='No. Fiscal' name='instNoFiscal'
+          <Form.Item
+            label='No. Fiscal'
+            name='instNoFiscal'
             initialValue={obj?.instNoFiscal}
-            rules={[{ required: required, max: 5 }]}>
+            rules={[{ required: required, max: 5 }]}
+          >
             <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
           </Form.Item>
 
-
           {!datofiscal && (
             <>
-              <Form.Item label='Nombres y Apellidos del Fiscal'
+              <Form.Item
+                label='Nombres y Apellidos del Fiscal'
                 initialValue={obj?.instNombreFiscal}
-                name='instNombreFiscal' rules={[{ required: isMedicinaLegal }]}>
+                name='instNombreFiscal'
+                rules={[{ required: isMedicinaLegal }]}
+              >
                 <Input allowClear placeholder='Nombres y apellidos completos' autoComplete='off' />
               </Form.Item>
 

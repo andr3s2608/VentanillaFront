@@ -16,7 +16,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
   const [user, setUser] = useState<IinformatioUser>();
   const { obj } = props;
 
-
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
@@ -30,7 +29,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     async () => {
       const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);
-
+      console.log(resp);
       setUser(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,19 +91,16 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
           </>
         ) : (
           <>
-            <Form.Item label='Razón Social' name='solicitudRazonSocial'
-            >
+            <Form.Item label='Razón Social' name='solicitudRazonSocial'>
               <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
             </Form.Item>
             {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item> */}
-            <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'
-            >
+            <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombres y Apellidos del Tramitador'
-              name='solicitudIDTramitador'>
+            <Form.Item label='Nombres y Apellidos del Tramitador' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
           </>

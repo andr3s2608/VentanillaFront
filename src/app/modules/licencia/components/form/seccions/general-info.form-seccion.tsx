@@ -14,13 +14,25 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const [isHora, setIsHora] = useState<boolean>(true);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
+  const check = obj?.check === undefined ? true : obj?.check;
+
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
+  useEffect(() => {
+    if (check) {
+      setIsHora(false);
+    }
+  });
 
   return (
     <>
-      <Form.Item label='Número de Certificado' name='certificado' rules={[{ required: true, max: 9 }]} initialValue={obj?.certificado}>
+      <Form.Item
+        label='Número de Certificado'
+        name='certificado'
+        rules={[{ required: true, max: 9 }]}
+        initialValue={obj?.certificado}
+      >
         <Input allowClear placeholder='Número de Certificado' autoComplete='off' />
       </Form.Item>
 
@@ -31,16 +43,20 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
       </Form.Item>
 
       <Form.Item label='Sin Establecer' name='check'>
-        <Switch onChange={onChangeSwitch} />
+        <Switch onChange={onChangeSwitch} defaultChecked={check} />
       </Form.Item>
-
       {isHora && (
-        <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time} >
+        <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time}>
           <DatepickerComponent picker='time' dateDisabledType='default' dateFormatType='time' value={time} />
         </Form.Item>
       )}
 
-      <Form.Item label='Sexo' name='sex' initialValue={obj?.idSexo ? obj?.idSexo : '259cf2da-6175-4dba-bd55-62723adf0dfa'} rules={[{ required: true }]}>
+      <Form.Item
+        label='Sexo'
+        name='sex'
+        initialValue={obj?.idSexo ? obj?.idSexo : '259cf2da-6175-4dba-bd55-62723adf0dfa'}
+        rules={[{ required: true }]}
+      >
         <Radio.Group>
           <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
           <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>
