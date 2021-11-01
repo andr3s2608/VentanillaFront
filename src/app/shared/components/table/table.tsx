@@ -102,7 +102,9 @@ export const Gridview = (props: IDataSource) => {
   ];
 
   const onPrev = ({ idSolicitud, estadoSolicitud }: { [x: string]: string }) => {
-    if (estadoSolicitud === '3cd0ed61-f26b-4cc0-9015-5b497673d27') {
+    console.log(estadoSolicitud);
+
+    if (estadoSolicitud === '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
       api.GeneratePDF(idSolicitud);
     }
   };

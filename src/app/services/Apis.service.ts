@@ -111,7 +111,6 @@ export class ApiService {
     });
 
   addSeguimiento = (payload: any) => {
-    payload.usuario = this.oid;
     return post<any>({
       endpoint: environments.inhcremacion,
       url: 'Seguimiento/AddSeguimiento',

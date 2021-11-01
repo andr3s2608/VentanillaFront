@@ -26,6 +26,7 @@ const formatObjJson = (obj: any) => {
     time: obj.hora,
     check: obj.sinEstablecer,
     sex: obj.idSexo,
+    idUsuario: obj.idUsuarioSeguridad,
 
     country: lugarDefuncion.idPais,
     state: lugarDefuncion.idDepartamento,

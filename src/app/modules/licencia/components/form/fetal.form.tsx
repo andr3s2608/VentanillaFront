@@ -249,7 +249,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         sinEstablecer: values.check,
         hora: values.check === true ? null : moment(values.time).format('LT'),
         idSexo: values.sex,
-        estadoSolicitud: estadoSolicitud,
+        estadoSolicitud: values.validFunctionaltype ?? estadoSolicitud,
         idPersonaVentanilla: Number(user), //numero de usuario registrado
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite?.toString(),
@@ -351,7 +351,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const tramite = {
         fechaRegistro: new Date(),
-        usuario: '',
+        usuario: obj.idUsuario,
         estado: values?.validFunctionaltype,
         idSolicitud: json.solicitud.idSolicitud,
         observacion: values?.descripcionvalidfuncional
