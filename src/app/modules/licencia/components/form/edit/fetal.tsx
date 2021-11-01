@@ -1,12 +1,10 @@
-import { IRegistroLicencia } from "app/Models/IRegistroLicencia";
+import { IRegistroLicencia } from 'app/Models/IRegistroLicencia';
 
 export const EditFetal = (): any => {
-
   const data = localStorage.getItem('register');
   if (data) {
     const json = JSON.parse(data);
     const [obj] = json;
-    //localStorage.removeItem("register");
     return formatObjJson(obj);
   }
   return {
@@ -14,11 +12,9 @@ export const EditFetal = (): any => {
       return 'Dentro de Bogotá';
     }
   };
-
 };
 
 const formatObjJson = (obj: any) => {
-
   const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio } = obj;
   const [madre] = esMadre(persona);
   const [certicador] = esMedico(persona);
@@ -96,21 +92,18 @@ const formatObjJson = (obj: any) => {
       const { enBogota, fueraBogota, fueraPais } = datosCementerio;
       let value: string = '';
       if (enBogota) {
-        value = "Dentro de Bogotá";
+        value = 'Dentro de Bogotá';
       }
       if (fueraBogota) {
-        value = "Fuera de Bogotá";
+        value = 'Fuera de Bogotá';
       }
       if (fueraPais) {
-        value = "Fuera del País";
+        value = 'Fuera del País';
       }
       return value;
     }
-
   };
   return jsonDt;
-
-}
-const esMadre = (personas: any[]) => personas.filter(m => m.idTipoPersona === '342d934b-c316-46cb-a4f3-3aac5845d246');
-const esMedico = (personas: any[]) => personas.filter(m => m.idTipoPersona === 'd8b0250b-2991-42a0-a672-8e3e45985500');
-
+};
+const esMadre = (personas: any[]) => personas.filter((m) => m.idTipoPersona === '342d934b-c316-46cb-a4f3-3aac5845d246');
+const esMedico = (personas: any[]) => personas.filter((m) => m.idTipoPersona === 'd8b0250b-2991-42a0-a672-8e3e45985500');

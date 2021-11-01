@@ -104,4 +104,27 @@ export class ApiService {
   putUser = (payload: any) => put<any>({ endpoint: environments.security, url: 'Security/UpdateUser', payload });
 
   UpdataLicencia = () => {};
+  GetAllTypeValidation = () =>
+    get<[]>({
+      endpoint: environments.endpointV1,
+      url: `Dominio/GetAllDominio/C5D41A74-09B6-4A7C-A45D-42792FCB4AC2`
+    });
+
+  addSeguimiento = (payload: any) => {
+    payload.usuario = this.oid;
+    return post<any>({
+      endpoint: environments.inhcremacion,
+      url: 'Seguimiento/AddSeguimiento',
+      payload
+    });
+  };
+
+  getUserTramite = (idTramite: string) =>
+    get<any>({
+      endpoint: environments.inhcremacion,
+      url: `Seguimiento/GetSeguimientoBySolicitud/${idTramite}`
+    });
+
+  GeneratePDF = (idTramite: string) =>
+    window.open(`${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
 }

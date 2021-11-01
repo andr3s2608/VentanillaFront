@@ -46,8 +46,8 @@ export const dataFake = [
 export const columnFake = [
   {
     title: 'Fecha Seguimiento',
-    dataIndex: 'fecha',
-    key: 'fecha'
+    dataIndex: 'fechaRegistro',
+    key: 'fechaRegistro'
   },
   {
     title: 'Usuario',

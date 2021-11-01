@@ -5,8 +5,9 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { useCallback, useEffect, useState } from 'react';
 import { columnFake, dataFake } from './model';
-import { CheckOutlined, EyeOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
+import moment from 'moment';
 
 interface IDataSource {
   data: Array<any>;
@@ -19,6 +20,8 @@ export const Gridview = (props: IDataSource) => {
   const [roles, setroles] = useState<IRoles[]>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [dataTable, setDataTable] = useState<[]>();
+  const formatDate = 'MM-DD-YYYY';
 
   const getListas = useCallback(
     async () => {
@@ -62,7 +65,7 @@ export const Gridview = (props: IDataSource) => {
       title: 'PDF',
       dataIndex: 'pdf',
       key: 'pdf',
-      render: () => <FilePdfOutlined style={{ fontSize: '30px' }} />
+      render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
     },
     {
       title: 'Acciones',
@@ -72,12 +75,14 @@ export const Gridview = (props: IDataSource) => {
         const [permiso] = roles;
 
         return permiso.rol === 'Ciudadano' ? (
-          <Button key={index} type='primary' onClick={showModal} icon={<EyeOutlined />}>
-            Ver
-          </Button>
+          <>
+            <Button key={index} type='primary' onClick={() => onClickView(row)} icon={<EyeOutlined />}>
+              Ver
+            </Button>
+          </>
         ) : permiso.rol === 'Funcionario' ? (
           <>
-            <Button type='primary' key={`ver-${index}`} onClick={showModal} icon={<EyeOutlined />}>
+            <Button type='primary' key={`ver-${index}`} onClick={() => onClickView(row)} icon={<EyeOutlined />}>
               Ver
             </Button>
 
@@ -96,12 +101,28 @@ export const Gridview = (props: IDataSource) => {
     }
   ];
 
+  const onPrev = ({ idSolicitud, estadoSolicitud }: { [x: string]: string }) => {
+    if (estadoSolicitud === '3cd0ed61-f26b-4cc0-9015-5b497673d27') {
+      api.GeneratePDF(idSolicitud);
+    }
+  };
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const onClickView = async ({ idSolicitud }: { [x: string]: string }) => {
+    const all = await api.getUserTramite(idSolicitud);
+    const alldata = all.map((item: any) => {
+      item.fechaRegistro = moment(item.fechaRegistro).format(formatDate);
+      return item;
+    });
+
+    setDataTable(alldata);
+    showModal();
   };
 
   const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
@@ -143,7 +164,7 @@ export const Gridview = (props: IDataSource) => {
         okButtonProps={{ hidden: true }}
         cancelText='Cerrar'
       >
-        <Table dataSource={dataFake} columns={columnFake} pagination={{ hideOnSinglePage: true }} />
+        <Table dataSource={dataTable} columns={columnFake} pagination={{ hideOnSinglePage: true }} />
       </Modal>
     </div>
   );
