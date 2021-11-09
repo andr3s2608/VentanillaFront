@@ -15,12 +15,13 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
   const check = obj?.check === undefined ? true : obj?.check;
-
+  console.log(check, obj)
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
+
   useEffect(() => {
-    if (check) {
+    if (obj?.check !== undefined && check) {
       setIsHora(false);
     }
   });
