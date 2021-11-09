@@ -15,7 +15,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
   const check = obj?.check === undefined ? true : obj?.check;
-  console.log(check, obj)
+
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
@@ -46,6 +46,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
       <Form.Item label='Sin Establecer' name='check'>
         <Switch onChange={onChangeSwitch} defaultChecked={check} />
       </Form.Item>
+
       {isHora && (
         <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time}>
           <DatepickerComponent picker='time' dateDisabledType='default' dateFormatType='time' value={time} />
