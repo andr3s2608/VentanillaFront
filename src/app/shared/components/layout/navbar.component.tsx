@@ -74,7 +74,7 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
       <div className='d-flex'>
         <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
-            Bienvenido <b className='text-primary'>{name}</b>
+            {name} <b className='text-primary'>{name}</b>
           </span>
           <br />
           <span className='text-muted'>{userName}</span>

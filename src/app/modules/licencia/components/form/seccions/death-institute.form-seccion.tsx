@@ -69,7 +69,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
       <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]} initialValue={obj?.instType}>
-        <Radio.Group onChange={onChangeTipoInst} defaultValue={obj?.instType}>
+        <Radio.Group onChange={onChangeTipoInst} defaultValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
           <Radio value='04e0913b-5d86-4c48-8904-0f504fedb3fd'>MEDICINA LEGAL</Radio>
           <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
         </Radio.Group>
