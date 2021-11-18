@@ -19,8 +19,9 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
+
   useEffect(() => {
-    if (check) {
+    if (obj?.check !== undefined && check) {
       setIsHora(false);
     }
   });
@@ -45,6 +46,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
       <Form.Item label='Sin Establecer' name='check'>
         <Switch onChange={onChangeSwitch} defaultChecked={check} />
       </Form.Item>
+
       {isHora && (
         <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time}>
           <DatepickerComponent picker='time' dateDisabledType='default' dateFormatType='time' value={time} />
