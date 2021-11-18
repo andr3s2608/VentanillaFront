@@ -59,11 +59,9 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   const cota = 'b5c40416-db96-4d1d-a5bd-da0ce61930e7';
   const cundinamarca = '1029c7b3-e8c7-46e6-8275-3e568e06e03c';
 
-
   const lugarCementerio = obj?.isLugar();
 
   const [lugar, setLugar] = useState<TypeLugarCementerio>(lugarCementerio);
-
 
   const onChangeLugarCementerio = (e: RadioChangeEvent) => {
     form.resetFields(['cementerioBogota', 'cementerioDepartamento', 'cementerioMunicipio', 'cementerioPais', 'cementerioCiudad']);
@@ -93,29 +91,34 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       case 'Fuera de Bogotá':
         return (
           <div className='fadeInRight'>
-            <Form.Item label='Departamento de Colombia' name='cementerioDepartamento' rules={[{ required: true }]}
-              initialValue={obj?.cementerioDepartamento}>
+            <Form.Item
+              label='Departamento de Colombia'
+              name='cementerioDepartamento'
+              rules={[{ required: true }]}
+              initialValue={obj?.cementerioDepartamento}
+            >
               <SelectComponent
                 options={l_departamentos_colombia.filter((i) => i.descripcion !== 'BOGOTÁ D.C.')}
-                optionPropkey='descripcion'
+                optionPropkey='idDepartamento'
                 optionPropLabel='descripcion'
                 onChange={onChangeDepartamento}
               />
             </Form.Item>
-            <Form.Item label='Municipio' name='cementerioMunicipio'
+            <Form.Item
+              label='Municipio'
+              name='cementerioMunicipio'
               initialValue={obj?.cementerioMunicipio}
-              rules={[{ required: true }]}>
+              rules={[{ required: true }]}
+            >
               <SelectComponent
                 options={l_municipios}
-                optionPropkey='descripcion'
+                optionPropkey='idMunicipio'
                 onChange={onChangeMunicipio}
                 optionPropLabel='descripcion'
               />
             </Form.Item>
             {isMunicipio.departament === cundinamarca && isMunicipio.municipio === cota && (
-              <Form.Item label='Otro sitio' name='otro' rules={[{ required: true }]}
-                initialValue={obj?.otro}
-              >
+              <Form.Item label='Otro sitio' name='otro' rules={[{ required: true }]} initialValue={obj?.otro}>
                 <Input allowClear placeholder='Otro Sitio' autoComplete='off' />
               </Form.Item>
             )}
@@ -125,18 +128,14 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       case 'Fuera del País':
         return (
           <div className='fadeInRight'>
-            <Form.Item label='País' name='cementerioPais' rules={[{ required: true }]}
-              initialValue={obj?.cementerioPais}
-            >
+            <Form.Item label='País' name='cementerioPais' rules={[{ required: true }]} initialValue={obj?.cementerioPais}>
               <SelectComponent
                 options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
                 optionPropkey='descripcion  '
                 optionPropLabel='descripcion'
               />
             </Form.Item>
-            <Form.Item label='Ciudad' name='cementerioCiudad'
-              initialValue={obj?.cementerioCiudad}
-              rules={[{ required: true }]}>
+            <Form.Item label='Ciudad' name='cementerioCiudad' initialValue={obj?.cementerioCiudad} rules={[{ required: true }]}>
               <Input allowClear placeholder='Ciudad' autoComplete='off' />
             </Form.Item>
           </div>
