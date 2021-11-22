@@ -31,7 +31,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
       <Form.Item
         label='Número de Certificado'
         name='certificado'
-        rules={[{ required: true, max: 9 }]}
+        rules={[{ required: true, max: 14 }]}
         initialValue={obj?.certificado}
       >
         <Input allowClear placeholder='Número de Certificado' autoComplete='off' />
