@@ -372,13 +372,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           status={status}
           onChange={setCurrent}
           direction='vertical'
-          style={{ maxWidth: 250 }}
+          style={{ maxWidth: 350 }}
         >
-          <Step title='Información General' description='Datos Certificación del fallecimiento.' />
-          <Step title='Información del Fallecido' description='Datos personales e información del fallecido.' />
-          <Step title='Información Solicitante' description='Datos del fallecimiento, Solicitud y otros datos.' />
-          <Step title='Información Certificado' description='Datos de Quien Certifica la defunción - Medico.' />
-          <Step title='Documentos Requeridos' description='Documentos de soporte pdf.' />
+          <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
+          <Step title='INFORMACIÓN DEL FALLECIDO' description='Datos personales del fallecido.' />
+          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante - cementerio.' />
+          <Step title='INFORMACION DEL MEDICO' description='Datos del médico que certifica.' />
+          <Step title='INFORMACION SOPORTES' description='Datos documentos de soporte PDF.' />
         </Steps>
 
         <Form

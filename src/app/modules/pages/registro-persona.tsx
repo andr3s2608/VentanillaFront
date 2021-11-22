@@ -2,15 +2,14 @@
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 
 // Utilidades
-import { direcionOrienta, letras, nomesclatura, projectInfo } from 'app/shared/utils/constants.util';
+import { direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { BasicaInformacion } from './components/form/BasicaInformacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import React, { useCallback, useEffect, useState } from 'react';
-import { dominioService, ETipoDominio, IDepartamento, IDominio, IMunicipio } from 'app/services/dominio.service';
-import Tabs from 'antd/es/tabs';
+import { IMunicipio } from 'app/services/dominio.service';
 import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
@@ -21,11 +20,9 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 
-const { TabPane } = Tabs;
 
 const RegistroPage: React.FC<any> = (props) => {
   const history = useHistory();
-  const { name, userName } = authProvider.getAccount();
   const [form] = Form.useForm<any>();
   const [isColombia, setIsColombia] = useState(true);
   const [sex, setSex] = useState<[]>([]);
