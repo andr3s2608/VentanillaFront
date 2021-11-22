@@ -97,10 +97,10 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item> */}
-            <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'>
+            <Form.Item label='Identificación del Solicitante' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombres y Apellidos del Tramitador' name='solicitudIDTramitador'>
+            <Form.Item label='Nombres y Apellidos del Solicitante' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
           </>
