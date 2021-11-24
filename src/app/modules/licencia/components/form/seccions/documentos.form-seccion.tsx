@@ -85,6 +85,15 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   }
 
   //#endregion
+  const isOtrosEdit = obj?.instType === "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8";
+  console.log(isEdit, obj?.instType);
+
+  const isEditOtros = () => {
+    console.log(obj?.instType !== "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8");
+
+    return isEdit ? obj?.instType !== "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8" : instType !== "Otros";
+  }
+  console.log(isEditOtros());
 
 
 
@@ -219,7 +228,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
 
 
-          {instType !== 'Otros' && (
+          {isEditOtros() && (
             <>
               {files?.length ? (
                 <Form.Item
@@ -236,6 +245,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                 </Form.Item>
 
               ) : null}
+
               <Form.Item
                 label='Autorizacion del fiscal para cremar'
                 name='fileOficioIdentificacion'
@@ -294,7 +304,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
         </>
       )}
 
-      {instType !== 'Otros' && (
+      {isEditOtros() && (
         <>
           {files?.length ? (
             <Form.Item

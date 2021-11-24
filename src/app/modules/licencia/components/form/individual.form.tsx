@@ -138,7 +138,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idNivelEducativo: values.educationLevel,
             idEtnia: values.etnia,
             idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+            idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
             idParentesco: '00000000-0000-0000-0000-000000000000',
             idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
           },
