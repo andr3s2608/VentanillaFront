@@ -38,6 +38,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     if (obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       setIsMedicinaLegal(false);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,11 +65,13 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
     setIsMedicinaLegal(e.target.value === '04e0913b-5d86-4c48-8904-0f504fedb3fd');
   };
+  console.log(obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8');
+
 
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
-      <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]} initialValue={obj?.instType}>
+      <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]} initialValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
         <Radio.Group onChange={onChangeTipoInst} defaultValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
           <Radio value='04e0913b-5d86-4c48-8904-0f504fedb3fd'>MEDICINA LEGAL</Radio>
           <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
