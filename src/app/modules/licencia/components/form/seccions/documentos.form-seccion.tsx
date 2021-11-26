@@ -86,16 +86,11 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
   //#endregion
   const isOtrosEdit = obj?.instType === "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8";
-  console.log(isEdit, obj?.instType);
+
 
   const isEditOtros = () => {
-    console.log(obj?.instType !== "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8");
-
-    return isEdit ? obj?.instType !== "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8" : instType !== "Otros";
+    return isEdit ? obj?.instType !== "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8" : instType !== "80d7f664-5bdd-48eb-8b2c-93c1bd648cc8";
   }
-  console.log(isEditOtros());
-
-
 
   return (
     <>

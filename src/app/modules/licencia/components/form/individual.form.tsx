@@ -123,7 +123,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         idTramite: tramite,
         idTipoMuerte: values.deathType,
         persona: [
-          //madre
+          //fallecido
           {
             tipoIdentificacion: values.IDType,
             numeroIdentificacion: values.IDNumber,
