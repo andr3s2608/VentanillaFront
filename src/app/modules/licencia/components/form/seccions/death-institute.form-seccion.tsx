@@ -12,12 +12,11 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
-import { AutorizacionCremacion } from './autorizacionCremacion';
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const { obj } = props;
+  const { obj, tipoLicencia } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
@@ -179,6 +178,41 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
+          {
+            tipoLicencia === "Cremación" &&
+            (
+              <>
+                <Form.Item label='Nombre'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <Input allowClear placeholder='fiscaliaName' autoComplete='off' />
+                </Form.Item>
+
+                <Form.Item label='Apellido'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <Input allowClear placeholder='fiscaliaLastName' autoComplete='off' />
+                </Form.Item>
+
+                <Form.Item label='Numero de oficio de medicina legal'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <Input allowClear placeholder='numberFiscal' autoComplete='off' />
+                </Form.Item>
+
+                <Form.Item label='Fecha del Oficio'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+                </Form.Item>
+              </>
+            )
+          }
+
         </div>
       )}
     </>

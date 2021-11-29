@@ -14,6 +14,7 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> = (props) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
   const { obj } = props;
+  const { tipoLicencia } = props;
   //#region Cargar Listas
 
   const getLista = useCallback(
@@ -120,4 +121,5 @@ export const KeysForm = [
 interface IMedicalSignatureProps<T> {
   form: FormInstance<T>;
   obj: any;
+  tipoLicencia: any;
 }
