@@ -57,21 +57,21 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       <Form.Item label='Numero documento'
         initialValue={null}
         required={true}
-        name='fiscalia'>
+        name='ndoc'>
         <Input allowClear placeholder='Numero documento' autoComplete='off' />
       </Form.Item>
 
       <Form.Item label='Nombres'
         initialValue={null}
         required={true}
-        name='fiscalia'>
+        name='namesolicitudadd'>
         <Input allowClear placeholder='Nombres' autoComplete='off' />
       </Form.Item>
 
       <Form.Item label='Apellidos'
         initialValue={null}
         required={true}
-        name='fiscalia'>
+        name='lastnamesolicitudadd'>
         <Input allowClear placeholder='Apellidos' autoComplete='off' />
       </Form.Item>
     </>
