@@ -51,7 +51,7 @@ export const Gridview = (props: IDataSource) => {
       key: 'fechaSolicitud'
     },
     {
-      title: 'Numero Licencia',
+      title: 'Número Certificado Defunción',
       dataIndex: 'numeroCertificado',
       key: 'numeroCertificado'
     },
