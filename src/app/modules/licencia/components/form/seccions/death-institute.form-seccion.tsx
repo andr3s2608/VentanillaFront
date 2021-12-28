@@ -17,12 +17,14 @@ import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const { obj } = props;
+  const { obj, tipoLicencia } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
   //#region Listados
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
+  const acta =
+    tipoLicencia === 'Cremación' ? 'DATOS DE CREMACION DEL FISCAL Y MEDICINA LEGAL' : 'DATOS DEL ACTA NOTARIAL DE LA FISCALÍA';
 
   const getListas = useCallback(
     async () => {
@@ -112,35 +114,66 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             <Input allowClear placeholder='Número de Protocolo' autoComplete='off' />
           </Form.Item>
 
-          <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-          <Form.Item
-            label='Número Acta de Levantamiento'
-            name='instNumActaLevantamiento'
-            initialValue={obj?.instNumActaLevantamiento}
-            rules={[{ required: required, max: 10 }]}
-          >
-            <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
-          </Form.Item>
-          <Form.Item label='Fecha de Acta' name='instFechaActa' initialValue={fechaActa} rules={[{ required: required }]}>
-            <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-          </Form.Item>
-          <Form.Item
-            label='Seccional Fiscalía'
-            initialValue={obj?.instSeccionalFiscalia}
-            name='instSeccionalFiscalia'
-            rules={[{ required: required, max: 20 }]}
-          >
-            <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
-          </Form.Item>
+          <Divider orientation='right'>{acta}</Divider>
+          {tipoLicencia === 'Inhumación' ? (
+            <>
+              <Form.Item
+                label='Número Acta de Levantamiento'
+                name='instNumActaLevantamiento'
+                initialValue={obj?.instNumActaLevantamiento}
+                rules={[{ required: required, max: 10 }]}
+              >
+                <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Fecha de Acta' name='instFechaActa' initialValue={fechaActa} rules={[{ required: required }]}>
+                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+              </Form.Item>
+              <Form.Item
+                label='Seccional Fiscalía'
+                initialValue={obj?.instSeccionalFiscalia}
+                name='instSeccionalFiscalia'
+                rules={[{ required: required, max: 20 }]}
+              >
+                <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
+              </Form.Item>
 
-          <Form.Item
-            label='No. Fiscal'
-            name='instNoFiscal'
-            initialValue={obj?.instNoFiscal}
-            rules={[{ required: required, max: 5 }]}
-          >
-            <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
-          </Form.Item>
+              <Form.Item
+                label='No. Fiscal'
+                name='instNoFiscal'
+                initialValue={obj?.instNoFiscal}
+                rules={[{ required: required, max: 5 }]}
+              >
+                <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
+              </Form.Item>
+            </>
+          ) : (
+            <>
+              <Form.Item label='Nombre ' name='' rules={[{ required: true, max: 10 }]}>
+                <Input allowClear placeholder='Nombre Fiscal' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Apellido ' name='' rules={[{ required: true, max: 10 }]}>
+                <Input allowClear placeholder='Apellido Fiscal' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Numero de Oficio de medicina legal' name='' rules={[{ required: true, max: 10 }]}>
+                <Input allowClear placeholder='Numero de Oficio de medicina legal' autoComplete='off' />
+              </Form.Item>
+              <Form.Item label='Fecha del Oficio' name='instFechaActa' rules={[{ required: true }]}>
+                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+              </Form.Item>
+              <Form.Item label='No. Fiscal' name='' rules={[{ required: false, max: 20 }]}>
+                <Input allowClear placeholder='No. Fiscal' autoComplete='off' />
+              </Form.Item>
+
+              <Form.Item
+                label='No. Fiscal'
+                name='instNoFiscal'
+                initialValue={obj?.instNoFiscal}
+                rules={[{ required: required, max: 5 }]}
+              >
+                <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
+              </Form.Item>
+            </>
+          )}
 
           {!datofiscal && (
             <>

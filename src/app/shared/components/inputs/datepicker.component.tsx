@@ -15,7 +15,13 @@ import {
 } from 'app/shared/utils/datePicker.util';
 
 export const DatepickerComponent: React.FC<TypePickerBaseProps<Moment>> = (props) => {
-  const { dateShowTime = false, dateFormatType = 'default', dateDisabledType = 'default', ...datepickerProps } = props;
+  const {
+    dateShowTime = false,
+    dateFormatType = 'default',
+    dateDisabledType = 'default',
+    placeholder,
+    ...datepickerProps
+  } = props;
 
   const onDateDisabled = dateDisabled[dateDisabledType];
   const onDateFormat = dateFormat[dateFormatType];
@@ -24,10 +30,10 @@ export const DatepickerComponent: React.FC<TypePickerBaseProps<Moment>> = (props
       ? { showTime }
       : undefined
     : {};
-
+  const placeholderName = placeholder ?? '-- Elija una fecha --';
   return (
     <DatePicker
-      placeholder='-- Elija una fecha --'
+      placeholder={placeholderName}
       disabledDate={onDateDisabled}
       format={onDateFormat}
       {...onShowTime}
@@ -40,6 +46,7 @@ interface IDatepickerComponent {
   dateShowTime?: boolean;
   dateFormatType?: TypeDateFormat;
   dateDisabledType?: TypeDatePeriod;
+  placeholder?: string;
 }
 
 type TypePickerBaseProps<T> =

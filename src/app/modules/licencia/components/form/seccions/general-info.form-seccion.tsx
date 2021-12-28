@@ -49,7 +49,13 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
 
       {isHora && (
         <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time}>
-          <DatepickerComponent picker='time' dateDisabledType='default' dateFormatType='time' value={time} />
+          <DatepickerComponent
+            picker='time'
+            dateDisabledType='default'
+            dateFormatType='time'
+            value={time}
+            placeholder='-- Elija una hora --'
+          />
         </Form.Item>
       )}
 
