@@ -11,10 +11,16 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { IinformatioUser } from 'app/Models/IInformatioUser';
 import { DatoSolicitanteAdd } from './datoSolicitanteAdd';
+import { toIdentifier } from '@babel/types';
 
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
-  const [user, setUser] = useState<IinformatioUser>();
+  const [user, setUser] = useState<IinformatioUser>({
+    tipoIdentificacion: 0,
+    numeroIdentificacion: 0,
+    fullName: '',
+    razonSocial: ''
+  });
   const { obj } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -30,7 +36,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     async () => {
       const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);
-      console.log(resp);
       setUser(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,6 +46,13 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const validPerson = (): boolean => {
+    const { tipoIdentificacion } = user;
+    if (tipoIdentificacion === 5) {
+      return true;
+    }
+    return false;
+  };
 
   /* NOTE: [2021-06-12] Se debe conectar un servicio para cargar el tipo de usuario autenticado y colocar la información segun el usuario autenticado. */
   /* TODO: [2021-06-12] Determinar si es usuario cliente o funcionario. */
@@ -92,13 +104,15 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
           </>
         ) : (
           <>
-            <Form.Item label='Razón Social' name='solicitudRazonSocial'>
-              <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
-            </Form.Item>
+            {validPerson() && (
+              <Form.Item label='Razón Social' name='solicitudRazonSocial'>
+                <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
+              </Form.Item>
+            )}
             {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item> */}
-            <Form.Item label='Identificación del Solicitante' name='solicitudIDTramitador'>
+            <Form.Item label={validPerson() ? 'Nit' : 'CC'} name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
             <Form.Item label='Nombres y Apellidos del Solicitante' name='solicitudIDTramitador'>

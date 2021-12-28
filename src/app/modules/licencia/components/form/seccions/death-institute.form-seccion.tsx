@@ -66,13 +66,16 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
     setIsMedicinaLegal(e.target.value === '04e0913b-5d86-4c48-8904-0f504fedb3fd');
   };
-  console.log(obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8');
-
 
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
-      <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]} initialValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
+      <Form.Item
+        label='Tipo de Institución'
+        name='instType'
+        rules={[{ required: true }]}
+        initialValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}
+      >
         <Radio.Group onChange={onChangeTipoInst} defaultValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
           <Radio value='04e0913b-5d86-4c48-8904-0f504fedb3fd'>MEDICINA LEGAL</Radio>
           <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
@@ -117,65 +120,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           </Form.Item>
 
           <Divider orientation='right'>{acta}</Divider>
-          {tipoLicencia === 'Inhumación' ? (
-            <>
-              <Form.Item
-                label='Número Acta de Levantamiento'
-                name='instNumActaLevantamiento'
-                initialValue={obj?.instNumActaLevantamiento}
-                rules={[{ required: required, max: 10 }]}
-              >
-                <Input allowClear placeholder='Número de Acta de Levantamiento' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Fecha de Acta' name='instFechaActa' initialValue={fechaActa} rules={[{ required: required }]}>
-                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-              </Form.Item>
-              <Form.Item
-                label='Seccional Fiscalía'
-                initialValue={obj?.instSeccionalFiscalia}
-                name='instSeccionalFiscalia'
-                rules={[{ required: required, max: 20 }]}
-              >
-                <Input allowClear placeholder='Seccional Fiscalía' autoComplete='off' />
-              </Form.Item>
-
-              <Form.Item
-                label='No. Fiscal'
-                name='instNoFiscal'
-                initialValue={obj?.instNoFiscal}
-                rules={[{ required: required, max: 5 }]}
-              >
-                <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
-              </Form.Item>
-            </>
-          ) : (
-            <>
-              <Form.Item label='Nombre ' name='' rules={[{ required: true, max: 10 }]}>
-                <Input allowClear placeholder='Nombre Fiscal' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Apellido ' name='' rules={[{ required: true, max: 10 }]}>
-                <Input allowClear placeholder='Apellido Fiscal' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Numero de Oficio de medicina legal' name='' rules={[{ required: true, max: 10 }]}>
-                <Input allowClear placeholder='Numero de Oficio de medicina legal' autoComplete='off' />
-              </Form.Item>
-              <Form.Item label='Fecha del Oficio' name='instFechaActa' rules={[{ required: true }]}>
-                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-              </Form.Item>
-              <Form.Item label='No. Fiscal' name='' rules={[{ required: false, max: 20 }]}>
-                <Input allowClear placeholder='No. Fiscal' autoComplete='off' />
-              </Form.Item>
-
-              <Form.Item
-                label='No. Fiscal'
-                name='instNoFiscal'
-                initialValue={obj?.instNoFiscal}
-                rules={[{ required: required, max: 5 }]}
-              >
-                <Input allowClear type='tel' placeholder='No. Fiscal' autoComplete='off' />
-              </Form.Item>
-            </>
-          )}
 
           {!datofiscal && (
             <>
@@ -211,41 +155,25 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
-          {
-            tipoLicencia === "Cremación" &&
-            (
-              <>
-                <Form.Item label='Nombre'
-                  initialValue={null}
-                  required={true}
-                  name='fiscalia'>
-                  <Input allowClear placeholder='fiscaliaName' autoComplete='off' />
-                </Form.Item>
+          {tipoLicencia === 'Cremación' && (
+            <>
+              <Form.Item label='Nombre' required={true} name='fiscalianombre'>
+                <Input allowClear placeholder='fiscaliaName' autoComplete='off' />
+              </Form.Item>
 
-                <Form.Item label='Apellido'
-                  initialValue={null}
-                  required={true}
-                  name='fiscalia'>
-                  <Input allowClear placeholder='fiscaliaLastName' autoComplete='off' />
-                </Form.Item>
+              <Form.Item label='Apellido' required={true} name='fiscaliaapellido'>
+                <Input allowClear placeholder='fiscaliaLastName' autoComplete='off' />
+              </Form.Item>
 
-                <Form.Item label='Numero de oficio de medicina legal'
-                  initialValue={null}
-                  required={true}
-                  name='fiscalia'>
-                  <Input allowClear placeholder='numberFiscal' autoComplete='off' />
-                </Form.Item>
+              <Form.Item label='Numero de oficio de medicina legal' required={true} name='fiscalianumero'>
+                <Input allowClear placeholder='numberFiscal' autoComplete='off' />
+              </Form.Item>
 
-                <Form.Item label='Fecha del Oficio'
-                  initialValue={null}
-                  required={true}
-                  name='fiscalia'>
-                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-                </Form.Item>
-              </>
-            )
-          }
-
+              <Form.Item label='Fecha del Oficio' required={true} name='fiscaliafecha'>
+                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+              </Form.Item>
+            </>
+          )}
         </div>
       )}
     </>
