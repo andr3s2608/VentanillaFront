@@ -38,10 +38,8 @@ import { DocumentosSoporte, IRegistroLicencia } from 'app/Models/IRegistroLicenc
 import moment from 'moment';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
-import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
-import { EditInhumacion } from './edit/Inhumacion';
 import { EditFetal } from './edit/fetal';
 import { ValidationFuntional } from './seccions/validationfuntional';
 import { IRoles } from 'app/Models/IRoles';
@@ -61,7 +59,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
     IDominio[][]
   >([]);
-  const [estado, setEstado] = useState<IEstadoSolicitud>();
+
   const [type, setType] = useState<[]>([]);
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
@@ -591,16 +589,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           status={status}
           onChange={setCurrent}
           direction='vertical'
-          style={{ maxWidth: 250 }}
+          style={{ maxWidth: 350 }}
         >
-          <Step title='Información General' description='Datos Certificación del fallecimiento.' />
-          <Step title='Información de la Madre' description='Información general de la Madre.' />
-          <Step
-            title='Información del Solicitante'
-            description='Datos o información de la funeraria o solicitante, datos del fallecimiento, solicitud y otros datos.'
-          />
-          <Step title='Información Certificado' description='Datos de Quien Certifica la defunción - Medico' />
-          <Step title='Documentos Requeridos' description='Documentos de soporte pdf.' />
+          <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
+          <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
+          <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
+          <Step title='INFORMACION DEL MEDICO' description='Datos del Médico que certifica.' />
+          <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
@@ -873,7 +868,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion obj={obj} form={form} />
+            <MedicalSignatureFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

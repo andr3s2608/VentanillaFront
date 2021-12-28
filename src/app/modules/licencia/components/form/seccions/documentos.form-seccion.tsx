@@ -83,6 +83,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
   };
 
   //#endregion
+  const isOtrosEdit = obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8';
 
   const formatBytes = (bytes: any, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
@@ -103,6 +104,11 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
       return false;
     }
     return true;
+  };
+  const isEditOtros = () => {
+    return isEdit
+      ? obj?.instType !== '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'
+      : instType !== '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8';
   };
 
   return (
@@ -253,7 +259,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
             </Upload>
           </Form.Item>
 
-          {instType !== 'Otros' && (
+          {isEditOtros() && (
             <>
               {files?.length ? (
                 <Form.Item
@@ -276,6 +282,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
                   />
                 </Form.Item>
               ) : null}
+
               <Form.Item
                 label='Autorizacion del fiscal para cremar'
                 name='fileOficioIdentificacion'
@@ -338,7 +345,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
         </>
       )}
 
-      {instType !== 'Otros' && (
+      {isEditOtros() && (
         <>
           {files?.length ? (
             <Form.Item

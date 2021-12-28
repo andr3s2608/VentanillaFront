@@ -7,14 +7,14 @@ import Divider from 'antd/es/divider';
 // Components
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import Switch from 'antd/es/switch';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 
 export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const [isHora, setIsHora] = useState<boolean>(true);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
-  const check = obj?.check === undefined ? true : obj?.check;
+  const check = obj?.check === undefined ? false : obj?.check;
 
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
@@ -31,7 +31,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
       <Form.Item
         label='Número de Certificado'
         name='certificado'
-        rules={[{ required: true, max: 9 }]}
+        rules={[{ required: true, max: 14 }]}
         initialValue={obj?.certificado}
       >
         <Input allowClear placeholder='Número de Certificado' autoComplete='off' />

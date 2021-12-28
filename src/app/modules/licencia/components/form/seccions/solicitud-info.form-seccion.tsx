@@ -10,6 +10,7 @@ import Divider from 'antd/es/divider';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { IinformatioUser } from 'app/Models/IInformatioUser';
+import { DatoSolicitanteAdd } from './datoSolicitanteAdd';
 
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
@@ -97,12 +98,13 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item> */}
-            <Form.Item label='Identificación del Tramitador' name='solicitudIDTramitador'>
+            <Form.Item label='Identificación del Solicitante' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombres y Apellidos del Tramitador' name='solicitudIDTramitador'>
+            <Form.Item label='Nombres y Apellidos del Solicitante' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
+            <DatoSolicitanteAdd />
           </>
         )}
       </>

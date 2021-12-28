@@ -123,7 +123,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         idTramite: tramite,
         idTipoMuerte: values.deathType,
         persona: [
-          //madre
+          //fallecido
           {
             tipoIdentificacion: values.IDType,
             numeroIdentificacion: values.IDNumber,
@@ -138,7 +138,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idNivelEducativo: values.educationLevel,
             idEtnia: values.etnia,
             idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+            idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
             idParentesco: '00000000-0000-0000-0000-000000000000',
             idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
           },
@@ -372,13 +372,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           status={status}
           onChange={setCurrent}
           direction='vertical'
-          style={{ maxWidth: 250 }}
+          style={{ maxWidth: 350 }}
         >
-          <Step title='Información General' description='Datos Certificación del fallecimiento.' />
-          <Step title='Información del Fallecido' description='Datos personales e información del fallecido.' />
-          <Step title='Información Solicitante' description='Datos del fallecimiento, Solicitud y otros datos.' />
-          <Step title='Información Certificado' description='Datos de Quien Certifica la defunción - Medico.' />
-          <Step title='Documentos Requeridos' description='Documentos de soporte pdf.' />
+          <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
+          <Step title='INFORMACIÓN DEL FALLECIDO' description='Datos personales del fallecido.' />
+          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante - cementerio.' />
+          <Step title='INFORMACION DEL MEDICO' description='Datos del médico que certifica.' />
+          <Step title='INFORMACION SOPORTES' description='Datos documentos de soporte PDF.' />
         </Steps>
 
         <Form
@@ -682,7 +682,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion obj={objJosn} form={form} />
+            <MedicalSignatureFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

@@ -12,7 +12,6 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
-import { AutorizacionCremacion } from './autorizacionCremacion';
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 
@@ -40,6 +39,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     if (obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       setIsMedicinaLegal(false);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -66,11 +66,13 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
     setIsMedicinaLegal(e.target.value === '04e0913b-5d86-4c48-8904-0f504fedb3fd');
   };
+  console.log(obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8');
+
 
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
-      <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]} initialValue={obj?.instType}>
+      <Form.Item label='Tipo de Institución' name='instType' rules={[{ required: true }]} initialValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
         <Radio.Group onChange={onChangeTipoInst} defaultValue={obj?.instType ?? '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}>
           <Radio value='04e0913b-5d86-4c48-8904-0f504fedb3fd'>MEDICINA LEGAL</Radio>
           <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
@@ -209,6 +211,41 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
+          {
+            tipoLicencia === "Cremación" &&
+            (
+              <>
+                <Form.Item label='Nombre'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <Input allowClear placeholder='fiscaliaName' autoComplete='off' />
+                </Form.Item>
+
+                <Form.Item label='Apellido'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <Input allowClear placeholder='fiscaliaLastName' autoComplete='off' />
+                </Form.Item>
+
+                <Form.Item label='Numero de oficio de medicina legal'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <Input allowClear placeholder='numberFiscal' autoComplete='off' />
+                </Form.Item>
+
+                <Form.Item label='Fecha del Oficio'
+                  initialValue={null}
+                  required={true}
+                  name='fiscalia'>
+                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+                </Form.Item>
+              </>
+            )
+          }
+
         </div>
       )}
     </>
