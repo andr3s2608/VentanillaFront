@@ -48,6 +48,7 @@
     "start:prod": "env-cmd -f .env.production react-scripts start",
     "build": "env-cmd -f .env react-scripts build",
     "build:prod": "env-cmd -f .env.production react-scripts build",
+    "build:dev": "env-cmd -f .env.dev react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "npx prettier --config .prettierrc --write src/**/*.tsx src/**/*.ts src/**/*.scss src/**/*.css src/**/*.less",
