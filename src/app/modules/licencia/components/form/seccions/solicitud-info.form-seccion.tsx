@@ -115,7 +115,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <Form.Item label={validPerson() ? 'Nit' : 'CC'} name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombres y Apellidos del Solicitante' name='solicitudIDTramitador'>
+            <Form.Item label='Nombre del representante legal' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
             <DatoSolicitanteAdd />

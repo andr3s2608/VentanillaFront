@@ -5,4 +5,5 @@ export interface ITipoLicencia {
   tipoLicencia: TypeLicencia;
   tramite?: string;
   tipoIndividuo?: TypeIndividuo;
+  objJosn?: any;
 }

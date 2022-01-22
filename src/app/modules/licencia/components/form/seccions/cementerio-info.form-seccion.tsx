@@ -57,6 +57,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   //#endregion
   //#region Acciones del formulario
   const cota = 'b5c40416-db96-4d1d-a5bd-da0ce61930e7';
+  const soacha = '2ad1a949-02a7-4e93-88f9-d39b98f2871f';
   const cundinamarca = '1029c7b3-e8c7-46e6-8275-3e568e06e03c';
 
   const lugarCementerio = obj?.isLugar();
@@ -117,7 +118,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
                 optionPropLabel='descripcion'
               />
             </Form.Item>
-            {isMunicipio.departament === cundinamarca && isMunicipio.municipio === cota && (
+            {isMunicipio.departament === cundinamarca && (isMunicipio.municipio === cota || isMunicipio.municipio === soacha) && (
               <Form.Item label='Otro sitio' name='otro' rules={[{ required: true }]} initialValue={obj?.otro}>
                 <Input allowClear placeholder='Otro Sitio' autoComplete='off' />
               </Form.Item>

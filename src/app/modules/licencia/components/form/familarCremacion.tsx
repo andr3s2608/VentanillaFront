@@ -46,7 +46,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 const { Step } = Steps;
 
 export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
-  const { tipoLicencia } = props;
+  const { tipoLicencia, objJosn } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
@@ -93,12 +93,6 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
-
-    /* const resp = await personaService.add_persona_vacuna_exterior(values);
-    if (resp) {
-      setCurrent(0);
-      form.resetFields();
-    } */
   };
 
   const onSubmitFailed = () => setStatus('error');
@@ -151,9 +145,10 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
     const resp = await dominioService.get_barrio_by_upz(value);
     setLBarrios(resp);
   };
+  const [isOtherParentesco, setIsOtherParentesco] = useState(false);
   const onChangeParentesco = (e: RadioChangeEvent) => {
     form.resetFields(['authOtherParentesco']);
-    //setIsOtherParentesco(e.target.value === 'Otro');
+    setIsOtherParentesco(e.target.value === 'Otro');
   };
   //#endregion
 
@@ -215,6 +210,19 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           <Radio value='Otro'>Otro</Radio>
         </Radio.Group>
       </Form.Item>
+
+      {isOtherParentesco && (
+        <Form.Item
+          className='fadeInRight'
+          label='Otro... ¿Cúal?'
+          name='authOtherParentesco'
+          initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
+          rules={[{ required: true }]}
+        >
+          <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
+        </Form.Item>
+      )}
+
       <AutorizacionCremacion tipoLicencia={tipoLicencia} />
     </div>
   );

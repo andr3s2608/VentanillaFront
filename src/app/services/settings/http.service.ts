@@ -33,16 +33,23 @@ const showLoading = (status: boolean) => store.dispatch(Loading(status));
 
 //#region Funciones de validaciones
 
+const isRegister = (url: string) => {
+  console.log(url);
+  return url.indexOf('AddRquest') && url.indexOf('AddFile');
+};
+
 const extract_data = <T>(response: AxiosResponse): T => {
   const {
     data: _response,
-    config: { method }
+    config: { method, url }
   } = response;
 
   if (!!_response.message && method !== 'get') {
-    successMessage({
-      content: _response.message
-    });
+    if (!isRegister(url as string)) {
+      successMessage({
+        content: _response.message
+      });
+    }
   }
 
   if (!_response.data && response.status === 204) {

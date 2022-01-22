@@ -151,48 +151,55 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               </Form.Item>
             </>
           )}
-          {tipoLicencia === 'Cremación' && (
-            <>
-              <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-              <Form.Item label='Número acta de Levantamiento' required={true} name='numeroActLeva'>
-                <Input allowClear placeholder='Nueva acta de Levantamiento' autoComplete='off' />
-              </Form.Item>
 
-              <Form.Item label='Fecha de Acta' required={true} name='DateAct'>
-                <Input allowClear placeholder='Fecha de Acta' autoComplete='off' />
-              </Form.Item>
+          <>
+            <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
+            <Form.Item label='Número acta de Levantamiento' required={true} name='numeroActLeva'>
+              <Input allowClear placeholder='Nueva acta de Levantamiento' autoComplete='off' />
+            </Form.Item>
 
-              <Form.Item label='Seccional Fiscalia' required={true} name='SecFiscalAct'>
-                <Input allowClear placeholder='Seccional Fiscalia' autoComplete='off' />
-              </Form.Item>
+            <Form.Item label='Fecha de Acta' required={true} name='DateAct'>
+              <DatepickerComponent
+                picker='date'
+                dateDisabledType='before'
+                dateFormatType='default'
+                placeholder='-- Elija un año --'
+              />
+            </Form.Item>
 
-              <Form.Item label='No. Fiscal' required={true} name='NoFiscAct'>
-                <Input allowClear placeholder='No. Fiscal' autoComplete='off' />
-              </Form.Item>
+            <Form.Item label='Seccional Fiscalia' required={true} name='SecFiscalAct'>
+              <Input allowClear placeholder='Seccional Fiscalia' autoComplete='off' />
+            </Form.Item>
 
-              <Divider orientation='right'>DATOS DE CREMACION DEL FISCAL Y MEDICINA LEGAL</Divider>
+            <Form.Item label='No. Fiscal' required={true} name='NoFiscAct'>
+              <Input allowClear placeholder='No. Fiscal' autoComplete='off' />
+            </Form.Item>
+            {tipoLicencia === 'Cremación' && (
+              <>
+                <Divider orientation='right'>DATOS DE CREMACION DEL FISCAL Y MEDICINA LEGAL</Divider>
 
-              <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
-                <Input allowClear placeholder='Nombre' autoComplete='off' />
-              </Form.Item>
+                <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
+                  <Input allowClear placeholder='Nombre' autoComplete='off' />
+                </Form.Item>
 
-              <Form.Item label='Apellido' required={true} name='fiscaliaapellidoDC'>
-                <Input allowClear placeholder='Apellido' autoComplete='off' />
-              </Form.Item>
+                <Form.Item label='Apellido' required={true} name='fiscaliaapellidoDC'>
+                  <Input allowClear placeholder='Apellido' autoComplete='off' />
+                </Form.Item>
 
-              <Form.Item label='Numero de oficio de medicina legal' required={true} name='fiscalianumeroDC'>
-                <Input allowClear placeholder='Numero de oficio de medicina legal' autoComplete='off' />
-              </Form.Item>
+                <Form.Item label='Numero de oficio de medicina legal' required={true} name='fiscalianumeroDC'>
+                  <Input allowClear placeholder='Numero de oficio de medicina legal' autoComplete='off' />
+                </Form.Item>
 
-              <Form.Item label='Fecha del Oficio' required={true} name='fiscaliafechaDC'>
-                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-              </Form.Item>
+                <Form.Item label='Fecha del Oficio' required={true} name='fiscaliafechaDC'>
+                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+                </Form.Item>
 
-              <Form.Item label='No. Fiscal' required={true} name='NoFiscalDC'>
-                <Input allowClear placeholder='numberFiscal' autoComplete='off' />
-              </Form.Item>
-            </>
-          )}
+                <Form.Item label='No. Fiscal' required={true} name='NoFiscalDC'>
+                  <Input allowClear placeholder='numberFiscal' autoComplete='off' />
+                </Form.Item>
+              </>
+            )}
+          </>
         </div>
       )}
     </>

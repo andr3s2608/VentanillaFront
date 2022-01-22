@@ -342,6 +342,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const [isOtherParentesco, setIsOtherParentesco] = useState(false);
+
   const onChangeParentesco = (e: RadioChangeEvent) => {
     form.resetFields(['authOtherParentesco']);
     setIsOtherParentesco(e.target.value === 'Otro');
@@ -636,7 +637,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         className='fadeInRight'
                         label='Otro... ¿Cúal?'
                         name='authOtherParentesco'
-                        initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : true}
+                        initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
                         rules={[{ required: true }]}
                       >
                         <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />

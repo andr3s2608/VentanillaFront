@@ -831,7 +831,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} />}
+            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} objJosn={obj} />}
 
             <SolicitudInfoFormSeccion obj={obj} form={form} />
 
