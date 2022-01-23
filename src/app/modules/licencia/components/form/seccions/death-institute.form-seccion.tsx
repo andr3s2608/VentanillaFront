@@ -154,7 +154,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <>
             <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-            <Form.Item label='Número acta de Levantamiento' required={true} name='numeroActLeva'>
+            <Form.Item label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: true, max: 10 }]}>
               <Input allowClear placeholder='Nueva acta de Levantamiento' autoComplete='off' />
             </Form.Item>
 
@@ -163,15 +163,15 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                 picker='date'
                 dateDisabledType='before'
                 dateFormatType='default'
-                placeholder='-- Elija un año --'
+                placeholder='-- Elija una fecha --'
               />
             </Form.Item>
 
-            <Form.Item label='Seccional Fiscalia' required={true} name='SecFiscalAct'>
+            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: true, max: 20 }]}>
               <Input allowClear placeholder='Seccional Fiscalia' autoComplete='off' />
             </Form.Item>
 
-            <Form.Item label='No. Fiscal' required={true} name='NoFiscAct'>
+            <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: true, max: 5 }]}>
               <Input allowClear placeholder='No. Fiscal' autoComplete='off' />
             </Form.Item>
             {tipoLicencia === 'Cremación' && (
