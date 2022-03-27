@@ -62,10 +62,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //form.setFieldsValue(objJosn?);
   //#region Listados
 
-  const [
-    [l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte],
-    setListas
-  ] = useState<IDominio[][]>([]);
+  const [[l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte], setListas] =
+    useState<IDominio[][]>([]);
 
   const getListas = useCallback(
     async () => {
@@ -109,7 +107,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-
+    console.log(values.emailcementerio, 'Email Cementerio');
+    console.log(values.emailfuneraria, 'Email funeraria');
+    console.log(values.ndoc, 'nro Solicitante');
+    console.log(values.namesolicitudadd, 'nombre Solicitante');
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -159,7 +160,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idNivelEducativo: '00000000-0000-0000-0000-000000000000',
             idEtnia: '00000000-0000-0000-0000-000000000000',
             idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+            idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
             idParentesco: '00000000-0000-0000-0000-000000000000',
             idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
             idTipoProfesional: values.medicalSignatureProfesionalType
@@ -191,6 +192,17 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           idDepartamento: values.cementerioDepartamento,
           idMunicipio: values.cementerioMunicipio
         },
+
+        resumenSolicitud: {
+          correoCementerio: values.emailcementerio,
+          correoFuneraria: values.emailcementerio,
+          tipoDocumentoSolicitante: values.emailfuneraria,
+          numeroDocumentoSolicitante: '',
+          nombreSolicitante: '',
+          apellidoSolicitante: '',
+          correoSolicitante: ''
+        },
+
         institucionCertificaFallecimiento: {
           tipoIdentificacion: values.instTipoIdent,
           numeroIdentificacion: values.instNumIdent,

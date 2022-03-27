@@ -14,6 +14,7 @@ export class ApiService {
 
   constructor(oid$: string) {
     this.oid = oid$;
+    console.log('id consola', oid$);
   }
 
   personaNatural = (tipoDominio: IPersonaNatural) =>

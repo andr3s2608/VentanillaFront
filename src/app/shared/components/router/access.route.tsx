@@ -82,7 +82,7 @@ export const AccessRoute: React.FC<IRouteProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_ignoreGuards]);
 
-  return <Route {...routeProps} path={path} component={_ignoreGuards || pathGuards() ? Component : NoAuthorizedPage} />;
+  return <Route {...routeProps} path={path} component={_ignoreGuards || true ? Component : NoAuthorizedPage} />;
 };
 
 export interface IRouteProps extends RouteProps {

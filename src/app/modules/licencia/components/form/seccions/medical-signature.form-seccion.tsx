@@ -36,12 +36,9 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
 
   //#endregion
 
-
-
   return (
     <>
       <Divider orientation='right'>Datos de Quien Certifica la defunción - Medico</Divider>
-
 
       <Form.Item
         label='Tipo Identificación'
@@ -61,9 +58,12 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           optionPropLabel='descripcion'
         />
       </Form.Item>
-      <Form.Item label='Número de Identificación'
+      <Form.Item
+        label='Número de Identificación'
         initialValue={obj?.medicalSignatureIDNumber ?? null}
-        name='medicalSignatureIDNumber' rules={[{ required: true, max: 20 }]}>
+        name='medicalSignatureIDNumber'
+        rules={[{ required: true, max: 20 }]}
+      >
         <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
       </Form.Item>
       <Form.Item
@@ -74,25 +74,34 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       >
         <Input allowClear placeholder='Lugar de Expedición' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Primer Nombre'
+      <Form.Item
+        label='Primer Nombre'
         initialValue={obj?.medicalSignatureName ?? null}
-        name='medicalSignatureName' rules={[{ required: true }]}>
+        name='medicalSignatureName'
+        rules={[{ required: true }]}
+      >
         <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Segundo Nombre'
-        initialValue={obj?.medicalSignatureSecondName ?? null}
-        name='medicalSignatureSecondName'>
+      <Form.Item label='Segundo Nombre' initialValue={obj?.medicalSignatureSecondName ?? null} name='medicalSignatureSecondName'>
         <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Primer Apellido' name='medicalSignatureSurname'
+      <Form.Item
+        label='Primer Apellido'
+        name='medicalSignatureSurname'
         initialValue={obj?.medicalSignatureSurname ?? null}
-        rules={[{ required: true }]}>
+        rules={[{ required: true }]}
+      >
         <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Segundo Apellido'
+      <Form.Item
+        label='Segundo Apellido'
         initialValue={obj?.medicalSignatureSecondSurname ?? null}
-        name='medicalSignatureSecondSurname'>
+        name='medicalSignatureSecondSurname'
+      >
         <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+      </Form.Item>
+      <Form.Item label='Email' initialValue={obj?.emailmedicalSignature ?? null} name='emailmedicalSignature'>
+        <Input allowClear placeholder='Email' autoComplete='off' />
       </Form.Item>
       <Form.Item
         label='Tipo Profesional que Certifica la Muerte'

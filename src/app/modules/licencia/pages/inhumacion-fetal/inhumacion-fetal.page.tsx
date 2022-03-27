@@ -4,6 +4,7 @@ import Tabs from 'antd/es/tabs';
 // Componentes
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { FetalForm } from 'app/modules/licencia/components/form/fetal.form';
+import App from '../validarCovid/validar';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -29,6 +30,7 @@ const InhumacionFetalPage = () => {
         </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <FetalForm tipoLicencia='Inhumación' tramite='ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' />
+          <App></App>
         </TabPane>
       </Tabs>
     </div>

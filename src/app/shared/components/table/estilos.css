@@ -1,0 +1,44 @@
+.titulo {
+  font-size: 18px;
+  line-height: 10px;
+  color: #000;
+  font-weight: bold;
+}
+
+.ant-modal-header {
+  background-color: #dfdfdf;
+  height: 40px;
+}
+
+.ant-table-thead > tr > th {
+  color: #000;
+  font-size: 17px;
+}
+
+.ant-modal-close-x {
+  margin-top: -5px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgb(95, 95, 95);
+}
+
+table th {
+  text-align: center !important;
+  background-color: #fff !important;
+}
+
+.ant-table-cell {
+  border: none !important;
+}
+
+.ant-modal-footer {
+  display: none;
+}
+
+.ant-modal-footer {
+  text-align: center;
+}
+
+.ant-table-cell {
+  text-align: center !important;
+}

@@ -1,3 +1,4 @@
+import { Grid } from 'antd';
 import Tabs from 'antd/es/tabs';
 import { IRoles } from 'app/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
@@ -20,6 +21,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       await api.GetRoles().then(async (res) => {
         setroles(res);
         await GetValidateRol(res);
+        console.log('TERMINOOOO');
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,7 +42,33 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       setGrid(resp);
     }
     if (permiso?.rol === 'Funcionario') {
+      let arraydatos = [];
       const resp = await api.GetAllLicencias();
+      //modificar api licencias para traer solo los datos necesarios
+
+      var stringData: string = resp.reduce((result: any, item: any) => {
+        return `${result}${item.idSolicitud}|`;
+      }, '');
+
+      /*
+      for (var i = 0; i < resp.length; i++) {
+        var posicion = stringData.indexOf('|');
+        var cadena: any = stringData.substring(0, posicion);
+        //console.log('id:', cadena, '///', 'salta?');
+
+        let solicitudes = await api.getLicencia(cadena);
+
+        console.log('cadena', solicitudes);
+        cadena = stringData;
+        stringData = cadena.substring(posicion + 1, stringData.length);
+
+        //console.log('stringdatanueva', stringData);
+        arraydatos.push(solicitudes);
+        console.log('array', arraydatos);
+      }
+      console.log(arraydatos, 'datos ');
+*/
+
       setGrid(resp);
     }
   };

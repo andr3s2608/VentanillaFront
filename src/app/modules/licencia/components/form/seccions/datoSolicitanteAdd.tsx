@@ -4,8 +4,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 
-
-
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { TypeLicencia } from 'app/shared/utils/types.util';
@@ -13,7 +11,6 @@ import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
-
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
 
   //#region Cargar Listas
@@ -37,10 +34,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   return (
     <>
-      <Form.Item label='Tipo documento'
-        initialValue={null}
-        required={true}
-        name='fiscalia'>
+      <Form.Item label='Tipo documento' initialValue={null} required={true} name='fiscalia'>
         <SelectComponent
           options={l_tipo_documento.filter((i) =>
             [
@@ -54,26 +48,20 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         />
       </Form.Item>
 
-      <Form.Item label='Numero documento'
-        initialValue={null}
-        required={true}
-        name='ndoc'>
+      <Form.Item label='Numero documento' initialValue={null} required={true} name='ndoc'>
         <Input allowClear placeholder='Numero documento' autoComplete='off' />
       </Form.Item>
 
-      <Form.Item label='Nombres'
-        initialValue={null}
-        required={true}
-        name='namesolicitudadd'>
+      <Form.Item label='Nombres' initialValue={null} required={true} name='namesolicitudadd'>
         <Input allowClear placeholder='Nombres' autoComplete='off' />
       </Form.Item>
 
-      <Form.Item label='Apellidos'
-        initialValue={null}
-        required={true}
-        name='lastnamesolicitudadd'>
+      <Form.Item label='Apellidos' initialValue={null} required={true} name='lastnamesolicitudadd'>
         <Input allowClear placeholder='Apellidos' autoComplete='off' />
+      </Form.Item>
+      <Form.Item label='Email' initialValue={null} required={true} name='emailsolicitudadd'>
+        <Input allowClear placeholder='Email' autoComplete='off' />
       </Form.Item>
     </>
   );
-}
+};

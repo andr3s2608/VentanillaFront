@@ -4,6 +4,7 @@ import Tabs from 'antd/es/tabs';
 // Componentes
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { IndividualForm } from 'app/modules/licencia/components/form/individual.form';
+import App from '../validarCovid/validar';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -29,6 +30,7 @@ const InhumacionIndividualPage = () => {
         </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Inhumación' tramite='a289c362-e576-4962-962b-1c208afa0273' />
+          <App></App>
         </TabPane>
       </Tabs>
     </div>

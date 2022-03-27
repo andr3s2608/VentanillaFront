@@ -9,6 +9,7 @@ export const tramiteServicePath = '/tramites-servicios';
 export const tramiteServiceReport = '/reportes/rayosx';
 
 // LazyLoad Pages
+const LicenciaPruebaPage = lazy(() => import('./pages/prueba-pagina/inhumacion-prueba.page'));
 const LicenciaCremacionIndividualPage = lazy(() => import('./pages/cremacion-individual/cremacion-individual.page'));
 const LicenciaInhumacionIndividualPage = lazy(() => import('./pages/inhumacion-individual/inhumacion-individual.page'));
 const LicenciaCremacionFetalPage = lazy(() => import('./pages/cremacion-fetal/cremacion-fetal.page'));
@@ -20,6 +21,10 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${licenciaPath}/cremacion-individual`,
     component: LicenciaCremacionIndividualPage
+  },
+  {
+    path: `${licenciaPath}/inhumacion-prueba`,
+    component: LicenciaPruebaPage
   },
   {
     path: `${licenciaPath}/inhumacion-individual`,

@@ -1,5 +1,4 @@
 export const EditInhumacion = () => {
-
   const data = localStorage.getItem('register');
 
   if (data) {
@@ -12,14 +11,13 @@ export const EditInhumacion = () => {
       return 'Dentro de Bogotá';
     }
   };
-
 };
 
 const formatObjJson = (obj: any) => {
-
   const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio } = obj;
   const [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certicador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
+
   const jsonDt = {
     idTramite: obj.idTramite,
     certificado: obj.numeroCertificado,
@@ -79,7 +77,8 @@ const formatObjJson = (obj: any) => {
     cementerioCiudad: datosCementerio.ciudad,
     otro: datosCementerio.otroSitio,
 
-    idmedico: certicador.idPersona,
+    /*
+    idmedico: certicador.idpersona,
     medicalSignatureIDType: certicador.tipoIdentificacion,
     medicalSignatureIDNumber: certicador.numeroIdentificacion,
     medicalSignatureIDExpedition: certicador.idLugarExpedicion,
@@ -88,24 +87,23 @@ const formatObjJson = (obj: any) => {
     medicalSignatureSurname: certicador.primerApellido,
     medicalSignatureSecondSurname: certicador.segundoApellido,
     medicalSignatureProfesionalType: certicador.idTipoProfesional,
+    */
 
     isLugar: () => {
       const { enBogota, fueraBogota, fueraPais } = datosCementerio;
       let value: string = '';
       if (enBogota) {
-        value = "Dentro de Bogotá";
+        value = 'Dentro de Bogotá';
       }
       if (fueraBogota) {
-        value = "Fuera de Bogotá";
+        value = 'Fuera de Bogotá';
       }
       if (fueraPais) {
-        value = "Fuera del País";
+        value = 'Fuera del País';
       }
       return value;
     }
-
   };
   return jsonDt;
-
-}
-const isPerson = (personas: any[], key: string) => personas.filter(m => m.idTipoPersona === key);
+};
+const isPerson = (personas: any[], key: string) => personas.filter((m) => m.idTipoPersona === key);

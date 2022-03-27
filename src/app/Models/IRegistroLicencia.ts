@@ -18,6 +18,7 @@ export interface Solicitud<T> {
   lugarDefuncion: LugarDefuncion;
   ubicacionPersona: UbicacionPersona;
   datosCementerio: DatosCementerio;
+  resumenSolicitud: ResumenSolicitud;
   institucionCertificaFallecimiento: InstitucionCertificaFallecimiento;
   //documentosSoporte: DocumentosSoporte[];
 }
@@ -33,6 +34,15 @@ export interface DatosCementerio {
   idPais: string;
   idDepartamento: string;
   idMunicipio: string;
+}
+export interface ResumenSolicitud {
+  correoCementerio: string;
+  correoFuneraria: string;
+  tipoDocumentoSolicitante: string;
+  numeroDocumentoSolicitante: string;
+  nombreSolicitante: string;
+  apellidoSolicitante: string;
+  correoSolicitante: string;
 }
 
 export interface DocumentosSoporte {
@@ -59,6 +69,14 @@ export interface InstitucionCertificaFallecimiento {
 
 export interface LugarDefuncion {
   idLugarDefuncion?: string;
+  idPais: string;
+  idDepartamento: string;
+  idMunicipio: string;
+  idAreaDefuncion: string;
+  idSitioDefuncion: string;
+}
+export interface Solicitante {
+  tipoDocumento?: string;
   idPais: string;
   idDepartamento: string;
   idMunicipio: string;

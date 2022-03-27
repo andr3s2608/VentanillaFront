@@ -45,23 +45,29 @@ export const dataFake = [
 ];
 export const columnFake = [
   {
-    title: 'Fecha Seguimiento',
+    title: 'Id tramite',
+    dataIndex: 'idTramite',
+    key: 'idTramite'
+  },
+  {
+    title: 'Usuario',
+    dataIndex: 'idUsuarioSeguridad',
+    key: 'idUsuarioSeguridad'
+  },
+  {
+    title: 'Fecha de registro',
     dataIndex: 'fechaRegistro',
     key: 'fechaRegistro'
   },
   {
-    title: 'Usuario',
-    dataIndex: 'usuario',
-    key: 'usuario'
-  },
-  {
     title: 'Estado',
-    dataIndex: 'estado',
-    key: 'estado'
+    dataIndex: 'estadoSolicitud',
+    key: 'estadoSolicitud'
   },
+
   {
-    title: 'Observacion',
-    dataIndex: 'observacion',
-    key: 'observacion'
+    title: 'Observación',
+    dataIndex: '',
+    key: ''
   }
 ];

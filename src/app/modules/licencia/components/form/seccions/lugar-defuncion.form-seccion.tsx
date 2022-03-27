@@ -60,7 +60,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
     <>
       <Divider orientation='right'>Lugar de Defunción</Divider>
 
-      <Form.Item label='País' name='country' initialValue={obj?.country ? obj?.country : idColombia} rules={[{ required: true }]} >
+      <Form.Item label='País' name='country' initialValue={obj?.country ? obj?.country : idColombia} rules={[{ required: true }]}>
         <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
       </Form.Item>
 

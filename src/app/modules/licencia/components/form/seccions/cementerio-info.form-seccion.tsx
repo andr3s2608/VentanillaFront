@@ -5,6 +5,7 @@ import Form, { FormInstance } from 'antd/es/form';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
+import { Row, Col } from 'antd';
 
 // Utilidades
 import { ITipoLicencia } from 'app/shared/utils/types.util';
@@ -65,7 +66,14 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   const [lugar, setLugar] = useState<TypeLugarCementerio>(lugarCementerio);
 
   const onChangeLugarCementerio = (e: RadioChangeEvent) => {
-    form.resetFields(['cementerioBogota', 'cementerioDepartamento', 'cementerioMunicipio', 'cementerioPais', 'cementerioCiudad']);
+    form.resetFields([
+      'cementerioBogota',
+      'cementerioDepartamento',
+      'cementerioMunicipio',
+      'cementerioPais',
+      'cementerioCiudad',
+      'emailcementerio'
+    ]);
     setLMunicipios([]);
     setLugar(e.target.value);
   };
@@ -144,22 +152,34 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
       default:
         return (
-          <Form.Item
-            className='fadeInRight'
-            label='Cementerio de Bogotá D.C.'
-            name='cementerioBogota'
-            initialValue={obj?.cementerioBogota}
-            rules={[{ required: true }]}
-          >
-            <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-          </Form.Item>
+          <>
+            <Form.Item
+              className='fadeInRight'
+              label='Cementerio de Bogotá D.C.'
+              name='cementerioBogota'
+              initialValue={obj?.cementerioBogota}
+              rules={[{ required: true }]}
+            >
+              <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+            </Form.Item>
+
+            <Form.Item
+              className='fadeInRight'
+              label='Funeraria de Bogotá D.C.'
+              name='FunerariaBogota'
+              initialValue={obj?.cementerioBogota}
+              rules={[{ required: true }]}
+            >
+              <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+            </Form.Item>
+          </>
         );
     }
   };
 
   return (
     <>
-      <Divider orientation='right'>Datos del Cementerio a realizar la {tipoLicencia}</Divider>
+      <Divider orientation='right'>Datos de la funeraria y Cementerio a realizar la {tipoLicencia}</Divider>
 
       <Form.Item
         className='mb-4'
@@ -177,6 +197,13 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         </Radio.Group>
       </Form.Item>
 
+      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true }]}>
+        <Input allowClear placeholder='Email Cementerio' autoComplete='off' />
+      </Form.Item>
+      <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true }]}>
+        <Input allowClear placeholder='Email Funeraria' autoComplete='off' />
+      </Form.Item>
+
       {renderForm(lugar)}
     </>
   );
@@ -188,7 +215,9 @@ export const KeysForm = [
   'cementerioDepartamento',
   'cementerioMunicipio',
   'cementerioPais',
-  'cementerioCiudad'
+  'cementerioCiudad',
+  'emailcementerio',
+  'emailfuneraria'
 ];
 
 interface ICementerioInfoProps<T> extends ITipoLicencia {
