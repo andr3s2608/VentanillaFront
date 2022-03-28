@@ -113,7 +113,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-
+    console.log('imprimir');
     /*
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -196,6 +196,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           idDepartamento: values.cementerioDepartamento,
           idMunicipio: values.cementerioMunicipio
         },
+        resumenSolicitud: {
+          correoCementerio: values.emailcementerio,
+          correoFuneraria: values.emailcementerio,
+          tipoDocumentoSolicitante: values.emailfuneraria,
+          numeroDocumentoSolicitante: '',
+          nombreSolicitante: '',
+          apellidoSolicitante: '',
+          correoSolicitante: ''
+        },
         institucionCertificaFallecimiento: {
           tipoIdentificacion: values.instTipoIdent,
           numeroIdentificacion: values.instNumIdent,
@@ -210,86 +219,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-    */
-    /*
-    if (edit) {
-      localStorage.removeItem('');
-
-      const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
-      const formData = new FormData();
-
-      const resp = await api.putLicencia(json.solicitud);
-      localStorage.removeItem('register');
-
-      const [files, names] = generateListFiles(values);
-      const supportDocumentsEdit: any[] = [];
-
-      files.forEach((item: any, i: number) => {
-        const name = names[i];
-
-        formData.append('file', item);
-        formData.append('nameFile', name);
-
-        TypeDocument.forEach((item: any) => {
-          if (item.key === name.toString()) {
-            const [support] = supports.filter((p) => p.path.includes(item.name));
-            supportDocumentsEdit.push({
-              idDocumentoSoporte: support.idDocumentoSoporte,
-              idSolicitud: resp,
-              idTipoDocumentoSoporte: item.value,
-              path: `${accountIdentifier}/${name}`,
-              idUsuario: accountIdentifier,
-              fechaModificacion: new Date()
-            });
-          }
-        });
-      });
-
-      formData.append('containerName', container);
-      formData.append('oid', accountIdentifier);
-
-      if (supportDocumentsEdit.length) {
-        await api.uploadFiles(formData);
-        await api.UpdateSupportDocuments(supportDocumentsEdit);
-      }
-    }
-
-    if (!edit) {
-      const resp = await api.postLicencia(json);
-      localStorage.removeItem('register');
-      if (resp) {
-        const formData = new FormData();
-        const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
-        const supportDocuments: any[] = [];
-        const [files, names] = generateListFiles(values);
-
-        files.forEach((item: any, i: number) => {
-          const name = names[i];
-
-          formData.append('file', item);
-          formData.append('nameFile', name);
-
-          TypeDocument.forEach((item: any) => {
-            if (item.key === name.toString()) {
-              supportDocuments.push({
-                idSolicitud: resp,
-                idTipoDocumentoSoporte: item.value,
-                path: `${accountIdentifier}/${name}`,
-                idUsuario: accountIdentifier
-              });
-            }
-          });
-        });
-
-        formData.append('containerName', container);
-        formData.append('oid', accountIdentifier);
-        await api.uploadFiles(formData);
-        await api.AddSupportDocuments(supportDocuments);
-
-        //form.resetFields();
-      }
-    }
-    */
+*/
     history.push('/tramites-servicios');
   };
   const showModal = () => {
@@ -502,16 +432,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                   </List.Item>
                 )}
               />
+              <Actions />
             </div>
           </div>
-
-          <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-            <div className='d-flex justify-content-end'>
-              <Button type='primary' htmlType='button' onClick={() => onNextStep([...KeyFormInformacionDefuncion])}>
-                Siguiente
-              </Button>
-            </div>
-          </Form.Item>
         </Form>
       </div>
     </div>

@@ -24,14 +24,15 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const solicitud = id.idsolicitud;
-
+  let counterDoc: Array<number>;
   const getListas = useCallback(async () => {
     await GetValidateRol();
   }, []);
 
   const GetValidateRol = async () => {
     const resp = await api.getSupportDocuments('11A328A2-D161-48CE-9D33-EB90B9F4DCC1');
-
+    //counterDoc = Array.from({ length: resp.length }, (v, i) => i);
+    console.log(resp, 'DOCUMENTOS');
     setGrid(resp);
   };
 
@@ -51,6 +52,11 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
     stringData = stringData.substring(posicionfinal + 1, stringData.length);
 
     return cadena;
+  };
+  var posicion = -1;
+  const counter = () => {
+    posicion = posicion + 1;
+    return posicion;
   };
 
   const archivo = () => {
@@ -123,7 +129,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
       dataIndex: '',
       key: 'path',
       render: (Text: string) => (
-        <Form.Item label='' name='' rules={[{ required: true }]}>
+        <Form.Item label='' name=''>
           <text>{validar()}</text>
         </Form.Item>
       )
@@ -158,8 +164,8 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
       dataIndex: 'Cumple',
       key: 'Cumple',
       render: (Text: string) => (
-        <Form.Item label='' name='' rules={[{ required: true }]}>
-          <Radio.Group name='radiogroup' defaultValue={1}>
+        <Form.Item label='' name={'form' + counter()}>
+          <Radio.Group name={'radio' + counter()} defaultValue={1}>
             <Radio value={1}>Si</Radio>
             <Radio value={2}>No</Radio>
           </Radio.Group>
