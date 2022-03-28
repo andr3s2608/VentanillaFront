@@ -3,17 +3,22 @@ import React, { useCallback, useEffect, useState } from 'react';
 // Antd
 import Divider from 'antd/es/divider';
 import moment from 'moment';
-import { List, Card, Layout } from 'antd';
-
+import { List, Card, Layout, Button, Form, Modal, Table } from 'antd';
+import 'app/shared/components/table/estilos.css';
 // Componentes
 
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const InformacionFallecidoSeccion = ({ obj }: any) => {
+  const [numeroCertificado, setNumeroCertificado] = useState();
   const [[l_paises, l_regimen, l_tipo_muerte], setListas] = useState<IDominio[][]>([]);
-
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const getListas = useCallback(async () => {
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
@@ -84,9 +89,48 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     }
   ];
 
+  const onClickViewFallecido = async (idSolicitud: string) => {
+    const all = await api.getCertificado(idSolicitud);
+    console.log('prueba', all);
+
+    setNumeroCertificado(all);
+    showModal();
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
     <>
-      <Divider orientation='left'>Datos del fallecido</Divider>
+      <Divider orientation='left'>
+        <div className='contenedor'>
+          datos del fallecido
+          <Form.Item>
+            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.idSolicitud)}>
+              No. Certificado
+            </Button>
+          </Form.Item>
+        </div>
+        <Modal
+          title={
+            <p className='text-center text-dark text-uppercase mb-0 titulo'> validación número de certificado de defunción</p>
+          }
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          width={1000}
+          okButtonProps={{ hidden: true }}
+          cancelText='Cerrar'
+        >
+          <div className='alert text-center text-dark'>
+            # {numeroCertificado}
+            {numeroCertificado !== true ? 'no es valido' : 'valido'}
+          </div>
+        </Modal>
+      </Divider>
       <List
         grid={{ gutter: 16, column: 3 }}
         dataSource={data}

@@ -43,6 +43,7 @@ export interface ResumenSolicitud {
   nombreSolicitante: string;
   apellidoSolicitante: string;
   correoSolicitante: string;
+  correoMedico: string;
 }
 
 export interface DocumentosSoporte {

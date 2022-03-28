@@ -113,7 +113,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
           overflow: 'auto'
         }}
       >
-        <Viewer fileUrl={'prueba.pdf'} />
+        <Viewer fileUrl={'F:/repositorios/prueba/TramitesVentanillaFront/src/archivo/prueba.pdf'} />
       </div>
     </div>
   );

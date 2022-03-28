@@ -284,12 +284,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         },
         resumenSolicitud: {
           correoCementerio: values.emailcementerio,
-          correoFuneraria: values.emailcementerio,
-          tipoDocumentoSolicitante: values.emailfuneraria,
-          numeroDocumentoSolicitante: '',
-          nombreSolicitante: '',
-          apellidoSolicitante: '',
-          correoSolicitante: ''
+          correoFuneraria: values.emailfuneraria,
+          tipoDocumentoSolicitante: values.fiscalia,
+          numeroDocumentoSolicitante: values.ndoc,
+          nombreSolicitante: values.namesolicitudadd,
+          apellidoSolicitante: values.lastnamesolicitudadd,
+          correoSolicitante: values.emailsolicitudadd,
+          correoMedico: values.emailmedicalSignature
         },
         institucionCertificaFallecimiento: {
           idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,

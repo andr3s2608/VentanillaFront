@@ -195,12 +195,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
         resumenSolicitud: {
           correoCementerio: values.emailcementerio,
-          correoFuneraria: values.emailcementerio,
-          tipoDocumentoSolicitante: values.emailfuneraria,
-          numeroDocumentoSolicitante: '',
-          nombreSolicitante: '',
-          apellidoSolicitante: '',
-          correoSolicitante: ''
+          correoFuneraria: values.emailfuneraria,
+          tipoDocumentoSolicitante: values.fiscalia,
+          numeroDocumentoSolicitante: values.ndoc,
+          nombreSolicitante: values.namesolicitudadd,
+          apellidoSolicitante: values.lastnamesolicitudadd,
+          correoSolicitante: values.emailsolicitudadd,
+          correoMedico: values.emailmedicalSignature
         },
 
         institucionCertificaFallecimiento: {
@@ -260,7 +261,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       }
     }
     if (!edit) {
-      const resp = await api.postLicencia(json);
+      const resp = await api.postprueba(json);
       localStorage.removeItem('register');
       if (resp) {
         const formData = new FormData();

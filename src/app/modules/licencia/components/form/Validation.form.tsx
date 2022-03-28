@@ -264,12 +264,44 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const onSubmitFailed = () => setStatus('error');
 
   //#region Eventos formulario
+  const getStatus = (estado: string) => {
+    var opciones = '';
+    switch (estado.toUpperCase()) {
+      case '3CD0ED61-F26B-4CC0-9015-5B497673D275':
+        opciones = 'Aprobado validador de documentos';
+        //inhumacion indivual
+        //history.push('/tramites-servicios/licencia/inhumacion-individual');
+        break;
+      case 'FDCEA488-2EA7-4485-B706-A2B96A86FFDF':
+        opciones = 'Registro de Tramite Usuario Externo';
+        //inhumacion fetal
+        return 'Registro de Tramite Usuario Externo';
+        //history.push('/tramites-servicios/licencia/inhumacion-fetal');
+        break;
+      case 'FA183116-BE8A-425F-A309-E2032221553F':
+        //cremacion individual
+        opciones = 'Negado validador de documentos';
+        // history.push('/tramites-servicios/licencia/cremacion-individual');
+        break;
+      case 'FE691637-BE8A-425F-A309-E2032221553F':
+        //cremacionfetal
+        opciones = 'Documentos Inconsistentes';
+        //history.push('/tramites-servicios/licencia/cremacion-fetal');
+        break;
+    }
+    console.log(opciones, 'opciones');
+    console.log(estado, 'estado');
+    return opciones;
+  };
 
   const onClickView = async (idSolicitud: string) => {
     const all = await api.getLicencia(idSolicitud);
-
+    console.log('prueba', all);
     const alldata = all.map((item: any) => {
       item.fechaRegistro = moment(item.fechaRegistro).format(formatDate);
+      item.primerNombre = item.persona[0].primerNombre + ' ' + item.persona[0].segundoNombre;
+      item.primerApellido = item.persona[0].primerApellido + ' ' + item.persona[0].segundoApellido;
+      item.estadoNuevo = getStatus(item.estadoSolicitud);
       return item;
     });
 
@@ -396,6 +428,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             <div className='fadeInLeft'>
               <Form.Item>
                 <Button
+                  style={{ width: '100%' }}
                   type='primary'
                   onClick={() => onClickView(objJosn?.idSolicitud)}
                   icon={<EyeOutlined width={100} />}

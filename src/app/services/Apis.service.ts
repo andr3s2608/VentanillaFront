@@ -48,7 +48,34 @@ export class ApiService {
 
   GetNivelEducativo = () => get<[]>({ endpoint: environments.shared, url: 'v1/NivelEducativo/GetNivelEducativo' });
 
+  getCertificado = (solicitud: string) =>
+    get<any>({
+      endpoint: environments.endpointV1,
+      url: `CertificadoDefuncion/ValidateCertificadoDefuncion/73051461`
+    });
+
+  getMedico = () =>
+    get<any>({
+      endpoint: environments.endpointV1,
+      url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/86073058564`
+    });
+
+  GetAllcementerios = () =>
+    get<any>({
+      endpoint: environments.endpointV1,
+      url: 'Cementerio/GetAllCementerio'
+    });
+
+  GetFunerarias = () =>
+    get<any>({
+      endpoint: environments.endpointV1,
+      url: 'Funeraria/GetAllFuneraria'
+    });
+
   postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload });
+
+  postprueba = (payload: any) => post({ endpoint: environments.local, url: 'Request/AddRquest', payload });
+
   putLicencia = (payload: any) => put({ endpoint: environments.inhcremacion, url: 'Request/UpdateRequest', payload });
 
   uploadFiles = (payload: any) =>
