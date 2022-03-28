@@ -108,7 +108,53 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
+  function getDescripcionTramite(idTramite: string): string {
+    let idInhumacionIndividual = 'A289C362-E576-4962-962B-1C208AFA0273';
+    let idInhumacionFetal = 'AD5EA0CB-1FA2-4933-A175-E93F2F8C0060';
+    let idCremacionIndividual = 'E69BDA86-2572-45DB-90DC-B40BE14FE020';
+    let idCremacionFetal = 'F4C4F874-1322-48EC-B8A8-3B0CAC6FCA8E';
+    switch (idTramite) {
+      case idInhumacionIndividual:
+        return 'Inhumación Individual';
+      case idInhumacionFetal:
+        return 'Inhumación fetal';
+      case idCremacionIndividual:
+        return 'Cremación Individual';
+      case idCremacionFetal:
+        return 'Cremación fetal';
+      default:
+        return '';
+    }
+  }
+
   const onSubmit = async (values: any) => {
+    let tipoSeguimiento: string = values.validFunctionaltype;
+    if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
+      alert('aprobacion');
+    } else {
+      let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+
+      let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
+      let idTramite = objJosn?.idTramite;
+
+      /*let datosDinamicos = {
+        ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        tipo_de_solicitud: getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        numero_de_solicitud: objJosn?.idSolicitud,
+        fecha_de_solicitud: fechaSolicitud.substring(0, 10),
+        observacion: values.Observations
+      };*/
+      let datosDinamicos = [
+        objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        objJosn?.idSolicitud,
+        fechaSolicitud.substring(0, 10),
+        values.Observations
+      ];
+
+      notificar(values.validFunctionaltype, datosDinamicos);
+    }
+
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -439,4 +485,83 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       </div>
     </div>
   );
+
+  function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
+    let nuevoHTML = HTML;
+
+    for (let index = 0; index < llavesAReemplazar.length; index++) {
+      nuevoHTML = nuevoHTML.replace(llavesAReemplazar[index], valoresDinamicos[index]);
+    }
+
+    return nuevoHTML;
+  }
+
+  async function notificar(tipoSeguimiento: string, datosDinamicos: any) {
+    const { accountIdentifier } = authProvider.getAccount();
+    const api = new ApiService(accountIdentifier);
+
+    const llavesAReemplazarGenericas = [
+      '~:~ciudadano~:~',
+      '~:~tipo_de_solicitud~:~',
+      '~:~número_de_solicitud~:~',
+      '~:~fecha_de_solicitud~:~',
+      '~:~observación~:~'
+    ];
+
+    const llavesAReemplazarAprobacion = [
+      '~:~ciudadano~:~',
+      '~:~tipo_de_solicitud~:~',
+      '~:~número_de_solicitud~:~',
+      '~:~fecha_de_solicitud~:~',
+      '~:~tipo_de_licencia~:~',
+      '~:~link_pdf~:~'
+    ];
+
+    const idPlantillaAnulacion = '903C641E-C65B-494B-AF79-B091C55217FC';
+    const idPlantillaNegacion = 'C5D07C62-E2C3-46DE-9444-E3397DAAA357';
+    const idPlantillaDocumentosInconsistentes = '77CA26E9-50E6-4823-8BB3-EB1EB29726EF';
+    const idPlantillaAprobacion = '985D236C-25B5-4A08-BB7B-98D22761BF63';
+
+    switch (tipoSeguimiento.toLocaleUpperCase()) {
+      case 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9': //'Anulado validador de documentos'
+        let plantillaAnulacion = await api.getFormato(idPlantillaAnulacion);
+        let bodyAnulacion = agregarValoresDinamicos(plantillaAnulacion.valor, llavesAReemplazarGenericas, datosDinamicos);
+
+        api.sendEmail({
+          to: 'ppalacios@soaint.com',
+          subject: plantillaAnulacion.asuntoNotificacion,
+          body: bodyAnulacion
+        });
+        break;
+      case 'FA183116-BE8A-425F-A309-E2032221553F': //'Negado validador de documentos'
+        let plantillaNegacion = await api.getFormato(idPlantillaNegacion);
+        let bodyNegacion = agregarValoresDinamicos(plantillaNegacion.valor, llavesAReemplazarGenericas, datosDinamicos);
+
+        api.sendEmail({
+          to: 'ppalacios@soaint.com',
+          subject: plantillaNegacion.asuntoNotificacion,
+          body: bodyNegacion
+        });
+        break;
+      case 'FE691637-BE8A-425F-A309-E2032221553F': //'Documentos Inconsistentes'
+        let plantillaDocumentosInconsistentes = await api.getFormato(idPlantillaDocumentosInconsistentes);
+        let bodyDocumentosInconsistentes = agregarValoresDinamicos(
+          plantillaDocumentosInconsistentes.valor,
+          llavesAReemplazarGenericas,
+          datosDinamicos
+        );
+
+        api.sendEmail({
+          to: 'ppalacios@soaint.com',
+          subject: plantillaDocumentosInconsistentes.asuntoNotificacion,
+          body: bodyDocumentosInconsistentes
+        });
+        break;
+      case '3CD0ED61-F26B-4CC0-9015-5B497673D275': //'Aprobado validador de documentos'
+        //let plantillaAprobacion = '';
+        break;
+      default:
+        break;
+    }
+  }
 };
