@@ -6,7 +6,50 @@ import swal from 'sweetalert2';
 const App = () => {
   const [visible, setVisible] = React.useState(true);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-
+  const festivos = [
+    {
+      fecha: {
+        mes: 1,
+        dia: 1
+      },
+      nombre: 'Año nuevo'
+    },
+    {
+      fecha: {
+        mes: 5,
+        dia: 1
+      },
+      nombre: 'Día del Trabajo'
+    },
+    {
+      fecha: {
+        mes: 7,
+        dia: 20
+      },
+      nombre: 'Día de la Independencia de Colombia'
+    },
+    {
+      fecha: {
+        mes: 8,
+        dia: 7
+      },
+      nombre: 'Batalla de Boyacá'
+    },
+    {
+      fecha: {
+        mes: 12,
+        dia: 8
+      },
+      nombre: 'Día de la Inmaculada Concepción'
+    },
+    {
+      fecha: {
+        mes: 12,
+        dia: 25
+      },
+      nombre: 'Navidad'
+    }
+  ];
   const history = useHistory();
 
   const isCovid = () => {
@@ -14,34 +57,18 @@ const App = () => {
   };
 
   const isNotCovid = () => {
-    /*
+    function isHoliday(): boolean {
+      let bandera = false;
+      let hoy = new Date();
 
-    array para festivos
-
-    const festivos = [
-      {
-        fecha: {
-          mes: 1,
-          dia: 1
-        },
-        nombre: 'Año nuevo'
-      },
-      {
-        fecha: {
-          mes: 1,
-          dia: 6
-        },
-        nombre: 'Día de los Reyes Magos'
-      },
-      {
-        fecha: {
-          mes: 3,
-          dia: 19
-        },
-        nombre: 'Día de San José'
+      for (let index = 0; index < festivos.length; index++) {
+        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
+          bandera = true;
+        }
       }
-    ];
-    */
+      return bandera;
+    }
+
     let ahora = new Date();
     let dia = ahora.getDate();
     let mes = ahora.getMonth();
@@ -51,7 +78,7 @@ const App = () => {
     const horaInicialFinSemana = new Date(año, mes, dia, 8, 0, 0);
     const horaFinalFinSemana = new Date(año, mes, dia, 12, 0, 0);
 
-    if (ahora.getDay() != 1 || ahora.getDay() != 7) {
+    if ((ahora.getDay() != 1 || ahora.getDay() != 7) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {
@@ -79,7 +106,7 @@ const App = () => {
         swal.fire({
           title: 'Horario de atención',
           text:
-            'Las solicitudes de licencia que estan asociadas a un caso no COVID son atendidas los fines de semana en el ' +
+            'Las solicitudes de licencia que estan asociadas a un caso no COVID son atendidas los fines de semana y dias festivos en el ' +
             'horario de: 8:00 AM a 12:00 PM, por favor vuelva a intertarlo en estos horarios.',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
