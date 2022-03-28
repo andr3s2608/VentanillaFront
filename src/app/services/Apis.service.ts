@@ -7,6 +7,7 @@ import { IRoles } from 'app/Models/IRoles';
 import { Menu } from 'app/Models/IMenu';
 import { IEstadoSolicitud } from 'app/Models/IEstadoSolicitud';
 import { IinformatioUser } from 'app/Models/IInformatioUser';
+import { Iformato } from 'app/Models/IFormato';
 
 export class ApiService {
   endpoint = environments.shared;
@@ -154,4 +155,24 @@ export class ApiService {
 
   GeneratePDF = (idTramite: string) =>
     window.open(`${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
+
+  GetSolicitud = (solicitud: string) =>
+    get<any>({
+      endpoint: environments.solicitud,
+      url: `Request/GetRequestById/${solicitud}`
+    });
+
+  sendEmail = (payload: any) => {
+    return post<any>({
+      endpoint: environments.notificacion,
+      url: 'Email/SendMail',
+      payload
+    });
+  };
+
+  getFormato = (idPlantilla: string) =>
+    get<Iformato>({
+      endpoint: environments.formatos,
+      url: `GetFormatoByTipoPlantilla/${idPlantilla}`
+    });
 }
