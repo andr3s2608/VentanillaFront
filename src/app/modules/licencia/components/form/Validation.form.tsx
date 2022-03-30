@@ -222,6 +222,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
 
       valor = valor.concat({
+        idSolicitud: values.idSolicitud,
         idDocumentoSoporte: id,
         Path: documento,
         Estado_Documento: datos,
@@ -457,9 +458,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                   onClick={() => onClickView(objJosn?.idSolicitud)}
                   icon={<EyeOutlined width={100} />}
                   size={'large'}
-                  block
                 >
-                  Ver
+                  Seguimiento
                 </Button>
               </Form.Item>
 

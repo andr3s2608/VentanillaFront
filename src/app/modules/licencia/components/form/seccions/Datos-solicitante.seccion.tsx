@@ -37,7 +37,8 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
     const iddepart = (await dep).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
-    const idMunicipio: string = iddepart[0].idDepPai + '';
+
+    const idMunicipio = iddepart[0].idDepPai + '';
 
     const resumensolicitud = await api.GetResumenSolicitud('0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
 
@@ -130,16 +131,8 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       describe: nombre
     },
     {
-      title: 'Segundo Nombre',
-      describe: ''
-    },
-    {
       title: 'Primer Apellido',
       describe: apellido
-    },
-    {
-      title: 'Segundo Apellido',
-      describe: ''
     },
     {
       title: 'Email',

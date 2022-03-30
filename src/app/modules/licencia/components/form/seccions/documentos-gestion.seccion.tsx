@@ -32,7 +32,6 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   }, []);
 
   const GetValidateRol = async () => {
-
     const resp = await api.getSupportDocuments(solicitud);
 
     setGrid(resp);
@@ -138,11 +137,6 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     //prop.datos(arrayarchivos);
   };
   const structureColumns = [
-    {
-      title: 'Id Documento',
-      dataIndex: 'idDocumentoSoporte',
-      key: 'idDocumentoSoporte'
-    },
     {
       title: 'Descripcion',
       dataIndex: '',

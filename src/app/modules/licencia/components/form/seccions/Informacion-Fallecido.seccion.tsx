@@ -22,18 +22,22 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
-    const iddepart = (await dep).filter((i) => i.idDepartamento == 'd6c3c518-216c-4830-a010-23af5f45e381');
+    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.idSolicitud);
 
-    const idMun: string = iddepart[0].idDepPai + '';
-    const mun = dominioService.get_municipios_by_departamento(idMun);
+    if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
+      const idMun: string = iddepart[0].idDepPai + '';
+      const mun = dominioService.get_municipios_by_departamento(idMun);
+      const idmuni = (await mun).filter((i) => i.idMunicipio == '404');
+
+      setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
+    } else {
+      setdefuncion(iddepart[0].descripcion);
+    }
 
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Regimen),
       dominioService.get_type(ETipoDominio['Tipo de Muerte'])
     ]);
-    const idmuni = (await mun).filter((i) => i.idMunicipio == '404');
-
-    setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
 
     setListas(resp);
   }, []);
@@ -101,7 +105,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const onClickViewFallecido = async (idSolicitud: string) => {
     const all = await api.getCertificado(idSolicitud);
-
 
     setNumeroCertificado(all);
     showModal();
