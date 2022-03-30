@@ -131,14 +131,43 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     let tipoSeguimiento: string = values.validFunctionaltype;
+    let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+    //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
+
+    let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
+    let idTramite = objJosn?.idTramite;
+    let cementerio = solicitud[0]['datosCementerio']['cementerio'];
+
     if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
-      alert('aprobacion');
+      //alert('aprobacion');
+      console.log('-----------------------------------------');
+      console.log(solicitud[0]['datosCementerio']['cementerio']);
+      console.log(solicitud[0]['fechaSolicitud']);
+      console.log('-----------------------------------------');
+      let linkPDF = api.getLinkPDF(objJosn?.idSolicitud);
+
+      let datosDinamicosAprobacion = [
+        objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        objJosn?.idSolicitud,
+        fechaSolicitud.substring(0, 10),
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        linkPDF
+      ];
+
+      let datosDinamicosCementerio = [
+        cementerio,
+        '001',
+        objJosn?.idSolicitud,
+        '2022-03-01',
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        linkPDF
+      ];
+
+      notificar(values.validFunctionaltype, datosDinamicosAprobacion);
+      notificarCementerio(datosDinamicosCementerio);
     } else {
-      let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-
-      let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
-      let idTramite = objJosn?.idTramite;
-
       /*let datosDinamicos = {
         ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
         tipo_de_solicitud: getDescripcionTramite(idTramite.toLocaleUpperCase()),
@@ -146,7 +175,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         fecha_de_solicitud: fechaSolicitud.substring(0, 10),
         observacion: values.Observations
       };*/
-      let datosDinamicos = [
+      let datosDinamicosGenericos = [
         objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
         getDescripcionTramite(idTramite.toLocaleUpperCase()),
         objJosn?.idSolicitud,
@@ -154,7 +183,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         values.Observations
       ];
 
-      notificar(values.validFunctionaltype, datosDinamicos);
+      notificar(values.validFunctionaltype, datosDinamicosGenericos);
     }
 
     setStatus(undefined);
@@ -479,6 +508,32 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     return nuevoHTML;
   }
 
+  async function notificarCementerio(datosDinamicos: any) {
+    const { accountIdentifier } = authProvider.getAccount();
+    const api = new ApiService(accountIdentifier);
+
+    const llavesAReemplazarCementerio = [
+      '~:~nombre_del_cementerio~:~',
+      '~:~número_de_licencia~:~',
+      '~:~número_de_solicitud~:~',
+      '~:~fecha_de_expedición~:~',
+      '~:~tipo_de_trámite~:~',
+      '~:~tipo_de_licencia~:~',
+      '~:~link_pdf~:~'
+    ];
+
+    const idPlantillaCementerio = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
+
+    let plantillaCementerio = await api.getFormato(idPlantillaCementerio);
+    let bodyCementerio = agregarValoresDinamicos(plantillaCementerio.valor, llavesAReemplazarCementerio, datosDinamicos);
+
+    api.sendEmail({
+      to: 'ppalacios@soaint.com',
+      subject: plantillaCementerio.asuntoNotificacion,
+      body: bodyCementerio
+    });
+  }
+
   async function notificar(tipoSeguimiento: string, datosDinamicos: any) {
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
@@ -541,7 +596,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         });
         break;
       case '3CD0ED61-F26B-4CC0-9015-5B497673D275': //'Aprobado validador de documentos'
-        //let plantillaAprobacion = '';
+        let plantillaAprobacion = await api.getFormato(idPlantillaAprobacion);
+        let bodyAprobacion = agregarValoresDinamicos(plantillaAprobacion.valor, llavesAReemplazarAprobacion, datosDinamicos);
+
+        api.sendEmail({
+          to: 'ppalacios@soaint.com',
+          subject: plantillaAprobacion.asuntoNotificacion,
+          body: bodyAprobacion
+        });
         break;
       default:
         break;

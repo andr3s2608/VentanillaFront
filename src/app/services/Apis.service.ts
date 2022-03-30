@@ -163,10 +163,14 @@ export class ApiService {
   GeneratePDF = (idTramite: string) =>
     window.open(`${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
 
+  getLinkPDF = (idTramite: string): string => {
+    return environments.inhcremacion + 'GeneratePDF/GeneratePDF/' + idTramite;
+  };
+
   GetSolicitud = (solicitud: string) =>
     get<any>({
-      endpoint: environments.solicitud,
-      url: `Request/GetRequestById/${solicitud}`
+      endpoint: environments.local,
+      url: `Request/GetAllRequestByIdSolicitud/${solicitud}`
     });
 
   sendEmail = (payload: any) => {

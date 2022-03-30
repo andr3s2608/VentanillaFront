@@ -17,6 +17,10 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 export const InformacionMedicoCertificante = ({ obj }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NROIDENT, setNROIDENT] = useState();
+  const [NOMBRES, setNombres] = useState();
+  const [medicalSignatureIDNumber, setmedicalSignatureIDNumber] = useState();
+  const [medicalSignatureName, setmedicalSignatureName] = useState();
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [[l_tipo_identificacion, l_profesion], setListas] = useState<IDominio[][]>([]);
@@ -91,7 +95,11 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   const onClickViewMedico = async () => {
     const all = await api.getMedico();
 
+    setNombres(all);
     setNROIDENT(all);
+    setmedicalSignatureIDNumber(all);
+    setmedicalSignatureName(all);
+
     showModal();
   };
 
@@ -121,8 +129,10 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           okButtonProps={{ hidden: true }}
           cancelText='Cerrar'
         >
-          <div className='alert text-center bg-info text-white'>
-            {NROIDENT !== NROIDENT ? 'el profesional de la salud no es valido' : 'el profesional de la salud es valido'}
+          <div className='alert text-center  text-dark'>
+            {NROIDENT !== medicalSignatureIDNumber || NOMBRES !== medicalSignatureName
+              ? 'el profesional de la salud no esta registrado'
+              : 'el profesional de la salud se encuentra registrado'}
           </div>
         </Modal>
       </Divider>
