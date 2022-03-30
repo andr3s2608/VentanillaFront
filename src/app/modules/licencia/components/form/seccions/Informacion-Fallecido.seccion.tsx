@@ -8,23 +8,33 @@ import 'app/shared/components/table/estilos.css';
 // Componentes
 
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import { dominioService, ETipoDominio, IDominio, IMunicipio, IDepartamento } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [numeroCertificado, setNumeroCertificado] = useState();
-  const [[l_paises, l_regimen, l_tipo_muerte], setListas] = useState<IDominio[][]>([]);
+  const [defuncion, setdefuncion] = useState<string | undefined>();
+  const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const getListas = useCallback(async () => {
+    const dep = dominioService.get_departamentos_colombia();
+    const iddepart = (await dep).filter((i) => i.idDepartamento == 'd6c3c518-216c-4830-a010-23af5f45e381');
+
+    const idMun: string = iddepart[0].idDepPai + '';
+    const mun = dominioService.get_municipios_by_departamento(idMun);
+
     const resp = await Promise.all([
-      dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_type(ETipoDominio.Regimen),
       dominioService.get_type(ETipoDominio['Tipo de Muerte'])
     ]);
+    const idmuni = (await mun).filter((i) => i.idMunicipio == '404');
+
+    setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
+
     setListas(resp);
   }, []);
 
@@ -40,9 +50,9 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const segundoapellido = obj?.secondSurname;
   const departamento = obj?.state;
   const municipio = obj?.city;
-  const regimen = obj?.regime ?? '848c6d53-6bda-4596-a889-8fdb0292f9e4';
+  const regimen = obj?.regime;
+  const idfallecido = obj?.IDNumber;
   const tipo = obj?.deathType ?? '475c280d-67af-47b0-a8bc-de420f6ac740';
-  const id = obj?.numeroIdentificacion;
 
   //#endregion
 
@@ -57,7 +67,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     },
     {
       title: 'Departamento/ Municipio Defuncion',
-      describe: departamento
+      describe: defuncion
     },
     {
       title: 'Primer Nombre',
@@ -77,7 +87,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     },
     {
       title: 'No. Identificacion.',
-      describe: id
+      describe: idfallecido
     },
     {
       title: 'Regimen',
@@ -91,7 +101,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const onClickViewFallecido = async (idSolicitud: string) => {
     const all = await api.getCertificado(idSolicitud);
-    console.log('prueba', all);
+
 
     setNumeroCertificado(all);
     showModal();

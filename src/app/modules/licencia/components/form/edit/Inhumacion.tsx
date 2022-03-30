@@ -4,7 +4,7 @@ export const EditInhumacion = () => {
   if (data) {
     const json = JSON.parse(data);
     const [obj] = json;
-    console.log(json, 'Json');
+
     return formatObjJson(obj);
   }
   return {
@@ -19,10 +19,6 @@ const formatObjJson = (obj: any) => {
   const [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
 
-  console.log(resumenSolicitud);
-
-  console.log('entro ihnumacionedit');
-  console.log(fallecido, 'tipo persona');
   let jsonDt;
 
   if (certificador == undefined) {

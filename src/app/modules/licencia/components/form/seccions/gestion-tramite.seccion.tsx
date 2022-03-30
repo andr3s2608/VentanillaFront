@@ -30,7 +30,7 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
       <Form.Item label='Tipo Seguimiento' name='validFunctionaltype' rules={[{ required: true }]}>
         <SelectComponent onChange={onChange} options={type} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
-      <Form.Item label='Observaciones.' name='Observations' rules={[{ required: true }]}>
+      <Form.Item label='Observaciones.' name='observations' rules={[{ required: true }]}>
         <Input.TextArea style={{ width: 500 }} />
       </Form.Item>
     </>

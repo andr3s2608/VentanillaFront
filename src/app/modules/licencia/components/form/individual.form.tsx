@@ -107,10 +107,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-    console.log(values.emailcementerio, 'Email Cementerio');
-    console.log(values.emailfuneraria, 'Email funeraria');
-    console.log(values.ndoc, 'nro Solicitante');
-    console.log(values.namesolicitudadd, 'nombre Solicitante');
+
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -138,7 +135,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idEstadoCivil: values.civilStatus,
             idNivelEducativo: values.educationLevel,
             idEtnia: values.etnia,
-            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idRegimen: values.regimen,
             idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
             idParentesco: '00000000-0000-0000-0000-000000000000',
             idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
@@ -159,7 +156,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idEstadoCivil: '00000000-0000-0000-0000-000000000000',
             idNivelEducativo: '00000000-0000-0000-0000-000000000000',
             idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
+            idRegimen: values.regimen,
             idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
             idParentesco: '00000000-0000-0000-0000-000000000000',
             idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
@@ -486,7 +483,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 
-            <Form.Item label='Régimen' name='regime' initialValue={objJosn?.regime ?? '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
+            <Form.Item label='Régimen' name='regimen' initialValue={objJosn?.regime ?? '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
               <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
 

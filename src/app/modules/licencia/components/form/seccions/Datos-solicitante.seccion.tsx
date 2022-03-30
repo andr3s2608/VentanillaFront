@@ -11,26 +11,80 @@ import { dominioService, ETipoDominio, IDominio, IDepartamento, ICementerio, IMu
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { resourceUsage } from 'process';
 
 export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [NROIDENT, setNROIDENT] = useState('');
   const [RAZON_S, setRAZON_S] = useState('');
+
   const [valor, setValor] = useState<string | undefined>();
+  const [emailsolicitante, setemailsolicitante] = useState<string | undefined>();
+  const [tipoid, setipoid] = useState<string | undefined>();
+  const [id, setid] = useState<string | undefined>();
+  const [nombre, setnombre] = useState<string | undefined>();
+  const [apellido, setapellido] = useState<string | undefined>();
+  const [emailcementerio, setemailcementerio] = useState<string | undefined>();
+  const [emailfuneraria, setemailfuneraria] = useState<string | undefined>();
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblef, setIsModalVisiblefuneraria] = useState(false);
-  const [[l_paises, l_departamento, l_cementerios, l_tipo_identificacion], setListas] = useState<
-    [IDominio[], IDepartamento[], ICementerio[], IDominio[]]
-  >([[], [], [], []]);
+  const [[l_paises, l_departamento, l_municipios, l_cementerios, l_tipo_identificacion], setListas] = useState<
+    [IDominio[], IDepartamento[], IMunicipio[], ICementerio[], IDominio[]]
+  >([[], [], [], [], []]);
 
   const getListas = useCallback(async () => {
+    const dep = dominioService.get_departamentos_colombia();
+    const iddepart = (await dep).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
+    const idMunicipio: string = iddepart[0].idDepPai + '';
+
+    const resumensolicitud = await api.GetResumenSolicitud('0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
+
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
+      dominioService.get_municipios_by_departamento(idMunicipio),
       dominioService.get_cementerios_bogota(),
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
+
+    var tipoidsolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.tipoDocumentoSolicitante}`;
+    }, '');
+
+    setipoid(tipoidsolicitante);
+
+    var idsolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.numeroDocumentoSolicitante}`;
+    }, '');
+    setid(idsolicitante);
+
+    var nombresolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.nombreSolicitante}`;
+    }, '');
+    setnombre(nombresolicitante);
+
+    var apellidosolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.apellidoSolicitante}`;
+    }, '');
+    setapellido(apellidosolicitante);
+
+    var correosolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.correoSolicitante}`;
+    }, '');
+    setemailsolicitante(correosolicitante);
+
+    var correocementerio: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.correoCementerio}`;
+    }, '');
+    setemailcementerio(correocementerio);
+
+    var correofuneraria: string = resumensolicitud.reduce((result: any, item: any) => {
+      return `${result}${item.correoFuneraria}`;
+    }, '');
+    setemailfuneraria(correofuneraria);
+
     setListas(resp);
   }, []);
 
@@ -39,20 +93,18 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const tipoid = obj?.IDType ? obj?.IDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e';
-  const primernombre = obj?.name;
-  const segundonombre = obj?.secondName;
-  const primerapellido = obj?.surname;
-  const segundoapellido = obj?.secondSurname;
+  const lugarcementerio = obj?.isLugar;
+  const cementerio = obj?.cementerioLugar;
+  const municipiocementerio = obj?.cementerioMunicipio;
+  const departamentocementerio = obj?.cementerioDepartamento;
+  const paiscementerio = obj?.cementerioPais;
 
-  const municipio = obj?.city;
-  const departamento = obj?.state;
-  const pais = obj?.cementerioPais ? obj?.cementerioPais : '1e05f64f-5e41-4252-862c-5505dbc3931c';
-  const id = obj?.IDNumber;
-  const email = obj?.Email;
-  const lugarcementerio = obj?.lugarCementerio;
-  const cementerio = obj?.cementerio;
-  const emailcementerio = obj?.emailcementerio;
+  const lugarfuneraria = obj?.isLugar;
+  const funeraria = obj?.cementerio;
+  const paisfuneraria = obj?.cementerioPais;
+
+  const municipiofuneraria = obj?.cementerioMunicipio;
+  const departamentofuneraria = obj?.cementerioDepartamento;
 
   //#endregion
 
@@ -75,23 +127,23 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     },
     {
       title: 'Primer Nombre',
-      describe: primernombre
+      describe: nombre
     },
     {
       title: 'Segundo Nombre',
-      describe: segundonombre
+      describe: ''
     },
     {
       title: 'Primer Apellido',
-      describe: primerapellido
+      describe: apellido
     },
     {
       title: 'Segundo Apellido',
-      describe: segundoapellido
+      describe: ''
     },
     {
       title: 'Email',
-      describe: email
+      describe: emailsolicitante
     }
   ];
 
@@ -111,7 +163,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     {
       title: 'País cementerio',
       describe: (
-        <SelectComponent options={l_paises} optionPropkey='idDepartamento' optionPropLabel='descripcion' value={pais} disabled />
+        <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' value={paiscementerio} disabled />
       )
     },
     {
@@ -121,14 +173,22 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           options={l_departamento}
           optionPropkey='idDepartamento'
           optionPropLabel='descripcion'
-          value={departamento}
+          value={departamentocementerio}
           disabled
         />
       )
     },
     {
       title: 'Municipio Cementerio',
-      describe: municipio
+      describe: (
+        <SelectComponent
+          options={l_municipios}
+          optionPropkey='idMunicipio'
+          optionPropLabel='descripcion'
+          value={municipiocementerio}
+          disabled
+        />
+      )
     }
   ];
 
@@ -143,12 +203,12 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     },
     {
       title: 'Email funeraria',
-      describe: emailcementerio
+      describe: emailfuneraria
     },
     {
       title: 'País funeraria',
       describe: (
-        <SelectComponent options={l_paises} optionPropkey='idDepartamento' optionPropLabel='descripcion' value={pais} disabled />
+        <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' value={paisfuneraria} disabled />
       )
     },
     {
@@ -158,20 +218,28 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           options={l_departamento}
           optionPropkey='idDepartamento'
           optionPropLabel='descripcion'
-          value={departamento}
+          value={departamentofuneraria}
           disabled
         />
       )
     },
     {
       title: 'Municipio funeraria',
-      describe: municipio
+      describe: (
+        <SelectComponent
+          options={l_municipios}
+          optionPropkey='idMunicipio'
+          optionPropLabel='descripcion'
+          value={municipiofuneraria}
+          disabled
+        />
+      )
     }
   ];
 
   const onClickViewCementerio = async () => {
     const all = await api.GetAllcementerios();
-    console.log('prueba', all);
+
     const alldata = all.map((item: any) => {
       setNROIDENT(item.NROIDENT);
       setRAZON_S(item.RAZON_S);
@@ -226,7 +294,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const onClickViewFuneraria = async () => {
     const all = await api.GetFunerarias();
-    console.log('prueba', all);
+
     const alldata = all.map((item: any) => {
       setNROIDENT(item.NROIDENT);
       setRAZON_S(item.RAZON_S);

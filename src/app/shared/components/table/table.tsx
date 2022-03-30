@@ -51,33 +51,109 @@ export const Gridview = (props: IDataSource) => {
       //arrayprueba.push(resp)
     }
   };
+  var nombre = data.reduce((result, item) => {
+    return `${result}${item.persona[0].primerNombre}|`;
+  }, '');
+  var nombres = data.reduce((result, item) => {
+    return `${result}${item.persona[0].segundoNombre}|`;
+  }, '');
+  var apellido = data.reduce((result, item) => {
+    return `${result}${item.persona[0].primerApellido}|`;
+  }, '');
+  var apellidos = data.reduce((result, item) => {
+    return `${result}${item.persona[0].segundoApellido}|`;
+  }, '');
+  const nombrecompleto = () => {
+    const posicioninicial = 0;
 
+    var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
+    nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
+
+    var segundonombre = nombres.substring(posicioninicial, nombres.indexOf('|'));
+    nombres = nombres.substring(nombres.indexOf('|') + 1, nombres.length);
+
+    var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
+    apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
+
+    var segundoapellido = apellidos.substring(posicioninicial, apellidos.indexOf('|'));
+    apellidos = apellidos.substring(apellidos.indexOf('|') + 1, apellidos.length);
+
+    var cadena = primernombre + ' ' + segundonombre + ' ' + primerapellido + ' ' + segundoapellido;
+
+    return cadena;
+  };
+  var identify = data.reduce((result, item) => {
+    return `${result}${item.persona[0].numeroIdentificacion}|`;
+  }, '');
+
+  const identificacion = () => {
+    const posicioninicial = 0;
+
+    var nroidentificacion = identify.substring(posicioninicial, identify.indexOf('|'));
+    identify = identify.substring(identify.indexOf('|') + 1, identify.length);
+    return nroidentificacion;
+  };
+
+  var tipotramite = data.reduce((result, item) => {
+    return `${result}${item.idTramite}|`;
+  }, '');
+
+  const tiposolicitud = () => {
+    const posicioninicial = 0;
+    var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
+    tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
+    var valor = '';
+
+    switch (idTramite) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        valor = 'Inhumacion Indivual';
+
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        //inhumacion fetal
+        valor = 'Inhumacion Fetal';
+
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        //cremacion individual
+        valor = 'Cremacion Individual';
+
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        //cremacionfetal
+        valor = 'Cremacion Fetal ';
+
+        break;
+    }
+    return valor;
+  };
+
+  const tramite = 'En tramite';
   const structureColumns = [
-    {
-      title: 'No Tramite',
-      dataIndex: 'numeroCertificado',
-      key: 'fechaSolicitud'
-    },
     {
       title: 'Nombre Completo',
       dataIndex: '',
-      key: 'fechaSolicitud'
+      key: 'nombreCompleto',
+      render: (Text: string) => (
+        <Form.Item label='' name=''>
+          <text>{nombrecompleto()}</text>
+        </Form.Item>
+      )
     },
     {
       title: 'Numero de Documento',
       dataIndex: '',
-      key: 'fechaSolicitud'
-    },
-
-    {
-      title: 'Telefono',
-      dataIndex: '',
-      key: 'idSolicitud'
+      key: 'numeroDocumento',
+      render: (Text: string) => (
+        <Form.Item label='' name=''>
+          <text>{identificacion()}</text>
+        </Form.Item>
+      )
     },
     {
       title: 'Correo',
       dataIndex: '',
-      key: 'numeroCertificado'
+      key: 'correo'
     },
     {
       title: 'Fecha de Registro',
@@ -86,13 +162,23 @@ export const Gridview = (props: IDataSource) => {
     },
     {
       title: 'Estado Tramite',
-      dataIndex: 'solicitud',
-      key: 'solicitud'
+      dataIndex: '',
+      key: 'estado',
+      render: (Text: string) => (
+        <Form.Item label='' name=''>
+          <text>{tramite}</text>
+        </Form.Item>
+      )
     },
     {
       title: 'Tipo Solicitud',
-      dataIndex: 'tramite',
-      key: 'tramite'
+      dataIndex: '',
+      key: 'tipoSolicitud',
+      render: (Text: string) => (
+        <Form.Item label='' name=''>
+          <text>{tiposolicitud()}</text>
+        </Form.Item>
+      )
     },
     {
       title: 'PDF',
@@ -147,7 +233,6 @@ export const Gridview = (props: IDataSource) => {
     setDataTable(alldata);
     showModal();
   };
-  console.log(data, 'datos nuevos');
 
   const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
@@ -180,33 +265,6 @@ export const Gridview = (props: IDataSource) => {
         break;
     }
   };
-  var stringData: string = data.reduce((result, item) => {
-    return `${result}${item.idSolicitud}|`;
-  }, '');
-
-  const arrayprueba: any = [];
-
-  var validacion = 0;
-  if (data.length > 0) {
-    if (validacion < 1) {
-      validacion = validacion + 1;
-
-      for (var i = 0; i < 10; i++) {
-        const posicion = stringData.indexOf('|');
-        var cadena: any = stringData.substring(0, posicion);
-        //console.log('id:', cadena, '///', 'salta?');
-
-        //traerdatos(data.at(i));
-
-        //console.log('cadena', cadena);
-        cadena = stringData;
-        stringData = cadena.substring(posicion + 1, stringData.length);
-        //console.log('stringdatanueva', stringData);
-
-        //traerdatos();
-      }
-    }
-  }
 
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>

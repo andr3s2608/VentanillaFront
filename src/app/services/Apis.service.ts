@@ -15,7 +15,6 @@ export class ApiService {
 
   constructor(oid$: string) {
     this.oid = oid$;
-    console.log('id consola', oid$);
   }
 
   personaNatural = (tipoDominio: IPersonaNatural) =>
@@ -77,6 +76,8 @@ export class ApiService {
 
   postprueba = (payload: any) => post({ endpoint: environments.local, url: 'Request/AddRquest', payload });
 
+  AddGestion = (payload: any) => post({ endpoint: environments.local, url: 'Request/AddGestion', payload });
+
   putLicencia = (payload: any) => put({ endpoint: environments.inhcremacion, url: 'Request/UpdateRequest', payload });
 
   uploadFiles = (payload: any) =>
@@ -93,6 +94,12 @@ export class ApiService {
     });
 
   GetEstadoSolicitud = () => get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${this.oid}` });
+
+  GetResumenSolicitud = (solicitud: string) =>
+    get<any>({ endpoint: environments.local, url: `Request/GetResumenSolicitud/${solicitud}` });
+
+  getallbyEstado = (solicitud: string) =>
+    get<[]>({ endpoint: environments.local, url: `Request/GetRequestByIdEstado/${solicitud}` });
 
   AddSupportDocuments = (payload: any[]) =>
     post({

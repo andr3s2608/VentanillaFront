@@ -15,24 +15,26 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import ReactDOM from 'react-dom';
 
 import { Viewer } from '@react-pdf-viewer/core';
+//import { VariableDocumento } from 'app/modules/licencia/components/form/Validation.form';
 
 // Services
-
-export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, id) => {
+export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
+  const { prop, obj, id } = props;
   const [grid, setGrid] = useState<any[]>([]);
   const [shown, setShown] = useState(false);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const solicitud = id.idsolicitud;
-  let counterDoc: Array<number>;
+  const solicitud = obj.idSolicitud;
+
+  var arrayarchivos: any[] = ['1', '1', '1', '1', '1'];
   const getListas = useCallback(async () => {
     await GetValidateRol();
   }, []);
 
   const GetValidateRol = async () => {
-    const resp = await api.getSupportDocuments('11A328A2-D161-48CE-9D33-EB90B9F4DCC1');
-    //counterDoc = Array.from({ length: resp.length }, (v, i) => i);
-    console.log(resp, 'DOCUMENTOS');
+
+    const resp = await api.getSupportDocuments(solicitud);
+
     setGrid(resp);
   };
 
@@ -40,6 +42,8 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
   useEffect(() => {
     getListas();
   }, []);
+
+  //desglosar descripcion de path
   var stringData = grid.reduce((result, item) => {
     return `${result}${item.path}|`;
   }, '');
@@ -53,15 +57,21 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
 
     return cadena;
   };
-  var posicion = -1;
-  const counter = () => {
-    posicion = posicion + 1;
-    return posicion;
+  //////////////////////
+
+  //separar los radiogroup
+  var posicionradio = -1;
+  var posicionform = -1;
+  const counterradio = () => {
+    posicionradio = posicionradio + 1;
+    return posicionradio;
+  };
+  const counterform = () => {
+    posicionform = posicionform + 1;
+    return posicionform;
   };
 
-  const archivo = () => {
-    window.open('src/archivo/prueba.pdf', 'abrir');
-  };
+  //////////////////////////
 
   const modalBody = () => (
     <div
@@ -117,7 +127,16 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
       </div>
     </div>
   );
+  var valorradio = 'sin modificar';
+  const onChange = (value: any) => {
+    var nombre: string = value.target.name;
+    var posicion: number = parseInt(nombre.substring(5, 6));
 
+    arrayarchivos[posicion] = value.target.value;
+
+    prop(arrayarchivos);
+    //prop.datos(arrayarchivos);
+  };
   const structureColumns = [
     {
       title: 'Id Documento',
@@ -127,7 +146,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
     {
       title: 'Descripcion',
       dataIndex: '',
-      key: 'path',
+      key: 'descripcionpath',
       render: (Text: string) => (
         <Form.Item label='' name=''>
           <text>{validar()}</text>
@@ -162,10 +181,10 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
     {
       title: 'Cumple?',
       dataIndex: 'Cumple',
-      key: 'Cumple',
+      key: 'cumple',
       render: (Text: string) => (
-        <Form.Item label='' name={'form' + counter()}>
-          <Radio.Group name={'radio' + counter()} defaultValue={1}>
+        <Form.Item label='' name={'form' + counterform()}>
+          <Radio.Group onChange={onChange} name={'radio' + counterradio()} defaultValue={1}>
             <Radio value={1}>Si</Radio>
             <Radio value={2}>No</Radio>
           </Radio.Group>
@@ -190,6 +209,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (obj, i
   );
 };
 interface documentosgestion {
+  prop: any;
   id: string;
   obj: any;
 }
