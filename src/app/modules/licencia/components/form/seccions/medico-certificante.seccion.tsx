@@ -131,8 +131,8 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
         >
           <div className='alert text-center  text-dark'>
             {NROIDENT !== medicalSignatureIDNumber || NOMBRES !== medicalSignatureName
-              ? 'el profesional de la salud no esta registrado'
-              : 'el profesional de la salud se encuentra registrado'}
+              ? 'El profesional (' + id + ') de la salud no esta registrado'
+              : 'El profesional (' + id + ') de la salud se encuentra registrado'}
           </div>
         </Modal>
       </Divider>

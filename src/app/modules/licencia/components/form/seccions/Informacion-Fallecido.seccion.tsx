@@ -24,7 +24,9 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     const dep = dominioService.get_departamentos_colombia();
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.idSolicitud);
 
+    /*
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
+
       const idMun: string = iddepart[0].idDepPai + '';
       const mun = dominioService.get_municipios_by_departamento(idMun);
       const idmuni = (await mun).filter((i) => i.idMunicipio == '404');
@@ -32,7 +34,9 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
     } else {
       setdefuncion(iddepart[0].descripcion);
-    }
+    }*/
+
+    setdefuncion('ramdon');
 
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Regimen),
@@ -139,8 +143,10 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
           cancelText='Cerrar'
         >
           <div className='alert text-center text-dark'>
-            # {numeroCertificado}
-            {numeroCertificado !== true ? 'no es valido' : 'valido'}
+            <p>
+              {'El número de certificado de defunción ' + numero}
+              {numeroCertificado !== true ? ' no es válido' : ' es válido'}
+            </p>
           </div>
         </Modal>
       </Divider>

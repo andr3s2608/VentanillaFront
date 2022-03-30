@@ -42,3 +42,31 @@ table th {
 .ant-table-cell {
   text-align: center !important;
 }
+
+.estado {
+  margin-top: 18px;
+}
+
+.contenedor {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  color: #0000;
+  margin-bottom: 15px;
+}
+
+.caja {
+  width: 100%;
+  padding: 10px;
+  outline: none !important;
+  border: 1px solid rgb(199, 199, 199);
+}
+
+.buscar {
+  margin: 0 auto;
+}
