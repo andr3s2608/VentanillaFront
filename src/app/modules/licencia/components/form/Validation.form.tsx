@@ -37,7 +37,7 @@ import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 //redux
 
-import { IRegistroLicencia } from 'app/Models/IRegistroLicencia';
+import { IGestionTramite } from 'app/Models/IGestion';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
@@ -52,6 +52,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const { Step } = Steps;
   const [dataTable, setDataTable] = useState<[]>();
+  const [datos, setdatos] = useState<[]>();
   const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
@@ -63,6 +64,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [type, setType] = useState<[]>([]);
   //create o edit
   const objJosn: any = EditInhumacion();
+
   const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
   //#region Listados
@@ -202,113 +204,58 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-    console.log('imprimir');
-    /*
-    const json: IRegistroLicencia<any> = {
-      solicitud: {
-        numeroCertificado: values.certificado,
-        fechaDefuncion: moment(values.date).format(formatDate),
-        sinEstablecer: values.check,
-        hora: values.check === true ? null : moment(values.time).format('LT'),
-        idSexo: values.sex,
-        estadoSolicitud: estadoSolicitud,
-        idPersonaVentanilla: Number(user), //numero de usuario registrado
-        idUsuarioSeguridad: accountIdentifier,
-        idTramite: tramite,
-        idTipoMuerte: values.deathType,
-        persona: [
-          //fallecido
-          {
-            tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
-            primerNombre: values.name,
-            segundoNombre: values.secondName,
-            primerApellido: values.surname,
-            segundoApellido: values.secondSurname,
-            fechaNacimiento: null,
-            nacionalidad: values.nationalidad[0],
-            otroParentesco: null,
-            idEstadoCivil: values.civilStatus,
-            idNivelEducativo: values.educationLevel,
-            idEtnia: values.etnia,
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
-          //authorizador cremacion
 
-          //certifica la defuncion
-          {
-            tipoIdentificacion: values.medicalSignatureIDType,
-            numeroIdentificacion: values.medicalSignatureIDNumber,
-            primerNombre: values.medicalSignatureName,
-            segundoNombre: values.medicalSignatureSecondName,
-            primerApellido: values.medicalSignatureSurname,
-            segundoApellido: values.medicalSignatureSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null,
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
-            idTipoProfesional: values.medicalSignatureProfesionalType
-          }
-        ],
-        lugarDefuncion: {
-          idPais: values.country,
-          idDepartamento: values.state,
-          idMunicipio: values.city,
-          idAreaDefuncion: values.areaDef,
-          idSitioDefuncion: values.sitDef
-        },
-        ubicacionPersona: {
-          idPaisResidencia: values.pais,
-          idDepartamentoResidencia: values.departamento,
-          idCiudadResidencia: values.ciudad,
-          idLocalidadResidencia: values.localidad,
-          idAreaResidencia: values.area,
-          idBarrioResidencia: values.barrio
-        },
-        datosCementerio: {
-          enBogota: values.cementerioLugar === 'Dentro de Bogotá',
-          fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
-          fueraPais: values.cementerioLugar === 'Fuera del País',
-          cementerio: values.cementerioBogota,
-          otroSitio: values.otro,
-          ciudad: values.cementerioCiudad,
-          idPais: values.cementerioPais,
-          idDepartamento: values.cementerioDepartamento,
-          idMunicipio: values.cementerioMunicipio
-        },
-        resumenSolicitud: {
-          correoCementerio: values.emailcementerio,
-          correoFuneraria: values.emailcementerio,
-          tipoDocumentoSolicitante: values.emailfuneraria,
-          numeroDocumentoSolicitante: '',
-          nombreSolicitante: '',
-          apellidoSolicitante: '',
-          correoSolicitante: ''
-        },
-        institucionCertificaFallecimiento: {
-          tipoIdentificacion: values.instTipoIdent,
-          numeroIdentificacion: values.instNumIdent,
-          razonSocial: values.instRazonSocial,
-          numeroProtocolo: values.instNumProtocolo,
-          numeroActaLevantamiento: values.instNumActaLevantamiento,
-          fechaActa: moment(values.instFechaActa).format(formatDate),
-          seccionalFiscalia: values.instSeccionalFiscalia,
-          noFiscal: values.instNoFiscal,
-          idTipoInstitucion: values.instType
-        }
-        // documentosSoporte: generateFormFiel(values.instType)
+    //let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
+    let documentos = await api.getSupportDocuments('11A328A2-D161-48CE-9D33-EB90B9F4DCC1');
+    var iddocumento: string = documentos.reduce((result: any, item: any) => {
+      return `${result}${item.idDocumentoSoporte}|`;
+    }, '');
+    var pathdocumento: string = documentos.reduce((result: any, item: any) => {
+      return `${result}${item.path}|`;
+    }, '');
+
+    var valor: any[] = [];
+
+    for (let index = 0; index < documentos.length; index++) {
+      var posicioninicialid = 0;
+      var posicionfinalid = iddocumento.indexOf('|');
+      var id = iddocumento.substring(posicioninicialid, posicionfinalid);
+      var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
+
+      var posicioninicialpath = 0;
+      var posicionfinalpath = pathdocumento.indexOf('/');
+      var nuevopath = pathdocumento.indexOf('|');
+      var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
+      var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
+
+      var datos: string = datosprueba.at(index);
+      if (datos == '1') {
+        datos = 'Cumple';
+      } else {
+        datos = 'No Cumple';
       }
-    };
-*/
+
+      valor = valor.concat({
+        idSolicitud: values.idSolicitud,
+        idDocumentoSoporte: id,
+        Path: documento,
+        Estado_Documento: datos,
+        TipoSeguimiento: values.validFunctionaltype,
+        Observaciones: values.observations
+      });
+      const json: IGestionTramite<any> = {
+        estado: {
+          idDocumentoSoporte: id,
+          Path: documento,
+          Estado_Documento: datos,
+          TipoSeguimiento: values.validFunctionaltype,
+          Observaciones: values.observations
+        }
+      };
+
+      const resp = await api.AddGestion(json);
+    }
+
     history.push('/tramites-servicios');
   };
   const showModal = () => {
@@ -317,6 +264,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+  var datosprueba: any[] = ['1', '1', '1', '1', '1'];
+  const getData = (rowData: any) => {
+    datosprueba = rowData;
   };
   const generateListFiles = (values: any) => {
     const Objs = [];
@@ -378,14 +329,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         //history.push('/tramites-servicios/licencia/cremacion-fetal');
         break;
     }
-    console.log(opciones, 'opciones');
-    console.log(estado, 'estado');
+
     return opciones;
   };
 
   const onClickView = async (idSolicitud: string) => {
     const all = await api.getLicencia(idSolicitud);
-    console.log('prueba', all);
+
     const alldata = all.map((item: any) => {
       item.fechaRegistro = moment(item.fechaRegistro).format(formatDate);
       item.primerNombre = item.persona[0].primerNombre + ' ' + item.persona[0].segundoNombre;
@@ -512,7 +462,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             <InformacionMedicoCertificante obj={objJosn} />
 
             <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
-            <InformacionDocumentosGestion obj={objJosn} id={objJosn?.idSolicitud} />
+            <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
 
             <div className='fadeInLeft'>
               <Form.Item>
@@ -522,9 +472,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                   onClick={() => onClickView(objJosn?.idSolicitud)}
                   icon={<EyeOutlined width={100} />}
                   size={'large'}
-                  block
                 >
-                  Ver
+                  Seguimiento
                 </Button>
               </Form.Item>
 
@@ -545,15 +494,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
               </Modal>
             </div>
             <div>
-              <List
-                grid={{ gutter: 24, column: 2 }}
-                dataSource={Lista}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta title={item.title} description={item.describe} />
-                  </List.Item>
-                )}
-              />
               <Actions />
             </div>
           </div>
@@ -561,7 +501,17 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       </div>
     </div>
   );
-
+  /*
+  <List
+    grid={{ gutter: 24, column: 2 }}
+    dataSource={Lista}
+    renderItem={(item) => (
+      <List.Item>
+        <List.Item.Meta title={item.title} description={item.describe} />
+      </List.Item>
+    )}
+  />;
+*/
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
     let nuevoHTML = HTML;
 

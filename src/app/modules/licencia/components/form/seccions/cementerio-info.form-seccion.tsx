@@ -33,6 +33,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   });
 
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
+  const [l_municipiosfunerarias, setLMunicipiosfunerarias] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
     [[], [], []]
   );
@@ -65,6 +66,10 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   const [lugar, setLugar] = useState<TypeLugarCementerio>(lugarCementerio);
 
+  const lugarFuneraria = obj?.isLugar();
+
+  const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
+
   const onChangeLugarCementerio = (e: RadioChangeEvent) => {
     form.resetFields([
       'cementerioBogota',
@@ -77,11 +82,51 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     setLMunicipios([]);
     setLugar(e.target.value);
   };
+  const onChangeLugarFuneraria = (e: RadioChangeEvent) => {
+    form.resetFields([
+      'funerariaBogota',
+      'funerariaDepartamento',
+      'funerariaMunicipio',
+      'funerariaPais',
+      'funerariaCiudad',
+      'emailfuneraria'
+    ]);
+    setLMunicipiosfunerarias([]);
+    setLugarFuneraria(e.target.value);
+  };
+  const onChangeDepartamentoFuneraria = async (value: string) => {
+    const depart = await dominioService.get_departamentos_colombia();
+    let id = (await depart).filter((i) => i.idDepartamento == value);
+
+    let idmunicipio = id[0].idDepPai + '';
+
+    form.resetFields(['funerariaMunicipio']);
+    const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
+
+    setLMunicipiosfunerarias(resp);
+    console.log(l_municipios);
+  };
+
+  const onChangeMunicipioFuneraria = async (value: string) => {
+    const departament = form.getFieldValue('funerariaDepartamento');
+
+    setMunicipio({
+      departament: departament,
+      municipio: value
+    });
+  };
 
   const onChangeDepartamento = async (value: string) => {
+    const depart = await dominioService.get_departamentos_colombia();
+    let id = (await depart).filter((i) => i.idDepartamento == value);
+
+    let idmunicipio = id[0].idDepPai + '';
+
     form.resetFields(['cementerioMunicipio']);
-    const resp = await dominioService.get_municipios_by_departamento(value);
+    const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
+
     setLMunicipios(resp);
+    console.log(l_municipiosfunerarias);
   };
 
   const onChangeMunicipio = async (value: string) => {
@@ -122,8 +167,8 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               <SelectComponent
                 options={l_municipios}
                 optionPropkey='idMunicipio'
-                onChange={onChangeMunicipio}
                 optionPropLabel='descripcion'
+                onChange={onChangeMunicipio}
               />
             </Form.Item>
             {isMunicipio.departament === cundinamarca && (isMunicipio.municipio === cota || isMunicipio.municipio === soacha) && (
@@ -162,11 +207,73 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
             >
               <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
             </Form.Item>
+          </>
+        );
+    }
+  };
 
+  const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
+    switch (_lugar) {
+      case 'Fuera de Bogotá':
+        return (
+          <div className='fadeInRight'>
+            <Form.Item
+              label='Departamento de Colombia'
+              name='funerariaDepartamento'
+              rules={[{ required: true }]}
+              initialValue={obj?.cementerioDepartamento}
+            >
+              <SelectComponent
+                options={l_departamentos_colombia.filter((i) => i.descripcion !== 'BOGOTÁ D.C.')}
+                optionPropkey='idDepartamento'
+                optionPropLabel='descripcion'
+                onChange={onChangeDepartamentoFuneraria}
+              />
+            </Form.Item>
+            <Form.Item
+              label='Municipio'
+              name='funerariaMunicipio'
+              initialValue={obj?.cementerioMunicipio}
+              rules={[{ required: true }]}
+            >
+              <SelectComponent
+                options={l_municipiosfunerarias}
+                optionPropkey='idMunicipio'
+                optionPropLabel='descripcion'
+                onChange={onChangeMunicipioFuneraria}
+              />
+            </Form.Item>
+            {isMunicipio.departament === cundinamarca && (isMunicipio.municipio === cota || isMunicipio.municipio === soacha) && (
+              <Form.Item label='Otro sitio funeraria' name='otrofuneraria' rules={[{ required: true }]} initialValue={obj?.otro}>
+                <Input allowClear placeholder='Otro Sitio' autoComplete='off' />
+              </Form.Item>
+            )}
+          </div>
+        );
+
+      case 'Fuera del País':
+        return (
+          <div className='fadeInRight'>
+            <Form.Item label='País' name='funerariaPais' rules={[{ required: true }]} initialValue={obj?.cementerioPais}>
+              <SelectComponent
+                options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
+                optionPropkey='descripcion  '
+                optionPropLabel='descripcion'
+              />
+            </Form.Item>
+            <Form.Item label='Ciudad' name='funerariaCiudad' initialValue={obj?.cementerioCiudad} rules={[{ required: true }]}>
+              <Input allowClear placeholder='Ciudad' autoComplete='off' />
+            </Form.Item>
+          </div>
+        );
+
+      default:
+        return (
+          <>
             <Form.Item
               className='fadeInRight'
               label='Funeraria de Bogotá D.C.'
-              name='FunerariaBogota'
+              name='funerariaBogota'
               initialValue={obj?.cementerioBogota}
               rules={[{ required: true }]}
             >
@@ -180,22 +287,42 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   return (
     <>
       <Divider orientation='right'>Datos de la funeraria y Cementerio a realizar la {tipoLicencia}</Divider>
-
-      <Form.Item
-        className='mb-4'
-        label='Lugar del cementerio'
-        name='cementerioLugar'
-        initialValue={obj?.isLugar() ?? 'Dentro de Bogotá'}
-        rules={[{ required: true }]}
-      >
-        <Radio.Group onChange={onChangeLugarCementerio}>
-          <Radio value='Dentro de Bogotá'>DENTRO DE BOGOTÁ</Radio>
-          <br />
-          <Radio value='Fuera de Bogotá'>FUERA DE BOGOTÁ</Radio>
-          <br />
-          <Radio value='Fuera del País'>FUERA DEL PAÍS</Radio>
-        </Radio.Group>
-      </Form.Item>
+      <div>
+        <Form.Item
+          className='mb-4'
+          label='Lugar del cementerio'
+          name='cementerioLugar'
+          initialValue={obj?.isLugar() ?? 'Dentro de Bogotá'}
+          rules={[{ required: true }]}
+        >
+          <Radio.Group onChange={onChangeLugarCementerio}>
+            <Radio value='Dentro de Bogotá'>DENTRO DE BOGOTÁ</Radio>
+            <br />
+            <Radio value='Fuera de Bogotá'>FUERA DE BOGOTÁ</Radio>
+            <br />
+            <Radio value='Fuera del País'>FUERA DEL PAÍS</Radio>
+          </Radio.Group>
+        </Form.Item>
+        {renderForm(lugar)}
+      </div>
+      <div>
+        <Form.Item
+          className='mb-4'
+          label='Lugar de la Funeraria'
+          name='funerariaLugar'
+          initialValue={obj?.isLugar() ?? 'Dentro de Bogotá'}
+          rules={[{ required: true }]}
+        >
+          <Radio.Group onChange={onChangeLugarFuneraria}>
+            <Radio value='Dentro de Bogotá'>DENTRO DE BOGOTÁ</Radio>
+            <br />
+            <Radio value='Fuera de Bogotá'>FUERA DE BOGOTÁ</Radio>
+            <br />
+            <Radio value='Fuera del País'>FUERA DEL PAÍS</Radio>
+          </Radio.Group>
+        </Form.Item>
+        {renderFormFuneria(lugarfuneraria)}
+      </div>
 
       <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true }]}>
         <Input allowClear placeholder='Email Cementerio' autoComplete='off' />
@@ -203,8 +330,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true }]}>
         <Input allowClear placeholder='Email Funeraria' autoComplete='off' />
       </Form.Item>
-
-      {renderForm(lugar)}
     </>
   );
 };
@@ -226,3 +351,4 @@ interface ICementerioInfoProps<T> extends ITipoLicencia {
 }
 
 type TypeLugarCementerio = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';
+type TypeLugarFuneraria = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';

@@ -10,7 +10,7 @@ class DominioService {
   get_departamentos_colombia = () => get<IDepartamento[]>({ endpoint: this.endpoint, url: `Departamento/GetAllDepartamento` });
 
   get_municipios_by_departamento = (idDepartamento: string) =>
-    get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetAllMunicipioByIdDepartamento/${idDepartamento}` });
+    get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetMunicipioByIdDepartamento//${idDepartamento}` });
 
   get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidad` });
 

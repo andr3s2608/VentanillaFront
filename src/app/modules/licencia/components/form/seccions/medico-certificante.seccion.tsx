@@ -44,7 +44,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   const segundonombre = obj?.medicalSignatureSecondName;
   const primerapellido = obj?.medicalSignatureSurname;
   const segundoapellido = obj?.medicalSignatureSecondSurname;
-  const profesional = obj?.medicalSignatureProfesionalType ?? '36ee9c22-30a7-4c29-8bd1-fb508ea01780';
+  const profesional = obj?.medicalSignatureProfesionalType;
   const email = obj?.emailmedicalSignature;
 
   const data = [
@@ -94,7 +94,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
 
   const onClickViewMedico = async () => {
     const all = await api.getMedico();
-    console.log('prueba', all);
+
     setNombres(all);
     setNROIDENT(all);
     setmedicalSignatureIDNumber(all);
