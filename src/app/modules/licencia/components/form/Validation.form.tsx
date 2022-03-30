@@ -135,6 +135,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
     let idTramite = objJosn?.idTramite;
     let cementerio = solicitud[0]['datosCementerio']['cementerio'];
+    let date = new Date();
+
+    console.log(solicitud);
+    console.log(values.Funeraria);
 
     if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
       //alert('aprobacion');
@@ -157,14 +161,24 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         cementerio,
         '001',
         objJosn?.idSolicitud,
-        '2022-03-01',
+        date.toLocaleDateString(),
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        linkPDF
+      ];
+
+      let datosDinamicosFuneraria = [
+        'Funeraria quemado',
+        '001',
+        objJosn?.idSolicitud,
+        date.toLocaleDateString(),
         getDescripcionTramite(idTramite.toLocaleUpperCase()),
         getDescripcionTramite(idTramite.toLocaleUpperCase()),
         linkPDF
       ];
 
       notificar(values.validFunctionaltype, datosDinamicosAprobacion);
-      notificarCementerio(datosDinamicosCementerio);
+      notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria);
     } else {
       /*let datosDinamicos = {
         ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
@@ -558,12 +572,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     return nuevoHTML;
   }
 
-  async function notificarCementerio(datosDinamicos: any) {
+  async function notificarCementerioYFuneraria(datosDinamicosCementerio: any, datosDinamicosFuneraria: any) {
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
 
-    const llavesAReemplazarCementerio = [
-      '~:~nombre_del_cementerio~:~',
+    const llavesAReemplazarCementerioYFuneraria = [
+      '~:~nombre~:~',
       '~:~número_de_licencia~:~',
       '~:~número_de_solicitud~:~',
       '~:~fecha_de_expedición~:~',
@@ -572,15 +586,32 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       '~:~link_pdf~:~'
     ];
 
-    const idPlantillaCementerio = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
+    const idPlantillaCementerioYFuneraria = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
 
-    let plantillaCementerio = await api.getFormato(idPlantillaCementerio);
-    let bodyCementerio = agregarValoresDinamicos(plantillaCementerio.valor, llavesAReemplazarCementerio, datosDinamicos);
+    let plantillaCementerio = await api.getFormato(idPlantillaCementerioYFuneraria);
+    let bodyCementerio = agregarValoresDinamicos(
+      plantillaCementerio.valor,
+      llavesAReemplazarCementerioYFuneraria,
+      datosDinamicosCementerio
+    );
+
+    let plantillaFuneraria = await api.getFormato(idPlantillaCementerioYFuneraria);
+    let bodyFuneraria = agregarValoresDinamicos(
+      plantillaFuneraria.valor,
+      llavesAReemplazarCementerioYFuneraria,
+      datosDinamicosFuneraria
+    );
 
     api.sendEmail({
       to: 'ppalacios@soaint.com',
-      subject: plantillaCementerio.asuntoNotificacion,
+      subject: 'Notificación cementerio',
       body: bodyCementerio
+    });
+
+    api.sendEmail({
+      to: 'ppalacios@soaint.com',
+      subject: 'Notificación funeraria',
+      body: bodyFuneraria
     });
   }
 
