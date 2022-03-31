@@ -22,7 +22,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
-    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.idSolicitud);
+    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
       const idMun: string = iddepart[0].idDepPai + '';
@@ -139,8 +139,10 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
           cancelText='Cerrar'
         >
           <div className='alert text-center text-dark'>
-            # {numeroCertificado}
-            {numeroCertificado !== true ? 'no es valido' : 'valido'}
+            <p>
+              {'El número de certificado de defunción ' + numero}
+              {numeroCertificado !== true ? ' no es válido' : ' es válido'}
+            </p>
           </div>
         </Modal>
       </Divider>
