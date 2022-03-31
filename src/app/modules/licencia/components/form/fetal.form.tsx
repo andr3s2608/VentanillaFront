@@ -286,7 +286,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           enBogota: values.funerariaLugar === 'Dentro de Bogotá',
           fueraBogota: values.funerariaLugar === 'Fuera de Bogotá',
           fueraPais: values.funerariaLugar === 'Fuera del País',
-          cementerio: values.funerariaBogota,
+          funeraria: values.funerariaBogota,
           otroSitio: values.otrofuneraria,
           ciudad: values.funerariaCiudad,
           idPais: values.funerariaPais,
