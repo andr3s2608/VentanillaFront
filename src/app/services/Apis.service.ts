@@ -174,11 +174,10 @@ export class ApiService {
       id: '0'
     });
 
-  GeneratePDF = (idTramite: string) =>
-    window.open(`${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
+  GeneratePDF = (idTramite: string) => window.open(`${environments.local}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
 
   getLinkPDF = (idTramite: string): string => {
-    return environments.inhcremacion + 'GeneratePDF/GeneratePDF/' + idTramite;
+    return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite;
   };
 
   GetSolicitud = (solicitud: string) =>
