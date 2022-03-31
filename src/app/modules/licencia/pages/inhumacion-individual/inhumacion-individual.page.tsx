@@ -10,6 +10,91 @@ import App from '../validarCovid/validar';
 const { TabPane } = Tabs;
 
 const InhumacionIndividualPage = () => {
+  function mostrarPopUp(): boolean {
+    let bandera = true;
+
+    const festivos = [
+      {
+        fecha: {
+          mes: 1,
+          dia: 1
+        },
+        nombre: 'Año nuevo'
+      },
+      {
+        fecha: {
+          mes: 5,
+          dia: 1
+        },
+        nombre: 'Día del Trabajo'
+      },
+      {
+        fecha: {
+          mes: 7,
+          dia: 20
+        },
+        nombre: 'Día de la Independencia de Colombia'
+      },
+      {
+        fecha: {
+          mes: 8,
+          dia: 7
+        },
+        nombre: 'Batalla de Boyacá'
+      },
+      {
+        fecha: {
+          mes: 12,
+          dia: 8
+        },
+        nombre: 'Día de la Inmaculada Concepción'
+      },
+      {
+        fecha: {
+          mes: 12,
+          dia: 25
+        },
+        nombre: 'Navidad'
+      }
+    ];
+
+    function isHoliday(): boolean {
+      let bandera = false;
+      let hoy = new Date();
+
+      for (let index = 0; index < festivos.length; index++) {
+        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
+          bandera = true;
+        }
+      }
+      return bandera;
+    }
+
+    let ahora = new Date();
+    let dia = ahora.getDate();
+    let mes = ahora.getMonth();
+    let año = ahora.getFullYear();
+    const horaInicialSemana = new Date(año, mes, dia, 7, 0, 0);
+    const horaFinalSemana = new Date(año, mes, dia, 15, 30, 0);
+    const horaInicialFinSemana = new Date(año, mes, dia, 8, 0, 0);
+    const horaFinalFinSemana = new Date(año, mes, dia, 12, 0, 0);
+
+    if ((ahora.getDay() != 1 || ahora.getDay() != 7) && !isHoliday()) {
+      if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
+        bandera = false;
+      } else {
+        bandera = true;
+      }
+    } else {
+      if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
+        bandera = false;
+      } else {
+        bandera = true;
+      }
+    }
+
+    return bandera;
+  }
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
@@ -30,7 +115,7 @@ const InhumacionIndividualPage = () => {
         </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Inhumación' tramite='a289c362-e576-4962-962b-1c208afa0273' />
-          <App></App>
+          {mostrarPopUp() && <App></App>}
         </TabPane>
       </Tabs>
     </div>

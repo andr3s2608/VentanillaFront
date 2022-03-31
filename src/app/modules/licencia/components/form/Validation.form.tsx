@@ -181,7 +181,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       ];
 
       notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante);
-      notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
+      notificarCementerio(datosDinamicosCementerio, emailCementerio);
+      notificarFuneraria(datosDinamicosFuneraria, emailFuneraria);
+      //notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
     } else {
       /*let datosDinamicos = {
         ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
@@ -516,7 +518,61 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     return nuevoHTML;
   }
 
-  async function notificarCementerioYFuneraria(
+  async function notificarCementerio(datosDinamicosCementerio: any, emailCementerio: string) {
+    const { accountIdentifier } = authProvider.getAccount();
+    const api = new ApiService(accountIdentifier);
+
+    const llavesAReemplazarCementerio = [
+      '~:~nombre~:~',
+      '~:~número_de_licencia~:~',
+      '~:~fecha_de_expedición~:~',
+      '~:~tipo_de_trámite~:~',
+      '~:~tipo_de_licencia~:~',
+      '~:~link_pdf~:~'
+    ];
+
+    const idPlantillaCementerio = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
+
+    let plantillaCementerio = await api.getFormato(idPlantillaCementerio);
+    let bodyCementerio = agregarValoresDinamicos(
+      plantillaCementerio.valor,
+      llavesAReemplazarCementerio,
+      datosDinamicosCementerio
+    );
+
+    api.sendEmail({
+      to: emailCementerio,
+      subject: 'Notificación cementerio',
+      body: bodyCementerio
+    });
+  }
+
+  async function notificarFuneraria(datosDinamicosFuneraria: any, emailFuneraria: string) {
+    const { accountIdentifier } = authProvider.getAccount();
+    const api = new ApiService(accountIdentifier);
+
+    const llavesAReemplazarFuneraria = [
+      '~:~nombre~:~',
+      '~:~número_de_licencia~:~',
+      '~:~fecha_de_expedición~:~',
+      '~:~tipo_de_trámite~:~',
+      '~:~tipo_de_licencia~:~',
+      '~:~link_pdf~:~'
+    ];
+
+    const idPlantillaFuneraria = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
+
+    let plantillaFuneraria = await api.getFormato(idPlantillaFuneraria);
+    let bodyFuneraria = agregarValoresDinamicos(plantillaFuneraria.valor, llavesAReemplazarFuneraria, datosDinamicosFuneraria);
+
+    api.sendEmail({
+      to: emailFuneraria,
+      subject: 'Notificación funeraria',
+      body: bodyFuneraria
+    });
+  }
+
+  /*async function notificarCementerioYFuneraria(
     datosDinamicosCementerio: any,
     datosDinamicosFuneraria: any,
     emailCementerio: string,
@@ -561,7 +617,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       subject: 'Notificación funeraria',
       body: bodyFuneraria
     });
-  }
+  }*/
 
   async function notificar(tipoSeguimiento: string, datosDinamicos: any, emailSolicitante: string) {
     const { accountIdentifier } = authProvider.getAccount();
