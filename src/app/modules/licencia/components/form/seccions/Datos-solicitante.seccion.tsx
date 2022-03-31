@@ -32,6 +32,12 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [emailfuneraria, setemailfuneraria] = useState<string | undefined>();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblef, setIsModalVisiblefuneraria] = useState(false);
+  const [lugarfuneraria, setlugarfuneraria] = useState<string | undefined>();
+  const [funeraria, setfuneraria] = useState<string | undefined>();
+  const [paisfuneraria, setpaisfuneraria] = useState<string | undefined>();
+  const [municipiofuneraria, setmunicipiofuneraria] = useState<string | undefined>();
+  const [departamentofuneraria, setdepartamentofuneraria] = useState<string | undefined>();
+
   const [[l_paises, l_departamento, l_municipios, l_cementerios, l_tipo_identificacion], setListas] = useState<
     [IDominio[], IDepartamento[], IMunicipio[], ICementerio[], IDominio[]]
   >([[], [], [], [], []]);
@@ -42,8 +48,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
     const idMunicipio = iddepart[0].idDepPai + '';
 
-    const resumensolicitud = await api.GetResumenSolicitud('0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
-
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
@@ -51,7 +55,8 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       dominioService.get_cementerios_bogota(),
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
-
+    //Relacionado con el solicitante
+    const resumensolicitud = await api.GetResumenSolicitud('0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
     var tipoidsolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
       return `${result}${item.tipoDocumentoSolicitante}`;
     }, '');
@@ -87,6 +92,33 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       return `${result}${item.correoFuneraria}`;
     }, '');
     setemailfuneraria(correofuneraria);
+    ////////////////////////
+    const Funerarias = await api.GetFunerariasAzure('593E8100-80D2-4CC4-9286-06229E3811BA');
+
+    var lugarfuneraria = Funerarias.reduce((result: any, item: any) => {
+      return `${result}${item.funeraria}`;
+    }, '');
+    setlugarfuneraria(lugarfuneraria);
+
+    var funeraria = Funerarias.reduce((result: any, item: any) => {
+      return `${result}${item.funeraria}`;
+    }, '');
+    setfuneraria(funeraria);
+
+    var paisfuneraria = Funerarias.reduce((result: any, item: any) => {
+      return `${result}${item.idPais}`;
+    }, '');
+    setpaisfuneraria(paisfuneraria);
+
+    var municipiofuneraria = Funerarias.reduce((result: any, item: any) => {
+      return `${result}${item.idMunicipio}`;
+    }, '');
+    setmunicipiofuneraria(municipiofuneraria);
+
+    var departamentofuneraria = Funerarias.reduce((result: any, item: any) => {
+      return `${result}${item.idDepartamento}`;
+    }, '');
+    setdepartamentofuneraria(departamentofuneraria);
 
     setListas(resp);
   }, []);
@@ -101,13 +133,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const municipiocementerio = obj?.cementerioMunicipio;
   const departamentocementerio = obj?.cementerioDepartamento;
   const paiscementerio = obj?.cementerioPais;
-
-  const lugarfuneraria = obj?.isLugar;
-  const funeraria = obj?.cementerio;
-  const paisfuneraria = obj?.cementerioPais;
-
-  const municipiofuneraria = obj?.cementerioMunicipio;
-  const departamentofuneraria = obj?.cementerioDepartamento;
 
   //#endregion
 
@@ -190,11 +215,11 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const funerarias = [
     {
       title: 'Lugar funeraria.',
-      describe: lugarcementerio
+      describe: lugarfuneraria
     },
     {
       title: 'Funeraria',
-      describe: cementerio
+      describe: funeraria
     },
     {
       title: 'Email funeraria',

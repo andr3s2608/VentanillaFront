@@ -282,6 +282,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idDepartamento: values.cementerioDepartamento,
           idMunicipio: values.cementerioMunicipio
         },
+        /*
         datosFuneraria: {
           enBogota: values.funerariaLugar === 'Dentro de Bogotá',
           fueraBogota: values.funerariaLugar === 'Fuera de Bogotá',
@@ -291,8 +292,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           ciudad: values.funerariaCiudad,
           idPais: values.funerariaPais,
           idDepartamento: values.funerariaDepartamento,
-          idMunicipio: values.funerariaMunicipio
+          idMunicipio: values.funerariaMunicipio,
+
         },
+*/
         resumenSolicitud: {
           correoCementerio: values.emailcementerio,
           correoFuneraria: values.emailfuneraria,
@@ -318,6 +321,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
     const formData = new FormData();
     const supportDocuments: any[] = [];
@@ -384,7 +388,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
     if (!isEdit) {
       debugger;
-      const resp = await api.postLicencia(json);
+      const resp = await api.postprueba(json);
 
       if (resp) {
         const [files, names] = generateListFiles(values, container);

@@ -103,6 +103,8 @@ export class ApiService {
 
   GetResumenSolicitud = (solicitud: string) =>
     get<any>({ endpoint: environments.local, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
+  GetFunerariasAzure = (solicitud: string) =>
+    get<any>({ endpoint: environments.local, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
   getallbyEstado = (solicitud: string) =>
     get<[]>({ endpoint: environments.local, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
