@@ -22,7 +22,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
-    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.idSolicitud);
+    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
       const idMun: string = iddepart[0].idDepPai + '';
