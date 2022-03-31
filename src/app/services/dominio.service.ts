@@ -5,27 +5,30 @@ class DominioService {
   private endpoint = environments.endpointV1;
 
   get_type = (tipoDominio: ETipoDominio) =>
-    get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}` });
+    get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}`, id: '0' });
 
-  get_departamentos_colombia = () => get<IDepartamento[]>({ endpoint: this.endpoint, url: `Departamento/GetAllDepartamento` });
+  get_departamentos_colombia = () =>
+    get<IDepartamento[]>({ endpoint: this.endpoint, url: `Departamento/GetAllDepartamento`, id: '0' });
 
   get_municipios_by_departamento = (idDepartamento: string) =>
-    get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetMunicipioByIdDepartamento//${idDepartamento}` });
+    get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetMunicipioByIdDepartamento//${idDepartamento}`, id: '0' });
 
-  get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidad` });
+  get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidad`, id: '0' });
 
   get_upz_by_localidad = (idLocalidad: string) =>
-    get<IUpz[]>({ endpoint: this.endpoint, url: `Upz/GetUpzByIdLocalidad/${idLocalidad}` });
+    get<IUpz[]>({ endpoint: this.endpoint, url: `Upz/GetUpzByIdLocalidad/${idLocalidad}`, id: '0' });
 
-  get_barrio_by_upz = (idUpz: string) => get<IBarrio[]>({ endpoint: this.endpoint, url: `Barrio/GetBarrioByIdUpz/${idUpz}` });
+  get_barrio_by_upz = (idUpz: string) =>
+    get<IBarrio[]>({ endpoint: this.endpoint, url: `Barrio/GetBarrioByIdUpz/${idUpz}`, id: '0' });
 
-  get_cementerios_bogota = () => get<ICementerio[]>({ endpoint: this.endpoint, url: `Cementerio/GetAllCementerio` });
+  get_cementerios_bogota = () => get<ICementerio[]>({ endpoint: this.endpoint, url: `Cementerio/GetAllCementerio`, id: '0' });
 
   search_profesional_salud_by_documento = (documento: string) =>
     get<IProfesionalSalud[]>({
       endpoint: this.endpoint,
       url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/${documento}`,
-      cancel: true
+      cancel: true,
+      id: '0'
     });
 }
 

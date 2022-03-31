@@ -15,6 +15,8 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
 import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 import { validateClaimsRequest } from 'msal/lib-commonjs/AuthenticationParameters';
 
 interface municiopioDepartament {
@@ -25,6 +27,9 @@ interface municiopioDepartament {
 export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (props) => {
   const { form, tipoLicencia } = props;
   const { obj } = props;
+
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
   //#region Listados
 
   const [isMunicipio, setMunicipio] = useState<municiopioDepartament>({
@@ -32,6 +37,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     departament: ''
   });
 
+  const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_municipiosfunerarias, setLMunicipiosfunerarias] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
@@ -45,6 +51,8 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         dominioService.get_cementerios_bogota(),
         dominioService.get_type(ETipoDominio.Pais)
       ]);
+      const funeraria = await api.GetFunerarias();
+      setLfunerarias(funeraria);
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -277,7 +285,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               initialValue={obj?.cementerioBogota}
               rules={[{ required: true }]}
             >
-              <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+              <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
             </Form.Item>
           </>
         );

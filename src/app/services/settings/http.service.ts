@@ -130,18 +130,24 @@ const post = async <T>({
   endpoint,
   url,
   payload,
+  id,
   loading = true,
   options,
   configMessage,
   cancel,
   confirmModal = true
 }: ISettingsService): Promise<T> => {
-  const confirm = confirmModal
-    ? await confirmMessage({
-        content: '¿Está seguro de guardar la información?',
-        ...configMessage
-      })
-    : await true;
+  var confirm = confirmModal;
+  console.log(id, 'ID');
+  if (id == '0') {
+    console.log(id, 'Entrooo');
+    confirm = confirmModal
+      ? await confirmMessage({
+          content: '¿Está seguro de guardar la información?',
+          ...configMessage
+        })
+      : await true;
+  }
 
   if (confirm) {
     if (loading) {
@@ -170,6 +176,7 @@ const put = async <T>({
   endpoint,
   url,
   payload,
+  id,
   loading = true,
   options,
   configMessage,
@@ -203,7 +210,7 @@ const put = async <T>({
  * @param params Configuración del servicio.
  * @returns Promesa con la respuesta del servicio.
  */
-const get = <T>({ endpoint, url, loading = true, options, cancel }: ISettingsService): Promise<T> => {
+const get = <T>({ endpoint, url, loading = true, options, id, cancel }: ISettingsService): Promise<T> => {
   if (loading) {
     showLoading(true);
   }
@@ -224,7 +231,15 @@ const get = <T>({ endpoint, url, loading = true, options, cancel }: ISettingsSer
  * @param message Mensaje personalizado para confirmar la eliminación de un registro.
  * @returns Promesa con la respuesta del servicio.
  */
-const deleted = async <T>({ endpoint, url, loading = true, options, configMessage, cancel }: ISettingsService): Promise<T> => {
+const deleted = async <T>({
+  endpoint,
+  url,
+  loading = true,
+  id,
+  options,
+  configMessage,
+  cancel
+}: ISettingsService): Promise<T> => {
   const confirm = await confirmMessage({
     content: '¿Está seguro de borrar la información?',
     okType: 'danger',
@@ -258,6 +273,8 @@ interface ISettingsService {
   endpoint: string;
   /** Ruta del Endpoint. */
   url: string;
+
+  id: string;
   /** Mostrar el loading, por defecto es true. */
   loading?: boolean;
   /** Cuerpo del servicio. */

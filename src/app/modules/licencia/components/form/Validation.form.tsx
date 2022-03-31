@@ -192,7 +192,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
 
     //let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
-    let documentos = await api.getSupportDocuments('11A328A2-D161-48CE-9D33-EB90B9F4DCC1');
+    let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
     var iddocumento: string = documentos.reduce((result: any, item: any) => {
       return `${result}${item.idDocumentoSoporte}|`;
     }, '');
@@ -201,6 +201,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }, '');
 
     var valor: any[] = [];
+    var not = 1;
 
     for (let index = 0; index < documentos.length; index++) {
       var posicioninicialid = 0;
@@ -221,16 +222,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         datos = 'No Cumple';
       }
 
-      valor = valor.concat({
-        idSolicitud: values.idSolicitud,
-        idDocumentoSoporte: id,
-        Path: documento,
-        Estado_Documento: datos,
-        TipoSeguimiento: values.validFunctionaltype,
-        Observaciones: values.observations
-      });
       const json: IGestionTramite<any> = {
         estado: {
+          idSolicitud: objJosn?.idSolicitud,
           idDocumentoSoporte: id,
           Path: documento,
           Estado_Documento: datos,
@@ -239,7 +233,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
       };
 
-      const resp = await api.AddGestion(json);
+      const resp = await api.AddGestion(json, not + '');
     }
 
     history.push('/tramites-servicios');
