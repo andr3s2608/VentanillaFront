@@ -2,8 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // Antd
 import Divider from 'antd/es/divider';
-import moment from 'moment';
-import { List, Card, Layout, Button, Form, Modal, Radio } from 'antd';
+import { List, Button, Form, Modal, Radio } from 'antd';
 import 'app/shared/components/table/estilos.css';
 // Componentes
 
@@ -11,13 +10,19 @@ import { dominioService, ETipoDominio, IDominio, IDepartamento, ICementerio, IMu
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { resourceUsage } from 'process';
 
 export const InformacionSolicitanteSeccion = ({ obj }: any) => {
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
   const [NROIDENT, setNROIDENT] = useState('');
   const [RAZON_S, setRAZON_S] = useState('');
-
   const [valor, setValor] = useState<string | undefined>();
+  const [IdOrNameGraveyard, setIdOrNameGraveyard] = useState('');
+  const [IdOrNameMortuary, setIdOrNameMortuary] = useState('');
+  const [isModalVisibleGraveyard, setIsModalVisibleGraveyard] = useState(false);
+  const [isModalVisibleMortuary, setIsModalVisibleMortuary] = useState(false);
+
   const [emailsolicitante, setemailsolicitante] = useState<string | undefined>();
   const [tipoid, setipoid] = useState<string | undefined>();
   const [id, setid] = useState<string | undefined>();
@@ -25,9 +30,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [apellido, setapellido] = useState<string | undefined>();
   const [emailcementerio, setemailcementerio] = useState<string | undefined>();
   const [emailfuneraria, setemailfuneraria] = useState<string | undefined>();
-
-  const { accountIdentifier } = authProvider.getAccount();
-  const api = new ApiService(accountIdentifier);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblef, setIsModalVisiblefuneraria] = useState(false);
   const [[l_paises, l_departamento, l_municipios, l_cementerios, l_tipo_identificacion], setListas] = useState<
@@ -230,85 +232,115 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     }
   ];
 
+  /**
+   * Control de PopUp de validacion de cementerio y funeraria
+   **/
+  const showModalGraveyard = () => {
+    setIsModalVisibleGraveyard(true);
+    setValor('');
+  };
+
+  const handleCancelGraveyard = () => {
+    setIsModalVisibleGraveyard(false);
+    (document.getElementById('fieldSearchGraveyard1') as HTMLInputElement).value = '';
+    (document.getElementById('fieldSearchGraveyard2') as HTMLInputElement).value = '';
+  };
+
+  const showModalMortuary = () => {
+    setIsModalVisibleMortuary(true);
+    setValor('');
+  };
+
+  const handleCancelMortuary = () => {
+    setIsModalVisibleMortuary(false);
+    (document.getElementById('fieldSearchMortuary1') as HTMLInputElement).value = '';
+    (document.getElementById('fieldSearchMortuary2') as HTMLInputElement).value = '';
+  };
+
+  /**
+   * Funcionalidades relacionada con cementerio
+   **/
   const onClickViewCementerio = async () => {
-    const all = await api.GetAllcementerios();
-
-    const alldata = all.map((item: any) => {
-      setNROIDENT(item.NROIDENT);
-      setRAZON_S(item.RAZON_S);
-      return item;
-    });
-    showModal();
-  };
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
+    showModalGraveyard();
   };
 
   const onClickValidarcementerio = async () => {
     const all = await api.GetAllcementerios();
-    const result = all.find((cementerio: any) => cementerio.NROIDENT === parseInt(NROIDENT) || cementerio.RAZON_S === RAZON_S);
-    if (result) setValor('El cementerio registrado Es valido');
-    else setValor('El cementerio registrado es Invalido');
-  };
 
-  //===============================
-  const changeA = (e: any) => {
-    if (e.target.value === 'Id') {
-      //(document.getElementById('radio') as HTMLElement).style.color = 'black';
-      (document.getElementById('exampleInputEmail2') as HTMLButtonElement).disabled = true;
-      (document.getElementById('exampleInputEmail1') as HTMLButtonElement).disabled = false;
-    } else if (e.target.value === 'Name') {
-      // (document.getElementById('radio2') as HTMLElement).style.color = 'black';
-      (document.getElementById('exampleInputEmail1') as HTMLButtonElement).disabled = true;
-      (document.getElementById('exampleInputEmail2') as HTMLButtonElement).disabled = false;
+    if (IdOrNameGraveyard == 'Id') {
+      const result = all.find((cementerio: any) => cementerio.NROIDENT == parseInt(NROIDENT));
+      if (result) {
+        setValor('El cementerio registrado es válido');
+      } else {
+        setValor('El cementerio registrado es inválido');
+      }
+    } else if (IdOrNameGraveyard == 'Name') {
+      const result = all.find((cementerio: any) => cementerio.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
+      if (result) {
+        setValor('El cementerio registrado es válido');
+      } else {
+        setValor('El cementerio registrado es inválido');
+      }
     }
   };
 
-  const changeB = (e: any) => {
-    if (e.target.value === 'Id') {
-      //(document.getElementById('radio') as HTMLElement).style.color = 'black';
-      (document.getElementById('exampleInputEmail4') as HTMLButtonElement).disabled = true;
-      (document.getElementById('exampleInputEmail3') as HTMLButtonElement).disabled = false;
-    } else if (e.target.value === 'Name') {
-      // (document.getElementById('radio2') as HTMLElement).style.color = 'black';
-      (document.getElementById('exampleInputEmail3') as HTMLButtonElement).disabled = true;
-      (document.getElementById('exampleInputEmail4') as HTMLButtonElement).disabled = false;
-    }
-  };
-
-  //=====================
-
-  //Funerarias
-
+  /**
+   * Funcionalidades relacionada con funeraria
+   **/
   const onClickViewFuneraria = async () => {
-    const all = await api.GetFunerarias();
-
-    const alldata = all.map((item: any) => {
-      setNROIDENT(item.NROIDENT);
-      setRAZON_S(item.RAZON_S);
-      return item;
-    });
-    showfModal();
-  };
-
-  const showfModal = () => {
-    setIsModalVisiblefuneraria(true);
-  };
-
-  const handlefCancel = () => {
-    setIsModalVisiblefuneraria(false);
+    showModalMortuary();
   };
 
   const onClickValidarfuneraria = async () => {
     const all = await api.GetFunerarias();
-    const result = all.find((cementerio: any) => cementerio.NROIDENT === parseInt(NROIDENT) || cementerio.RAZON_S === RAZON_S);
-    if (result) setValor('La funeraria registrada Es valida');
-    else setValor('La funeraria registrada es Invalida');
+
+    if (IdOrNameMortuary == 'Id') {
+      const result = all.find((funeraria: any) => funeraria.NROIDENT == parseInt(NROIDENT));
+      if (result) {
+        setValor('La funeraria registrada es válida');
+      } else {
+        setValor('La funeraria registrada es inválida');
+      }
+    } else if (IdOrNameMortuary == 'Name') {
+      const result = all.find((funeraria: any) => funeraria.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
+      if (result) {
+        setValor('La funeraria registrada es valida');
+      } else {
+        setValor('La funeraria registrada es invalida');
+      }
+    }
+  };
+
+  /**
+   * Control de tipo de busqueda de cementerio
+   **/
+  const changeRadioButtonGraveyard = (e: any) => {
+    setIdOrNameGraveyard(e.target.value);
+    if (e.target.value === 'Id') {
+      (document.getElementById('fieldSearchGraveyard2') as HTMLInputElement).disabled = true;
+      (document.getElementById('fieldSearchGraveyard2') as HTMLInputElement).value = '';
+      (document.getElementById('fieldSearchGraveyard1') as HTMLInputElement).disabled = false;
+    } else if (e.target.value === 'Name') {
+      (document.getElementById('fieldSearchGraveyard1') as HTMLInputElement).disabled = true;
+      (document.getElementById('fieldSearchGraveyard1') as HTMLInputElement).value = '';
+      (document.getElementById('fieldSearchGraveyard2') as HTMLInputElement).disabled = false;
+    }
+  };
+
+  /**
+   * Control de tipo de busqueda de funeraria
+   **/
+  const changeRadioButtonMortuary = (e: any) => {
+    setIdOrNameMortuary(e.target.value);
+    if (e.target.value === 'Id') {
+      (document.getElementById('fieldSearchMortuary2') as HTMLInputElement).disabled = true;
+      (document.getElementById('fieldSearchMortuary2') as HTMLInputElement).value = '';
+      (document.getElementById('fieldSearchMortuary1') as HTMLInputElement).disabled = false;
+    } else if (e.target.value === 'Name') {
+      (document.getElementById('fieldSearchMortuary1') as HTMLInputElement).disabled = true;
+      (document.getElementById('fieldSearchMortuary1') as HTMLInputElement).value = '';
+      (document.getElementById('fieldSearchMortuary2') as HTMLInputElement).disabled = false;
+    }
   };
 
   return (
@@ -363,25 +395,20 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       />
       <Modal
         title={<p className='text-center text-dark text-uppercase mb-0 titulo'>validación Cementerio</p>}
-        visible={isModalVisible}
-        onCancel={handleCancel}
+        visible={isModalVisibleGraveyard}
+        onCancel={handleCancelGraveyard}
         width={1000}
         okButtonProps={{ hidden: true }}
         cancelText='Cerrar'
       >
-        //==================================
         <div>
           <p>Buscar por:</p>
-          <Radio.Group onChange={changeA}>
-            <Radio.Button id='radio1' className='changeSearchType text-white' value='Id'>
-              No. Identificación
-            </Radio.Button>
-            <Radio.Button id='radio1' className='changeSearchType ml-3 text-white' value='Name'>
-              Nombre del Cementerio
-            </Radio.Button>
+          <Radio.Group onChange={changeRadioButtonGraveyard}>
+            <Radio value='Id'>No. Identificación</Radio>
+            <Radio value='Name'>Nombre del Cementerio</Radio>
           </Radio.Group>
         </div>
-        //===========================
+
         <div className='row'>
           <div className='col-lg-6'>
             <label htmlFor=''>Buscar Constante No. Identificación</label>
@@ -389,10 +416,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
               placeholder='Ingrese la constante de de identificación'
               type='text'
               className='form-control d-flex caja'
-              id='exampleInputEmail1'
-              aria-describedby='emailHelp '
-              value={NROIDENT}
-              name='firstName'
+              id='fieldSearchGraveyard1'
               onChange={(e) => setNROIDENT(e.target.value)}
               disabled={true}
             />
@@ -403,10 +427,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
               placeholder='Ingrese el nombre del cementerio'
               type='text'
               className='form-control d-flex caja'
-              id='exampleInputEmail2'
-              aria-describedby='emailHelp'
-              value={RAZON_S}
-              name='firstName'
+              id='fieldSearchGraveyard2'
               onChange={(e) => setRAZON_S(e.target.value)}
               disabled={true}
             />
@@ -419,30 +440,27 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
             </Form.Item>
           </div>
         </div>
-        {valor && <div className='alert text-center  text-white mt-4'> {valor}</div>}
+        <p id='messageGraveyard' className='text-center text-dark mt-4'>
+          {valor}
+        </p>
       </Modal>
 
       <Modal
         title={<p className='text-center text-dark text-uppercase mb-0 titulo'>validación Funeraria</p>}
-        visible={isModalVisiblef}
-        onCancel={handlefCancel}
+        visible={isModalVisibleMortuary}
+        onCancel={handleCancelMortuary}
         width={1000}
         okButtonProps={{ hidden: true }}
         cancelText='Cerrar'
       >
-        //=====================
         <div>
           <p>Buscar por:</p>
-          <Radio.Group onChange={changeB}>
-            <Radio.Button id='radio1' className='changeSearchType text-white' value='Id'>
-              No. Identificación
-            </Radio.Button>
-            <Radio.Button id='radio1' className='changeSearchType ml-3 text-white' value='Name'>
-              Nombre del Cementerio
-            </Radio.Button>
+          <Radio.Group onChange={changeRadioButtonMortuary}>
+            <Radio value='Id'>No. Identificación</Radio>
+            <Radio value='Name'>Nombre del Cementerio</Radio>
           </Radio.Group>
         </div>
-        //======================
+
         <div className='row'>
           <div className='col-lg-6'>
             <label htmlFor=''>Buscar Constante No. Identificación</label>
@@ -450,10 +468,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
               placeholder='Ingrese la constante de de identificación'
               type='text'
               className='form-control d-flex caja'
-              id='exampleInputEmail3'
-              aria-describedby='emailHelp '
-              value={NROIDENT}
-              name='firstName'
+              id='fieldSearchMortuary1'
               onChange={(e) => setNROIDENT(e.target.value)}
               disabled={true}
             />
@@ -464,10 +479,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
               placeholder='Ingrese el nombre del cementerio'
               type='text'
               className='form-control d-flex caja'
-              id='exampleInputEmail4'
-              aria-describedby='emailHelp'
-              value={RAZON_S}
-              name='firstName'
+              id='fieldSearchMortuary2'
               onChange={(e) => setRAZON_S(e.target.value)}
               disabled={true}
             />
@@ -480,7 +492,11 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
             </Form.Item>
           </div>
         </div>
-        {valor && <div className='alert text-center  text-white mt-4'> {valor}</div>}
+        {valor && (
+          <p id='messageMortuary' className='text-center text-dark mt-4'>
+            {valor}
+          </p>
+        )}
       </Modal>
     </>
   );
