@@ -409,16 +409,49 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       describe: <Button type='primary'>Consultar</Button>
     }
   ];
-  const newcolumn = [
+
+  const colorEstado = (estado: string) => {
+    switch (estado) {
+      case 'Aprobado validador de documentos':
+        return (
+          <p className={'estado'} style={{ color: 'green' }}>
+            {estado}
+          </p>
+        );
+      case 'Registro de Tramite Usuario Externo':
+        return (
+          <p className={'estado'} style={{ color: 'green' }}>
+            {estado}
+          </p>
+        );
+        break;
+      case 'Negado validador de documentos':
+        return (
+          <p className={'estado'} style={{ color: 'red' }}>
+            {estado}
+          </p>
+        );
+        break;
+      case 'Documentos Inconsistentes':
+        return (
+          <p className={'estado'} style={{ color: 'red' }}>
+            {estado}
+          </p>
+        );
+        break;
+    }
+  };
+  const columnFake = [
     {
-      title: 'Id tramite',
-      dataIndex: 'idTramite',
-      key: 'idTramite'
+      title: 'Nombres',
+      dataIndex: 'primerNombre',
+      key: 'primerNombre'
     },
+
     {
-      title: 'Usuario',
-      dataIndex: '',
-      key: 'idUsuarioSeguridad'
+      title: 'Apellidos',
+      dataIndex: 'primerApellido',
+      key: 'primerApellido'
     },
     {
       title: 'Fecha de registro',
@@ -427,8 +460,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     },
     {
       title: 'Estado',
-      dataIndex: 'estadoSolicitud',
-      key: 'estadoSolicitud'
+      dataIndex: 'estadoNuevo',
+      key: 'estadoNuevo',
+      render: (estado: string) => <> {colorEstado(estado)}</>
     },
 
     {
