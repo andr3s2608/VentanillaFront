@@ -39,7 +39,7 @@ const ModulePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onCancel = (): void => {};
+  const onCancel = (): void => { };
 
   return (
     <div className='fadeInTop container-fluid'>

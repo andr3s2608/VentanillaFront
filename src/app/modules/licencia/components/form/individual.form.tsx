@@ -194,7 +194,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           enBogota: values.funerariaLugar === 'Dentro de Bogotá',
           fueraBogota: values.funerariaLugar === 'Fuera de Bogotá',
           fueraPais: values.funerariaLugar === 'Fuera del País',
-          funeraria: values.funerariaBogota,
+          cementerio: values.funerariaBogota,
           otroSitio: values.otrofuneraria,
           ciudad: values.funerariaCiudad,
           idPais: values.funerariaPais,

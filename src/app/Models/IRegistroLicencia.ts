@@ -18,7 +18,7 @@ export interface Solicitud<T> {
   lugarDefuncion: LugarDefuncion;
   ubicacionPersona: UbicacionPersona;
   datosCementerio: DatosCementerio;
-  //datosFuneraria: DatosFuneraria;
+  datosFuneraria: DatosCementerio;
   resumenSolicitud: ResumenSolicitud;
   institucionCertificaFallecimiento: InstitucionCertificaFallecimiento;
   //documentosSoporte: DocumentosSoporte[];
@@ -38,10 +38,11 @@ export interface DatosCementerio {
 }
 
 export interface DatosFuneraria {
+  idDatosFuneraria?: string;
   enBogota: boolean;
   fueraBogota: boolean;
   fueraPais: boolean;
-  funeraria: string;
+  cementerio: string;
   otroSitio: string;
   ciudad: string;
   idPais: string;

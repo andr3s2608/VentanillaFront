@@ -50,13 +50,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
   };
   const onChangeDepartamento = async (value: string) => {
     props.form.setFieldsValue({ city: undefined });
-
-    const depart = await dominioService.get_departamentos_colombia();
-    let id = (await depart).filter((i) => i.idDepartamento == value);
-
-    let idmunicipio = id[0].idDepPai + '';
-
-    const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
+    const resp = await dominioService.get_municipios_by_departamento(value);
     setLMunicipios(resp);
   };
 
@@ -85,7 +79,12 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
         />
       </Form.Item>
 
-      <Form.Item label='Municipio Defunción' name='city' initialValue={obj?.city} rules={[{ required: isColombia }]}>
+      <Form.Item
+        label='Municipio Defunción'
+        name='city'
+        initialValue={obj?.city ? obj?.city : '31211657-3386-420a-8620-f9c07a8ca491'}
+        rules={[{ required: isColombia }]}
+      >
         <SelectComponent
           options={l_municipios}
           optionPropkey='idMunicipio'
