@@ -20,7 +20,6 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 
-
 const RegistroPage: React.FC<any> = (props) => {
   const history = useHistory();
   const [form] = Form.useForm<any>();
@@ -119,6 +118,10 @@ const RegistroPage: React.FC<any> = (props) => {
       };
       const resApi = await api.personaNatural(data);
       if (typeof resApi === 'number') {
+        await api.putUser({
+          oid: accountIdentifier,
+          idPersonaVentanilla: resApi
+        });
         await api.PostRolesUser({
           idUser: accountIdentifier,
           idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
@@ -127,9 +130,6 @@ const RegistroPage: React.FC<any> = (props) => {
         store.dispatch(SetGrid({ key: 'relaodMenu' }));
         history.push('/');
       }
-      /* if (typeof resApi === 'object') {
-        console.log('error');
-      } */
     }
   };
 
