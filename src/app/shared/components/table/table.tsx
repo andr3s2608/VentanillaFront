@@ -51,9 +51,13 @@ export const Gridview = (props: IDataSource) => {
       //arrayprueba.push(resp)
     }
   };
+  console.log(data);
+  console.log(nombre, 'nombre');
   var nombre = data.reduce((result, item) => {
     return `${result}${item.persona[0].primerNombre}|`;
   }, '');
+  console.log(nombre, 'nombre');
+
   var nombres = data.reduce((result, item) => {
     return `${result}${item.persona[0].segundoNombre}|`;
   }, '');
@@ -82,6 +86,7 @@ export const Gridview = (props: IDataSource) => {
 
     return cadena;
   };
+
   var identify = data.reduce((result, item) => {
     return `${result}${item.persona[0].numeroIdentificacion}|`;
   }, '');
@@ -149,11 +154,6 @@ export const Gridview = (props: IDataSource) => {
           <text>{identificacion()}</text>
         </Form.Item>
       )
-    },
-    {
-      title: 'Correo',
-      dataIndex: '',
-      key: 'correo'
     },
     {
       title: 'Fecha de Registro',

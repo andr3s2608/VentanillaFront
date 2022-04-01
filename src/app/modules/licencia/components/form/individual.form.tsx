@@ -189,20 +189,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           idDepartamento: values.cementerioDepartamento,
           idMunicipio: values.cementerioMunicipio
         },
-        /*
+
         datosFuneraria: {
           enBogota: values.funerariaLugar === 'Dentro de Bogotá',
           fueraBogota: values.funerariaLugar === 'Fuera de Bogotá',
           fueraPais: values.funerariaLugar === 'Fuera del País',
-          cementerio: values.funerariaBogota,
+          funeraria: values.funerariaBogota,
           otroSitio: values.otrofuneraria,
           ciudad: values.funerariaCiudad,
           idPais: values.funerariaPais,
           idDepartamento: values.funerariaDepartamento,
-          idMunicipio: values.funerariaMunicipio,
-
+          idMunicipio: values.funerariaMunicipio
         },
-*/
+
         resumenSolicitud: {
           correoCementerio: values.emailcementerio,
           correoFuneraria: values.emailfuneraria,
