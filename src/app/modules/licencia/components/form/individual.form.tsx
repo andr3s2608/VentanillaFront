@@ -129,7 +129,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             segundoNombre: values.secondName,
             primerApellido: values.surname,
             segundoApellido: values.secondSurname,
-            fechaNacimiento: null,
+            fechaNacimiento: values.dateOfBirth,
             nacionalidad: values.nationalidad[0],
             otroParentesco: null,
             idEstadoCivil: values.civilStatus,

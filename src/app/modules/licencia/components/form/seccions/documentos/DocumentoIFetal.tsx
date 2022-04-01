@@ -340,30 +340,32 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
           )}
         </>
       )}
-
-      {files?.length ? (
-        <Form.Item label='Otros' name='fileCCFallecido' valuePropName='fileList' rules={[{ required: false }]}>
-          <Button
-            type='default'
-            shape='round'
-            style={{ marginRight: '10px' }}
-            icon={<EyeOutlined />}
-            size='middle'
-            onClick={() => onEventFile(nameFileType)}
-            disabled={isFileViwerDisabled(nameFileType)}
-          >{`${nameFileType}.pdf`}</Button>
-        </Form.Item>
-      ) : null}
-
-      <Form.Item label='Otros' name='fileCCFallecido' valuePropName='fileList' getValueFromEvent={normFile}>
-        <Upload name='fileCCFallecido' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
     </>
   );
 };
+/*
+{
+  files?.length ? (
+    <Form.Item label='Otros' name='fileCCFallecido' valuePropName='fileList' rules={[{ required: false }]}>
+      <Button
+        type='default'
+        shape='round'
+        style={{ marginRight: '10px' }}
+        icon={<EyeOutlined />}
+        size='middle'
+        onClick={() => onEventFile(nameFileType)}
+        disabled={isFileViwerDisabled(nameFileType)}
+      >{`${nameFileType}.pdf`}</Button>
+    </Form.Item>
+  ) : null;
+}
 
+<Form.Item label='Otros' name='fileCCFallecido' valuePropName='fileList' getValueFromEvent={normFile}>
+  <Upload name='fileCCFallecido' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+    <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+  </Upload>
+</Form.Item>;
+*/
 interface IDocumentForm<T> {
   form: FormInstance<T>;
   tipoLicencia: TypeLicencia;
