@@ -44,12 +44,20 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
   //#endregion
 
   const [isColombia, setIsColombia] = useState(true);
+  const [isBogota, setIsBogota] = useState(false);
   const onChangePais = (value: string) => {
     setIsColombia(value === idColombia);
+
     props.form.setFieldsValue({ state: undefined, city: undefined });
   };
   const onChangeDepartamento = async (value: string) => {
     props.form.setFieldsValue({ city: undefined });
+    console.log(value);
+    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') setIsBogota(false);
+    else {
+      setIsBogota(true);
+    }
+
     const resp = await dominioService.get_municipios_by_departamento(value);
     setLMunicipios(resp);
   };
@@ -85,12 +93,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
         initialValue={obj?.city ? obj?.city : '31211657-3386-420a-8620-f9c07a8ca491'}
         rules={[{ required: isColombia }]}
       >
-        <SelectComponent
-          options={l_municipios}
-          optionPropkey='idMunicipio'
-          optionPropLabel='descripcion'
-          disabled={!isColombia}
-        />
+        <SelectComponent options={l_municipios} optionPropkey='idMunicipio' optionPropLabel='descripcion' disabled={!isBogota} />
       </Form.Item>
 
       <Form.Item
