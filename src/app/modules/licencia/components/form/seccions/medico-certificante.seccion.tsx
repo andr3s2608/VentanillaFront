@@ -45,7 +45,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   const primerapellido = obj?.medicalSignatureSurname;
   const segundoapellido = obj?.medicalSignatureSecondSurname;
   const profesional = obj?.medicalSignatureProfesionalType;
-  const email = obj?.emailmedicalSignature;
+  //const email = obj?.emailmedicalSignature;
 
   const data = [
     {
@@ -79,10 +79,6 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
     {
       title: 'Segundo Apellido',
       describe: segundoapellido
-    },
-    {
-      title: 'Email',
-      describe: email
     },
     {
       title: 'Tipo Profesion',

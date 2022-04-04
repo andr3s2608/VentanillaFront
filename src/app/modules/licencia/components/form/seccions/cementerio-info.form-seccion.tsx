@@ -221,75 +221,19 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   };
 
   const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
-    switch (_lugar) {
-      case 'Fuera de Bogotá':
-        return (
-          <div className='fadeInRight'>
-            <Form.Item
-              label='Departamento de Colombia'
-              name='funerariaDepartamento'
-              rules={[{ required: true }]}
-              initialValue={obj?.cementerioDepartamento}
-            >
-              <SelectComponent
-                options={l_departamentos_colombia.filter((i) => i.descripcion !== 'BOGOTÁ D.C.')}
-                optionPropkey='idDepartamento'
-                optionPropLabel='descripcion'
-                onChange={onChangeDepartamentoFuneraria}
-              />
-            </Form.Item>
-            <Form.Item
-              label='Municipio'
-              name='funerariaMunicipio'
-              initialValue={obj?.cementerioMunicipio}
-              rules={[{ required: true }]}
-            >
-              <SelectComponent
-                options={l_municipiosfunerarias}
-                optionPropkey='idMunicipio'
-                optionPropLabel='descripcion'
-                onChange={onChangeMunicipioFuneraria}
-              />
-            </Form.Item>
-            {isMunicipio.departament === cundinamarca && (isMunicipio.municipio === cota || isMunicipio.municipio === soacha) && (
-              <Form.Item label='Otro sitio funeraria' name='otrofuneraria' rules={[{ required: true }]} initialValue={obj?.otro}>
-                <Input allowClear placeholder='Otro Sitio' autoComplete='off' />
-              </Form.Item>
-            )}
-          </div>
-        );
-
-      case 'Fuera del País':
-        return (
-          <div className='fadeInRight'>
-            <Form.Item label='País' name='funerariaPais' rules={[{ required: true }]} initialValue={obj?.cementerioPais}>
-              <SelectComponent
-                options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
-                optionPropkey='descripcion  '
-                optionPropLabel='descripcion'
-              />
-            </Form.Item>
-            <Form.Item label='Ciudad' name='funerariaCiudad' initialValue={obj?.cementerioCiudad} rules={[{ required: true }]}>
-              <Input allowClear placeholder='Ciudad' autoComplete='off' />
-            </Form.Item>
-          </div>
-        );
-
-      default:
-        return (
-          <>
-            <Form.Item
-              className='fadeInRight'
-              label='Funeraria de Bogotá D.C.'
-              name='funerariaBogota'
-              initialValue={obj?.cementerioBogota}
-              rules={[{ required: true }]}
-            >
-              <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-            </Form.Item>
-          </>
-        );
-    }
+    return (
+      <>
+        <Form.Item
+          className='fadeInRight'
+          label='Funeraria de Bogotá D.C.'
+          name='funerariaBogota'
+          initialValue={obj?.cementerioBogota}
+          rules={[{ required: true }]}
+        >
+          <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+        </Form.Item>
+      </>
+    );
   };
 
   return (
@@ -320,15 +264,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           name='funerariaLugar'
           initialValue={obj?.isLugar() ?? 'Dentro de Bogotá'}
           rules={[{ required: true }]}
-        >
-          <Radio.Group onChange={onChangeLugarFuneraria}>
-            <Radio value='Dentro de Bogotá'>DENTRO DE BOGOTÁ</Radio>
-            <br />
-            <Radio value='Fuera de Bogotá'>FUERA DE BOGOTÁ</Radio>
-            <br />
-            <Radio value='Fuera del País'>FUERA DEL PAÍS</Radio>
-          </Radio.Group>
-        </Form.Item>
+        ></Form.Item>
         {renderFormFuneria(lugarfuneraria)}
       </div>
 
@@ -359,4 +295,4 @@ interface ICementerioInfoProps<T> extends ITipoLicencia {
 }
 
 type TypeLugarCementerio = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';
-type TypeLugarFuneraria = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';
+type TypeLugarFuneraria = 'Dentro de Bogotá';

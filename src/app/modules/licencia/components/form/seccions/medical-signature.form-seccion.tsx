@@ -100,11 +100,8 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       >
         <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Email' initialValue={obj?.emailmedicalSignature ?? null} name='emailmedicalSignature'>
-        <Input allowClear placeholder='Email' autoComplete='off' />
-      </Form.Item>
       <Form.Item
-        label='Tipo Profesional que Certifica la Muerte'
+        label='Medico'
         name='medicalSignatureProfesionalType'
         initialValue={obj?.medicalSignatureProfesionalType ?? '36ee9c22-30a7-4c29-8bd1-fb508ea01780'}
         rules={[{ required: true }]}

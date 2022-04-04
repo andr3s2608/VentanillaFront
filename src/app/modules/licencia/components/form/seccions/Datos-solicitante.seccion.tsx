@@ -56,7 +56,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
     //Relacionado con el solicitante
-    const resumensolicitud = await api.GetResumenSolicitud('0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
+    const resumensolicitud = await api.GetResumenSolicitud('ACF323FE-181C-4039-876D-07695F363C3C');
     var tipoidsolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
       return `${result}${item.tipoDocumentoSolicitante}`;
     }, '');
@@ -95,15 +95,16 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     ////////////////////////
     const Funerarias = await api.GetFunerariasAzure('593E8100-80D2-4CC4-9286-06229E3811BA');
 
-    var lugarfuneraria = Funerarias.reduce((result: any, item: any) => {
-      return `${result}${item.funeraria}`;
-    }, '');
-    setlugarfuneraria(lugarfuneraria);
-
     var funeraria = Funerarias.reduce((result: any, item: any) => {
       return `${result}${item.funeraria}`;
     }, '');
     setfuneraria(funeraria);
+
+    /*
+    var lugarfuneraria = Funerarias.reduce((result: any, item: any) => {
+      return `${result}${item.funeraria}`;
+    }, '');
+    setlugarfuneraria(lugarfuneraria);
 
     var paisfuneraria = Funerarias.reduce((result: any, item: any) => {
       return `${result}${item.idPais}`;
@@ -119,7 +120,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       return `${result}${item.idDepartamento}`;
     }, '');
     setdepartamentofuneraria(departamentofuneraria);
-
+*/
     setListas(resp);
   }, []);
 
@@ -128,11 +129,11 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const lugarcementerio = obj?.isLugar;
+  // const lugarcementerio = obj?.isLugar;
   const cementerio = obj?.cementerioLugar;
-  const municipiocementerio = obj?.cementerioMunicipio;
-  const departamentocementerio = obj?.cementerioDepartamento;
-  const paiscementerio = obj?.cementerioPais;
+  //const municipiocementerio = obj?.cementerioMunicipio;
+  //const departamentocementerio = obj?.cementerioDepartamento;
+  //const paiscementerio = obj?.cementerioPais;
 
   //#endregion
 
@@ -169,54 +170,16 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const cementerios = [
     {
-      title: 'Lugar Cementerio.',
-      describe: lugarcementerio
-    },
-    {
       title: 'Cementerio',
       describe: cementerio
     },
     {
       title: 'Email Cementerio',
       describe: emailcementerio
-    },
-    {
-      title: 'País cementerio',
-      describe: (
-        <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' value={paiscementerio} disabled />
-      )
-    },
-    {
-      title: 'Departamento Cementerio',
-      describe: (
-        <SelectComponent
-          options={l_departamento}
-          optionPropkey='idDepartamento'
-          optionPropLabel='descripcion'
-          value={departamentocementerio}
-          disabled
-        />
-      )
-    },
-    {
-      title: 'Municipio Cementerio',
-      describe: (
-        <SelectComponent
-          options={l_municipios}
-          optionPropkey='idMunicipio'
-          optionPropLabel='descripcion'
-          value={municipiocementerio}
-          disabled
-        />
-      )
     }
   ];
 
   const funerarias = [
-    {
-      title: 'Lugar funeraria.',
-      describe: lugarfuneraria
-    },
     {
       title: 'Funeraria',
       describe: funeraria
@@ -224,36 +187,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     {
       title: 'Email funeraria',
       describe: emailfuneraria
-    },
-    {
-      title: 'País funeraria',
-      describe: (
-        <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' value={paisfuneraria} disabled />
-      )
-    },
-    {
-      title: 'Departamento funeraria',
-      describe: (
-        <SelectComponent
-          options={l_departamento}
-          optionPropkey='idDepartamento'
-          optionPropLabel='descripcion'
-          value={departamentofuneraria}
-          disabled
-        />
-      )
-    },
-    {
-      title: 'Municipio funeraria',
-      describe: (
-        <SelectComponent
-          options={l_municipios}
-          optionPropkey='idMunicipio'
-          optionPropLabel='descripcion'
-          value={municipiofuneraria}
-          disabled
-        />
-      )
     }
   ];
 
@@ -527,3 +460,94 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   );
 };
 export const KeysForm = ['certificatenumber'];
+/*
+  const cementerios = [
+    {
+      title: 'Lugar Cementerio.',
+      describe: lugarcementerio
+    },
+    {
+      title: 'Cementerio',
+      describe: cementerio
+    },
+    {
+      title: 'Email Cementerio',
+      describe: emailcementerio
+    },
+    {
+      title: 'País cementerio',
+      describe: (
+        <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' value={paiscementerio} disabled />
+      )
+    },
+    {
+      title: 'Departamento Cementerio',
+      describe: (
+        <SelectComponent
+          options={l_departamento}
+          optionPropkey='idDepartamento'
+          optionPropLabel='descripcion'
+          value={departamentocementerio}
+          disabled
+        />
+      )
+    },
+    {
+      title: 'Municipio Cementerio',
+      describe: (
+        <SelectComponent
+          options={l_municipios}
+          optionPropkey='idMunicipio'
+          optionPropLabel='descripcion'
+          value={municipiocementerio}
+          disabled
+        />
+      )
+    }
+  ];
+
+  const funerarias = [
+    {
+      title: 'Lugar funeraria.',
+      describe: lugarfuneraria
+    },
+    {
+      title: 'Funeraria',
+      describe: funeraria
+    },
+    {
+      title: 'Email funeraria',
+      describe: emailfuneraria
+    },
+    {
+      title: 'País funeraria',
+      describe: (
+        <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' value={paisfuneraria} disabled />
+      )
+    },
+    {
+      title: 'Departamento funeraria',
+      describe: (
+        <SelectComponent
+          options={l_departamento}
+          optionPropkey='idDepartamento'
+          optionPropLabel='descripcion'
+          value={departamentofuneraria}
+          disabled
+        />
+      )
+    },
+    {
+      title: 'Municipio funeraria',
+      describe: (
+        <SelectComponent
+          options={l_municipios}
+          optionPropkey='idMunicipio'
+          optionPropLabel='descripcion'
+          value={municipiofuneraria}
+          disabled
+        />
+      )
+    }
+  ];
+  */

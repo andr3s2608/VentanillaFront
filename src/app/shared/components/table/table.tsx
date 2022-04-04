@@ -21,6 +21,7 @@ export const Gridview = (props: IDataSource) => {
   const [solicitud, setSolicitud] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
   const [Validacion, setValidacion] = useState<string | undefined>();
+  const Paginas: number = 10;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [dataTable, setDataTable] = useState<[]>();
@@ -29,10 +30,7 @@ export const Gridview = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
 
-      console.log(resp, 'usuario');
       setroles(mysRoles);
       setValidacion('1');
     },
@@ -49,50 +47,65 @@ export const Gridview = (props: IDataSource) => {
   }, []);
 
   const [Tipo] = roles;
-  console.log(data);
-  if (Validacion == '1') {
-    console.log(roles, 'roles');
+  console.log(data, 'data');
+
+  var nombre: any;
+  var apellido: any;
+  var nombres: any;
+  var apellidos: any;
+  var identify: any;
+  var tipotramite: any;
+  const Renovar = (datos: any) => {
+    if (datos == undefined) {
+      datos = data;
+    }
 
     if (Tipo.rol == 'Ciudadano') {
-      var nombre = data.reduce((result, item) => {
+      nombre = datos.reduce((result: any, item: { nombre: any }) => {
         return `${result}${item.nombre}|`;
       }, '');
-      var apellido = data.reduce((result, item) => {
+
+      apellido = datos.reduce((result: any, item: { apellido: any }) => {
         return `${result}${item.apellido}|`;
       }, '');
 
-      var identify = data.reduce((result, item) => {
+      identify = datos.reduce((result: any, item: { numeroIdentificacion: any }) => {
         return `${result}${item.numeroIdentificacion}|`;
       }, '');
-      var tipotramite = data.reduce((result, item) => {
+      tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
         return `${result}${item.tramite}|`;
       }, '');
     } else {
       console.log(data);
       console.log(nombre, 'nombre');
-      var nombre = data.reduce((result, item) => {
+      nombre = datos.reduce((result: any, item: { persona: { primerNombre: any }[] }) => {
         return `${result}${item.persona[0].primerNombre}|`;
       }, '');
       console.log(nombre, 'nombre');
 
-      var nombres = data.reduce((result, item) => {
+      nombres = datos.reduce((result: any, item: { persona: { segundoNombre: any }[] }) => {
         return `${result}${item.persona[0].segundoNombre}|`;
       }, '');
-      var apellido = data.reduce((result, item) => {
+      apellido = datos.reduce((result: any, item: { persona: { primerApellido: any }[] }) => {
         return `${result}${item.persona[0].primerApellido}|`;
       }, '');
-      var apellidos = data.reduce((result, item) => {
+      apellidos = datos.reduce((result: any, item: { persona: { segundoApellido: any }[] }) => {
         return `${result}${item.persona[0].segundoApellido}|`;
       }, '');
 
-      var identify = data.reduce((result, item) => {
+      identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
         return `${result}${item.persona[0].numeroIdentificacion}|`;
       }, '');
 
-      var tipotramite = data.reduce((result, item) => {
+      tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
         return `${result}${item.idTramite}|`;
       }, '');
     }
+  };
+
+  if (Validacion == '1') {
+    console.log(roles, 'roles');
+    Renovar(undefined);
   }
 
   const nombrecompleto = () => {
@@ -303,15 +316,27 @@ export const Gridview = (props: IDataSource) => {
     }
   };
   const onPageChange = (pagination: any) => {
-    //projectId = this.props.match.params;
     //alert(pagination.current);
+    console.log('data', data);
+
+    var valor: any = data.at(0);
+    var array: any[] = [];
+    for (let index = 0; index < data.length; index++) {
+      if (index >= (pagination.current - 1) * 10) {
+        valor = data.at(index);
+        array.push(valor);
+        console.log(array, 'array');
+      }
+    }
+
+    Renovar(array);
   };
 
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
         //
-        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: 3 }} onChange={onPageChange} />
+        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} onChange={onPageChange} />
       </div>
     </div>
   );

@@ -340,6 +340,25 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
           )}
         </>
       )}
+      {files?.length ? (
+        <Form.Item label='Otros' name='otros' valuePropName='fileList' rules={[{ required: false }]}>
+          <Button
+            type='default'
+            shape='round'
+            style={{ marginRight: '10px' }}
+            icon={<EyeOutlined />}
+            size='middle'
+            onClick={() => onEventFile('Otros')}
+            disabled={isFileViwerDisabled(nameFileType)}
+          >{`${'otros'}.pdf`}</Button>
+        </Form.Item>
+      ) : null}
+
+      <Form.Item label='Otros' name='fileotros' valuePropName='fileList' getValueFromEvent={normFile}>
+        <Upload name='fileotros' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+        </Upload>
+      </Form.Item>
     </>
   );
 };

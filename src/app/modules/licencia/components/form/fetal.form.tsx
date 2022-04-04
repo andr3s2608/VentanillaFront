@@ -284,9 +284,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         },
 
         datosFuneraria: {
-          enBogota: values.funerariaLugar === 'Dentro de Bogotá',
-          fueraBogota: values.funerariaLugar === 'Fuera de Bogotá',
-          fueraPais: values.funerariaLugar === 'Fuera del País',
+          enBogota: true,
+          fueraBogota: false,
+          fueraPais: false,
           funeraria: values.funerariaBogota,
           otroSitio: values.otrofuneraria,
           ciudad: values.funerariaCiudad,
@@ -303,7 +303,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           nombreSolicitante: values.namesolicitudadd,
           apellidoSolicitante: values.lastnamesolicitudadd,
           correoSolicitante: values.emailsolicitudadd,
-          correoMedico: values.emailmedicalSignature
+          correoMedico: ''
         },
         institucionCertificaFallecimiento: {
           idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,

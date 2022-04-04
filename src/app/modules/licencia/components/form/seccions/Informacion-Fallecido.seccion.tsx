@@ -52,9 +52,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const segundonombre = obj?.secondName;
   const primerapellido = obj?.surname;
   const segundoapellido = obj?.secondSurname;
-  const departamento = obj?.state;
-  const municipio = obj?.city;
-  const regimen = obj?.regime;
+  //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
   const tipo = obj?.deathType ?? '475c280d-67af-47b0-a8bc-de420f6ac740';
 
@@ -93,10 +91,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       title: 'No. Identificacion.',
       describe: idfallecido
     },
-    {
-      title: 'Regimen',
-      describe: <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' value={regimen} disabled />
-    },
+
     {
       title: 'Tipo de Muerte',
       describe: <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' value={tipo} disabled />
