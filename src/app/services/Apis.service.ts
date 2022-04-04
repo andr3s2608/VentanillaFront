@@ -78,9 +78,10 @@ export class ApiService {
 
   postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload, id: '0' });
 
-  postprueba = (payload: any) => post({ endpoint: environments.local, url: 'Request/AddRquest', payload, id: '0' });
+  postprueba = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload, id: '0' });
 
-  AddGestion = (payload: any, id: string) => post({ endpoint: environments.local, url: 'Request/AddGestion', payload, id });
+  AddGestion = (payload: any, id: string) =>
+    post({ endpoint: environments.inhcremacion, url: 'Request/AddGestion', payload, id });
 
   putLicencia = (payload: any) => put({ endpoint: environments.inhcremacion, url: 'Request/UpdateRequest', payload, id: '0' });
 
@@ -101,15 +102,16 @@ export class ApiService {
   GetEstadoSolicitud = () =>
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${this.oid}`, id: '0' });
 
- GetEstadoSolicitudNuevo = () => get<[]>({ endpoint: environments.local, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
+  GetEstadoSolicitudNuevo = () =>
+    get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
   GetResumenSolicitud = (solicitud: string) =>
-    get<any>({ endpoint: environments.local, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
+    get<any>({ endpoint: environments.inhcremacion, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
   GetFunerariasAzure = (solicitud: string) =>
-    get<any>({ endpoint: environments.local, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
+    get<any>({ endpoint: environments.inhcremacion, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
   getallbyEstado = (solicitud: string) =>
-    get<[]>({ endpoint: environments.local, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
+    get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
   AddSupportDocuments = (payload: any[]) =>
     post({
@@ -186,7 +188,7 @@ export class ApiService {
 
   GetSolicitud = (solicitud: string) =>
     get<any>({
-      endpoint: environments.local,
+      endpoint: environments.inhcremacion,
       url: `Request/GetAllRequestByIdSolicitud/${solicitud}`,
       id: '0'
     });

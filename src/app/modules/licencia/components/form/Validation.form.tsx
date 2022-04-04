@@ -132,10 +132,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const onSubmit = async (values: any) => {
     let tipoSeguimiento: string = values.validFunctionaltype;
     let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-    let resumenSolicitud = await api.GetResumenSolicitud(/*objJosn?.idSolicitud*/ '0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
+    let resumenSolicitud = await api.GetResumenSolicitud(/*objJosn?.idSolicitud*/ 'ACF323FE-181C-4039-876D-07695F363C3C');
     //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
 
-    let funeraria = await api.GetFunerariasAzure(/*objJosn?.idSolicitud*/ 'A32094AD-45C1-458B-B9C0-D036550BEECD');
+    let funeraria = await api.GetFunerariasAzure(/*objJosn?.idSolicitud*/ '593E8100-80D2-4CC4-9286-06229E3811BA');
+    console.log(funeraria, 'funerariaaaaa');
     console.log(funeraria[0]['funeraria']);
 
     let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
@@ -144,8 +145,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let date = new Date();
     let emailSolicitante = resumenSolicitud[0]['correoSolicitante'];
 
-    console.log(solicitud);
-    console.log(resumenSolicitud);
+    console.log(solicitud, 'solicitud');
+    console.log(resumenSolicitud[0]['correoSolicitante'], 'resumen solicitud');
 
     if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
       //alert('aprobacion');

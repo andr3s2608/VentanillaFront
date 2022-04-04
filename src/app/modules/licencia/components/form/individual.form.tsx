@@ -52,6 +52,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
+  const [sex, setSex] = useState<[]>([]);
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
   const [supports, setSupports] = useState<any[]>([]);
@@ -76,7 +77,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Regimen),
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
-
+      const sexo = await api.GetSexo();
+      setSex(sexo);
       const userres = await api.getCodeUser();
       setUser(userres);
       setListas(resp);
@@ -490,6 +492,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               initialValue={objJosn?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}
             >
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+            <Form.Item label='Sexo' name='genero' rules={[{ required: true }]}>
+              <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
             </Form.Item>
             <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />

@@ -257,16 +257,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         </Form.Item>
         {renderForm(lugar)}
       </div>
-      <div>
-        <Form.Item
-          className='mb-4'
-          label='Lugar de la Funeraria'
-          name='funerariaLugar'
-          initialValue={obj?.isLugar() ?? 'Dentro de Bogotá'}
-          rules={[{ required: true }]}
-        ></Form.Item>
-        {renderFormFuneria(lugarfuneraria)}
-      </div>
+      <div>{renderFormFuneria(lugarfuneraria)}</div>
 
       <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true }]}>
         <Input allowClear placeholder='Email Cementerio' autoComplete='off' />
