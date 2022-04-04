@@ -340,8 +340,11 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
           )}
         </>
       )}
-
-      {files?.length ? (
+    </>
+  );
+};
+/*
+{files?.length ? (
         <Form.Item label='Otros' name='fileCCFallecido' valuePropName='fileList' rules={[{ required: false }]}>
           <Button
             type='default'
@@ -360,10 +363,7 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
       </Form.Item>
-    </>
-  );
-};
-
+*/
 interface IDocumentForm<T> {
   form: FormInstance<T>;
   tipoLicencia: TypeLicencia;

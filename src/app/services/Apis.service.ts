@@ -101,6 +101,8 @@ export class ApiService {
   GetEstadoSolicitud = () =>
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${this.oid}`, id: '0' });
 
+ GetEstadoSolicitudNuevo = () => get<[]>({ endpoint: environments.local, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
+
   GetResumenSolicitud = (solicitud: string) =>
     get<any>({ endpoint: environments.local, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
   GetFunerariasAzure = (solicitud: string) =>

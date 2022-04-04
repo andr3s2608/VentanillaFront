@@ -135,6 +135,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let resumenSolicitud = await api.GetResumenSolicitud(/*objJosn?.idSolicitud*/ '0CFEB91D-7940-46C5-82DC-5D7DF7EE1188');
     //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
 
+    let funeraria = await api.GetFunerariasAzure(/*objJosn?.idSolicitud*/ 'A32094AD-45C1-458B-B9C0-D036550BEECD');
+    console.log(funeraria[0]['funeraria']);
+
     let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
     let idTramite = objJosn?.idTramite;
     let cementerio = solicitud[0]['datosCementerio']['cementerio'];
@@ -172,7 +175,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
       let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
       let datosDinamicosFuneraria = [
-        cementerio,
+        funeraria[0]['funeraria'],
         resumenSolicitud[0]['numeroLicencia'],
         date.toLocaleDateString(),
         getDescripcionTramite(idTramite.toLocaleUpperCase()),

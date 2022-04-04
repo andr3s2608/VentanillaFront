@@ -20,6 +20,7 @@ export const Gridview = (props: IDataSource) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [solicitud, setSolicitud] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
+  const [Validacion, setValidacion] = useState<string | undefined>();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [dataTable, setDataTable] = useState<[]>();
@@ -28,7 +29,12 @@ export const Gridview = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
+      const idUser = await api.getCodeUser();
+      const resp = await api.GetInformationUser(idUser);
+
+      console.log(resp, 'usuario');
       setroles(mysRoles);
+      setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -41,91 +47,127 @@ export const Gridview = (props: IDataSource) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  var numero = 0;
 
-  const traerdatos = async ({ idSolicitud }: { [x: string]: string }) => {
-    if (numero == 0) {
-      const data = await api.getLicencia(idSolicitud);
-      const { idTramite } = data[0];
+  const [Tipo] = roles;
+  console.log(data);
+  if (Validacion == '1') {
+    console.log(roles, 'roles');
 
-      //arrayprueba.push(resp)
+    if (Tipo.rol == 'Ciudadano') {
+      var nombre = data.reduce((result, item) => {
+        return `${result}${item.nombre}|`;
+      }, '');
+      var apellido = data.reduce((result, item) => {
+        return `${result}${item.apellido}|`;
+      }, '');
+
+      var identify = data.reduce((result, item) => {
+        return `${result}${item.numeroIdentificacion}|`;
+      }, '');
+      var tipotramite = data.reduce((result, item) => {
+        return `${result}${item.tramite}|`;
+      }, '');
+    } else {
+      console.log(data);
+      console.log(nombre, 'nombre');
+      var nombre = data.reduce((result, item) => {
+        return `${result}${item.persona[0].primerNombre}|`;
+      }, '');
+      console.log(nombre, 'nombre');
+
+      var nombres = data.reduce((result, item) => {
+        return `${result}${item.persona[0].segundoNombre}|`;
+      }, '');
+      var apellido = data.reduce((result, item) => {
+        return `${result}${item.persona[0].primerApellido}|`;
+      }, '');
+      var apellidos = data.reduce((result, item) => {
+        return `${result}${item.persona[0].segundoApellido}|`;
+      }, '');
+
+      var identify = data.reduce((result, item) => {
+        return `${result}${item.persona[0].numeroIdentificacion}|`;
+      }, '');
+
+      var tipotramite = data.reduce((result, item) => {
+        return `${result}${item.idTramite}|`;
+      }, '');
     }
-  };
-  var nombre = data.reduce((result, item) => {
-    return `${result}${item.persona[0].primerNombre}|`;
-  }, '');
-  var nombres = data.reduce((result, item) => {
-    return `${result}${item.persona[0].segundoNombre}|`;
-  }, '');
-  var apellido = data.reduce((result, item) => {
-    return `${result}${item.persona[0].primerApellido}|`;
-  }, '');
-  var apellidos = data.reduce((result, item) => {
-    return `${result}${item.persona[0].segundoApellido}|`;
-  }, '');
+  }
+
   const nombrecompleto = () => {
     const posicioninicial = 0;
 
-    var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
-    nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
+    if (Tipo.rol == 'Ciudadano') {
+      var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
+      nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
 
-    var segundonombre = nombres.substring(posicioninicial, nombres.indexOf('|'));
-    nombres = nombres.substring(nombres.indexOf('|') + 1, nombres.length);
+      var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
+      apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
+      var cadena = primernombre + ' ' + primerapellido;
 
-    var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
-    apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
+      return cadena;
+    } else {
+      var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
+      nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
 
-    var segundoapellido = apellidos.substring(posicioninicial, apellidos.indexOf('|'));
-    apellidos = apellidos.substring(apellidos.indexOf('|') + 1, apellidos.length);
+      var segundonombre = nombres.substring(posicioninicial, nombres.indexOf('|'));
+      nombres = nombres.substring(nombres.indexOf('|') + 1, nombres.length);
 
-    var cadena = primernombre + ' ' + segundonombre + ' ' + primerapellido + ' ' + segundoapellido;
+      var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
+      apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
 
-    return cadena;
+      var segundoapellido = apellidos.substring(posicioninicial, apellidos.indexOf('|'));
+      apellidos = apellidos.substring(apellidos.indexOf('|') + 1, apellidos.length);
+
+      var cadena = primernombre + ' ' + segundonombre + ' ' + primerapellido + ' ' + segundoapellido;
+
+      return cadena;
+    }
   };
-  var identify = data.reduce((result, item) => {
-    return `${result}${item.persona[0].numeroIdentificacion}|`;
-  }, '');
 
   const identificacion = () => {
     const posicioninicial = 0;
-
     var nroidentificacion = identify.substring(posicioninicial, identify.indexOf('|'));
     identify = identify.substring(identify.indexOf('|') + 1, identify.length);
     return nroidentificacion;
   };
 
-  var tipotramite = data.reduce((result, item) => {
-    return `${result}${item.idTramite}|`;
-  }, '');
-
   const tiposolicitud = () => {
-    const posicioninicial = 0;
-    var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
-    tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
-    var valor = '';
+    if (Tipo.rol == 'Funcionario') {
+      const posicioninicial = 0;
+      var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
+      tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
+      var valor = '';
 
-    switch (idTramite) {
-      case 'a289c362-e576-4962-962b-1c208afa0273':
-        valor = 'Inhumacion Indivual';
+      switch (idTramite) {
+        case 'a289c362-e576-4962-962b-1c208afa0273':
+          valor = 'Inhumacion Indivual';
 
-        break;
-      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-        //inhumacion fetal
-        valor = 'Inhumacion Fetal';
+          break;
+        case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+          //inhumacion fetal
+          valor = 'Inhumacion Fetal';
 
-        break;
-      case 'e69bda86-2572-45db-90dc-b40be14fe020':
-        //cremacion individual
-        valor = 'Cremacion Individual';
+          break;
+        case 'e69bda86-2572-45db-90dc-b40be14fe020':
+          //cremacion individual
+          valor = 'Cremacion Individual';
 
-        break;
-      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-        //cremacionfetal
-        valor = 'Cremacion Fetal ';
+          break;
+        case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+          //cremacionfetal
+          valor = 'Cremacion Fetal ';
 
-        break;
+          break;
+      }
+      return valor;
+    } else {
+      const posicioninicial = 0;
+      var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
+      tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
+      return idTramite;
     }
-    return valor;
   };
 
   const tramite = 'En tramite';
@@ -151,11 +193,6 @@ export const Gridview = (props: IDataSource) => {
       )
     },
     {
-      title: 'Correo',
-      dataIndex: '',
-      key: 'correo'
-    },
-    {
       title: 'Fecha de Registro',
       dataIndex: 'fechaSolicitud',
       key: 'fechaSolicitud'
@@ -172,7 +209,7 @@ export const Gridview = (props: IDataSource) => {
     },
     {
       title: 'Tipo Solicitud',
-      dataIndex: '',
+      dataIndex: 'tramite',
       key: 'tipoSolicitud',
       render: (Text: string) => (
         <Form.Item label='' name=''>
@@ -265,12 +302,16 @@ export const Gridview = (props: IDataSource) => {
         break;
     }
   };
+  const onPageChange = (pagination: any) => {
+    //projectId = this.props.match.params;
+    //alert(pagination.current);
+  };
 
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
         //
-        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: 3 }} />
+        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: 3 }} onChange={onPageChange} />
       </div>
     </div>
   );
