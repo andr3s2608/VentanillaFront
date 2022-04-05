@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // Antd
 import Divider from 'antd/es/divider';
-import { List, Button, Form, Modal, Radio } from 'antd';
+import { List, Button, Form, Modal, Radio, Table } from 'antd';
 import 'app/shared/components/table/estilos.css';
 // Componentes
 
@@ -18,7 +18,10 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [NROIDENT, setNROIDENT] = useState('');
   const [RAZON_S, setRAZON_S] = useState('');
   const [valor, setValor] = useState<string | undefined>();
-  const [[Razon, Direccion, Telefono, NombreRep, TipoRep, NroIden], setCementerioDatos] = useState<
+  const [[RazonC, DireccionC, TelefonoC, NombreRepC, TipoRepC, NroIdenC], setCementerioDatos] = useState<
+    [String, string, String, String, String, String]
+  >(['', '', '', '', '', '']);
+  const [[RazonF, DireccionF, TelefonoF, NombreRepF, TipoRepF, NroIdenF], setFunerariaDatos] = useState<
     [String, string, String, String, String, String]
   >(['', '', '', '', '', '']);
   const [IdOrNameGraveyard, setIdOrNameGraveyard] = useState('');
@@ -234,18 +237,19 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         const Oracle = all.filter((i: { NROIDENT: number }) => i.NROIDENT == parseInt(NROIDENT));
         console.log('Oracle', Oracle);
         setCementerioDatos([
-          Oracle.RAZON_S + '',
-          Oracle.DIRECCION + '',
-          Oracle.TELEFONO_1 + '',
-          Oracle.NOMBRE_REP + '',
-          Oracle.TIPO_I_REP + '',
-          Oracle.NROIDENT_REP + ''
+          Oracle[0].RAZON_S + '',
+          Oracle[0].DIRECCION + '',
+          Oracle[0].TELEFONO_1 + '',
+          Oracle[0].NOMBRE_REP + '',
+          Oracle[0].TIPO_I_REP + '',
+          Oracle[0].NROIDENT_REP + ''
         ]);
-        console.log(Oracle.DIRECCION, 'direccion');
-        console.log(Oracle.TELEFONO_1, 'telefono');
-        console.log(Oracle.NOMBRE_REP, 'nombre');
-        console.log(Oracle.TIPO_I_REP, 'tipo');
-        console.log(Oracle.NROIDENT_REP, 'numero');
+        console.log(Oracle[0].RAZON_S, 'direccion');
+        console.log(Oracle[0].DIRECCION, 'direccion');
+        console.log(Oracle[0].TELEFONO_1, 'telefono');
+        console.log(Oracle[0].NOMBRE_REP, 'nombre');
+        console.log(Oracle[0].TIPO_I_REP, 'tipo');
+        console.log(Oracle[0].NROIDENT_REP, 'numero');
 
         setValor('El cementerio registrado es válido');
       } else {
@@ -258,25 +262,26 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         console.log('Oracle', Oracle);
         console.log('Result', result);
         setCementerioDatos([
-          Oracle.RAZON_S + '',
+          Oracle[0].RAZON_S + '',
           Oracle[0].DIRECCION + '',
           Oracle[0].TELEFONO_1 + '',
           Oracle[0].NOMBRE_REP + '',
           Oracle[0].TIPO_I_REP + '',
           Oracle[0].NROIDENT_REP + ''
         ]);
+        console.log(Oracle[0].RAZON_S, 'direccion');
         console.log(Oracle[0].DIRECCION, 'direccion');
         console.log(Oracle[0].TELEFONO_1, 'telefono');
         console.log(Oracle[0].NOMBRE_REP, 'nombre');
         console.log(Oracle[0].TIPO_I_REP, 'tipo');
         console.log(Oracle[0].NROIDENT_REP, 'numero');
         console.log('-----------------');
-        console.log(Razon, 'direccion');
-        console.log(Direccion, 'direccion');
-        console.log(Telefono, 'telefono');
-        console.log(NombreRep, 'nombre');
-        console.log(TipoRep, 'tipo');
-        console.log(NroIden, 'numero');
+        console.log(RazonC, 'direccion');
+        console.log(DireccionC, 'direccion');
+        console.log(TelefonoC, 'telefono');
+        console.log(NombreRepC, 'nombre');
+        console.log(TipoRepC, 'tipo');
+        console.log(NroIdenC, 'numero');
         setValor('El cementerio registrado es válido');
       } else {
         setValor('El cementerio registrado es inválido');
@@ -293,10 +298,21 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const onClickValidarfuneraria = async () => {
     const all = await api.GetFunerarias();
+    const consulta = api.GetFunerarias();
 
     if (IdOrNameMortuary == 'Id') {
       const result = all.find((funeraria: any) => funeraria.NROIDENT == parseInt(NROIDENT));
       if (result) {
+        const Oracle = all.filter((i: { NROIDENT: number }) => i.NROIDENT == parseInt(NROIDENT));
+        console.log('Oracle', Oracle);
+        setFunerariaDatos([
+          Oracle[0].RAZON_S + '',
+          Oracle[0].DIRECCION + '',
+          Oracle[0].TELEFONO_1 + '',
+          Oracle[0].NOMBRE_REP + '',
+          Oracle[0].TIPO_I_REP + '',
+          Oracle[0].NROIDENT_REP + ''
+        ]);
         setValor('La funeraria registrada es válida');
       } else {
         setValor('La funeraria registrada es inválida');
@@ -304,9 +320,20 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     } else if (IdOrNameMortuary == 'Name') {
       const result = all.find((funeraria: any) => funeraria.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
       if (result) {
-        setValor('La funeraria registrada es valida');
+        const Oracle = (await consulta).filter((funeraria: any) => funeraria.RAZON_S == RAZON_S.trim().toUpperCase());
+        console.log('Oracle', Oracle);
+        console.log('Result', result);
+        setFunerariaDatos([
+          Oracle[0].RAZON_S + '',
+          Oracle[0].DIRECCION + '',
+          Oracle[0].TELEFONO_1 + '',
+          Oracle[0].NOMBRE_REP + '',
+          Oracle[0].TIPO_I_REP + '',
+          Oracle[0].NROIDENT_REP + ''
+        ]);
+        setValor('La funeraria registrada es válida');
       } else {
-        setValor('La funeraria registrada es invalida');
+        setValor('La funeraria registrada es inválida');
       }
     }
   };
@@ -442,33 +469,57 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         </div>
         {valor && (
           <>
-            <div className='col-lg-12'>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {valor}
-              </p>
-            </div>
-            <div className='col-lg-12'>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {RAZON_S}
-              </p>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {Direccion}
-              </p>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {Telefono}
-              </p>
-            </div>
-            <div className='col-lg-12'>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {NombreRep}
-              </p>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {TipoRep}
-              </p>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {NroIden}
-              </p>
-            </div>
+            {valor == 'El cementerio registrado es válido' && (
+              <>
+                <div className='col-lg-12'>
+                  <p
+                    id='messageMortuary'
+                    className='text-center mt-4'
+                    style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                  >
+                    {valor}
+                  </p>
+                </div>
+              </>
+            )}
+            {valor == 'El cementerio registrado es inválido' && (
+              <>
+                <div className='col-lg-12'>
+                  <p
+                    id='messageMortuary'
+                    className='text-center mt-4'
+                    style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                  >
+                    {valor}
+                  </p>
+                </div>
+              </>
+            )}
+            {valor == 'El cementerio registrado es válido' && (
+              <>
+                {' '}
+                <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                  <tbody>
+                    <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                      <th>RAZON SOCIAL</th>
+                      <th>DIRECCIÓN</th>
+                      <th>TELEFONO</th>
+                      <th>REPRESENTANTE LEGAL</th>
+                      <th>TIPO DE IDENTIFICACIÓN</th>
+                      <th>NUMERO IDENTIFICACIÓN</th>
+                    </tr>
+                    <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                      <td>{RazonC}</td>
+                      <td>{DireccionC}</td>
+                      <td>{TelefonoC}</td>
+                      <td>{NombreRepC}</td>
+                      <td>{TipoRepC}</td>
+                      <td>{NroIdenC}</td>
+                    </tr>
+                  </tbody>
+                </table>{' '}
+              </>
+            )}
           </>
         )}
       </Modal>
@@ -485,7 +536,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           <p>Buscar por:</p>
           <Radio.Group onChange={changeRadioButtonMortuary}>
             <Radio value='Id'>No. Identificación</Radio>
-            <Radio value='Name'>Nombre del Cementerio</Radio>
+            <Radio value='Name'>Nombre de la funeraria</Radio>
           </Radio.Group>
         </div>
 
@@ -522,16 +573,57 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         </div>
         {valor && (
           <>
-            <div className='col-lg-12'>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {valor}
-              </p>
-            </div>
-            <div className='col-lg-12'>
-              <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {valor}
-              </p>
-            </div>
+            {valor == 'La funeraria registrada es válida' && (
+              <>
+                <div className='col-lg-12'>
+                  <p
+                    id='messageMortuary'
+                    className='text-center mt-4'
+                    style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                  >
+                    {valor}
+                  </p>
+                </div>
+              </>
+            )}
+            {valor == 'La funeraria registrada es inválida' && (
+              <>
+                <div className='col-lg-12'>
+                  <p
+                    id='messageMortuary'
+                    className='text-center mt-4'
+                    style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                  >
+                    {valor}
+                  </p>
+                </div>
+              </>
+            )}
+            {valor == 'La funeraria registrada es válida' && (
+              <>
+                {' '}
+                <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                  <tbody>
+                    <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                      <th>RAZON SOCIAL</th>
+                      <th>DIRECCIÓN</th>
+                      <th>TELEFONO</th>
+                      <th>REPRESENTANTE LEGAL</th>
+                      <th>TIPO DE IDENTIFICACIÓN</th>
+                      <th>NUMERO IDENTIFICACIÓN</th>
+                    </tr>
+                    <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                      <td>{RazonF}</td>
+                      <td>{DireccionF}</td>
+                      <td>{TelefonoF}</td>
+                      <td>{NombreRepF}</td>
+                      <td>{TipoRepF}</td>
+                      <td>{NroIdenF}</td>
+                    </tr>
+                  </tbody>
+                </table>{' '}
+              </>
+            )}
           </>
         )}
       </Modal>
