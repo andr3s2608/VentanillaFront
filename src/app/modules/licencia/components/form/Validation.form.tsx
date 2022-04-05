@@ -154,7 +154,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       console.log(solicitud[0]['datosCementerio']['cementerio']);
       console.log(solicitud[0]['fechaSolicitud']);
       console.log('-----------------------------------------');
-      let linkPDF = api.getLinkPDF(objJosn?.idSolicitud);
+      let codeUser = await api.getCodeUser();
+      let nameUser = await api.GetInformationUser(codeUser);
+      console.log(' tu dato: ' + codeUser);
+      console.log(' tu dato: ' + nameUser.fullName.toLocaleUpperCase());
+
+      let linkPDF = api.getLinkPDF(objJosn?.idSolicitud, nameUser.fullName.toLocaleUpperCase());
+
+      window.open(linkPDF, 'hola mundo');
 
       let datosDinamicosAprobacion = [
         objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,

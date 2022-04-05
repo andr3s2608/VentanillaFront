@@ -13,6 +13,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { Console } from 'console';
 
 export const InformacionMedicoCertificante = ({ obj }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -89,8 +90,8 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   ];
 
   const onClickViewMedico = async () => {
-    const all = await api.getMedico();
-
+    const all = await api.getMedico(id);
+    console.log(all);
     setNombres(all);
     setNROIDENT(all);
     setmedicalSignatureIDNumber(all);
