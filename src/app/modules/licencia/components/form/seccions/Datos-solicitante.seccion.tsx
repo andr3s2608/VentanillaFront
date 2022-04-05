@@ -18,6 +18,9 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [NROIDENT, setNROIDENT] = useState('');
   const [RAZON_S, setRAZON_S] = useState('');
   const [valor, setValor] = useState<string | undefined>();
+  const [[Razon, Direccion, Telefono, NombreRep, TipoRep, NroIden], setCementerioDatos] = useState<
+    [String, string, String, String, String, String]
+  >(['', '', '', '', '', '']);
   const [IdOrNameGraveyard, setIdOrNameGraveyard] = useState('');
   const [IdOrNameMortuary, setIdOrNameMortuary] = useState('');
   const [isModalVisibleGraveyard, setIsModalVisibleGraveyard] = useState(false);
@@ -224,10 +227,26 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const onClickValidarcementerio = async () => {
     const all = await api.GetAllcementerios();
-
+    const consulta = api.GetAllcementerios();
     if (IdOrNameGraveyard == 'Id') {
       const result = all.find((cementerio: any) => cementerio.NROIDENT == parseInt(NROIDENT));
       if (result) {
+        const Oracle = all.filter((i: { NROIDENT: number }) => i.NROIDENT == parseInt(NROIDENT));
+        console.log('Oracle', Oracle);
+        setCementerioDatos([
+          Oracle.RAZON_S + '',
+          Oracle.DIRECCION + '',
+          Oracle.TELEFONO_1 + '',
+          Oracle.NOMBRE_REP + '',
+          Oracle.TIPO_I_REP + '',
+          Oracle.NROIDENT_REP + ''
+        ]);
+        console.log(Oracle.DIRECCION, 'direccion');
+        console.log(Oracle.TELEFONO_1, 'telefono');
+        console.log(Oracle.NOMBRE_REP, 'nombre');
+        console.log(Oracle.TIPO_I_REP, 'tipo');
+        console.log(Oracle.NROIDENT_REP, 'numero');
+
         setValor('El cementerio registrado es válido');
       } else {
         setValor('El cementerio registrado es inválido');
@@ -235,6 +254,29 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     } else if (IdOrNameGraveyard == 'Name') {
       const result = all.find((cementerio: any) => cementerio.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
       if (result) {
+        const Oracle = (await consulta).filter((cementerio: any) => cementerio.RAZON_S == RAZON_S.trim().toUpperCase());
+        console.log('Oracle', Oracle);
+        console.log('Result', result);
+        setCementerioDatos([
+          Oracle.RAZON_S + '',
+          Oracle[0].DIRECCION + '',
+          Oracle[0].TELEFONO_1 + '',
+          Oracle[0].NOMBRE_REP + '',
+          Oracle[0].TIPO_I_REP + '',
+          Oracle[0].NROIDENT_REP + ''
+        ]);
+        console.log(Oracle[0].DIRECCION, 'direccion');
+        console.log(Oracle[0].TELEFONO_1, 'telefono');
+        console.log(Oracle[0].NOMBRE_REP, 'nombre');
+        console.log(Oracle[0].TIPO_I_REP, 'tipo');
+        console.log(Oracle[0].NROIDENT_REP, 'numero');
+        console.log('-----------------');
+        console.log(Razon, 'direccion');
+        console.log(Direccion, 'direccion');
+        console.log(Telefono, 'telefono');
+        console.log(NombreRep, 'nombre');
+        console.log(TipoRep, 'tipo');
+        console.log(NroIden, 'numero');
         setValor('El cementerio registrado es válido');
       } else {
         setValor('El cementerio registrado es inválido');
@@ -398,9 +440,37 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
             </Form.Item>
           </div>
         </div>
-        <p id='messageGraveyard' className='text-center text-dark mt-4'>
-          {valor}
-        </p>
+        {valor && (
+          <>
+            <div className='col-lg-12'>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {valor}
+              </p>
+            </div>
+            <div className='col-lg-12'>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {RAZON_S}
+              </p>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {Direccion}
+              </p>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {Telefono}
+              </p>
+            </div>
+            <div className='col-lg-12'>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {NombreRep}
+              </p>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {TipoRep}
+              </p>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {NroIden}
+              </p>
+            </div>
+          </>
+        )}
       </Modal>
 
       <Modal
@@ -451,9 +521,18 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           </div>
         </div>
         {valor && (
-          <p id='messageMortuary' className='text-center text-dark mt-4'>
-            {valor}
-          </p>
+          <>
+            <div className='col-lg-12'>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {valor}
+              </p>
+            </div>
+            <div className='col-lg-12'>
+              <p id='messageMortuary' className='text-center text-dark mt-4'>
+                {valor}
+              </p>
+            </div>
+          </>
         )}
       </Modal>
     </>
