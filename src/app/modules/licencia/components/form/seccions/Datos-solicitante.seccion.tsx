@@ -181,6 +181,32 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       describe: emailcementerio
     }
   ];
+  const cementeriosbusqueda = [
+    {
+      title: 'Razon Social',
+      describe: Razon
+    },
+    {
+      title: 'Direccion',
+      describe: Direccion
+    },
+    {
+      title: 'Telefono',
+      describe: Telefono
+    },
+    {
+      title: 'Representante',
+      describe: NombreRep
+    },
+    {
+      title: 'Tipo Identificacion',
+      describe: TipoRep
+    },
+    {
+      title: 'Nro Identificacion',
+      describe: NroIden
+    }
+  ];
 
   const funerarias = [
     {
@@ -449,7 +475,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
             </div>
             <div className='col-lg-12'>
               <p id='messageMortuary' className='text-center text-dark mt-4'>
-                {RAZON_S}
+                {Razon}
               </p>
               <p id='messageMortuary' className='text-center text-dark mt-4'>
                 {Direccion}

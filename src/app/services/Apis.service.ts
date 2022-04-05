@@ -78,7 +78,7 @@ export class ApiService {
 
   postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload, id: '0' });
 
-  postprueba = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload, id: '0' });
+  postprueba = (payload: any) => post({ endpoint: environments.local, url: 'Request/AddRquest', payload, id: '0' });
 
   AddGestion = (payload: any, id: string) =>
     post({ endpoint: environments.inhcremacion, url: 'Request/AddGestion', payload, id });
@@ -111,7 +111,7 @@ export class ApiService {
     get<any>({ endpoint: environments.inhcremacion, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
   getallbyEstado = (solicitud: string) =>
-    get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
+    get<[]>({ endpoint: environments.local, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
   AddSupportDocuments = (payload: any[]) =>
     post({

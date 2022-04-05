@@ -109,6 +109,21 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+    const idUser = await api.getCodeUser();
+    const resp = await api.GetInformationUser(idUser);
+    var tipo = '';
+    var razon = '';
+    var tipoid = resp.tipoIdentificacion + '';
+    var nroid = resp.numeroIdentificacion + '';
+    if (resp.tipoIdentificacion == 5) {
+      tipo = 'Juridica';
+      razon = resp.razonSocial;
+    } else {
+      tipo = 'Natural';
+      razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+      tipoid = values.fiscalia;
+      nroid = values.ndoc;
+    }
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -122,6 +137,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite,
         idTipoMuerte: values.deathType,
+        tipoPersona: tipo,
+        tipoIdentificacionSolicitante: tipoid,
+        noIdentificacionSolicitante: nroid,
+        razonSocialSolicitante: razon,
         persona: [
           //fallecido
           {
@@ -493,9 +512,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             >
               <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>
-            <Form.Item label='Sexo' name='genero' rules={[{ required: true }]}>
-              <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
-            </Form.Item>
+
             <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
               <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
             </Form.Item>

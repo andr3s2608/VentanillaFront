@@ -14,6 +14,10 @@ export interface Solicitud<T> {
   idUsuarioSeguridad: string;
   idTramite?: string;
   idTipoMuerte: string;
+  tipoPersona: string;
+  tipoIdentificacionSolicitante: string;
+  noIdentificacionSolicitante: string;
+  razonSocialSolicitante: string;
   persona: T;
   lugarDefuncion: LugarDefuncion;
   ubicacionPersona: UbicacionPersona;

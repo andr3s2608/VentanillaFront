@@ -238,7 +238,19 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         }
       ];
     }
-
+    const idUser = await api.getCodeUser();
+    const resp = await api.GetInformationUser(idUser);
+    var tipo = '';
+    var razon = '';
+    var tipoid = resp.tipoIdentificacion + '';
+    var nroid = resp.numeroIdentificacion + '';
+    if (resp.tipoIdentificacion == 5) {
+      tipo = 'Juridica';
+      razon = resp.razonSocial;
+    } else {
+      tipo = 'Natural';
+      razon = resp.fullName;
+    }
     const json: IRegistroLicencia<any> = {
       solicitud: {
         idSolicitud: obj?.idSolicitud,
@@ -252,6 +264,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         idUsuarioSeguridad: accountIdentifier,
         idTramite: tramite?.toString(),
         idTipoMuerte: values.deathType,
+        tipoPersona: tipo,
+        tipoIdentificacionSolicitante: tipoid,
+        noIdentificacionSolicitante: nroid,
+        razonSocialSolicitante: razon,
         persona,
         lugarDefuncion: {
           idLugarDefuncion: obj?.idLugarDefuncion,
