@@ -15,7 +15,16 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import ReactDOM from 'react-dom';
 
 import { Viewer } from '@react-pdf-viewer/core';
-//import { VariableDocumento } from 'app/modules/licencia/components/form/Validation.form';
+
+// Antonio Cantillo - Components
+import { PDFViewer } from '@react-pdf/renderer';
+import { Page, Document } from 'react-pdf';
+import ReactPDF from '@react-pdf/renderer';
+import { MyDocument } from '../seccions/documentoPDF';
+import { FilePdfOutlined } from '@ant-design/icons';
+
+//import PDFReader from './PDFReader';
+import BasicDocument from './BasicDocument';
 
 // Services
 export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
@@ -136,6 +145,15 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     prop(arrayarchivos);
     //prop.datos(arrayarchivos);
   };
+      const onPrevPDF = ({ idDocumentoSoporte, estadoSolicitud }: { [x: string]: string }) => {
+    console.log('ID SOPORTE', { idDocumentoSoporte });
+    idDocumentoSoporte = '1042979778.pdf';
+    api.VisualizerPdfEstado(idDocumentoSoporte);
+  };
+  
+  
+  
+
   const structureColumns = [
     {
       title: 'Descripcion',
@@ -146,31 +164,12 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
           <text>{validar()}</text>
         </Form.Item>
       )
-    },
-
+    }, 
     {
-      title: 'Ver Documento',
-      dataIndex: 'Ver',
-      key: 'Ver',
-      render: (Text: string) => (
-        <>
-          <button
-            style={{
-              backgroundColor: '#00449e',
-              border: 'none',
-              borderRadius: '.25rem',
-              color: '#fff',
-              cursor: 'pointer',
-              padding: '.5rem'
-            }}
-            onClick={() => setShown(true)}
-          >
-            ver
-          </button>
-
-          {shown && ReactDOM.createPortal(modalBody(), document.body)}
-        </>
-      )
+      title: 'Ver PDF',
+      dataIndex: 'pdf',
+      key: Math.random().toString(36).substring(2, 9),
+      render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrevPDF(row)} style={{ fontSize: '30px' }} />
     },
     {
       title: 'Cumple?',
@@ -187,11 +186,6 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     }
   ];
 
-  const onPrev = ({ idSolicitud, estadoSolicitud }: { [x: string]: string }) => {
-    if (estadoSolicitud === '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
-      // api.GeneratePDF(idSolicitud);
-    }
-  };
 
   return (
     <>
