@@ -58,6 +58,7 @@ export class ApiService {
   getMedico = (id: string) =>
     get<any>({
       endpoint: environments.endpointV1,
+      //86073058564 quemado -> ${id} dinamico
       url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/86073058564`,
       id: '0'
     });

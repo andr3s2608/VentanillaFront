@@ -17,14 +17,14 @@ import ReactDOM from 'react-dom';
 import { Viewer } from '@react-pdf-viewer/core';
 
 // Antonio Cantillo - Components
-import { PDFViewer } from '@react-pdf/renderer';
-import { Page, Document } from 'react-pdf';
-import ReactPDF from '@react-pdf/renderer';
-import { MyDocument } from '../seccions/documentoPDF';
+//import { PDFViewer } from '@react-pdf/renderer';
+//import { Page, Document } from 'react-pdf';
+//import ReactPDF from '@react-pdf/renderer';
+//import { MyDocument } from '../seccions/documentoPDF';
 import { FilePdfOutlined } from '@ant-design/icons';
 
 //import PDFReader from './PDFReader';
-import BasicDocument from './BasicDocument';
+//import BasicDocument from './BasicDocument';
 
 // Services
 export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
@@ -145,14 +145,11 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     prop(arrayarchivos);
     //prop.datos(arrayarchivos);
   };
-      const onPrevPDF = ({ idDocumentoSoporte, estadoSolicitud }: { [x: string]: string }) => {
+  const onPrevPDF = ({ idDocumentoSoporte, estadoSolicitud }: { [x: string]: string }) => {
     console.log('ID SOPORTE', { idDocumentoSoporte });
     idDocumentoSoporte = '1042979778.pdf';
     api.VisualizerPdfEstado(idDocumentoSoporte);
   };
-  
-  
-  
 
   const structureColumns = [
     {
@@ -164,7 +161,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
           <text>{validar()}</text>
         </Form.Item>
       )
-    }, 
+    },
     {
       title: 'Ver PDF',
       dataIndex: 'pdf',
@@ -185,7 +182,6 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
       )
     }
   ];
-
 
   return (
     <>
