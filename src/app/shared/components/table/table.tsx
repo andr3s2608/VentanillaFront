@@ -184,26 +184,29 @@ export const Gridview = (props: IDataSource) => {
   };
 
   const tramite = 'En tramite';
+  /*
+  render: (Text: string) => (
+    <Form.Item label='' name=''>
+      <text>{identificacion()}</text>
+    </Form.Item>
+  );
+
+  render: (Text: string) => (
+    <Form.Item label='' name=''>
+      <text>{nombrecompleto()}</text>
+    </Form.Item>
+  );
+  */
   const structureColumns = [
     {
       title: 'Nombre Completo',
-      dataIndex: '',
-      key: 'nombreCompleto',
-      render: (Text: string) => (
-        <Form.Item label='' name=''>
-          <text>{nombrecompleto()}</text>
-        </Form.Item>
-      )
+      dataIndex: 'razonSocialSolicitante',
+      key: 'nombreCompleto'
     },
     {
       title: 'Numero de Documento',
-      dataIndex: '',
-      key: 'numeroDocumento',
-      render: (Text: string) => (
-        <Form.Item label='' name=''>
-          <text>{identificacion()}</text>
-        </Form.Item>
-      )
+      dataIndex: 'noIdentificacionSolicitante',
+      key: 'numeroDocumento'
     },
     {
       title: 'Fecha de Registro',
