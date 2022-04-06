@@ -55,9 +55,10 @@ export class ApiService {
       id: '0'
     });
 
-  getMedico = () =>
+  getMedico = (id: string) =>
     get<any>({
       endpoint: environments.endpointV1,
+      //86073058564 quemado -> ${id} dinamico
       url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/86073058564`,
       id: '0'
     });
@@ -184,8 +185,8 @@ export class ApiService {
 
   VisualizerPdfEstado = (pathPDF: string) =>
     window.open(`${environments.local}GeneratePDF/VisualizarPDF/${pathPDF}`, 'Visualizar');
-  getLinkPDF = (idTramite: string): string => {
-    return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite;
+  getLinkPDF = (idTramite: string, tramitador: string): string => {
+    return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
   };
 
   GetSolicitud = (solicitud: string) =>
