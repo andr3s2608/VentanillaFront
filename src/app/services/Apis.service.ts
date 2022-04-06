@@ -183,8 +183,8 @@ export class ApiService {
 
   GeneratePDF = (idTramite: string) => window.open(`${environments.local}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
 
-  VisualizerPdfEstado = (pathPDF: string) =>
-    window.open(`${environments.local}GeneratePDF/VisualizarPDF/${pathPDF}`, 'Visualizar');
+  VisualizerPdfEstado = (pathfull: string) => window.open(`${environments.blob}Storage/GetBlob/${pathfull}`, 'Visualizar');
+
   getLinkPDF = (idTramite: string, tramitador: string): string => {
     return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
   };

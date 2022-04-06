@@ -145,10 +145,41 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     prop(arrayarchivos);
     //prop.datos(arrayarchivos);
   };
-  const onPrevPDF = ({ idDocumentoSoporte, estadoSolicitud }: { [x: string]: string }) => {
-    console.log('ID SOPORTE', { idDocumentoSoporte });
-    idDocumentoSoporte = 'prueba.pdf';
-    api.VisualizerPdfEstado(idDocumentoSoporte);
+
+  const onPrevPDF = async (DocumentsSupport: any) => {
+    /** Se consume end-point para obtener la solicitud a la que pertenece
+     *  el documento, y saber el tipo de tramite de la solicitud
+     * */
+    const [solicitud] = await api.getLicencia(DocumentsSupport.idSolicitud);
+    let typeContainer = null;
+
+    /** Se asigna el tipo de contendor donde buscar el pdf que depende del tipo
+     *  de tramite de la solicitud
+     **/
+    switch (solicitud.idTramite) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        /*El contenedor es de inhumacion indivual */
+        typeContainer = `inhumacionindividual/`;
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        /*El contenedor es de inhumacion fetal */
+        typeContainer = `inhumacionfetal/`;
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        /*El contenedor es de cremacion individual */
+        typeContainer = `cremacionindividual/`;
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        /*El contenedor es de cremacionfetal */
+        typeContainer = `cremacionfetal/`;
+        break;
+    }
+
+    console.log('EL contenedor donde se buscará es: ');
+    console.log(typeContainer);
+    let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
+
+    api.VisualizerPdfEstado(pathFull);
   };
 
   const structureColumns = [
