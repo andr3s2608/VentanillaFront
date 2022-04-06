@@ -5,7 +5,7 @@ import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
 import Table from 'antd/es/table';
-import { List, Card, Layout, Radio } from 'antd';
+import { List, Card, Layout, Radio, Modal } from 'antd';
 
 // Componentes
 
@@ -31,6 +31,8 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   const { prop, obj, id } = props;
   const [grid, setGrid] = useState<any[]>([]);
   const [shown, setShown] = useState(false);
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [urlPdf, setUrlPdf] = useState<any>('');
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const solicitud = obj.idSolicitud;
@@ -179,7 +181,14 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     console.log(typeContainer);
     let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
 
-    api.VisualizerPdfEstado(pathFull);
+    //api.VisualizerPdfEstado(pathFull);
+    //setPdf(api.VisualizerPdf(pathFull));
+    //api.VisualizerPdf(pathFull).then((val) => console.log(val));
+    setUrlPdf(api.GetUrlPdf(pathFull));
+    /**
+     * Se despliega el pop up con el pdf dentro
+     */
+    setIsModalVisiblePdf(true);
   };
 
   const structureColumns = [
@@ -220,9 +229,21 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
       <div className='d-lg-flex align-items-start'>
         <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
       </div>
+
+      <Modal
+        title={<p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>Visualización de pdf</p>}
+        visible={isModalVisiblePdf}
+        onCancel={() => setIsModalVisiblePdf(false)}
+        width={1000}
+        okButtonProps={{ hidden: true }}
+        cancelText='Cerrar'
+      >
+        <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+      </Modal>
     </>
   );
 };
+
 interface documentosgestion {
   prop: any;
   id: string;
