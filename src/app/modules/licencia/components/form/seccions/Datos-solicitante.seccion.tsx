@@ -21,6 +21,12 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [[RazonC, DireccionC, TelefonoC, NombreRepC, TipoRepC, NroIdenC], setCementerioDatos] = useState<
     [String, string, String, String, String, String]
   >(['', '', '', '', '', '']);
+  const [[TIPO_IF, NROIDENTF, RAZON_SF, DIRECCIONF, TELEFONO_1F, TIPO_I_PROPF], setFunerariaDatos1] = useState<
+    [String, string, String, String, String, String]
+  >(['', '', '', '', '', '']);
+  const [[NROIDENT_PROPF, NOMBRE_PROPF, NUM_SALASF, TIPO_I_REPF, NROIDENT_REPF, NOMBRE_REPF], setFunerariaDatos2] = useState<
+    [String, string, String, String, String, String]
+  >(['', '', '', '', '', '']);
   const [[RazonF, DireccionF, TelefonoF, NombreRepF, TipoRepF, NroIdenF], setFunerariaDatos] = useState<
     [String, string, String, String, String, String]
   >(['', '', '', '', '', '']);
@@ -305,13 +311,23 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       if (result) {
         const Oracle = all.filter((i: { NROIDENT: number }) => i.NROIDENT == parseInt(NROIDENT));
         console.log('Oracle', Oracle);
-        setFunerariaDatos([
+
+        setFunerariaDatos1([
+          Oracle[0].TIPO_I + '',
+          Oracle[0].NROIDENT + '',
           Oracle[0].RAZON_S + '',
           Oracle[0].DIRECCION + '',
           Oracle[0].TELEFONO_1 + '',
-          Oracle[0].NOMBRE_REP + '',
+          Oracle[0].TIPO_I_PROP + ''
+        ]);
+
+        setFunerariaDatos2([
+          Oracle[0].NROIDENT_PROP + '',
+          Oracle[0].NOMBRE_PROP + '',
+          Oracle[0].NUM_SALAS + '',
           Oracle[0].TIPO_I_REP + '',
-          Oracle[0].NROIDENT_REP + ''
+          Oracle[0].NROIDENT_REP + '',
+          Oracle[0].NOMBRE_REP + ''
         ]);
         setValor('La funeraria registrada es válida');
       } else {
@@ -323,13 +339,22 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         const Oracle = (await consulta).filter((funeraria: any) => funeraria.RAZON_S == RAZON_S.trim().toUpperCase());
         console.log('Oracle', Oracle);
         console.log('Result', result);
-        setFunerariaDatos([
+        setFunerariaDatos1([
+          Oracle[0].TIPO_I + '',
+          Oracle[0].NROIDENT + '',
           Oracle[0].RAZON_S + '',
           Oracle[0].DIRECCION + '',
           Oracle[0].TELEFONO_1 + '',
-          Oracle[0].NOMBRE_REP + '',
+          Oracle[0].TIPO_I_PROP + ''
+        ]);
+
+        setFunerariaDatos2([
+          Oracle[0].NROIDENT_PROP + '',
+          Oracle[0].NOMBRE_PROP + '',
+          Oracle[0].NUM_SALAS + '',
           Oracle[0].TIPO_I_REP + '',
-          Oracle[0].NROIDENT_REP + ''
+          Oracle[0].NROIDENT_REP + '',
+          Oracle[0].NOMBRE_REP + ''
         ]);
         setValor('La funeraria registrada es válida');
       } else {
@@ -605,20 +630,42 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
                 <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
                   <tbody>
                     <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                      <th>TIPO ID FUNERARIA</th>
                       <th>RAZON SOCIAL</th>
-                      <th>DIRECCIÓN</th>
-                      <th>TELEFONO</th>
-                      <th>REPRESENTANTE LEGAL</th>
-                      <th>TIPO DE IDENTIFICACIÓN</th>
-                      <th>NUMERO IDENTIFICACIÓN</th>
+                      <th>NÚMERO ID FUNERARIA </th>
+                      <th>DIRECCIÓN FUNERARIA</th>
+                      <th>TELEFONO FUNERARIA</th>
+                      <th>TIPO ID PROPIETARIO </th>
                     </tr>
                     <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
-                      <td>{RazonF}</td>
-                      <td>{DireccionF}</td>
-                      <td>{TelefonoF}</td>
-                      <td>{NombreRepF}</td>
-                      <td>{TipoRepF}</td>
-                      <td>{NroIdenF}</td>
+                      <td>{TIPO_IF}</td>
+                      <td>{RAZON_SF}</td>
+                      <td>{NROIDENTF}</td>
+                      <td>{DIRECCIONF}</td>
+                      <td>{TELEFONO_1F}</td>
+                      <td>{TIPO_I_PROPF}</td>
+                    </tr>
+                  </tbody>
+                </table>{' '}
+                <br />
+                <br />
+                <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                  <tbody>
+                    <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                      <th>NÚMERO ID PROPIETARIO</th>
+                      <th>NOMBRE PROPIETARIO</th>
+                      <th>NÚMERO SALAS FUNERARIA</th>
+                      <th>TIPO ID _REPRESENTANTE</th>
+                      <th>NÚMERO ID REPRESENTANTE</th>
+                      <th>NOMBRE REPRESENTANTE</th>
+                    </tr>
+                    <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                      <td>{NROIDENT_PROPF}</td>
+                      <td>{NOMBRE_PROPF}</td>
+                      <td>{NUM_SALASF}</td>
+                      <td>{TIPO_I_REPF}</td>
+                      <td>{NROIDENT_REPF}</td>
+                      <td>{NOMBRE_REPF}</td>
                     </tr>
                   </tbody>
                 </table>{' '}
