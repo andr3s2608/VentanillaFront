@@ -150,7 +150,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             segundoNombre: values.secondName,
             primerApellido: values.surname,
             segundoApellido: values.secondSurname,
-            fechaNacimiento: null,
+            fechaNacimiento: values.dateOfBirth,
             nacionalidad: values.nationalidad[0],
             otroParentesco: null,
             idEstadoCivil: values.civilStatus,
@@ -298,7 +298,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
         const supportDocuments: any[] = [];
         const [files, names] = generateListFiles(values);
-
+        console.log(names, 'names');
         files.forEach((item: any, i: number) => {
           const name = names[i];
 
@@ -306,7 +306,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           formData.append('nameFile', name);
 
           TypeDocument.forEach((item: any) => {
+            console.log(item.key, 'key');
+            console.log(name.toString(), 'name');
             if (item.key === name.toString()) {
+              console.log('Entro');
               supportDocuments.push({
                 idSolicitud: resp,
                 idTipoDocumentoSoporte: item.value,
@@ -342,7 +345,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       fileActaNotarialFiscal
     } = values;
 
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
+    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defunción' });
     Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
     Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
     Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });

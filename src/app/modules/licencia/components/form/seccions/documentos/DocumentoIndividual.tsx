@@ -173,8 +173,8 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
                 style={{ marginRight: '10px' }}
                 icon={<EyeOutlined />}
                 size='middle'
-                onClick={() => onEventFile('Acta_Notarial_Fiscal')}
-                disabled={isFileViwerDisabled('Acta_Notarial_Fiscal')}
+                onClick={() => onEventFile('Acta_Notarial_del_Fiscal')}
+                disabled={isFileViwerDisabled('Acta_Notarial_del_Fiscal')}
               >
                 Otros_Documentos.pdf
               </Button>
@@ -187,7 +187,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
             getValueFromEvent={normFile}
             rules={[{ required: isEdit ? false : true }]}
           >
-            <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+            <Upload name='fileOtrosDocumentos' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
           </Form.Item>
@@ -352,8 +352,8 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
             style={{ marginRight: '10px' }}
             icon={<EyeOutlined />}
             size='middle'
-            onClick={() => onEventFile('Otros')}
-            disabled={isFileViwerDisabled(nameFileType)}
+            onClick={() => onEventFile('Otros_Documentos')}
+            disabled={isFileViwerDisabled('Otros_Documentos')}
           >{`${'otros'}.pdf`}</Button>
         </Form.Item>
       ) : null}

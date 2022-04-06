@@ -204,7 +204,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoNombre: values.authSecondName,
           primerApellido: values.authSurname,
           segundoApellido: values.authSecondSurname,
-          fechaNacimiento: null,
+          fechaNacimiento: values.dateOfBirth,
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: null, //lista parentesco
           idEstadoCivil: '00000000-0000-0000-0000-000000000000',

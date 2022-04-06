@@ -91,7 +91,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       title: 'No. Identificacion.',
       describe: idfallecido
     },
-
     {
       title: 'Tipo de Muerte',
       describe: <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' value={tipo} disabled />
