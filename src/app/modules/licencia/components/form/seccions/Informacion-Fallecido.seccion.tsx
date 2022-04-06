@@ -14,6 +14,9 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const InformacionFallecidoSeccion = ({ obj }: any) => {
+  const [[tipo_identificacion, edad, fechaNacimiento, horaFallecido, genero], setFallecido] = useState<
+    [string, string, string, string, string]
+  >(['', '', '', '', '']);
   const [numeroCertificado, setNumeroCertificado] = useState();
   const [defuncion, setdefuncion] = useState<string | undefined>();
   const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
@@ -33,6 +36,16 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     } else {
       setdefuncion(iddepart[0].descripcion);
     }
+
+    const inf_fallecido = await api.GetInformacionFallecido('FE0BB8F5-D0D7-42EC-86C3-DF4CA7579DC3' /*obj?.idSolicitud*/);
+    console.log(inf_fallecido['idSolicitud'] + 'aqui estamos');
+    setFallecido([
+      inf_fallecido['tipoIdentificacion'] + '',
+      inf_fallecido['edadFallecido'] + '',
+      inf_fallecido['fechaNacimiento'] + '',
+      inf_fallecido['hora'] + '',
+      inf_fallecido['idSexo'] + ''
+    ]);
 
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Regimen),
@@ -90,6 +103,26 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     {
       title: 'No. Identificacion.',
       describe: idfallecido
+    },
+    {
+      title: 'Tipo de identificación',
+      describe: tipo_identificacion
+    },
+    {
+      title: 'Edad',
+      describe: edad
+    },
+    {
+      title: 'Fecha de nacimiento',
+      describe: fechaNacimiento
+    },
+    {
+      title: 'Hora de fallecimiento',
+      describe: horaFallecido
+    },
+    {
+      title: 'Genero',
+      describe: genero
     },
     {
       title: 'Tipo de Muerte',
