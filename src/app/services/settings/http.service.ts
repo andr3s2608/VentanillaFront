@@ -180,12 +180,20 @@ const put = async <T>({
   loading = true,
   options,
   configMessage,
-  cancel
+  cancel,
+  confirmModal = true
 }: ISettingsService): Promise<T> => {
-  const confirm = await confirmMessage({
-    content: '¿Está seguro de actualizar la información?',
-    ...configMessage
-  });
+  var confirm = confirmModal;
+  console.log(id, 'ID');
+  if (id == '0') {
+    console.log(id, 'Entrooo');
+    confirm = confirmModal
+      ? await confirmMessage({
+          content: '¿Está seguro de guardar la información?',
+          ...configMessage
+        })
+      : await true;
+  }
 
   if (confirm) {
     if (loading) {
