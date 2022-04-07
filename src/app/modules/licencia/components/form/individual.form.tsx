@@ -58,7 +58,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
-  const objJosn: any = EditInhumacion();
+  const objJosn: any = EditInhumacion('0');
   const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
   //#region Listados
