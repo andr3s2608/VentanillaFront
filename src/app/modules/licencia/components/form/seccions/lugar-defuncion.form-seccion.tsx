@@ -20,7 +20,6 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
 
   const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-
   const getListas = useCallback(
     async () => {
       const [municipios, ...resp] = await Promise.all([
@@ -46,7 +45,6 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
 
   const [isColombia, setIsColombia] = useState(true);
   const [isBogota, setIsBogota] = useState(false);
-  const [municipiobogota, setMunicipiobogota] = useState('BOGOTÁ D.C.');
   const onChangePais = (value: string) => {
     setIsColombia(value === idColombia);
 
@@ -55,20 +53,13 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
   const onChangeDepartamento = async (value: string) => {
     props.form.setFieldsValue({ city: undefined });
     console.log(value);
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIsBogota(false);
-      setLMunicipios([]);
-      setMunicipiobogota('BOGOTÁ D.C.');
-    } else {
+    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') setIsBogota(false);
+    else {
       setIsBogota(true);
-      const depart = await dominioService.get_departamentos_colombia();
-      let id = (await depart).filter((i) => i.idDepartamento == value);
-
-      let idmunicipio = id[0].idDepPai + '';
-      const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
-      setLMunicipios(resp);
-      console.log('entro');
     }
+
+    const resp = await dominioService.get_municipios_by_departamento(value);
+    setLMunicipios(resp);
   };
 
   const { obj } = props;
@@ -96,14 +87,13 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
         />
       </Form.Item>
 
-      <Form.Item label='Municipio Defunción' name='city' initialValue={municipiobogota} rules={[{ required: isBogota }]}>
-        <SelectComponent
-          options={l_municipios}
-          optionPropkey='idMunicipio'
-          optionPropLabel='descripcion'
-          value={municipiobogota}
-          disabled={!isBogota}
-        />
+      <Form.Item
+        label='Municipio Defunción'
+        name='city'
+        initialValue={obj?.city ? obj?.city : '31211657-3386-420a-8620-f9c07a8ca491'}
+        rules={[{ required: isColombia }]}
+      >
+        <SelectComponent options={l_municipios} optionPropkey='idMunicipio' optionPropLabel='descripcion' disabled={!isBogota} />
       </Form.Item>
 
       <Form.Item
