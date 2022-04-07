@@ -16,6 +16,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { Console } from 'console';
 
 export const InformacionMedicoCertificante = ({ obj }: any) => {
+  const [banderaBotonActualizarMedico, setMedico] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NROIDENT, setNROIDENT] = useState<string | undefined>();
   const [NOMBRES, setNOMBRES] = useState<string | undefined>();
@@ -23,9 +24,9 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   const [valor, setValor] = useState<string | undefined>();
 
   const [primernombre, setPrimerNombre] = useState<string>(obj?.medicalSignatureName + '');
-  const [segundonombre, setSegundoNombre] = useState<string>(obj?.medicalSignatureName + '');
-  const [primerapellido, setPrimerApellido] = useState<string>(obj?.medicalSignatureName + '');
-  const [segundoapellido, setSegundoApellido] = useState<string>(obj?.medicalSignatureName + '');
+  const [segundonombre, setSegundoNombre] = useState<string>(obj?.medicalSignatureSecondName + '');
+  const [primerapellido, setPrimerApellido] = useState<string>(obj?.medicalSignatureSurname + '');
+  const [segundoapellido, setSegundoApellido] = useState<string>(obj?.medicalSignatureSecondSurname + '');
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -56,21 +57,40 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   const cambioPrimerNombre = (e: any) => {
     console.log(e);
     setPrimerNombre(e);
+    setMedico(true);
   };
 
   const cambioSegundoNombre = (e: any) => {
     console.log(e);
     setSegundoNombre(e);
+    setMedico(true);
   };
 
   const cambioPrimerApellido = (e: any) => {
     console.log(e);
     setPrimerApellido(e);
+    setMedico(true);
   };
 
   const cambioSegundoApellido = (e: any) => {
     console.log(e);
     setSegundoApellido(e);
+    setMedico(true);
+  };
+
+  const botonActualizar = (bandera: boolean) => {
+    switch (bandera) {
+      case true:
+        return (
+          <Button type='primary' className='ml-3 mt-2' onClick={() => actualizarMedico()}>
+            Actualizar médico
+          </Button>
+        );
+        break;
+      default:
+        return <></>;
+        break;
+    }
   };
 
   const data = [
@@ -97,7 +117,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='primernombre'
           value={primernombre}
-          disabled={true}
+          disabled={false}
           onChange={(e) => cambioPrimerNombre(e.target.value)}
         />
       )
@@ -109,7 +129,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='segundonombre'
           value={segundonombre}
-          disabled={true}
+          disabled={false}
           onChange={(e) => cambioSegundoNombre(e.target.value)}
         />
       )
@@ -121,7 +141,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='primerapellido'
           value={primerapellido}
-          disabled={true}
+          disabled={false}
           onChange={(e) => cambioPrimerApellido(e.target.value)}
         />
       )
@@ -133,7 +153,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='segundoapellido'
           value={segundoapellido}
-          disabled={true}
+          disabled={false}
           onChange={(e) => cambioSegundoApellido(e.target.value)}
         />
       )
@@ -159,6 +179,14 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
       setValor('El médico registrado es inválido');
     }
     showModal();
+  };
+
+  const actualizarMedico = async () => {
+    const result1 = await api.actualizarMedico(id, 'primerNombre', primernombre);
+    const result2 = await api.actualizarMedico(id, 'segundoNombre', segundonombre);
+    const result3 = await api.actualizarMedico(id, 'primerApellido', primerapellido);
+    const result4 = await api.actualizarMedico(id, 'segundoApellido', segundoapellido);
+    setMedico(false);
   };
 
   const showModal = () => {
@@ -247,6 +275,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           </List.Item>
         )}
       />
+      {botonActualizar(banderaBotonActualizarMedico)}
     </>
   );
 };

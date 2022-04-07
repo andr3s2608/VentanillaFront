@@ -184,14 +184,6 @@ export class ApiService {
   GetInformacionFallecido = (solicitud: string) =>
     get<any>({ endpoint: environments.local, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 
-  GeneratePDF = (idTramite: string) => window.open(`${environments.local}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
-
-  VisualizerPdfEstado = (pathPDF: string) =>
-    window.open(`${environments.local}GeneratePDF/VisualizarPDF/${pathPDF}`, 'Visualizar');
-  getLinkPDF = (idTramite: string, tramitador: string): string => {
-    return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
-  };
-
   GetSolicitud = (solicitud: string) =>
     get<any>({
       endpoint: environments.inhcremacion,
@@ -208,10 +200,29 @@ export class ApiService {
     });
   };
 
+  actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
+    return put<any>({
+      endpoint: environments.local,
+      url: `Request/UpdateMedico/${idMedico}/${campo}/${cambio}`,
+      id: '1'
+    });
+  };
+
   getFormato = (idPlantilla: string) =>
     get<Iformato>({
       endpoint: environments.formatos,
       url: `GetFormatoByTipoPlantilla/${idPlantilla}`,
       id: '0'
     });
+
+  /** Lista de metodos que permiten consumir los end-point que retornar los Blob
+   *  de los pdf que se agregar al crear las solicitudes.
+   * */
+  GetUrlPdf = (pathfull: string) => environments.blob + `Storage/GetBlob/${pathfull}`;
+
+  GeneratePDF = (idTramite: string) => `${environments.local}GeneratePDF/GeneratePDF/${idTramite}`;
+
+  getLinkPDF = (idTramite: string, tramitador: string): string => {
+    return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
+  };
 }
