@@ -63,7 +63,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
-  const objJosn: any = EditInhumacion();
+  const objJosn: any = EditInhumacion('1');
 
   const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);

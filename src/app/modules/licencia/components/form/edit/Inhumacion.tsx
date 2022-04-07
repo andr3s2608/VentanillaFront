@@ -1,11 +1,11 @@
-export const EditInhumacion = () => {
+export const EditInhumacion = (id: String) => {
   const data = localStorage.getItem('register');
 
   if (data) {
     const json = JSON.parse(data);
     const [obj] = json;
 
-    return formatObjJson(obj);
+    return formatObjJson(obj, id);
   }
   return {
     isLugar: () => {
@@ -14,10 +14,15 @@ export const EditInhumacion = () => {
   };
 };
 
-const formatObjJson = (obj: any) => {
+const formatObjJson = (obj: any, id: String) => {
   const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio, resumenSolicitud } = obj;
-  const [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
+  var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
+  if (id == '1') {
+    if (fallecido == undefined) {
+      fallecido = isPerson(persona, '342d934b-c316-46cb-a4f3-3aac5845d246');
+    }
+  }
 
   let jsonDt;
 
