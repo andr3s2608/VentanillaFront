@@ -181,6 +181,9 @@ export class ApiService {
       id: '0'
     });
 
+  GetInformacionFallecido = (solicitud: string) =>
+    get<any>({ endpoint: environments.local, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
+
   GeneratePDF = (idTramite: string) => window.open(`${environments.local}GeneratePDF/GeneratePDF/${idTramite}`, 'descarga');
 
   VisualizerPdfEstado = (pathPDF: string) =>
