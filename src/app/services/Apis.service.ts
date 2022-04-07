@@ -200,6 +200,14 @@ export class ApiService {
     });
   };
 
+  actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
+    return put<any>({
+      endpoint: environments.local,
+      url: `Request/UpdateMedico/${idMedico}/${campo}/${cambio}`,
+      id: '1'
+    });
+  };
+
   getFormato = (idPlantilla: string) =>
     get<Iformato>({
       endpoint: environments.formatos,
