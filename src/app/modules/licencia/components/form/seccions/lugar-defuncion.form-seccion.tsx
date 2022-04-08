@@ -52,13 +52,17 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
   };
   const onChangeDepartamento = async (value: string) => {
     props.form.setFieldsValue({ city: undefined });
+    const depart = await dominioService.get_departamentos_colombia();
+    let id = (await depart).filter((i) => i.idDepartamento == value);
+
+    let idmunicipio = id[0].idDepPai + '';
     console.log(value);
     if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') setIsBogota(false);
     else {
       setIsBogota(true);
     }
 
-    const resp = await dominioService.get_municipios_by_departamento(value);
+    const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
     setLMunicipios(resp);
   };
 
