@@ -91,7 +91,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
         label='Municipio Defunción'
         name='city'
         initialValue={obj?.city ? obj?.city : '31211657-3386-420a-8620-f9c07a8ca491'}
-        rules={[{ required: isBogota }]}
+        rules={[{ required: isColombia }]}
       >
         <SelectComponent options={l_municipios} optionPropkey='idMunicipio' optionPropLabel='descripcion' disabled={!isBogota} />
       </Form.Item>
