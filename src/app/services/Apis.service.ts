@@ -181,6 +181,13 @@ export class ApiService {
       id: '0'
     });
 
+  getCostante = (idConstante: string) =>
+    get<any>({
+      endpoint: environments.local,
+      url: `Seguimiento/GetCosntante/${idConstante}`,
+      id: '0'
+    });
+
   GetInformacionFallecido = (solicitud: string) =>
     get<any>({ endpoint: environments.local, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 
@@ -224,5 +231,9 @@ export class ApiService {
 
   getLinkPDF = (idTramite: string, tramitador: string): string => {
     return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
+  };
+
+  getLinkPDFPrev = (idTramite: string, tramitador: string): string => {
+    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
   };
 }

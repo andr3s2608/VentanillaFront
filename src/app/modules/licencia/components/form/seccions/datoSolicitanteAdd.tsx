@@ -27,6 +27,22 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     []
   );
 
+  let validEmail = false;
+
+  const cambioemail = (e: any) => {
+    let campo = e;
+
+    console.log(campo);
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+    if (emailRegex.test(campo)) {
+      console.log('válido');
+    } else {
+      console.log('incorrecto');
+    }
+  };
+
   useEffect(() => {
     getLista();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +76,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         <Input allowClear placeholder='Apellidos' autoComplete='off' />
       </Form.Item>
       <Form.Item label='Email' initialValue={null} required={true} name='emailsolicitudadd'>
-        <Input allowClear placeholder='Email' autoComplete='off' />
+        <Input allowClear placeholder='Email' autoComplete='off' onChange={(e) => cambioemail(e.target.value)} id='emailsol' />
       </Form.Item>
     </>
   );

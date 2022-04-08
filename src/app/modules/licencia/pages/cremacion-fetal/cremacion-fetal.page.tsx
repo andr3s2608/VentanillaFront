@@ -74,6 +74,7 @@ const CremacionFetalPage = () => {
     let dia = ahora.getDate();
     let mes = ahora.getMonth();
     let año = ahora.getFullYear();
+
     const horaInicialSemana = new Date(año, mes, dia, 7, 0, 0);
     const horaFinalSemana = new Date(año, mes, dia, 15, 30, 0);
     const horaInicialFinSemana = new Date(año, mes, dia, 8, 0, 0);

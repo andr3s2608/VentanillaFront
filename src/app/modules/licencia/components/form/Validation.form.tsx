@@ -249,13 +249,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         datos = 'No Cumple';
       }
 
+      console.log('Seguimiento', values.validFunctionaltype);
       const json: IGestionTramite<any> = {
         estado: {
           idSolicitud: objJosn?.idSolicitud,
           idDocumentoSoporte: id,
           Path: documento,
           Estado_Documento: datos,
-          TipoSeguimiento: values.validFunctionaltype,
+          tipoSeguimiento: values.validFunctionaltype,
           Observaciones: values.observations
         }
       };
