@@ -59,7 +59,7 @@ export class ApiService {
     get<any>({
       endpoint: environments.endpointV1,
       //86073058564 quemado -> ${id} dinamico
-      url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/86073058564`,
+      url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/${id}`,
       id: '0'
     });
 
@@ -181,6 +181,13 @@ export class ApiService {
       id: '0'
     });
 
+  getCostante = (idConstante: string) =>
+    get<any>({
+      endpoint: environments.local,
+      url: `Seguimiento/GetCosntante/${idConstante}`,
+      id: '0'
+    });
+
   GetInformacionFallecido = (solicitud: string) =>
     get<any>({ endpoint: environments.local, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 
@@ -200,6 +207,14 @@ export class ApiService {
     });
   };
 
+  actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
+    return put<any>({
+      endpoint: environments.local,
+      url: `Request/UpdateMedico/${idMedico}/${campo}/${cambio}`,
+      id: '1'
+    });
+  };
+
   getFormato = (idPlantilla: string) =>
     get<Iformato>({
       endpoint: environments.formatos,
@@ -215,6 +230,10 @@ export class ApiService {
   GeneratePDF = (idTramite: string) => `${environments.local}GeneratePDF/GeneratePDF/${idTramite}`;
 
   getLinkPDF = (idTramite: string, tramitador: string): string => {
+    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
+  };
+
+  getLinkPDFPrev = (idTramite: string, tramitador: string): string => {
     return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
   };
 }

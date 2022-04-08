@@ -146,6 +146,46 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     });
   };
 
+  let validEmail = false;
+
+  const cambioemailCEM = (e: any) => {
+    let campo = e;
+
+    console.log(campo);
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+
+    //PREGUNTAR SI LOS EMAILS DE CEMENTERIO Y FUNERARIA APLICA PARA LA VALIDACION DE QUE SEA CORPORATIVO
+
+    if (emailRegex.test(campo)) {
+      validEmail = true;
+      console.log('Corporativo y valido');
+    } else {
+      validEmail = false;
+      console.log('Corporativo y NO valido');
+    }
+  };
+
+  let validEmailFUN = false;
+
+  const cambioemailFUN = (e: any) => {
+    let campo = e;
+
+    console.log(campo);
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+
+    if (emailRegex.test(campo)) {
+      validEmailFUN = true;
+      console.log('valido');
+    } else {
+      validEmailFUN = false;
+      console.log('NO valido');
+    }
+  };
+
   //#endregion
 
   const renderForm = (_lugar: TypeLugarCementerio) => {
@@ -260,10 +300,10 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       <div>{renderFormFuneria(lugarfuneraria)}</div>
 
       <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Email Cementerio' autoComplete='off' />
+        <Input allowClear placeholder='Email Cementerio' onChange={(e) => cambioemailCEM(e.target.value)} autoComplete='off' />
       </Form.Item>
       <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Email Funeraria' autoComplete='off' />
+        <Input allowClear placeholder='Email Funeraria' onChange={(e) => cambioemailFUN(e.target.value)} autoComplete='off' />
       </Form.Item>
     </>
   );

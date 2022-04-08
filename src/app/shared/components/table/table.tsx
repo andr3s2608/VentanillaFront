@@ -69,8 +69,8 @@ export const Gridview = (props: IDataSource) => {
         return `${result}${item.apellido}|`;
       }, '');
 
-      identify = datos.reduce((result: any, item: { numeroIdentificacion: any }) => {
-        return `${result}${item.numeroIdentificacion}|`;
+      identify = datos.reduce((result: any, item: { nroIdentificacionFallecido: any }) => {
+        return `${result}${item.nroIdentificacionFallecido}|`;
       }, '');
       tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
         return `${result}${item.tramite}|`;
@@ -145,6 +145,7 @@ export const Gridview = (props: IDataSource) => {
     identify = identify.substring(identify.indexOf('|') + 1, identify.length);
     return nroidentificacion;
   };
+  var structureColumns;
 
   const tiposolicitud = () => {
     if (Tipo.rol == 'Funcionario') {
@@ -182,6 +183,145 @@ export const Gridview = (props: IDataSource) => {
       return idTramite;
     }
   };
+  const boton = () => {
+    if (Tipo.rol == 'Funcionario') {
+      structureColumns = [
+        {
+          title: 'Id Tramite',
+          dataIndex: 'iD_Control_Tramite',
+          key: 'idTramite'
+        },
+        {
+          title: 'Numero de Documento',
+          dataIndex: '',
+          key: 'numeroDocumento',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{identificacion()}</text>
+            </Form.Item>
+          )
+        },
+        {
+          title: 'Nombre Completo',
+          dataIndex: 'razonSocialSolicitante',
+          key: 'nombreCompleto'
+        },
+
+        {
+          title: 'Fecha de Registro',
+          dataIndex: 'fechaSolicitud',
+          key: 'fechaSolicitud'
+        },
+        {
+          title: 'Estado Tramite',
+          dataIndex: '',
+          key: 'estado',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{tramite}</text>
+            </Form.Item>
+          )
+        },
+        {
+          title: 'Tipo Solicitud',
+          dataIndex: 'tramite',
+          key: 'tipoSolicitud',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{tiposolicitud()}</text>
+            </Form.Item>
+          )
+        },
+        {
+          title: 'PDF',
+          dataIndex: 'pdf',
+          key: 'pdf',
+          render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
+        },
+
+        {
+          title: 'Validar Tramite',
+          key: 'Acciones',
+
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+
+            return permiso.rol === 'Funcionario' ? (
+              <>
+                <Button
+                  type='primary'
+                  key={`vali-${index}`}
+                  onClick={() => onClickValidarInformacion(row)}
+                  style={{ marginLeft: '5px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Validar Informacion
+                </Button>
+              </>
+            ) : null;
+          }
+        }
+      ];
+    } else {
+      structureColumns = [
+        {
+          title: 'Id Tramite',
+          dataIndex: 'iD_Control_Tramite',
+          key: 'idTramite'
+        },
+        {
+          title: 'Numero de Documento',
+          dataIndex: '',
+          key: 'numeroDocumento',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{identificacion()}</text>
+            </Form.Item>
+          )
+        },
+        {
+          title: 'Nombre Completo',
+          dataIndex: 'razonSocialSolicitante',
+          key: 'nombreCompleto'
+        },
+        {
+          title: 'Fecha de Registro',
+          dataIndex: 'fechaSolicitud',
+          key: 'fechaSolicitud'
+        },
+        {
+          title: 'Estado Tramite',
+          dataIndex: '',
+          key: 'estado',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{tramite}</text>
+            </Form.Item>
+          )
+        },
+        {
+          title: 'Tipo Solicitud',
+          dataIndex: 'tramite',
+          key: 'tipoSolicitud',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{tiposolicitud()}</text>
+            </Form.Item>
+          )
+        },
+
+        {
+          title: 'PDF',
+          dataIndex: 'pdf',
+          key: 'pdf',
+          render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
+        }
+      ];
+    }
+  };
+  if (Validacion == '1') {
+    boton();
+  }
 
   const tramite = 'En tramite';
   /*
@@ -197,71 +337,6 @@ export const Gridview = (props: IDataSource) => {
     </Form.Item>
   );
   */
-  const structureColumns = [
-    {
-      title: 'Nombre Completo',
-      dataIndex: 'razonSocialSolicitante',
-      key: 'nombreCompleto'
-    },
-    {
-      title: 'Numero de Documento',
-      dataIndex: 'noIdentificacionSolicitante',
-      key: 'numeroDocumento'
-    },
-    {
-      title: 'Fecha de Registro',
-      dataIndex: 'fechaSolicitud',
-      key: 'fechaSolicitud'
-    },
-    {
-      title: 'Estado Tramite',
-      dataIndex: '',
-      key: 'estado',
-      render: (Text: string) => (
-        <Form.Item label='' name=''>
-          <text>{tramite}</text>
-        </Form.Item>
-      )
-    },
-    {
-      title: 'Tipo Solicitud',
-      dataIndex: 'tramite',
-      key: 'tipoSolicitud',
-      render: (Text: string) => (
-        <Form.Item label='' name=''>
-          <text>{tiposolicitud()}</text>
-        </Form.Item>
-      )
-    },
-    {
-      title: 'PDF',
-      dataIndex: 'pdf',
-      key: 'pdf',
-      render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
-    },
-    {
-      title: 'Validar Tramite',
-      key: 'Acciones',
-
-      render: (_: any, row: any, index: any) => {
-        const [permiso] = roles;
-
-        return permiso.rol === 'Funcionario' ? (
-          <>
-            <Button
-              type='primary'
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ marginLeft: '5px' }}
-              icon={<CheckOutlined />}
-            >
-              Validar Informacion
-            </Button>
-          </>
-        ) : null;
-      }
-    }
-  ];
 
   const onPrev = ({ idSolicitud, estadoSolicitud }: { [x: string]: string }) => {
     if (estadoSolicitud === '3cd0ed61-f26b-4cc0-9015-5b497673d275') {

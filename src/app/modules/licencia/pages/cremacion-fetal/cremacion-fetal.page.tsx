@@ -5,11 +5,67 @@ import Tabs from 'antd/es/tabs';
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { FetalForm } from 'app/modules/licencia/components/form/fetal.form';
 import App from '../validarCovid/validar';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ApiService } from 'app/services/Apis.service';
+import { useCallback, useEffect, useState } from 'react';
 
 // Otros componentes
 const { TabPane } = Tabs;
 
 const CremacionFetalPage = () => {
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+  const [HIA_LV, setHIA_LV] = useState<string[]>(['0', '0', '0']);
+  const [HFA_LV, setHFA_LV] = useState<string[]>(['12', '5', '9']);
+  const [HIA_SD, setHIA_SD] = useState<string[]>(['0', '0', '0']);
+  const [HFA_SD, setHFA_SD] = useState<string[]>(['12', '5', '9']);
+
+  const getListas = useCallback(async () => {
+    await GetValidateRol();
+  }, []);
+
+  function obtenerHora(hora: string): string[] {
+    let aux = hora[0];
+
+    let horario: string[] = ['', '', ''];
+
+    if (aux == '0') {
+      horario[0] = hora[1];
+      horario[1] = hora[3];
+      horario[2] = hora[4];
+    } else {
+      horario[0] = hora[0] + hora[1];
+      horario[1] = hora[3];
+      horario[2] = hora[4];
+    }
+
+    return horario;
+  }
+
+  const GetValidateRol = async () => {
+    let HoraInicioAtencion_LV = await api.getCostante('5DF03735-503B-4D22-8169-E4FCDD19DA26');
+    let HoraFinAtencion_LV = await api.getCostante('818AA32D-C90D-45D0-975F-486D069F7CB1');
+    let HoraInicioAtencion_SD = await api.getCostante('CE62162E-5E79-4E05-AEDE-276B6C89D886');
+    let HoraFinAtencion_SD = await api.getCostante('A196007F-BCCB-4160-B345-1F8605949E46');
+    var aux1 = obtenerHora(HoraInicioAtencion_LV.valor);
+    var aux2 = obtenerHora(HoraFinAtencion_LV.valor);
+    var aux3 = obtenerHora(HoraInicioAtencion_SD.valor);
+    var aux4 = obtenerHora(HoraFinAtencion_SD.valor);
+    setHIA_LV(aux1);
+    setHFA_LV(aux2);
+    setHIA_SD(aux3);
+    setHFA_SD(aux4);
+  };
+
+  //console.log(HIA_LV);
+  //console.log(HFA_LV);
+  //console.log(HIA_SD);
+  //console.log(HFA_SD);
+
+  useEffect(() => {
+    getListas();
+  }, []);
+
   function mostrarPopUp(): boolean {
     let bandera = true;
 
@@ -74,10 +130,40 @@ const CremacionFetalPage = () => {
     let dia = ahora.getDate();
     let mes = ahora.getMonth();
     let año = ahora.getFullYear();
-    const horaInicialSemana = new Date(año, mes, dia, 7, 0, 0);
-    const horaFinalSemana = new Date(año, mes, dia, 15, 30, 0);
-    const horaInicialFinSemana = new Date(año, mes, dia, 8, 0, 0);
-    const horaFinalFinSemana = new Date(año, mes, dia, 12, 0, 0);
+
+    const horaInicialSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HIA_LV[0]),
+      Number.parseInt(HIA_LV[1]),
+      Number.parseInt(HIA_LV[2])
+    );
+    const horaFinalSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HFA_LV[0]),
+      Number.parseInt(HFA_LV[1]),
+      Number.parseInt(HFA_LV[2])
+    );
+
+    const horaInicialFinSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HIA_SD[0]),
+      Number.parseInt(HIA_SD[1]),
+      Number.parseInt(HIA_SD[2])
+    );
+    const horaFinalFinSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HFA_SD[0]),
+      Number.parseInt(HFA_SD[1]),
+      Number.parseInt(HFA_SD[2])
+    );
 
     if ((ahora.getDay() != 1 || ahora.getDay() != 7) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
