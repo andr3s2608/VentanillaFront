@@ -132,10 +132,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const onSubmit = async (values: any) => {
     let tipoSeguimiento: string = values.validFunctionaltype;
     let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-    let resumenSolicitud = await api.GetResumenSolicitud(/*objJosn?.idSolicitud*/ 'ACF323FE-181C-4039-876D-07695F363C3C');
+    let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
     //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
 
-    let funeraria = await api.GetFunerariasAzure(/*objJosn?.idSolicitud*/ '593E8100-80D2-4CC4-9286-06229E3811BA');
+    let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
     console.log(funeraria, 'funerariaaaaa');
     console.log(funeraria[0]['funeraria']);
 
