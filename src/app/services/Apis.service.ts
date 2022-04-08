@@ -59,7 +59,7 @@ export class ApiService {
     get<any>({
       endpoint: environments.endpointV1,
       //86073058564 quemado -> ${id} dinamico
-      url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/86073058564`,
+      url: `ProfesionalesSalud/GetProfesionalSaludByNumeroIdentificacion/${id}`,
       id: '0'
     });
 
