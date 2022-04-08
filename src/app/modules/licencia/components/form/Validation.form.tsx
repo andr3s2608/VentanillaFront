@@ -495,6 +495,19 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       key: ''
     }
   ];
+  const onPrevPDF = async () => {
+    const codeUser = await api.getCodeUser();
+    const nameUser = await api.GetInformationUser(codeUser);
+    const idSolicitud = objJosn?.idSolicitud;
+
+    let linkPdf = await api.getLinkPDF(idSolicitud, nameUser.fullName);
+    console.log('La url de la licencia es: ');
+    console.log(linkPdf);
+
+    setUrlPdfLicence(linkPdf);
+    setNameUser(nameUser);
+    setIsModalVisiblePdf(true);
+  };
 
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
@@ -517,17 +530,32 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
 
             <div className='fadeInLeft'>
-              <Form.Item>
-                <Button
-                  style={{ width: '100%' }}
-                  type='primary'
-                  onClick={() => onClickView(objJosn?.idSolicitud)}
-                  icon={<EyeOutlined width={100} />}
-                  size={'large'}
-                >
-                  Seguimiento
-                </Button>
-              </Form.Item>
+              <div className='container-fluid'>
+                <div className='col-lg-12'>
+                  <Form.Item>
+                    <Button
+                      style={{ width: '50%' }}
+                      type='primary'
+                      onClick={() => onClickView(objJosn?.idSolicitud)}
+                      icon={<EyeOutlined width={100} />}
+                      size={'large'}
+                    >
+                      Seguimiento
+                    </Button>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      style={{ width: '50%', float: 'right', marginTop: '-63px', marginRight: '-100px' }}
+                      type='primary'
+                      onClick={() => onPrevPDF()}
+                      icon={<EyeOutlined width={100} />}
+                      size={'large'}
+                    >
+                      Vista previa licencia
+                    </Button>
+                  </Form.Item>
+                </div>
+              </div>
 
               <Modal
                 title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Ventana de seguimiento y auditoria</p>}
@@ -543,6 +571,24 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                   columns={columnFake}
                   pagination={{ hideOnSinglePage: true }}
                 />
+              </Modal>
+
+              <Modal
+                title={
+                  <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                    Visualización de la licencia
+                  </p>
+                }
+                visible={isModalVisiblePdf}
+                onCancel={() => setIsModalVisiblePdf(false)}
+                width={1000}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                <div className='col-lg-12 text-center'>
+                  <p>Nombre del tramitador : {nameUser.fullName} </p>
+                </div>
+                <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
               </Modal>
             </div>
             <div>
