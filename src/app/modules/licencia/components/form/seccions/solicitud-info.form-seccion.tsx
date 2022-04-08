@@ -21,7 +21,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     fullName: '',
     razonSocial: ''
   });
-  const { obj } = props;
+  const { obj, prop, form } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -52,6 +52,11 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
       return true;
     }
     return false;
+  };
+  var emailsolicitantevalidacion = false;
+  const getData = (rowData: any) => {
+    emailsolicitantevalidacion = rowData;
+    prop(emailsolicitantevalidacion);
   };
 
   /* NOTE: [2021-06-12] Se debe conectar un servicio para cargar el tipo de usuario autenticado y colocar la información segun el usuario autenticado. */
@@ -118,7 +123,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <Form.Item label='Nombre del representante legal' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
-            <DatoSolicitanteAdd />
+            <DatoSolicitanteAdd prop={getData} />
           </>
         )}
       </>
@@ -131,4 +136,5 @@ export const KeysForm = ['solicitudParentesco', 'solicitudOtherParentesco'];
 interface ISolicitudInfoProps<T> {
   form: FormInstance<T>;
   obj: any;
+  prop: any;
 }

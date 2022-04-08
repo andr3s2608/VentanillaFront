@@ -104,6 +104,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
+  var cementeriovalidacion = false;
+  var funerariavalidacion = false;
+  var solicitantevalidacion = false;
+  const getData = (cementerio: any, funeraria: any) => {
+    cementeriovalidacion = cementerio;
+    console.log(cementerio, 'cementerio recibio');
+    funerariavalidacion = funeraria;
+    console.log(funeraria, 'funeraira recibio');
+  };
+  const getDataSolicitante = (solicitante: any) => {
+    solicitantevalidacion = solicitante;
+  };
+
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
@@ -111,6 +124,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
     const idUser = await api.getCodeUser();
     const resp = await api.GetInformationUser(idUser);
+    console.log('emailsolicitante:', solicitantevalidacion);
+    console.log('emailcementerio:', cementeriovalidacion);
+    console.log('emailfuneraria:', funerariavalidacion);
     var tipo = '';
     var razon = '';
     var tipoid = resp.tipoIdentificacion + '';
@@ -697,8 +713,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               </>
             )}
 
-            <SolicitudInfoFormSeccion form={form} obj={objJosn} />
-            <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+            <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
+            <CementerioInfoFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

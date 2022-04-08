@@ -25,7 +25,7 @@ interface municiopioDepartament {
 }
 
 export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (props) => {
-  const { form, tipoLicencia } = props;
+  const { form, tipoLicencia, prop } = props;
   const { obj } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -148,6 +148,11 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   let validEmail = false;
 
+  const onChange = (value: any) => {
+    console.log(value);
+    prop(validEmail, validEmailFUN);
+  };
+
   const cambioemailCEM = (e: any) => {
     let campo = e;
 
@@ -160,10 +165,12 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
     if (emailRegex.test(campo)) {
       validEmail = true;
-      console.log('Corporativo y valido');
+      onChange(validEmail);
+      console.log('Corporativo y validocementerio');
     } else {
       validEmail = false;
-      console.log('Corporativo y NO valido');
+      onChange(validEmail);
+      console.log('Corporativo y NO validocementerio');
     }
   };
 
@@ -179,10 +186,12 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
     if (emailRegex.test(campo)) {
       validEmailFUN = true;
-      console.log('valido');
+      onChange(validEmailFUN);
+      console.log('validofuneraria');
     } else {
       validEmailFUN = false;
-      console.log('NO valido');
+      onChange(validEmailFUN);
+      console.log('NO validofuneraria');
     }
   };
 
@@ -323,6 +332,7 @@ export const KeysForm = [
 interface ICementerioInfoProps<T> extends ITipoLicencia {
   form: FormInstance<T>;
   obj: any;
+  prop: any;
 }
 
 type TypeLugarCementerio = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';

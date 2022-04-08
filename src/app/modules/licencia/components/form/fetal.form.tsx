@@ -120,6 +120,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
+  let cementeriovalidacion = true;
+  let funerariavalidacion = true;
+  let solicitantevalidacion = true;
+  const getData = (cementerio: any, funeraria: any) => {
+    cementeriovalidacion = cementerio;
+    funerariavalidacion = funeraria;
+  };
+  const getDataSolicitante = (solicitante: any) => {
+    solicitantevalidacion = solicitante;
+  };
   const onSubmit = async (values: any) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
@@ -873,9 +883,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
             {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} objJosn={obj} />}
 
-            <SolicitudInfoFormSeccion obj={obj} form={form} />
-
-            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
+            <CementerioInfoFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

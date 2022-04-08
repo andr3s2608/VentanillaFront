@@ -28,6 +28,9 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   );
 
   let validEmail = false;
+  const onChange = (value: any) => {
+    props(validEmail);
+  };
 
   const cambioemail = (e: any) => {
     let campo = e;
