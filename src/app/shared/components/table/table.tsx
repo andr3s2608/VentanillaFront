@@ -232,12 +232,6 @@ export const Gridview = (props: IDataSource) => {
             </Form.Item>
           )
         },
-        {
-          title: 'PDF',
-          dataIndex: 'pdf',
-          key: 'pdf',
-          render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
-        },
 
         {
           title: 'Validar Tramite',
@@ -308,13 +302,6 @@ export const Gridview = (props: IDataSource) => {
               <text>{tiposolicitud()}</text>
             </Form.Item>
           )
-        },
-
-        {
-          title: 'PDF',
-          dataIndex: 'pdf',
-          key: 'pdf',
-          render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
         }
       ];
     }

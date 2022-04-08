@@ -75,7 +75,18 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             [
               'a4ee4462-f837-4dff-a800-5495c33ac3ce',
               'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
-              '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+              '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
+              '97f5657d-d8ec-48ef-bbe3-1babefecb1a4',
+              '60518653-70b7-42ab-8622-caa27b496184',
+              'ffe88939-06d5-486c-887c-e52d50b7f35d',
+              'a7a1b90b-8f29-4509-8220-a95f567e6fcb',
+              '0d69523b-4676-4e3d-8a3d-c6800a3acf3e',
+              '2491bc4b-8a60-408f-9fd1-136213f1e4fb',
+              '71f659be-9d6b-4169-9ee2-e70bf0d65f92',
+              'c532c358-56ae-4f93-8b9b-344ddf1256b7',
+              '0676c046-d93a-4551-a37e-72e3a653bd1b',
+              'ac3629d8-5c87-46ce-a8e2-530b0495cbf6',
+              'c087d833-3cfb-460f-aa78-e5cf2fe83f25'
             ].includes(i.id)
           )}
           optionPropkey='id'

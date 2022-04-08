@@ -79,7 +79,7 @@ export class ApiService {
 
   postLicencia = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload, id: '0' });
 
-  postprueba = (payload: any) => post({ endpoint: environments.local, url: 'Request/AddRquest', payload, id: '0' });
+  postprueba = (payload: any) => post({ endpoint: environments.inhcremacion, url: 'Request/AddRquest', payload, id: '0' });
 
   AddGestion = (payload: any, id: string) =>
     post({ endpoint: environments.inhcremacion, url: 'Request/AddGestion', payload, id });
@@ -106,13 +106,16 @@ export class ApiService {
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
+  updatelicencia = (solicitud: string) =>
+    get<any>({ endpoint: environments.inhcremacion, url: `Request/GetDataFromQuery/${solicitud}/"cadena"`, id: '0' });
+
   GetResumenSolicitud = (solicitud: string) =>
     get<any>({ endpoint: environments.inhcremacion, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
   GetFunerariasAzure = (solicitud: string) =>
     get<any>({ endpoint: environments.inhcremacion, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
   getallbyEstado = (solicitud: string) =>
-    get<[]>({ endpoint: environments.local, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
+    get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
   AddSupportDocuments = (payload: any[]) =>
     post({
@@ -183,13 +186,13 @@ export class ApiService {
 
   getCostante = (idConstante: string) =>
     get<any>({
-      endpoint: environments.local,
+      endpoint: environments.inhcremacion,
       url: `Seguimiento/GetCosntante/${idConstante}`,
       id: '0'
     });
 
   GetInformacionFallecido = (solicitud: string) =>
-    get<any>({ endpoint: environments.local, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
+    get<any>({ endpoint: environments.inhcremacion, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 
   GetSolicitud = (solicitud: string) =>
     get<any>({
@@ -209,7 +212,7 @@ export class ApiService {
 
   actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
     return put<any>({
-      endpoint: environments.local,
+      endpoint: environments.inhcremacion,
       url: `Request/UpdateMedico/${idMedico}/${campo}/${cambio}`,
       id: '1'
     });
@@ -227,13 +230,13 @@ export class ApiService {
    * */
   GetUrlPdf = (pathfull: string) => environments.blob + `Storage/GetBlob/${pathfull}`;
 
-  GeneratePDF = (idTramite: string) => `${environments.local}GeneratePDF/GeneratePDF/${idTramite}`;
+  GeneratePDF = (idTramite: string) => `${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`;
 
   getLinkPDF = (idTramite: string, tramitador: string): string => {
-    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
+    return environments.inhcremacion + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
   };
 
   getLinkPDFPrev = (idTramite: string, tramitador: string): string => {
-    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
+    return environments.inhcremacion + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
   };
 }
