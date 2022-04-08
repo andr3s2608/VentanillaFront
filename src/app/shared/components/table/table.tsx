@@ -188,7 +188,7 @@ export const Gridview = (props: IDataSource) => {
       structureColumns = [
         {
           title: 'Id Tramite',
-          dataIndex: '',
+          dataIndex: 'iD_Control_Tramite',
           key: 'idTramite'
         },
         {
@@ -266,7 +266,7 @@ export const Gridview = (props: IDataSource) => {
       structureColumns = [
         {
           title: 'Id Tramite',
-          dataIndex: '',
+          dataIndex: 'iD_Control_Tramite',
           key: 'idTramite'
         },
         {
