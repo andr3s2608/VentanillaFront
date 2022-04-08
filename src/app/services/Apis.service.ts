@@ -230,7 +230,7 @@ export class ApiService {
   GeneratePDF = (idTramite: string) => `${environments.local}GeneratePDF/GeneratePDF/${idTramite}`;
 
   getLinkPDF = (idTramite: string, tramitador: string): string => {
-    return environments.local + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
+    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
   };
 
   getLinkPDFPrev = (idTramite: string, tramitador: string): string => {
