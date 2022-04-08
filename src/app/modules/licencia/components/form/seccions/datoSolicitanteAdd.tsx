@@ -36,10 +36,26 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     const emailRegex =
       /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     //Se muestra un texto a modo de ejemplo, luego va a ser un icono
-    if (emailRegex.test(campo)) {
-      console.log('válido');
+    let corporativo = campo.includes('@hotmail.');
+    if (true) {
+      // Agregar que el usuario logueado SI es juridico
+      if (corporativo == false) {
+        corporativo = campo.includes('@gmail.');
+        if (corporativo == false) {
+          corporativo = campo.includes('@outlook.');
+          if (corporativo == false) {
+            corporativo = campo.includes('@yahoo.');
+          }
+        }
+      }
+    }
+
+    if (emailRegex.test(campo) && !corporativo) {
+      validEmail = true;
+      console.log('Corporativo y valido');
     } else {
-      console.log('incorrecto');
+      validEmail = false;
+      console.log('Corporativo y NO valido');
     }
   };
 
