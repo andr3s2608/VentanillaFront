@@ -15,6 +15,7 @@ import { toIdentifier } from '@babel/types';
 
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
+  const [nroiden, setNroiden] = useState<any>();
   const [user, setUser] = useState<IinformatioUser>({
     tipoIdentificacion: 0,
     numeroIdentificacion: 0,
@@ -36,7 +37,11 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     async () => {
       const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);
+      const funeraria = await api.GetFunerarias();
+      const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
       setUser(resp);
+      setNroiden(existefuneraria.NROIDENT);
+      console.log('nroident', existefuneraria.NROIDENT);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -53,9 +58,16 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     }
     return false;
   };
+  const validFun = (): boolean => {
+    if (nroiden == undefined) {
+      return false;
+    }
+    return true;
+  };
   var emailsolicitantevalidacion = false;
   const getData = (rowData: any) => {
     emailsolicitantevalidacion = rowData;
+    console.log('mando:', emailsolicitantevalidacion);
     prop(emailsolicitantevalidacion);
   };
 
@@ -110,9 +122,16 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
         ) : (
           <>
             {validPerson() && (
-              <Form.Item label='Razón Social' name='solicitudRazonSocial'>
-                <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
-              </Form.Item>
+              <>
+                <Form.Item label='Razón Social' name='solicitudRazonSocial'>
+                  <span className='ant-form-text'>{user?.razonSocial.toUpperCase()}</span>
+                </Form.Item>
+                {validFun() && (
+                  <Form.Item label='Consecutivo' name='consecutivoInterno'>
+                    <span className='ant-form-text'>{nroiden}</span>
+                  </Form.Item>
+                )}
+              </>
             )}
             {/*   <Form.Item label='Representante Legal' name='solicitudRepresentanteLegal'>
               <span className='ant-form-text'>{name.toUpperCase()}</span>
@@ -123,7 +142,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <Form.Item label='Nombre del representante legal' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
-            <DatoSolicitanteAdd prop={getData} />
+            <DatoSolicitanteAdd prop={getData} obj={obj} />
           </>
         )}
       </>

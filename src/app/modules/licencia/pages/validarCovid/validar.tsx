@@ -140,7 +140,7 @@ const App = () => {
       Number.parseInt(HFA_SD[2])
     );
 
-    if ((ahora.getDay() != 1 || ahora.getDay() != 7) && !isHoliday()) {
+    if ((ahora.getDay() != 0 || ahora.getDay() != 6) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {

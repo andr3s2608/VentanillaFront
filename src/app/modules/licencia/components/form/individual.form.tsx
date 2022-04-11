@@ -55,6 +55,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [sex, setSex] = useState<[]>([]);
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
+  const [emailsol, setEmailso] = useState(false);
+  const [emailcem, setEmailcem] = useState(false);
+  const [emailfun, setEmailfun] = useState(false);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
@@ -104,17 +107,22 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  var cementeriovalidacion = false;
-  var funerariavalidacion = false;
-  var solicitantevalidacion = false;
-  const getData = (cementerio: any, funeraria: any) => {
-    cementeriovalidacion = cementerio;
-    console.log(cementerio, 'cementerio recibio');
-    funerariavalidacion = funeraria;
-    console.log(funeraria, 'funeraira recibio');
+  const getData = (validacion: any, tipo: string) => {
+    if (tipo == '0') {
+      setEmailcem(validacion);
+      console.log(validacion, 'cementerio recibio');
+    } else {
+      setEmailfun(validacion);
+      console.log(validacion, 'funeraira recibio');
+    }
   };
   const getDataSolicitante = (solicitante: any) => {
-    solicitantevalidacion = solicitante;
+    if (solicitante) {
+      setEmailso(true);
+    } else {
+      setEmailso(false);
+    }
+    console.log(solicitante, 'solicitante recibio');
   };
 
   const onSubmit = async (values: any) => {
@@ -124,9 +132,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
     const idUser = await api.getCodeUser();
     const resp = await api.GetInformationUser(idUser);
-    console.log('emailsolicitante:', solicitantevalidacion);
-    console.log('emailcementerio:', cementeriovalidacion);
-    console.log('emailfuneraria:', funerariavalidacion);
+
     var tipo = '';
     var razon = '';
     var tipoid = resp.tipoIdentificacion + '';
@@ -361,7 +367,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       fileActaNotarialFiscal
     } = values;
 
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defunción' });
+    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
     Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
     Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
     Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
@@ -380,6 +386,33 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     return [files, names];
   };
   const onSubmitFailed = () => setStatus('error');
+
+  const Prueba = () => {
+    if (emailsol) {
+      if (emailcem) {
+        if (emailfun) {
+          onNextStep([
+            ...KeyFormSolicitudInfo,
+            ...KeyFormCementerio,
+            'authIDType',
+            'mauthIDNumber',
+            'authName',
+            'authSecondName',
+            'authSurname',
+            'authSecondSurname',
+            'authParentesco',
+            'authOtherParentesco'
+          ]);
+        } else {
+          alert('Email de Funeraria incorrecto');
+        }
+      } else {
+        alert('Email de Cementerio incorrecto');
+      }
+    } else {
+      alert('Email de Solicitante incorrecto');
+    }
+  };
 
   //#region Eventos formulario
 
@@ -721,24 +754,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() =>
-                    onNextStep([
-                      ...KeyFormSolicitudInfo,
-                      ...KeyFormCementerio,
-                      'authIDType',
-                      'mauthIDNumber',
-                      'authName',
-                      'authSecondName',
-                      'authSurname',
-                      'authSecondSurname',
-                      'authParentesco',
-                      'authOtherParentesco'
-                    ])
-                  }
-                >
+                <Button type='primary' htmlType='button' onClick={() => Prueba()}>
                   Siguiente
                 </Button>
               </div>

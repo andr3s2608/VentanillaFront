@@ -232,13 +232,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     var valor: any[] = [];
 
     var not = 1;
-    var segui = values.validFunctionaltype + '';
 
-    if (segui === '3cd0ed61-f26B-4cc0-9015-5b497673d275') {
-      console.log('entro');
-      const update = await api.updatelicencia(objJosn?.idSolicitud);
-      console.log('entro2');
+    const segui = values.validFunctionaltype;
+
+    if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
+      //const update = await api.updatelicencia(objJosn?.idSolicitud);
     }
+
     for (let index = 0; index < documentos.length; index++) {
       var posicioninicialid = 0;
       var posicionfinalid = iddocumento.indexOf('|');

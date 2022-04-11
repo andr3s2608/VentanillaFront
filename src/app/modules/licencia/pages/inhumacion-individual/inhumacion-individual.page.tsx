@@ -16,9 +16,9 @@ const InhumacionIndividualPage = () => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [HIA_LV, setHIA_LV] = useState<string[]>(['0', '0', '0']);
-  const [HFA_LV, setHFA_LV] = useState<string[]>(['12', '5', '9']);
+  const [HFA_LV, setHFA_LV] = useState<string[]>(['23', '5', '9']);
   const [HIA_SD, setHIA_SD] = useState<string[]>(['0', '0', '0']);
-  const [HFA_SD, setHFA_SD] = useState<string[]>(['12', '5', '9']);
+  const [HFA_SD, setHFA_SD] = useState<string[]>(['23', '5', '9']);
 
   const getListas = useCallback(async () => {
     await GetValidateRol();
@@ -51,6 +51,10 @@ const InhumacionIndividualPage = () => {
     var aux2 = obtenerHora(HoraFinAtencion_LV.valor);
     var aux3 = obtenerHora(HoraInicioAtencion_SD.valor);
     var aux4 = obtenerHora(HoraFinAtencion_SD.valor);
+    console.log(aux1, 'iniciolv');
+    console.log(aux2, 'funlv');
+    console.log(aux3, 'iniciosd');
+    console.log(aux4, 'finsd');
     setHIA_LV(aux1);
     setHFA_LV(aux2);
     setHIA_SD(aux3);
@@ -163,7 +167,7 @@ const InhumacionIndividualPage = () => {
       Number.parseInt(HFA_SD[2])
     );
 
-    if ((ahora.getDay() != 1 || ahora.getDay() != 7) && !isHoliday()) {
+    if ((ahora.getDay() != 0 || ahora.getDay() != 6) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         bandera = false;
       } else {

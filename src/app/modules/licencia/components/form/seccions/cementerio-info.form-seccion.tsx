@@ -73,6 +73,8 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   const lugarCementerio = obj?.isLugar();
 
   const [lugar, setLugar] = useState<TypeLugarCementerio>(lugarCementerio);
+  const [validEmail, setValidEmail] = useState(false);
+  const [validEmailFUN, setValidEmailFUN] = useState(false);
 
   const lugarFuneraria = obj?.isLugar();
 
@@ -146,11 +148,9 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     });
   };
 
-  let validEmail = false;
-
-  const onChange = (value: any) => {
+  const onChange = (value: any, tipo: String) => {
     console.log(value);
-    prop(validEmail, validEmailFUN);
+    prop(value, tipo);
   };
 
   const cambioemailCEM = (e: any) => {
@@ -164,17 +164,15 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     //PREGUNTAR SI LOS EMAILS DE CEMENTERIO Y FUNERARIA APLICA PARA LA VALIDACION DE QUE SEA CORPORATIVO
 
     if (emailRegex.test(campo)) {
-      validEmail = true;
-      onChange(validEmail);
+      //setValidEmail(true);
+      onChange(true, '0');
       console.log('Corporativo y validocementerio');
     } else {
-      validEmail = false;
-      onChange(validEmail);
+      //setValidEmail(false);
+      onChange(false, '0');
       console.log('Corporativo y NO validocementerio');
     }
   };
-
-  let validEmailFUN = false;
 
   const cambioemailFUN = (e: any) => {
     let campo = e;
@@ -185,13 +183,13 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     //Se muestra un texto a modo de ejemplo, luego va a ser un icono
 
     if (emailRegex.test(campo)) {
-      validEmailFUN = true;
-      onChange(validEmailFUN);
-      console.log('validofuneraria');
+      //setValidEmailFUN(true);
+      onChange(true, '1');
+      console.log('validofuneraria', validEmailFUN);
     } else {
-      validEmailFUN = false;
-      onChange(validEmailFUN);
-      console.log('NO validofuneraria');
+      //setValidEmailFUN(false);
+      onChange(false, '1');
+      console.log('NO validofuneraria', validEmailFUN);
     }
   };
 

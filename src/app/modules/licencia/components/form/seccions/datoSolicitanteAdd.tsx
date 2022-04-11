@@ -14,7 +14,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
 
   //#region Cargar Listas
-
+  const { obj, prop } = props;
   const getLista = useCallback(
     async () => {
       const resp = await Promise.all([
@@ -29,7 +29,8 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   let validEmail = false;
   const onChange = (value: any) => {
-    props(validEmail);
+    console.log('mando 1');
+    prop(validEmail);
   };
 
   const cambioemail = (e: any) => {
@@ -56,8 +57,10 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     if (emailRegex.test(campo) && !corporativo) {
       validEmail = true;
       console.log('Corporativo y valido');
+      onChange(validEmail);
     } else {
       validEmail = false;
+      onChange(validEmail);
       console.log('Corporativo y NO valido');
     }
   };
@@ -111,3 +114,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     </>
   );
 };
+interface ISolicitudInfoProps<T> {
+  obj: any;
+  prop: any;
+}

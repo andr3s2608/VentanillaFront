@@ -61,6 +61,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   >([]);
 
   const [type, setType] = useState<[]>([]);
+  const [emailsol, setEmailso] = useState(false);
+  const [emailcem, setEmailcem] = useState(false);
+  const [emailfun, setEmailfun] = useState(false);
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
@@ -120,16 +123,24 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  let cementeriovalidacion = true;
-  let funerariavalidacion = true;
-  let solicitantevalidacion = true;
-  const getData = (cementerio: any, funeraria: any) => {
-    cementeriovalidacion = cementerio;
-    funerariavalidacion = funeraria;
+  const getData = (validacion: any, tipo: string) => {
+    if (tipo == '0') {
+      setEmailcem(validacion);
+      console.log(validacion, 'cementerio recibio');
+    } else {
+      setEmailfun(validacion);
+      console.log(validacion, 'funeraira recibio');
+    }
   };
   const getDataSolicitante = (solicitante: any) => {
-    solicitantevalidacion = solicitante;
+    if (solicitante) {
+      setEmailso(true);
+    } else {
+      setEmailso(false);
+    }
+    console.log(solicitante, 'solicitante recibio');
   };
+
   const onSubmit = async (values: any) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
@@ -464,7 +475,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       fileActaNotarialFiscal
     } = values;
     const NameDoc = container.indexOf('fatal') ? 'Documento_de_la_Madre' : 'Documento_del_fallecido';
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defunción' });
+    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
     Objs.push({ file: fileCCFallecido, name: NameDoc });
     Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
     Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
@@ -480,6 +491,33 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     });
     const names: string[] = filesName.map((item) => item.name);
     return [files, names];
+  };
+  const Prueba = () => {
+    if (emailsol) {
+      if (emailcem) {
+        if (emailfun) {
+          onNextStep([
+            ...KeyFormDeathInstitute,
+            ...KeyFormSolicitudInfo,
+            ...KeyFormCementerio,
+            'deathType',
+            'authIDType',
+            'authName',
+            'authSecondName',
+            'authSurname',
+            'authSecondSurname',
+            'authParentesco',
+            'authOtherParentesco'
+          ]);
+        } else {
+          alert('Email de Funeraria incorrecto');
+        }
+      } else {
+        alert('Email de Cementerio incorrecto');
+      }
+    } else {
+      alert('Email de Solicitante incorrecto');
+    }
   };
 
   const generateFormFiel = (tipoInstitucion: string): DocumentosSoporte[] => {
@@ -891,25 +929,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() =>
-                    onNextStep([
-                      ...KeyFormDeathInstitute,
-                      ...KeyFormSolicitudInfo,
-                      ...KeyFormCementerio,
-                      'deathType',
-                      'authIDType',
-                      'authName',
-                      'authSecondName',
-                      'authSurname',
-                      'authSecondSurname',
-                      'authParentesco',
-                      'authOtherParentesco'
-                    ])
-                  }
-                >
+                <Button type='primary' htmlType='button' onClick={() => Prueba()}>
                   Siguiente
                 </Button>
               </div>
