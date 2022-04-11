@@ -161,7 +161,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       console.log(' tu dato: ' + codeUser);
       console.log(' tu dato: ' + nameUser.fullName.toLocaleUpperCase());
 
-      let linkPDF = api.getLinkPDF(objJosn?.idSolicitud, nameUser.fullName.toLocaleUpperCase());
+      let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, nameUser.fullName.toLocaleUpperCase());
 
       //window.open(linkPDF, 'hola mundo');
 

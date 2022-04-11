@@ -236,7 +236,7 @@ export class ApiService {
     return environments.inhcremacion + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
   };
 
-  getLinkPDFPrev = (idTramite: string, tramitador: string): string => {
-    return environments.inhcremacion + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
+  getLinkPDFNotificacion = (idTramite: string, tramitador: string): string => {
+    return environments.inhcremacion + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
   };
 }
