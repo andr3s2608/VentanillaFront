@@ -27,6 +27,8 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   const [segundonombre, setSegundoNombre] = useState<string>(obj?.medicalSignatureSecondName + '');
   const [primerapellido, setPrimerApellido] = useState<string>(obj?.medicalSignatureSurname + '');
   const [segundoapellido, setSegundoApellido] = useState<string>(obj?.medicalSignatureSecondSurname + '');
+  const [numeroIdentificacion, setNumeroIdentificacion] = useState<string>(obj?.medicalSignatureIDNumber + '');
+  const [numeroIdentificacionAux, setNumeroIdentificacionAux] = useState<string>(obj?.medicalSignatureIDNumber + '');
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -78,6 +80,12 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
     setMedico(true);
   };
 
+  const cambioNumeroIdentificacion = (e: any) => {
+    console.log(e);
+    setNumeroIdentificacion(e);
+    setMedico(true);
+  };
+
   const botonActualizar = (bandera: boolean) => {
     switch (bandera) {
       case true:
@@ -108,7 +116,15 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
     },
     {
       title: 'Numero de Identificación',
-      describe: id
+      describe: (
+        <input
+          type='text'
+          name='numeroIdentificacion'
+          value={numeroIdentificacion}
+          disabled={false}
+          onChange={(e) => cambioNumeroIdentificacion(e.target.value)}
+        />
+      )
     },
     {
       title: 'Primer Nombre',
@@ -182,11 +198,13 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
   };
 
   const actualizarMedico = async () => {
-    const result1 = await api.actualizarMedico(id, 'primerNombre', primernombre);
-    const result2 = await api.actualizarMedico(id, 'segundoNombre', segundonombre);
-    const result3 = await api.actualizarMedico(id, 'primerApellido', primerapellido);
-    const result4 = await api.actualizarMedico(id, 'segundoApellido', segundoapellido);
+    const result1 = await api.actualizarMedico(numeroIdentificacionAux, 'primerNombre', primernombre);
+    const result2 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoNombre', segundonombre);
+    const result3 = await api.actualizarMedico(numeroIdentificacionAux, 'primerApellido', primerapellido);
+    const result4 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoApellido', segundoapellido);
+    const result5 = await api.actualizarMedico(numeroIdentificacionAux, 'numeroIdentificacion', numeroIdentificacion);
     setMedico(false);
+    setNumeroIdentificacionAux(numeroIdentificacion);
   };
 
   const showModal = () => {

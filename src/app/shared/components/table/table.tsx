@@ -10,6 +10,10 @@ import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined } from '@
 import { useHistory } from 'react-router';
 import moment from 'moment';
 
+//redux
+import { store } from 'app/redux/app.reducers';
+import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+
 interface IDataSource {
   data: Array<any>;
 }
@@ -354,6 +358,8 @@ export const Gridview = (props: IDataSource) => {
     const { idTramite } = data[0];
 
     localStorage.setItem('register', JSON.stringify(data));
+
+    store.dispatch(SetResetViewLicence());
 
     //history.push('/tramites-servicios/licencia/inhumacion-prueba');
 
