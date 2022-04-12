@@ -147,6 +147,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
 
+    const tipoinst = values.instTipoIdent;
+    var tipoidinst = values.instTipoIdent;
+    var numeroins = values.instNumIdent;
+    var razonSocialins = values.instRazonSocial;
+    var numeroProtocoloins = values.instNumProtocolo;
+    if (tipoinst == undefined) {
+      tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      numeroins = '0';
+      razonSocialins = 'Otros';
+      numeroProtocoloins = '452022';
+    }
     let persona: any[] = [];
     if (tipoLicencia === 'Inhumación') {
       persona = [
@@ -343,11 +354,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           correoMedico: ''
         },
         institucionCertificaFallecimiento: {
-          idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
-          tipoIdentificacion: values.instTipoIdent,
-          numeroIdentificacion: values.instNumIdent,
-          razonSocial: values.instRazonSocial,
-          numeroProtocolo: values.instNumProtocolo,
+          tipoIdentificacion: tipoidinst,
+          numeroIdentificacion: numeroins,
+          razonSocial: razonSocialins,
+          numeroProtocolo: numeroProtocoloins,
           numeroActaLevantamiento: values.instNumActaLevantamiento,
           fechaActa: moment(values.instFechaActa).format(formatDate),
           seccionalFiscalia: values.instSeccionalFiscalia,

@@ -132,6 +132,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   }
 
   const onSubmit = async (values: any) => {
+    /////////////////////////Enviar Notificacion//////////////////////////
     let tipoSeguimiento: string = values.validFunctionaltype;
     let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
     let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
@@ -214,7 +215,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
       notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
     }
-
+    /////////////////////////Guardar status//////////////////////////
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -229,51 +230,70 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       return `${result}${item.path}|`;
     }, '');
 
-    var valor: any[] = [];
-
     var not = 1;
 
     const segui = values.validFunctionaltype;
 
     if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
-      const update = await api.updatelicencia(objJosn?.idSolicitud);
-    }
-
-    for (let index = 0; index < documentos.length; index++) {
-      var posicioninicialid = 0;
-      var posicionfinalid = iddocumento.indexOf('|');
-      var id = iddocumento.substring(posicioninicialid, posicionfinalid);
-      var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
-
-      var posicioninicialpath = 0;
-      var posicionfinalpath = pathdocumento.indexOf('/');
-      var nuevopath = pathdocumento.indexOf('|');
-      var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
-      var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
-
-      var datos: string = datosprueba.at(index);
-      if (datos == '1') {
-        datos = 'Cumple';
+      if (
+        datosprueba.at(0) == '1' &&
+        datosprueba.at(1) == '1' &&
+        datosprueba.at(2) == '1' &&
+        datosprueba.at(3) == '1' &&
+        datosprueba.at(4) == '1'
+      ) {
+        console.log('cumple todo');
       } else {
-        datos = 'No Cumple';
+        alert('Todos los documentos deben de cumplir en caso de aprobacion');
+        not = 0;
+        console.log(
+          'no cumple todo',
+          datosprueba.at(0),
+          datosprueba.at(1),
+          datosprueba.at(2),
+          datosprueba.at(3),
+          datosprueba.at(4)
+        );
       }
 
-      console.log('Seguimiento', values.validFunctionaltype);
-      const json: IGestionTramite<any> = {
-        estado: {
-          idSolicitud: objJosn?.idSolicitud,
-          idDocumentoSoporte: id,
-          Path: documento,
-          Estado_Documento: datos,
-          tipoSeguimiento: values.validFunctionaltype,
-          Observaciones: values.observations
-        }
-      };
-
-      const resp = await api.AddGestion(json, not + '');
+      //const update = await api.updatelicencia(objJosn?.idSolicitud);
     }
+    if (not == 1) {
+      for (let index = 0; index < documentos.length; index++) {
+        var posicioninicialid = 0;
+        var posicionfinalid = iddocumento.indexOf('|');
+        var id = iddocumento.substring(posicioninicialid, posicionfinalid);
+        var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
 
-    history.push('/tramites-servicios');
+        var posicioninicialpath = 0;
+        var posicionfinalpath = pathdocumento.indexOf('/');
+        var nuevopath = pathdocumento.indexOf('|');
+        var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
+        var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
+
+        var datos: string = datosprueba.at(index);
+        if (datos == '1') {
+          datos = 'Cumple';
+        } else {
+          datos = 'No Cumple';
+        }
+
+        console.log('Seguimiento', values.validFunctionaltype);
+        const json: IGestionTramite<any> = {
+          estado: {
+            idSolicitud: objJosn?.idSolicitud,
+            idDocumentoSoporte: id,
+            Path: documento,
+            Estado_Documento: datos,
+            tipoSeguimiento: values.validFunctionaltype,
+            Observaciones: values.observations
+          }
+        };
+
+        const resp = await api.AddGestion(json, not + '');
+      }
+      history.push('/tramites-servicios');
+    }
   };
   const showModal = () => {
     setIsModalVisible(true);
@@ -522,9 +542,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <InformacionSolicitanteSeccion obj={objJosn} />
             <InformacionFallecidoSeccion obj={objJosn} />
             <InformacionMedicoCertificante obj={objJosn} />
+            <InformacionSolicitanteSeccion obj={objJosn} />
 
             <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
             <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />

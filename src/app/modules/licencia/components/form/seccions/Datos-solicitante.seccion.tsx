@@ -397,6 +397,26 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   return (
     <>
+      <Divider orientation='left'>
+        <div className='contenedor'>
+          Datos de la Funeraria
+          <Form.Item>
+            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFuneraria()}>
+              Validar Funeraria
+            </Button>
+          </Form.Item>
+        </div>
+      </Divider>
+      <List
+        grid={{ gutter: 16, column: 3 }}
+        dataSource={funerarias}
+        renderItem={(item) => (
+          <List.Item>
+            <List.Item.Meta title={item.title} description={item.describe} />
+          </List.Item>
+        )}
+      />
+
       <Divider orientation='left'>Datos del Solicitante</Divider>
       <List
         grid={{ gutter: 16, column: 3 }}
@@ -426,25 +446,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           </List.Item>
         )}
       />
-      <Divider orientation='left'>
-        <div className='contenedor'>
-          Datos de la Funeraria
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFuneraria()}>
-              Validar Funeraria
-            </Button>
-          </Form.Item>
-        </div>
-      </Divider>
-      <List
-        grid={{ gutter: 16, column: 3 }}
-        dataSource={funerarias}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta title={item.title} description={item.describe} />
-          </List.Item>
-        )}
-      />
+
       <Modal
         title={<p className='text-center text-dark text-uppercase mb-0 titulo'>validación Cementerio</p>}
         visible={isModalVisibleGraveyard}

@@ -192,7 +192,7 @@ export const Gridview = (props: IDataSource) => {
           key: 'idTramite'
         },
         {
-          title: 'Numero de Documento',
+          title: 'Documento del Fallecido',
           dataIndex: '',
           key: 'numeroDocumento',
           render: (Text: string) => (
@@ -264,7 +264,7 @@ export const Gridview = (props: IDataSource) => {
           key: 'idTramite'
         },
         {
-          title: 'Numero de Documento',
+          title: 'Documento del Fallecido',
           dataIndex: '',
           key: 'numeroDocumento',
           render: (Text: string) => (
@@ -356,29 +356,7 @@ export const Gridview = (props: IDataSource) => {
     localStorage.setItem('register', JSON.stringify(data));
 
     //history.push('/tramites-servicios/licencia/inhumacion-prueba');
-
-    switch (idTramite) {
-      case 'a289c362-e576-4962-962b-1c208afa0273':
-        //inhumacion indivual
-        history.push('/tramites-servicios/licencia/inhumacion-prueba');
-        //history.push('/tramites-servicios/licencia/inhumacion-individual');
-        break;
-      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-        //inhumacion fetal
-        history.push('/tramites-servicios/licencia/inhumacion-prueba');
-        //history.push('/tramites-servicios/licencia/inhumacion-fetal');
-        break;
-      case 'e69bda86-2572-45db-90dc-b40be14fe020':
-        //cremacion individual
-        history.push('/tramites-servicios/licencia/inhumacion-prueba');
-        // history.push('/tramites-servicios/licencia/cremacion-individual');
-        break;
-      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-        //cremacionfetal
-        history.push('/tramites-servicios/licencia/inhumacion-prueba');
-        //history.push('/tramites-servicios/licencia/cremacion-fetal');
-        break;
-    }
+    history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
   const onPageChange = (pagination: any) => {
     //alert(pagination.current);
