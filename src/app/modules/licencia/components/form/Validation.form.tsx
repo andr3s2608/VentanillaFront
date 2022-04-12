@@ -166,7 +166,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       //window.open(linkPDF, 'hola mundo');
 
       let datosDinamicosAprobacion = [
-        objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        //objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        solicitud[0]['razonSocialSolicitante'],
         getDescripcionTramite(idTramite.toLocaleUpperCase()),
         fechaSolicitud.substring(0, 10),
         getDescripcionTramite(idTramite.toLocaleUpperCase()),
@@ -206,7 +207,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         observacion: values.Observations
       };*/
       let datosDinamicosGenericos = [
-        objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        //objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        solicitud[0]['razonSocialSolicitante'],
         getDescripcionTramite(idTramite.toLocaleUpperCase()),
         fechaSolicitud.substring(0, 10),
         values.observations
