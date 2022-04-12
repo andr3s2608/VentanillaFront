@@ -236,7 +236,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const segui = values.validFunctionaltype;
 
     if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
-      //const update = await api.updatelicencia(objJosn?.idSolicitud);
+      console.log('APROBADO');
+      const update = await api.updatelicencia(objJosn?.idSolicitud);
     }
 
     for (let index = 0; index < documentos.length; index++) {
