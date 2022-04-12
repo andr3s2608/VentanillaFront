@@ -243,6 +243,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         datosprueba.at(4) == '1'
       ) {
         console.log('cumple todo');
+        const update = await api.updatelicencia(objJosn?.idSolicitud);
       } else {
         alert('Todos los documentos deben de cumplir en caso de aprobacion');
         not = 0;
@@ -255,8 +256,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           datosprueba.at(4)
         );
       }
-
-      //const update = await api.updatelicencia(objJosn?.idSolicitud);
     }
     if (not == 1) {
       for (let index = 0; index < documentos.length; index++) {
