@@ -56,7 +56,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
     const [file]: any = files?.filter((p) => p.path.includes(fileString));
     if (file?.path !== undefined) {
       const url = `${environments.blob}Storage/GetBlob/${path}${type}/${file?.path}.pdf`;
-      console.log(url);
+
       window.open(url, 'descarga');
     }
     if (file?.path === undefined) {

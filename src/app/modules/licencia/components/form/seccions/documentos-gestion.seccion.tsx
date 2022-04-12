@@ -81,69 +81,16 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     return posicionform;
   };
 
-  //////////////////////////
-
-  const modalBody = () => (
-    <div
-      style={{
-        backgroundColor: '#fff',
-        flexDirection: 'column',
-        overflow: 'hidden',
-
-        /* Fixed position */
-        left: 0,
-        position: 'fixed',
-        top: 0,
-
-        /* Take full size */
-        height: '100%',
-        width: '100%',
-
-        /* Displayed on top of other elements */
-        zIndex: 9999
-      }}
-    >
-      <div
-        style={{
-          alignItems: 'center',
-          backgroundColor: '#000',
-          color: '#fff',
-          display: 'flex',
-          padding: '.5rem'
-        }}
-      >
-        <div style={{ marginRight: 'auto' }}></div>
-        <button
-          style={{
-            backgroundColor: '#357edd',
-            border: 'none',
-            borderRadius: '4px',
-            color: '#ffffff',
-            cursor: 'pointer',
-            padding: '8px'
-          }}
-          onClick={() => setShown(false)}
-        >
-          Close
-        </button>
-      </div>
-      <div
-        style={{
-          flexGrow: 1,
-          overflow: 'auto'
-        }}
-      >
-        <Viewer fileUrl={'F:/repositorios/prueba/TramitesVentanillaFront/src/archivo/prueba.pdf'} />
-      </div>
-    </div>
-  );
   var valorradio = 'sin modificar';
+
+  //Capturar que documento se modifico(cumple,no cumple)
   const onChange = (value: any) => {
     var nombre: string = value.target.name;
     var posicion: number = parseInt(nombre.substring(5, 6));
 
     arrayarchivos[posicion] = value.target.value;
 
+    //envia a validation.form el array con el estado de los documentos
     prop(arrayarchivos);
     //prop.datos(arrayarchivos);
   };
@@ -177,13 +124,8 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
         break;
     }
 
-    console.log('EL contenedor donde se buscará es: ');
-    console.log(typeContainer);
     let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
 
-    //api.VisualizerPdfEstado(pathFull);
-    //setPdf(api.VisualizerPdf(pathFull));
-    //api.VisualizerPdf(pathFull).then((val) => console.log(val));
     setUrlPdf(api.GetUrlPdf(pathFull));
     /**
      * Se despliega el pop up con el pdf dentro

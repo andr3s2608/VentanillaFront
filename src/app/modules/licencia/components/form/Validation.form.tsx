@@ -62,6 +62,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
+  const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String]>(['1', '1', '1', '1', '1']);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
@@ -132,90 +133,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   }
 
   const onSubmit = async (values: any) => {
-    /////////////////////////Enviar Notificacion//////////////////////////
-    let tipoSeguimiento: string = values.validFunctionaltype;
-    let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-    let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
-    //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
-
-    let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
-    console.log(funeraria, 'funerariaaaaa');
-    console.log(funeraria[0]['funeraria']);
-
-    let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
-    let idTramite = objJosn?.idTramite;
-    let cementerio = solicitud[0]['datosCementerio']['cementerio'];
-    let date = new Date();
-    let emailSolicitante = resumenSolicitud[0]['correoSolicitante'];
-
-    console.log(solicitud, 'solicitud');
-    console.log(resumenSolicitud[0]['correoSolicitante'], 'resumen solicitud');
-
-    if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
-      //alert('aprobacion');
-      console.log('-----------------------------------------');
-      console.log(solicitud[0]['datosCementerio']['cementerio']);
-      console.log(solicitud[0]['fechaSolicitud']);
-      console.log('-----------------------------------------');
-      let codeUser = await api.getCodeUser();
-      let nameUser = await api.GetInformationUser(codeUser);
-      console.log(' tu dato: ' + codeUser);
-      console.log(' tu dato: ' + nameUser.fullName.toLocaleUpperCase());
-
-      let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, nameUser.fullName.toLocaleUpperCase());
-
-      //window.open(linkPDF, 'hola mundo');
-
-      let datosDinamicosAprobacion = [
-        objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        fechaSolicitud.substring(0, 10),
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        linkPDF
-      ];
-
-      let emailCementerio = resumenSolicitud[0]['correoCementerio'];
-      let datosDinamicosCementerio = [
-        cementerio,
-        resumenSolicitud[0]['numeroLicencia'],
-        date.toLocaleDateString(),
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        linkPDF
-      ];
-
-      let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
-      let datosDinamicosFuneraria = [
-        funeraria[0]['funeraria'],
-        resumenSolicitud[0]['numeroLicencia'],
-        date.toLocaleDateString(),
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        linkPDF
-      ];
-
-      notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante);
-      notificarCementerio(datosDinamicosCementerio, emailCementerio);
-      notificarFuneraria(datosDinamicosFuneraria, emailFuneraria);
-      //notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
-    } else {
-      /*let datosDinamicos = {
-        ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
-        tipo_de_solicitud: getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        numero_de_solicitud: objJosn?.idSolicitud,
-        fecha_de_solicitud: fechaSolicitud.substring(0, 10),
-        observacion: values.Observations
-      };*/
-      let datosDinamicosGenericos = [
-        objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
-        getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        fechaSolicitud.substring(0, 10),
-        values.observations
-      ];
-
-      notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
-    }
-    /////////////////////////Guardar status//////////////////////////
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -236,29 +153,35 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
       if (
-        datosprueba.at(0) == '1' &&
-        datosprueba.at(1) == '1' &&
-        datosprueba.at(2) == '1' &&
-        datosprueba.at(3) == '1' &&
-        datosprueba.at(4) == '1'
+        DatosDocumento.at(0) == '1' &&
+        DatosDocumento.at(1) == '1' &&
+        DatosDocumento.at(2) == '1' &&
+        DatosDocumento.at(3) == '1' &&
+        DatosDocumento.at(4) == '1'
       ) {
-        console.log('cumple todo');
         const update = await api.updatelicencia(objJosn?.idSolicitud);
       } else {
         alert('Todos los documentos deben de cumplir en caso de aprobacion');
         not = 0;
-        console.log(
-          'no cumple todo',
-          datosprueba.at(0),
-          datosprueba.at(1),
-          datosprueba.at(2),
-          datosprueba.at(3),
-          datosprueba.at(4)
-        );
+      }
+    }
+    if (segui == 'fe691637-be8a-425f-a309-e2032221553f') {
+      if (
+        DatosDocumento.at(0) == '2' ||
+        DatosDocumento.at(1) == '2' ||
+        DatosDocumento.at(2) == '2' ||
+        DatosDocumento.at(3) == '2' ||
+        DatosDocumento.at(4) == '2'
+      ) {
+      } else {
+        alert('Debe indicar almenos un Documento que no Cumpla');
+        not = 0;
       }
     }
     if (not == 1) {
+      /////////////////////////Guardar status//////////////////////////
       for (let index = 0; index < documentos.length; index++) {
+        //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
         var posicioninicialid = 0;
         var posicionfinalid = iddocumento.indexOf('|');
         var id = iddocumento.substring(posicioninicialid, posicionfinalid);
@@ -270,14 +193,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
         var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
 
-        var datos: string = datosprueba.at(index);
+        var datos = DatosDocumento.at(index);
         if (datos == '1') {
           datos = 'Cumple';
         } else {
           datos = 'No Cumple';
         }
 
-        console.log('Seguimiento', values.validFunctionaltype);
         const json: IGestionTramite<any> = {
           estado: {
             idSolicitud: objJosn?.idSolicitud,
@@ -291,6 +213,79 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
         const resp = await api.AddGestion(json, not + '');
       }
+      /////////////////////////Enviar Notificacion//////////////////////////
+      let tipoSeguimiento: string = values.validFunctionaltype;
+      let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+      let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
+      //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
+
+      let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
+
+      let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
+      let idTramite = objJosn?.idTramite;
+      let cementerio = solicitud[0]['datosCementerio']['cementerio'];
+      let date = new Date();
+      let emailSolicitante = resumenSolicitud[0]['correoSolicitante'];
+
+      if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
+        //alert('aprobacion');
+
+        let codeUser = await api.getCodeUser();
+        let nameUser = await api.GetInformationUser(codeUser);
+
+        let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, nameUser.fullName.toLocaleUpperCase());
+
+        //window.open(linkPDF, 'hola mundo');
+
+        let datosDinamicosAprobacion = [
+          objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          fechaSolicitud.substring(0, 10),
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          linkPDF
+        ];
+
+        let emailCementerio = resumenSolicitud[0]['correoCementerio'];
+        let datosDinamicosCementerio = [
+          cementerio,
+          resumenSolicitud[0]['numeroLicencia'],
+          date.toLocaleDateString(),
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          linkPDF
+        ];
+
+        let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
+        let datosDinamicosFuneraria = [
+          funeraria[0]['funeraria'],
+          resumenSolicitud[0]['numeroLicencia'],
+          date.toLocaleDateString(),
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          linkPDF
+        ];
+
+        notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante);
+        notificarCementerio(datosDinamicosCementerio, emailCementerio);
+        notificarFuneraria(datosDinamicosFuneraria, emailFuneraria);
+        //notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
+      } else {
+        /*let datosDinamicos = {
+        ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+        tipo_de_solicitud: getDescripcionTramite(idTramite.toLocaleUpperCase()),
+        numero_de_solicitud: objJosn?.idSolicitud,
+        fecha_de_solicitud: fechaSolicitud.substring(0, 10),
+        observacion: values.Observations
+      };*/
+        let datosDinamicosGenericos = [
+          objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+          getDescripcionTramite(idTramite.toLocaleUpperCase()),
+          fechaSolicitud.substring(0, 10),
+          values.observations
+        ];
+
+        notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
+      }
       history.push('/tramites-servicios');
     }
   };
@@ -301,10 +296,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  var datosprueba: any[] = ['1', '1', '1', '1', '1'];
-
+  //Metodo que captura que documento marco el usuario como cumple o no cumple
   const getData = (rowData: any) => {
-    datosprueba = rowData;
+    setDatosDocumento(rowData);
   };
   const generateListFiles = (values: any) => {
     const Objs = [];
@@ -520,8 +514,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const idSolicitud = objJosn?.idSolicitud;
 
     let linkPdf = await api.getLinkPDF(idSolicitud, nameUser.fullName);
-    console.log('La url de la licencia es: ');
-    console.log(linkPdf);
 
     setUrlPdfLicence(linkPdf);
     setNameUser(nameUser);

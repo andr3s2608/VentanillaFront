@@ -41,7 +41,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
       const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
       setUser(resp);
       setNroiden(existefuneraria.NROIDENT);
-      console.log('nroident', existefuneraria.NROIDENT);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -67,7 +66,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
   var emailsolicitantevalidacion = false;
   const getData = (rowData: any) => {
     emailsolicitantevalidacion = rowData;
-    console.log('mando:', emailsolicitantevalidacion);
+
     prop(emailsolicitantevalidacion);
   };
 

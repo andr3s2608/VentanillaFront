@@ -13,7 +13,6 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { Console } from 'console';
 
 export const InformacionMedicoCertificante = ({ obj }: any) => {
   const [banderaBotonActualizarMedico, setMedico] = useState(false);
@@ -49,39 +48,30 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
 
   const tipoid = obj?.medicalSignatureIDType;
   const id = obj?.medicalSignatureIDNumber;
-  //var primernombre = obj?.medicalSignatureName;
-  //const segundonombre = obj?.medicalSignatureSecondName;
-  //const primerapellido = obj?.medicalSignatureSurname;
-  //const segundoapellido = obj?.medicalSignatureSecondSurname;
+
   const profesional = obj?.medicalSignatureProfesionalType;
-  //const email = obj?.emailmedicalSignature;
 
   const cambioPrimerNombre = (e: any) => {
-    console.log(e);
     setPrimerNombre(e);
     setMedico(true);
   };
 
   const cambioSegundoNombre = (e: any) => {
-    console.log(e);
     setSegundoNombre(e);
     setMedico(true);
   };
 
   const cambioPrimerApellido = (e: any) => {
-    console.log(e);
     setPrimerApellido(e);
     setMedico(true);
   };
 
   const cambioSegundoApellido = (e: any) => {
-    console.log(e);
     setSegundoApellido(e);
     setMedico(true);
   };
 
   const cambioNumeroIdentificacion = (e: any) => {
-    console.log(e);
     setNumeroIdentificacion(e);
     setMedico(true);
   };
@@ -186,7 +176,6 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
     const Oracle = await api.getMedico(id);
 
     if (Oracle) {
-      console.log(Oracle);
       setNOMBRES(Oracle[0].NOMBRES + ' ' + Oracle[0].APELLIDOS);
       setNROIDENT(Oracle[0].NROIDENT);
       setTIPO_I(Oracle[0].TIPO_I);

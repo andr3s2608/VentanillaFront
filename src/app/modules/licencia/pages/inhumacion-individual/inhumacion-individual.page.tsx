@@ -51,20 +51,12 @@ const InhumacionIndividualPage = () => {
     var aux2 = obtenerHora(HoraFinAtencion_LV.valor);
     var aux3 = obtenerHora(HoraInicioAtencion_SD.valor);
     var aux4 = obtenerHora(HoraFinAtencion_SD.valor);
-    console.log(aux1, 'iniciolv');
-    console.log(aux2, 'funlv');
-    console.log(aux3, 'iniciosd');
-    console.log(aux4, 'finsd');
+
     setHIA_LV(aux1);
     setHFA_LV(aux2);
     setHIA_SD(aux3);
     setHFA_SD(aux4);
   };
-
-  //console.log(HIA_LV);
-  //console.log(HFA_LV);
-  //console.log(HIA_SD);
-  //console.log(HFA_SD);
 
   useEffect(() => {
     getListas();

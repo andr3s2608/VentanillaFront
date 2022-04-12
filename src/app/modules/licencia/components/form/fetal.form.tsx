@@ -72,7 +72,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const obj: any = EditFetal();
+  //const obj: any = EditFetal();
+  const obj: any = undefined;
 
   const isEdit = obj?.idTramite !== undefined;
 
@@ -126,10 +127,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const getData = (validacion: any, tipo: string) => {
     if (tipo == '0') {
       setEmailcem(validacion);
-      console.log(validacion, 'cementerio recibio');
     } else {
       setEmailfun(validacion);
-      console.log(validacion, 'funeraira recibio');
     }
   };
   const getDataSolicitante = (solicitante: any) => {
@@ -138,10 +137,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       setEmailso(false);
     }
-    console.log(solicitante, 'solicitante recibio');
   };
 
   const onSubmit = async (values: any) => {
+    ////////////Guarda Solicitud///////////
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
@@ -270,6 +269,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         }
       ];
     }
+    //captura usuario logeado
     const idUser = await api.getCodeUser();
     const resp = await api.GetInformationUser(idUser);
     var tipo = '';
@@ -283,6 +283,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       tipo = 'Natural';
       razon = resp.fullName;
     }
+    //JSon con lso datos seteadosde la solicitud
     const json: IRegistroLicencia<any> = {
       solicitud: {
         idSolicitud: obj?.idSolicitud,
@@ -364,10 +365,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           noFiscal: values.instNoFiscal,
           idTipoInstitucion: values.instType
         }
-        // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-
+    //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
     const formData = new FormData();
     const supportDocuments: any[] = [];
@@ -386,6 +386,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         formData.append('nameFile', name);
 
         TypeDocument.forEach((item: any) => {
+          ///comprueba que documentos se subieron dependiendo de la solicitud
           if (item.key === name.toString()) {
             const [support] = supports.filter((p) => p.path.includes(item.key));
 
@@ -414,7 +415,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       formData.append('oid', accountIdentifier);
 
       if (supportDocumentsEdit.length) {
+        ///Guarde de documentos azure
         await api.uploadFiles(formData);
+        //Guarde de documentos bd
         await api.UpdateSupportDocuments(supportDocumentsEdit);
       }
 
@@ -502,6 +505,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const names: string[] = filesName.map((item) => item.name);
     return [files, names];
   };
+
+  //metodo para permitir pasar si los correos son validos
   const Prueba = () => {
     if (emailsol) {
       if (emailcem) {

@@ -51,7 +51,6 @@ export const Gridview = (props: IDataSource) => {
   }, []);
 
   const [Tipo] = roles;
-  console.log(data, 'data');
 
   var nombre: any;
   var apellido: any;
@@ -80,12 +79,9 @@ export const Gridview = (props: IDataSource) => {
         return `${result}${item.tramite}|`;
       }, '');
     } else {
-      console.log(data);
-      console.log(nombre, 'nombre');
       nombre = datos.reduce((result: any, item: { persona: { primerNombre: any }[] }) => {
         return `${result}${item.persona[0].primerNombre}|`;
       }, '');
-      console.log(nombre, 'nombre');
 
       nombres = datos.reduce((result: any, item: { persona: { segundoNombre: any }[] }) => {
         return `${result}${item.persona[0].segundoNombre}|`;
@@ -108,7 +104,6 @@ export const Gridview = (props: IDataSource) => {
   };
 
   if (Validacion == '1') {
-    console.log(roles, 'roles');
     Renovar(undefined);
   }
 
@@ -366,7 +361,6 @@ export const Gridview = (props: IDataSource) => {
   };
   const onPageChange = (pagination: any) => {
     //alert(pagination.current);
-    console.log('data', data);
 
     var valor: any = data.at(0);
     var array: any[] = [];
@@ -374,7 +368,6 @@ export const Gridview = (props: IDataSource) => {
       if (index >= (pagination.current - 1) * 10) {
         valor = data.at(index);
         array.push(valor);
-        console.log(array, 'array');
       }
     }
 

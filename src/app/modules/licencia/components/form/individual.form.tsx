@@ -111,10 +111,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const getData = (validacion: any, tipo: string) => {
     if (tipo == '0') {
       setEmailcem(validacion);
-      console.log(validacion, 'cementerio recibio');
     } else {
       setEmailfun(validacion);
-      console.log(validacion, 'funeraira recibio');
     }
   };
   const getDataSolicitante = (solicitante: any) => {
@@ -123,7 +121,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       setEmailso(false);
     }
-    console.log(solicitante, 'solicitante recibio');
   };
 
   const onSubmit = async (values: any) => {
@@ -140,7 +137,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var razonSocialins = values.instRazonSocial;
     var numeroProtocoloins = values.instNumProtocolo;
     if (tipoinst == undefined) {
-      console.log('entro otros');
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
       numeroins = '0';
       razonSocialins = 'Otros';
@@ -177,7 +173,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
         break;
     }
-    console.log('parentesco:', parentesco);
 
     var tipo = '';
     var razon = '';
@@ -366,7 +361,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
         const supportDocuments: any[] = [];
         const [files, names] = generateListFiles(values);
-        console.log(names, 'names');
+
         files.forEach((item: any, i: number) => {
           const name = names[i];
 
@@ -374,10 +369,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           formData.append('nameFile', name);
 
           TypeDocument.forEach((item: any) => {
-            console.log(item.key, 'key');
-            console.log(name.toString(), 'name');
             if (item.key === name.toString()) {
-              console.log('Entro');
               supportDocuments.push({
                 idSolicitud: resp,
                 idTipoDocumentoSoporte: item.value,
