@@ -1,6 +1,6 @@
 /** Ficha técnica del proyecto. */
 const projectInfo = {
-  name: 'Ventanilla Única de Trámites y Servicios - Desarrollo',
+  name: 'Ventanilla Única de Trámites y Servicios - Produccion',
   fullname: 'Secretaría Distrital de Salud',
   description:
     'La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía, la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los principios de seguridad de la información.',
