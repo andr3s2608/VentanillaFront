@@ -14,4 +14,4 @@ steps:
       output_location: 'build'
       app_build_command: $(commanddev)
       azure_static_web_apps_api_token: $(deployment_token)
-      deployment_environment: 'gbm'
+      deployment_environment: 'Dev'
