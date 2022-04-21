@@ -107,7 +107,7 @@ export class ApiService {
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
   updatelicencia = (solicitud: string) =>
-    get<any>({ endpoint: environments.local, url: `Request/GetDataFromQuery/${solicitud}/"cadena"`, id: '0' });
+    post<any>({ endpoint: environments.inhcremacion, url: `Request/GetDataFromQuery/${solicitud}`, id: '1' });
 
   GetResumenSolicitud = (solicitud: string) =>
     get<any>({ endpoint: environments.inhcremacion, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
@@ -191,6 +191,7 @@ export class ApiService {
       id: '0'
     });
 
+  //consulta informacion adicional del fallecido
   GetInformacionFallecido = (solicitud: string) =>
     get<any>({ endpoint: environments.inhcremacion, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 

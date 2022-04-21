@@ -61,7 +61,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
-  const objJosn: any = EditInhumacion('0');
+  //const objJosn: any = EditInhumacion('0');
+  const objJosn: any = undefined;
   const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
   //#region Listados
@@ -110,10 +111,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const getData = (validacion: any, tipo: string) => {
     if (tipo == '0') {
       setEmailcem(validacion);
-      console.log(validacion, 'cementerio recibio');
     } else {
       setEmailfun(validacion);
-      console.log(validacion, 'funeraira recibio');
     }
   };
   const getDataSolicitante = (solicitante: any) => {
@@ -122,7 +121,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       setEmailso(false);
     }
-    console.log(solicitante, 'solicitante recibio');
   };
 
   const onSubmit = async (values: any) => {
@@ -132,6 +130,49 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
     const idUser = await api.getCodeUser();
     const resp = await api.GetInformationUser(idUser);
+
+    const tipoinst = values.instTipoIdent;
+    var tipoidinst = values.instTipoIdent;
+    var numeroins = values.instNumIdent;
+    var razonSocialins = values.instRazonSocial;
+    var numeroProtocoloins = values.instNumProtocolo;
+    if (tipoinst == undefined) {
+      tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      numeroins = '0';
+      razonSocialins = 'Otros';
+      numeroProtocoloins = '452022';
+    }
+    const par = values.authParentesco;
+    var parentesco = '';
+    switch (par) {
+      case 'Padre / Madre':
+        parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
+        break;
+      case 'Hermano/a':
+        parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
+        break;
+      case 'Hijo/a':
+        parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
+        break;
+      case 'Cónyuge (Compañero/a Permanente)':
+        parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
+        break;
+      case 'Tío/a':
+        parentesco = '6880824b-39c2-4105-8195-c190885796d8';
+        break;
+      case 'Sobrino/a':
+        parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
+        break;
+      case 'Abuelo/a':
+        parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
+        break;
+      case 'Nieto/a':
+        parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
+        break;
+      case 'Otro':
+        parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+        break;
+    }
 
     var tipo = '';
     var razon = '';
@@ -180,7 +221,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             idEtnia: values.etnia,
             idRegimen: values.regimen,
             idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idParentesco: parentesco,
             idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
           },
           //authorizador cremacion
@@ -257,10 +298,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         },
 
         institucionCertificaFallecimiento: {
-          tipoIdentificacion: values.instTipoIdent,
-          numeroIdentificacion: values.instNumIdent,
-          razonSocial: values.instRazonSocial,
-          numeroProtocolo: values.instNumProtocolo,
+          tipoIdentificacion: tipoidinst,
+          numeroIdentificacion: numeroins,
+          razonSocial: razonSocialins,
+          numeroProtocolo: numeroProtocoloins,
           numeroActaLevantamiento: values.instNumActaLevantamiento,
           fechaActa: moment(values.instFechaActa).format(formatDate),
           seccionalFiscalia: values.instSeccionalFiscalia,
@@ -320,7 +361,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
         const supportDocuments: any[] = [];
         const [files, names] = generateListFiles(values);
-        console.log(names, 'names');
+
         files.forEach((item: any, i: number) => {
           const name = names[i];
 
@@ -328,10 +369,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           formData.append('nameFile', name);
 
           TypeDocument.forEach((item: any) => {
-            console.log(item.key, 'key');
-            console.log(name.toString(), 'name');
             if (item.key === name.toString()) {
-              console.log('Entro');
               supportDocuments.push({
                 idSolicitud: resp,
                 idTipoDocumentoSoporte: item.value,
@@ -548,7 +586,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
               rules={[{ required: true, max: 25 }]}
             >
-              <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
+              <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
             <Form.Item
               label='Estado Civil'
@@ -592,7 +630,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 </Form.Item>
 
                 <Form.Item label='Número de Identificación' name='knownIDNumber'>
-                  <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+                  <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
                 </Form.Item>
 
                 <Form.Item label='Nombre' name='knownName'>
@@ -641,7 +679,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
             {isCremacion && (
               <>
-                <Divider orientation='right'>Datos Del Familiar Que Autoriza la Cremación</Divider>
+                <Divider orientation='right'>Datos Del Familiar Que Autoriza Cremación</Divider>
 
                 {hasCremacionAuth && (
                   <div className='fadeInRight'>
@@ -668,7 +706,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       rules={[{ required: true, max: 20 }]}
                       initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
                     >
-                      <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+                      <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
                     </Form.Item>
 
                     <Form.Item

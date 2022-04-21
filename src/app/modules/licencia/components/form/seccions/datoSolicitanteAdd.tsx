@@ -29,14 +29,12 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   let validEmail = false;
   const onChange = (value: any) => {
-    console.log('mando 1');
     prop(validEmail);
   };
 
   const cambioemail = (e: any) => {
     let campo = e;
 
-    console.log(campo);
     const emailRegex =
       /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     //Se muestra un texto a modo de ejemplo, luego va a ser un icono
@@ -56,12 +54,11 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
     if (emailRegex.test(campo) && !corporativo) {
       validEmail = true;
-      console.log('Corporativo y valido');
+
       onChange(validEmail);
     } else {
       validEmail = false;
       onChange(validEmail);
-      console.log('Corporativo y NO valido');
     }
   };
 
@@ -98,7 +95,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       </Form.Item>
 
       <Form.Item label='Numero documento' initialValue={null} required={true} name='ndoc'>
-        <Input allowClear placeholder='Numero documento' autoComplete='off' />
+        <Input allowClear type='number' placeholder='Numero documento' autoComplete='off' />
       </Form.Item>
 
       <Form.Item label='Nombres' initialValue={null} required={true} name='namesolicitudadd'>

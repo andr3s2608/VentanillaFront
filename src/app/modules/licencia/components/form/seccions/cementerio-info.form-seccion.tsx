@@ -114,7 +114,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
 
     setLMunicipiosfunerarias(resp);
-    console.log(l_municipios);
   };
 
   const onChangeMunicipioFuneraria = async (value: string) => {
@@ -136,7 +135,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
 
     setLMunicipios(resp);
-    console.log(l_municipiosfunerarias);
   };
 
   const onChangeMunicipio = async (value: string) => {
@@ -149,14 +147,12 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   };
 
   const onChange = (value: any, tipo: String) => {
-    console.log(value);
     prop(value, tipo);
   };
 
   const cambioemailCEM = (e: any) => {
     let campo = e;
 
-    console.log(campo);
     const emailRegex =
       /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     //Se muestra un texto a modo de ejemplo, luego va a ser un icono
@@ -166,18 +162,15 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     if (emailRegex.test(campo)) {
       //setValidEmail(true);
       onChange(true, '0');
-      console.log('Corporativo y validocementerio');
     } else {
       //setValidEmail(false);
       onChange(false, '0');
-      console.log('Corporativo y NO validocementerio');
     }
   };
 
   const cambioemailFUN = (e: any) => {
     let campo = e;
 
-    console.log(campo);
     const emailRegex =
       /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     //Se muestra un texto a modo de ejemplo, luego va a ser un icono
@@ -185,11 +178,9 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     if (emailRegex.test(campo)) {
       //setValidEmailFUN(true);
       onChange(true, '1');
-      console.log('validofuneraria', validEmailFUN);
     } else {
       //setValidEmailFUN(false);
       onChange(false, '1');
-      console.log('NO validofuneraria', validEmailFUN);
     }
   };
 

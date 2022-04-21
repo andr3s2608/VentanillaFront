@@ -68,7 +68,8 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
     //Relacionado con el solicitante
-    const resumensolicitud = await api.GetResumenSolicitud('ACF323FE-181C-4039-876D-07695F363C3C');
+    //Se guarda toda la informacion del Solicitante
+    const resumensolicitud = await api.GetResumenSolicitud(obj?.idSolicitud);
     var tipoidsolicitante: string = resumensolicitud.reduce((result: any, item: any) => {
       return `${result}${item.tipoDocumentoSolicitante}`;
     }, '');
@@ -104,8 +105,8 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       return `${result}${item.correoFuneraria}`;
     }, '');
     setemailfuneraria(correofuneraria);
-    ////////////////////////
-    const Funerarias = await api.GetFunerariasAzure('593E8100-80D2-4CC4-9286-06229E3811BA');
+    //////////////////////// Se guarda la informacion de la funeraria
+    const Funerarias = await api.GetFunerariasAzure(obj?.idSolicitud);
 
     var funeraria = Funerarias.reduce((result: any, item: any) => {
       return `${result}${item.funeraria}`;
@@ -138,14 +139,9 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   useEffect(() => {
     getListas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const lugarcementerio = obj?.isLugar;
   const cementerio = obj?.cementerioLugar;
-  //const municipiocementerio = obj?.cementerioMunicipio;
-  //const departamentocementerio = obj?.cementerioDepartamento;
-  //const paiscementerio = obj?.cementerioPais;
 
   //#endregion
 
@@ -241,7 +237,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       const result = all.find((cementerio: any) => cementerio.NROIDENT == parseInt(NROIDENT));
       if (result) {
         const Oracle = all.filter((i: { NROIDENT: number }) => i.NROIDENT == parseInt(NROIDENT));
-        console.log('Oracle', Oracle);
+
         setCementerioDatos([
           Oracle[0].RAZON_S + '',
           Oracle[0].DIRECCION + '',
@@ -250,12 +246,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           Oracle[0].TIPO_I_REP + '',
           Oracle[0].NROIDENT_REP + ''
         ]);
-        console.log(Oracle[0].RAZON_S, 'direccion');
-        console.log(Oracle[0].DIRECCION, 'direccion');
-        console.log(Oracle[0].TELEFONO_1, 'telefono');
-        console.log(Oracle[0].NOMBRE_REP, 'nombre');
-        console.log(Oracle[0].TIPO_I_REP, 'tipo');
-        console.log(Oracle[0].NROIDENT_REP, 'numero');
 
         setValor('El cementerio registrado es válido');
       } else {
@@ -265,8 +255,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       const result = all.find((cementerio: any) => cementerio.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
       if (result) {
         const Oracle = (await consulta).filter((cementerio: any) => cementerio.RAZON_S == RAZON_S.trim().toUpperCase());
-        console.log('Oracle', Oracle);
-        console.log('Result', result);
+
         setCementerioDatos([
           Oracle[0].RAZON_S + '',
           Oracle[0].DIRECCION + '',
@@ -275,19 +264,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           Oracle[0].TIPO_I_REP + '',
           Oracle[0].NROIDENT_REP + ''
         ]);
-        console.log(Oracle[0].RAZON_S, 'direccion');
-        console.log(Oracle[0].DIRECCION, 'direccion');
-        console.log(Oracle[0].TELEFONO_1, 'telefono');
-        console.log(Oracle[0].NOMBRE_REP, 'nombre');
-        console.log(Oracle[0].TIPO_I_REP, 'tipo');
-        console.log(Oracle[0].NROIDENT_REP, 'numero');
-        console.log('-----------------');
-        console.log(RazonC, 'direccion');
-        console.log(DireccionC, 'direccion');
-        console.log(TelefonoC, 'telefono');
-        console.log(NombreRepC, 'nombre');
-        console.log(TipoRepC, 'tipo');
-        console.log(NroIdenC, 'numero');
+
         setValor('El cementerio registrado es válido');
       } else {
         setValor('El cementerio registrado es inválido');
@@ -310,7 +287,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       const result = all.find((funeraria: any) => funeraria.NROIDENT == parseInt(NROIDENT));
       if (result) {
         const Oracle = all.filter((i: { NROIDENT: number }) => i.NROIDENT == parseInt(NROIDENT));
-        console.log('Oracle', Oracle);
 
         setFunerariaDatos1([
           Oracle[0].TIPO_I + '',
@@ -337,8 +313,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       const result = all.find((funeraria: any) => funeraria.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
       if (result) {
         const Oracle = (await consulta).filter((funeraria: any) => funeraria.RAZON_S == RAZON_S.trim().toUpperCase());
-        console.log('Oracle', Oracle);
-        console.log('Result', result);
+
         setFunerariaDatos1([
           Oracle[0].TIPO_I + '',
           Oracle[0].NROIDENT + '',
@@ -397,6 +372,26 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   return (
     <>
+      <Divider orientation='left'>
+        <div className='contenedor'>
+          Datos de la Funeraria
+          <Form.Item>
+            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFuneraria()}>
+              Validar Funeraria
+            </Button>
+          </Form.Item>
+        </div>
+      </Divider>
+      <List
+        grid={{ gutter: 16, column: 3 }}
+        dataSource={funerarias}
+        renderItem={(item) => (
+          <List.Item>
+            <List.Item.Meta title={item.title} description={item.describe} />
+          </List.Item>
+        )}
+      />
+
       <Divider orientation='left'>Datos del Solicitante</Divider>
       <List
         grid={{ gutter: 16, column: 3 }}
@@ -426,25 +421,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           </List.Item>
         )}
       />
-      <Divider orientation='left'>
-        <div className='contenedor'>
-          Datos de la Funeraria
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFuneraria()}>
-              Validar Funeraria
-            </Button>
-          </Form.Item>
-        </div>
-      </Divider>
-      <List
-        grid={{ gutter: 16, column: 3 }}
-        dataSource={funerarias}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta title={item.title} description={item.describe} />
-          </List.Item>
-        )}
-      />
+
       <Modal
         title={<p className='text-center text-dark text-uppercase mb-0 titulo'>validación Cementerio</p>}
         visible={isModalVisibleGraveyard}

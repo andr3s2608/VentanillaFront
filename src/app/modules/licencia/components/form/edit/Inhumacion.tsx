@@ -18,6 +18,7 @@ const formatObjJson = (obj: any, id: String) => {
   const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio, resumenSolicitud } = obj;
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
+  //en caso de que no exista un fallecido, se tomara el de la madre
   if (id == '1') {
     if (fallecido == undefined) {
       fallecido = isPerson(persona, '342d934b-c316-46cb-a4f3-3aac5845d246');
@@ -25,7 +26,7 @@ const formatObjJson = (obj: any, id: String) => {
   }
 
   let jsonDt;
-
+  ///metodo que se habia hecho por inconsistencias en la bd(no existia medico ligado a cada solicitud)
   if (certificador == undefined) {
     jsonDt = {
       idTramite: obj.idTramite,

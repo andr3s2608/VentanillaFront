@@ -128,20 +128,20 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         label='Número Identificación'
         initialValue={defaultValues.identification}
         name='instNumIdent'
-        rules={[{ required: true, max: 15 }]}
+        rules={[{ required: true, max: 10 }]}
       >
         <Input allowClear type='number' placeholder='Número Identificación' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Telefono Fijo' name='phone'>
+      <Form.Item label='Teléfono Fijo' name='phone'>
         <Input allowClear placeholder='Telefono Fijo' type='number' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Telefono Celular' name='phonecell' rules={[{ required: true }]}>
+      <Form.Item label='Teléfono Celular' name='phonecell' rules={[{ required: true }]}>
         <Input allowClear placeholder='Telefono Celular' type='number' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Correo electronico' name='email' rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label='Correo electrónico' name='email' rules={[{ required: true, type: 'email' }]}>
         <Input allowClear placeholder='email@exaple.com' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Confirmar Correo Electronico' name='confirEmail' rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label='Confirmar Correo Electrónico' name='confirEmail' rules={[{ required: true, type: 'email' }]}>
         <Input allowClear placeholder='email@exaple.com' autoComplete='off' />
       </Form.Item>
     </>

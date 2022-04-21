@@ -64,7 +64,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         name='medicalSignatureIDNumber'
         rules={[{ required: true, max: 20 }]}
       >
-        <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+        <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
       </Form.Item>
       <Form.Item
         label='Lugar de Expedición'

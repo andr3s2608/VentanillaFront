@@ -37,8 +37,8 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       setdefuncion(iddepart[0].descripcion);
     }
 
-    const inf_fallecido = await api.GetInformacionFallecido('FE0BB8F5-D0D7-42EC-86C3-DF4CA7579DC3' /*obj?.idSolicitud*/);
-    console.log(inf_fallecido['idSolicitud'] + 'aqui estamos');
+    const inf_fallecido = await api.GetInformacionFallecido(obj?.idSolicitud);
+
     setFallecido([
       inf_fallecido['tipoIdentificacion'] + '',
       inf_fallecido['edadFallecido'] + '',

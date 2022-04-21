@@ -140,7 +140,7 @@ const RegistroPage: React.FC<any> = (props) => {
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
         title={`Registro Persona Natural.`}
-        subTitle={`Por favor registre los datos exactamente como aparecen en su documento de identidad, estos datos seran usados para la generaciòn de los Documentos asociados al trámite solicitado y su posterior reporte a entidades de vigilancia y control.`}
+        subTitle={`Por favor registre los datos exactamente como aparecen en su documento de identidad, estos datos serán usados para la generacion de los Documentos asociados al trámite solicitado y su posterior reporte a entidades de vigilancia y control.`}
         backIcon={null}
       />
 
@@ -227,11 +227,11 @@ const RegistroPage: React.FC<any> = (props) => {
                                 estandarizar la dirección para el resto de ciudades.'
             type='info'
           />
-          <Form.Item label='Via Ppla' name='ppla' rules={[{ required: true }]}>
+          <Form.Item label='Via Ppal' name='ppla' rules={[{ required: true }]}>
             <SelectComponent options={nomesclatura} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
-          <Form.Item label='Num' name='Num1' rules={[{ required: true }]}>
-            <Input allowClear placeholder='' autoComplete='off' />
+          <Form.Item label='Número' name='Num1' rules={[{ required: true }]}>
+            <Input allowClear type='number' placeholder='' autoComplete='off' />
           </Form.Item>
           <Form.Item label='letra' name='letra1'>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
@@ -242,8 +242,8 @@ const RegistroPage: React.FC<any> = (props) => {
           <Form.Item label='Card' name='card1'>
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
-          <Form.Item label='Num' name='Num2' rules={[{ required: true }]}>
-            <Input allowClear placeholder='' autoComplete='off' />
+          <Form.Item label='Número' name='Num2' rules={[{ required: true }]}>
+            <Input allowClear type='number' placeholder='' autoComplete='off' />
           </Form.Item>
           <Form.Item label='letra' name='letra2'>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
@@ -276,10 +276,10 @@ const RegistroPage: React.FC<any> = (props) => {
           <Form.Item label='Sexo' name='sex' rules={[{ required: true }]}>
             <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
           </Form.Item>
-          <Form.Item label='Genero' name='gender' rules={[{ required: true }]}>
+          <Form.Item label='Género' name='gender' rules={[{ required: true }]}>
             <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
           </Form.Item>
-          <Form.Item label='Orientacion sexual' name='sexual_orientation' rules={[{ required: true }]}>
+          <Form.Item label='Orientación sexual' name='sexual_orientation' rules={[{ required: true }]}>
             <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
           </Form.Item>
           <Form.Item label='Etnia' name='ethnicity' rules={[{ required: true }]}>

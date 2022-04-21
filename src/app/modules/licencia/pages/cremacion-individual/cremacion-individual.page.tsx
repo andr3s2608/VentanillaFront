@@ -57,11 +57,6 @@ const CremacionIndividualPage = () => {
     setHFA_SD(aux4);
   };
 
-  //console.log(HIA_LV);
-  //console.log(HFA_LV);
-  //console.log(HIA_SD);
-  //console.log(HFA_SD);
-
   useEffect(() => {
     getListas();
   }, []);

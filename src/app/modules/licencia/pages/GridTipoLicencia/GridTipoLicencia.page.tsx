@@ -37,7 +37,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
     if (permiso?.rol === 'Ciudadano') {
-      const resp = await api.GetEstadoSolicitud();
+      const resp = await api.GetEstadoSolicitudNuevo();
       setGrid(resp);
     }
     if (permiso?.rol === 'Funcionario') {
