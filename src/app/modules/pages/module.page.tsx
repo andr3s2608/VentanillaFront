@@ -39,7 +39,7 @@ const ModulePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onCancel = (): void => { };
+  const onCancel = (): void => {};
 
   return (
     <div className='fadeInTop container-fluid'>
@@ -54,7 +54,7 @@ const ModulePage = () => {
         >
           <PageHeaderComponent
             title={''}
-            subTitle={`Tenga en cuenta, que para realizar de nuestros trámites en línea, es obligatorio diligenciar previamente el
+            subTitle={`Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el
           REGISTRO DEL CIUDADANO (persona natural o jurídica),
           el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
             backIcon={null}
