@@ -18,6 +18,7 @@ import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import { store } from 'app/redux/app.reducers';
+import Swal from 'sweetalert2';
 
 const { TabPane } = Tabs;
 
@@ -96,7 +97,7 @@ const RegistroPage: React.FC<any> = (props) => {
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
         title={`Registro Persona Jurídica. \n Datos Básicos.`}
-        subTitle={`Por favor registre los datos exactamente como aparecen en la Registro de Cámara de Comercio, estos 
+        subTitle={`Por favor registre los datos exactamente como aparecen en la Registro de Cámara de Comercio, estos
                 datos serán usados para la generación de los Documentos asociados al trámite solicitado y su posterior reporte a
                 entidades de vigilancia y control.`}
         backIcon={null}
@@ -115,7 +116,20 @@ const RegistroPage: React.FC<any> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <Form.Item label='Razón Social' name='razonsocial' rules={[{ required: true, max: 25 }]}>
-            <Input allowClear placeholder='Razón Social' autoComplete='off' />
+            <Input
+              allowClear
+              placeholder='Razón Social'
+              autoComplete='off'
+              type='text'
+              pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Razón social'
+                });
+              }}
+            />
           </Form.Item>
 
           <Form.Item label='Tipo Identificación' initialValue={5} name='TipoIdent' rules={[{ required: true }]}>

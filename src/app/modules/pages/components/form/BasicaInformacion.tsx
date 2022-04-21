@@ -6,6 +6,7 @@ import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import Swal from 'sweetalert2';
 
 export const BasicaInformacion: React.FC<any> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
@@ -14,6 +15,15 @@ export const BasicaInformacion: React.FC<any> = (props) => {
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
   const api = new ApiService(accountIdentifier);
+
+  const mensajeErrorLetras = (campo: string): string => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Datos invalidos',
+      text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo ' + campo
+    });
+    return '';
+  };
 
   const getListas = useCallback(
     async () => {
@@ -41,16 +51,68 @@ export const BasicaInformacion: React.FC<any> = (props) => {
   return (
     <>
       <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Primer Nombre'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Segundo Nombre' name='secondName'>
-        <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Segundo Nombre'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Primer Apellido'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Segundo Apellido' name='secondSurname'>
-        <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Segundo Apellido'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+            });
+          }}
+        />
       </Form.Item>
 
       <Form.Item
@@ -68,7 +130,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         name='instNumIdent'
         rules={[{ required: true, max: 15 }]}
       >
-        <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
+        <Input allowClear type='number' placeholder='Número Identificación' autoComplete='off' />
       </Form.Item>
       <Form.Item label='Telefono Fijo' name='phone'>
         <Input allowClear placeholder='Telefono Fijo' type='number' autoComplete='off' />
