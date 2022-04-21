@@ -123,7 +123,7 @@ const RegistroPage: React.FC<any> = (props) => {
           </Form.Item>
 
           <Form.Item label='NIT' initialValue={defaultValues.identification} name='nit' rules={[{ required: true, max: 15 }]}>
-            <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
+            <Input allowClear type='number' placeholder='Número Identificación' autoComplete='off' />
           </Form.Item>
 
           <h4 className='app-subtitle mt-3'>Representante Legal.</h4>
