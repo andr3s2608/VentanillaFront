@@ -96,8 +96,8 @@ const RegistroPage: React.FC<any> = (props) => {
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
         title={`Registro Persona Jurídica. \n Datos Básicos.`}
-        subTitle={`Por favor registre los datos exactamente como aparecen en la Registro de Cámara de Comercio, estos 
-                datos serán usados para la generación de los Documentos asociados al trámite solicitado y su posterior reporte a
+        subTitle={`Por favor registre los datos exactamente como aparecen en la Registro de Cámara de Comercio, estos
+                datos serán usados para la generacion de los Documentos asociados al trámite solicitado y su posterior reporte a
                 entidades de vigilancia y control.`}
         backIcon={null}
       />
