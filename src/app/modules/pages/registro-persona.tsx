@@ -230,7 +230,7 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={nomesclatura} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num1' rules={[{ required: true }]}>
-            <Input allowClear placeholder='' autoComplete='off' />
+            <Input allowClear type='number' placeholder='' autoComplete='off' />
           </Form.Item>
           <Form.Item label='letra' name='letra1'>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
@@ -242,7 +242,7 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num2' rules={[{ required: true }]}>
-            <Input allowClear placeholder='' autoComplete='off' />
+            <Input allowClear type='number' placeholder='' autoComplete='off' />
           </Form.Item>
           <Form.Item label='letra' name='letra2'>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />

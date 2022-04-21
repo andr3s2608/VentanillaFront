@@ -756,7 +756,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               name='IDNumber'
               rules={[{ required: true, max: 25 }]}
             >
-              <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
+              <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
 
             <Form.Item label='Primer Nombre' name='namemother' initialValue={obj?.namemother} rules={[{ required: true }]}>

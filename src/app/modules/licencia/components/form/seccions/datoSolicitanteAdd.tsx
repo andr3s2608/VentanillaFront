@@ -95,7 +95,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       </Form.Item>
 
       <Form.Item label='Numero documento' initialValue={null} required={true} name='ndoc'>
-        <Input allowClear placeholder='Numero documento' autoComplete='off' />
+        <Input allowClear type='number' placeholder='Numero documento' autoComplete='off' />
       </Form.Item>
 
       <Form.Item label='Nombres' initialValue={null} required={true} name='namesolicitudadd'>

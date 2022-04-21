@@ -586,7 +586,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
               rules={[{ required: true, max: 25 }]}
             >
-              <Input allowClear placeholder='Número de Identificación' autoComplete='off' />
+              <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
             </Form.Item>
             <Form.Item
               label='Estado Civil'
@@ -630,7 +630,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 </Form.Item>
 
                 <Form.Item label='Número de Identificación' name='knownIDNumber'>
-                  <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+                  <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
                 </Form.Item>
 
                 <Form.Item label='Nombre' name='knownName'>
@@ -706,7 +706,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       rules={[{ required: true, max: 20 }]}
                       initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
                     >
-                      <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+                      <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
                     </Form.Item>
 
                     <Form.Item
