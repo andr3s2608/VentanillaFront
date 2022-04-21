@@ -19,6 +19,7 @@ import { EstadoCivil } from 'app/shared/utils/constants.util';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
+import Swal from 'sweetalert2';
 
 const RegistroPage: React.FC<any> = (props) => {
   const history = useHistory();
@@ -248,7 +249,20 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Placa' name='placa' rules={[{ required: true }]}>
-            <Input allowClear placeholder='' autoComplete='off' />
+            <Input
+              allowClear
+              placeholder=''
+              autoComplete='off'
+              type='text'
+              pattern='[a-zA-Z0-9-]{7,7}'
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text: 'Los datos ingresados en el campo Placa son invalidos'
+                });
+              }}
+            />
           </Form.Item>
           <Form.Item label='Card' name='card2'>
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
