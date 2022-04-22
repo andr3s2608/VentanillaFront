@@ -13,6 +13,11 @@ export const BasicaInformacion: React.FC<any> = (props) => {
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [campo, setCampo] = useState<string>('Numéricos');
 
   const api = new ApiService(accountIdentifier);
 
@@ -47,6 +52,27 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     identity: 1,
     identification: ''
   };
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1') {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+    } else {
+      if (valor == '3' || valor == '5') {
+        setLongitudminima(10);
+        setLongitudminima(11);
+        setTipocampo('[0-9]{10,111}');
+        setCampo('Numéricos');
+      } else {
+        setLongitudminima(11);
+        setLongitudminima(11);
+        setTipocampo('[a-zA-Z0-9]{11,11}');
+        setCampo('AlfaNuméricos(Numéros y letras)');
+      }
+    }
+  };
 
   return (
     <>
@@ -56,7 +82,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Primer Nombre'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -72,7 +98,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Segundo Nombre'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -88,7 +114,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Primer Apellido'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -104,7 +130,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Segundo Apellido'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,15}'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -121,16 +147,42 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         name='instTipoIdent'
         rules={[{ required: true }]}
       >
-        <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+        <SelectComponent
+          options={l_tipos_documento}
+          onChange={cambiodocumento}
+          optionPropkey='id'
+          optionPropLabel='descripcion'
+        />
       </Form.Item>
 
       <Form.Item
         label='Número Identificación'
         initialValue={defaultValues.identification}
         name='instNumIdent'
-        rules={[{ required: true, max: 10 }]}
+        rules={[{ required: true }]}
       >
-        <Input allowClear type='number' placeholder='Número Identificación' autoComplete='off' />
+        <Input
+          allowClear
+          type='text'
+          placeholder='Número Identificación'
+          autoComplete='off'
+          pattern={tipocampo}
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text:
+                'recuerde que para el tipo de documento:' +
+                tipodocumento +
+                ' solo se admiten valores ' +
+                campo +
+                ' de longitud entre ' +
+                longitudminima +
+                ' y ' +
+                longitudmaxima
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Teléfono Fijo' name='phone'>
         <Input allowClear placeholder='Telefono Fijo' type='number' autoComplete='off' />
