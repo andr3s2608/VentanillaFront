@@ -43,6 +43,7 @@ import { useHistory } from 'react-router';
 import { EditFetal } from './edit/fetal';
 import { ValidationFuntional } from './seccions/validationfuntional';
 import { IRoles } from 'app/Models/IRoles';
+import Swal from 'sweetalert2';
 
 const { Step } = Steps;
 
@@ -760,10 +761,36 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
 
             <Form.Item label='Primer Nombre' name='namemother' initialValue={obj?.namemother} rules={[{ required: true }]}>
-              <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Primer Nombre'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item label='Segundo Nombre' name='secondNamemother' initialValue={obj?.secondNamemother}>
-              <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Segundo Nombre'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item
               label='Primer Apellido'
@@ -771,10 +798,36 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               initialValue={obj?.surnamemother}
               rules={[{ required: true }]}
             >
-              <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Primer Apellido'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item label='Segundo Apellido' name='secondSurnamemother' initialValue={obj?.surnamemother}>
-              <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Segundo Apellido'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+                  });
+                }}
+              />
             </Form.Item>
 
             <Form.Item

@@ -11,6 +11,7 @@ import Divider from 'antd/es/divider';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { type } from 'os';
 import { TypeLicencia } from 'app/shared/utils/types.util';
+import Swal from 'sweetalert2';
 
 export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = (props) => {
   //#endregion
@@ -23,7 +24,20 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
           <Divider orientation='right'>Autorización cremación del fiscal y medicina legal</Divider>
 
           <Form.Item label='Nombres y Apellidos' name='firtNameAndLastName' rules={[{ required: true }]}>
-            <Input allowClear placeholder='Nombres y Apellidos' autoComplete='off' />
+            <Input
+              allowClear
+              placeholder='Nombres y Apellidos'
+              autoComplete='off'
+              type='text'
+              pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres y Apellidos'
+                });
+              }}
+            />
           </Form.Item>
           <Form.Item label='Fiscal No.' name='fiscal' rules={[{ required: true, max: 5 }]}>
             <Input allowClear placeholder='Fiscal No.' autoComplete='off' type='number' />

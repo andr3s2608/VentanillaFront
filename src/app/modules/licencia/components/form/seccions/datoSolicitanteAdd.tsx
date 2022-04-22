@@ -9,6 +9,7 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import Swal from 'sweetalert2';
 
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
@@ -99,11 +100,37 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       </Form.Item>
 
       <Form.Item label='Nombres' initialValue={null} required={true} name='namesolicitudadd'>
-        <Input allowClear placeholder='Nombres' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Nombres'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres'
+            });
+          }}
+        />
       </Form.Item>
 
       <Form.Item label='Apellidos' initialValue={null} required={true} name='lastnamesolicitudadd'>
-        <Input allowClear placeholder='Apellidos' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Apellidos'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Apellidos'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Email' initialValue={null} required={true} name='emailsolicitudadd'>
         <Input allowClear placeholder='Email' autoComplete='off' onChange={(e) => cambioemail(e.target.value)} id='emailsol' />

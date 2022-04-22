@@ -14,6 +14,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
   const { obj, tipoLicencia } = props;
@@ -97,7 +98,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             initialValue={obj?.instNumIdent ? obj?.instNumIdent : defaultValues.identification}
             rules={[{ required: true }]}
           >
-            <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
+            <Input allowClear type='number' placeholder='Número Identificación' autoComplete='off' />
           </Form.Item>
 
           <Form.Item
@@ -125,7 +126,20 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                 name='instNombreFiscal'
                 rules={[{ required: isMedicinaLegal }]}
               >
-                <Input allowClear placeholder='Nombres y apellidos completos' autoComplete='off' />
+                <Input
+                  allowClear
+                  placeholder='Nombres y apellidos completos'
+                  autoComplete='off'
+                  type='text'
+                  pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                  onInvalid={() => {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Datos invalidos',
+                      text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres y apellidos completos'
+                    });
+                  }}
+                />
               </Form.Item>
 
               <Form.Item

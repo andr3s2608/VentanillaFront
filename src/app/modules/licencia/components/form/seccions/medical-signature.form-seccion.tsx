@@ -10,6 +10,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Services
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import Swal from 'sweetalert2';
 
 export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> = (props) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
@@ -80,10 +81,36 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         name='medicalSignatureName'
         rules={[{ required: true }]}
       >
-        <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Primer Nombre'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Segundo Nombre' initialValue={obj?.medicalSignatureSecondName ?? null} name='medicalSignatureSecondName'>
-        <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Segundo Nombre'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item
         label='Primer Apellido'
@@ -91,14 +118,40 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         initialValue={obj?.medicalSignatureSurname ?? null}
         rules={[{ required: true }]}
       >
-        <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Primer Apellido'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item
         label='Segundo Apellido'
         initialValue={obj?.medicalSignatureSecondSurname ?? null}
         name='medicalSignatureSecondSurname'
       >
-        <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Segundo Apellido'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item
         label='Medico'

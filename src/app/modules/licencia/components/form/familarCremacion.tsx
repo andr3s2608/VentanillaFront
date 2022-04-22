@@ -42,6 +42,7 @@ import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import Swal from 'sweetalert2';
 
 const { Step } = Steps;
 
@@ -169,20 +170,72 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
       </Form.Item>
 
       <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
-        <Input allowClear type='tel' placeholder='Número de Identificación' autoComplete='off' />
+        <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
       </Form.Item>
 
       <Form.Item label='Primer Nombre' name='authName' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Primer Nombre'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Segundo Nombre' name='authSecondName'>
-        <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Segundo Nombre'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Primer Apellido' name='authSurname' rules={[{ required: true }]}>
-        <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Primer Apellido'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Segundo Apellido' name='authSecondSurname'>
-        <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Segundo Apellido'
+          autoComplete='off'
+          type='text'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item
         label='Parentesco'

@@ -43,6 +43,7 @@ import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { ValidationFuntional } from './seccions/validationfuntional';
+import Swal from 'sweetalert2';
 
 const { Step } = Steps;
 
@@ -544,16 +545,68 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
             <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.name}>
-              <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Primer Nombre'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn?.secondName}>
-              <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Segundo Nombre'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]} initialValue={objJosn?.surname}>
-              <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Primer Apellido'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item label='Segundo Apellido' name='secondSurname' initialValue={objJosn?.secondSurname}>
-              <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Segundo Apellido'
+                autoComplete='off'
+                type='text'
+                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item
               label='Nacionalidad'
@@ -634,7 +687,20 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 </Form.Item>
 
                 <Form.Item label='Nombre' name='knownName'>
-                  <Input allowClear placeholder='Nombres y Apellidos completos' autoComplete='off' />
+                  <Input
+                    allowClear
+                    placeholder='Nombres y Apellidos completos'
+                    autoComplete='off'
+                    type='text'
+                    pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]{3,50}'
+                    onInvalid={() => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Datos invalidos',
+                        text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres y Apellidos completos'
+                      });
+                    }}
+                  />
                 </Form.Item>
               </>
             )}
@@ -715,14 +781,40 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       initialValue={objJosn?.authName ? objJosn?.authName : null}
                       rules={[{ required: true }]}
                     >
-                      <Input allowClear placeholder='Primer Nombre' autoComplete='off' />
+                      <Input
+                        allowClear
+                        placeholder='Primer Nombre'
+                        autoComplete='off'
+                        type='text'
+                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                        onInvalid={() => {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Datos invalidos',
+                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+                          });
+                        }}
+                      />
                     </Form.Item>
                     <Form.Item
                       label='Segundo Nombre'
                       initialValue={objJosn?.authSecondName ? objJosn?.authSecondName : null}
                       name='authSecondName'
                     >
-                      <Input allowClear placeholder='Segundo Nombre' autoComplete='off' />
+                      <Input
+                        allowClear
+                        placeholder='Segundo Nombre'
+                        autoComplete='off'
+                        type='text'
+                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                        onInvalid={() => {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Datos invalidos',
+                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+                          });
+                        }}
+                      />
                     </Form.Item>
                     <Form.Item
                       label='Primer Apellido'
@@ -730,14 +822,40 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       name='authSurname'
                       rules={[{ required: true }]}
                     >
-                      <Input allowClear placeholder='Primer Apellido' autoComplete='off' />
+                      <Input
+                        allowClear
+                        placeholder='Primer Apellido'
+                        autoComplete='off'
+                        type='text'
+                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                        onInvalid={() => {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Datos invalidos',
+                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+                          });
+                        }}
+                      />
                     </Form.Item>
                     <Form.Item
                       label='Segundo Apellido'
                       initialValue={objJosn?.authSecondSurname ? objJosn?.authSecondSurname : null}
                       name='authSecondSurname'
                     >
-                      <Input allowClear placeholder='Segundo Apellido' autoComplete='off' />
+                      <Input
+                        allowClear
+                        placeholder='Segundo Apellido'
+                        autoComplete='off'
+                        type='text'
+                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                        onInvalid={() => {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Datos invalidos',
+                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+                          });
+                        }}
+                      />
                     </Form.Item>
 
                     <AutorizacionCremacion tipoLicencia={tipoLicencia} />
