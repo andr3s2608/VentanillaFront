@@ -135,7 +135,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
             });
           }}
         />
@@ -151,7 +151,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
             });
           }}
         />
@@ -172,7 +172,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
             });
           }}
         />
@@ -192,7 +192,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
             });
           }}
         />

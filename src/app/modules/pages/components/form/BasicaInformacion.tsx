@@ -25,7 +25,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     Swal.fire({
       icon: 'error',
       title: 'Datos invalidos',
-      text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo ' + campo
+      text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo ' + campo
     });
     return '';
   };
@@ -69,11 +69,19 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad y Nit');
       } else {
-        setLongitudminima(11);
-        setLongitudminima(11);
-        setTipocampo('[a-zA-Z0-9]{11,11}');
-        setCampo('AlfaNuméricos(Numéros y letras)');
-        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+        if (valor == '4') {
+          setLongitudminima(15);
+          setLongitudminima(15);
+          setTipocampo('[0-9]{15,15}');
+          setCampo('Numéricos');
+          setTipodocumento('Permiso Especial de Permanencia');
+        } else {
+          setLongitudminima(11);
+          setLongitudminima(11);
+          setTipocampo('[a-zA-Z0-9]{11,11}');
+          setCampo('AlfaNuméricos(Numéros y letras)');
+          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+        }
       }
     }
   };
@@ -91,7 +99,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
             });
           }}
         />
@@ -107,7 +115,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
             });
           }}
         />
@@ -123,7 +131,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
             });
           }}
         />
@@ -139,7 +147,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
             });
           }}
         />
@@ -188,17 +196,17 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Teléfono Fijo' name='phone'>
+      <Form.Item label='Teléfono Fijo' rules={[{ max: 12 }]} name='phone'>
         <Input allowClear placeholder='Telefono Fijo' type='number' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Teléfono Celular' name='phonecell' rules={[{ required: true }]}>
+      <Form.Item label='Teléfono Celular' name='phonecell' rules={[{ required: true, max: 12 }]}>
         <Input allowClear placeholder='Telefono Celular' type='number' autoComplete='off' />
       </Form.Item>
       <Form.Item label='Correo electrónico' name='email' rules={[{ required: true, type: 'email' }]}>
-        <Input allowClear placeholder='email@exaple.com' autoComplete='off' />
+        <Input allowClear placeholder='email@example.com' autoComplete='off' />
       </Form.Item>
       <Form.Item label='Confirmar Correo Electrónico' name='confirEmail' rules={[{ required: true, type: 'email' }]}>
-        <Input allowClear placeholder='email@exaple.com' autoComplete='off' />
+        <Input allowClear placeholder='email@example.com' autoComplete='off' />
       </Form.Item>
     </>
   );

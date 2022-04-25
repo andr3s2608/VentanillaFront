@@ -34,7 +34,7 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
                 Swal.fire({
                   icon: 'error',
                   title: 'Datos invalidos',
-                  text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres y Apellidos'
+                  text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres y Apellidos'
                 });
               }}
             />

@@ -519,11 +519,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad y Nit');
       } else {
-        setLongitudminima(11);
-        setLongitudminima(11);
-        setTipocampo('[a-zA-Z0-9]{11,11}');
-        setCampo('AlfaNuméricos(Numéros y letras)');
-        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+        if (valor == '4') {
+          setLongitudminima(15);
+          setLongitudminima(15);
+          setTipocampo('[0-9]{15,15}');
+          setCampo('Numéricos');
+          setTipodocumento('Permiso Especial de Permanencia');
+        } else {
+          setLongitudminima(11);
+          setLongitudminima(11);
+          setTipocampo('[a-zA-Z0-9]{11,11}');
+          setCampo('AlfaNuméricos(Numéros y letras)');
+          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+        }
       }
     }
   };
@@ -584,7 +592,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
                   });
                 }}
               />
@@ -605,7 +613,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
                   });
                 }}
               />
@@ -626,7 +634,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
                   });
                 }}
               />
@@ -647,7 +655,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
                   });
                 }}
               />
@@ -793,7 +801,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       Swal.fire({
                         icon: 'error',
                         title: 'Datos invalidos',
-                        text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres y Apellidos completos'
+                        text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres y Apellidos completos'
                       });
                     }}
                   />
@@ -913,7 +921,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           Swal.fire({
                             icon: 'error',
                             title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
                           });
                         }}
                       />
@@ -934,7 +942,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           Swal.fire({
                             icon: 'error',
                             title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
                           });
                         }}
                       />
@@ -955,7 +963,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           Swal.fire({
                             icon: 'error',
                             title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
                           });
                         }}
                       />
@@ -976,46 +984,85 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           Swal.fire({
                             icon: 'error',
                             title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
                           });
                         }}
                       />
                     </Form.Item>
 
                     <AutorizacionCremacion tipoLicencia={tipoLicencia} />
+                    <Form.Item
+                      label='Parentesco'
+                      initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
+                      name='authParentesco'
+                      rules={[{ required: true }]}
+                    >
+                      <Radio.Group onChange={onChangeParentesco}>
+                        <Radio value='Padre / Madre'>Padre / Madre</Radio>
+                        <br />
+                        <Radio value='Hermano/a'>Hermano/a</Radio>
+                        <br />
+                        <Radio value='Hijo/a'>Hijo/a</Radio>
+                        <br />
+                        <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
+                        <br />
+                        <Radio value='Tío/a'>Tío/a</Radio>
+                        <br />
+                        <Radio value='Sobrino/a'>Sobrino/a</Radio>
+                        <br />
+                        <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                        <br />
+                        <Radio value='Nieto/a'>Nieto/a</Radio>
+                        <br />
+                        <Radio value='Otro'>Otro</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+
+                    {isOtherParentesco && (
+                      <Form.Item
+                        className='fadeInRight'
+                        label='Otro... ¿Cúal?'
+                        name='authOtherParentesco'
+                        initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
+                        rules={[{ required: true }]}
+                      >
+                        <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
+                      </Form.Item>
+                    )}
                   </div>
                 )}
               </>
             )}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-            <Form.Item
-              label='Parentesco'
-              initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
-              name='authParentesco'
-              rules={[{ required: true }]}
-            >
-              <Radio.Group onChange={onChangeParentesco}>
-                <Radio value='Padre / Madre'>Padre / Madre</Radio>
-                <br />
-                <Radio value='Hermano/a'>Hermano/a</Radio>
-                <br />
-                <Radio value='Hijo/a'>Hijo/a</Radio>
-                <br />
-                <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                <br />
-                <Radio value='Tío/a'>Tío/a</Radio>
-                <br />
-                <Radio value='Sobrino/a'>Sobrino/a</Radio>
-                <br />
-                <Radio value='Abuelo/a'>Abuelo/a</Radio>
-                <br />
-                <Radio value='Nieto/a'>Nieto/a</Radio>
-                <br />
-                <Radio value='Otro'>Otro</Radio>
-              </Radio.Group>
-            </Form.Item>
-
+            {!isCremacion && (
+              <Form.Item
+                label='Parentesco'
+                initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
+                name='authParentesco'
+                rules={[{ required: true }]}
+              >
+                <Radio.Group onChange={onChangeParentesco}>
+                  <Radio value='Padre / Madre'>Padre / Madre</Radio>
+                  <br />
+                  <Radio value='Hermano/a'>Hermano/a</Radio>
+                  <br />
+                  <Radio value='Hijo/a'>Hijo/a</Radio>
+                  <br />
+                  <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
+                  <br />
+                  <Radio value='Tío/a'>Tío/a</Radio>
+                  <br />
+                  <Radio value='Sobrino/a'>Sobrino/a</Radio>
+                  <br />
+                  <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                  <br />
+                  <Radio value='Nieto/a'>Nieto/a</Radio>
+                  <br />
+                  <Radio value='Otro'>Otro</Radio>
+                </Radio.Group>
+              </Form.Item>
+            )}
             {isOtherParentesco && (
               <Form.Item
                 className='fadeInRight'
