@@ -30,7 +30,11 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], IDominio[]]>([[], []]);
-
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(11);
+  const [longitudminima, setLongitudminima] = useState<number>(10);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{10,11}');
+  const [tipodocumento, setTipodocumento] = useState<string>('NIT');
+  const [campo, setCampo] = useState<string>('Numéricos');
   const api = new ApiService(accountIdentifier);
 
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
@@ -56,9 +60,10 @@ const RegistroPage: React.FC<any> = (props) => {
     history.goBack();
   };
   const defaultValues = {
-    identity: 1,
+    identity: 5,
     identification: ''
   };
+
   const onSubmit = async (value: any) => {
     const json = {
       primerNombre: value.name,
@@ -74,7 +79,7 @@ const RegistroPage: React.FC<any> = (props) => {
       numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
       nombreRazonSocial: value.razonsocial
     };
-
+    console.log(value.TipoIdent + ' tipo id');
     const resApi = await api.personaJuridica(json);
 
     if (typeof resApi === 'number') {
@@ -89,10 +94,38 @@ const RegistroPage: React.FC<any> = (props) => {
       });
       localStorage.setItem(accountIdentifier, resApi.toString());
       store.dispatch(SetGrid({ key: 'relaodMenu' }));
+
+      Swal.fire({
+        title: 'Usuario Registrado',
+        text: 'El Usuario ' + value.razonsocial + 'ha sido Registrado de manera exitosa',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
+      });
       history.push('/');
     }
   };
   const onSubmitFailed = () => {};
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1') {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
+    } else {
+      setLongitudminima(10);
+      setLongitudminima(11);
+      setTipocampo('[0-9]{10,111}');
+      setCampo('Numéricos');
+      setTipodocumento('Nit');
+    }
+  };
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
@@ -132,12 +165,43 @@ const RegistroPage: React.FC<any> = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label='Tipo Identificación' initialValue={5} name='TipoIdent' rules={[{ required: true }]}>
-            <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+          <Form.Item
+            label='Tipo Identificación'
+            initialValue={defaultValues.identity}
+            name='TipoIdent'
+            rules={[{ required: true }]}
+          >
+            <SelectComponent
+              options={l_tipos_documento.filter((i) => ['Cédula de ciudadanía', 'NIT'].includes(i.descripcion))}
+              onChange={cambiodocumento}
+              optionPropkey='id'
+              optionPropLabel='descripcion'
+            />
           </Form.Item>
 
-          <Form.Item label='NIT' initialValue={defaultValues.identification} name='nit' rules={[{ required: true, max: 15 }]}>
-            <Input allowClear type='tel' placeholder='Número Identificación' autoComplete='off' />
+          <Form.Item label='Número' initialValue={defaultValues.identification} name='nit' rules={[{ required: true, max: 11 }]}>
+            <Input
+              allowClear
+              type='text'
+              placeholder='Número Identificación'
+              autoComplete='off'
+              pattern={tipocampo}
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text:
+                    'recuerde que para el tipo de documento:' +
+                    tipodocumento +
+                    ' solo se admiten valores ' +
+                    campo +
+                    ' de longitud entre ' +
+                    longitudminima +
+                    ' y ' +
+                    longitudmaxima
+                });
+              }}
+            />
           </Form.Item>
 
           <h4 className='app-subtitle mt-3'>Representante Legal.</h4>

@@ -704,11 +704,19 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad y Nit');
       } else {
-        setLongitudminima(11);
-        setLongitudminima(11);
-        setTipocampo('[a-zA-Z0-9]{11,11}');
-        setCampo('AlfaNuméricos(Numéros y letras)');
-        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+        if (valor == '4') {
+          setLongitudminima(15);
+          setLongitudminima(15);
+          setTipocampo('[0-9]{15,15}');
+          setCampo('Numéricos');
+          setTipodocumento('Permiso Especial de Permanencia');
+        } else {
+          setLongitudminima(11);
+          setLongitudminima(11);
+          setTipocampo('[a-zA-Z0-9]{11,11}');
+          setCampo('AlfaNuméricos(Numéros y letras)');
+          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+        }
       }
     }
   };
@@ -832,7 +840,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer nombre'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
                   });
                 }}
               />
@@ -848,7 +856,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo nombre'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
                   });
                 }}
               />
@@ -869,7 +877,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Primer apellido'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
                   });
                 }}
               />
@@ -890,7 +898,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   Swal.fire({
                     icon: 'error',
                     title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Segundo apellido'
+                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
                   });
                 }}
               />

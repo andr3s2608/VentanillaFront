@@ -87,11 +87,19 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad y Nit');
       } else {
-        setLongitudminima(11);
-        setLongitudminima(11);
-        setTipocampo('[a-zA-Z0-9]{11,11}');
-        setCampo('AlfaNuméricos(Numéros y letras)');
-        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+        if (valor == '4') {
+          setLongitudminima(15);
+          setLongitudminima(15);
+          setTipocampo('[0-9]{15,15}');
+          setCampo('Numéricos');
+          setTipodocumento('Permiso Especial de Permanencia');
+        } else {
+          setLongitudminima(11);
+          setLongitudminima(11);
+          setTipocampo('[a-zA-Z0-9]{11,11}');
+          setCampo('AlfaNuméricos(Numéros y letras)');
+          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+        }
       }
     }
   };
@@ -204,7 +212,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     Swal.fire({
                       icon: 'error',
                       title: 'Datos invalidos',
-                      text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Nombres y apellidos completos'
+                      text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres y apellidos completos'
                     });
                   }}
                 />

@@ -12,6 +12,7 @@ export const environments = {
 
   blob: 'https://wa-aeu-sds-dev-filemanager.azurewebsites.net/api/v1/',
   local: 'https://localhost:5001/api/',
+  localDominio: 'https://localhost:5001/api/v1/',
   formatos: 'https://wa-aeu-sds-dev-inhcremacion.azurewebsites.net/api/Formato/',
   //solicitud: 'https://wa-aeu-sds-dev-inhcremacion.azurewebsites.net/api/',
   notificacion: 'https://wa-aeu-sds-dev-notifications.azurewebsites.net/api/v1/'

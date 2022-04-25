@@ -88,9 +88,12 @@ const RegistroPage: React.FC<any> = (props) => {
   };
 
   const onSubmit = async (value: any) => {
-    const { confirEmail, email } = value;
+    const confirEmail: string = value.confirEmail;
+    const email: string = value.email;
 
-    if (confirEmail === email) {
+    console.log('correo', email);
+    console.log('correo conf', confirEmail);
+    if (confirEmail.toUpperCase == email.toUpperCase) {
       const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
       var numero1: number;
       const numero2: number = Num2;
@@ -153,6 +156,17 @@ const RegistroPage: React.FC<any> = (props) => {
                 });
                 localStorage.setItem(accountIdentifier, resApi.toString());
                 store.dispatch(SetGrid({ key: 'relaodMenu' }));
+                Swal.fire({
+                  title: 'Usuario Registrado',
+                  text: 'El Usuario ' + value.name + value.surname + 'ha sido Registrado de manera exitosa',
+                  showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                  },
+                  icon: 'info'
+                });
                 history.push('/');
               }
             } else {
@@ -183,6 +197,12 @@ const RegistroPage: React.FC<any> = (props) => {
           text: 'Por favor Ingrese un numero de Teléfono Valido'
         });
       }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: 'Los Emails deben coincidir'
+      });
     }
   };
 
