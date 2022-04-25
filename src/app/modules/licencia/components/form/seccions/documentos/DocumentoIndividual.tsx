@@ -204,7 +204,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
         <>
           {files?.length ? (
             <Form.Item
-              label='Ver Autorizacion de cremacion del familiar'
+              label='Ver Autorización de cremacion del familiar'
               name='fileAuthCCFamiliar'
               valuePropName='fileList'
               rules={[{ required: isEdit ? false : true }]}
@@ -221,7 +221,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
             </Form.Item>
           ) : null}
           <Form.Item
-            label='Autorizacion de cremacion del familiar'
+            label='Autorización de cremacion del familiar'
             name='fileAuthCCFamiliar'
             valuePropName='fileList'
             rules={[{ required: isEdit ? false : true }]}
@@ -268,7 +268,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
             <>
               {files?.length ? (
                 <Form.Item
-                  label='Ver Autorizacion del fiscal para cremar'
+                  label='Ver Autorización del fiscal para cremar'
                   name='fileOficioIdentificacion'
                   valuePropName='fileList'
                   rules={[{ required: isEdit ? false : true }]}
@@ -289,7 +289,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
               ) : null}
 
               <Form.Item
-                label='Autorizacion de cremacion del fiscal'
+                label='Autorización de cremacion del fiscal'
                 name='fileOficioIdentificacion'
                 valuePropName='fileList'
                 rules={[{ required: isEdit ? false : true }]}
