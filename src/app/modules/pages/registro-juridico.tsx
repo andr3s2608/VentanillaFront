@@ -115,7 +115,7 @@ const RegistroPage: React.FC<any> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <Form.Item label='Razón Social' name='razonsocial' rules={[{ required: true, max: 25 }]}>
+          <Form.Item label='Razón Social' name='razonsocial' rules={[{ required: true }]}>
             <Input
               allowClear
               placeholder='Razón Social'

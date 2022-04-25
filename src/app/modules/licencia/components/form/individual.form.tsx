@@ -61,6 +61,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [emailfun, setEmailfun] = useState(false);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [campo, setCampo] = useState<string>('Numéricos');
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
@@ -497,7 +502,31 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   );
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
   //#endregion
-
+  //validacion tipo de documento//
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1') {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
+    } else {
+      if (valor == '3' || valor == '5') {
+        setLongitudminima(10);
+        setLongitudminima(11);
+        setTipocampo('[0-9]{10,111}');
+        setCampo('Numéricos');
+        setTipodocumento('Tarjeta de Identidad y Nit');
+      } else {
+        setLongitudminima(11);
+        setLongitudminima(11);
+        setTipocampo('[a-zA-Z0-9]{11,11}');
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+      }
+    }
+  };
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
@@ -544,7 +573,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]} initialValue={objJosn?.name}>
+            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={objJosn?.name}>
               <Input
                 allowClear
                 placeholder='Primer Nombre'
@@ -560,7 +589,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 }}
               />
             </Form.Item>
-            <Form.Item label='Segundo Nombre' name='secondName' initialValue={objJosn?.secondName}>
+            <Form.Item
+              label='Segundo Nombre'
+              name='secondName'
+              rules={[{ required: true, max: 50 }]}
+              initialValue={objJosn?.secondName}
+            >
               <Input
                 allowClear
                 placeholder='Segundo Nombre'
@@ -576,7 +610,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 }}
               />
             </Form.Item>
-            <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]} initialValue={objJosn?.surname}>
+            <Form.Item
+              label='Primer Apellido'
+              name='surname'
+              rules={[{ required: true, max: 50 }]}
+              initialValue={objJosn?.surname}
+            >
               <Input
                 allowClear
                 placeholder='Primer Apellido'
@@ -592,7 +631,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 }}
               />
             </Form.Item>
-            <Form.Item label='Segundo Apellido' name='secondSurname' initialValue={objJosn?.secondSurname}>
+            <Form.Item
+              label='Segundo Apellido'
+              name='secondSurname'
+              rules={[{ required: true, max: 50 }]}
+              initialValue={objJosn?.secondSurname}
+            >
               <Input
                 allowClear
                 placeholder='Segundo Apellido'
@@ -631,15 +675,41 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               initialValue={objJosn?.IDType ? objJosn?.IDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
               rules={[{ required: true }]}
             >
-              <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+              <SelectComponent
+                options={l_tipos_documento}
+                onChange={cambiodocumento}
+                optionPropkey='id'
+                optionPropLabel='descripcion'
+              />
             </Form.Item>
             <Form.Item
               label='Número de Identificación'
               name='IDNumber'
               initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
-              rules={[{ required: true, max: 25 }]}
+              rules={[{ required: true }]}
             >
-              <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
+              <Input
+                allowClear
+                type='text'
+                placeholder='Número Identificación'
+                autoComplete='off'
+                pattern={tipocampo}
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text:
+                      'recuerde que para el tipo de documento:' +
+                      tipodocumento +
+                      ' solo se admiten valores ' +
+                      campo +
+                      ' de longitud entre ' +
+                      longitudminima +
+                      ' y ' +
+                      longitudmaxima
+                  });
+                }}
+              />
             </Form.Item>
             <Form.Item
               label='Estado Civil'
@@ -679,11 +749,37 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 <Divider orientation='right'>Reconocido como...</Divider>
 
                 <Form.Item label='Tipo Identificación' name='knownIDType'>
-                  <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+                  <SelectComponent
+                    options={l_tipos_documento}
+                    onChange={cambiodocumento}
+                    optionPropkey='id'
+                    optionPropLabel='descripcion'
+                  />
                 </Form.Item>
 
                 <Form.Item label='Número de Identificación' name='knownIDNumber'>
-                  <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
+                  <Input
+                    allowClear
+                    type='text'
+                    placeholder='Número Identificación'
+                    autoComplete='off'
+                    pattern={tipocampo}
+                    onInvalid={() => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Datos invalidos',
+                        text:
+                          'recuerde que para el tipo de documento:' +
+                          tipodocumento +
+                          ' solo se admiten valores ' +
+                          campo +
+                          ' de longitud entre ' +
+                          longitudminima +
+                          ' y ' +
+                          longitudmaxima
+                      });
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item label='Nombre' name='knownName'>
@@ -763,23 +859,49 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       initialValue={objJosn?.authIDType ? objJosn?.authIDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                       rules={[{ required: true }]}
                     >
-                      <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+                      <SelectComponent
+                        options={l_tipos_documento}
+                        onChange={cambiodocumento}
+                        optionPropkey='id'
+                        optionPropLabel='descripcion'
+                      />
                     </Form.Item>
 
                     <Form.Item
                       label='Número de Identificación'
                       name='mauthIDNumber'
-                      rules={[{ required: true, max: 20 }]}
+                      rules={[{ required: true }]}
                       initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
                     >
-                      <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
+                      <Input
+                        allowClear
+                        type='text'
+                        placeholder='Número Identificación'
+                        autoComplete='off'
+                        pattern={tipocampo}
+                        onInvalid={() => {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Datos invalidos',
+                            text:
+                              'recuerde que para el tipo de documento:' +
+                              tipodocumento +
+                              ' solo se admiten valores ' +
+                              campo +
+                              ' de longitud entre ' +
+                              longitudminima +
+                              ' y ' +
+                              longitudmaxima
+                          });
+                        }}
+                      />
                     </Form.Item>
 
                     <Form.Item
                       label='Primer Nombre'
                       name='authName'
                       initialValue={objJosn?.authName ? objJosn?.authName : null}
-                      rules={[{ required: true }]}
+                      rules={[{ required: true, max: 50 }]}
                     >
                       <Input
                         allowClear
@@ -799,6 +921,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     <Form.Item
                       label='Segundo Nombre'
                       initialValue={objJosn?.authSecondName ? objJosn?.authSecondName : null}
+                      rules={[{ max: 50 }]}
                       name='authSecondName'
                     >
                       <Input
@@ -820,7 +943,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       label='Primer Apellido'
                       initialValue={objJosn?.authSurname ? objJosn?.authSurname : null}
                       name='authSurname'
-                      rules={[{ required: true }]}
+                      rules={[{ required: true, max: 50 }]}
                     >
                       <Input
                         allowClear
@@ -841,6 +964,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       label='Segundo Apellido'
                       initialValue={objJosn?.authSecondSurname ? objJosn?.authSecondSurname : null}
                       name='authSecondSurname'
+                      rules={[{ max: 50 }]}
                     >
                       <Input
                         allowClear

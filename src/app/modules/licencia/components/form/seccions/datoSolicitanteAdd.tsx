@@ -13,6 +13,11 @@ import Swal from 'sweetalert2';
 
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [campo, setCampo] = useState<string>('Numéricos');
 
   //#region Cargar Listas
   const { obj, prop } = props;
@@ -62,6 +67,31 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       onChange(validEmail);
     }
   };
+  //validacion Tipo de documento//
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1') {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
+    } else {
+      if (valor == '3' || valor == '5') {
+        setLongitudminima(10);
+        setLongitudminima(11);
+        setTipocampo('[0-9]{10,111}');
+        setCampo('Numéricos');
+        setTipodocumento('Tarjeta de Identidad y Nit');
+      } else {
+        setLongitudminima(11);
+        setLongitudminima(11);
+        setTipocampo('[a-zA-Z0-9]{11,11}');
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+      }
+    }
+  };
 
   useEffect(() => {
     getLista();
@@ -71,41 +101,41 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   return (
     <>
       <Form.Item label='Tipo documento' initialValue={null} required={true} name='fiscalia'>
-        <SelectComponent
-          options={l_tipo_documento.filter((i) =>
-            [
-              'a4ee4462-f837-4dff-a800-5495c33ac3ce',
-              'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
-              '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
-              '97f5657d-d8ec-48ef-bbe3-1babefecb1a4',
-              '60518653-70b7-42ab-8622-caa27b496184',
-              'ffe88939-06d5-486c-887c-e52d50b7f35d',
-              'a7a1b90b-8f29-4509-8220-a95f567e6fcb',
-              '0d69523b-4676-4e3d-8a3d-c6800a3acf3e',
-              '2491bc4b-8a60-408f-9fd1-136213f1e4fb',
-              '71f659be-9d6b-4169-9ee2-e70bf0d65f92',
-              'c532c358-56ae-4f93-8b9b-344ddf1256b7',
-              '0676c046-d93a-4551-a37e-72e3a653bd1b',
-              'ac3629d8-5c87-46ce-a8e2-530b0495cbf6',
-              'c087d833-3cfb-460f-aa78-e5cf2fe83f25'
-            ].includes(i.id)
-          )}
-          optionPropkey='id'
-          optionPropLabel='descripcion'
-        />
+        <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
 
       <Form.Item label='Numero documento' initialValue={null} required={true} name='ndoc'>
-        <Input allowClear type='number' placeholder='Numero documento' autoComplete='off' />
+        <Input
+          allowClear
+          type='text'
+          placeholder='Número Identificación'
+          autoComplete='off'
+          pattern={tipocampo}
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text:
+                'recuerde que para el tipo de documento:' +
+                tipodocumento +
+                ' solo se admiten valores ' +
+                campo +
+                ' de longitud entre ' +
+                longitudminima +
+                ' y ' +
+                longitudmaxima
+            });
+          }}
+        />
       </Form.Item>
 
-      <Form.Item label='Nombres' initialValue={null} required={true} name='namesolicitudadd'>
+      <Form.Item label='Nombres' initialValue={null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
         <Input
           allowClear
           placeholder='Nombres'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,100}'
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -116,13 +146,13 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         />
       </Form.Item>
 
-      <Form.Item label='Apellidos' initialValue={null} required={true} name='lastnamesolicitudadd'>
+      <Form.Item label='Apellidos' initialValue={null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
         <Input
           allowClear
           placeholder='Apellidos'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,100}'
           onInvalid={() => {
             Swal.fire({
               icon: 'error',

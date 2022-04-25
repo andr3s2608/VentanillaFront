@@ -52,6 +52,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     identity: 1,
     identification: ''
   };
+  //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
     const valor: string = value;
     if (valor == '1') {
@@ -59,24 +60,27 @@ export const BasicaInformacion: React.FC<any> = (props) => {
       setLongitudminima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
     } else {
       if (valor == '3' || valor == '5') {
         setLongitudminima(10);
         setLongitudminima(11);
         setTipocampo('[0-9]{10,111}');
         setCampo('Numéricos');
+        setTipodocumento('Tarjeta de Identidad y Nit');
       } else {
         setLongitudminima(11);
         setLongitudminima(11);
         setTipocampo('[a-zA-Z0-9]{11,11}');
         setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
       }
     }
   };
 
   return (
     <>
-      <Form.Item label='Primer Nombre' name='name' rules={[{ required: true }]}>
+      <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]}>
         <Input
           allowClear
           placeholder='Primer Nombre'
@@ -108,7 +112,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true }]}>
+      <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true, max: 50 }]}>
         <Input
           allowClear
           placeholder='Primer Apellido'

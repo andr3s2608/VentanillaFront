@@ -16,6 +16,12 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
   const { obj } = props;
   const { tipoLicencia } = props;
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [campo, setCampo] = useState<string>('Numéricos');
+
   //#region Cargar Listas
 
   const getLista = useCallback(
@@ -36,7 +42,23 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   }, []);
 
   //#endregion
-
+  //validacion Tipo de documento//
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1' || valor == '2') {
+      setLongitudminima(11);
+      setLongitudminima(11);
+      setTipocampo('[a-zA-Z0-9]{11,11}');
+      setCampo('AlfaNuméricos(Numéros y letras)');
+      setTipodocumento('Pasaporte y Cédula de Extranjería ');
+    } else {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
+    }
+  };
   return (
     <>
       <Divider orientation='right'>Datos de Quien Certifica la defunción - Medico</Divider>
@@ -55,6 +77,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
               '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
             ].includes(i.id)
           )}
+          onChange={cambiodocumento}
           optionPropkey='id'
           optionPropLabel='descripcion'
         />
@@ -65,7 +88,28 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         name='medicalSignatureIDNumber'
         rules={[{ required: true, max: 20 }]}
       >
-        <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
+        <Input
+          allowClear
+          type='text'
+          placeholder='Número Identificación'
+          autoComplete='off'
+          pattern={tipocampo}
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text:
+                'recuerde que para el tipo de documento:' +
+                tipodocumento +
+                ' solo se admiten valores ' +
+                campo +
+                ' de longitud entre ' +
+                longitudminima +
+                ' y ' +
+                longitudmaxima
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item
         label='Lugar de Expedición'

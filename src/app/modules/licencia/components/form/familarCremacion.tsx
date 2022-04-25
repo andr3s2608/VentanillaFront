@@ -53,6 +53,11 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [campo, setCampo] = useState<string>('Numéricos');
   //#region Listados
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
@@ -153,6 +158,32 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
   };
   //#endregion
 
+  //validacion Tipo de documento//
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1') {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
+    } else {
+      if (valor == '3' || valor == '5') {
+        setLongitudminima(10);
+        setLongitudminima(11);
+        setTipocampo('[0-9]{10,111}');
+        setCampo('Numéricos');
+        setTipodocumento('Tarjeta de Identidad y Nit');
+      } else {
+        setLongitudminima(11);
+        setLongitudminima(11);
+        setTipocampo('[a-zA-Z0-9]{11,11}');
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+      }
+    }
+  };
+
   return (
     <div className='fadeInRight'>
       <Divider orientation='right'> Datos Del Familiar Que Autoriza la Cremación </Divider>
@@ -166,14 +197,40 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
         initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
         rules={[{ required: true }]}
       >
-        <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+        <SelectComponent
+          options={l_tipos_documento}
+          onChange={cambiodocumento}
+          optionPropkey='id'
+          optionPropLabel='descripcion'
+        />
       </Form.Item>
 
       <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
-        <Input allowClear type='number' placeholder='Número de Identificación' autoComplete='off' />
+        <Input
+          allowClear
+          type='text'
+          placeholder='Número Identificación'
+          autoComplete='off'
+          pattern={tipocampo}
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text:
+                'recuerde que para el tipo de documento:' +
+                tipodocumento +
+                ' solo se admiten valores ' +
+                campo +
+                ' de longitud entre ' +
+                longitudminima +
+                ' y ' +
+                longitudmaxima
+            });
+          }}
+        />
       </Form.Item>
 
-      <Form.Item label='Primer Nombre' name='authName' rules={[{ required: true }]}>
+      <Form.Item label='Primer Nombre' name='authName' rules={[{ required: true, max: 50 }]}>
         <Input
           allowClear
           placeholder='Primer Nombre'
@@ -205,7 +262,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Primer Apellido' name='authSurname' rules={[{ required: true }]}>
+      <Form.Item label='Primer Apellido' name='authSurname' rules={[{ required: true, max: 50 }]}>
         <Input
           allowClear
           placeholder='Primer Apellido'

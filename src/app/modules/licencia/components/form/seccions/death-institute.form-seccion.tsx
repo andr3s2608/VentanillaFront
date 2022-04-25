@@ -21,6 +21,11 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
+  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [campo, setCampo] = useState<string>('Numéricos');
   //#region Listados
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
@@ -65,7 +70,31 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
     setIsMedicinaLegal(e.target.value === '04e0913b-5d86-4c48-8904-0f504fedb3fd');
   };
-
+  //validacion Tipo de documento//
+  const cambiodocumento = (value: any) => {
+    const valor: string = value;
+    if (valor == '1') {
+      setLongitudminima(6);
+      setLongitudminima(10);
+      setTipocampo('[0-9]{6,10}');
+      setCampo('Numéricos');
+      setTipodocumento('Cédula de Ciudadanía');
+    } else {
+      if (valor == '3' || valor == '5') {
+        setLongitudminima(10);
+        setLongitudminima(11);
+        setTipocampo('[0-9]{10,111}');
+        setCampo('Numéricos');
+        setTipodocumento('Tarjeta de Identidad y Nit');
+      } else {
+        setLongitudminima(11);
+        setLongitudminima(11);
+        setTipocampo('[a-zA-Z0-9]{11,11}');
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte,Cédula de Extranjería y Permiso Especial de Permanencia');
+      }
+    }
+  };
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
@@ -89,7 +118,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             initialValue={obj?.instTipoIdent ? obj?.instTipoIdent : defaultValues.identity}
             rules={[{ required: true }]}
           >
-            <SelectComponent options={l_tipos_documento} optionPropkey='id' optionPropLabel='descripcion' />
+            <SelectComponent
+              options={l_tipos_documento}
+              onChange={cambiodocumento}
+              optionPropkey='id'
+              optionPropLabel='descripcion'
+            />
           </Form.Item>
 
           <Form.Item
@@ -98,7 +132,28 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             initialValue={obj?.instNumIdent ? obj?.instNumIdent : defaultValues.identification}
             rules={[{ required: true }]}
           >
-            <Input allowClear type='number' placeholder='Número Identificación' autoComplete='off' />
+            <Input
+              allowClear
+              type='text'
+              placeholder='Número Identificación'
+              autoComplete='off'
+              pattern={tipocampo}
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text:
+                    'recuerde que para el tipo de documento:' +
+                    tipodocumento +
+                    ' solo se admiten valores ' +
+                    campo +
+                    ' de longitud entre ' +
+                    longitudminima +
+                    ' y ' +
+                    longitudmaxima
+                });
+              }}
+            />
           </Form.Item>
 
           <Form.Item
@@ -124,14 +179,14 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                 label='Nombres y Apellidos del Fiscal'
                 initialValue={obj?.instNombreFiscal}
                 name='instNombreFiscal'
-                rules={[{ required: isMedicinaLegal }]}
+                rules={[{ required: isMedicinaLegal, max: 200 }]}
               >
                 <Input
                   allowClear
                   placeholder='Nombres y apellidos completos'
                   autoComplete='off'
                   type='text'
-                  pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+                  pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,200}'
                   onInvalid={() => {
                     Swal.fire({
                       icon: 'error',

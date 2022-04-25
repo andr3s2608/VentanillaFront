@@ -23,13 +23,13 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
         <>
           <Divider orientation='right'>Autorización cremación del fiscal y medicina legal</Divider>
 
-          <Form.Item label='Nombres y Apellidos' name='firtNameAndLastName' rules={[{ required: true }]}>
+          <Form.Item label='Nombres y Apellidos' name='firtNameAndLastName' rules={[{ required: true, max: 200 }]}>
             <Input
               allowClear
               placeholder='Nombres y Apellidos'
               autoComplete='off'
               type='text'
-              pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
+              pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,200}'
               onInvalid={() => {
                 Swal.fire({
                   icon: 'error',
