@@ -131,6 +131,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               onChange={cambiodocumento}
               optionPropkey='id'
               optionPropLabel='descripcion'
+              disabled={true}
             />
           </Form.Item>
 
@@ -161,6 +162,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     longitudmaxima
                 });
               }}
+              disabled={true}
             />
           </Form.Item>
 
@@ -170,7 +172,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             name='instRazonSocial'
             rules={[{ required: true }]}
           >
-            <Input allowClear placeholder='Nombre de la Razón Social' autoComplete='off' />
+            <Input allowClear placeholder='Nombre de la Razón Social' autoComplete='off' disabled={true} />
           </Form.Item>
           <Form.Item
             label='Número de Protocolo Medicina Legal'
