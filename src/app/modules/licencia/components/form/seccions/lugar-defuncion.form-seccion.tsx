@@ -103,7 +103,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       <Form.Item
         label='Área Defunción'
         name='areaDef'
-        initialValue={obj?.areaDef ? obj?.areaDef : 'dcb9985a-6e4f-45b6-ab53-c8105d0b9cc3'}
+        initialValue={obj?.areaDef ? obj?.areaDef : '1931a90Ff-80b4-4ecf-8712-5922990d20c4'}
         rules={[{ required: true }]}
       >
         <SelectComponent options={l_area_defuncion} optionPropkey='id' optionPropLabel='descripcion' />

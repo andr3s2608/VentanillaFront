@@ -215,7 +215,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que solo puede ingresar datos numericos'
+              text: 'recuerde que solo puede ingresar datos numéricos'
             });
           }}
         />
@@ -231,7 +231,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que solo puede ingresar datos numericos'
+              text: 'recuerde que solo puede ingresar datos numéricos'
             });
           }}
         />

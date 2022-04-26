@@ -221,7 +221,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoNombre: values.secondNamemother,
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother,
-          fechaNacimiento: null,
+          fechaNacimiento: moment(values.date).format(formatDate),
           nacionalidad: values.nationalidadmother[0],
           otroParentesco: null,
           idEstadoCivil: values.civilStatusmother,
@@ -797,18 +797,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               initialValue={obj?.IDType ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
             >
               <SelectComponent
-                options={l_tipos_documento.filter((i) =>
-                  [
-                    'a4ee4462-f837-4dff-a800-5495c33ac3ce',
-                    'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
-                    '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
-                    'ac3629D8-5c87-46ce-A8e2-530b0495cbf6',
-                    '2491bc4b-8a60-408f-9fd1-136213f1e4fb',
-                    'ffe88939-06d5-486c-887c-e52d50B7f35d',
-                    '71f659be-9d6b-4169-9ee2-e70Bf0d65f92',
-                    '0676c046-d93a-4551-a37e-72e3A653bd1b'
-                  ].includes(i.id)
-                )}
+                options={l_tipos_documento}
                 optionPropkey='id'
                 onChange={cambiodocumento}
                 optionPropLabel='descripcion'

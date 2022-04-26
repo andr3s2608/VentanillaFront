@@ -40,10 +40,36 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
             />
           </Form.Item>
           <Form.Item label='Fiscal No.' name='fiscal' rules={[{ required: true, max: 5 }]}>
-            <Input allowClear placeholder='Fiscal No.' autoComplete='off' type='number' />
+            <Input
+              allowClear
+              placeholder='Fiscal No.'
+              type='text'
+              autoComplete='off'
+              pattern={'[0-9-]{7,12}'}
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text: 'recuerde que solo puede ingresar datos numéricos'
+                });
+              }}
+            />
           </Form.Item>
           <Form.Item label='No. Oficio de medicina legal' name='medicinalegal' rules={[{ required: true, max: 6 }]}>
-            <Input allowClear placeholder='No. Oficio de medicina legal' autoComplete='off' type='number' />
+            <Input
+              allowClear
+              placeholder='No. Oficio de medicina legal'
+              type='text'
+              autoComplete='off'
+              pattern={'[0-9-]{7,12}'}
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text: 'recuerde que solo puede ingresar datos numéricos'
+                });
+              }}
+            />
           </Form.Item>
           <Form.Item label='Fecha Oficio de Medicina Legal' name='fecha' rules={[{ required: true }]}>
             <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />

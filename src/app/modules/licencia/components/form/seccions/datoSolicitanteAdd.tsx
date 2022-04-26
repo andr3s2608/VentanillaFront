@@ -195,10 +195,10 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Email' initialValue={null} required={true} name='emailsolicitudadd'>
+      <Form.Item label='Email' initialValue={null} rules={[{ required: true, type: 'email' }]} name='emailsolicitudadd'>
         <Input
           allowClear
-          placeholder='Email'
+          placeholder='email@example.com'
           type='email'
           autoComplete='off'
           onChange={(e) => cambioemail(e.target.value)}
