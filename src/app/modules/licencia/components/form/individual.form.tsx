@@ -364,7 +364,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       localStorage.removeItem('register');
       if (resp) {
         const formData = new FormData();
-        const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
+        const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'Cremación';
         const supportDocuments: any[] = [];
         const [files, names] = generateListFiles(values);
 
@@ -462,6 +462,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const [isCremacion, setIsCremacion] = useState(false);
   useEffect(() => {
+    console.log('Tipo de licencia', tipoLicencia);
     setIsCremacion(tipoLicencia === 'Cremación');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tipoLicencia]);
