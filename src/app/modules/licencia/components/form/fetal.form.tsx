@@ -736,7 +736,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
           <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
           <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
-          <Step title='INFORMACION DEL MEDICO' description='Datos del Médico que certifica.' />
+          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
           <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
@@ -908,7 +908,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               label='Nacionalidad de la Madre'
               name='nationalidadmother'
               initialValue={obj?.nationalidadmother ?? [idColombia]}
-              rules={[{ required: true, type: 'array' }]}
+              rules={[{ required: true, type: 'array', max: 3 }]}
             >
               <SelectComponent
                 options={l_paises}

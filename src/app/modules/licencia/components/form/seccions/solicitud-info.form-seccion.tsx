@@ -75,7 +75,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
   return (
     true && (
       <>
-        <Divider orientation='right'>Datos del Solicitante</Divider>
+        <Divider orientation='right'>DATOS DEL SOLICITANTE Y/O FUNERARIA</Divider>
         {/* TODO: [2021-06-12] Determinar si es persona natural o jurídica. */}
         {false ? (
           <>

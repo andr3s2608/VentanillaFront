@@ -549,7 +549,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
           <Step title='INFORMACIÓN DEL FALLECIDO' description='Datos personales del fallecido.' />
           <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante - cementerio.' />
-          <Step title='INFORMACION DEL MEDICO' description='Datos del médico que certifica.' />
+          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del médico que certifica.' />
           <Step title='INFORMACION SOPORTES' description='Datos documentos de soporte PDF.' />
         </Steps>
 
@@ -664,7 +664,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               label='Nacionalidad'
               name='nationalidad'
               initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
-              rules={[{ required: true, type: 'array' }]}
+              rules={[{ required: true, type: 'array', max: 3 }]}
             >
               <SelectComponent
                 options={l_paises}

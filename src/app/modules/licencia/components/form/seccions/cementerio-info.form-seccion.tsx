@@ -276,7 +276,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   return (
     <>
-      <Divider orientation='right'>Datos de la funeraria y Cementerio a realizar la {tipoLicencia}</Divider>
+      <Divider orientation='right'>DATOS DEL CEMENTERIO A REALIZAR LA {tipoLicencia}</Divider>
       <div>
         <Form.Item
           className='mb-4'
