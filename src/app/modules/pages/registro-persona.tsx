@@ -91,8 +91,6 @@ const RegistroPage: React.FC<any> = (props) => {
     const confirEmail: string = value.confirEmail;
     const email: string = value.email;
 
-    console.log('correo', email);
-    console.log('correo conf', confirEmail);
     if (confirEmail.toUpperCase == email.toUpperCase) {
       const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
       var numero1: number;

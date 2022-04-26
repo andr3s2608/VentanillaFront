@@ -45,7 +45,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
     const valor: string = value;
-    if (valor == '1' || valor == '2') {
+    if (valor == 'f1b570ee-f628-4438-a47f-6d7bff1f06d7' || valor == 'a4ee4462-f837-4dff-a800-5495c33ac3ce') {
       setLongitudminima(11);
       setLongitudminima(11);
       setTipocampo('[a-zA-Z0-9]{11,11}');
@@ -99,7 +99,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'recuerde que para el tipo de documento:' +
+                'recuerde que para el tipo de documento5:' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +

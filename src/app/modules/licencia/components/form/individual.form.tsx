@@ -462,7 +462,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const [isCremacion, setIsCremacion] = useState(false);
   useEffect(() => {
-    console.log('Tipo de licencia', tipoLicencia);
     setIsCremacion(tipoLicencia === 'Cremación');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tipoLicencia]);
@@ -503,35 +502,44 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   );
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
   //#endregion
-  //validacion tipo de documento//
+  //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
     const valor: string = value;
-    if (valor == '1') {
+    const valorupper = valor.toUpperCase();
+    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
       setLongitudminima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
-      if (valor == '3' || valor == '5') {
+      if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
         setLongitudminima(11);
-        setTipocampo('[0-9]{10,111}');
+        setTipocampo('[0-9]{10,11}');
         setCampo('Numéricos');
-        setTipodocumento('Tarjeta de Identidad y Nit');
+        setTipodocumento('Tarjeta de Identidad ');
       } else {
-        if (valor == '4') {
+        if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
           setLongitudminima(15);
           setTipocampo('[0-9]{15,15}');
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
-          setLongitudminima(11);
-          setLongitudminima(11);
-          setTipocampo('[a-zA-Z0-9]{11,11}');
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+          if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+            setLongitudminima(15);
+            setLongitudminima(15);
+            setTipocampo('[0-9]{15,15}');
+            setCampo('Numéricos');
+            setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+          } else {
+            setLongitudminima(11);
+            setLongitudminima(11);
+            setTipocampo('[a-zA-Z0-9]{11,11}');
+            setCampo('AlfaNuméricos(Numéros y letras)');
+            setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+          }
         }
       }
     }
@@ -685,7 +693,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               rules={[{ required: true }]}
             >
               <SelectComponent
-                options={l_tipos_documento}
+                options={l_tipos_documento.filter((i) =>
+                  [
+                    'a4ee4462-f837-4dff-a800-5495c33ac3ce',
+                    'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
+                    '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
+                    'ac3629D8-5c87-46ce-A8e2-530b0495cbf6',
+                    '2491bc4b-8a60-408f-9fd1-136213f1e4fb',
+                    'ffe88939-06d5-486c-887c-e52d50B7f35d',
+                    '71f659be-9d6b-4169-9ee2-e70Bf0d65f92',
+                    '0676c046-d93a-4551-a37e-72e3A653bd1b'
+                  ].includes(i.id)
+                )}
                 onChange={cambiodocumento}
                 optionPropkey='id'
                 optionPropLabel='descripcion'
@@ -708,7 +727,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'recuerde que para el tipo de documento:' +
+                      'recuerde que para el tipo de documento1:' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
@@ -759,7 +778,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
                 <Form.Item label='Tipo Identificación' name='knownIDType'>
                   <SelectComponent
-                    options={l_tipos_documento}
+                    options={l_tipos_documento.filter((i) =>
+                      [
+                        'a4ee4462-f837-4dff-a800-5495c33ac3ce',
+                        'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
+                        '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
+                        'ac3629D8-5c87-46ce-A8e2-530b0495cbf6',
+                        '2491bc4b-8a60-408f-9fd1-136213f1e4fb',
+                        'ffe88939-06d5-486c-887c-e52d50B7f35d',
+                        '71f659be-9d6b-4169-9ee2-e70Bf0d65f92',
+                        '0676c046-d93a-4551-a37e-72e3A653bd1b'
+                      ].includes(i.id)
+                    )}
                     onChange={cambiodocumento}
                     optionPropkey='id'
                     optionPropLabel='descripcion'
@@ -778,7 +808,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         icon: 'error',
                         title: 'Datos invalidos',
                         text:
-                          'recuerde que para el tipo de documento:' +
+                          'recuerde que para el tipo de documentox:' +
                           tipodocumento +
                           ' solo se admiten valores ' +
                           campo +
@@ -869,7 +899,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       rules={[{ required: true }]}
                     >
                       <SelectComponent
-                        options={l_tipos_documento}
+                        options={l_tipos_documento.filter((i) =>
+                          [
+                            'a4ee4462-f837-4dff-a800-5495c33ac3ce',
+                            'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
+                            '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
+                            'ac3629D8-5c87-46ce-A8e2-530b0495cbf6',
+                            '2491bc4b-8a60-408f-9fd1-136213f1e4fb',
+                            'ffe88939-06d5-486c-887c-e52d50B7f35d',
+                            '71f659be-9d6b-4169-9ee2-e70Bf0d65f92',
+                            '0676c046-d93a-4551-a37e-72e3A653bd1b'
+                          ].includes(i.id)
+                        )}
                         onChange={cambiodocumento}
                         optionPropkey='id'
                         optionPropLabel='descripcion'
@@ -893,7 +934,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                             icon: 'error',
                             title: 'Datos invalidos',
                             text:
-                              'recuerde que para el tipo de documento:' +
+                              'recuerde que para el tipo de documentoy:' +
                               tipodocumento +
                               ' solo se admiten valores ' +
                               campo +

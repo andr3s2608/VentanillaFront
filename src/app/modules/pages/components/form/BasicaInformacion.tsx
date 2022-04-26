@@ -62,25 +62,33 @@ export const BasicaInformacion: React.FC<any> = (props) => {
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
-      if (valor == '3' || valor == '5') {
+      if (valor == '3') {
         setLongitudminima(10);
         setLongitudminima(11);
-        setTipocampo('[0-9]{10,111}');
+        setTipocampo('[0-9]{10,11}');
         setCampo('Numéricos');
-        setTipodocumento('Tarjeta de Identidad y Nit');
+        setTipodocumento('Tarjeta de Identidad ');
       } else {
-        if (valor == '4') {
+        if (valor == '5') {
           setLongitudminima(15);
           setLongitudminima(15);
-          setTipocampo('[0-9]{15,15}');
+          setTipocampo('[0-9-]{10,10}');
           setCampo('Numéricos');
-          setTipodocumento('Permiso Especial de Permanencia');
+          setTipodocumento('Nit');
         } else {
-          setLongitudminima(11);
-          setLongitudminima(11);
-          setTipocampo('[a-zA-Z0-9]{11,11}');
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+          if (valor == '4') {
+            setLongitudminima(15);
+            setLongitudminima(15);
+            setTipocampo('[0-9]{15,15}');
+            setCampo('Numéricos');
+            setTipodocumento('Permiso Especial de Permanencia');
+          } else {
+            setLongitudminima(11);
+            setLongitudminima(11);
+            setTipocampo('[a-zA-Z0-9]{6,10}');
+            setCampo('AlfaNuméricos(Numéros y letras)');
+            setTipodocumento('Pasaporte y Cédula de Extranjería ');
+          }
         }
       }
     }
@@ -197,10 +205,36 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         />
       </Form.Item>
       <Form.Item label='Teléfono Fijo' rules={[{ max: 12 }]} name='phone'>
-        <Input allowClear placeholder='Telefono Fijo' type='number' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Telefono Fijo'
+          type='text'
+          autoComplete='off'
+          pattern={'[0-9-]{7,12}'}
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que solo puede ingresar datos numericos'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Teléfono Celular' name='phonecell' rules={[{ required: true, max: 12 }]}>
-        <Input allowClear placeholder='Telefono Celular' type='number' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='Telefono Celular'
+          type='text'
+          autoComplete='off'
+          pattern={'[0-9-]{7,12}'}
+          onInvalid={() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos invalidos',
+              text: 'recuerde que solo puede ingresar datos numericos'
+            });
+          }}
+        />
       </Form.Item>
       <Form.Item label='Correo electrónico' name='email' rules={[{ required: true, type: 'email' }]}>
         <Input allowClear placeholder='email@example.com' autoComplete='off' />

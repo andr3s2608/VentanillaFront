@@ -121,7 +121,7 @@ const RegistroPage: React.FC<any> = (props) => {
     } else {
       setLongitudminima(10);
       setLongitudminima(11);
-      setTipocampo('[0-9]{10,111}');
+      setTipocampo('[0-9-]{10,10}');
       setCampo('Numéricos');
       setTipodocumento('Nit');
     }
