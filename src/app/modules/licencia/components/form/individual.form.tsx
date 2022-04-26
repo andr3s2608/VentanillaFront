@@ -664,7 +664,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               label='Nacionalidad'
               name='nationalidad'
               initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
-              rules={[{ required: true, type: 'array', max: 3 }]}
+              rules={[{ required: true, type: 'array', max: 1 }]}
             >
               <SelectComponent
                 options={l_paises}
