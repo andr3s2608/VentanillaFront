@@ -79,7 +79,7 @@ const RegistroPage: React.FC<any> = (props) => {
       numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
       nombreRazonSocial: value.razonsocial
     };
-    console.log(value.TipoIdent + ' tipo id');
+
     const resApi = await api.personaJuridica(json);
 
     if (typeof resApi === 'number') {

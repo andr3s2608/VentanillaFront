@@ -519,7 +519,31 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     setNameUser(nameUser);
     setIsModalVisiblePdf(true);
   };
+  const idcontrol = objJosn.idControlTramite;
+  const tipotramite: string = objJosn.idTramite;
+  var valor = '';
+  switch (tipotramite) {
+    case 'a289c362-e576-4962-962b-1c208afa0273':
+      valor = 'Inhumacion Indivual';
 
+      break;
+    case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+      //inhumacion fetal
+      valor = 'Inhumacion Fetal';
+
+      break;
+    case 'e69bda86-2572-45db-90dc-b40be14fe020':
+      //cremacion individual
+      valor = 'Cremacion Individual';
+
+      break;
+    case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+      //cremacionfetal
+      valor = 'Cremacion Fetal ';
+
+      break;
+  }
+  const separacion = '                      ';
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
@@ -532,14 +556,18 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
+          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
+            ID TRAMITE:{idcontrol}
+          </Divider>
+          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
+            TIPO DE SOLICITUD:{valor}
+          </Divider>
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
             <InformacionFallecidoSeccion obj={objJosn} />
             <InformacionMedicoCertificante obj={objJosn} />
             <InformacionSolicitanteSeccion obj={objJosn} />
-
             <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
             <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
-
             <div className='fadeInLeft'>
               <div className='container-fluid'>
                 <div className='col-lg-12'>
