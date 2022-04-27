@@ -13,6 +13,11 @@ import { IinformatioUser } from 'app/Models/IInformatioUser';
 import { DatoSolicitanteAdd } from './datoSolicitanteAdd';
 import { toIdentifier } from '@babel/types';
 
+// Componentes
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+
+import { ICementerio } from 'app/services/dominio.service';
+
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
   const [nroiden, setNroiden] = useState<any>();
@@ -23,6 +28,10 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     razonSocial: ''
   });
   const { obj, prop, form } = props;
+
+  const lugarFuneraria = obj?.isLugar();
+  const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
+  const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -41,6 +50,8 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
       const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
       setUser(resp);
       setNroiden(existefuneraria.NROIDENT);
+
+      setLfunerarias(funeraria);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -72,10 +83,47 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
 
   /* NOTE: [2021-06-12] Se debe conectar un servicio para cargar el tipo de usuario autenticado y colocar la información segun el usuario autenticado. */
   /* TODO: [2021-06-12] Determinar si es usuario cliente o funcionario. */
+
+  const onChange = (value: any, tipo: String) => {
+    prop(value, tipo);
+  };
+
+  const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
+    return (
+      <>
+        <Form.Item
+          className='fadeInRight'
+          label='Funeraria de Bogotá D.C.'
+          name='funerariaBogota'
+          initialValue={obj?.cementerioBogota}
+          rules={[{ required: true }]}
+        >
+          <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+        </Form.Item>
+      </>
+    );
+  };
+
+  const cambioemailFUN = (e: any) => {
+    let campo = e;
+
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+
+    if (emailRegex.test(campo)) {
+      //setValidEmailFUN(true);
+      onChange(true, '1');
+    } else {
+      //setValidEmailFUN(false);
+      onChange(false, '1');
+    }
+  };
+
   return (
     true && (
       <>
-        <Divider orientation='right'>Datos del Solicitante</Divider>
+        <Divider orientation='right'>DATOS DEL SOLICITANTE Y/O FUNERARIA</Divider>
         {/* TODO: [2021-06-12] Determinar si es persona natural o jurídica. */}
         {false ? (
           <>
@@ -142,6 +190,17 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
             <DatoSolicitanteAdd prop={getData} obj={obj} />
+
+            <div>{renderFormFuneria(lugarfuneraria)}</div>
+            <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, max: 50 }]}>
+              <Input
+                allowClear
+                placeholder='Email Funeraria'
+                type='email'
+                onChange={(e) => cambioemailFUN(e.target.value)}
+                autoComplete='off'
+              />
+            </Form.Item>
           </>
         )}
       </>
@@ -156,3 +215,5 @@ interface ISolicitudInfoProps<T> {
   obj: any;
   prop: any;
 }
+
+type TypeLugarFuneraria = 'Dentro de Bogotá';

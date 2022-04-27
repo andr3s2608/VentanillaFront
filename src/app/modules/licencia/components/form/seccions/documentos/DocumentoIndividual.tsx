@@ -204,7 +204,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
         <>
           {files?.length ? (
             <Form.Item
-              label='Ver Autorizacion de cremacion del familiar'
+              label='Ver Autorización de cremación del familiar'
               name='fileAuthCCFamiliar'
               valuePropName='fileList'
               rules={[{ required: isEdit ? false : true }]}
@@ -221,7 +221,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
             </Form.Item>
           ) : null}
           <Form.Item
-            label='Autorizacion de cremacion del familiar'
+            label='Autorización de cremación del familiar'
             name='fileAuthCCFamiliar'
             valuePropName='fileList'
             rules={[{ required: isEdit ? false : true }]}

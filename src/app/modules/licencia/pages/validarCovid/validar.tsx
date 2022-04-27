@@ -147,19 +147,7 @@ const App = () => {
         setVisible(false);
         swal.fire({
           title: 'Horario de atención',
-          text:
-            'Las solicitudes de licencia que estan asociadas a un caso no COVID son atendidas de lunes a viernes en el ' +
-            'horario de: ' +
-            HIA_LV[0] +
-            ':' +
-            HIA_LV[1] +
-            HIA_LV[2] +
-            ' AM a ' +
-            HFA_LV[0] +
-            ':' +
-            HFA_LV[1] +
-            HIA_LV[2] +
-            ' PM, por favor vuelva a intertarlo en estos horarios.',
+          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 13:00 PM; sábados, domingos y festivos en el horario de: 08:00 AM a 11:00 AM. Por favor vuelva a intentarlo en estos horarios.',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -177,19 +165,7 @@ const App = () => {
         setVisible(false);
         swal.fire({
           title: 'Horario de atención',
-          text:
-            'Las solicitudes de licencia que estan asociadas a un caso no COVID son atendidas los fines de semana y dias festivos en el ' +
-            'horario de: ' +
-            HIA_SD[0] +
-            ':' +
-            HIA_SD[1] +
-            HIA_SD[2] +
-            ' AM a ' +
-            HFA_SD[0] +
-            ':' +
-            HFA_SD[1] +
-            HIA_SD[2] +
-            ' PM, por favor vuelva a intertarlo en estos horarios.',
+          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 13:00 PM; sábados, domingos y festivos en el horario de: 08:00 AM a 11:00 AM. Por favor vuelva a intentarlo en estos horarios.',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
