@@ -68,6 +68,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
 
   const { obj } = props;
 
+  console.log();
   return (
     <>
       <Divider orientation='right'>Lugar de Defunción</Divider>

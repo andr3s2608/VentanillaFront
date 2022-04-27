@@ -195,7 +195,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Email' initialValue={null} rules={[{ required: true, type: 'email' }]} name='emailsolicitudadd'>
+      <Form.Item label='Email' initialValue={null} rules={[{ required: true, type: 'email', max: 50 }]} name='emailsolicitudadd'>
         <Input
           allowClear
           placeholder='email@example.com'

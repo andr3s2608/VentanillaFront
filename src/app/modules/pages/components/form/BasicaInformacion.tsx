@@ -215,7 +215,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que solo puede ingresar datos numéricos'
+              text: 'recuerde que solo puede ingresar datos numéricos de máximo 12 dígitos'
             });
           }}
         />
@@ -231,15 +231,15 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos invalidos',
-              text: 'recuerde que solo puede ingresar datos numéricos'
+              text: 'recuerde que solo puede ingresar datos numéricos de máximo 12 dígitos'
             });
           }}
         />
       </Form.Item>
-      <Form.Item label='Correo electrónico' name='email' rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label='Correo electrónico' name='email' rules={[{ required: true, type: 'email', max: 50 }]}>
         <Input allowClear placeholder='email@example.com' autoComplete='off' />
       </Form.Item>
-      <Form.Item label='Confirmar Correo Electrónico' name='confirEmail' rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label='Confirmar Correo Electrónico' name='confirEmail' rules={[{ required: true, type: 'email', max: 50 }]}>
         <Input allowClear placeholder='email@example.com' autoComplete='off' />
       </Form.Item>
     </>

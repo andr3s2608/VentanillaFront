@@ -297,7 +297,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       </div>
       <div>{renderFormFuneria(lugarfuneraria)}</div>
 
-      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true, type: 'email', max: 50 }]}>
         <Input
           allowClear
           placeholder='email@example.com'
@@ -306,7 +306,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           autoComplete='off'
         />
       </Form.Item>
-      <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, type: 'email', max: 50 }]}>
         <Input
           allowClear
           placeholder='email@example.com'
