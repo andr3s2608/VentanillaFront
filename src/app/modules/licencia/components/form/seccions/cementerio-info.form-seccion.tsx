@@ -10,14 +10,14 @@ import { Row, Col } from 'antd';
 // Utilidades
 import { ITipoLicencia } from 'app/shared/utils/types.util';
 
-// Componentes
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
-
 // Servicios
 import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { validateClaimsRequest } from 'msal/lib-commonjs/AuthenticationParameters';
+
+// Componentes
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 interface municiopioDepartament {
   municipio: string;
@@ -37,9 +37,8 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     departament: ''
   });
 
-  const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [l_municipiosfunerarias, setLMunicipiosfunerarias] = useState<IMunicipio[]>([]);
+
   const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
     [[], [], []]
   );
@@ -51,8 +50,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         dominioService.get_cementerios_bogota(),
         dominioService.get_type(ETipoDominio.Pais)
       ]);
-      const funeraria = await api.GetFunerarias();
-      setLfunerarias(funeraria);
+
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,10 +74,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   const [validEmail, setValidEmail] = useState(false);
   const [validEmailFUN, setValidEmailFUN] = useState(false);
 
-  const lugarFuneraria = obj?.isLugar();
-
-  const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
-
   const onChangeLugarCementerio = (e: RadioChangeEvent) => {
     form.resetFields([
       'cementerioBogota',
@@ -91,38 +85,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     ]);
     setLMunicipios([]);
     setLugar(e.target.value);
-  };
-  const onChangeLugarFuneraria = (e: RadioChangeEvent) => {
-    form.resetFields([
-      'funerariaBogota',
-      'funerariaDepartamento',
-      'funerariaMunicipio',
-      'funerariaPais',
-      'funerariaCiudad',
-      'emailfuneraria'
-    ]);
-    setLMunicipiosfunerarias([]);
-    setLugarFuneraria(e.target.value);
-  };
-  const onChangeDepartamentoFuneraria = async (value: string) => {
-    const depart = await dominioService.get_departamentos_colombia();
-    let id = (await depart).filter((i) => i.idDepartamento == value);
-
-    let idmunicipio = id[0].idDepPai + '';
-
-    form.resetFields(['funerariaMunicipio']);
-    const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
-
-    setLMunicipiosfunerarias(resp);
-  };
-
-  const onChangeMunicipioFuneraria = async (value: string) => {
-    const departament = form.getFieldValue('funerariaDepartamento');
-
-    setMunicipio({
-      departament: departament,
-      municipio: value
-    });
   };
 
   const onChangeDepartamento = async (value: string) => {
@@ -165,22 +127,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     } else {
       //setValidEmail(false);
       onChange(false, '0');
-    }
-  };
-
-  const cambioemailFUN = (e: any) => {
-    let campo = e;
-
-    const emailRegex =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    //Se muestra un texto a modo de ejemplo, luego va a ser un icono
-
-    if (emailRegex.test(campo)) {
-      //setValidEmailFUN(true);
-      onChange(true, '1');
-    } else {
-      //setValidEmailFUN(false);
-      onChange(false, '1');
     }
   };
 
@@ -236,7 +182,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               />
             </Form.Item>
             <Form.Item label='Ciudad' name='cementerioCiudad' initialValue={obj?.cementerioCiudad} rules={[{ required: true }]}>
-              <Input allowClear placeholder='Ciudad' autoComplete='off' />
+              <Input allowClear pattern='[a-zA-Z ]' placeholder='Ciudad' autoComplete='off' />
             </Form.Item>
           </div>
         );
@@ -258,25 +204,9 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
     }
   };
 
-  const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
-    return (
-      <>
-        <Form.Item
-          className='fadeInRight'
-          label='Funeraria de Bogotá D.C.'
-          name='funerariaBogota'
-          initialValue={obj?.cementerioBogota}
-          rules={[{ required: true }]}
-        >
-          <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-        </Form.Item>
-      </>
-    );
-  };
-
   return (
     <>
-      <Divider orientation='right'>Datos de la funeraria y Cementerio a realizar la {tipoLicencia}</Divider>
+      <Divider orientation='right'>DATOS DEL CEMENTERIO A REALIZAR LA {tipoLicencia}</Divider>
       <div>
         <Form.Item
           className='mb-4'
@@ -295,23 +225,13 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         </Form.Item>
         {renderForm(lugar)}
       </div>
-      <div>{renderFormFuneria(lugarfuneraria)}</div>
 
-      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true }]}>
+      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true, type: 'email', max: 50 }]}>
         <Input
           allowClear
-          placeholder='Email Cementerio'
+          placeholder='email@example.com'
           type='email'
           onChange={(e) => cambioemailCEM(e.target.value)}
-          autoComplete='off'
-        />
-      </Form.Item>
-      <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true }]}>
-        <Input
-          allowClear
-          placeholder='Email Funeraria'
-          type='email'
-          onChange={(e) => cambioemailFUN(e.target.value)}
           autoComplete='off'
         />
       </Form.Item>
@@ -337,4 +257,3 @@ interface ICementerioInfoProps<T> extends ITipoLicencia {
 }
 
 type TypeLugarCementerio = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';
-type TypeLugarFuneraria = 'Dentro de Bogotá';

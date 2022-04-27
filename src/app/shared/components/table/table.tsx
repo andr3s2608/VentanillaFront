@@ -58,6 +58,7 @@ export const Gridview = (props: IDataSource) => {
   var apellidos: any;
   var identify: any;
   var tipotramite: any;
+
   const Renovar = (datos: any) => {
     if (datos == undefined) {
       datos = data;
@@ -348,7 +349,7 @@ export const Gridview = (props: IDataSource) => {
     showModal();
   };
 
-  const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
+  const onClickValidarInformacion = async ({ idSolicitud, iD_Control_Tramite }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
     const { idTramite } = data[0];
 

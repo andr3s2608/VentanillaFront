@@ -56,7 +56,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
     let id = (await depart).filter((i) => i.idDepartamento == value);
 
     let idmunicipio = id[0].idDepPai + '';
-    console.log(value);
+
     if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') setIsBogota(false);
     else {
       setIsBogota(true);
@@ -68,6 +68,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
 
   const { obj } = props;
 
+  console.log();
   return (
     <>
       <Divider orientation='right'>Lugar de Defunción</Divider>
@@ -103,7 +104,7 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       <Form.Item
         label='Área Defunción'
         name='areaDef'
-        initialValue={obj?.areaDef ? obj?.areaDef : 'dcb9985a-6e4f-45b6-ab53-c8105d0b9cc3'}
+        initialValue={obj?.areaDef ? obj?.areaDef : '1931a90Ff-80b4-4ecf-8712-5922990d20c4'}
         rules={[{ required: true }]}
       >
         <SelectComponent options={l_area_defuncion} optionPropkey='id' optionPropLabel='descripcion' />

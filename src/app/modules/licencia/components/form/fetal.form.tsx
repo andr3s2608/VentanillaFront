@@ -221,7 +221,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoNombre: values.secondNamemother,
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother,
-          fechaNacimiento: null,
+          fechaNacimiento: moment(values.date).format(formatDate),
           nacionalidad: values.nationalidadmother[0],
           otroParentesco: null,
           idEstadoCivil: values.civilStatusmother,
@@ -687,35 +687,44 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     </Form.Item>
   );
 
-  //validacion tipo de documento
+  //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
     const valor: string = value;
-    if (valor == '1') {
+    const valorupper = valor.toUpperCase();
+    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
       setLongitudminima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
-      if (valor == '3' || valor == '5') {
+      if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
         setLongitudminima(11);
-        setTipocampo('[0-9]{10,111}');
+        setTipocampo('[0-9]{10,11}');
         setCampo('Numéricos');
-        setTipodocumento('Tarjeta de Identidad y Nit');
+        setTipodocumento('Tarjeta de Identidad ');
       } else {
-        if (valor == '4') {
+        if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
           setLongitudminima(15);
           setTipocampo('[0-9]{15,15}');
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
-          setLongitudminima(11);
-          setLongitudminima(11);
-          setTipocampo('[a-zA-Z0-9]{11,11}');
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Pasaporte y Cédula de Extranjería ');
+          if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+            setLongitudminima(15);
+            setLongitudminima(15);
+            setTipocampo('[0-9]{15,15}');
+            setCampo('Numéricos');
+            setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+          } else {
+            setLongitudminima(11);
+            setLongitudminima(11);
+            setTipocampo('[a-zA-Z0-9]{11,11}');
+            setCampo('AlfaNuméricos(Numéros y letras)');
+            setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+          }
         }
       }
     }
@@ -734,10 +743,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
+<<<<<<< HEAD
           <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' />
           <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' />
           <Step title='INFORMACIÓN DEL MEDICO' description='Datos del Médico que certifica.' />
           <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
+=======
+          <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
+          <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
+          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
+          <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
+>>>>>>> da4bcdbc58cda621f8d73ac927d43d95281e5f96
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
@@ -811,7 +827,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'recuerde que para el tipo de documento:' +
+                      'recuerde que para el tipo de documentoz:' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
@@ -908,7 +924,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               label='Nacionalidad de la Madre'
               name='nationalidadmother'
               initialValue={obj?.nationalidadmother ?? [idColombia]}
-              rules={[{ required: true, type: 'array' }]}
+              rules={[{ required: true, type: 'array', max: 1 }]}
             >
               <SelectComponent
                 options={l_paises}

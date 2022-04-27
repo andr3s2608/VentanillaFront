@@ -30,6 +30,7 @@ const formatObjJson = (obj: any, id: String) => {
   if (certificador == undefined) {
     jsonDt = {
       idTramite: obj.idTramite,
+      idControlTramite: obj.iD_Control_Tramite,
       certificado: obj.numeroCertificado,
       date: obj.fechaDefuncion,
       time: obj.hora,
@@ -105,6 +106,7 @@ const formatObjJson = (obj: any, id: String) => {
   } else {
     jsonDt = {
       idTramite: obj.idTramite,
+      idControlTramite: obj.iD_Control_Tramite,
       certificado: obj.numeroCertificado,
       date: obj.fechaDefuncion,
       time: obj.hora,

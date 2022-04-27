@@ -79,7 +79,7 @@ const RegistroPage: React.FC<any> = (props) => {
       numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
       nombreRazonSocial: value.razonsocial
     };
-    console.log(value.TipoIdent + ' tipo id');
+
     const resApi = await api.personaJuridica(json);
 
     if (typeof resApi === 'number') {
@@ -121,7 +121,7 @@ const RegistroPage: React.FC<any> = (props) => {
     } else {
       setLongitudminima(10);
       setLongitudminima(11);
-      setTipocampo('[0-9]{10,111}');
+      setTipocampo('[0-9-]{10,10}');
       setCampo('Numéricos');
       setTipodocumento('Nit');
     }

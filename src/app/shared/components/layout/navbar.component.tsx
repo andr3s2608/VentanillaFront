@@ -74,10 +74,8 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
       <div className='d-flex'>
         <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
-            {name} <b className='text-primary'>{name}</b>
+            <b className='text-primary'>{name}</b>
           </span>
-          <br />
-          <span className='text-muted'>{userName}</span>
         </span>
         <Menu className='bg-transparent' theme='dark' mode='horizontal'>
           <Menu.Item className='bg-transparent' key='1' onClick={onLogout} title='Cerrar sesión'>
