@@ -92,6 +92,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const userres = await api.getCodeUser();
       setUser(userres);
       setListas(resp);
+      console.log('============');
+      console.log(resp);
 
       if (edit) {
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
