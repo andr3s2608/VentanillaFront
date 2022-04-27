@@ -89,12 +89,12 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   const onChangeDepartamento = async (value: string) => {
     const depart = await dominioService.get_departamentos_colombia();
-    let id = (await depart).filter((i) => i.idDepartamento == value);
+    let departamento = (await depart).filter((i) => i.idDepartamento == value);
 
-    let idmunicipio = id[0].idDepPai + '';
+    const { idDepartamento } = departamento[0];
 
     form.resetFields(['cementerioMunicipio']);
-    const resp = await dominioService.get_municipios_by_departamento(idmunicipio);
+    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
 
     setLMunicipios(resp);
   };
