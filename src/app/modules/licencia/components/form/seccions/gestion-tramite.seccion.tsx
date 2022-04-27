@@ -16,6 +16,8 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
   const { type, idSolicitud, idTramite } = props;
 
   const onChange = (value: any) => {
+    console.log('El estado de aprobación es: ');
+    console.log(value);
     if (value === '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
       store.dispatch(SetViewLicence(false));
     } else {

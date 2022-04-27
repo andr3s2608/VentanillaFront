@@ -36,6 +36,8 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 //redux
+import { store } from 'app/redux/app.reducers';
+import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 
 import { IGestionTramite } from 'app/Models/IGestion';
 import { authProvider } from 'app/shared/utils/authprovider.util';
@@ -52,6 +54,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const [nameUser, setNameUser] = useState<any>('');
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
+  const [viewLicenceState, setViewLicenceState] = useState<any>();
   const { Step } = Steps;
   const [dataTable, setDataTable] = useState<[]>();
   const [datos, setdatos] = useState<[]>();
@@ -75,6 +78,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const formatDate = 'MM-DD-YYYY';
   const [[l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte], setListas] =
     useState<IDominio[][]>([]);
+
+  store.subscribe(() => {
+    const { viewLicence } = store.getState();
+    setViewLicenceState(viewLicence);
+  });
 
   const getListas = useCallback(
     async () => {
@@ -106,6 +114,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   useEffect(() => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    store.dispatch(SetResetViewLicence());
     return () => {
       localStorage.removeItem('register');
     };
@@ -287,6 +296,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
       }
       history.push('/tramites-servicios');
+      store.dispatch(SetResetViewLicence());
     }
   };
   const showModal = () => {
@@ -332,8 +342,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const names: string[] = filesName.map((item) => item.name);
     return [files, names];
   };
-  const onSubmitFailed = () => setStatus('error');
-
+  const onSubmitFailed = () => {
+    setStatus('error');
+    store.dispatch(SetResetViewLicence());
+  };
   //#region Eventos formulario
   const getStatus = (estado: string) => {
     var opciones = '';
@@ -561,6 +573,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                       onClick={() => onPrevPDF()}
                       icon={<EyeOutlined width={100} />}
                       size={'large'}
+                      disabled={viewLicenceState}
                     >
                       Vista previa licencia
                     </Button>
