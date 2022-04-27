@@ -23,7 +23,6 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   const [campo, setCampo] = useState<string>('Numéricos');
 
   //#region Cargar Listas
-
   const getLista = useCallback(
     async () => {
       const resp = await Promise.all([
@@ -198,7 +197,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         />
       </Form.Item>
       <Form.Item
-        label='Medico'
+        label='Médico'
         name='medicalSignatureProfesionalType'
         initialValue={obj?.medicalSignatureProfesionalType ?? '36ee9c22-30a7-4c29-8bd1-fb508ea01780'}
         rules={[{ required: true }]}
