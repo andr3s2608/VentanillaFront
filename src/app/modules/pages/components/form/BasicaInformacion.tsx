@@ -57,34 +57,34 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(6);
-      setLongitudminima(10);
+      setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
       if (valor == '3') {
         setLongitudminima(10);
-        setLongitudminima(11);
+        setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
       } else {
         if (valor == '5') {
-          setLongitudminima(15);
-          setLongitudminima(15);
+          setLongitudminima(10);
+          setLongitudmaxima(10);
           setTipocampo('[0-9-]{10,10}');
-          setCampo('Numéricos');
-          setTipodocumento('Nit');
+          setCampo('Numéricosy guion');
+          setTipodocumento('NIT');
         } else {
           if (valor == '4') {
             setLongitudminima(15);
-            setLongitudminima(15);
+            setLongitudmaxima(15);
             setTipocampo('[0-9]{15,15}');
             setCampo('Numéricos');
             setTipodocumento('Permiso Especial de Permanencia');
           } else {
-            setLongitudminima(11);
-            setLongitudminima(11);
+            setLongitudminima(6);
+            setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte y Cédula de Extranjería ');
