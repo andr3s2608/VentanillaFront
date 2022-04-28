@@ -743,17 +743,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
-<<<<<<< HEAD
           <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' />
           <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' />
-          <Step title='INFORMACIÓN DEL MEDICO' description='Datos del Médico que certifica.' />
-          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
-=======
-          <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
-          <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
-          <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
->>>>>>> da4bcdbc58cda621f8d73ac927d43d95281e5f96
+          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
