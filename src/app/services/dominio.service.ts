@@ -5,8 +5,7 @@ class DominioService {
   private endpoint = environments.endpointV1;
 
   get_type = (tipoDominio: ETipoDominio) =>
-    get<IDominio[]>({ endpoint: 'https://localhost:5001/api/v1/', url: `Dominio/GetAllDominio/${tipoDominio}`, id: '0' });
-  //get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}`, id: '0' });
+    get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}`, id: '0' });
 
   get_departamentos_colombia = () =>
     get<IDepartamento[]>({ endpoint: this.endpoint, url: `Departamento/GetAllDepartamento`, id: '0' });
