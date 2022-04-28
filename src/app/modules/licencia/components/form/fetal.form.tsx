@@ -521,31 +521,19 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   //metodo para permitir pasar si los correos son validos
   const Prueba = () => {
-    if (emailsol) {
-      if (emailcem) {
-        if (emailfun) {
-          onNextStep([
-            ...KeyFormDeathInstitute,
-            ...KeyFormSolicitudInfo,
-            ...KeyFormCementerio,
-            'deathType',
-            'authIDType',
-            'authName',
-            'authSecondName',
-            'authSurname',
-            'authSecondSurname',
-            'authParentesco',
-            'authOtherParentesco'
-          ]);
-        } else {
-          alert('Email de Funeraria incorrecto');
-        }
-      } else {
-        alert('Email de Cementerio incorrecto');
-      }
-    } else {
-      alert('Email de Solicitante incorrecto');
-    }
+    onNextStep([
+      ...KeyFormDeathInstitute,
+      ...KeyFormSolicitudInfo,
+      ...KeyFormCementerio,
+      'deathType',
+      'authIDType',
+      'authName',
+      'authSecondName',
+      'authSurname',
+      'authSecondSurname',
+      'authParentesco',
+      'authOtherParentesco'
+    ]);
   };
 
   const generateFormFiel = (tipoInstitucion: string): DocumentosSoporte[] => {

@@ -441,30 +441,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const onSubmitFailed = () => setStatus('error');
 
   const Prueba = () => {
-    if (emailsol) {
-      if (emailcem) {
-        if (true) {
-          onNextStep([
-            ...KeyFormSolicitudInfo,
-            ...KeyFormCementerio,
-            'authIDType',
-            'mauthIDNumber',
-            'authName',
-            'authSecondName',
-            'authSurname',
-            'authSecondSurname',
-            'authParentesco',
-            'authOtherParentesco'
-          ]);
-        } else {
-          alert('Email de Funeraria incorrecto');
-        }
-      } else {
-        alert('Email de Cementerio incorrecto');
-      }
-    } else {
-      alert('Email de Solicitante incorrecto');
-    }
+    onNextStep([
+      ...KeyFormSolicitudInfo,
+      ...KeyFormCementerio,
+      'authIDType',
+      'mauthIDNumber',
+      'authName',
+      'authSecondName',
+      'authSurname',
+      'authSecondSurname',
+      'authParentesco',
+      'authOtherParentesco'
+    ]);
   };
 
   //#region Eventos formulario

@@ -152,7 +152,7 @@ export class ApiService {
 
   getLicencia = (solicitud: string) =>
     get<any>({
-      endpoint: environments.local,
+      endpoint: environments.inhcremacion,
       url: `Request/GetRequestById/${solicitud}`,
       id: '0'
     });
