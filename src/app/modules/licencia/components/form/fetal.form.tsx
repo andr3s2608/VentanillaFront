@@ -561,7 +561,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idUsuario: accountIdentifier
         },
         {
-          idTipoDocumentoSoporte: 'Autorizacion de cremacion del familiar',
+          idTipoDocumentoSoporte: 'Autorización de cremacion del familiar',
           fechaRegistro: moment(new Date()).format('L'),
           idUsuario: accountIdentifier
         },
@@ -590,7 +590,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idUsuario: accountIdentifier
         },
         {
-          idTipoDocumentoSoporte: 'Autorizacion de cremacion del familiar',
+          idTipoDocumentoSoporte: 'Autorización de cremacion del familiar',
           fechaRegistro: moment(new Date()).format('L'),
           idUsuario: accountIdentifier
         },
@@ -600,7 +600,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idUsuario: accountIdentifier
         },
         {
-          idTipoDocumentoSoporte: 'Autorizacion del fiscal para cremar',
+          idTipoDocumentoSoporte: 'Autorización del fiscal para cremar',
           fechaRegistro: moment(new Date()).format('L'),
           idUsuario: accountIdentifier
         },
@@ -743,10 +743,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
+<<<<<<< HEAD
+          <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' />
+          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' />
+          <Step title='INFORMACIÓN DEL MEDICO' description='Datos del Médico que certifica.' />
+          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
+=======
           <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
           <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
           <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
+>>>>>>> da4bcdbc58cda621f8d73ac927d43d95281e5f96
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}

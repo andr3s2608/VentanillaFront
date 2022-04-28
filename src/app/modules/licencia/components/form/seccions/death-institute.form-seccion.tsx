@@ -189,7 +189,20 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             initialValue={obj?.instNumProtocolo}
             rules={[{ required: isMedicinaLegal, max: 10 }]}
           >
-            <Input allowClear placeholder='Número de Protocolo' autoComplete='off' />
+            <Input
+              allowClear
+              placeholder='Número de protocolo'
+              autoComplete='off'
+              type='number'
+              pattern='^[0-9]+'
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos invalidos',
+                  text: 'recuerde que no puede ingresar letras o caracteres especiales en el Número de protocolo'
+                });
+              }}
+            />
           </Form.Item>
 
           {!datofiscal && (
@@ -256,26 +269,25 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             </Form.Item>
 
             <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: true, max: 20 }]}>
-              <Input allowClear placeholder='Seccional Fiscalia' autoComplete='off' />
+              <SelectComponent options={[]} optionPropkey='id' optionPropLabel='name' />
             </Form.Item>
-
             <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: true, max: 5 }]}>
-              <Input allowClear placeholder='No. Fiscal' autoComplete='off' />
+              <Input allowClear placeholder='No. Fiscal' autoComplete='off' pattern='^[0-9]+' />
             </Form.Item>
             {tipoLicencia === 'Cremación' && (
               <>
                 <Divider orientation='right'>DATOS DE CREMACION DEL FISCAL Y MEDICINA LEGAL</Divider>
 
                 <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
-                  <Input allowClear placeholder='Nombre' autoComplete='off' />
+                  <Input allowClear placeholder='Nombre' autoComplete='off' pattern='[a-zA-Z]+' />
                 </Form.Item>
 
                 <Form.Item label='Apellido' required={true} name='fiscaliaapellidoDC'>
-                  <Input allowClear placeholder='Apellido' autoComplete='off' />
+                  <Input allowClear placeholder='Apellido' autoComplete='off' pattern='[a-zA-Z]+' />
                 </Form.Item>
 
-                <Form.Item label='Numero de oficio de medicina legal' required={true} name='fiscalianumeroDC'>
-                  <Input allowClear placeholder='Numero de oficio de medicina legal' autoComplete='off' />
+                <Form.Item label='Número de oficio de medicina legal' required={true} name='fiscalianumeroDC'>
+                  <Input allowClear placeholder='Número de oficio de medicina legal' autoComplete='off' pattern='^[0-9]+' />
                 </Form.Item>
 
                 <Form.Item label='Fecha del Oficio' required={true} name='fiscaliafechaDC'>
@@ -283,7 +295,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                 </Form.Item>
 
                 <Form.Item label='No. Fiscal' required={true} name='NoFiscalDC'>
-                  <Input allowClear placeholder='numberFiscal' autoComplete='off' />
+                  <Input allowClear placeholder='numberFiscal' autoComplete='off' pattern='^[0-9]+' />
                 </Form.Item>
               </>
             )}

@@ -58,7 +58,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const { Step } = Steps;
   const [dataTable, setDataTable] = useState<[]>();
   const [datos, setdatos] = useState<[]>();
+  const [solicitante, setsolicitante] = useState<[]>();
   const history = useHistory();
+  const [nombre, setnombre] = useState<string | undefined>();
+  const [apellido, setapellido] = useState<string | undefined>();
+  const [fecha, setfecha] = useState<string | undefined>();
+  const [estado, setestado] = useState<string | undefined>();
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
@@ -377,17 +382,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const onClickView = async (idSolicitud: string) => {
-    const all = await api.getLicencia(idSolicitud);
-
-    const alldata = all.map((item: any) => {
-      item.fechaRegistro = moment(item.fechaRegistro).format(formatDate);
-      item.primerNombre = item.persona[0].primerNombre + ' ' + item.persona[0].segundoNombre;
-      item.primerApellido = item.persona[0].primerApellido + ' ' + item.persona[0].segundoApellido;
-      item.estadoNuevo = getStatus(item.estadoSolicitud);
-      return item;
-    });
-
-    setDataTable(alldata);
+    const solicitante = await api.GetResumenSolicitud(idSolicitud);
+    console.log(solicitante);
+    setsolicitante(solicitante[0]['nombreSolicitante']);
+    setapellido(solicitante[0]['apellidoSolicitante']);
+    setfecha(solicitante[0]['fechaLicencia']);
+    setDataTable(solicitante);
     showModal();
   };
 
@@ -493,19 +493,19 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const columnFake = [
     {
       title: 'Nombres',
-      dataIndex: 'primerNombre',
-      key: 'primerNombre'
+      dataIndex: 'nombreSolicitante',
+      key: 'nombreSolicitante'
     },
 
     {
       title: 'Apellidos',
-      dataIndex: 'primerApellido',
-      key: 'primerApellido'
+      dataIndex: 'apellidoSolicitante',
+      key: 'apellidoSolicitante'
     },
     {
       title: 'Fecha de registro',
-      dataIndex: 'fechaRegistro',
-      key: 'fechaRegistro'
+      dataIndex: 'fechaLicencia',
+      key: 'fechaLicencia'
     },
     {
       title: 'Estado',
@@ -520,13 +520,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       key: ''
     }
   ];
+
   const onPrevPDF = async () => {
     const codeUser = await api.getCodeUser();
     const nameUser = await api.GetInformationUser(codeUser);
     const idSolicitud = objJosn?.idSolicitud;
-
+    const all = await api.GetSolicitud(idSolicitud);
     let linkPdf = await api.getLinkPDF(idSolicitud, nameUser.fullName);
-
+    const solicitante = await api.GetResumenSolicitud(idSolicitud);
+    setsolicitante(solicitante[0]['nombreSolicitante']);
     setUrlPdfLicence(linkPdf);
     setNameUser(nameUser);
     setIsModalVisiblePdf(true);
@@ -638,7 +640,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                 cancelText='Cerrar'
               >
                 <div className='col-lg-12 text-center'>
-                  <p>Nombre del tramitador : {nameUser.fullName} </p>
+                  <p>Nombre del Solicitante : {solicitante} </p>
                 </div>
                 <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
               </Modal>

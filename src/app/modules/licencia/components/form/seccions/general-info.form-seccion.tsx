@@ -34,7 +34,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
         rules={[{ required: true, max: 14 }]}
         initialValue={obj?.certificado}
       >
-        <Input allowClear placeholder='Número de Certificado' autoComplete='off' />
+        <Input allowClear placeholder='Número de Certificado' autoComplete='off' pattern='.{6,6},^[0-9]+' maxLength={6} />
       </Form.Item>
 
       <Divider orientation='right'>Información General</Divider>
