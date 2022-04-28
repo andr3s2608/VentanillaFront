@@ -234,7 +234,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'recuerde que para el tipo de documento2:' +
+                'Seccion:Datos Del Familiar Que Autoriza la Cremación \n recuerde que para el tipo de documento:' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +

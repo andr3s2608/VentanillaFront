@@ -196,7 +196,7 @@ const RegistroPage: React.FC<any> = (props) => {
                   icon: 'error',
                   title: 'Datos invalidos',
                   text:
-                    'recuerde que para el tipo de documento:' +
+                    'Seccion:Datos Básicos \n recuerde que para el tipo de documento:' +
                     tipodocumento +
                     ' solo se admiten valores ' +
                     campo +

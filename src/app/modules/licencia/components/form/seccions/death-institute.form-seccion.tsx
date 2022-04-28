@@ -162,7 +162,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   icon: 'error',
                   title: 'Datos invalidos',
                   text:
-                    'recuerde que para el tipo de documento4:' +
+                    'Seccion:Institución que Certifica el Fallecimiento \n recuerde que para el tipo de documento4:' +
                     tipodocumento +
                     ' solo se admiten valores ' +
                     campo +

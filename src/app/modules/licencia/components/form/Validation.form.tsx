@@ -383,7 +383,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const onClickView = async (idSolicitud: string) => {
     const solicitante = await api.GetResumenSolicitud(idSolicitud);
-    console.log(solicitante);
+
     setsolicitante(solicitante[0]['nombreSolicitante']);
     setapellido(solicitante[0]['apellidoSolicitante']);
     setfecha(solicitante[0]['fechaLicencia']);

@@ -831,7 +831,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'recuerde que para el tipo de documentoz:' +
+                      'Seccion: INFORMACION DE LA MADRE \n recuerde que para el tipo de documento:' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +

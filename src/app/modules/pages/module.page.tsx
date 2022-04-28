@@ -16,6 +16,8 @@ import { ResetGrid } from 'app/redux/Grid/grid.actions';
 const ModulePage = () => {
   const history = useHistory();
   const [roles, setroles] = useState<IRoles[]>();
+  const [info, setinfo] = useState<any>();
+  const [validacioninfo, setvalidacioninfo] = useState<any>(false);
   const { name, userName } = authProvider.getAccount();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -26,7 +28,31 @@ const ModulePage = () => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
+      //solo era para permitir volver a registrar sin necesidad de crear otro correo(prueba)
+      /*
+      const validar: string = mysRoles[0].codigoUsuario;
+
+      if (validar == '00793309-9522-438a-b49c-e9386e6f6666') {
+        setroles([]);
+        console.log('entro');
+      } else {
+        setroles(mysRoles);
+      }
+    */
       setroles(mysRoles);
+      const idUser = await api.getCodeUser();
+      const resp = await api.GetInformationUser(idUser);
+
+      if (resp == undefined) {
+        setvalidacioninfo(name);
+      } else {
+        if (resp.tipoIdentificacion == 5) {
+          setvalidacioninfo(resp.razonSocial);
+        } else {
+          setvalidacioninfo(resp.fullName);
+        }
+      }
+      setinfo(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -40,7 +66,7 @@ const ModulePage = () => {
   }, []);
 
   const onCancel = (): void => {};
-
+  console.log(roles?.length, +'ROLES');
   return (
     <div className='fadeInTop container-fluid'>
       {roles?.length === 0 ? (
@@ -71,7 +97,7 @@ const ModulePage = () => {
       ) : null}
 
       <PageHeaderComponent
-        title={`¡Bienvenido/a ${name || userName}!`}
+        title={`¡Bienvenido/a ${validacioninfo}!`}
         subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
         backIcon={null}
       />

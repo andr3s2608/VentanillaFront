@@ -98,7 +98,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'recuerde que para el tipo de documento5:' +
+                'Seccion:Datos de Quien Certifica la defunción - Medico \n recuerde que para el tipo de documento5:' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +
