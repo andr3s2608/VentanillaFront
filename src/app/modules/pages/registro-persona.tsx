@@ -144,6 +144,12 @@ const RegistroPage: React.FC<any> = (props) => {
               };
               const resApi = await api.personaNatural(data);
               if (typeof resApi === 'number') {
+                await api.sendEmail({
+                  to: value.email,
+                  subject: 'Registro de persona natural ',
+                  body: 'Señor (a) ' + value.name + ' ' + value.secondName + ' su usuario creado exitosamente'
+                });
+
                 await api.putUser({
                   oid: accountIdentifier,
                   idPersonaVentanilla: resApi
@@ -156,7 +162,7 @@ const RegistroPage: React.FC<any> = (props) => {
                 store.dispatch(SetGrid({ key: 'relaodMenu' }));
                 Swal.fire({
                   title: 'Usuario Registrado',
-                  text: 'El Usuario ' + value.name + value.surname + 'ha sido Registrado de manera exitosa',
+                  text: 'El Usuario ' + value.name + ' ' + value.surname + 'ha sido Registrado de manera exitosa',
                   showClass: {
                     popup: 'animate__animated animate__fadeInDown'
                   },
@@ -367,7 +373,7 @@ const RegistroPage: React.FC<any> = (props) => {
           <Form.Item label='Estado Civil' name='estadoCivil' rules={[{ required: true }]}>
             <SelectComponent options={EstadoCivil} optionPropkey='key' optionPropLabel='name' />
           </Form.Item>
-          <Form.Item label='Nivel Educativo' name='levelEducation' rules={[{ required: false }]}>
+          <Form.Item label='Nivel Educativo' name='levelEducation' rules={[{ required: true }]}>
             <SelectComponent options={nivelEducativo} optionPropkey='idNivelEducativo' optionPropLabel='nombre' />
           </Form.Item>
           <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
