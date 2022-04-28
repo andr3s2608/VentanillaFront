@@ -18,18 +18,26 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
     [IDepartamento[], IDominio[], IDominio[], IDominio[]]
   >([[], [], [], []]);
 
+  const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
+
   const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
-  const idDepartamentoBogota = '31B870AA-6CD0-4128-96DB-1F08AFAD7CDD';
+  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+
   const getListas = useCallback(
     async () => {
-      const [municipios, ...resp] = await Promise.all([
-        dominioService.get_municipios_by_departamento(idDepartamentoBogota),
+      const resp = await Promise.all([
         dominioService.get_departamentos_colombia(),
         dominioService.get_type(ETipoDominio.Pais),
         dominioService.get_type(ETipoDominio['Sitio de Defuncion']),
         dominioService.get_type(ETipoDominio['Area de Defuncion'])
       ]);
+      const depart = await dominioService.get_departamentos_colombia();
+      let departamento = (await depart).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
+
+      const { idDepartamento } = departamento[0];
+      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamento);
       setLMunicipios(municipios);
+
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -57,18 +65,21 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
 
     const { idDepartamento } = departamento[0];
 
-    /*if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') setIsBogota(false);
-    else {
-      setIsBogota(true);
-    }*/
-
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
+
+    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+      setIsBogota(false);
+      setciudadBogota('Bogotá D.C.');
+    } else {
+      setIsBogota(true);
+      setciudadBogota('');
+    }
+    console.log(resp, 'Municipios');
   };
 
   const { obj } = props;
 
-  console.log();
   return (
     <>
       <Divider orientation='right'>Lugar de Defunción</Divider>
@@ -77,7 +88,12 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
         <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
       </Form.Item>
 
-      <Form.Item label='Departamento Defunción' name='state' initialValue={'BOGOTÁ D.C.'} rules={[{ required: isColombia }]}>
+      <Form.Item
+        label='Departamento Defunción'
+        name='state'
+        initialValue={obj?.state ? obj?.state : idDepartamentoBogota}
+        rules={[{ required: isColombia }]}
+      >
         <SelectComponent
           options={l_departamentos_colombia}
           optionPropkey='idDepartamento'
@@ -87,14 +103,26 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
         />
       </Form.Item>
 
-      <Form.Item label='Municipio Defunción' name='city' initialValue={'BOGOTÁ D.C.'} rules={[{ required: isColombia }]}>
-        <SelectComponent options={l_municipios} optionPropkey='idMunicipio' optionPropLabel='descripcion' />
+      <Form.Item
+        label='Municipio Defunción'
+        name='city'
+        initialValue={obj?.city ? obj?.city : ciudadBogota}
+        rules={[{ required: isBogota }]}
+      >
+        <SelectComponent
+          options={l_municipios}
+          value={ciudadBogota}
+          searchValue={ciudadBogota}
+          optionPropkey='idMunicipio'
+          optionPropLabel='descripcion'
+          disabled={!isBogota}
+        />
       </Form.Item>
 
       <Form.Item
         label='Área Defunción'
         name='areaDef'
-        initialValue={obj?.areaDef ? obj?.areaDef : '1931a90Ff-80b4-4ecf-8712-5922990d20c4'}
+        initialValue={obj?.areaDef ? obj?.areaDef : '1931a90f-80b4-4ecf-8712-5922990d20c4'}
         rules={[{ required: true }]}
       >
         <SelectComponent options={l_area_defuncion} optionPropkey='id' optionPropLabel='descripcion' />

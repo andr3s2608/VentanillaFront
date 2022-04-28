@@ -114,15 +114,15 @@ const RegistroPage: React.FC<any> = (props) => {
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(6);
-      setLongitudminima(10);
+      setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
       setLongitudminima(10);
-      setLongitudminima(11);
+      setLongitudmaxima(10);
       setTipocampo('[0-9-]{10,10}');
-      setCampo('Numéricos');
+      setCampo('Numéricos y guion');
       setTipodocumento('Nit');
     }
   };

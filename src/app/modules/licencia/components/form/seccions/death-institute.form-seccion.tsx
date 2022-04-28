@@ -156,6 +156,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               placeholder='Número Identificación'
               autoComplete='off'
               pattern={tipocampo}
+              disabled={true}
               onInvalid={() => {
                 Swal.fire({
                   icon: 'error',
@@ -171,7 +172,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     longitudmaxima
                 });
               }}
-              disabled={true}
             />
           </Form.Item>
 

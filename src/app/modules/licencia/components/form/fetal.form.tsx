@@ -289,6 +289,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       tipo = 'Natural';
       razon = resp.fullName;
     }
+    const dep = values.state;
+    var mun = values.city;
+    switch (dep) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+        break;
+    }
     //JSon con lso datos seteadosde la solicitud
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -312,7 +319,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idLugarDefuncion: obj?.idLugarDefuncion,
           idPais: values.country,
           idDepartamento: values.state,
-          idMunicipio: values.city,
+          idMunicipio: mun,
           idAreaDefuncion: values.areaDef,
           idSitioDefuncion: values.sitDef
         },
@@ -561,7 +568,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idUsuario: accountIdentifier
         },
         {
-          idTipoDocumentoSoporte: 'Autorización de cremacion del familiar',
+          idTipoDocumentoSoporte: 'Autorizacion de cremacion del familiar',
           fechaRegistro: moment(new Date()).format('L'),
           idUsuario: accountIdentifier
         },
@@ -590,7 +597,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idUsuario: accountIdentifier
         },
         {
-          idTipoDocumentoSoporte: 'Autorización de cremacion del familiar',
+          idTipoDocumentoSoporte: 'Autorizacion de cremacion del familiar',
           fechaRegistro: moment(new Date()).format('L'),
           idUsuario: accountIdentifier
         },
@@ -600,7 +607,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idUsuario: accountIdentifier
         },
         {
-          idTipoDocumentoSoporte: 'Autorización del fiscal para cremar',
+          idTipoDocumentoSoporte: 'Autorizacion del fiscal para cremar',
           fechaRegistro: moment(new Date()).format('L'),
           idUsuario: accountIdentifier
         },
@@ -641,7 +648,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const onChangeDepartamento = async (value: string) => {
     form.resetFields(['ciudad', 'localidad', 'area', 'barrio']);
-    const resp = await dominioService.get_municipios_by_departamento(value);
+    const depart = await dominioService.get_departamentos_colombia();
+    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+
+    const { idDepartamento } = departamento[0];
+    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
     setIsBogota(false);
     setLAreas([]);
@@ -693,35 +704,35 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
-      setLongitudminima(10);
+      setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
       if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
-        setLongitudminima(11);
+        setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
       } else {
         if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
-          setLongitudminima(15);
+          setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-            setLongitudminima(15);
-            setLongitudminima(15);
-            setTipocampo('[0-9]{15,15}');
-            setCampo('Numéricos');
+            setLongitudminima(10);
+            setLongitudmaxima(11);
+            setTipocampo('[0-9]{10,11}');
+            setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
-            setLongitudminima(11);
-            setLongitudminima(11);
-            setTipocampo('[a-zA-Z0-9]{11,11}');
+            setLongitudminima(6);
+            setLongitudmaxima(10);
+            setTipocampo('[a-zA-Z0-9]{6,10}');
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }
@@ -743,17 +754,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
-<<<<<<< HEAD
-          <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' />
-          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' />
-          <Step title='INFORMACIÓN DEL MEDICO' description='Datos del Médico que certifica.' />
-          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
-=======
           <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
           <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
           <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
->>>>>>> da4bcdbc58cda621f8d73ac927d43d95281e5f96
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}

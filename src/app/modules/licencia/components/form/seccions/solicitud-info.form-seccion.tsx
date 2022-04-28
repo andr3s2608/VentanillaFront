@@ -192,12 +192,12 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <DatoSolicitanteAdd prop={getData} obj={obj} />
 
             <div>{renderFormFuneria(lugarfuneraria)}</div>
-            <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, max: 50 }]}>
+            <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, type: 'email', max: 50 }]}>
               <Input
                 allowClear
                 placeholder='Email Funeraria'
                 type='email'
-                onChange={(e) => cambioemailFUN(e.target.value)}
+                //onChange={(e) => cambioemailFUN(e.target.value)}
                 autoComplete='off'
               />
             </Form.Item>

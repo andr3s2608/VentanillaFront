@@ -45,14 +45,14 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   const cambiodocumento = (value: any) => {
     const valor: string = value;
     if (valor == 'f1b570ee-f628-4438-a47f-6d7bff1f06d7' || valor == 'a4ee4462-f837-4dff-a800-5495c33ac3ce') {
-      setLongitudminima(11);
-      setLongitudminima(11);
+      setLongitudminima(10);
+      setLongitudmaxima(11);
       setTipocampo('[a-zA-Z0-9]{11,11}');
       setCampo('AlfaNuméricos(Numéros y letras)');
       setTipodocumento('Pasaporte y Cédula de Extranjería ');
     } else {
       setLongitudminima(6);
-      setLongitudminima(10);
+      setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');

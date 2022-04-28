@@ -218,11 +218,7 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
             </Form.Item>
           ) : null}
           <Form.Item
-<<<<<<< HEAD
-            label='Autorización de cremacion del familiar'
-=======
             label='Autorización de cremación del familiar'
->>>>>>> da4bcdbc58cda621f8d73ac927d43d95281e5f96
             name='fileAuthCCFamiliar'
             valuePropName='fileList'
             rules={[{ required: isEdit ? false : true }]}
