@@ -133,7 +133,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'recuerde que para el tipo de documento3:' +
+                'Seccion: DATOS DEL SOLICITANTE Y/O FUNERARIA \n recuerde que para el tipo de documento:' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +

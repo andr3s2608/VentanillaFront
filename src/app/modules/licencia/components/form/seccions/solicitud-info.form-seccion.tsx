@@ -44,9 +44,11 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
 
   const getListas = useCallback(
     async () => {
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
       const funeraria = await api.GetFunerarias();
+      const idUser = await api.getCodeUser();
+
+      const resp = await api.GetInformationUser(idUser);
+
       const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
       setUser(resp);
       setNroiden(existefuneraria.NROIDENT);

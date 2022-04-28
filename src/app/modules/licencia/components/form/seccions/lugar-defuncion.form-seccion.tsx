@@ -75,7 +75,6 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
       setIsBogota(true);
       setciudadBogota('');
     }
-    console.log(resp, 'Municipios');
   };
 
   const { obj } = props;

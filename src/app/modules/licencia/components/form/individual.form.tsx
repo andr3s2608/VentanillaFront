@@ -92,8 +92,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const userres = await api.getCodeUser();
       setUser(userres);
       setListas(resp);
-      //console.log('============');
-      //console.log(resp);
 
       if (edit) {
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
@@ -327,7 +325,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-    console.log('Json' + mun);
+
     if (edit) {
       localStorage.removeItem('');
 
@@ -727,7 +725,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'recuerde que para el tipo de documento1:' +
+                      'Seccion:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento1:' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
@@ -797,7 +795,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         icon: 'error',
                         title: 'Datos invalidos',
                         text:
-                          'recuerde que para el tipo de documentox:' +
+                          'Seccion:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento:' +
                           tipodocumento +
                           ' solo se admiten valores ' +
                           campo +
@@ -912,7 +910,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                             icon: 'error',
                             title: 'Datos invalidos',
                             text:
-                              'recuerde que para el tipo de documentoy:' +
+                              'Seccion:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento:' +
                               tipodocumento +
                               ' solo se admiten valores ' +
                               campo +
