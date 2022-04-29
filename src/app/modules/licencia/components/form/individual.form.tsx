@@ -556,7 +556,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           <Step title='INFORMACIÓN DEL FALLECIDO' description='Datos personales del fallecido.' />
           <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante - cementerio.' />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del médico que certifica.' />
-          <Step title='INFORMACION SOPORTES' description='Datos documentos de soporte PDF.' />
+          <Step title='INFORMACIÓN SOPORTES' description='Datos documentos de soporte PDF.' />
         </Steps>
 
         <Form
