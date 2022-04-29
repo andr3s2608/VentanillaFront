@@ -194,7 +194,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           placeholder='email@example.com'
           type='email'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ@_-]/.test(event.key)) {
               event.preventDefault();
             }
           }}
