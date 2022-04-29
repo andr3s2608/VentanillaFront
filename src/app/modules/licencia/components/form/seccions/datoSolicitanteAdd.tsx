@@ -69,7 +69,6 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   };
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
-    props.form.setFieldsValue({ ndoc: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
