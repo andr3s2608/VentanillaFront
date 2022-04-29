@@ -29,13 +29,13 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
               placeholder='Nombres y Apellidos'
               autoComplete='off'
               type='text'
-              pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,200}'
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos invalidos',
-                  text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres y Apellidos'
-                });
+              onKeyPress={(event) => {
+                if (!/[a-zA-Z ]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>
@@ -45,13 +45,13 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
               placeholder='Fiscal No.'
               type='text'
               autoComplete='off'
-              pattern={'[0-9-]{7,12}'}
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos invalidos',
-                  text: 'recuerde que solo puede ingresar datos numéricos'
-                });
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>
@@ -61,13 +61,13 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
               placeholder='No. Oficio de medicina legal'
               type='text'
               autoComplete='off'
-              pattern={'[0-9-]{7,12}'}
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos invalidos',
-                  text: 'recuerde que solo puede ingresar datos numéricos'
-                });
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>

@@ -43,6 +43,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   //#endregion
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    props.form.setFieldsValue({ medicalSignatureIDNumber: undefined });
     const valor: string = value;
     if (valor == 'f1b570ee-f628-4438-a47f-6d7bff1f06d7' || valor == 'a4ee4462-f837-4dff-a800-5495c33ac3ce') {
       setLongitudminima(10);
@@ -93,6 +94,15 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           placeholder='Número Identificación'
           autoComplete='off'
           pattern={tipocampo}
+          maxLength={longitudmaxima}
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z0-9]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
+          }}
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -129,13 +139,13 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           placeholder='Primer Nombre'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -145,13 +155,13 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           placeholder='Segundo Nombre'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -166,13 +176,13 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           placeholder='Primer Apellido'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -186,13 +196,13 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           placeholder='Segundo Apellido'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>

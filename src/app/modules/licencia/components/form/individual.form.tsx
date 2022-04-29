@@ -66,6 +66,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
+  //---
+  const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
+  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(6);
+  const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{6,10}');
+  const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
+  const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
@@ -501,6 +507,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //#endregion
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    form.setFieldsValue({ IDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -536,6 +543,48 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             setTipocampo('[a-zA-Z0-9]{6,10}');
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+          }
+        }
+      }
+    }
+  };
+  const cambiodocumentoautoriza = (value: any) => {
+    form.setFieldsValue({ mauthIDNumber: undefined });
+    const valor: string = value;
+    const valorupper = valor.toUpperCase();
+    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+      setLongitudminimaautoriza(6);
+      setLongitudmaximaautoriza(10);
+      setTipocampoautoriza('[0-9]{6,10}');
+      setCampoautoriza('Numéricos');
+      setTipodocumentoautoriza('Cédula de Ciudadanía');
+    } else {
+      if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+        setLongitudminimaautoriza(10);
+        setLongitudmaximaautoriza(11);
+        setTipocampoautoriza('[0-9]{10,11}');
+        setCampoautoriza('Numéricos');
+        setTipodocumentoautoriza('Tarjeta de Identidad ');
+      } else {
+        if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+          setLongitudminimaautoriza(15);
+          setLongitudmaximaautoriza(15);
+          setTipocampoautoriza('[0-9]{15,15}');
+          setCampoautoriza('Numéricos');
+          setTipodocumentoautoriza('Permiso Especial de Permanencia');
+        } else {
+          if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+            setLongitudminimaautoriza(10);
+            setLongitudmaximaautoriza(11);
+            setTipocampoautoriza('[0-9]{10,11}');
+            setCampoautoriza('AlfaNuméricos(Numéros y letras)');
+            setTipodocumentoautoriza('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+          } else {
+            setLongitudminimaautoriza(6);
+            setLongitudmaximaautoriza(10);
+            setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
+            setCampoautoriza('AlfaNuméricos(Numéros y letras)');
+            setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }
         }
       }
@@ -585,7 +634,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-
+          <Divider orientation='right'>Datos del Fallecido</Divider>
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
             <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={objJosn?.name}>
               <Input
@@ -593,13 +642,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Primer Nombre'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -614,13 +663,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Segundo Nombre'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -635,13 +684,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Primer Apellido'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -656,13 +705,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Segundo Apellido'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -670,7 +719,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               label='Nacionalidad'
               name='nationalidad'
               initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
-              rules={[{ required: true, type: 'array', max: 1 }]}
+              rules={[{ required: true }]}
             >
               <SelectComponent
                 options={l_paises}
@@ -708,6 +757,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Número Identificación'
                 autoComplete='off'
                 pattern={tipocampo}
+                maxLength={longitudmaxima}
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
                 onInvalid={() => {
                   Swal.fire({
                     icon: 'error',
@@ -778,6 +836,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     placeholder='Número Identificación'
                     autoComplete='off'
                     pattern={tipocampo}
+                    maxLength={longitudmaxima}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
                     onInvalid={() => {
                       Swal.fire({
                         icon: 'error',
@@ -802,13 +869,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     placeholder='Nombres y Apellidos completos'
                     autoComplete='off'
                     type='text'
-                    pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]{3,50}'
-                    onInvalid={() => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Datos invalidos',
-                        text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres y Apellidos completos'
-                      });
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
                     }}
                   />
                 </Form.Item>
@@ -875,7 +942,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     >
                       <SelectComponent
                         options={l_tipos_documento}
-                        onChange={cambiodocumento}
+                        onChange={cambiodocumentoautoriza}
                         optionPropkey='id'
                         optionPropLabel='descripcion'
                       />
@@ -893,6 +960,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         placeholder='Número Identificación'
                         autoComplete='off'
                         pattern={tipocampo}
+                        maxLength={longitudmaxima}
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
                         onInvalid={() => {
                           Swal.fire({
                             icon: 'error',
@@ -922,13 +998,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         placeholder='Primer Nombre'
                         autoComplete='off'
                         type='text'
-                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                        onInvalid={() => {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
-                          });
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
                         }}
                       />
                     </Form.Item>
@@ -943,13 +1019,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         placeholder='Segundo Nombre'
                         autoComplete='off'
                         type='text'
-                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                        onInvalid={() => {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
-                          });
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
                         }}
                       />
                     </Form.Item>
@@ -964,13 +1040,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         placeholder='Primer Apellido'
                         autoComplete='off'
                         type='text'
-                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                        onInvalid={() => {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
-                          });
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
                         }}
                       />
                     </Form.Item>
@@ -985,13 +1061,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         placeholder='Segundo Apellido'
                         autoComplete='off'
                         type='text'
-                        pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                        onInvalid={() => {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Datos invalidos',
-                            text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
-                          });
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
                         }}
                       />
                     </Form.Item>

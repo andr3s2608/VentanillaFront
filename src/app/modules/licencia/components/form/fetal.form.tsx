@@ -688,6 +688,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    form.setFieldsValue({ IDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -814,6 +815,15 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Número Identificación'
                 autoComplete='off'
                 pattern={tipocampo}
+                maxLength={longitudmaxima}
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
                 onInvalid={() => {
                   Swal.fire({
                     icon: 'error',
@@ -843,13 +853,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Primer Nombre'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -859,13 +869,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Segundo Nombre'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -880,13 +890,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Primer Apellido'
                 autoComplete='off'
                 type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>
@@ -900,14 +910,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 allowClear
                 placeholder='Segundo Apellido'
                 autoComplete='off'
-                type='text'
-                pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
-                  });
+                onKeyPress={(event) => {
+                  if (!/[a-zA-Z]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
                 }}
               />
             </Form.Item>

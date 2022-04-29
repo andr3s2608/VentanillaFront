@@ -72,6 +72,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   };
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    props.form.setFieldsValue({ instNumIdent: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -156,7 +157,16 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               placeholder='Número Identificación'
               autoComplete='off'
               pattern={tipocampo}
+              maxLength={longitudmaxima}
               disabled={true}
+              onKeyPress={(event) => {
+                if (!/[a-zA-Z0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
               onInvalid={() => {
                 Swal.fire({
                   icon: 'error',
@@ -194,13 +204,13 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               placeholder='Número de protocolo'
               autoComplete='off'
               type='number'
-              pattern='^[0-9]+'
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos invalidos',
-                  text: 'recuerde que no puede ingresar letras o caracteres especiales en el Número de protocolo'
-                });
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>
@@ -218,13 +228,13 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   placeholder='Nombres y apellidos completos'
                   autoComplete='off'
                   type='text'
-                  pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,200}'
-                  onInvalid={() => {
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Datos invalidos',
-                      text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres y apellidos completos'
-                    });
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
                   }}
                 />
               </Form.Item>

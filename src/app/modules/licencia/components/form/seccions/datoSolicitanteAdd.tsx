@@ -69,6 +69,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   };
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    props.form.setFieldsValue({ ndoc: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -128,6 +129,15 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           placeholder='Número Identificación'
           autoComplete='off'
           pattern={tipocampo}
+          maxLength={longitudmaxima}
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z0-9]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
+          }}
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -152,13 +162,13 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           placeholder='Nombres'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,100}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Nombres'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z ]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -169,13 +179,13 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           placeholder='Apellidos'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,100}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Apellidos'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z ]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>

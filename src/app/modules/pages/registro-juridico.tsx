@@ -102,7 +102,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
       Swal.fire({
         title: 'Usuario Registrado',
-        text: 'El Usuario ' + value.razonsocial + 'ha sido Registrado de manera exitosa',
+        text: 'El Usuario ' + value.razonsocial + ' ha sido Registrado de manera exitosa',
         showClass: {
           popup: 'animate__animated animate__fadeInDown'
         },
@@ -116,6 +116,7 @@ const RegistroPage: React.FC<any> = (props) => {
   };
   const onSubmitFailed = () => {};
   const cambiodocumento = (value: any) => {
+    form.setFieldsValue({ nit: undefined });
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(6);
@@ -159,13 +160,13 @@ const RegistroPage: React.FC<any> = (props) => {
               placeholder='Razón Social'
               autoComplete='off'
               type='text'
-              pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos invalidos',
-                  text: 'recuerde que no puede ingresar numeros o caracteres especiales en el campo Razón social'
-                });
+              onKeyPress={(event) => {
+                if (!/[a-zA-Z ]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>
@@ -191,6 +192,15 @@ const RegistroPage: React.FC<any> = (props) => {
               placeholder='Número Identificación'
               autoComplete='off'
               pattern={tipocampo}
+              maxLength={longitudmaxima}
+              onKeyPress={(event) => {
+                if (!/[0-9-]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
               onInvalid={() => {
                 Swal.fire({
                   icon: 'error',

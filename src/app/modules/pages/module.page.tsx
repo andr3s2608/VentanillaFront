@@ -31,14 +31,16 @@ const ModulePage = () => {
       //solo era para permitir volver a registrar sin necesidad de crear otro correo(prueba)
       /*
       const validar: string = mysRoles[0].codigoUsuario;
-
-      if (validar == '00793309-9522-438a-b49c-e9386e6f6666') {
-        setroles([]);
+      console.log('validar ' + validar);
+      if (validar == 'e2d9efd7-de49-46e3-9782-36e2aee6270f') {
         console.log('entro');
+        setroles([]);
       } else {
+        console.log('entro2');
         setroles(mysRoles);
       }
-    */
+      */
+
       setroles(mysRoles);
       const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);
@@ -52,6 +54,7 @@ const ModulePage = () => {
           setvalidacioninfo(resp.fullName);
         }
       }
+
       setinfo(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +69,7 @@ const ModulePage = () => {
   }, []);
 
   const onCancel = (): void => {};
-  console.log(roles?.length, +'ROLES');
+
   return (
     <div className='fadeInTop container-fluid'>
       {roles?.length === 0 ? (

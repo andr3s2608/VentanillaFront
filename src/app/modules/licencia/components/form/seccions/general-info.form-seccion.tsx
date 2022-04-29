@@ -31,10 +31,24 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
       <Form.Item
         label='Número de Certificado'
         name='certificado'
-        rules={[{ required: true, max: 6 }]}
+        rules={[{ required: true, max: 14 }]}
         initialValue={obj?.certificado}
       >
-        <Input allowClear placeholder='Número de Certificado' autoComplete='off' maxLength={6} />
+        <Input
+          allowClear
+          placeholder='Número de Certificado'
+          autoComplete='off'
+          maxLength={14}
+          minLength={6}
+          onKeyPress={(event) => {
+            if (!/[0-9]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
+          }}
+        />
       </Form.Item>
 
       <Divider orientation='right'>Información General</Divider>

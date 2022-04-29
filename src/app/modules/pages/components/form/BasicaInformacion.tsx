@@ -21,15 +21,6 @@ export const BasicaInformacion: React.FC<any> = (props) => {
 
   const api = new ApiService(accountIdentifier);
 
-  const mensajeErrorLetras = (campo: string): string => {
-    Swal.fire({
-      icon: 'error',
-      title: 'Datos invalidos',
-      text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo ' + campo
-    });
-    return '';
-  };
-
   const getListas = useCallback(
     async () => {
       //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
@@ -54,6 +45,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
   };
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    props.form.setFieldsValue({ instNumIdent: undefined });
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(6);
@@ -102,13 +94,13 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Primer Nombre'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer nombre'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z ]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -118,13 +110,13 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Segundo Nombre'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo nombre'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z ]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -134,13 +126,13 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Primer Apellido'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Primer apellido'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z ]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -150,13 +142,13 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Segundo Apellido'
           autoComplete='off'
           type='text'
-          pattern='[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,50}'
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que no puede ingresar numéros o caracteres especiales en el campo Segundo apellido'
-            });
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z ]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -187,6 +179,15 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Número Identificación'
           autoComplete='off'
           pattern={tipocampo}
+          maxLength={longitudmaxima}
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z0-9-]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
+          }}
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
@@ -210,13 +211,14 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Telefono Fijo'
           type='text'
           autoComplete='off'
-          pattern={'[0-9-]{7,12}'}
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que solo puede ingresar datos numéricos de máximo 12 dígitos'
-            });
+          maxLength={12}
+          onKeyPress={(event) => {
+            if (!/[0-9]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>
@@ -226,13 +228,14 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='Telefono Celular'
           type='text'
           autoComplete='off'
-          pattern={'[0-9-]{7,12}'}
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'recuerde que solo puede ingresar datos numéricos de máximo 12 dígitos'
-            });
+          maxLength={12}
+          onKeyPress={(event) => {
+            if (!/[0-9]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          onPaste={(event) => {
+            event.preventDefault();
           }}
         />
       </Form.Item>

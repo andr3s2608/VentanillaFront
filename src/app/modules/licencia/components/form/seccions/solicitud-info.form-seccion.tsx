@@ -49,8 +49,9 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
 
       const resp = await api.GetInformationUser(idUser);
 
-      const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
       setUser(resp);
+      const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
+
       setNroiden(existefuneraria.NROIDENT);
 
       setLfunerarias(funeraria);

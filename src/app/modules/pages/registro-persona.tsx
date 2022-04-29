@@ -29,6 +29,7 @@ const RegistroPage: React.FC<any> = (props) => {
   const [etniastate, setEtnia] = useState<[]>([]);
   const [nivelEducativo, setNivelEducativo] = useState<[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
+
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
 
@@ -90,115 +91,82 @@ const RegistroPage: React.FC<any> = (props) => {
   const onSubmit = async (value: any) => {
     const confirEmail: string = value.confirEmail;
     const email: string = value.email;
+    const emailmayus = email.toUpperCase();
+    const emailconfirmayus = confirEmail.toUpperCase();
 
-    if (confirEmail.toUpperCase == email.toUpperCase) {
+    if (emailmayus == emailconfirmayus) {
       const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-      var numero1: number;
-      const numero2: number = Num2;
-      var telfijo: number = value.phone;
-      const telcel: number = value.phonecell;
+
       const fecha: String = value.date;
 
       var fechaformato: string = fecha.toString();
 
       var fechavalidacion = fechaformato.substring(11, 15);
-      if (avenida) {
-        numero1 = Num1;
-      } else {
-        numero1 = 10;
-      }
 
-      if (telfijo == undefined) {
-        telfijo = 1;
-      }
-      if (telfijo > 0 && telcel > 0) {
-        if (numero1 >= 0 && numero1 <= 999) {
-          if (numero2 >= 0 && numero2 <= 999) {
-            if (fechavalidacion >= '1900') {
-              const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-              const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
-              const data = {
-                primerNombre: value.name,
-                segundoNombre: value.secondName ?? '',
-                primerApellido: value.surname,
-                segundoApellido: value.secondSurname ?? '',
-                tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-                numeroIdentificacion: Number(value.instNumIdent),
-                telefonoFijo: value.phone ?? '',
-                telefonoCelular: value.phonecell,
-                email: value.email,
-                nacionalidad: value.country, //listado de paises
-                departamento: value.state, //listado de departamentos
-                ciudadNacimientoOtro: !isColombia ? value.cityLive : '',
-                ciudadNacimiento: isColombia ? value.cityLive : 0, //listado municipios
-                departamentoResidencia: value.state, //listado departamentos
-                ciudadResidencia: value.city, //listado municipios
-                direccionResidencia: direcion,
-                fechaNacimiento: value.date,
-                sexo: value.sex, //listado sexo
-                genero: value.gender, //lista quemada
-                orientacionSexual: value.sexual_orientation, //lista quemada
-                etnia: value.ethnicity, //listado etnia
-                estadoCivil: value.estadoCivil, //lista quemada
-                nivelEducativo: value.levelEducation //listado nivel educativo
-              };
-              const resApi = await api.personaNatural(data);
-              if (typeof resApi === 'number') {
-                await api.sendEmail({
-                  to: value.email,
-                  subject: 'Registro de persona natural ',
-                  body: 'Señor (a) ' + value.name + ' ' + value.secondName + ' su usuario creado exitosamente'
-                });
-
-                await api.putUser({
-                  oid: accountIdentifier,
-                  idPersonaVentanilla: resApi
-                });
-                await api.PostRolesUser({
-                  idUser: accountIdentifier,
-                  idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-                });
-                localStorage.setItem(accountIdentifier, resApi.toString());
-                store.dispatch(SetGrid({ key: 'relaodMenu' }));
-                Swal.fire({
-                  title: 'Usuario Registrado',
-                  text: 'El Usuario ' + value.name + ' ' + value.surname + 'ha sido Registrado de manera exitosa',
-                  showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                  },
-                  hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                  },
-                  icon: 'info'
-                });
-                history.push('/');
-              }
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Datos invalidos',
-                text: 'Por favor Ingrese una Fecha de Nacimiento Valida Valido'
-              });
-            }
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'Los datos ingresados en el campo Numéro de la Vía deben ser numéros entre 0 y 999'
-            });
-          }
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos invalidos',
-            text: 'Los datos ingresados en el campo Numéro Vía Ppal deben ser numéros entre 0 y 999'
+      if (fechavalidacion >= '1900') {
+        const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+        const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
+        const data = {
+          primerNombre: value.name,
+          segundoNombre: value.secondName ?? '',
+          primerApellido: value.surname,
+          segundoApellido: value.secondSurname ?? '',
+          tipoDocumento: value.instTipoIdent, //listado tipos de documentos
+          numeroIdentificacion: Number(value.instNumIdent),
+          telefonoFijo: value.phone ?? '',
+          telefonoCelular: value.phonecell,
+          email: value.email,
+          nacionalidad: value.country, //listado de paises
+          departamento: value.state, //listado de departamentos
+          ciudadNacimientoOtro: !isColombia ? value.cityLive : '',
+          ciudadNacimiento: isColombia ? value.cityLive : 0, //listado municipios
+          departamentoResidencia: value.state, //listado departamentos
+          ciudadResidencia: value.city, //listado municipios
+          direccionResidencia: direcion,
+          fechaNacimiento: value.date,
+          sexo: value.sex, //listado sexo
+          genero: value.gender, //lista quemada
+          orientacionSexual: value.sexual_orientation, //lista quemada
+          etnia: value.ethnicity, //listado etnia
+          estadoCivil: value.estadoCivil, //lista quemada
+          nivelEducativo: value.levelEducation //listado nivel educativo
+        };
+        const resApi = await api.personaNatural(data);
+        if (typeof resApi === 'number') {
+          await api.sendEmail({
+            to: value.email,
+            subject: 'Registro de persona natural ',
+            body: 'Señor (a) ' + value.name + ' ' + value.secondName + ' su usuario creado exitosamente'
           });
+
+          await api.putUser({
+            oid: accountIdentifier,
+            idPersonaVentanilla: resApi
+          });
+          await api.PostRolesUser({
+            idUser: accountIdentifier,
+            idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+          });
+          localStorage.setItem(accountIdentifier, resApi.toString());
+          store.dispatch(SetGrid({ key: 'relaodMenu' }));
+          Swal.fire({
+            title: 'Usuario Registrado',
+            text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            icon: 'info'
+          });
+          history.push('/');
         }
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Datos invalidos',
-          text: 'Por favor Ingrese un numero de Teléfono Valido'
+          text: 'Por favor Ingrese una Fecha de Nacimiento Valida Valido'
         });
       }
     } else {
@@ -316,7 +284,21 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num1' rules={[{ required: avenida, max: 3 }]}>
-            <Input allowClear type='number' placeholder='' autoComplete='off' />
+            <Input
+              allowClear
+              type='text'
+              placeholder=''
+              autoComplete='off'
+              maxLength={3}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
+            />
           </Form.Item>
           <Form.Item label='letra' name='letra1' rules={[{ max: 1 }]}>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
@@ -328,7 +310,21 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
-            <Input allowClear type='number' placeholder='' autoComplete='off' />
+            <Input
+              allowClear
+              type='text'
+              placeholder=''
+              autoComplete='off'
+              maxLength={3}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
+            />
           </Form.Item>
           <Form.Item label='letra' name='letra2' rules={[{ max: 1 }]}>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
@@ -339,13 +335,14 @@ const RegistroPage: React.FC<any> = (props) => {
               placeholder=''
               autoComplete='off'
               type='text'
-              pattern='[0-9]{0,2}'
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos inválidos',
-                  text: 'Los datos ingresados en el campo Placa deben ser numéros entre 0 y 99'
-                });
+              maxLength={2}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>
