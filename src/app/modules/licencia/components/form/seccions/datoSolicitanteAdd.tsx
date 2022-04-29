@@ -163,7 +163,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-Z ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -180,7 +180,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-Z ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}

@@ -95,7 +95,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-Z ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -111,7 +111,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-Z ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -127,7 +127,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-Z ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -143,7 +143,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-Z ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}

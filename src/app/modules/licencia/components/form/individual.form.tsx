@@ -645,7 +645,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -657,7 +657,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item
               label='Segundo Nombre'
               name='secondName'
-              rules={[{ required: true, max: 50 }]}
+              rules={[{ required: false, max: 50 }]}
               initialValue={objJosn?.secondName}
             >
               <Input
@@ -666,7 +666,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -687,7 +687,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -699,7 +699,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item
               label='Segundo Apellido'
               name='secondSurname'
-              rules={[{ required: true, max: 50 }]}
+              rules={[{ required: false, max: 50 }]}
               initialValue={objJosn?.secondSurname}
             >
               <Input
@@ -708,7 +708,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -872,7 +872,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -1001,7 +1001,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         autoComplete='off'
                         type='text'
                         onKeyPress={(event) => {
-                          if (!/[a-zA-Z]/.test(event.key)) {
+                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -1022,7 +1022,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         autoComplete='off'
                         type='text'
                         onKeyPress={(event) => {
-                          if (!/[a-zA-Z]/.test(event.key)) {
+                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -1043,7 +1043,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         autoComplete='off'
                         type='text'
                         onKeyPress={(event) => {
-                          if (!/[a-zA-Z]/.test(event.key)) {
+                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -1064,7 +1064,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         autoComplete='off'
                         type='text'
                         onKeyPress={(event) => {
-                          if (!/[a-zA-Z]/.test(event.key)) {
+                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}

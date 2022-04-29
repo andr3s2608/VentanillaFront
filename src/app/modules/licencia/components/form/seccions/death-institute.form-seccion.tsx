@@ -203,7 +203,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               allowClear
               placeholder='Número de protocolo'
               autoComplete='off'
-              type='number'
+              type='text'
               onKeyPress={(event) => {
                 if (!/[0-9]/.test(event.key)) {
                   event.preventDefault();
@@ -229,7 +229,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   autoComplete='off'
                   type='text'
                   onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -278,7 +278,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: true, max: 20 }]}>
+            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false, max: 20 }]}>
               <SelectComponent options={[]} optionPropkey='id' optionPropLabel='name' />
             </Form.Item>
             <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: true, max: 5 }]}>

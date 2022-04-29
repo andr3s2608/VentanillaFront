@@ -40,7 +40,7 @@ const regExp = {
 };
 
 export { projectInfo, regExp };
-export const direcionOrienta = [{ key: 'ESTE' }, { key: 'SUR' }];
+export const direcionOrienta = [{ key: ' ' }, { key: 'ESTE' }, { key: 'SUR' }];
 
 export const nomesclatura = [
   { key: 'AK- Avenida Carrera', value: 'AK - Avenida Carrera' },
@@ -52,6 +52,7 @@ export const nomesclatura = [
 ];
 
 export const letras = [
+  { key: ' ' },
   { key: 'A' },
   { key: 'B' },
   { key: 'C' },

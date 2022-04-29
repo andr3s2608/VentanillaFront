@@ -27,6 +27,8 @@ const RegistroPage: React.FC<any> = (props) => {
   const [form] = Form.useForm<any>();
   const [isColombia, setIsColombia] = useState(true);
   const [sex, setSex] = useState<[]>([]);
+  const [genero, setGenero] = useState<[]>([]);
+  const [orientacion, setOrientacion] = useState<[]>([]);
   const [etniastate, setEtnia] = useState<[]>([]);
   const [nivelEducativo, setNivelEducativo] = useState<[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
@@ -35,6 +37,8 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
+  const [ciudadBogota2, setciudadBogota2] = useState<string>('Bogotá D.C.');
 
   const idColombia = '170';
   const idDepartamentoBogota = '3';
@@ -54,9 +58,17 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const getListas2 = useCallback(
     async () => {
-      const [etnia, sexo, educacion] = await Promise.all([api.GetEtnia(), api.GetSexo(), api.GetNivelEducativo()]);
+      const [etnia, sexo, genero, orientacion, educacion] = await Promise.all([
+        api.GetEtnia(),
+        api.GetSexoazure(),
+        api.GetGeneroonazure(),
+        api.GetOrientacionazure(),
+        api.GetNivelEducativo()
+      ]);
       setEtnia(etnia);
       setSex(sexo);
+      setGenero(genero);
+      setOrientacion(orientacion);
       setNivelEducativo(educacion);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,6 +91,12 @@ const RegistroPage: React.FC<any> = (props) => {
     const { idDepartamento } = departamento[0];
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
+
+    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+      setciudadBogota('Bogotá D.C.');
+    } else {
+      setciudadBogota('');
+    }
   };
 
   const onChangeDepartamentor = async (value: string) => {
@@ -88,6 +106,11 @@ const RegistroPage: React.FC<any> = (props) => {
     const { idDepartamento } = departamento[0];
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
+    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+      setciudadBogota2('Bogotá D.C.');
+    } else {
+      setciudadBogota2('');
+    }
   };
 
   useEffect(() => {
@@ -103,12 +126,14 @@ const RegistroPage: React.FC<any> = (props) => {
   const onSubmit = async (value: any) => {
     const confirEmail: string = value.confirEmail;
     const email: string = value.email;
+    const emailmayus = email.toUpperCase();
+    const emailconfmayus = confirEmail.toUpperCase();
 
-    if (confirEmail.toUpperCase == email.toUpperCase) {
+    if (emailmayus == emailconfmayus) {
       const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
       var numero1: number;
       const numero2: number = Num2;
-      var telfijo: number = value.phone;
+
       const telcel: number = value.phonecell;
       const fecha: String = value.date;
 
@@ -121,97 +146,85 @@ const RegistroPage: React.FC<any> = (props) => {
         numero1 = 10;
       }
 
-      if (telfijo == undefined) {
-        telfijo = 1;
+      const dep = value.stateLive;
+      var mun = value.cityLive;
+      switch (dep) {
+        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+          mun = 11001000;
+          break;
       }
-      if (telfijo > 0 && telcel > 0) {
-        if (numero1 >= 0 && numero1 <= 999) {
-          if (numero2 >= 0 && numero2 <= 999) {
-            if (fechavalidacion >= '1900') {
-              const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-              const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
-              const data = {
-                primerNombre: value.name,
-                segundoNombre: value.secondName ?? '',
-                primerApellido: value.surname,
-                segundoApellido: value.secondSurname ?? '',
-                tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-                numeroIdentificacion: Number(value.instNumIdent),
-                telefonoFijo: value.phone ?? '',
-                telefonoCelular: value.phonecell,
-                email: value.email,
-                nacionalidad: value.country, //listado de paises
-                departamento: value.state, //listado de departamentos
-                ciudadNacimientoOtro: !isColombia ? value.cityLive : '',
-                ciudadNacimiento: isColombia ? value.cityLive : 0, //listado municipios
-                departamentoResidencia: value.state, //listado departamentos
-                ciudadResidencia: value.city, //listado municipios
-                direccionResidencia: direcion,
-                fechaNacimiento: value.date,
-                sexo: value.sex, //listado sexo
-                genero: value.gender, //lista quemada
-                orientacionSexual: value.sexual_orientation, //lista quemada
-                etnia: value.ethnicity, //listado etnia
-                estadoCivil: value.estadoCivil, //lista quemada
-                nivelEducativo: value.levelEducation //listado nivel educativo
-              };
-              const resApi = await api.personaNatural(data);
-              if (typeof resApi === 'number') {
-                await api.sendEmail({
-                  to: value.email,
-                  subject: 'Registro de persona natural ',
-                  body: 'Señor (a) ' + value.name + ' ' + value.secondName + ' su usuario creado exitosamente'
-                });
 
-                await api.putUser({
-                  oid: accountIdentifier,
-                  idPersonaVentanilla: resApi
-                });
-                await api.PostRolesUser({
-                  idUser: accountIdentifier,
-                  idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-                });
-                localStorage.setItem(accountIdentifier, resApi.toString());
-                store.dispatch(SetGrid({ key: 'relaodMenu' }));
-                Swal.fire({
-                  title: 'Usuario Registrado',
-                  text: 'El Usuario ' + value.name + ' ' + value.surname + 'ha sido Registrado de manera exitosa',
-                  showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                  },
-                  hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                  },
-                  icon: 'info'
-                });
-                history.push('/');
-              }
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Datos invalidos',
-                text: 'Por favor Ingrese una Fecha de Nacimiento Valida Valido'
-              });
-            }
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos invalidos',
-              text: 'Los datos ingresados en el campo Numéro de la Vía deben ser numéros entre 0 y 999'
-            });
-          }
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos invalidos',
-            text: 'Los datos ingresados en el campo Numéro Vía Ppal deben ser numéros entre 0 y 999'
+      const depres = value.state;
+      var munres = value.city;
+      switch (depres) {
+        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+          munres = 11001000;
+          break;
+      }
+      if (fechavalidacion >= '1900') {
+        const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+        const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
+        const data = {
+          primerNombre: value.name,
+          segundoNombre: value.secondName ?? '',
+          primerApellido: value.surname,
+          segundoApellido: value.secondSurname ?? '',
+          tipoDocumento: value.instTipoIdent, //listado tipos de documentos
+          numeroIdentificacion: Number(value.instNumIdent),
+          telefonoFijo: value.phone ?? '',
+          telefonoCelular: value.phonecell,
+          email: value.email,
+          nacionalidad: value.country, //listado de paises
+          departamento: value.stateLive, //listado de departamentos
+          ciudadNacimientoOtro: !isColombia ? mun : '',
+          ciudadNacimiento: isColombia ? mun : 0, //listado municipios
+          departamentoResidencia: value.state, //listado departamentos
+          ciudadResidencia: munres, //listado municipios
+          direccionResidencia: direcion,
+          fechaNacimiento: value.date,
+          sexo: value.sex, //listado sexo
+          genero: value.gender, //lista quemada
+          orientacionSexual: value.sexual_orientation, //lista quemada
+          etnia: value.ethnicity, //listado etnia
+          estadoCivil: value.estadoCivil, //lista quemada
+          nivelEducativo: value.levelEducation //listado nivel educativo
+        };
+        const resApi = await api.personaNatural(data);
+        if (typeof resApi === 'number') {
+          await api.sendEmail({
+            to: value.email,
+            subject: 'Registro de persona natural ',
+            body: 'Señor (a) ' + value.name + ' ' + value.secondName + ' su usuario creado exitosamente'
           });
+
+          await api.putUser({
+            oid: accountIdentifier,
+            idPersonaVentanilla: resApi
+          });
+          await api.PostRolesUser({
+            idUser: accountIdentifier,
+            idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+          });
+          localStorage.setItem(accountIdentifier, resApi.toString());
+          store.dispatch(SetGrid({ key: 'relaodMenu' }));
+          Swal.fire({
+            title: 'Usuario Registrado',
+            text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            icon: 'info'
+          });
+          history.push('/');
         }
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Datos invalidos',
-          text: 'Por favor Ingrese un numero de Teléfono Valido'
+          text: 'Por favor Ingrese una Fecha de Nacimiento Valida Valido'
         });
       }
     } else {
@@ -278,7 +291,8 @@ const RegistroPage: React.FC<any> = (props) => {
               <Form.Item label='Ciudad de nacimiento' name='cityLive' rules={[{ required: isColombia }]}>
                 <SelectComponent
                   options={l_municipios}
-                  optionPropkey='idMunicipio'
+                  value={ciudadBogota}
+                  optionPropkey='mun_id'
                   optionPropLabel='descripcion'
                   disabled={!isColombia}
                 />
@@ -300,7 +314,8 @@ const RegistroPage: React.FC<any> = (props) => {
               <Form.Item label='Ciudad de residencia' name='city' initialValue={149} rules={[{ required: isColombia }]}>
                 <SelectComponent
                   options={l_municipios}
-                  optionPropkey='idMunicipio'
+                  value={ciudadBogota2}
+                  optionPropkey='mun_id'
                   optionPropLabel='descripcion'
                   disabled={!isColombia}
                 />
@@ -312,7 +327,20 @@ const RegistroPage: React.FC<any> = (props) => {
                 <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' onChange={onChangePais} />
               </Form.Item>
               <Form.Item label='Ciudad de nacimiento' name='cityLive' initialValue={''} rules={[{ required: true }]}>
-                <Input allowClear placeholder='' autoComplete='off' />
+                <Input
+                  allowClear
+                  placeholder=''
+                  autoComplete='off'
+                  type={'text'}
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
               </Form.Item>
               <Form.Item label='Departamento de residencia' name='state' rules={[{ required: true }]}>
                 <SelectComponent
@@ -339,19 +367,54 @@ const RegistroPage: React.FC<any> = (props) => {
             <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num1' rules={[{ required: avenida, max: 3 }]}>
-            <Input allowClear type='number' placeholder='' autoComplete='off' />
+            <Input
+              allowClear
+              type='text'
+              placeholder=''
+              autoComplete='off'
+              maxLength={3}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
+            />
           </Form.Item>
           <Form.Item label='letra' name='letra1' rules={[{ max: 1 }]}>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Bis' name='Bis' rules={[{ max: 3 }]}>
-            <SelectComponent options={[{ key: 'Bis', value: 'Bis' }]} optionPropkey='key' optionPropLabel='value' />
+            <SelectComponent
+              options={[
+                { key: 'Bis', value: 'Bis' },
+                { key: ' ', value: ' ' }
+              ]}
+              optionPropkey='key'
+              optionPropLabel='value'
+            />
           </Form.Item>
           <Form.Item label='Card' name='card1' rules={[{ max: 4 }]}>
             <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
-            <Input allowClear type='number' placeholder='' autoComplete='off' />
+            <Input
+              allowClear
+              type='text'
+              placeholder=''
+              autoComplete='off'
+              maxLength={3}
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
+            />
           </Form.Item>
           <Form.Item label='letra' name='letra2' rules={[{ max: 1 }]}>
             <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
@@ -361,14 +424,15 @@ const RegistroPage: React.FC<any> = (props) => {
               allowClear
               placeholder=''
               autoComplete='off'
+              maxLength={2}
               type='text'
-              pattern='[0-9]{0,2}'
-              onInvalid={() => {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Datos inválidos',
-                  text: 'Los datos ingresados en el campo Placa deben ser numéros entre 0 y 99'
-                });
+              onKeyPress={(event) => {
+                if (!/[0-9]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
               }}
             />
           </Form.Item>
@@ -382,13 +446,13 @@ const RegistroPage: React.FC<any> = (props) => {
             <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
           </Form.Item>
           <Form.Item label='Sexo' name='sex' rules={[{ required: true }]}>
-            <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
+            <SelectComponent options={sex} optionPropkey='orden' optionPropLabel='descripcion' />
           </Form.Item>
           <Form.Item label='Género' name='gender' rules={[{ required: true }]}>
-            <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
+            <SelectComponent options={genero} optionPropkey='orden' optionPropLabel='descripcion' />
           </Form.Item>
           <Form.Item label='Orientación sexual' name='sexual_orientation' rules={[{ required: true }]}>
-            <SelectComponent options={sex} optionPropkey='idSexo' optionPropLabel='descripcionSexo' />
+            <SelectComponent options={orientacion} optionPropkey='orden' optionPropLabel='descripcion' />
           </Form.Item>
           <Form.Item label='Etnia' name='ethnicity' rules={[{ required: true }]}>
             <SelectComponent options={etniastate} optionPropkey='idEtnia' optionPropLabel='nombre' />

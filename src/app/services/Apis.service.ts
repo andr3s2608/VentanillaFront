@@ -34,6 +34,9 @@ export class ApiService {
     post({ endpoint: environments.security, url: 'Security/AddUserRole', payload, confirmModal: false, id: '0' });
 
   GetSexo = () => get<[]>({ endpoint: environments.shared, url: 'v1/Sexo/GetSexo', id: '0' });
+  GetSexoazure = () => get<[]>({ endpoint: environments.shared, url: 'v1/Sexo/GetSexoSQL', id: '0' });
+  GetOrientacionazure = () => get<[]>({ endpoint: environments.shared, url: 'v1/Sexo/GetOrientacion', id: '0' });
+  GetGeneroonazure = () => get<[]>({ endpoint: environments.shared, url: 'v1/Sexo/GetGenero', id: '0' });
 
   GetEtnia = () => get<[]>({ endpoint: environments.shared, url: 'v1/Etnia/GetEtnia', id: '0' });
 
