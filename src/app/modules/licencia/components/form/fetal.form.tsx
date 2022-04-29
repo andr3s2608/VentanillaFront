@@ -763,7 +763,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion obj={obj} />
+            <GeneralInfoFormSeccion obj={obj} prop={undefined} tipoLicencia={'Cremación'} />
             <LugarDefuncionFormSeccion form={form} obj={obj} />
             <DeathInstituteFormSeccion obj={obj} form={form} datofiscal={true} required={false} tipoLicencia={tipoLicencia} />
             <Divider orientation='right'> Tipo de Muerte </Divider>
