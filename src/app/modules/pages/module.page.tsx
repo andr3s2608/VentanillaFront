@@ -29,16 +29,16 @@ const ModulePage = () => {
     async () => {
       const mysRoles = await api.GetRoles();
       //solo era para permitir volver a registrar sin necesidad de crear otro correo(prueba)
-      /*
+
       const validar: string = mysRoles[0].codigoUsuario;
 
-      if (validar == '00793309-9522-438a-b49c-e9386e6f6666') {
+      if (validar == '8f779d2f-9fc9-471e-a902-7ed8d49bf1da') {
         setroles([]);
         console.log('entro');
       } else {
         setroles(mysRoles);
       }
-    */
+
       setroles(mysRoles);
       const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);

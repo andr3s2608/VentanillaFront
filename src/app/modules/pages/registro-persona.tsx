@@ -9,11 +9,12 @@ import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { BasicaInformacion } from './components/form/BasicaInformacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import React, { useCallback, useEffect, useState } from 'react';
-import { IMunicipio } from 'app/services/dominio.service';
+import { IDepartamento, IMunicipio } from 'app/services/dominio.service';
 import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { dominioService } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { EstadoCivil } from 'app/shared/utils/constants.util';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
@@ -29,7 +30,7 @@ const RegistroPage: React.FC<any> = (props) => {
   const [etniastate, setEtnia] = useState<[]>([]);
   const [nivelEducativo, setNivelEducativo] = useState<[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [[l_departamentos_colombia, l_paises], setListas] = useState<[[], []]>([[], []]);
+  const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -41,7 +42,7 @@ const RegistroPage: React.FC<any> = (props) => {
     async () => {
       const [municipios, ...resp] = await Promise.all([
         api.getMunicipio(idDepartamentoBogota),
-        api.getDepartament(),
+        dominioService.get_departamentos_colombia(),
         api.getPaises()
       ]);
       setLMunicipios(municipios);
@@ -72,8 +73,20 @@ const RegistroPage: React.FC<any> = (props) => {
     form.setFieldsValue({ state: undefined, city: undefined, cityLive: undefined });
   };
   const onChangeDepartamento = async (value: string) => {
+    form.setFieldsValue({ cityLive: undefined });
+    const depart = await dominioService.get_departamentos_colombia();
+    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+    const { idDepartamento } = departamento[0];
+    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
+    setLMunicipios(resp);
+  };
+
+  const onChangeDepartamentor = async (value: string) => {
     form.setFieldsValue({ city: undefined });
-    const resp = await api.getMunicipio(value);
+    const depart = await dominioService.get_departamentos_colombia();
+    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+    const { idDepartamento } = departamento[0];
+    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
   };
 
@@ -248,7 +261,12 @@ const RegistroPage: React.FC<any> = (props) => {
               <Form.Item label='Nacionalidad' name='country' initialValue={idColombia} rules={[{ required: true }]}>
                 <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' onChange={onChangePais} />
               </Form.Item>
-              <Form.Item label='Departamento de nacimiento' name='stateLive' initialValue={3} rules={[{ required: isColombia }]}>
+              <Form.Item
+                label='Departamento de nacimiento'
+                name='stateLive'
+                initialValue={'31b870aa-6cd0-4128-96db-1f08afad7cdd'}
+                rules={[{ required: isColombia }]}
+              >
                 <SelectComponent
                   options={l_departamentos_colombia}
                   optionPropkey='idDepartamento'
@@ -257,7 +275,7 @@ const RegistroPage: React.FC<any> = (props) => {
                   disabled={!isColombia}
                 />
               </Form.Item>
-              <Form.Item label='Ciudad de nacimiento' name='cityLive' initialValue={149} rules={[{ required: isColombia }]}>
+              <Form.Item label='Ciudad de nacimiento' name='cityLive' rules={[{ required: isColombia }]}>
                 <SelectComponent
                   options={l_municipios}
                   optionPropkey='idMunicipio'
@@ -265,12 +283,17 @@ const RegistroPage: React.FC<any> = (props) => {
                   disabled={!isColombia}
                 />
               </Form.Item>
-              <Form.Item label='Departamento de residencia' name='state' initialValue={3} rules={[{ required: isColombia }]}>
+              <Form.Item
+                label='Departamento de residencia'
+                name='state'
+                initialValue={'31b870aa-6cd0-4128-96db-1f08afad7cdd'}
+                rules={[{ required: isColombia }]}
+              >
                 <SelectComponent
                   options={l_departamentos_colombia}
                   optionPropkey='idDepartamento'
                   optionPropLabel='descripcion'
-                  onChange={onChangeDepartamento}
+                  onChange={onChangeDepartamentor}
                   disabled={!isColombia}
                 />
               </Form.Item>
