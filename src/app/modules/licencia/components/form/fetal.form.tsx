@@ -742,10 +742,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
-          <Step title='INFORMACION DE LA MADRE' description='Datos generales de la madre.' />
-          <Step title='INFORMACION SOLICITANTE' description='Datos solicitante – cementerio.' />
+          <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' />
+          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
-          <Step title='INFORMACION SOPORTES' description='Datos Documentos de soporte PDF .' />
+          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
@@ -788,7 +788,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Divider orientation='right'> INFORMACION DE LA MADRE</Divider>
+            <Divider orientation='right'> INFORMACIÓN DE LA MADRE</Divider>
             <Form.Item
               label='Tipo Identificación'
               name='IDType'
@@ -819,7 +819,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'Seccion: INFORMACION DE LA MADRE \n recuerde que para el tipo de documento:' +
+                      'Seccion: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento:' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
