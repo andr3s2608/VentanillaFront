@@ -110,7 +110,7 @@ export class ApiService {
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
   updatelicencia = (solicitud: string) =>
-    post<any>({ endpoint: environments.inhcremacion, url: `Request/GetDataFromQuery/${solicitud}`, id: '1' });
+    post<any>({ endpoint: environments.shared, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
 
   GetResumenSolicitud = (solicitud: string) =>
     get<any>({ endpoint: environments.inhcremacion, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });

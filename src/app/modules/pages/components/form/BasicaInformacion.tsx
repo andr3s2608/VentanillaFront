@@ -245,7 +245,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='email@example.com'
           autoComplete='off'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ@_-]/.test(event.key)) {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -257,7 +257,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='email@example.com'
           autoComplete='off'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ@_-]/.test(event.key)) {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
               event.preventDefault();
             }
           }}

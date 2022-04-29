@@ -930,7 +930,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             >
               <SelectComponent
                 options={l_paises}
-                mode='multiple'
                 placeholder='-- Elija una o varias --'
                 optionPropkey='id'
                 optionPropLabel='descripcion'
