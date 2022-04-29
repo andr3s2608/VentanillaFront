@@ -194,8 +194,12 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           allowClear
           placeholder='email@example.com'
           type='email'
+          onKeyPress={(event) => {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
           autoComplete='off'
-          onChange={(e) => cambioemail(e.target.value)}
           id='emailsol'
         />
       </Form.Item>

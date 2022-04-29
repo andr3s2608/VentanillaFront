@@ -9,8 +9,10 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import Switch from 'antd/es/switch';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { ITipoLicencia } from 'app/shared/utils/types.util';
 
-export const GeneralInfoFormSeccion = ({ obj }: any) => {
+export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) => {
+  const { obj, prop } = props;
   const [isHora, setIsHora] = useState<boolean>(true);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
@@ -19,6 +21,8 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
   };
+
+  const onChange = (value: any) => {};
 
   useEffect(() => {
     if (obj?.check !== undefined && check) {
@@ -40,6 +44,7 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
           autoComplete='off'
           maxLength={14}
           minLength={6}
+          onChange={(e) => onChange(e.target.value)}
           onKeyPress={(event) => {
             if (!/[0-9]/.test(event.key)) {
               event.preventDefault();
@@ -89,4 +94,8 @@ export const GeneralInfoFormSeccion = ({ obj }: any) => {
   );
 };
 
+interface IGeneralInfoProps<T> extends ITipoLicencia {
+  obj: any;
+  prop: any;
+}
 export const KeysForm = ['certificado', 'date', 'time', 'sex'];

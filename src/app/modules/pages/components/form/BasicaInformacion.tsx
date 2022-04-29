@@ -240,10 +240,28 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         />
       </Form.Item>
       <Form.Item label='Correo electrónico' name='email' rules={[{ required: true, type: 'email', max: 50 }]}>
-        <Input allowClear placeholder='email@example.com' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='email@example.com'
+          autoComplete='off'
+          onKeyPress={(event) => {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+        />
       </Form.Item>
       <Form.Item label='Confirmar Correo Electrónico' name='confirEmail' rules={[{ required: true, type: 'email', max: 50 }]}>
-        <Input allowClear placeholder='email@example.com' autoComplete='off' />
+        <Input
+          allowClear
+          placeholder='email@example.com'
+          autoComplete='off'
+          onKeyPress={(event) => {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+        />
       </Form.Item>
     </>
   );

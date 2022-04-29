@@ -192,7 +192,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <Form.Item label='Nombre del representante legal' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
-            <DatoSolicitanteAdd prop={getData} obj={obj} />
+            <DatoSolicitanteAdd form={props} obj={obj} />
 
             <div>{renderFormFuneria(lugarfuneraria)}</div>
             <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, type: 'email', max: 50 }]}>
@@ -200,6 +200,11 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
                 allowClear
                 placeholder='Email Funeraria'
                 type='email'
+                onKeyPress={(event) => {
+                  if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 //onChange={(e) => cambioemailFUN(e.target.value)}
                 autoComplete='off'
               />

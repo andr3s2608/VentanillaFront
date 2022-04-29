@@ -231,7 +231,11 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           allowClear
           placeholder='email@example.com'
           type='email'
-          onChange={(e) => cambioemailCEM(e.target.value)}
+          onKeyPress={(event) => {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
           autoComplete='off'
         />
       </Form.Item>
