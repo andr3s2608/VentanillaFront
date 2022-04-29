@@ -50,6 +50,8 @@ const { Step } = Steps;
 export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const history = useHistory();
   const { tipoLicencia, tramite } = props;
+  const [inputVal, setInputVal] = useState('');
+
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
@@ -553,10 +555,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
-          <Step title='INFORMACIÓN DEL FALLECIDO' description='Datos personales del fallecido.' />
-          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante - cementerio.' />
-          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del médico que certifica.' />
-          <Step title='INFORMACIÓN SOPORTES' description='Datos documentos de soporte PDF.' />
+          <Step title='INFORMACIÓN DEL FALLECIDO' description='Datos personales del fallecido.' disabled={!inputVal} />
+          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante - cementerio.' disabled={!inputVal} />
+          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del médico que certifica.' disabled={!inputVal} />
+          <Step title='INFORMACIÓN SOPORTES' description='Datos documentos de soporte PDF.' disabled={!inputVal} />
         </Steps>
 
         <Form

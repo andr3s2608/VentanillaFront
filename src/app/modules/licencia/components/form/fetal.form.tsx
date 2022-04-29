@@ -51,6 +51,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
+  const [inputVal, setInputVal] = useState('');
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
@@ -742,10 +743,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           style={{ maxWidth: 350 }}
         >
           <Step title='INFORMACIÓN GENERAL CERTIFICADO' description='Datos certificado de defunción.' />
-          <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' />
-          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' />
-          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' />
-          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' />
+          <Step title='INFORMACIÓN DE LA MADRE' description='Datos generales de la madre.' disabled={!inputVal} />
+          <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' disabled={!inputVal} />
+          <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' disabled={!inputVal} />
+          <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' disabled={!inputVal} />
           {permiso?.rol === 'Funcionario' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
