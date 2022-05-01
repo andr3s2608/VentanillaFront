@@ -90,7 +90,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         api.getCodeUser(),
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
-        dominioService.get_municipios_by_departamento(idDepartamentoBogota),
+        dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_upz_by_localidad(idlocalidad),
         dominioService.get_type(ETipoDominio['Tipo Documento']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
