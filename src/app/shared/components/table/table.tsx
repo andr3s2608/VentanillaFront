@@ -265,13 +265,8 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Documento del Fallecido',
-          dataIndex: '',
-          key: 'numeroDocumento',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{identificacion()}</text>
-            </Form.Item>
-          )
+          dataIndex: 'nroIdentificacionFallecido',
+          key: 'numeroDocumento'
         },
         {
           title: 'Funeraria y/o Nombre',

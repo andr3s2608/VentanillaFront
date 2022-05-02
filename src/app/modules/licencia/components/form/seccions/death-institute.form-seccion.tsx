@@ -312,15 +312,51 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                 <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
 
                 <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
-                  <Input allowClear placeholder='Nombre' autoComplete='off' pattern='[a-zA-Z]+' />
+                  <Input
+                    allowClear
+                    placeholder='Nombre'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item label='Apellido' required={true} name='fiscaliaapellidoDC'>
-                  <Input allowClear placeholder='Apellido' autoComplete='off' pattern='[a-zA-Z]+' />
+                  <Input
+                    allowClear
+                    placeholder='Apellido'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item label='Número de oficio de medicina legal' required={true} name='fiscalianumeroDC'>
-                  <Input allowClear placeholder='Número de oficio de medicina legal' autoComplete='off' pattern='^[0-9]+' />
+                  <Input
+                    allowClear
+                    placeholder='Número de oficio de medicina legal'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item label='Fecha del Oficio' required={true} name='fiscaliafechaDC'>
@@ -328,7 +364,19 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                 </Form.Item>
 
                 <Form.Item label='No. Fiscal' required={true} name='NoFiscalDC'>
-                  <Input allowClear placeholder='numberFiscal' autoComplete='off' pattern='^[0-9]+' />
+                  <Input
+                    allowClear
+                    placeholder='numberFiscal'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
                 </Form.Item>
               </>
             )}

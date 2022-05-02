@@ -65,53 +65,66 @@ const RegistroPage: React.FC<any> = (props) => {
   };
 
   const onSubmit = async (value: any) => {
-    const json = {
-      primerNombre: value.name,
-      segundoNombre: value.secondName ?? '',
-      primerApellido: value.surname,
-      segundoApellido: value.secondSurname ?? '',
-      tipoDocumento: value.TipoIdent, //listado tipos de documentos
-      numeroIdentificacion: Number(value.nit),
-      telefonoFijo: value.phone ?? 0,
-      telefonoCelular: value.phonecell,
-      email: value.email,
-      tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
-      numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
-      nombreRazonSocial: value.razonsocial
-    };
+    const confirEmail: string = value.confirEmail;
+    const email: string = value.email;
+    const emailmayus = email.toUpperCase();
+    const emailconfmayus = confirEmail.toUpperCase();
 
-    const resApi = await api.personaJuridica(json);
+    if (emailmayus == emailconfmayus) {
+      const json = {
+        primerNombre: value.name,
+        segundoNombre: value.secondName ?? '',
+        primerApellido: value.surname,
+        segundoApellido: value.secondSurname ?? '',
+        tipoDocumento: value.TipoIdent, //listado tipos de documentos
+        numeroIdentificacion: Number(value.nit),
+        telefonoFijo: value.phone ?? 0,
+        telefonoCelular: value.phonecell,
+        email: value.email,
+        tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
+        numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
+        nombreRazonSocial: value.razonsocial
+      };
 
-    if (typeof resApi === 'number') {
-      await api.sendEmail({
-        to: value.email,
-        subject: 'Registro de persona jurídica ',
-        body: 'Señores ' + value.razonsocial + ' su usuario creado exitosamente'
-      });
-      await api.putUser({
-        oid: accountIdentifier,
-        idPersonaVentanilla: resApi
-      });
+      const resApi = await api.personaJuridica(json);
 
-      await api.PostRolesUser({
-        idUser: accountIdentifier,
-        idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-      });
-      localStorage.setItem(accountIdentifier, resApi.toString());
-      store.dispatch(SetGrid({ key: 'relaodMenu' }));
+      if (typeof resApi === 'number') {
+        await api.sendEmail({
+          to: value.email,
+          subject: 'Registro de persona jurídica ',
+          body: 'Señores ' + value.razonsocial + ' su usuario creado exitosamente'
+        });
+        await api.putUser({
+          oid: accountIdentifier,
+          idPersonaVentanilla: resApi
+        });
 
+        await api.PostRolesUser({
+          idUser: accountIdentifier,
+          idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+        });
+        localStorage.setItem(accountIdentifier, resApi.toString());
+        store.dispatch(SetGrid({ key: 'relaodMenu' }));
+
+        Swal.fire({
+          title: 'Usuario Registrado',
+          text: 'El Usuario ' + value.razonsocial + ' ha sido Registrado de manera exitosa',
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          },
+          icon: 'info'
+        });
+        history.push('/');
+      }
+    } else {
       Swal.fire({
-        title: 'Usuario Registrado',
-        text: 'El Usuario ' + value.razonsocial + ' ha sido Registrado de manera exitosa',
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp'
-        },
-        icon: 'info'
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: 'Los Emails deben coincidir'
       });
-      history.push('/');
     }
   };
   const onSubmitFailed = () => {};
