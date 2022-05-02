@@ -266,7 +266,20 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <>
             <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
             <Form.Item label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: true, max: 10 }]}>
-              <Input allowClear placeholder='Nueva acta de Levantamiento' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Nueva acta de Levantamiento'
+                autoComplete='off'
+                maxLength={10}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
             </Form.Item>
 
             <Form.Item label='Fecha de Acta' required={true} name='DateAct'>
@@ -282,11 +295,21 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               <SelectComponent options={[]} optionPropkey='id' optionPropLabel='name' />
             </Form.Item>
             <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: true, max: 5 }]}>
-              <Input allowClear placeholder='No. Fiscal' autoComplete='off' pattern='^[0-9]+' />
+              <Input
+                allowClear
+                placeholder='No. Fiscal'
+                autoComplete='off'
+                maxLength={5}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              />
             </Form.Item>
             {tipoLicencia === 'Cremación' && (
               <>
-                <Divider orientation='right'>DATOS DE CREMACION DEL FISCAL Y MEDICINA LEGAL</Divider>
+                <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
 
                 <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
                   <Input allowClear placeholder='Nombre' autoComplete='off' pattern='[a-zA-Z]+' />

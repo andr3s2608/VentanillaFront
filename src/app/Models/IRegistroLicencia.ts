@@ -112,6 +112,7 @@ export interface Persona {
   segundoApellido: string;
   fechaNacimiento: string;
   nacionalidad: string;
+  segundanacionalidad: string;
   otroParentesco: string;
   estado: boolean;
   idEstadoCivil: string;

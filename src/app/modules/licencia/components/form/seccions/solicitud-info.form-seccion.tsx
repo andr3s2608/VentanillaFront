@@ -96,7 +96,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
       <>
         <Form.Item
           className='fadeInRight'
-          label='Funeraria de Bogotá D.C.'
+          label='Funeraria de Bogotá D.C. y/o Solicitante'
           name='funerariaBogota'
           initialValue={obj?.cementerioBogota}
           rules={[{ required: true }]}
@@ -195,13 +195,17 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <DatoSolicitanteAdd form={props} obj={obj} />
 
             <div>{renderFormFuneria(lugarfuneraria)}</div>
-            <Form.Item label='Email Funeraria' name='emailfuneraria' rules={[{ required: true, type: 'email', max: 50 }]}>
+            <Form.Item
+              label='Email Funeraria y/o solicitante'
+              name='emailfuneraria'
+              rules={[{ required: true, type: 'email', max: 50 }]}
+            >
               <Input
                 allowClear
                 placeholder='Email Funeraria'
                 type='email'
                 onKeyPress={(event) => {
-                  if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+                  if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}

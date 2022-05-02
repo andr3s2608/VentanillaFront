@@ -173,8 +173,8 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
                 style={{ marginRight: '10px' }}
                 icon={<EyeOutlined />}
                 size='middle'
-                onClick={() => onEventFile('Acta_Notarial_del_Fiscal')}
-                disabled={isFileViwerDisabled('Acta_Notarial_del_Fiscal')}
+                onClick={() => onEventFile('Acta_Notarial_Fiscal')}
+                disabled={isFileViwerDisabled('Acta_Notarial_Fiscal')}
               >
                 Acta_Notarial_del_Fiscal.pdf
               </Button>
@@ -185,7 +185,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
             name='fileActaNotarialFiscal'
             valuePropName='fileList'
             getValueFromEvent={normFile}
-            rules={[{ required: isEdit ? false : true }]}
+            rules={[{ required: false }]}
           >
             <Upload
               name='fileActaNotarialFiscal'
@@ -204,7 +204,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
         <>
           {files?.length ? (
             <Form.Item
-              label='Ver Autorización de cremación del familiar'
+              label='Ver Autorización de cremacion del familiar'
               name='fileAuthCCFamiliar'
               valuePropName='fileList'
               rules={[{ required: isEdit ? false : true }]}
@@ -251,7 +251,6 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
               />
             </Form.Item>
           ) : null}
-
           <Form.Item
             label='Documento del familiar'
             name='fileAuthCremacion'

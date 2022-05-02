@@ -109,6 +109,7 @@ const formatObjJson = (obj: any, id: String) => {
       idControlTramite: obj.iD_Control_Tramite,
       certificado: obj.numeroCertificado,
       date: obj.fechaDefuncion,
+      fechasol: obj.fechaSolicitud,
       time: obj.hora,
       check: obj.sinEstablecer,
       sex: obj.idSexo,
