@@ -207,7 +207,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           numeroCertificado: values.certificado,
           fechaDefuncion: moment(values.date).format(formatDate),
           sinEstablecer: values.check,
-          hora: values.check === true ? null : moment(values.time).format('LT'),
+          hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
           idSexo: values.sex,
           estadoSolicitud: estadoSolicitud,
           idPersonaVentanilla: Number(user), //numero de usuario registrado
