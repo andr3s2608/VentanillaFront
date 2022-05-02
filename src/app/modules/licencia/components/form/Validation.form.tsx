@@ -387,6 +387,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     setsolicitante(solicitante[0]['nombreSolicitante']);
     setapellido(solicitante[0]['apellidoSolicitante']);
     setestado('En tramite');
+    setfecha(objJosn.fechasol);
     setDataTable(solicitante);
     showModal();
   };
@@ -502,7 +503,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       dataIndex: 'apellidoSolicitante',
       key: 'apellidoSolicitante'
     },
-
+    {
+      title: 'Fecha de Solicitud',
+      dataIndex: objJosn.fechasol,
+      key: 'apellidoSolicitante'
+    },
     {
       title: 'Estado',
       dataIndex: 'estadoNuevo',
