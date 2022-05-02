@@ -58,6 +58,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [sex, setSex] = useState<[]>([]);
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
+  const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
   const [certif, setcertif] = useState(false);
   const [emailcem, setEmailcem] = useState(false);
   const [emailfun, setEmailfun] = useState(false);
@@ -95,9 +96,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Regimen),
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
+
       const sexo = await api.GetSexo();
-      setSex(sexo);
       const userres = await api.getCodeUser();
+      const informationUser = await api.GetInformationUser(userres);
+      console.log('User=========');
+      console.log(userres);
+
+      setSex(sexo);
       setUser(userres);
       setListas(resp);
 
@@ -106,6 +112,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         const typeList = await api.GetAllTypeValidation();
         setSupports(support);
         setType(typeList);
+      }
+
+      if (informationUser.tipoIdentificacion == 5) {
+        setIsPersonNatural(false);
+        console.log('el usuario es juridico');
+      } else {
+        setIsPersonNatural(true);
+        console.log('el usuario es natural');
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1073,32 +1087,35 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     </Form.Item>
 
                     <AutorizacionCremacion form={form} tipoLicencia={tipoLicencia} />
-                    <Form.Item
-                      label='Parentesco'
-                      initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
-                      name='authParentesco'
-                      rules={[{ required: true }]}
-                    >
-                      <Radio.Group onChange={onChangeParentesco}>
-                        <Radio value='Padre / Madre'>Padre / Madre</Radio>
-                        <br />
-                        <Radio value='Hermano/a'>Hermano/a</Radio>
-                        <br />
-                        <Radio value='Hijo/a'>Hijo/a</Radio>
-                        <br />
-                        <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                        <br />
-                        <Radio value='Tío/a'>Tío/a</Radio>
-                        <br />
-                        <Radio value='Sobrino/a'>Sobrino/a</Radio>
-                        <br />
-                        <Radio value='Abuelo/a'>Abuelo/a</Radio>
-                        <br />
-                        <Radio value='Nieto/a'>Nieto/a</Radio>
-                        <br />
-                        <Radio value='Otro'>Otro</Radio>
-                      </Radio.Group>
-                    </Form.Item>
+
+                    {isPersonNatural && (
+                      <Form.Item
+                        label='Parentesco'
+                        initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
+                        name='authParentesco'
+                        rules={[{ required: true }]}
+                      >
+                        <Radio.Group onChange={onChangeParentesco}>
+                          <Radio value='Padre / Madre'>Padre / Madre</Radio>
+                          <br />
+                          <Radio value='Hermano/a'>Hermano/a</Radio>
+                          <br />
+                          <Radio value='Hijo/a'>Hijo/a</Radio>
+                          <br />
+                          <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
+                          <br />
+                          <Radio value='Tío/a'>Tío/a</Radio>
+                          <br />
+                          <Radio value='Sobrino/a'>Sobrino/a</Radio>
+                          <br />
+                          <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                          <br />
+                          <Radio value='Nieto/a'>Nieto/a</Radio>
+                          <br />
+                          <Radio value='Otro'>Otro</Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                    )}
 
                     {isOtherParentesco && (
                       <Form.Item
@@ -1117,7 +1134,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             )}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-            {!isCremacion && (
+            {isCremacion && isPersonNatural && (
               <Form.Item
                 label='Parentesco'
                 initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}

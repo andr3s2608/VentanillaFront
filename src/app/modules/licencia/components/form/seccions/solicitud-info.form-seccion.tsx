@@ -137,7 +137,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item>
             <Form.Item
-              label='Parentesco'
+              label='Parentesco xx'
               name='solicitudParentesco'
               initialValue='Cónyuge (Compañero/a Permanente)'
               rules={[{ required: true }]}
