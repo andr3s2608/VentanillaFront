@@ -286,7 +286,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             </Form.Item>
             {tipoLicencia === 'Cremación' && (
               <>
-                <Divider orientation='right'>DATOS DE CREMACION DEL FISCAL Y MEDICINA LEGAL</Divider>
+                <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
 
                 <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
                   <Input allowClear placeholder='Nombre' autoComplete='off' pattern='[a-zA-Z]+' />

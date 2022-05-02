@@ -63,7 +63,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
-      dominioService.get_municipios_by_departamento(idMunicipio),
+      dominioService.get_all_municipios_by_departamento(idMunicipio),
       dominioService.get_cementerios_bogota(),
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
