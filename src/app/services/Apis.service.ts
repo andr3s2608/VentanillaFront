@@ -161,7 +161,7 @@ export class ApiService {
     });
 
   //https://wa-aeu-sds-dev-tsecurity.azurewebsites.net/api/v2/Security/UpdateUser
-  putUser = (payload: any) => put<any>({ endpoint: environments.security, url: 'Security/UpdateUser', payload, id: '0' });
+  putUser = (payload: any) => put<any>({ endpoint: environments.security, url: 'Security/UpdateUser', payload, id: '1' });
 
   UpdataLicencia = () => {};
   GetAllTypeValidation = () =>

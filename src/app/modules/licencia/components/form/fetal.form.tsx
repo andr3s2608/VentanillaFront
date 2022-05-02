@@ -176,7 +176,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoNombre: values.secondNamemother,
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother,
-          fechaNacimiento: null,
+          fechaNacimiento: moment(values.date).format(formatDate),
           nacionalidad: values.nationalidadmother[0],
           otroParentesco: null,
           idEstadoCivil: values.civilStatusmother,
@@ -297,6 +297,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
         break;
     }
+    console.log(dep, 'departamento');
+    console.log(mun, 'municipio');
     //JSon con lso datos seteadosde la solicitud
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -450,7 +452,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       localStorage.removeItem('register');
     }
     if (!isEdit) {
-      debugger;
       const resp = await api.postprueba(json);
 
       if (resp) {

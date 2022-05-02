@@ -32,6 +32,7 @@ const RegistroPage: React.FC<any> = (props) => {
   const [etniastate, setEtnia] = useState<[]>([]);
   const [nivelEducativo, setNivelEducativo] = useState<[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
+  const [l_municipiosres, setLMunicipiosres] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
 
@@ -41,15 +42,17 @@ const RegistroPage: React.FC<any> = (props) => {
   const [ciudadBogota2, setciudadBogota2] = useState<string>('Bogotá D.C.');
 
   const idColombia = '170';
-  const idDepartamentoBogota = '3';
+  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const getListas = useCallback(
     async () => {
       const [municipios, ...resp] = await Promise.all([
-        api.getMunicipio(idDepartamentoBogota),
+        dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_departamentos_colombia(),
         api.getPaises()
       ]);
+      console.log(municipios);
       setLMunicipios(municipios);
+      setLMunicipiosres(municipios);
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,12 +90,13 @@ const RegistroPage: React.FC<any> = (props) => {
   const onChangeDepartamento = async (value: string) => {
     form.setFieldsValue({ cityLive: undefined });
     const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+    let departamento = (await depart).filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
+
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
 
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+    if (value == '1') {
       setciudadBogota('Bogotá D.C.');
     } else {
       setciudadBogota('');
@@ -102,11 +106,12 @@ const RegistroPage: React.FC<any> = (props) => {
   const onChangeDepartamentor = async (value: string) => {
     form.setFieldsValue({ city: undefined });
     const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+    let departamento = (await depart).filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
+
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
-    setLMunicipios(resp);
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+    setLMunicipiosres(resp);
+    if (value == '1') {
       setciudadBogota2('Bogotá D.C.');
     } else {
       setciudadBogota2('');
@@ -147,20 +152,25 @@ const RegistroPage: React.FC<any> = (props) => {
       }
 
       const dep = value.stateLive;
-      var mun = value.cityLive;
+      var mun1: string = value.cityLive;
+      var mun: number = parseInt(mun1);
       switch (dep) {
-        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        case 1:
+          console.log('entro');
           mun = 11001000;
           break;
       }
 
       const depres = value.state;
-      var munres = value.city;
+      var munres1: string = value.city;
+      var munres: number = parseInt(munres1);
       switch (depres) {
-        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        case 1:
+          console.log('entro');
           munres = 11001000;
           break;
       }
+      console.log(mun + ' Municipio');
       if (fechavalidacion >= '1900') {
         const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
         const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
@@ -189,12 +199,16 @@ const RegistroPage: React.FC<any> = (props) => {
           estadoCivil: value.estadoCivil, //lista quemada
           nivelEducativo: value.levelEducation //listado nivel educativo
         };
+
         const resApi = await api.personaNatural(data);
+        console.log(resApi, ' resapi');
+
+        console.log(accountIdentifier + ' account');
         if (typeof resApi === 'number') {
-          await api.sendEmail({
+          api.sendEmail({
             to: value.email,
             subject: 'Registro de persona natural ',
-            body: 'Señor (a) ' + value.name + ' ' + value.secondName + ' su usuario creado exitosamente'
+            body: 'Señor (a) ' + value.name + '  ' + value.secondName + ' su usuario creado exitosamente'
           });
 
           await api.putUser({
@@ -274,48 +288,38 @@ const RegistroPage: React.FC<any> = (props) => {
               <Form.Item label='Nacionalidad' name='country' initialValue={idColombia} rules={[{ required: true }]}>
                 <SelectComponent options={l_paises} optionPropkey='idPais' optionPropLabel='nombre' onChange={onChangePais} />
               </Form.Item>
-              <Form.Item
-                label='Departamento de nacimiento'
-                name='stateLive'
-                initialValue={'31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                rules={[{ required: isColombia }]}
-              >
+              <Form.Item label='Departamento de nacimiento' name='stateLive' initialValue={1} rules={[{ required: isColombia }]}>
                 <SelectComponent
                   options={l_departamentos_colombia}
-                  optionPropkey='idDepartamento'
+                  optionPropkey='idDepPai'
                   optionPropLabel='descripcion'
                   onChange={onChangeDepartamento}
                   disabled={!isColombia}
                 />
               </Form.Item>
-              <Form.Item label='Ciudad de nacimiento' name='cityLive' rules={[{ required: isColombia }]}>
+              <Form.Item label='Ciudad de nacimiento' name='cityLive' initialValue={11001000} rules={[{ required: isColombia }]}>
                 <SelectComponent
                   options={l_municipios}
                   value={ciudadBogota}
-                  optionPropkey='mun_id'
+                  optionPropkey='munId'
                   optionPropLabel='descripcion'
                   disabled={!isColombia}
                 />
               </Form.Item>
-              <Form.Item
-                label='Departamento de residencia'
-                name='state'
-                initialValue={'31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                rules={[{ required: isColombia }]}
-              >
+              <Form.Item label='Departamento de residencia' name='state' initialValue={1} rules={[{ required: isColombia }]}>
                 <SelectComponent
                   options={l_departamentos_colombia}
-                  optionPropkey='idDepartamento'
+                  optionPropkey='idDepPai'
                   optionPropLabel='descripcion'
                   onChange={onChangeDepartamentor}
                   disabled={!isColombia}
                 />
               </Form.Item>
-              <Form.Item label='Ciudad de residencia' name='city' initialValue={149} rules={[{ required: isColombia }]}>
+              <Form.Item label='Ciudad de residencia' name='city' initialValue={11001000} rules={[{ required: isColombia }]}>
                 <SelectComponent
-                  options={l_municipios}
+                  options={l_municipiosres}
                   value={ciudadBogota2}
-                  optionPropkey='mun_id'
+                  optionPropkey='munId'
                   optionPropLabel='descripcion'
                   disabled={!isColombia}
                 />

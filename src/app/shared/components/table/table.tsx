@@ -202,7 +202,7 @@ export const Gridview = (props: IDataSource) => {
           )
         },
         {
-          title: 'Nombre Completo',
+          title: 'Funeraria y/o Nombre',
           dataIndex: 'razonSocialSolicitante',
           key: 'nombreCompleto'
         },
@@ -274,7 +274,7 @@ export const Gridview = (props: IDataSource) => {
           )
         },
         {
-          title: 'Nombre Completo',
+          title: 'Funeraria y/o Nombre',
           dataIndex: 'razonSocialSolicitante',
           key: 'nombreCompleto'
         },
