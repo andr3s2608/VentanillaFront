@@ -122,15 +122,6 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
     setLBarrios([]);
   };
 
-  const onChangeDepartamento = async (value: string) => {
-    form.resetFields(['ciudad', 'localidad', 'area', 'barrio']);
-    const resp = await dominioService.get_municipios_by_departamento(value);
-    setLMunicipios(resp);
-    setIsBogota(false);
-    setLAreas([]);
-    setLBarrios([]);
-  };
-
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const onChangeMunicipio = (value: string) => {
     form.resetFields(['localidad', 'area', 'barrio']);
@@ -244,7 +235,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'Seccion:Datos Del Familiar Que Autoriza la Cremación \n recuerde que para el tipo de documento:' +
+                'Sección:Datos Del Familiar Que Autoriza la Cremación \n recuerde que para el tipo de documento: ' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +

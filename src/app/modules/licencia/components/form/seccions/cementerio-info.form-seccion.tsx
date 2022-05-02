@@ -182,7 +182,16 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               />
             </Form.Item>
             <Form.Item label='Ciudad' name='cementerioCiudad' initialValue={obj?.cementerioCiudad} rules={[{ required: true }]}>
-              <Input allowClear pattern='[a-zA-Z ]' placeholder='Ciudad' autoComplete='off' />
+              <Input
+                allowClear
+                placeholder='Ciudad'
+                autoComplete='off'
+                onKeyPress={(event) => {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              />
             </Form.Item>
           </div>
         );
@@ -232,7 +241,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           placeholder='email@example.com'
           type='email'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ_-]/.test(event.key)) {
+            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
               event.preventDefault();
             }
           }}

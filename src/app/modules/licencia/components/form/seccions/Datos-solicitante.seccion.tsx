@@ -50,23 +50,24 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [municipiofuneraria, setmunicipiofuneraria] = useState<string | undefined>();
   const [departamentofuneraria, setdepartamentofuneraria] = useState<string | undefined>();
 
-  const [[l_paises, l_departamento, l_municipios, l_cementerios, l_tipo_identificacion], setListas] = useState<
-    [IDominio[], IDepartamento[], IMunicipio[], ICementerio[], IDominio[]]
-  >([[], [], [], [], []]);
+  const [[l_paises, l_departamento, l_cementerios, l_tipo_identificacion], setListas] = useState<
+    [IDominio[], IDepartamento[], ICementerio[], IDominio[]]
+  >([[], [], [], []]);
 
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
     const iddepart = (await dep).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
 
     const idMunicipio = iddepart[0].idDepPai + '';
-
+    console.log(idMunicipio, ' id municipio');
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
-      dominioService.get_municipios_by_departamento(idMunicipio),
+      // dominioService.get_all_municipios_by_departamento(idMunicipio),
       dominioService.get_cementerios_bogota(),
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
+    console.log(resp);
     //Relacionado con el solicitante
     //Se guarda toda la informacion del Solicitante
     const resumensolicitud = await api.GetResumenSolicitud(obj?.idSolicitud);
