@@ -233,6 +233,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
       //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
 
+      console.log(solicitud);
       let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
 
       let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
@@ -252,7 +253,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         //window.open(linkPDF, 'hola mundo');
 
         let datosDinamicosAprobacion = [
-          objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+          solicitud[0]['razonSocialSolicitante'],
           getDescripcionTramite(idTramite.toLocaleUpperCase()),
           fechaSolicitud.substring(0, 10),
           getDescripcionTramite(idTramite.toLocaleUpperCase()),
@@ -292,7 +293,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         observacion: values.Observations
       };*/
         let datosDinamicosGenericos = [
-          objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
+          solicitud[0]['razonSocialSolicitante'],
           getDescripcionTramite(idTramite.toLocaleUpperCase()),
           fechaSolicitud.substring(0, 10),
           values.observations
