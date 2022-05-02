@@ -74,6 +74,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
+  const [idBogotac, setIdBogota] = useState<string>('31211657-3386-420a-8620-f9c07a8ca491');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
   const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
   const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
@@ -639,20 +640,26 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     form.resetFields(['ciudad', 'localidad', 'area', 'barrio']);
     const depart = await dominioService.get_departamentos_colombia();
     let departamento = (await depart).filter((i) => i.idDepartamento == value);
-
     const { idDepartamento } = departamento[0];
+
+    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+      setIdBogota('31211657-3386-420a-8620-f9c07a8ca491');
+      setIsBogota(false);
+    } else {
+      setIsBogota(true);
+      setIdBogota('');
+    }
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
-    setIsBogota(false);
-    setLAreas([]);
-    setLBarrios([]);
+    const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
+    const respBarrios = await dominioService.get_barrio_by_upz(idupz);
+    setLBarrios(respBarrios);
+    setLAreas(respArea);
   };
 
   const onChangeMunicipio = (value: string) => {
     form.resetFields(['localidad', 'area', 'barrio']);
     setIsBogota(value === idBogota);
-    setLAreas([]);
-    setLBarrios([]);
   };
 
   const onChangeLocalidad = async (value: string) => {
@@ -983,7 +990,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             {isColombia ? (
               <Form.Item
                 label='Ciudad de Residencia'
-                initialValue={obj?.idCiudadResidencia ?? idBogota}
+                initialValue={obj?.idCiudadResidencia ?? idBogotac}
                 name='ciudad'
                 rules={[{ required: true }]}
               >
@@ -992,6 +999,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropkey='idMunicipio'
                   optionPropLabel='descripcion'
                   onChange={onChangeMunicipio}
+                  value={idBogotac}
                 />
               </Form.Item>
             ) : (
@@ -1015,7 +1023,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 options={l_localidades}
                 optionPropkey='idLocalidad'
                 optionPropLabel='descripcion'
-                disabled={!isBogota}
+                disabled={isBogota}
                 onChange={onChangeLocalidad}
               />
             </Form.Item>
@@ -1030,7 +1038,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 options={l_areas}
                 optionPropkey='idUpz'
                 optionPropLabel='descripcion'
-                disabled={!isBogota}
+                disabled={isBogota}
                 onChange={onChangeArea}
               />
             </Form.Item>
@@ -1041,7 +1049,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               name='barrio'
               rules={[{ required: isBogota }]}
             >
-              <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
+              <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={isBogota} />
             </Form.Item>
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
