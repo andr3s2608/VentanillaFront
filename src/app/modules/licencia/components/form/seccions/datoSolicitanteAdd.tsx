@@ -142,7 +142,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'Seccion: DATOS DEL SOLICITANTE Y/O FUNERARIA \n recuerde que para el tipo de documento:' +
+                'Sección: DATOS DEL SOLICITANTE Y/O FUNERARIA \n recuerde que para el tipo de documento: ' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +
@@ -194,7 +194,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           placeholder='email@example.com'
           type='email'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ@._-]/.test(event.key)) {
+            if (!/[a-zA0-9ZñÑ@._-]/.test(event.key)) {
               event.preventDefault();
             }
           }}

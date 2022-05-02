@@ -229,6 +229,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               segundoApellido: values.secondSurname,
               fechaNacimiento: values.dateOfBirth,
               nacionalidad: values.nationalidad[0],
+              segundanacionalidad: values.nationalidad2,
               otroParentesco: null,
               idEstadoCivil: values.civilStatus,
               idNivelEducativo: values.educationLevel,
@@ -250,6 +251,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               segundoApellido: values.medicalSignatureSecondSurname,
               fechaNacimiento: null,
               nacionalidad: '00000000-0000-0000-0000-000000000000',
+              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
               otroParentesco: null,
               idEstadoCivil: '00000000-0000-0000-0000-000000000000',
               idNivelEducativo: '00000000-0000-0000-0000-000000000000',
@@ -325,6 +327,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           // documentosSoporte: generateFormFiel(values.instType)
         }
       };
+      //Guarde de documentos
+      const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
+      const formData = new FormData();
+      const supportDocuments: any[] = [];
 
       if (edit) {
         localStorage.removeItem('');
@@ -370,17 +376,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       if (!edit) {
         const resp = await api.postprueba(json);
-        localStorage.removeItem('register');
+
         if (resp) {
-          const formData = new FormData();
-          const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'Cremación';
-          const supportDocuments: any[] = [];
           const [files, names] = generateListFiles(values);
 
-          files.forEach((item: any, i: number) => {
+          files.forEach((file: any, i: number) => {
             const name = names[i];
 
-            formData.append('file', item);
+            formData.append('file', file);
             formData.append('nameFile', name);
 
             TypeDocument.forEach((item: any) => {
@@ -394,15 +397,16 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               }
             });
           });
-
+          console.log(supportDocuments);
           formData.append('containerName', container);
           formData.append('oid', accountIdentifier);
           await api.uploadFiles(formData);
           await api.AddSupportDocuments(supportDocuments);
 
-          //form.resetFields();
+          form.resetFields();
         }
       }
+      history.push('/tramites-servicios');
     } else {
       Swal.fire({
         icon: 'error',
@@ -410,7 +414,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         text: 'El número de Certificado debe tener mínimo 6 Dígitos'
       });
     }
-    history.push('/tramites-servicios');
   };
   const generateListFiles = (values: any) => {
     const Objs = [];
@@ -436,7 +439,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
 
     const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
-
     const files: Blob[] = filesName.map((item) => {
       const [file] = item.file;
       return file.originFileObj;
@@ -729,6 +731,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 optionPropLabel='descripcion'
               />
             </Form.Item>
+            <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
+              <SelectComponent
+                options={l_paises}
+                placeholder='-- Elija una o varias --'
+                optionPropkey='id'
+                optionPropLabel='descripcion'
+              />
+            </Form.Item>
             <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]} initialValue={date}>
               <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
             </Form.Item>
@@ -771,7 +781,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'Seccion:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento1:' +
+                      'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
@@ -850,7 +860,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         icon: 'error',
                         title: 'Datos invalidos',
                         text:
-                          'Seccion:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento:' +
+                          'Seccion:Reconocido como \n recuerde que para el tipo de documento:' +
                           tipodocumento +
                           ' solo se admiten valores ' +
                           campo +
@@ -974,7 +984,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                             icon: 'error',
                             title: 'Datos invalidos',
                             text:
-                              'Seccion:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento:' +
+                              'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
                               tipodocumento +
                               ' solo se admiten valores ' +
                               campo +
