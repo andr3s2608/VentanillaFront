@@ -29,7 +29,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
       const idMun: string = iddepart[0].idDepPai + '';
-      const mun = dominioService.get_municipios_by_departamento(idMun);
+      const mun = dominioService.get_all_municipios_by_departamento(idMun);
       const idmuni = (await mun).filter((i) => i.idMunicipio == '404');
 
       setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);

@@ -122,15 +122,6 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
     setLBarrios([]);
   };
 
-  const onChangeDepartamento = async (value: string) => {
-    form.resetFields(['ciudad', 'localidad', 'area', 'barrio']);
-    const resp = await dominioService.get_municipios_by_departamento(value);
-    setLMunicipios(resp);
-    setIsBogota(false);
-    setLAreas([]);
-    setLBarrios([]);
-  };
-
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const onChangeMunicipio = (value: string) => {
     form.resetFields(['localidad', 'area', 'barrio']);
