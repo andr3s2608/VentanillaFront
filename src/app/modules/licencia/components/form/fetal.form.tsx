@@ -391,7 +391,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const supportDocuments: any[] = [];
 
     if (isEdit) {
-      debugger;
       const resp = await api.putLicencia(json.solicitud);
 
       const [files, names] = generateListFiles(values, container);

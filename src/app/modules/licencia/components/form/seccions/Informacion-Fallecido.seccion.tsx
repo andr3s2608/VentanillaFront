@@ -25,15 +25,18 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const getListas = useCallback(async () => {
+    console.log('entro');
     const dep = dominioService.get_departamentos_colombia();
-    console.log(obj, ' obj');
+    console.log('entro2');
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
       const idMun: string = iddepart[0].idDepPai + '';
       const mun = dominioService.get_all_municipios_by_departamento(idMun);
-      const idmuni = (await mun).filter((i) => i.idMunicipio == '404');
-
+      console.log(idMun, ' idmun');
+      console.log(mun, ' resp ');
+      const idmuni = (await mun).filter((i) => i.idMunicipio == '11001000');
+      console.log('paso');
       setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
     } else {
       setdefuncion(iddepart[0].descripcion);

@@ -23,6 +23,7 @@ const formatObjJson = (obj: any) => {
     idSolicitud: obj.idSolicitud,
     certificado: obj.numeroCertificado,
     date: obj.fechaDefuncion,
+    fechasol: obj.fechaSolicitud,
     time: obj.hora,
     check: obj.sinEstablecer,
     sex: obj.idSexo,

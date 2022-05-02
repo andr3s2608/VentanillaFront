@@ -367,7 +367,7 @@ const RegistroPage: React.FC<any> = (props) => {
                                 estandarizar la dirección para el resto de ciudades.'
             type='info'
           />
-          <Form.Item label='Via Ppal' name='ppla' rules={[{ required: true }]}>
+          <Form.Item label='Via Principal' name='ppla' rules={[{ required: true }]}>
             <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
           </Form.Item>
           <Form.Item label='Número' name='Num1' rules={[{ required: avenida, max: 3 }]}>
