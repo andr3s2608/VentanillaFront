@@ -30,10 +30,10 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
-      const idMun: string = iddepart[0].idDepPai + '';
-      const mun = dominioService.get_all_municipios_by_departamento(idMun);
+      const idMun: string = iddepart[0].idDepartamento + '';
+      const mun = (await dominioService).get_all_municipios_by_departamento(idMun);
 
-      const idmuni = (await mun).filter((i) => i.idMunicipio == '11001000');
+      const idmuni = (await mun).filter((i) => i.idMunicipio == obj?.city);
 
       setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
     } else {

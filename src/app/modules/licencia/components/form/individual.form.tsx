@@ -211,6 +211,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
           break;
       }
+      var segunda = values.nationalidad2;
+      console.log(segunda, ' segunda nacionalidad');
+      if (segunda == undefined) {
+        segunda = '00000000-0000-0000-0000-000000000000';
+      }
 
       const json: IRegistroLicencia<any> = {
         solicitud: {
@@ -239,7 +244,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               segundoApellido: values.secondSurname,
               fechaNacimiento: values.dateOfBirth,
               nacionalidad: values.nationalidad[0],
-              segundanacionalidad: values.nationalidad2,
+              segundanacionalidad: segunda,
               otroParentesco: null,
               idEstadoCivil: values.civilStatus,
               idNivelEducativo: values.educationLevel,
@@ -568,6 +573,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ mauthIDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+    console.log(valor, 'valor');
+    console.log(valorupper, 'valor');
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminimaautoriza(6);
       setLongitudmaximaautoriza(10);
@@ -979,8 +986,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         type='text'
                         placeholder='Número Identificación'
                         autoComplete='off'
-                        pattern={tipocampo}
-                        maxLength={longitudmaxima}
+                        pattern={tipocampoautoriza}
+                        maxLength={longitudmaximaautoriza}
                         onKeyPress={(event) => {
                           if (!/[a-zA-Z0-9]/.test(event.key)) {
                             event.preventDefault();
@@ -995,13 +1002,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                             title: 'Datos invalidos',
                             text:
                               'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
-                              tipodocumento +
+                              tipodocumentoautoriza +
                               ' solo se admiten valores ' +
-                              campo +
+                              campoautoriza +
                               ' de longitud entre ' +
-                              longitudminima +
+                              longitudminimaautoriza +
                               ' y ' +
-                              longitudmaxima
+                              longitudmaximaautoriza
                           });
                         }}
                       />

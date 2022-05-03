@@ -103,9 +103,9 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             setCampo('Numéricos');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
-            setLongitudminima(11);
-            setLongitudminima(11);
-            setTipocampo('[a-zA-Z0-9]{11,11}');
+            setLongitudminima(6);
+            setLongitudminima(10);
+            setTipocampo('[a-zA-Z0-9]{6,10}');
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }

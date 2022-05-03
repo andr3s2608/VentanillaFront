@@ -169,6 +169,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         numeroProtocoloins = '452022';
       }
       let persona: any[] = [];
+      var segunda = values.nationalidad2;
+      console.log(segunda, ' segunda nacionalidad');
+      if (segunda == undefined) {
+        segunda = '00000000-0000-0000-0000-000000000000';
+      }
+
       if (tipoLicencia === 'Inhumación') {
         persona = [
           //madre
@@ -182,7 +188,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
             nacionalidad: values.nationalidadmother[0],
-            segundanacionalidad: values.nationalidad2,
+            segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
@@ -230,7 +236,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
             nacionalidad: values.nationalidadmother[0],
-            segundanacionalidad: values.nationalidad2,
+            segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
