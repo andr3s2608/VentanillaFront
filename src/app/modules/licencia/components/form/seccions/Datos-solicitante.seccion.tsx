@@ -59,7 +59,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     const iddepart = (await dep).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
 
     const idMunicipio = iddepart[0].idDepPai + '';
-    console.log(idMunicipio, ' id municipio');
+
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
@@ -67,7 +67,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       dominioService.get_cementerios_bogota(),
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
-    console.log(resp);
+
     //Relacionado con el solicitante
     //Se guarda toda la informacion del Solicitante
     const resumensolicitud = await api.GetResumenSolicitud(obj?.idSolicitud);

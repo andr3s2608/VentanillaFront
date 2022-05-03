@@ -20,7 +20,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [campo, setCampo] = useState<string>('Numéricos');
 
   //#region Cargar Listas
-  const { obj, prop } = props;
+  const { obj, prop, form } = props;
   const getLista = useCallback(
     async () => {
       const resp = await Promise.all([
@@ -69,6 +69,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   };
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
+    form.setFieldsValue({ ndoc: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -117,11 +118,11 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   return (
     <>
-      <Form.Item label='Tipo documento' initialValue={null} required={true} name='fiscalia'>
+      <Form.Item label='Tipo documento' initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'} required={true} name='fiscalia'>
         <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
 
-      <Form.Item label='Numero documento' initialValue={null} required={true} name='ndoc'>
+      <Form.Item label='Numero documento' required={true} name='ndoc'>
         <Input
           allowClear
           type='text'
@@ -194,7 +195,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           placeholder='email@example.com'
           type='email'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑ@._-]/.test(event.key)) {
+            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -208,4 +209,5 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 interface ISolicitudInfoProps<T> {
   obj: any;
   prop: any;
+  form: any;
 }

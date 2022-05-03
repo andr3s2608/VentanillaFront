@@ -53,6 +53,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
@@ -81,10 +82,18 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
 
+      const informationUser = await api.GetInformationUser(userres);
+
       setUser(userres);
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
       setListas(resp);
+
+      if (informationUser.tipoIdentificacion == 5) {
+        setIsPersonNatural(false);
+      } else {
+        setIsPersonNatural(true);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -154,7 +163,10 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ mauthIDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+    console.log(valor, 'valor');
+    console.log(valorupper, 'valor');
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+      console.log('entro cedula');
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
@@ -162,6 +174,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
       setTipodocumento('Cédula de Ciudadanía');
     } else {
       if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+        console.log('entro tarjeta');
         setLongitudminima(10);
         setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
@@ -169,6 +182,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
         setTipodocumento('Tarjeta de Identidad ');
       } else {
         if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+          console.log('entro permiso');
           setLongitudminima(15);
           setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
@@ -176,12 +190,14 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+            console.log('entro registro');
             setLongitudminima(10);
             setLongitudmaxima(11);
             setTipocampo('[0-9]{10,11}');
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
+            console.log('entro pasaporte');
             setLongitudminima(6);
             setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
@@ -312,6 +328,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           }}
         />
       </Form.Item>
+
       <Form.Item
         label='Parentesco'
         name='authParentesco'

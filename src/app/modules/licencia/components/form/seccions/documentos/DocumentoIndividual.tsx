@@ -163,45 +163,45 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
       </Form.Item>
 
       {/* {!isCremacion && <></>} */}
-      {isEditOtros() && (
-        <>
-          {files?.length ? (
-            <Form.Item label='Acta Notarial Fiscal' name='fileActaNotarialFiscal' valuePropName='fileList'>
-              <Button
-                type='default'
-                shape='round'
-                style={{ marginRight: '10px' }}
-                icon={<EyeOutlined />}
-                size='middle'
-                onClick={() => onEventFile('Acta_Notarial_Fiscal')}
-                disabled={isFileViwerDisabled('Acta_Notarial_Fiscal')}
-              >
-                Acta_Notarial_del_Fiscal.pdf
-              </Button>
-            </Form.Item>
-          ) : null}
-          <Form.Item
-            label='Acta Notarial Fiscal'
-            name='fileActaNotarialFiscal'
-            valuePropName='fileList'
-            getValueFromEvent={normFile}
-            rules={[{ required: false }]}
-          >
-            <Upload
-              name='fileActaNotarialFiscal'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
-        </>
-      )}
 
       {isCremacion && (
         <>
+          {isEditOtros() && (
+            <>
+              {files?.length ? (
+                <Form.Item label='Acta Notarial Fiscal' name='fileActaNotarialFiscal' valuePropName='fileList'>
+                  <Button
+                    type='default'
+                    shape='round'
+                    style={{ marginRight: '10px' }}
+                    icon={<EyeOutlined />}
+                    size='middle'
+                    onClick={() => onEventFile('Acta_Notarial_Fiscal')}
+                    disabled={isFileViwerDisabled('Acta_Notarial_Fiscal')}
+                  >
+                    Acta_Notarial_del_Fiscal.pdf
+                  </Button>
+                </Form.Item>
+              ) : null}
+              <Form.Item
+                label='Acta Notarial Fiscal'
+                name='fileActaNotarialFiscal'
+                valuePropName='fileList'
+                getValueFromEvent={normFile}
+                rules={[{ required: false }]}
+              >
+                <Upload
+                  name='fileActaNotarialFiscal'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
+            </>
+          )}
           {files?.length ? (
             <Form.Item
               label='Ver Autorización de cremacion del familiar'

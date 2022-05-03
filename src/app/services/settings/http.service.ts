@@ -110,7 +110,7 @@ http.interceptors.request.use(
   async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
     const token = await authProvider.getAccessToken();
     const { headers } = config;
-    console.log(token);
+
     headers.Authorization = `Bearer ${token.accessToken}`;
     return config;
   },

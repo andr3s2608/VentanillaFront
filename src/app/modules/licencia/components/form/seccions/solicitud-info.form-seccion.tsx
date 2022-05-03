@@ -98,7 +98,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
           className='fadeInRight'
           label='Funeraria de Bogotá D.C. y/o Solicitante'
           name='funerariaBogota'
-          initialValue={obj?.cementerioBogota}
+          initialValue={obj?.cementerioBogota ? obj?.cementerioBogota : 'PARTICULAR'}
           rules={[{ required: true }]}
         >
           <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
@@ -137,7 +137,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
               <span className='ant-form-text'>{name.toUpperCase()}</span>
             </Form.Item>
             <Form.Item
-              label='Parentesco'
+              label='Parentesco xx'
               name='solicitudParentesco'
               initialValue='Cónyuge (Compañero/a Permanente)'
               rules={[{ required: true }]}
@@ -189,10 +189,10 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <Form.Item label={validPerson() ? 'Nit' : 'CC'} name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombre del representante legal' name='solicitudIDTramitador'>
+            <Form.Item label='Nombre del Solicitante y/o del Representante Legal' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
-            <DatoSolicitanteAdd form={props} obj={obj} />
+            <DatoSolicitanteAdd form={form} obj={obj} />
 
             <div>{renderFormFuneria(lugarfuneraria)}</div>
             <Form.Item
@@ -205,7 +205,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
                 placeholder='Email Funeraria'
                 type='email'
                 onKeyPress={(event) => {
-                  if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
+                  if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}

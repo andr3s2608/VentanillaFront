@@ -30,18 +30,16 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [SEXO, setSEXO] = useState<string | undefined>();
   const [FECHA_DEFUNCION, setFECHA_DEFUNCION] = useState<string | undefined>();
   const getListas = useCallback(async () => {
-    console.log('entro');
     const dep = dominioService.get_departamentos_colombia();
-    console.log('entro2');
+
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
-      const idMun: string = iddepart[0].idDepPai + '';
-      const mun = dominioService.get_all_municipios_by_departamento(idMun);
-      console.log(idMun, ' idmun');
-      console.log(mun, ' resp ');
-      const idmuni = (await mun).filter((i) => i.idMunicipio == '11001000');
-      console.log('paso');
+      const idMun: string = iddepart[0].idDepartamento + '';
+      const mun = (await dominioService).get_all_municipios_by_departamento(idMun);
+
+      const idmuni = (await mun).filter((i) => i.idMunicipio == obj?.city);
+
       setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
     } else {
       setdefuncion(iddepart[0].descripcion);
