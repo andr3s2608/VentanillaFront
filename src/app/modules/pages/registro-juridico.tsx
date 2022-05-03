@@ -33,6 +33,7 @@ const RegistroPage: React.FC<any> = (props) => {
   const [longitudmaxima, setLongitudmaxima] = useState<number>(11);
   const [longitudminima, setLongitudminima] = useState<number>(10);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{10,11}');
+  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('NIT');
   const [campo, setCampo] = useState<string>('Numéricos');
   const api = new ApiService(accountIdentifier);
@@ -135,12 +136,14 @@ const RegistroPage: React.FC<any> = (props) => {
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
+      setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
       setLongitudminima(10);
       setLongitudmaxima(10);
       setTipocampo('[0-9-]{10,10}');
+      setTipocampovalidacion(/[0-9-]/);
       setCampo('Numéricos y guion');
       setTipodocumento('Nit');
     }
@@ -207,7 +210,7 @@ const RegistroPage: React.FC<any> = (props) => {
               pattern={tipocampo}
               maxLength={longitudmaxima}
               onKeyPress={(event) => {
-                if (!/[0-9-]/.test(event.key)) {
+                if (!tipocampovalidacion.test(event.key)) {
                   event.preventDefault();
                 }
               }}

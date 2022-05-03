@@ -56,6 +56,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   //#region Listados
@@ -732,6 +733,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
+      setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
@@ -739,6 +741,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         setLongitudminima(10);
         setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
+        setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
       } else {
@@ -746,19 +749,22 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           setLongitudminima(15);
           setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
+          setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminima(10);
             setLongitudmaxima(11);
-            setTipocampo('[0-9]{10,11}');
+            setTipocampo('[a-zA-Z0-9]{10,11}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
             setLongitudminima(6);
             setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }
@@ -854,7 +860,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 pattern={tipocampo}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9]/.test(event.key)) {
+                  if (!tipocampovalidacion.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
