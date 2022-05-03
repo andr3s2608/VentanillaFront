@@ -321,34 +321,34 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           }}
         />
       </Form.Item>
-      {isPersonNatural && (
-        <Form.Item
-          label='Parentesco'
-          name='authParentesco'
-          initialValue='Cónyuge (Compañero/a Permanente)'
-          rules={[{ required: true }]}
-        >
-          <Radio.Group onChange={onChangeParentesco}>
-            <Radio value='Padre / Madre'>Padre / Madre</Radio>
-            <br />
-            <Radio value='Hermano/a'>Hermano/a</Radio>
-            <br />
-            <Radio value='Hijo/a'>Hijo/a</Radio>
-            <br />
-            <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-            <br />
-            <Radio value='Tío/a'>Tío/a</Radio>
-            <br />
-            <Radio value='Sobrino/a'>Sobrino/a</Radio>
-            <br />
-            <Radio value='Abuelo/a'>Abuelo/a</Radio>
-            <br />
-            <Radio value='Nieto/a'>Nieto/a</Radio>
-            <br />
-            <Radio value='Otro'>Otro</Radio>
-          </Radio.Group>
-        </Form.Item>
-      )}
+
+      <Form.Item
+        label='Parentesco'
+        name='authParentesco'
+        initialValue='Cónyuge (Compañero/a Permanente)'
+        rules={[{ required: true }]}
+      >
+        <Radio.Group onChange={onChangeParentesco}>
+          <Radio value='Padre / Madre'>Padre / Madre</Radio>
+          <br />
+          <Radio value='Hermano/a'>Hermano/a</Radio>
+          <br />
+          <Radio value='Hijo/a'>Hijo/a</Radio>
+          <br />
+          <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
+          <br />
+          <Radio value='Tío/a'>Tío/a</Radio>
+          <br />
+          <Radio value='Sobrino/a'>Sobrino/a</Radio>
+          <br />
+          <Radio value='Abuelo/a'>Abuelo/a</Radio>
+          <br />
+          <Radio value='Nieto/a'>Nieto/a</Radio>
+          <br />
+          <Radio value='Otro'>Otro</Radio>
+        </Radio.Group>
+      </Form.Item>
+
 
       {isOtherParentesco && (
         <Form.Item
