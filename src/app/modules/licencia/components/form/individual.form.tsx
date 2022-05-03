@@ -100,8 +100,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
       const informationUser = await api.GetInformationUser(userres);
-      console.log('User=========');
-      console.log(userres);
 
       setSex(sexo);
       setUser(userres);
@@ -116,10 +114,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       if (informationUser.tipoIdentificacion == 5) {
         setIsPersonNatural(false);
-        console.log('el usuario es juridico');
       } else {
         setIsPersonNatural(true);
-        console.log('el usuario es natural');
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -411,7 +407,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               }
             });
           });
-          console.log(supportDocuments);
+
           formData.append('containerName', container);
           formData.append('oid', accountIdentifier);
           await api.uploadFiles(formData);

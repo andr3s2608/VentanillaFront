@@ -24,7 +24,7 @@ export const Gridview = (props: IDataSource) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [solicitud, setSolicitud] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [Validacion, setValidacion] = useState<string | undefined>();
+  const [Validacion, setValidacion] = useState<string>('0');
   const Paginas: number = 10;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -36,6 +36,7 @@ export const Gridview = (props: IDataSource) => {
       const mysRoles = await api.GetRoles();
 
       setroles(mysRoles);
+
       setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,88 +57,45 @@ export const Gridview = (props: IDataSource) => {
   var apellido: any;
   var nombres: any;
   var apellidos: any;
-  var identify: any;
+  var identify: string;
   var tipotramite: any;
 
   const Renovar = (datos: any) => {
-    if (datos == undefined) {
-      datos = data;
-    }
-
-    if (Tipo.rol == 'Ciudadano') {
-      nombre = datos.reduce((result: any, item: { nombre: any }) => {
-        return `${result}${item.nombre}|`;
-      }, '');
-
-      apellido = datos.reduce((result: any, item: { apellido: any }) => {
-        return `${result}${item.apellido}|`;
-      }, '');
-
-      identify = datos.reduce((result: any, item: { nroIdentificacionFallecido: any }) => {
-        return `${result}${item.nroIdentificacionFallecido}|`;
-      }, '');
-      tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
-        return `${result}${item.tramite}|`;
-      }, '');
+    if (data.length == 0) {
     } else {
-      nombre = datos.reduce((result: any, item: { persona: { primerNombre: any }[] }) => {
-        return `${result}${item.persona[0].primerNombre}|`;
-      }, '');
+      if (datos == undefined) {
+        datos = data;
+      }
 
-      nombres = datos.reduce((result: any, item: { persona: { segundoNombre: any }[] }) => {
-        return `${result}${item.persona[0].segundoNombre}|`;
-      }, '');
-      apellido = datos.reduce((result: any, item: { persona: { primerApellido: any }[] }) => {
-        return `${result}${item.persona[0].primerApellido}|`;
-      }, '');
-      apellidos = datos.reduce((result: any, item: { persona: { segundoApellido: any }[] }) => {
-        return `${result}${item.persona[0].segundoApellido}|`;
-      }, '');
+      if (Tipo.rol == 'Ciudadano') {
+        identify = datos.reduce((result: any, item: { nroIdentificacionFallecido: any }) => {
+          return `${result}${item.nroIdentificacionFallecido}|`;
+        }, '');
+        tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
+          return `${result}${item.tramite}|`;
+        }, '');
+      } else {
+        const { persona } = datos;
 
-      identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
-        return `${result}${item.persona[0].numeroIdentificacion}|`;
-      }, '');
+        identify = '';
+        for (let index = 0; index < data.length; index++) {
+          identify = identify + datos[index]['persona'][0]['numeroIdentificacion'] + '|';
+        }
 
-      tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
-        return `${result}${item.idTramite}|`;
-      }, '');
+        // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
+        // return `${result}${item['persona']['numeroIdentificacion']}|`;
+        // }, '');
+
+        tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
+          return `${result}${item.idTramite}|`;
+        }, '');
+      }
     }
   };
 
   if (Validacion == '1') {
     Renovar(undefined);
   }
-
-  const nombrecompleto = () => {
-    const posicioninicial = 0;
-
-    if (Tipo.rol == 'Ciudadano') {
-      var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
-      nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
-
-      var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
-      apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
-      var cadena = primernombre + ' ' + primerapellido;
-
-      return cadena;
-    } else {
-      var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
-      nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
-
-      var segundonombre = nombres.substring(posicioninicial, nombres.indexOf('|'));
-      nombres = nombres.substring(nombres.indexOf('|') + 1, nombres.length);
-
-      var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
-      apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
-
-      var segundoapellido = apellidos.substring(posicioninicial, apellidos.indexOf('|'));
-      apellidos = apellidos.substring(apellidos.indexOf('|') + 1, apellidos.length);
-
-      var cadena = primernombre + ' ' + segundonombre + ' ' + primerapellido + ' ' + segundoapellido;
-
-      return cadena;
-    }
-  };
 
   const identificacion = () => {
     const posicioninicial = 0;

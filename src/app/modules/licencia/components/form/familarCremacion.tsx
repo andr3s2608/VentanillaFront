@@ -91,10 +91,8 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
 
       if (informationUser.tipoIdentificacion == 5) {
         setIsPersonNatural(false);
-        console.log('el usuario es juridico');
       } else {
         setIsPersonNatural(true);
-        console.log('el usuario es natural');
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

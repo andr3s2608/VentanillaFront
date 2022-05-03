@@ -63,7 +63,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [nombre, setnombre] = useState<string | undefined>();
   const [apellido, setapellido] = useState<string | undefined>();
   const [fecha, setfecha] = useState<string | undefined>();
-  const [estado, setestado] = useState<string | undefined>();
+  const [estado, setestado] = useState<string>('');
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
@@ -386,8 +386,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     setsolicitante(solicitante[0]['nombreSolicitante']);
     setapellido(solicitante[0]['apellidoSolicitante']);
-    setestado('En tramite');
+    setestado('En trámite');
     setfecha(objJosn.fechasol);
+    console.log(objJosn?.fechasol, ' Fecha de solicitud1');
+    console.log(objJosn.fechasol, ' Fecha de solicitud2');
     setDataTable(solicitante);
     showModal();
   };
@@ -462,6 +464,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const colorEstado = (estado: string) => {
     switch (estado) {
+      case 'En Trámite':
+        return (
+          <p className={'estado'} style={{ color: 'green' }}>
+            {estado}
+          </p>
+        );
       case 'Aprobado validador de documentos':
         return (
           <p className={'estado'} style={{ color: 'green' }}>
@@ -505,14 +513,25 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     },
     {
       title: 'Fecha de Solicitud',
-      dataIndex: objJosn.fechasol,
-      key: 'apellidoSolicitante'
+      dataIndex: '',
+      key: 'apellidoSolicitante',
+      render: (Text: string) => (
+        <Form.Item label='' name=''>
+          <text>{fecha}</text>
+        </Form.Item>
+      )
     },
     {
       title: 'Estado',
-      dataIndex: 'estadoNuevo',
+      dataIndex: '',
       key: 'estadoNuevo',
-      render: (estado: string) => <> {colorEstado(estado)}</>
+      render: (estadon: string) => (
+        <>
+          <Form.Item label='' name=''>
+            <text>{estado}</text>
+          </Form.Item>{' '}
+        </>
+      )
     },
 
     {

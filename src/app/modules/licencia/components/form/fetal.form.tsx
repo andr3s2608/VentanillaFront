@@ -108,8 +108,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLLocalidades(localidades);
       setListas(resp);
       setLMunicipios(listMunicipio);
-      console.log('=========');
-      console.log(listMunicipio);
+
       setLAreas(upzLocalidad);
       onChangeArea(idupz);
       if (isEdit) {
@@ -315,8 +314,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           munres = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
           break;
       }
-      console.log(dep, 'departamento');
-      console.log(mun, 'municipio');
+
       //JSon con lso datos seteadosde la solicitud
       const json: IRegistroLicencia<any> = {
         solicitud: {
