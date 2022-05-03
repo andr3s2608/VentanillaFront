@@ -82,7 +82,7 @@ const RegistroPage: React.FC<any> = (props) => {
     setIsColombia(value === idColombia);
 
     if (isColombia) {
-      form.setFieldsValue({ state: 3, city: 179 });
+      form.setFieldsValue({ state: 1, city: 11001000 });
     }
 
     form.setFieldsValue({ state: undefined, city: undefined, cityLive: undefined });
