@@ -388,8 +388,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     setapellido(solicitante[0]['apellidoSolicitante']);
     setestado('En trámite');
     setfecha(objJosn.fechasol);
-    console.log(objJosn?.fechasol, ' Fecha de solicitud1');
-    console.log(objJosn.fechasol, ' Fecha de solicitud2');
+
     setDataTable(solicitante);
     showModal();
   };
