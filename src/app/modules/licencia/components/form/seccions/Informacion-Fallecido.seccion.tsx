@@ -23,7 +23,12 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [valorR, setValorR] = useState<string | undefined>();
+  const [NOMBRES, setNOMBRES] = useState<string | undefined>();
+  const [NROIDENT, setNROIDENT] = useState<string | undefined>();
 
+  const [SEXO, setSEXO] = useState<string | undefined>();
+  const [FECHA_DEFUNCION, setFECHA_DEFUNCION] = useState<string | undefined>();
   const getListas = useCallback(async () => {
     console.log('entro');
     const dep = dominioService.get_departamentos_colombia();
@@ -198,8 +203,20 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const onClickViewFallecido = async (idSolicitud: string) => {
     const all = await api.getCertificado(idSolicitud);
+    console.log(obj?.certificado);
+    console.log(all);
+    if (all) {
+      setNumeroCertificado(all.numeroCertificado);
+      setNOMBRES(all['NOMBRE20']);
+      setFECHA_DEFUNCION(all['FECHA_DEFUNCION7']);
+      setNROIDENT(all['NROIDENT18']);
+      console.log(all['NROIDENT18']);
+      setSEXO(all['SEXO3']);
+      setValorR('El certificado registrado es válido');
+    } else {
+      setValorR('El certificado registrado es inválido');
+    }
 
-    setNumeroCertificado(all);
     showModal();
   };
 
@@ -216,7 +233,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         <div className='contenedor'>
           datos del fallecido
           <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.idSolicitud)}>
+            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
               No. Certificado
             </Button>
           </Form.Item>
@@ -231,12 +248,56 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
           okButtonProps={{ hidden: true }}
           cancelText='Cerrar'
         >
-          <div className='alert text-center text-dark'>
-            <p>
-              {'El número de certificado de defunción ' + numero}
-              {numeroCertificado !== true ? ' no es válido' : ' es válido'}
-            </p>
-          </div>
+          {valorR && (
+            <>
+              {valorR == 'El certificado registrado es válido' && (
+                <>
+                  <div className='col-lg-12'>
+                    <p
+                      id='messageMortuary'
+                      className='text-center mt-4'
+                      style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                    >
+                      {valorR}
+                    </p>
+                  </div>
+                </>
+              )}
+              {valorR == 'El certificado registrado es inválido' && (
+                <>
+                  <div className='col-lg-12'>
+                    <p
+                      id='messageMortuary'
+                      className='text-center mt-4'
+                      style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                    >
+                      {valorR}
+                    </p>
+                  </div>
+                </>
+              )}
+              {valorR == 'El certificado registrado es válido' && (
+                <>
+                  <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                    <tbody>
+                      <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                        <th>NOMBRE</th>
+                        <th>FECHA</th>
+                        <th>NÚMERO IDENTIFICACIÓN</th>
+                        <th>GENERO</th>
+                      </tr>
+                      <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                        <td>{NOMBRES}</td>
+                        <td>{FECHA_DEFUNCION}</td>
+                        <td>{NROIDENT}</td>
+                        <td>{SEXO}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </>
+              )}
+            </>
+          )}
         </Modal>
       </Divider>
       <List
