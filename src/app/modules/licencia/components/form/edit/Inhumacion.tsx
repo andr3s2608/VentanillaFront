@@ -71,7 +71,7 @@ const formatObjJson = (obj: any, id: String) => {
       educationLevel: fallecido.idNivelEducativo,
       etnia: fallecido.idEtnia,
       regime: fallecido.idRegimen, //falta
-      deathType: fallecido.idTipoMuerte,
+      deathType: obj.idTipoMuerte,
 
       residencia: ubicacionPersona.idPaisResidencia,
       idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,
@@ -148,7 +148,7 @@ const formatObjJson = (obj: any, id: String) => {
       educationLevel: fallecido.idNivelEducativo,
       etnia: fallecido.idEtnia,
       regime: fallecido.idRegimen, //falta
-      deathType: fallecido.idTipoMuerte,
+      deathType: obj.idTipoMuerte,
 
       residencia: ubicacionPersona.idPaisResidencia,
       idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,

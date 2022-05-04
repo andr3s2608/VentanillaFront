@@ -171,7 +171,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       }
       let persona: any[] = [];
       var segunda = values.nationalidad2;
-      console.log(segunda, ' segunda nacionalidad');
+
       if (segunda == undefined) {
         segunda = '00000000-0000-0000-0000-000000000000';
       }
