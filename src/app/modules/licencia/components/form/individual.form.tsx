@@ -218,7 +218,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       if (segunda == undefined) {
         segunda = '00000000-0000-0000-0000-000000000000';
       }
-
+      console.log(values.cementerioPais, 'pais prueba');
       const json: IRegistroLicencia<any> = {
         solicitud: {
           numeroCertificado: values.certificado,

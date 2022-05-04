@@ -38,7 +38,6 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   });
 
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-
   const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
     [[], [], []]
   );
@@ -50,7 +49,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         dominioService.get_cementerios_bogota(),
         dominioService.get_type(ETipoDominio.Pais)
       ]);
-
+      console.log(resp);
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -177,7 +176,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
             <Form.Item label='País' name='cementerioPais' rules={[{ required: true }]} initialValue={obj?.cementerioPais}>
               <SelectComponent
                 options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
-                optionPropkey='descripcion  '
+                optionPropkey='id'
                 optionPropLabel='descripcion'
               />
             </Form.Item>
