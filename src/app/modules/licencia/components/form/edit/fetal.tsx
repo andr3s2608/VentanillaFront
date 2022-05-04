@@ -64,7 +64,7 @@ const formatObjJson = (obj: any) => {
     educationLevel: madre.idNivelEducativo,
     etnia: madre.idEtnia,
     regime: madre.idRegimen, //falta
-    deathType: madre.idTipoMuerte,
+    deathType: obj.idTipoMuerte,
 
     residencia: ubicacionPersona.idPaisResidencia,
     idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,

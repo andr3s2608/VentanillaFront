@@ -19,6 +19,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
 
@@ -46,15 +47,17 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
     props.form.setFieldsValue({ medicalSignatureIDNumber: undefined });
     const valor: string = value;
     if (valor == 'f1b570ee-f628-4438-a47f-6d7bff1f06d7' || valor == 'a4ee4462-f837-4dff-a800-5495c33ac3ce') {
-      setLongitudminima(10);
-      setLongitudmaxima(11);
-      setTipocampo('[a-zA-Z0-9]{11,11}');
+      setLongitudminima(6);
+      setLongitudmaxima(10);
+      setTipocampo('[a-zA-Z0-9]{6,10}');
+      setTipocampovalidacion(/[a-zA-Z0-9]/);
       setCampo('AlfaNuméricos(Numéros y letras)');
       setTipodocumento('Pasaporte y Cédula de Extranjería ');
     } else {
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
+      setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     }
@@ -96,7 +99,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           pattern={tipocampo}
           maxLength={longitudmaxima}
           onKeyPress={(event) => {
-            if (!/[a-zA-Z0-9]/.test(event.key)) {
+            if (!tipocampovalidacion.test(event.key)) {
               event.preventDefault();
             }
           }}

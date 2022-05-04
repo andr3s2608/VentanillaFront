@@ -51,10 +51,10 @@ export class ApiService {
 
   GetNivelEducativo = () => get<[]>({ endpoint: environments.shared, url: 'v1/NivelEducativo/GetNivelEducativo', id: '0' });
 
-  getCertificado = (solicitud: string) =>
+  getCertificado = (id: string) =>
     get<any>({
       endpoint: environments.endpointV1,
-      url: `CertificadoDefuncion/ValidateCertificadoDefuncion/73051461`,
+      url: `CertificadoDefuncion/ValidateCertificadoDefuncion/${id}`,
       id: '0'
     });
 

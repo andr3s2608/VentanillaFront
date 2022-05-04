@@ -50,7 +50,7 @@ const RegistroPage: React.FC<any> = (props) => {
         dominioService.get_departamentos_colombia(),
         api.getPaises()
       ]);
-      console.log(municipios);
+
       setLMunicipios(municipios);
       setLMunicipiosres(municipios);
       setListas(resp);
@@ -82,7 +82,7 @@ const RegistroPage: React.FC<any> = (props) => {
     setIsColombia(value === idColombia);
 
     if (isColombia) {
-      form.setFieldsValue({ state: 3, city: 179 });
+      form.setFieldsValue({ state: 1, city: 11001000 });
     }
 
     form.setFieldsValue({ state: undefined, city: undefined, cityLive: undefined });
@@ -156,7 +156,6 @@ const RegistroPage: React.FC<any> = (props) => {
       var mun: number = parseInt(mun1);
       switch (dep) {
         case 1:
-          console.log('entro');
           mun = 11001000;
           break;
       }
@@ -166,11 +165,10 @@ const RegistroPage: React.FC<any> = (props) => {
       var munres: number = parseInt(munres1);
       switch (depres) {
         case 1:
-          console.log('entro');
           munres = 11001000;
           break;
       }
-      console.log(mun + ' Municipio');
+
       if (fechavalidacion >= '1900') {
         const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
         const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
@@ -201,9 +199,7 @@ const RegistroPage: React.FC<any> = (props) => {
         };
 
         const resApi = await api.personaNatural(data);
-        console.log(resApi, ' resapi');
 
-        console.log(accountIdentifier + ' account');
         if (typeof resApi === 'number') {
           api.sendEmail({
             to: value.email,

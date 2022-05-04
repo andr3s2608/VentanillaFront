@@ -43,7 +43,6 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
           placeholder='Número de Certificado'
           autoComplete='off'
           maxLength={14}
-          minLength={6}
           onChange={(e) => onChange(e.target.value)}
           onKeyPress={(event) => {
             if (!/[0-9]/.test(event.key)) {

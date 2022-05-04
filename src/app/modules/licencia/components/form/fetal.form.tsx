@@ -56,6 +56,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   //#region Listados
@@ -74,7 +75,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
-  const [idBogotac, setIdBogota] = useState<string>('31211657-3386-420a-8620-f9c07a8ca491');
+  const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
   const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
   const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
@@ -108,8 +109,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLLocalidades(localidades);
       setListas(resp);
       setLMunicipios(listMunicipio);
-      console.log('=========');
-      console.log(listMunicipio);
+
       setLAreas(upzLocalidad);
       onChangeArea(idupz);
       if (isEdit) {
@@ -170,6 +170,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         numeroProtocoloins = '452022';
       }
       let persona: any[] = [];
+      var segunda = values.nationalidad2;
+
+      if (segunda == undefined) {
+        segunda = '00000000-0000-0000-0000-000000000000';
+      }
+
       if (tipoLicencia === 'Inhumación') {
         persona = [
           //madre
@@ -183,7 +189,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
             nacionalidad: values.nationalidadmother[0],
-            segundanacionalidad: values.nationalidad2,
+            segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
@@ -231,7 +237,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
             nacionalidad: values.nationalidadmother[0],
-            segundanacionalidad: values.nationalidad2,
+            segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
@@ -307,8 +313,15 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
           break;
       }
-      console.log(dep, 'departamento');
-      console.log(mun, 'municipio');
+
+      const depres = values.departamento;
+      var munres = values.city;
+      switch (depres) {
+        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+          munres = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+          break;
+      }
+
       //JSon con lso datos seteadosde la solicitud
       const json: IRegistroLicencia<any> = {
         solicitud: {
@@ -340,7 +353,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             idUbicacionPersona: obj?.idUbicacionPersona,
             idPaisResidencia: values.pais,
             idDepartamentoResidencia: values.departamento,
-            idCiudadResidencia: values.ciudad,
+            idCiudadResidencia: munres,
             idLocalidadResidencia: values.localidad,
             idAreaResidencia: values.area,
             idBarrioResidencia: values.barrio
@@ -653,16 +666,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const onChangeDepartamento = async (value: string) => {
-    form.resetFields(['ciudad', 'localidad', 'area', 'barrio']);
+    form.resetFields(['localidad', 'area', 'barrio']);
+    form.setFieldsValue({ ciudad: undefined });
     const depart = await dominioService.get_departamentos_colombia();
     let departamento = (await depart).filter((i) => i.idDepartamento == value);
     const { idDepartamento } = departamento[0];
 
     if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIdBogota('31211657-3386-420a-8620-f9c07a8ca491');
-      setIsBogota(false);
-    } else {
+      setIdBogota('Bogotá D.C.');
       setIsBogota(true);
+    } else {
+      setIsBogota(false);
       setIdBogota('');
     }
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
@@ -719,6 +733,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
+      setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
@@ -726,6 +741,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         setLongitudminima(10);
         setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
+        setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
       } else {
@@ -733,19 +749,22 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           setLongitudminima(15);
           setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
+          setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminima(10);
             setLongitudmaxima(11);
-            setTipocampo('[0-9]{10,11}');
+            setTipocampo('[a-zA-Z0-9]{10,11}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
             setLongitudminima(6);
             setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }
@@ -841,7 +860,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 pattern={tipocampo}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9]/.test(event.key)) {
+                  if (!tipocampovalidacion.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -1011,18 +1030,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
 
             {isColombia ? (
-              <Form.Item
-                label='Ciudad de Residencia'
-                initialValue={obj?.idCiudadResidencia ?? idBogotac}
-                name='ciudad'
-                rules={[{ required: true }]}
-              >
+              <Form.Item label='Ciudad de Residencia' initialValue={idBogotac} name='ciudad' rules={[{ required: true }]}>
                 <SelectComponent
                   options={l_municipios}
                   optionPropkey='idMunicipio'
                   optionPropLabel='descripcion'
                   onChange={onChangeMunicipio}
                   value={idBogotac}
+                  searchValue={idBogotac}
                 />
               </Form.Item>
             ) : (
@@ -1046,7 +1061,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 options={l_localidades}
                 optionPropkey='idLocalidad'
                 optionPropLabel='descripcion'
-                disabled={isBogota}
+                disabled={!isBogota}
                 onChange={onChangeLocalidad}
               />
             </Form.Item>
@@ -1061,7 +1076,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 options={l_areas}
                 optionPropkey='idUpz'
                 optionPropLabel='descripcion'
-                disabled={isBogota}
+                disabled={!isBogota}
                 onChange={onChangeArea}
               />
             </Form.Item>
@@ -1072,7 +1087,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               name='barrio'
               rules={[{ required: isBogota }]}
             >
-              <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={isBogota} />
+              <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
             </Form.Item>
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>

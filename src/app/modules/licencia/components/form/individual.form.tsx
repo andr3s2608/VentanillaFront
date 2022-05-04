@@ -51,13 +51,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [inputVal, setInputVal] = useState('');
-
+  const pruebatipo = /[0-9]/;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const [sex, setSex] = useState<[]>([]);
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
+  const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
   const [certif, setcertif] = useState(false);
   const [emailcem, setEmailcem] = useState(false);
   const [emailfun, setEmailfun] = useState(false);
@@ -66,12 +67,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
   const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(6);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{6,10}');
+  const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
   const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
   //create o edit
@@ -95,9 +98,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Regimen),
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
+
       const sexo = await api.GetSexo();
-      setSex(sexo);
       const userres = await api.getCodeUser();
+      const informationUser = await api.GetInformationUser(userres);
+
+      setSex(sexo);
       setUser(userres);
       setListas(resp);
 
@@ -106,6 +112,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         const typeList = await api.GetAllTypeValidation();
         setSupports(support);
         setType(typeList);
+      }
+
+      if (informationUser.tipoIdentificacion == 5) {
+        setIsPersonNatural(false);
+      } else {
+        setIsPersonNatural(true);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,6 +213,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
           break;
       }
+      var segunda = values.nationalidad2;
+
+      if (segunda == undefined) {
+        segunda = '00000000-0000-0000-0000-000000000000';
+      }
 
       const json: IRegistroLicencia<any> = {
         solicitud: {
@@ -229,7 +246,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               segundoApellido: values.secondSurname,
               fechaNacimiento: values.dateOfBirth,
               nacionalidad: values.nationalidad[0],
-              segundanacionalidad: values.nationalidad2,
+              segundanacionalidad: segunda,
               otroParentesco: null,
               idEstadoCivil: values.civilStatus,
               idNivelEducativo: values.educationLevel,
@@ -397,7 +414,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               }
             });
           });
-          console.log(supportDocuments);
+
           formData.append('containerName', container);
           formData.append('oid', accountIdentifier);
           await api.uploadFiles(formData);
@@ -520,6 +537,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
+      setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
@@ -527,6 +545,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         setLongitudminima(10);
         setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
+        setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
       } else {
@@ -534,19 +553,22 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           setLongitudminima(15);
           setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
+          setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminima(10);
             setLongitudmaxima(11);
-            setTipocampo('[0-9]{10,11}');
+            setTipocampo('[a-zA-Z0-9]{10,11}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
             setLongitudminima(6);
             setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }
@@ -558,10 +580,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ mauthIDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminimaautoriza(6);
       setLongitudmaximaautoriza(10);
       setTipocampoautoriza('[0-9]{6,10}');
+      setTipocampovalidacionautoriza(/[0-9]/);
       setCampoautoriza('Numéricos');
       setTipodocumentoautoriza('Cédula de Ciudadanía');
     } else {
@@ -569,6 +593,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         setLongitudminimaautoriza(10);
         setLongitudmaximaautoriza(11);
         setTipocampoautoriza('[0-9]{10,11}');
+        setTipocampovalidacionautoriza(/[0-9]/);
         setCampoautoriza('Numéricos');
         setTipodocumentoautoriza('Tarjeta de Identidad ');
       } else {
@@ -576,19 +601,22 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           setLongitudminimaautoriza(15);
           setLongitudmaximaautoriza(15);
           setTipocampoautoriza('[0-9]{15,15}');
+          setTipocampovalidacionautoriza(/[0-9]/);
           setCampoautoriza('Numéricos');
           setTipodocumentoautoriza('Permiso Especial de Permanencia');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminimaautoriza(10);
             setLongitudmaximaautoriza(11);
-            setTipocampoautoriza('[0-9]{10,11}');
+            setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
+            setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
             setCampoautoriza('AlfaNuméricos(Numéros y letras)');
             setTipodocumentoautoriza('Registro Civil de Nacimiento y Numero único de identificacíon personal');
           } else {
             setLongitudminimaautoriza(6);
             setLongitudmaximaautoriza(10);
             setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
+            setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
             setCampoautoriza('AlfaNuméricos(Numéros y letras)');
             setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
           }
@@ -769,7 +797,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 pattern={tipocampo}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9]/.test(event.key)) {
+                  if (!tipocampovalidacion.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -848,7 +876,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     pattern={tipocampo}
                     maxLength={longitudmaxima}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9]/.test(event.key)) {
+                      if (!tipocampovalidacion.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -969,10 +997,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         type='text'
                         placeholder='Número Identificación'
                         autoComplete='off'
-                        pattern={tipocampo}
-                        maxLength={longitudmaxima}
+                        pattern={tipocampoautoriza}
+                        maxLength={longitudmaximaautoriza}
                         onKeyPress={(event) => {
-                          if (!/[a-zA-Z0-9]/.test(event.key)) {
+                          if (!tipocampovalidacionautoriza.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -985,13 +1013,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                             title: 'Datos invalidos',
                             text:
                               'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
-                              tipodocumento +
+                              tipodocumentoautoriza +
                               ' solo se admiten valores ' +
-                              campo +
+                              campoautoriza +
                               ' de longitud entre ' +
-                              longitudminima +
+                              longitudminimaautoriza +
                               ' y ' +
-                              longitudmaxima
+                              longitudmaximaautoriza
                           });
                         }}
                       />
@@ -1083,6 +1111,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     </Form.Item>
 
                     <AutorizacionCremacion form={form} tipoLicencia={tipoLicencia} />
+
                     <Form.Item
                       label='Parentesco'
                       initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
@@ -1127,45 +1156,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             )}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-            {!isCremacion && (
-              <Form.Item
-                label='Parentesco'
-                initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
-                name='authParentesco'
-                rules={[{ required: true }]}
-              >
-                <Radio.Group onChange={onChangeParentesco}>
-                  <Radio value='Padre / Madre'>Padre / Madre</Radio>
-                  <br />
-                  <Radio value='Hermano/a'>Hermano/a</Radio>
-                  <br />
-                  <Radio value='Hijo/a'>Hijo/a</Radio>
-                  <br />
-                  <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                  <br />
-                  <Radio value='Tío/a'>Tío/a</Radio>
-                  <br />
-                  <Radio value='Sobrino/a'>Sobrino/a</Radio>
-                  <br />
-                  <Radio value='Abuelo/a'>Abuelo/a</Radio>
-                  <br />
-                  <Radio value='Nieto/a'>Nieto/a</Radio>
-                  <br />
-                  <Radio value='Otro'>Otro</Radio>
-                </Radio.Group>
-              </Form.Item>
-            )}
-            {isOtherParentesco && (
-              <Form.Item
-                className='fadeInRight'
-                label='Otro... ¿Cúal?'
-                name='authOtherParentesco'
-                initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
-                rules={[{ required: true }]}
-              >
-                <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
-              </Form.Item>
-            )}
             <CementerioInfoFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>

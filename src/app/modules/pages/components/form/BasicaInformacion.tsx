@@ -16,6 +16,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
 
@@ -51,6 +52,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
       setLongitudminima(6);
       setLongitudmaxima(10);
       setTipocampo('[0-9]{6,10}');
+      setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
     } else {
@@ -58,6 +60,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
         setLongitudminima(10);
         setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
+        setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
       } else {
@@ -65,6 +68,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           setLongitudminima(10);
           setLongitudmaxima(10);
           setTipocampo('[0-9-]{10,10}');
+          setTipocampovalidacion(/[0-9-]/);
           setCampo('Numéricosy guion');
           setTipodocumento('NIT');
         } else {
@@ -72,12 +76,14 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             setLongitudminima(15);
             setLongitudmaxima(15);
             setTipocampo('[0-9]{15,15}');
+            setTipocampovalidacion(/[0-9]/);
             setCampo('Numéricos');
             setTipodocumento('Permiso Especial de Permanencia');
           } else {
             setLongitudminima(6);
             setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
+            setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte y Cédula de Extranjería ');
           }
@@ -181,7 +187,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           pattern={tipocampo}
           maxLength={longitudmaxima}
           onKeyPress={(event) => {
-            if (!/[a-zA-Z0-9-]/.test(event.key)) {
+            if (!tipocampovalidacion.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -245,7 +251,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='email@example.com'
           autoComplete='off'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
+            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -257,7 +263,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           placeholder='email@example.com'
           autoComplete='off'
           onKeyPress={(event) => {
-            if (!/[a-zA0-9ZñÑáéíóúÁÉÍÓÚ.@_-]/.test(event.key)) {
+            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
               event.preventDefault();
             }
           }}
