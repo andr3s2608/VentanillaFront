@@ -75,7 +75,8 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const segundoapellido = obj?.secondSurname;
   //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
-  const tipo = obj?.deathType ?? '475c280d-67af-47b0-a8bc-de420f6ac740';
+
+  const tipo = obj?.deathType;
 
   //#endregion
 
@@ -201,14 +202,13 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const onClickViewFallecido = async (idSolicitud: string) => {
     const all = await api.getCertificado(idSolicitud);
-    console.log(obj?.certificado);
-    console.log(all);
+
     if (all) {
       setNumeroCertificado(all.numeroCertificado);
       setNOMBRES(all['NOMBRE20']);
       setFECHA_DEFUNCION(all['FECHA_DEFUNCION7']);
       setNROIDENT(all['NROIDENT18']);
-      console.log(all['NROIDENT18']);
+
       setSEXO(all['SEXO3']);
       setValorR('El certificado registrado es válido');
     } else {

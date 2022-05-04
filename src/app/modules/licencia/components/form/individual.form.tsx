@@ -214,7 +214,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           break;
       }
       var segunda = values.nationalidad2;
-      console.log(segunda, ' segunda nacionalidad');
+
       if (segunda == undefined) {
         segunda = '00000000-0000-0000-0000-000000000000';
       }
@@ -580,8 +580,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ mauthIDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
-    console.log(valor, 'valor');
-    console.log(valorupper, 'valor');
+
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminimaautoriza(6);
       setLongitudmaximaautoriza(10);
