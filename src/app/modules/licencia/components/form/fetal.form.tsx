@@ -421,7 +421,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           const name = names[i];
 
           formData.append('file', item);
-          formData.append('nameFile', name);
+          formData.append('nameFile', name + '_' + resp);
 
           TypeDocument.forEach((item: any) => {
             ///comprueba que documentos se subieron dependiendo de la solicitud
@@ -433,7 +433,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   idDocumentoSoporte: support.idDocumentoSoporte,
                   idSolicitud: resp,
                   idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
+                  path: `${accountIdentifier}/${name}_${resp}`,
                   idUsuario: accountIdentifier,
                   fechaModificacion: new Date()
                 });
@@ -441,7 +441,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 supportDocumentsEdit.push({
                   idSolicitud: resp,
                   idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
+                  path: `${accountIdentifier}/${name}_${resp}`,
                   idUsuario: accountIdentifier
                 });
               }
@@ -483,14 +483,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             const name = names[i];
 
             formData.append('file', file);
-            formData.append('nameFile', name);
+            formData.append('nameFile', name + '_' + resp);
 
             TypeDocument.forEach((item: any) => {
               if (item.key === name.toString()) {
                 supportDocuments.push({
                   idSolicitud: resp,
                   idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
+                  path: `${accountIdentifier}/${name}_${resp}`,
                   idUsuario: accountIdentifier
                 });
               }

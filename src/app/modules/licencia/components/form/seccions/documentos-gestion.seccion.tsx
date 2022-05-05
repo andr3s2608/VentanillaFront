@@ -61,8 +61,9 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   var validara = 0;
   const validar = () => {
     const posicioninicial = stringData.indexOf('/');
-    const posicionfinal = stringData.indexOf('|');
+    var posicionfinal = stringData.indexOf('_');
     var cadena = stringData.substring(posicioninicial + 1, posicionfinal);
+    posicionfinal = stringData.indexOf('|');
     stringData = stringData.substring(posicionfinal + 1, stringData.length);
 
     return cadena;
@@ -125,6 +126,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     }
 
     let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
+    console.log(pathFull + ' path');
 
     setUrlPdf(api.GetUrlPdf(pathFull));
     /**
