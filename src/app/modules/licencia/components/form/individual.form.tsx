@@ -28,6 +28,7 @@ import { DeathInstituteFormSeccion, KeysForm as KeyFormDeathInstitute } from './
 import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from './seccions/medical-signature.form-seccion';
 import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
+import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './seccions/datoSolicitanteAdd';
 import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
 
 // Servicios
@@ -473,6 +474,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     onNextStep([
       ...KeyFormSolicitudInfo,
       ...KeyFormCementerio,
+      ...KeyFormSolicitante,
       'authIDType',
       'mauthIDNumber',
       'authName',
@@ -1156,6 +1158,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             )}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
+            <DatoSolicitanteAdd form={form} obj={objJosn} />
             <CementerioInfoFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>

@@ -7,8 +7,13 @@ import Input from 'antd/es/input';
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { TypeLicencia } from 'app/shared/utils/types.util';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ApiService } from 'app/services/Apis.service';
 import moment from 'moment';
+
+import { ICementerio } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+
 import Swal from 'sweetalert2';
 
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
@@ -19,15 +24,24 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
-
-  //#region Cargar Listas
   const { obj, prop, form } = props;
+  const lugarFuneraria = obj?.isLugar();
+  const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
+  const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
+
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+  //#region Cargar Listas
+
   const getLista = useCallback(
     async () => {
       const resp = await Promise.all([
         dominioService.get_type(ETipoDominio['Tipo de Profesional']),
         dominioService.get_type(ETipoDominio['Tipo Documento'])
       ]);
+
+      const funeraria = await api.GetFunerarias();
+      setLfunerarias(funeraria);
       setLTipoDocumento(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,6 +136,22 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
+    return (
+      <>
+        <Form.Item
+          className='fadeInRight'
+          label='Funeraria de Bogotá D.C. y/o Solicitante'
+          name='funerariaBogota'
+          initialValue={obj?.cementerioBogota ? obj?.cementerioBogota : 'PARTICULAR'}
+          rules={[{ required: true }]}
+        >
+          <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+        </Form.Item>
+      </>
+    );
+  };
+
   return (
     <>
       <Form.Item label='Tipo documento' initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'} required={true} name='fiscalia'>
@@ -209,11 +239,32 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           id='emailsol'
         />
       </Form.Item>
+      <div>{renderFormFuneria(lugarfuneraria)}</div>
+      <Form.Item
+        label='Email Funeraria y/o solicitante'
+        name='emailfuneraria'
+        rules={[{ required: true, type: 'email', max: 50 }]}
+      >
+        <Input
+          allowClear
+          placeholder='Email Funeraria'
+          type='email'
+          onKeyPress={(event) => {
+            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+              event.preventDefault();
+            }
+          }}
+          //onChange={(e) => cambioemailFUN(e.target.value)}
+          autoComplete='off'
+        />
+      </Form.Item>
     </>
   );
 };
+export const KeysForm = ['fiscalia', 'ndoc', 'namesolicitudadd', 'lastnamesolicitudadd', 'emailsolicitudadd', 'emailfuneraria'];
 interface ISolicitudInfoProps<T> {
   obj: any;
   prop: any;
   form: any;
 }
+type TypeLugarFuneraria = 'Dentro de Bogotá';

@@ -18,6 +18,7 @@ import { DeathInstituteFormSeccion, KeysForm as KeyFormDeathInstitute } from './
 import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from './seccions/medical-signature.form-seccion';
 import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
+import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './seccions/datoSolicitanteAdd';
 import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
 
 // Servicios
@@ -76,9 +77,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
+  const [idupz, setidupz] = useState<string>('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+  const [idbarrio, setidbarrio] = useState<string>('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
-  const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
-  const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   //const obj: any = EditFetal();
@@ -556,6 +558,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       ...KeyFormDeathInstitute,
       ...KeyFormSolicitudInfo,
       ...KeyFormCementerio,
+      ...KeyFormSolicitante,
       'deathType',
       'authIDType',
       'authName',
@@ -656,17 +659,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const onChangePais = (value: string) => {
-    form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
+  const onChangePais = async (value: string) => {
     setIsColombia(value === idColombia);
     setLMunicipios([]);
     setIsBogota(false);
-    setLAreas([]);
-    setLBarrios([]);
+    const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
+    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    setLBarrios(respBarrios);
+    setLAreas(respArea);
+    setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
+    form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
   };
 
   const onChangeDepartamento = async (value: string) => {
-    form.resetFields(['localidad', 'area', 'barrio']);
     form.setFieldsValue({ ciudad: undefined });
     const depart = await dominioService.get_departamentos_colombia();
     let departamento = (await depart).filter((i) => i.idDepartamento == value);
@@ -682,9 +688,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
     const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
-    const respBarrios = await dominioService.get_barrio_by_upz(idupz);
+    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
     setLBarrios(respBarrios);
     setLAreas(respArea);
+    setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
+    form.resetFields(['localidad', 'area', 'barrio']);
   };
 
   const onChangeMunicipio = (value: string) => {
@@ -693,16 +702,30 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const onChangeLocalidad = async (value: string) => {
-    form.resetFields(['area', 'barrio']);
     const resp = await dominioService.get_upz_by_localidad(value);
+    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    if (value == idlocalidad) {
+      setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    } else {
+      setidupz('');
+    }
+
+    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
     setLAreas(resp);
-    setLBarrios([]);
+    setLBarrios(respBarrios);
+    form.resetFields(['area', 'barrio']);
   };
 
   const onChangeArea = async (value: string) => {
-    form.resetFields(['barrio']);
+    if (value == 'd869bc18-4fca-422a-9a09-a88d3911dc8c') {
+      setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
+    } else {
+      setidbarrio('');
+    }
+
     const resp = await dominioService.get_barrio_by_upz(value);
     setLBarrios(resp);
+    form.resetFields(['barrio']);
   };
   const onChangeParentesco = (e: RadioChangeEvent) => {
     form.resetFields(['authOtherParentesco']);
@@ -1043,11 +1066,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             ) : (
               <Form.Item
                 label='Ciudad de Residencia'
-                name='ciudad'
+                name='ciudadfuera'
                 initialValue={obj?.idCiudadResidencia}
                 rules={[{ required: true }]}
               >
-                <Input allowClear placeholder='Ciudad' autoComplete='off' />
+                <Input
+                  allowClear
+                  placeholder='Ciudad'
+                  autoComplete='off'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                />
               </Form.Item>
             )}
 
@@ -1074,6 +1106,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             >
               <SelectComponent
                 options={l_areas}
+                defaultValue={idupz}
                 optionPropkey='idUpz'
                 optionPropLabel='descripcion'
                 disabled={!isBogota}
@@ -1087,7 +1120,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               name='barrio'
               rules={[{ required: isBogota }]}
             >
-              <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
+              <SelectComponent
+                options={l_barrios}
+                defaultValue={idbarrio}
+                optionPropkey='idBarrio'
+                optionPropLabel='descripcion'
+                disabled={!isBogota}
+              />
             </Form.Item>
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
@@ -1128,6 +1167,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} objJosn={obj} />}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
+            <DatoSolicitanteAdd form={form} obj={obj} />
             <CementerioInfoFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>

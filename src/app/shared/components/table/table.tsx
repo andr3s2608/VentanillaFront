@@ -78,8 +78,10 @@ export const Gridview = (props: IDataSource) => {
         const { persona } = datos;
 
         identify = '';
-        for (let index = 0; index < data.length; index++) {
-          identify = identify + datos[index]['persona'][0]['numeroIdentificacion'] + '|';
+        console.log(datos + ' datos llego');
+        for (let index = 0; index < datos.length; index++) {
+          console.log(index + ' codigo');
+          identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
         }
 
         // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
@@ -317,6 +319,8 @@ export const Gridview = (props: IDataSource) => {
     //alert(pagination.current);
 
     var valor: any = data.at(0);
+    console.log(data[0].persona[0].numeroIdentificacion + ' persona');
+    console.log(data + ' data array');
     var array: any[] = [];
     for (let index = 0; index < data.length; index++) {
       if (index >= (pagination.current - 1) * 10) {
@@ -324,7 +328,8 @@ export const Gridview = (props: IDataSource) => {
         array.push(valor);
       }
     }
-
+    console.log(array);
+    console.log(array[0].persona[0].numeroIdentificacion + ' persona');
     Renovar(array);
   };
 

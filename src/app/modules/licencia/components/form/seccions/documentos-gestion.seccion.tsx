@@ -61,9 +61,14 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   var validara = 0;
   const validar = () => {
     const posicioninicial = stringData.indexOf('/');
-    var posicionfinal = stringData.indexOf('_');
-    var cadena = stringData.substring(posicioninicial + 1, posicionfinal);
-    posicionfinal = stringData.indexOf('|');
+    var posicion_ = 0;
+    for (let index = 0; index < stringData.indexOf('|'); index++) {
+      if (stringData.substring(index, index + 1) == '_') {
+        posicion_ = index;
+      }
+    }
+    var cadena = stringData.substring(posicioninicial + 1, posicion_);
+    const posicionfinal = stringData.indexOf('|');
     stringData = stringData.substring(posicionfinal + 1, stringData.length);
 
     return cadena;
