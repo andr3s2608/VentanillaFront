@@ -107,7 +107,7 @@ export class ApiService {
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetRequestByIdUser/${this.oid}`, id: '0' });
 
   GetDocumentoFallecido = (numero: string, persona: string) =>
-    get<[]>({ endpoint: environments.local, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
+    get<[]>({ endpoint: environments.inhcremacion, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
 
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
