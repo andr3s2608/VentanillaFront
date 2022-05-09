@@ -8252,12 +8252,15 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
 }
 .ant-form-item-label > label {
   position: relative;
-  display: inline-flex;
+  display: block;
   align-items: center;
-  height: 32px;
+  height: 50px;
   color: #3366cc;
-  font-size: 12px;
+  font-size: 15px;
+  margin-right: 40px;
+  white-space: pre-wrap;
 }
+
 .ant-form-item-label > label > .anticon {
   font-size: 12px;
   vertical-align: top;
