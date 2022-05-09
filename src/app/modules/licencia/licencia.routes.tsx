@@ -6,10 +6,15 @@ import { IRouteProps } from 'app/shared/components/router/access.route';
 /** Path principal del modulo. */
 export const licenciaPath = '/tramites-servicios/licencia';
 export const tramiteServicePath = '/tramites-servicios';
+export const tramiteAdmin = '/tramites-administrador';
 export const tramiteServiceReport = '/reportes/rayosx';
 
 // LazyLoad Pages
 const LicenciaPruebaPage = lazy(() => import('./pages/gestion-tramite/gestion-inhumacion.page'));
+const AdministrationFirmasPage = lazy(() => import('./pages/administracion/administracion-firmas.page'));
+const AdministrationHorarioPage = lazy(() => import('./pages/administracion/administracion-horario.page'));
+const AdministrationNotificacionPage = lazy(() => import('./pages/administracion/administracion-notificaciones.page'));
+const AdministrationReportePage = lazy(() => import('./pages/administracion/administracion-reportes.page'));
 const LicenciaCremacionIndividualPage = lazy(() => import('./pages/cremacion-individual/cremacion-individual.page'));
 const LicenciaInhumacionIndividualPage = lazy(() => import('./pages/inhumacion-individual/inhumacion-individual.page'));
 const LicenciaCremacionFetalPage = lazy(() => import('./pages/cremacion-fetal/cremacion-fetal.page'));
@@ -45,5 +50,21 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${tramiteServiceReport}`,
     component: ReportPage
+  },
+  {
+    path: `${tramiteAdmin}/firmas`,
+    component: AdministrationFirmasPage
+  },
+  {
+    path: `${tramiteAdmin}/horario`,
+    component: AdministrationHorarioPage
+  },
+  {
+    path: `${tramiteAdmin}/notificacion`,
+    component: AdministrationNotificacionPage
+  },
+  {
+    path: `${tramiteAdmin}/reporte`,
+    component: AdministrationReportePage
   }
 ];
