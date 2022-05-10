@@ -193,7 +193,7 @@ const RegistroPage: React.FC<any> = (props) => {
           sexo: value.sex, //listado sexo
           genero: value.gender, //lista quemada
           orientacionSexual: value.sexual_orientation, //lista quemada
-          etnia: value.ethnicity, //listado etnia
+          etnia: value.ethnicity ?? '', //listado etnia
           estadoCivil: value.estadoCivil, //lista quemada
           nivelEducativo: value.levelEducation //listado nivel educativo
         };

@@ -398,11 +398,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           institucionCertificaFallecimiento: {
             tipoIdentificacion: tipoidinst,
             numeroIdentificacion: numeroins,
-            razonSocial: razonSocialins,
+            razonSocial: razonSocialins ?? '',
             numeroProtocolo: numeroProtocoloins,
             numeroActaLevantamiento: values.instNumActaLevantamiento,
             fechaActa: moment(values.instFechaActa).format(formatDate),
-            seccionalFiscalia: values.instSeccionalFiscalia,
+            seccionalFiscalia: values.instSeccionalFiscalia ?? '',
             noFiscal: values.instNoFiscal,
             idTipoInstitucion: values.instType
           }
