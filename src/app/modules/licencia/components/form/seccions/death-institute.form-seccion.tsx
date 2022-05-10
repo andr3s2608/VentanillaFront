@@ -17,7 +17,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const { obj, tipoLicencia } = props;
+  const { obj, tipoLicencia, prop } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
@@ -83,6 +83,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
+      prop(6, 'deathinst');
     } else {
       if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
@@ -91,6 +92,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
+        prop(10, 'deathinst');
       } else {
         if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
@@ -99,6 +101,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
+          prop(15, 'deathinst');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminima(10);
@@ -107,6 +110,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('Numéricos');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            prop(10, 'deathinst');
           } else {
             setLongitudminima(6);
             setLongitudminima(10);
@@ -114,6 +118,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+            prop(6, 'deathinst');
           }
         }
       }
@@ -178,7 +183,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   icon: 'error',
                   title: 'Datos invalidos',
                   text:
-                    'Seccion:Institución que Certifica el Fallecimiento \n recuerde que para el tipo de documento4:' +
+                    'Sección:Institución que Certifica el Fallecimiento \n recuerde que para el tipo de documento4:' +
                     tipodocumento +
                     ' solo se admiten valores ' +
                     campo +
@@ -414,4 +419,5 @@ interface IDeathInstituteProps<T> {
   required: boolean;
   tipoLicencia: TypeLicencia;
   obj: any;
+  prop: any;
 }

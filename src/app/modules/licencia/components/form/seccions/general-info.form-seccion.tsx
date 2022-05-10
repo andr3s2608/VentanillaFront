@@ -12,7 +12,7 @@ import moment from 'moment';
 import { ITipoLicencia } from 'app/shared/utils/types.util';
 
 export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) => {
-  const { obj, prop } = props;
+  const { obj } = props;
   const [isHora, setIsHora] = useState<boolean>(true);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
@@ -95,6 +95,5 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
 
 interface IGeneralInfoProps<T> extends ITipoLicencia {
   obj: any;
-  prop: any;
 }
 export const KeysForm = ['certificado', 'date', 'time', 'sex'];

@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 
 export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> = (props) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
-  const { obj } = props;
+  const { obj, prop } = props;
   const { tipoLicencia } = props;
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
@@ -53,6 +53,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       setTipocampovalidacion(/[a-zA-Z0-9]/);
       setCampo('AlfaNuméricos(Numéros y letras)');
       setTipodocumento('Pasaporte y Cédula de Extranjería ');
+      prop(6, 'medico');
     } else {
       setLongitudminima(6);
       setLongitudmaxima(10);
@@ -60,6 +61,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
+      prop(6, 'medico');
     }
   };
   return (
@@ -111,7 +113,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
               icon: 'error',
               title: 'Datos invalidos',
               text:
-                'Seccion:Datos de Quien Certifica la defunción - Medico \n recuerde que para el tipo de documento: ' +
+                'Sección:Datos de Quien Certifica la defunción - Medico \n recuerde que para el tipo de documento: ' +
                 tipodocumento +
                 ' solo se admiten valores ' +
                 campo +
@@ -237,4 +239,5 @@ interface IMedicalSignatureProps<T> {
   form: FormInstance<T>;
   obj: any;
   tipoLicencia: any;
+  prop: any;
 }

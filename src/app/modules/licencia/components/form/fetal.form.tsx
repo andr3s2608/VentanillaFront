@@ -70,9 +70,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   >([]);
 
   const [type, setType] = useState<[]>([]);
-  const [emailsol, setEmailso] = useState(false);
-  const [emailcem, setEmailcem] = useState(false);
-  const [emailfun, setEmailfun] = useState(false);
+  const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
+  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
+  const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
+  const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
@@ -136,20 +137,22 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  const getData = (validacion: any, tipo: string) => {
-    if (tipo == '0') {
-      setEmailcem(validacion);
-    } else {
-      setEmailfun(validacion);
+  const getData = (longitud: number, procedencia: any) => {
+    if (procedencia === 'solicitante') {
+      setlongitudsolicitante(longitud);
+    }
+    if (procedencia === 'familiarautoriza') {
+      setlongitudfamiliaraut(longitud);
+    }
+    if (procedencia === 'deathinst') {
+      setlongituddeathinst(longitud);
+    }
+    if (procedencia === 'medico') {
+      setlongitudmedico(longitud);
     }
   };
-  const getDataSolicitante = (solicitante: any) => {
-    if (solicitante) {
-      setEmailso(true);
-    } else {
-      setEmailso(false);
-    }
-  };
+
+  const getDataSolicitante = (longitud: number) => {};
 
   const onSubmit = async (values: any) => {
     const certificado = values.certificado;
@@ -518,6 +521,131 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
   };
 
+  const PruebaCertificado = () => {
+    let numero: string = form.getFieldValue('certificado');
+    let numerodeath: string = form.getFieldValue('instNumIdent');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    if (numerodeath == undefined) {
+      numerodeath = '00000000000000000';
+    }
+
+    if (numero.length >= 6) {
+      if (numerodeath.length >= longituddeathinst) {
+        onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
+      });
+    }
+  };
+  const ValidacionMedico = () => {
+    let numero: string = form.getFieldValue('medicalSignatureIDNumber');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    onNextStep([...KeyFormMedicalSignature]);
+  };
+  const ValidacionAutorizador = () => {
+    let numero: string = form.getFieldValue('mauthIDNumber');
+    let numerosolicitante: string = form.getFieldValue('ndoc');
+    if (numerosolicitante == undefined) {
+      numerosolicitante = '0';
+    }
+
+    if (numero == undefined) {
+      numero = '00000000000000000000';
+    }
+
+    if (numero.length >= longitudfamiliaraut) {
+      if (numerosolicitante.length >= longitudsolicitante) {
+        onNextStep([
+          ...KeyFormSolicitudInfo,
+          ...KeyFormCementerio,
+          ...KeyFormSolicitante,
+          'deathType',
+          'authIDType',
+          'authName',
+          'authSecondName',
+          'authSurname',
+          'authSecondSurname',
+          'authParentesco',
+          'authOtherParentesco'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Identificación del Solicitante debe tener mínimo ${longitudsolicitante} Dígitos o Caracteres`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: `El Número de Identificación del Familiar que Autoriza debe tener mínimo ${longitudfamiliaraut} Dígitos o Caracteres`
+      });
+    }
+  };
+
+  const ValidacionMadre = async () => {
+    let numero: string = form.getFieldValue('IDNumber');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    const busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+    if (busqueda == null) {
+      if (numero.length >= longitudminima) {
+        onNextStep([
+          'name',
+          'secondName',
+          'surname',
+          'secondSurname',
+          'nationalidad',
+          'IDType',
+          'IDNumber',
+          'pais',
+          'departamento',
+          'ciudad',
+          'localidad',
+          'area',
+          'barrio',
+          'civilStatus',
+          'educationLevel',
+          'etnia'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
+        });
+      }
+    } else {
+      Swal.fire({
+        title: 'Usuario Registrado',
+        text: 'El Número de Identificación del Fallecido ya se Encuentra Registrado',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
+      });
+    }
+  };
+
   const onSubmitFailed = () => setStatus('error');
 
   const generateListFiles = (values: any, container: string) => {
@@ -553,22 +681,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   //metodo para permitir pasar si los correos son validos
-  const Prueba = () => {
-    onNextStep([
-      ...KeyFormDeathInstitute,
-      ...KeyFormSolicitudInfo,
-      ...KeyFormCementerio,
-      ...KeyFormSolicitante,
-      'deathType',
-      'authIDType',
-      'authName',
-      'authSecondName',
-      'authSurname',
-      'authSecondSurname',
-      'authParentesco',
-      'authOtherParentesco'
-    ]);
-  };
 
   const generateFormFiel = (tipoInstitucion: string): DocumentosSoporte[] => {
     let data: DocumentosSoporte[] = [];
@@ -813,7 +925,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' disabled={!inputVal} />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' disabled={!inputVal} />
           <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' disabled={!inputVal} />
-          {permiso?.rol === 'Funcionario' && isEdit ? (
+          {permiso?.rol !== 'Ciudadano' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
         </Steps>
@@ -828,9 +940,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion obj={obj} prop={undefined} tipoLicencia={'Cremación'} />
+            <GeneralInfoFormSeccion obj={obj} tipoLicencia={'Cremación'} />
             <LugarDefuncionFormSeccion form={form} obj={obj} />
-            <DeathInstituteFormSeccion obj={obj} form={form} datofiscal={true} required={false} tipoLicencia={tipoLicencia} />
+            <DeathInstituteFormSeccion
+              prop={getData}
+              obj={obj}
+              form={form}
+              datofiscal={true}
+              required={false}
+              tipoLicencia={tipoLicencia}
+            />
             <Divider orientation='right'> Tipo de Muerte </Divider>
             <Form.Item
               label='Tipo de Muerte'
@@ -843,11 +962,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-end'>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() => onNextStep([...KeyFormGeneralInfo, ...KeyFormLugarDefuncion])}
-                >
+                <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
                   Siguiente
                 </Button>
               </div>
@@ -895,7 +1010,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'Seccion: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
+                      'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
@@ -1133,30 +1248,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() =>
-                    onNextStep([
-                      'name',
-                      'secondName',
-                      'surname',
-                      'secondSurname',
-                      'nationalidad',
-                      'IDType',
-                      'IDNumber',
-                      'pais',
-                      'departamento',
-                      'ciudad',
-                      'localidad',
-                      'area',
-                      'barrio',
-                      'civilStatus',
-                      'educationLevel',
-                      'etnia'
-                    ])
-                  }
-                >
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMadre()}>
                   Siguiente
                 </Button>
               </div>
@@ -1164,18 +1256,18 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} objJosn={obj} />}
+            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
-            <DatoSolicitanteAdd form={form} obj={obj} />
-            <CementerioInfoFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
+            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button type='primary' htmlType='button' onClick={() => Prueba()}>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
                   Siguiente
                 </Button>
               </div>
@@ -1183,14 +1275,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <MedicalSignatureFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button type='primary' htmlType='button' onClick={() => onNextStep([...KeyFormMedicalSignature])}>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
                   Siguiente
                 </Button>
               </div>

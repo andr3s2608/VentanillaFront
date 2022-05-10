@@ -21,8 +21,14 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import Swal from 'sweetalert2';
+import 'app/shared/components/table/estilos.css';
+
+//Redux
+import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 
 const RegistroPage: React.FC<any> = (props) => {
+  const [direccionCompleta, setDireccionCompleta] = useState<string>('');
+  const [prueba, setPrueba] = useState<any>([]);
   const history = useHistory();
   const [form] = Form.useForm<any>();
   const [isColombia, setIsColombia] = useState(true);
@@ -58,6 +64,11 @@ const RegistroPage: React.FC<any> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  store.subscribe(() => {
+    const { direccion } = store.getState();
+    setDireccionCompleta(direccion.toString());
+  });
 
   const getListas2 = useCallback(
     async () => {
@@ -255,6 +266,18 @@ const RegistroPage: React.FC<any> = (props) => {
     } else {
       setAvenida(true);
     }
+    build_direction(0, valor);
+  };
+
+  const build_direction = (posicion: number, valor: string) => {
+    const { direccion } = store.getState();
+    let direccion_completa: string[] = direccion;
+    direccion_completa[posicion] = valor;
+
+    console.log(direccion_completa);
+
+    store.dispatch(SetDireccion(direccion_completa));
+    setDireccionCompleta(direccion_completa.toString());
   };
 
   return (
@@ -363,82 +386,168 @@ const RegistroPage: React.FC<any> = (props) => {
                                 estandarizar la dirección para el resto de ciudades.'
             type='info'
           />
-          <Form.Item label='Via Principal' name='ppla' rules={[{ required: true }]}>
-            <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
-          </Form.Item>
-          <Form.Item label='Número' name='Num1' rules={[{ required: avenida, max: 3 }]}>
-            <Input
-              allowClear
-              type='text'
-              placeholder=''
-              autoComplete='off'
-              maxLength={3}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-            />
-          </Form.Item>
-          <Form.Item label='letra' name='letra1' rules={[{ max: 1 }]}>
-            <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
-          </Form.Item>
-          <Form.Item label='Bis' name='Bis' rules={[{ max: 3 }]}>
-            <SelectComponent
-              options={[
-                { key: 'Bis', value: 'Bis' },
-                { key: ' ', value: ' ' }
-              ]}
-              optionPropkey='key'
-              optionPropLabel='value'
-            />
-          </Form.Item>
-          <Form.Item label='Card' name='card1' rules={[{ max: 4 }]}>
-            <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
-          </Form.Item>
-          <Form.Item label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
-            <Input
-              allowClear
-              type='text'
-              placeholder=''
-              autoComplete='off'
-              maxLength={3}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-            />
-          </Form.Item>
-          <Form.Item label='letra' name='letra2' rules={[{ max: 1 }]}>
-            <SelectComponent options={letras} optionPropkey='key' optionPropLabel='key' />
-          </Form.Item>
-          <Form.Item label='Placa' name='placa' rules={[{ required: true, max: 2 }]}>
-            <Input
-              allowClear
-              placeholder=''
-              autoComplete='off'
-              maxLength={2}
-              type='text'
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-            />
-          </Form.Item>
-          <Form.Item label='Card' name='card2'>
-            <SelectComponent options={direcionOrienta} optionPropkey='key' optionPropLabel='key' />
-          </Form.Item>
+
+          <div className='container-flex'>
+            <div className='row'>
+              <div className='col-7 form-group'>
+                <Form.Item name='ppla' rules={[{ required: true }]}>
+                  <p className='text-center no_margin'>Via Principal</p>
+                  <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
+                </Form.Item>
+              </div>
+              <div className='col-3'>
+                <Form.Item name='Num1' rules={[{ required: avenida, max: 3 }]}>
+                  <p className='text-center no_margin'>Número</p>
+                  <Input
+                    id='23'
+                    allowClear
+                    type='text'
+                    placeholder=''
+                    autoComplete='off'
+                    maxLength={3}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                    onChange={(event) => {
+                      build_direction(1, event.target.value);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-2'>
+                <Form.Item name='letra1' rules={[{ max: 1 }]}>
+                  <p className='text-center no_margin'>Letra</p>
+                  <SelectComponent
+                    options={letras}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      build_direction(2, event);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-2'>
+                <Form.Item name='Bis' rules={[{ max: 3 }]}>
+                  <p className='text-center no_margin'>Bis</p>
+                  <SelectComponent
+                    options={[
+                      { key: 'Bis', value: 'Bis' },
+                      { key: ' ', value: ' ' }
+                    ]}
+                    optionPropkey='key'
+                    optionPropLabel='value'
+                    onChange={(event) => {
+                      build_direction(3, event);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-2'>
+                <Form.Item name='card1' rules={[{ max: 4 }]}>
+                  <p className='text-center no_margin'>Card</p>
+                  <SelectComponent
+                    options={direcionOrienta}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      build_direction(4, event);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-2'>
+                <Form.Item name='Num2' rules={[{ required: true, max: 3 }]}>
+                  <p className='text-center no_margin'>Número</p>
+                  <Input
+                    allowClear
+                    type='text'
+                    placeholder=''
+                    autoComplete='off'
+                    maxLength={3}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                    onChange={(event) => {
+                      build_direction(5, event.target.value);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-2'>
+                <Form.Item name='letra2' rules={[{ max: 1 }]}>
+                  <p className='text-center no_margin'>Letra</p>
+                  <SelectComponent
+                    options={letras}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      build_direction(6, event);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-2'>
+                <Form.Item name='placa' rules={[{ required: true, max: 2 }]}>
+                  <p className='text-center no_margin'>Placa</p>
+                  <Input
+                    allowClear
+                    placeholder=''
+                    autoComplete='off'
+                    maxLength={2}
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                    onChange={(event) => {
+                      build_direction(7, event.target.value);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-2'>
+                <Form.Item name='card2'>
+                  <p className='text-center no_margin'>Card</p>
+                  <SelectComponent
+                    options={direcionOrienta}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      build_direction(8, event);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='row margintop'>
+              <div className='col-10'>
+                <Form.Item name='dirreccion_completa' className='fullwidth'>
+                  <p className='text-center no_margin'>Dirección</p>
+                  <Input type='text' value={direccionCompleta} className='fullwidth' disabled />
+                </Form.Item>
+              </div>
+              <div className='col-2 d-flex justify-content-start align-items-end'>
+                <Button type='primary'>Validar</Button>
+              </div>
+            </div>
+          </div>
 
           <h4 className='app-subtitle mt-3'>Datos Demográficos.</h4>
 

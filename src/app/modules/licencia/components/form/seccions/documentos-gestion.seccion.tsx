@@ -131,7 +131,6 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     }
 
     let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
-    console.log(pathFull + ' path');
 
     setUrlPdf(api.GetUrlPdf(pathFull));
     /**
