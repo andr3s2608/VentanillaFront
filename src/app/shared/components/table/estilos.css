@@ -112,3 +112,15 @@ table th {
 .buscar {
   margin: 0 auto;
 }
+
+.no_margin {
+  margin: 0px;
+}
+
+.margintop {
+  margin-top: 1vh;
+}
+
+.fullwidth {
+  width: 100%;
+}
