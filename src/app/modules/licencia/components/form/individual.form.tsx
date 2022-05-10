@@ -470,6 +470,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const PruebaCertificado = () => {
     let numero: string = form.getFieldValue('certificado');
+    const busquedacertificado = api.ComprobarCertificado(numero);
     let numerodeath: string = form.getFieldValue('instNumIdent');
     if (numero == undefined) {
       numero = '0';
@@ -477,25 +478,39 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     if (numerodeath == undefined) {
       numerodeath = '00000000000000000';
     }
-
-    if (numero.length >= 6) {
-      if (numerodeath.length >= longituddeathinst) {
-        onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+    if (busquedacertificado == null) {
+      if (numero.length >= 6) {
+        if (numerodeath.length >= longituddeathinst) {
+          onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos invalidos',
+            text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+          });
+        }
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Datos invalidos',
-          text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+          text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
         });
       }
     } else {
       Swal.fire({
-        icon: 'error',
-        title: 'Datos invalidos',
-        text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
+        title: 'Usuario Registrado',
+        text: 'El Número de Certificado ya se Encuentra Registrado',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
       });
     }
   };
+
   const ValidacionMedico = () => {
     let numero: string = form.getFieldValue('medicalSignatureIDNumber');
     if (numero == undefined) {
