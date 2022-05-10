@@ -6,13 +6,14 @@ import { PageHeaderComponent } from 'app/shared/components/page-header.component
 import { Gridview } from 'app/shared/components/table';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import React, { useCallback, useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const { TabPane } = Tabs;
 
 const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-
+  const [search, setSearch] = React.useState('');
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
@@ -51,7 +52,6 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent title='Maestro detalle' subTitle='Consulte el trámite de los certificados.' />
-
       <Tabs>
         <TabPane tab='' key='1'>
           <Gridview data={grid} />
