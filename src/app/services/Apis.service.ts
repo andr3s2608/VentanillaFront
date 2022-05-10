@@ -109,6 +109,9 @@ export class ApiService {
   GetDocumentoFallecido = (numero: string, persona: string) =>
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
 
+  ComprobarCertificado = (numero: string) =>
+    get<[]>({ endpoint: environments.inhcremacion, url: `Request/ConsultarCertificado/${numero}`, id: '0' });
+
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: environments.inhcremacion, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
