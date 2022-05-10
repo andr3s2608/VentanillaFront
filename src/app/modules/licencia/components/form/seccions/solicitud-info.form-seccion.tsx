@@ -10,7 +10,8 @@ import Divider from 'antd/es/divider';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { IinformatioUser } from 'app/Models/IInformatioUser';
-import { DatoSolicitanteAdd } from './datoSolicitanteAdd';
+import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './datoSolicitanteAdd';
+
 import { toIdentifier } from '@babel/types';
 
 // Componentes
@@ -28,10 +29,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     razonSocial: ''
   });
   const { obj, prop, form } = props;
-
-  const lugarFuneraria = obj?.isLugar();
-  const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
-  const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -53,8 +50,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
       const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
 
       setNroiden(existefuneraria.NROIDENT);
-
-      setLfunerarias(funeraria);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -89,22 +84,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
 
   const onChange = (value: any, tipo: String) => {
     prop(value, tipo);
-  };
-
-  const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
-    return (
-      <>
-        <Form.Item
-          className='fadeInRight'
-          label='Funeraria de Bogotá D.C. y/o Solicitante'
-          name='funerariaBogota'
-          initialValue={obj?.cementerioBogota ? obj?.cementerioBogota : 'PARTICULAR'}
-          rules={[{ required: true }]}
-        >
-          <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-        </Form.Item>
-      </>
-    );
   };
 
   const cambioemailFUN = (e: any) => {
@@ -191,27 +170,6 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             </Form.Item>
             <Form.Item label='Nombre del Solicitante y/o del Representante Legal' name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
-            </Form.Item>
-            <DatoSolicitanteAdd form={form} obj={obj} />
-
-            <div>{renderFormFuneria(lugarfuneraria)}</div>
-            <Form.Item
-              label='Email Funeraria y/o solicitante'
-              name='emailfuneraria'
-              rules={[{ required: true, type: 'email', max: 50 }]}
-            >
-              <Input
-                allowClear
-                placeholder='Email Funeraria'
-                type='email'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                //onChange={(e) => cambioemailFUN(e.target.value)}
-                autoComplete='off'
-              />
             </Form.Item>
           </>
         )}

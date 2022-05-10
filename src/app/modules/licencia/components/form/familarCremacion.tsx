@@ -46,8 +46,8 @@ import Swal from 'sweetalert2';
 
 const { Step } = Steps;
 
-export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
-  const { tipoLicencia, objJosn } = props;
+export const FamilarFetalCremacion: React.FC<any> = (props) => {
+  const { tipoLicencia, objJosn, prop } = props;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
@@ -172,6 +172,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
+      prop(6, 'familiarautoriza');
     } else {
       if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
@@ -180,6 +181,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
+        prop(10, 'familiarautoriza');
       } else {
         if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
@@ -188,6 +190,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
+          prop(15, 'familiarautoriza');
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminima(10);
@@ -196,6 +199,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            prop(10, 'familiarautoriza');
           } else {
             setLongitudminima(6);
             setLongitudmaxima(10);
@@ -203,6 +207,7 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+            prop(6, 'familiarautoriza');
           }
         }
       }
@@ -372,3 +377,8 @@ export const FamilarFetalCremacion: React.FC<ITipoLicencia> = (props) => {
     </div>
   );
 };
+interface IAutorizaInfoProps<T> {
+  objJosn: any;
+  prop: any;
+  tipoLicencia: any;
+}

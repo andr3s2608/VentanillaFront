@@ -78,8 +78,9 @@ export const Gridview = (props: IDataSource) => {
         const { persona } = datos;
 
         identify = '';
-        for (let index = 0; index < data.length; index++) {
-          identify = identify + datos[index]['persona'][0]['numeroIdentificacion'] + '|';
+
+        for (let index = 0; index < datos.length; index++) {
+          identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
         }
 
         // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
@@ -106,7 +107,7 @@ export const Gridview = (props: IDataSource) => {
   var structureColumns;
 
   const tiposolicitud = () => {
-    if (Tipo.rol == 'Funcionario') {
+    if (Tipo.rol !== 'Ciudadano') {
       const posicioninicial = 0;
       var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
       tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
@@ -142,7 +143,7 @@ export const Gridview = (props: IDataSource) => {
     }
   };
   const boton = () => {
-    if (Tipo.rol == 'Funcionario') {
+    if (Tipo.rol !== 'Ciudadano') {
       structureColumns = [
         {
           title: 'Id Tramite',
@@ -198,7 +199,7 @@ export const Gridview = (props: IDataSource) => {
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
 
-            return permiso.rol === 'Funcionario' ? (
+            return permiso.rol !== 'Ciudadano' ? (
               <>
                 <Button
                   type='primary'

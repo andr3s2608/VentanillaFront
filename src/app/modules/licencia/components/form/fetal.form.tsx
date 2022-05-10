@@ -18,6 +18,7 @@ import { DeathInstituteFormSeccion, KeysForm as KeyFormDeathInstitute } from './
 import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from './seccions/medical-signature.form-seccion';
 import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
+import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './seccions/datoSolicitanteAdd';
 import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
 
 // Servicios
@@ -69,16 +70,18 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   >([]);
 
   const [type, setType] = useState<[]>([]);
-  const [emailsol, setEmailso] = useState(false);
-  const [emailcem, setEmailcem] = useState(false);
-  const [emailfun, setEmailfun] = useState(false);
+  const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
+  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
+  const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
+  const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
+  const [idupz, setidupz] = useState<string>('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+  const [idbarrio, setidbarrio] = useState<string>('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
-  const idupz = 'd869bc18-4fca-422a-9a09-a88d3911dc8c';
-  const idbarrio = '4674c6b9-1e5f-4446-8b2a-1a986a10ca2e';
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   //const obj: any = EditFetal();
@@ -134,20 +137,22 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  const getData = (validacion: any, tipo: string) => {
-    if (tipo == '0') {
-      setEmailcem(validacion);
-    } else {
-      setEmailfun(validacion);
+  const getData = (longitud: number, procedencia: any) => {
+    if (procedencia === 'solicitante') {
+      setlongitudsolicitante(longitud);
+    }
+    if (procedencia === 'familiarautoriza') {
+      setlongitudfamiliaraut(longitud);
+    }
+    if (procedencia === 'deathinst') {
+      setlongituddeathinst(longitud);
+    }
+    if (procedencia === 'medico') {
+      setlongitudmedico(longitud);
     }
   };
-  const getDataSolicitante = (solicitante: any) => {
-    if (solicitante) {
-      setEmailso(true);
-    } else {
-      setEmailso(false);
-    }
-  };
+
+  const getDataSolicitante = (longitud: number) => {};
 
   const onSubmit = async (values: any) => {
     const certificado = values.certificado;
@@ -421,7 +426,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           const name = names[i];
 
           formData.append('file', item);
-          formData.append('nameFile', name);
+          formData.append('nameFile', name + '_' + resp);
 
           TypeDocument.forEach((item: any) => {
             ///comprueba que documentos se subieron dependiendo de la solicitud
@@ -433,7 +438,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                   idDocumentoSoporte: support.idDocumentoSoporte,
                   idSolicitud: resp,
                   idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
+                  path: `${accountIdentifier}/${name}_${resp}`,
                   idUsuario: accountIdentifier,
                   fechaModificacion: new Date()
                 });
@@ -441,7 +446,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 supportDocumentsEdit.push({
                   idSolicitud: resp,
                   idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
+                  path: `${accountIdentifier}/${name}_${resp}`,
                   idUsuario: accountIdentifier
                 });
               }
@@ -483,14 +488,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             const name = names[i];
 
             formData.append('file', file);
-            formData.append('nameFile', name);
+            formData.append('nameFile', name + '_' + resp);
 
             TypeDocument.forEach((item: any) => {
               if (item.key === name.toString()) {
                 supportDocuments.push({
                   idSolicitud: resp,
                   idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
+                  path: `${accountIdentifier}/${name}_${resp}`,
                   idUsuario: accountIdentifier
                 });
               }
@@ -512,6 +517,131 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         icon: 'error',
         title: 'Datos invalidos',
         text: 'El número de Certificado debe tener mínimo 6 Dígitos'
+      });
+    }
+  };
+
+  const PruebaCertificado = () => {
+    let numero: string = form.getFieldValue('certificado');
+    let numerodeath: string = form.getFieldValue('instNumIdent');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    if (numerodeath == undefined) {
+      numerodeath = '00000000000000000';
+    }
+
+    if (numero.length >= 6) {
+      if (numerodeath.length >= longituddeathinst) {
+        onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
+      });
+    }
+  };
+  const ValidacionMedico = () => {
+    let numero: string = form.getFieldValue('medicalSignatureIDNumber');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    onNextStep([...KeyFormMedicalSignature]);
+  };
+  const ValidacionAutorizador = () => {
+    let numero: string = form.getFieldValue('mauthIDNumber');
+    let numerosolicitante: string = form.getFieldValue('ndoc');
+    if (numerosolicitante == undefined) {
+      numerosolicitante = '0';
+    }
+
+    if (numero == undefined) {
+      numero = '00000000000000000000';
+    }
+
+    if (numero.length >= longitudfamiliaraut) {
+      if (numerosolicitante.length >= longitudsolicitante) {
+        onNextStep([
+          ...KeyFormSolicitudInfo,
+          ...KeyFormCementerio,
+          ...KeyFormSolicitante,
+          'deathType',
+          'authIDType',
+          'authName',
+          'authSecondName',
+          'authSurname',
+          'authSecondSurname',
+          'authParentesco',
+          'authOtherParentesco'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Identificación del Solicitante debe tener mínimo ${longitudsolicitante} Dígitos o Caracteres`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: `El Número de Identificación del Familiar que Autoriza debe tener mínimo ${longitudfamiliaraut} Dígitos o Caracteres`
+      });
+    }
+  };
+
+  const ValidacionMadre = async () => {
+    let numero: string = form.getFieldValue('IDNumber');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    const busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+    if (busqueda == null) {
+      if (numero.length >= longitudminima) {
+        onNextStep([
+          'name',
+          'secondName',
+          'surname',
+          'secondSurname',
+          'nationalidad',
+          'IDType',
+          'IDNumber',
+          'pais',
+          'departamento',
+          'ciudad',
+          'localidad',
+          'area',
+          'barrio',
+          'civilStatus',
+          'educationLevel',
+          'etnia'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
+        });
+      }
+    } else {
+      Swal.fire({
+        title: 'Usuario Registrado',
+        text: 'El Número de Identificación del Fallecido ya se Encuentra Registrado',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
       });
     }
   };
@@ -551,21 +681,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   //metodo para permitir pasar si los correos son validos
-  const Prueba = () => {
-    onNextStep([
-      ...KeyFormDeathInstitute,
-      ...KeyFormSolicitudInfo,
-      ...KeyFormCementerio,
-      'deathType',
-      'authIDType',
-      'authName',
-      'authSecondName',
-      'authSurname',
-      'authSecondSurname',
-      'authParentesco',
-      'authOtherParentesco'
-    ]);
-  };
 
   const generateFormFiel = (tipoInstitucion: string): DocumentosSoporte[] => {
     let data: DocumentosSoporte[] = [];
@@ -656,17 +771,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const onChangePais = (value: string) => {
-    form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
+  const onChangePais = async (value: string) => {
     setIsColombia(value === idColombia);
     setLMunicipios([]);
     setIsBogota(false);
-    setLAreas([]);
-    setLBarrios([]);
+    const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
+    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    setLBarrios(respBarrios);
+    setLAreas(respArea);
+    setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
+    form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
   };
 
   const onChangeDepartamento = async (value: string) => {
-    form.resetFields(['localidad', 'area', 'barrio']);
     form.setFieldsValue({ ciudad: undefined });
     const depart = await dominioService.get_departamentos_colombia();
     let departamento = (await depart).filter((i) => i.idDepartamento == value);
@@ -682,9 +800,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
     const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
-    const respBarrios = await dominioService.get_barrio_by_upz(idupz);
+    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
     setLBarrios(respBarrios);
     setLAreas(respArea);
+    setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
+    form.resetFields(['localidad', 'area', 'barrio']);
   };
 
   const onChangeMunicipio = (value: string) => {
@@ -693,16 +814,30 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const onChangeLocalidad = async (value: string) => {
-    form.resetFields(['area', 'barrio']);
     const resp = await dominioService.get_upz_by_localidad(value);
+    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    if (value == idlocalidad) {
+      setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
+    } else {
+      setidupz('');
+    }
+
+    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
     setLAreas(resp);
-    setLBarrios([]);
+    setLBarrios(respBarrios);
+    form.resetFields(['area', 'barrio']);
   };
 
   const onChangeArea = async (value: string) => {
-    form.resetFields(['barrio']);
+    if (value == 'd869bc18-4fca-422a-9a09-a88d3911dc8c') {
+      setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
+    } else {
+      setidbarrio('');
+    }
+
     const resp = await dominioService.get_barrio_by_upz(value);
     setLBarrios(resp);
+    form.resetFields(['barrio']);
   };
   const onChangeParentesco = (e: RadioChangeEvent) => {
     form.resetFields(['authOtherParentesco']);
@@ -790,7 +925,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           <Step title='INFORMACIÓN SOLICITANTE' description='Datos solicitante – cementerio.' disabled={!inputVal} />
           <Step title='INFORMACIÓN DEL MÉDICO' description='Datos del Médico que certifica.' disabled={!inputVal} />
           <Step title='INFORMACIÓN SOPORTES' description='Datos Documentos de soporte PDF .' disabled={!inputVal} />
-          {permiso?.rol === 'Funcionario' && isEdit ? (
+          {permiso?.rol !== 'Ciudadano' && isEdit ? (
             <Step title='Resultado de la validacion' description='Resultado de la validacion funcional.' />
           ) : null}
         </Steps>
@@ -805,9 +940,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion obj={obj} prop={undefined} tipoLicencia={'Cremación'} />
+            <GeneralInfoFormSeccion obj={obj} tipoLicencia={'Cremación'} />
             <LugarDefuncionFormSeccion form={form} obj={obj} />
-            <DeathInstituteFormSeccion obj={obj} form={form} datofiscal={true} required={false} tipoLicencia={tipoLicencia} />
+            <DeathInstituteFormSeccion
+              prop={getData}
+              obj={obj}
+              form={form}
+              datofiscal={true}
+              required={false}
+              tipoLicencia={tipoLicencia}
+            />
             <Divider orientation='right'> Tipo de Muerte </Divider>
             <Form.Item
               label='Tipo de Muerte'
@@ -820,11 +962,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-end'>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() => onNextStep([...KeyFormGeneralInfo, ...KeyFormLugarDefuncion])}
-                >
+                <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
                   Siguiente
                 </Button>
               </div>
@@ -872,7 +1010,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                     icon: 'error',
                     title: 'Datos invalidos',
                     text:
-                      'Seccion: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
+                      'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +
@@ -1043,11 +1181,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             ) : (
               <Form.Item
                 label='Ciudad de Residencia'
-                name='ciudad'
+                name='ciudadfuera'
                 initialValue={obj?.idCiudadResidencia}
                 rules={[{ required: true }]}
               >
-                <Input allowClear placeholder='Ciudad' autoComplete='off' />
+                <Input
+                  allowClear
+                  placeholder='Ciudad'
+                  autoComplete='off'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                />
               </Form.Item>
             )}
 
@@ -1074,6 +1221,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             >
               <SelectComponent
                 options={l_areas}
+                defaultValue={idupz}
                 optionPropkey='idUpz'
                 optionPropLabel='descripcion'
                 disabled={!isBogota}
@@ -1087,37 +1235,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               name='barrio'
               rules={[{ required: isBogota }]}
             >
-              <SelectComponent options={l_barrios} optionPropkey='idBarrio' optionPropLabel='descripcion' disabled={!isBogota} />
+              <SelectComponent
+                options={l_barrios}
+                defaultValue={idbarrio}
+                optionPropkey='idBarrio'
+                optionPropLabel='descripcion'
+                disabled={!isBogota}
+              />
             </Form.Item>
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() =>
-                    onNextStep([
-                      'name',
-                      'secondName',
-                      'surname',
-                      'secondSurname',
-                      'nationalidad',
-                      'IDType',
-                      'IDNumber',
-                      'pais',
-                      'departamento',
-                      'ciudad',
-                      'localidad',
-                      'area',
-                      'barrio',
-                      'civilStatus',
-                      'educationLevel',
-                      'etnia'
-                    ])
-                  }
-                >
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMadre()}>
                   Siguiente
                 </Button>
               </div>
@@ -1125,17 +1256,18 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion tipoLicencia={tipoLicencia} objJosn={obj} />}
+            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
-            <CementerioInfoFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
+            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button type='primary' htmlType='button' onClick={() => Prueba()}>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
                   Siguiente
                 </Button>
               </div>
@@ -1143,14 +1275,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <MedicalSignatureFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button type='primary' htmlType='button' onClick={() => onNextStep([...KeyFormMedicalSignature])}>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
                   Siguiente
                 </Button>
               </div>

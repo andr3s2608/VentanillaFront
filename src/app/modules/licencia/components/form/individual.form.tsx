@@ -9,6 +9,7 @@ import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import Button from 'antd/es/button';
 import Divider from 'antd/es/divider';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -28,6 +29,7 @@ import { DeathInstituteFormSeccion, KeysForm as KeyFormDeathInstitute } from './
 import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from './seccions/medical-signature.form-seccion';
 import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
+import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './seccions/datoSolicitanteAdd';
 import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
 
 // Servicios
@@ -43,7 +45,6 @@ import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { ValidationFuntional } from './seccions/validationfuntional';
-import Swal from 'sweetalert2';
 
 const { Step } = Steps;
 
@@ -59,9 +60,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
   const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
-  const [certif, setcertif] = useState(false);
-  const [emailcem, setEmailcem] = useState(false);
-  const [emailfun, setEmailfun] = useState(false);
+
+  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
+  const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
+  const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
@@ -134,249 +136,290 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  const getData = (validacion: any) => {
-    setcertif(validacion);
+  const getData = (longitud: number, procedencia: any) => {
+    if (procedencia === 'solicitante') {
+      setlongitudsolicitante(longitud);
+    }
+    if (procedencia === 'deathinst') {
+      setlongituddeathinst(longitud);
+    }
+    if (procedencia === 'medico') {
+      setlongitudmedico(longitud);
+    }
   };
   const getDataSolicitante = (solicitante: any) => {};
 
   const onSubmit = async (values: any) => {
     const certificado = values.certificado;
-    if (certificado.length > 5) {
-      setStatus(undefined);
-      const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
-      const formatDate = 'MM-DD-YYYY';
-      const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
 
-      const tipoinst = values.instTipoIdent;
-      var tipoidinst = values.instTipoIdent;
-      var numeroins = values.instNumIdent;
-      var razonSocialins = values.instRazonSocial;
-      var numeroProtocoloins = values.instNumProtocolo;
-      if (tipoinst == undefined) {
-        tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
-        numeroins = '0';
-        razonSocialins = 'Otros';
-        numeroProtocoloins = '452022';
-      }
-      const par = values.authParentesco;
-      var parentesco = '';
-      switch (par) {
-        case 'Padre / Madre':
-          parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
-          break;
-        case 'Hermano/a':
-          parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
-          break;
-        case 'Hijo/a':
-          parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
-          break;
-        case 'Cónyuge (Compañero/a Permanente)':
-          parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
-          break;
-        case 'Tío/a':
-          parentesco = '6880824b-39c2-4105-8195-c190885796d8';
-          break;
-        case 'Sobrino/a':
-          parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
-          break;
-        case 'Abuelo/a':
-          parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
-          break;
-        case 'Nieto/a':
-          parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
-          break;
-        case 'Otro':
-          parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
-          break;
-      }
+    setStatus(undefined);
+    const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
+    const formatDate = 'MM-DD-YYYY';
+    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+    const idUser = await api.getCodeUser();
+    const resp = await api.GetInformationUser(idUser);
 
-      var tipo = '';
-      var razon = '';
-      var tipoid = resp.tipoIdentificacion + '';
-      var nroid = resp.numeroIdentificacion + '';
-      if (resp.tipoIdentificacion == 5) {
-        tipo = 'Juridica';
-        razon = resp.razonSocial;
-      } else {
-        tipo = 'Natural';
-        razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
-        tipoid = values.fiscalia;
-        nroid = values.ndoc;
-      }
+    const tipoinst = values.instTipoIdent;
+    var tipoidinst = values.instTipoIdent;
+    var numeroins = values.instNumIdent;
+    var razonSocialins = values.instRazonSocial;
+    var numeroProtocoloins = values.instNumProtocolo;
+    if (tipoinst == undefined) {
+      tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      numeroins = '0';
+      razonSocialins = 'Otros';
+      numeroProtocoloins = '452022';
+    }
+    const par = values.authParentesco;
+    var parentesco = '';
+    switch (par) {
+      case 'Padre / Madre':
+        parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
+        break;
+      case 'Hermano/a':
+        parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
+        break;
+      case 'Hijo/a':
+        parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
+        break;
+      case 'Cónyuge (Compañero/a Permanente)':
+        parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
+        break;
+      case 'Tío/a':
+        parentesco = '6880824b-39c2-4105-8195-c190885796d8';
+        break;
+      case 'Sobrino/a':
+        parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
+        break;
+      case 'Abuelo/a':
+        parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
+        break;
+      case 'Nieto/a':
+        parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
+        break;
+      case 'Otro':
+        parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+        break;
+    }
 
-      const dep = values.state;
-      var mun = values.city;
-      switch (dep) {
-        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-          mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-          break;
-      }
-      var segunda = values.nationalidad2;
+    var tipo = '';
+    var razon = '';
+    var tipoid = resp.tipoIdentificacion + '';
+    var nroid = resp.numeroIdentificacion + '';
+    if (resp.tipoIdentificacion == 5) {
+      tipo = 'Juridica';
+      razon = resp.razonSocial;
+    } else {
+      tipo = 'Natural';
+      razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+      tipoid = values.fiscalia;
+      nroid = values.ndoc;
+    }
 
-      if (segunda == undefined) {
-        segunda = '00000000-0000-0000-0000-000000000000';
-      }
+    const dep = values.state;
+    var mun = values.city;
+    switch (dep) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+        break;
+    }
+    var segunda = values.nationalidad2;
 
-      const json: IRegistroLicencia<any> = {
-        solicitud: {
-          numeroCertificado: values.certificado,
-          fechaDefuncion: moment(values.date).format(formatDate),
-          sinEstablecer: values.check,
-          hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
-          idSexo: values.sex,
-          estadoSolicitud: estadoSolicitud,
-          idPersonaVentanilla: Number(user), //numero de usuario registrado
-          idUsuarioSeguridad: accountIdentifier,
-          idTramite: tramite,
-          idTipoMuerte: values.deathType,
-          tipoPersona: tipo,
-          tipoIdentificacionSolicitante: tipoid,
-          noIdentificacionSolicitante: nroid,
-          razonSocialSolicitante: razon,
-          persona: [
-            //fallecido
-            {
-              tipoIdentificacion: values.IDType,
-              numeroIdentificacion: values.IDNumber,
-              primerNombre: values.name,
-              segundoNombre: values.secondName,
-              primerApellido: values.surname,
-              segundoApellido: values.secondSurname,
-              fechaNacimiento: values.dateOfBirth,
-              nacionalidad: values.nationalidad[0],
-              segundanacionalidad: segunda,
-              otroParentesco: null,
-              idEstadoCivil: values.civilStatus,
-              idNivelEducativo: values.educationLevel,
-              idEtnia: values.etnia,
-              idRegimen: values.regimen,
-              idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-              idParentesco: parentesco,
-              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-            },
-            //authorizador cremacion
+    if (segunda == undefined) {
+      segunda = '00000000-0000-0000-0000-000000000000';
+    }
 
-            //certifica la defuncion
-            {
-              tipoIdentificacion: values.medicalSignatureIDType,
-              numeroIdentificacion: values.medicalSignatureIDNumber,
-              primerNombre: values.medicalSignatureName,
-              segundoNombre: values.medicalSignatureSecondName,
-              primerApellido: values.medicalSignatureSurname,
-              segundoApellido: values.medicalSignatureSecondSurname,
-              fechaNacimiento: null,
-              nacionalidad: '00000000-0000-0000-0000-000000000000',
-              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-              otroParentesco: null,
-              idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-              idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-              idEtnia: '00000000-0000-0000-0000-000000000000',
-              idRegimen: values.regimen,
-              idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
-              idParentesco: '00000000-0000-0000-0000-000000000000',
-              idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
-              idTipoProfesional: values.medicalSignatureProfesionalType
-            }
-          ],
-          lugarDefuncion: {
-            idPais: values.country,
-            idDepartamento: values.state,
-            idMunicipio: mun,
-            idAreaDefuncion: values.areaDef,
-            idSitioDefuncion: values.sitDef
+    const json: IRegistroLicencia<any> = {
+      solicitud: {
+        numeroCertificado: values.certificado,
+        fechaDefuncion: moment(values.date).format(formatDate),
+        sinEstablecer: values.check,
+        hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
+        idSexo: values.sex,
+        estadoSolicitud: estadoSolicitud,
+        idPersonaVentanilla: Number(user), //numero de usuario registrado
+        idUsuarioSeguridad: accountIdentifier,
+        idTramite: tramite,
+        idTipoMuerte: values.deathType,
+        tipoPersona: tipo,
+        tipoIdentificacionSolicitante: tipoid,
+        noIdentificacionSolicitante: nroid,
+        razonSocialSolicitante: razon,
+        persona: [
+          //fallecido
+          {
+            tipoIdentificacion: values.IDType,
+            numeroIdentificacion: values.IDNumber,
+            primerNombre: values.name,
+            segundoNombre: values.secondName,
+            primerApellido: values.surname,
+            segundoApellido: values.secondSurname,
+            fechaNacimiento: values.dateOfBirth,
+            nacionalidad: values.nationalidad[0],
+            segundanacionalidad: segunda,
+            otroParentesco: null,
+            idEstadoCivil: values.civilStatus,
+            idNivelEducativo: values.educationLevel,
+            idEtnia: values.etnia,
+            idRegimen: values.regimen,
+            idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+            idParentesco: parentesco,
+            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
           },
-          ubicacionPersona: {
-            idPaisResidencia: values.pais,
-            idDepartamentoResidencia: values.departamento,
-            idCiudadResidencia: values.ciudad,
-            idLocalidadResidencia: values.localidad,
-            idAreaResidencia: values.area,
-            idBarrioResidencia: values.barrio
-          },
-          datosCementerio: {
-            enBogota: values.cementerioLugar === 'Dentro de Bogotá',
-            fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
-            fueraPais: values.cementerioLugar === 'Fuera del País',
-            cementerio: values.cementerioBogota,
-            otroSitio: values.otro,
-            ciudad: values.cementerioCiudad,
-            idPais: values.cementerioPais,
-            idDepartamento: values.cementerioDepartamento,
-            idMunicipio: values.cementerioMunicipio
-          },
+          //authorizador cremacion
 
-          datosFuneraria: {
-            enBogota: true,
-            fueraBogota: false,
-            fueraPais: false,
-            funeraria: values.funerariaBogota,
-            otroSitio: values.otrofuneraria,
-            ciudad: values.funerariaCiudad,
-            idPais: values.funerariaPais,
-            idDepartamento: values.funerariaDepartamento,
-            idMunicipio: values.funerariaMunicipio
-          },
-
-          resumenSolicitud: {
-            correoCementerio: values.emailcementerio,
-            correoFuneraria: values.emailfuneraria,
-            tipoDocumentoSolicitante: values.fiscalia,
-            numeroDocumentoSolicitante: values.ndoc,
-            nombreSolicitante: values.namesolicitudadd,
-            apellidoSolicitante: values.lastnamesolicitudadd,
-            correoSolicitante: values.emailsolicitudadd,
-            correoMedico: ''
-          },
-
-          institucionCertificaFallecimiento: {
-            tipoIdentificacion: tipoidinst,
-            numeroIdentificacion: numeroins,
-            razonSocial: razonSocialins,
-            numeroProtocolo: numeroProtocoloins,
-            numeroActaLevantamiento: values.instNumActaLevantamiento,
-            fechaActa: moment(values.instFechaActa).format(formatDate),
-            seccionalFiscalia: values.instSeccionalFiscalia,
-            noFiscal: values.instNoFiscal,
-            idTipoInstitucion: values.instType
+          //certifica la defuncion
+          {
+            tipoIdentificacion: values.medicalSignatureIDType,
+            numeroIdentificacion: values.medicalSignatureIDNumber,
+            primerNombre: values.medicalSignatureName,
+            segundoNombre: values.medicalSignatureSecondName,
+            primerApellido: values.medicalSignatureSurname,
+            segundoApellido: values.medicalSignatureSecondSurname,
+            fechaNacimiento: null,
+            nacionalidad: '00000000-0000-0000-0000-000000000000',
+            segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+            otroParentesco: null,
+            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+            idEtnia: '00000000-0000-0000-0000-000000000000',
+            idRegimen: values.regimen,
+            idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
+            idParentesco: '00000000-0000-0000-0000-000000000000',
+            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+            idTipoProfesional: values.medicalSignatureProfesionalType
           }
-          // documentosSoporte: generateFormFiel(values.instType)
+        ],
+        lugarDefuncion: {
+          idPais: values.country,
+          idDepartamento: values.state,
+          idMunicipio: mun,
+          idAreaDefuncion: values.areaDef,
+          idSitioDefuncion: values.sitDef
+        },
+        ubicacionPersona: {
+          idPaisResidencia: values.pais,
+          idDepartamentoResidencia: values.departamento,
+          idCiudadResidencia: values.ciudad,
+          idLocalidadResidencia: values.localidad,
+          idAreaResidencia: values.area,
+          idBarrioResidencia: values.barrio
+        },
+        datosCementerio: {
+          enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+          fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+          fueraPais: values.cementerioLugar === 'Fuera del País',
+          cementerio: values.cementerioBogota,
+          otroSitio: values.otro,
+          ciudad: values.cementerioCiudad,
+          idPais: values.cementerioPais,
+          idDepartamento: values.cementerioDepartamento,
+          idMunicipio: values.cementerioMunicipio
+        },
+
+        datosFuneraria: {
+          enBogota: true,
+          fueraBogota: false,
+          fueraPais: false,
+          funeraria: values.funerariaBogota,
+          otroSitio: values.otrofuneraria,
+          ciudad: values.funerariaCiudad,
+          idPais: values.funerariaPais,
+          idDepartamento: values.funerariaDepartamento,
+          idMunicipio: values.funerariaMunicipio
+        },
+
+        resumenSolicitud: {
+          correoCementerio: values.emailcementerio,
+          correoFuneraria: values.emailfuneraria,
+          tipoDocumentoSolicitante: values.fiscalia,
+          numeroDocumentoSolicitante: values.ndoc,
+          nombreSolicitante: values.namesolicitudadd,
+          apellidoSolicitante: values.lastnamesolicitudadd,
+          correoSolicitante: values.emailsolicitudadd,
+          correoMedico: ''
+        },
+
+        institucionCertificaFallecimiento: {
+          tipoIdentificacion: tipoidinst,
+          numeroIdentificacion: numeroins,
+          razonSocial: razonSocialins,
+          numeroProtocolo: numeroProtocoloins,
+          numeroActaLevantamiento: values.instNumActaLevantamiento,
+          fechaActa: moment(values.instFechaActa).format(formatDate),
+          seccionalFiscalia: values.instSeccionalFiscalia,
+          noFiscal: values.instNoFiscal,
+          idTipoInstitucion: values.instType
         }
-      };
-      //Guarde de documentos
-      const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
+        // documentosSoporte: generateFormFiel(values.instType)
+      }
+    };
+    //Guarde de documentos
+    const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
+    const formData = new FormData();
+    const supportDocuments: any[] = [];
+
+    if (edit) {
+      localStorage.removeItem('');
+
+      const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
       const formData = new FormData();
-      const supportDocuments: any[] = [];
 
-      if (edit) {
-        localStorage.removeItem('');
+      const resp = await api.putLicencia(json.solicitud);
+      localStorage.removeItem('register');
 
-        const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
-        const formData = new FormData();
+      const [files, names] = generateListFiles(values);
+      const supportDocumentsEdit: any[] = [];
 
-        const resp = await api.putLicencia(json.solicitud);
-        localStorage.removeItem('register');
+      files.forEach((item: any, i: number) => {
+        const name = names[i];
 
+        formData.append('file', item);
+        formData.append('nameFile', name + '_' + resp);
+
+        TypeDocument.forEach((item: any) => {
+          if (item.key === name.toString()) {
+            const [support] = supports.filter((p) => p.path.includes(item.name));
+            supportDocumentsEdit.push({
+              idDocumentoSoporte: support.idDocumentoSoporte,
+              idSolicitud: resp,
+              idTipoDocumentoSoporte: item.value,
+              path: `${accountIdentifier}/${name}_${resp}`,
+              idUsuario: accountIdentifier,
+              fechaModificacion: new Date()
+            });
+          }
+        });
+      });
+
+      formData.append('containerName', container);
+      formData.append('oid', accountIdentifier);
+
+      if (supportDocumentsEdit.length) {
+        await api.uploadFiles(formData);
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
+      }
+    }
+
+    if (!edit) {
+      const resp = await api.postprueba(json);
+
+      if (resp) {
         const [files, names] = generateListFiles(values);
-        const supportDocumentsEdit: any[] = [];
 
-        files.forEach((item: any, i: number) => {
+        files.forEach((file: any, i: number) => {
           const name = names[i];
 
-          formData.append('file', item);
-          formData.append('nameFile', name);
+          formData.append('file', file);
+          formData.append('nameFile', name + '_' + resp);
 
           TypeDocument.forEach((item: any) => {
             if (item.key === name.toString()) {
-              const [support] = supports.filter((p) => p.path.includes(item.name));
-              supportDocumentsEdit.push({
-                idDocumentoSoporte: support.idDocumentoSoporte,
+              supportDocuments.push({
                 idSolicitud: resp,
                 idTipoDocumentoSoporte: item.value,
-                path: `${accountIdentifier}/${name}`,
-                idUsuario: accountIdentifier,
-                fechaModificacion: new Date()
+                path: `${accountIdentifier}/${name}_${resp}`,
+                idUsuario: accountIdentifier
               });
             }
           });
@@ -384,53 +427,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
         formData.append('containerName', container);
         formData.append('oid', accountIdentifier);
+        await api.uploadFiles(formData);
+        await api.AddSupportDocuments(supportDocuments);
 
-        if (supportDocumentsEdit.length) {
-          await api.uploadFiles(formData);
-          await api.UpdateSupportDocuments(supportDocumentsEdit);
-        }
+        form.resetFields();
       }
-
-      if (!edit) {
-        const resp = await api.postprueba(json);
-
-        if (resp) {
-          const [files, names] = generateListFiles(values);
-
-          files.forEach((file: any, i: number) => {
-            const name = names[i];
-
-            formData.append('file', file);
-            formData.append('nameFile', name);
-
-            TypeDocument.forEach((item: any) => {
-              if (item.key === name.toString()) {
-                supportDocuments.push({
-                  idSolicitud: resp,
-                  idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}`,
-                  idUsuario: accountIdentifier
-                });
-              }
-            });
-          });
-
-          formData.append('containerName', container);
-          formData.append('oid', accountIdentifier);
-          await api.uploadFiles(formData);
-          await api.AddSupportDocuments(supportDocuments);
-
-          form.resetFields();
-        }
-      }
-      history.push('/tramites-servicios');
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Datos invalidos',
-        text: 'El número de Certificado debe tener mínimo 6 Dígitos'
-      });
     }
+    history.push('/tramites-servicios');
   };
   const generateListFiles = (values: any) => {
     const Objs = [];
@@ -466,22 +469,131 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const onSubmitFailed = () => setStatus('error');
 
   const PruebaCertificado = () => {
-    onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+    let numero: string = form.getFieldValue('certificado');
+    let numerodeath: string = form.getFieldValue('instNumIdent');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    if (numerodeath == undefined) {
+      numerodeath = '00000000000000000';
+    }
+
+    if (numero.length >= 6) {
+      if (numerodeath.length >= longituddeathinst) {
+        onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
+      });
+    }
+  };
+  const ValidacionMedico = () => {
+    let numero: string = form.getFieldValue('medicalSignatureIDNumber');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    onNextStep([...KeyFormMedicalSignature]);
   };
 
-  const Prueba = () => {
-    onNextStep([
-      ...KeyFormSolicitudInfo,
-      ...KeyFormCementerio,
-      'authIDType',
-      'mauthIDNumber',
-      'authName',
-      'authSecondName',
-      'authSurname',
-      'authSecondSurname',
-      'authParentesco',
-      'authOtherParentesco'
-    ]);
+  const ValidacionAutorizador = () => {
+    let numero: string = form.getFieldValue('mauthIDNumber');
+    let numerosolicitante: string = form.getFieldValue('ndoc');
+    if (numerosolicitante == undefined) {
+      numerosolicitante = '0';
+    }
+
+    if (numero == undefined) {
+      numero = '00000000000000000000';
+    }
+
+    if (numero.length >= longitudminimaautoriza) {
+      if (numerosolicitante.length >= longitudsolicitante) {
+        onNextStep([
+          ...KeyFormSolicitudInfo,
+          ...KeyFormCementerio,
+          ...KeyFormSolicitante,
+          'authIDType',
+          'mauthIDNumber',
+          'authName',
+          'authSecondName',
+          'authSurname',
+          'authSecondSurname',
+          'authParentesco',
+          'authOtherParentesco'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Identificación del Solicitante debe tener mínimo ${longitudsolicitante} Dígitos o Caracteres`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: `El Número de Identificación del Autorizador debe tener mínimo ${longitudminimaautoriza} Dígitos o Caracteres`
+      });
+    }
+  };
+
+  const ValidacionFallecido = async () => {
+    let numero: string = form.getFieldValue('IDNumber');
+    if (numero == undefined) {
+      numero = '0';
+    }
+    const busqueda = await api.GetDocumentoFallecido(numero, '01F64F02-373B-49D4-8CB1-CB677F74292C');
+    if (busqueda == null) {
+      if (numero.length >= longitudminima) {
+        onNextStep([
+          'name',
+          'secondName',
+          'surname',
+          'secondSurname',
+          'nationalidad',
+          'dateOfBirth',
+          'IDType',
+          'IDNumber',
+          'civilStatus',
+          'educationLevel',
+          'etnia',
+          'age',
+          'unitAge',
+          'regime',
+          'knownIDType',
+          'knownIDNumber',
+          'knownName',
+          'deathType'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos invalidos',
+          text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
+        });
+      }
+    } else {
+      Swal.fire({
+        title: 'Usuario Registrado',
+        text: 'El Número de Identificación del Fallecido ya se Encuentra Registrado',
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
+      });
+    }
   };
 
   //#region Eventos formulario
@@ -652,9 +764,16 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion prop={getData} obj={objJosn} tipoLicencia={'Cremación'} />
+            <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
             <LugarDefuncionFormSeccion form={form} obj={objJosn} />
-            <DeathInstituteFormSeccion obj={objJosn} form={form} datofiscal={true} required={true} tipoLicencia={tipoLicencia} />
+            <DeathInstituteFormSeccion
+              prop={getData}
+              obj={objJosn}
+              form={form}
+              datofiscal={true}
+              required={true}
+              tipoLicencia={tipoLicencia}
+            />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-end'>
@@ -888,7 +1007,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         icon: 'error',
                         title: 'Datos invalidos',
                         text:
-                          'Seccion:Reconocido como \n recuerde que para el tipo de documento:' +
+                          'Sección:Reconocido como \n recuerde que para el tipo de documento:' +
                           tipodocumento +
                           ' solo se admiten valores ' +
                           campo +
@@ -925,32 +1044,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button
-                  type='primary'
-                  htmlType='button'
-                  onClick={() =>
-                    onNextStep([
-                      'name',
-                      'secondName',
-                      'surname',
-                      'secondSurname',
-                      'nationalidad',
-                      'dateOfBirth',
-                      'IDType',
-                      'IDNumber',
-                      'civilStatus',
-                      'educationLevel',
-                      'etnia',
-                      'age',
-                      'unitAge',
-                      'regime',
-                      'knownIDType',
-                      'knownIDNumber',
-                      'knownName',
-                      'deathType'
-                    ])
-                  }
-                >
+                <Button type='primary' htmlType='button' onClick={() => ValidacionFallecido()}>
                   Siguiente
                 </Button>
               </div>
@@ -1156,14 +1250,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             )}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-            <CementerioInfoFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+            <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} />
+            <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button type='primary' htmlType='button' onClick={() => Prueba()}>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
                   Siguiente
                 </Button>
               </div>
@@ -1171,14 +1266,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </div>
 
           <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+            <MedicalSignatureFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
                 <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                   Volver atrás
                 </Button>
-                <Button type='primary' htmlType='button' onClick={() => onNextStep([...KeyFormMedicalSignature])}>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
                   Siguiente
                 </Button>
               </div>
