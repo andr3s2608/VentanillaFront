@@ -215,12 +215,14 @@ const RegistroPage: React.FC<any> = (props) => {
           api.sendEmail({
             to: value.email,
             subject: 'Registro de persona natural ',
-            body: 'Señor (a) ' + value.name + '  ' + value.secondName + ' su usuario creado exitosamente'
+            body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario creado exitosamente'
           });
-
+          const segundo = value.secondName ?? ' ';
+          const segundoape = value.secondSurname ?? '';
           await api.putUser({
             oid: accountIdentifier,
-            idPersonaVentanilla: resApi
+            idPersonaVentanilla: resApi,
+            NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
           });
           await api.PostRolesUser({
             idUser: accountIdentifier,
@@ -266,15 +268,13 @@ const RegistroPage: React.FC<any> = (props) => {
     } else {
       setAvenida(true);
     }
-    build_direction(0, valor);
+    //build_direction(0, valor);
   };
 
   const build_direction = (posicion: number, valor: string) => {
     const { direccion } = store.getState();
     let direccion_completa: string[] = direccion;
     direccion_completa[posicion] = valor;
-
-    console.log(direccion_completa);
 
     store.dispatch(SetDireccion(direccion_completa));
     setDireccionCompleta(direccion_completa.toString());
@@ -390,14 +390,15 @@ const RegistroPage: React.FC<any> = (props) => {
           <div className='container-flex'>
             <div className='row'>
               <div className='col-7 form-group'>
-                <Form.Item name='ppla' rules={[{ required: true }]}>
-                  <p className='text-center no_margin'>Via Principal</p>
+                <Form.Item label='Via Principal' name='ppla' rules={[{ required: true }]}>
                   <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
                 </Form.Item>
               </div>
               <div className='col-3'>
-                <Form.Item name='Num1' rules={[{ required: avenida, max: 3 }]}>
-                  <p className='text-center no_margin'>Número</p>
+                <Form.Item label='Número' name='Num1' rules={[{ required: avenida, max: 3 }]}>
+                  {
+                    //<p className='text-center no_margin'>Número</p>
+                  }
                   <Input
                     id='23'
                     allowClear
@@ -464,8 +465,11 @@ const RegistroPage: React.FC<any> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item name='Num2' rules={[{ required: true, max: 3 }]}>
-                  <p className='text-center no_margin'>Número</p>
+                <Form.Item label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
+                  {
+                    //<p className='text-center no_margin'>Número</p>
+                  }
+
                   <Input
                     allowClear
                     type='text'
@@ -500,8 +504,11 @@ const RegistroPage: React.FC<any> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item name='placa' rules={[{ required: true, max: 2 }]}>
-                  <p className='text-center no_margin'>Placa</p>
+                <Form.Item label='Placa' name='placa' rules={[{ required: true, max: 2 }]}>
+                  {
+                    //<p className='text-center no_margin'>Placa</p>
+                  }
+
                   <Input
                     allowClear
                     placeholder=''

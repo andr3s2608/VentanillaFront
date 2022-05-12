@@ -95,9 +95,12 @@ const RegistroPage: React.FC<any> = (props) => {
           subject: 'Registro de persona jurídica ',
           body: 'Señores ' + value.razonsocial + ' su usuario creado exitosamente'
         });
+        const segundo = value.secondName ?? ' ';
+        const segundoape = value.secondSurname ?? '';
         await api.putUser({
           oid: accountIdentifier,
-          idPersonaVentanilla: resApi
+          idPersonaVentanilla: resApi,
+          NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
         });
 
         await api.PostRolesUser({

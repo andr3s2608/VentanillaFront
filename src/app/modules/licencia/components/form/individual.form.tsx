@@ -151,7 +151,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     const certificado = values.certificado;
-
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -468,9 +467,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   };
   const onSubmitFailed = () => setStatus('error');
 
-  const PruebaCertificado = () => {
+  const PruebaCertificado = async () => {
     let numero: string = form.getFieldValue('certificado');
-    const busquedacertificado = api.ComprobarCertificado(numero);
+    const busquedacertificado = await api.ComprobarCertificado(numero);
     let numerodeath: string = form.getFieldValue('instNumIdent');
     if (numero == undefined) {
       numero = '0';

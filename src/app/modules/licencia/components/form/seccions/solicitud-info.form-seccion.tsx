@@ -26,7 +26,8 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     tipoIdentificacion: 0,
     numeroIdentificacion: 0,
     fullName: '',
-    razonSocial: ''
+    razonSocial: '',
+    email: ''
   });
   const { obj, prop, form } = props;
 

@@ -8205,6 +8205,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
 }
 .ant-form .ant-form-text {
   display: inline-block;
+  font-size: 15px;
   padding-right: 8px;
 }
 .ant-form-small .ant-form-item-label > label {

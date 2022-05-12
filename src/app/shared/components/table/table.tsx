@@ -332,7 +332,6 @@ export const Gridview = (props: IDataSource) => {
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
-        //
         <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} onChange={onPageChange} />
       </div>
     </div>

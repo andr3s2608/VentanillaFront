@@ -232,7 +232,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
       let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
       //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
-      console.log(solicitud);
+
       let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
 
       let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
@@ -597,7 +597,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
             TIPO DE SOLICITUD:{valor}
           </Divider>
-          <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
+          <div className='fadeInLeft'>
             <InformacionFallecidoSeccion obj={objJosn} />
             <InformacionMedicoCertificante obj={objJosn} />
             <InformacionSolicitanteSeccion obj={objJosn} />
