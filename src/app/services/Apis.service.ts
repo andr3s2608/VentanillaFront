@@ -159,7 +159,7 @@ export class ApiService {
   getCodeUser = () =>
     get<any>({ endpoint: environments.security, url: `Security/GetCodeVentanillaByIdUser/${this.oid}`, id: '0' });
 
-  getFuncionarios = () => get<any>({ endpoint: environments.local, url: `v2/Persona/GetUsers`, id: '0' });
+  getFuncionarios = () => get<any>({ endpoint: environments.shared, url: `v2/Persona/GetUsers`, id: '0' });
 
   getLicencia = (solicitud: string) =>
     get<any>({
@@ -169,7 +169,7 @@ export class ApiService {
     });
 
   //https://wa-aeu-sds-dev-tsecurity.azurewebsites.net/api/v2/Security/UpdateUser
-  putUser = (payload: any) => put<any>({ endpoint: environments.localsecurity, url: 'Security/UpdateUser', payload, id: '1' });
+  putUser = (payload: any) => put<any>({ endpoint: environments.security, url: 'Security/UpdateUser', payload, id: '1' });
 
   UpdataLicencia = () => {};
   GetAllTypeValidation = () =>
