@@ -6,5 +6,6 @@ export interface Menu {
   path: string;
   order: number;
   icon: null;
+  menuPadreHijo: Menu[];
   menuHijo: Menu[];
 }
