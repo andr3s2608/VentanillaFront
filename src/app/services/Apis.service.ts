@@ -17,6 +17,10 @@ export class ApiService {
     this.oid = oid$;
   }
 
+  getIdUsuario = () => {
+    return this.oid;
+  };
+
   personaNatural = (tipoDominio: IPersonaNatural) =>
     post<IPersonaNatural>({ endpoint: environments.shared, url: `v2/Persona/AddPersonaNatural`, payload: tipoDominio, id: '0' });
 
@@ -222,6 +226,15 @@ export class ApiService {
     });
   };
 
+  agregarFirma = (payload: any) => {
+    return post<any>({
+      endpoint: environments.local,
+      url: 'Request/AddFirma',
+      payload,
+      id: '1'
+    });
+  };
+
   actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
     return put<any>({
       endpoint: environments.inhcremacion,
@@ -244,11 +257,11 @@ export class ApiService {
 
   GeneratePDF = (idTramite: string) => `${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`;
 
-  getLinkPDF = (idTramite: string, tramitador: string): string => {
-    return environments.inhcremacion + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
+  getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
+    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador;
   };
 
-  getLinkPDFNotificacion = (idTramite: string, tramitador: string): string => {
-    return environments.inhcremacion + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
+  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string): string => {
+    return environments.inhcremacion + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador + '/' + nombreTramitador;
   };
 }

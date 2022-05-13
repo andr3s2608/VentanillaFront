@@ -76,6 +76,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   //create o edit
   const objJosn: any = EditInhumacion('1');
 
+  const idUsuario = api.getIdUsuario();
+
   const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
   //#region Listados
@@ -247,7 +249,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         let codeUser = await api.getCodeUser();
         let nameUser = await api.GetInformationUser(codeUser);
 
-        let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, nameUser.fullName.toLocaleUpperCase());
+        let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName);
 
         //window.open(linkPDF, 'hola mundo');
 
@@ -544,10 +546,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const onPrevPDF = async () => {
     const codeUser = await api.getCodeUser();
+    console.log('aqui estamos: ' + codeUser);
     const nameUser = await api.GetInformationUser(codeUser);
     const idSolicitud = objJosn?.idSolicitud;
     const all = await api.GetSolicitud(idSolicitud);
-    let linkPdf = await api.getLinkPDF(idSolicitud, nameUser.fullName);
+    let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, nameUser.fullName);
     const solicitante = await api.GetResumenSolicitud(idSolicitud);
     setsolicitante(solicitante[0]['nombreSolicitante']);
     setUrlPdfLicence(linkPdf);
