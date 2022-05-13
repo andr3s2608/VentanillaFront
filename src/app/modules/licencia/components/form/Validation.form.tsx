@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Form from 'antd/es/form';
 import Input from 'antd/es/input';
 import Alert from 'antd/es/alert';
+import Swal from 'sweetalert2';
 import Steps from 'antd/es/steps';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import { columnFake } from 'app/shared/components/table/model';
@@ -149,165 +150,178 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   }
 
   const onSubmit = async (values: any) => {
-    setStatus(undefined);
-    const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
-    const formatDate = 'MM-DD-YYYY';
-    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
+    let bandera = await api.validarFirmaFuncionario(idUsuario);
 
-    //let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
-    let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
-    var iddocumento: string = documentos.reduce((result: any, item: any) => {
-      return `${result}${item.idDocumentoSoporte}|`;
-    }, '');
-    var pathdocumento: string = documentos.reduce((result: any, item: any) => {
-      return `${result}${item.path}|`;
-    }, '');
+    if (bandera) {
+      setStatus(undefined);
+      const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
+      const formatDate = 'MM-DD-YYYY';
+      const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
 
-    var not = 1;
+      //let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
+      let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
+      var iddocumento: string = documentos.reduce((result: any, item: any) => {
+        return `${result}${item.idDocumentoSoporte}|`;
+      }, '');
+      var pathdocumento: string = documentos.reduce((result: any, item: any) => {
+        return `${result}${item.path}|`;
+      }, '');
 
-    const segui = values.validFunctionaltype;
+      var not = 1;
 
-    if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
-      if (
-        DatosDocumento.at(0) == '1' &&
-        DatosDocumento.at(1) == '1' &&
-        DatosDocumento.at(2) == '1' &&
-        DatosDocumento.at(3) == '1' &&
-        DatosDocumento.at(4) == '1'
-      ) {
-        const update = await api.updatelicencia(objJosn?.idSolicitud);
-      } else {
-        alert('Todos los documentos deben de cumplir en caso de aprobacion');
-        not = 0;
-      }
-    }
-    if (segui == 'fe691637-be8a-425f-a309-e2032221553f') {
-      if (
-        DatosDocumento.at(0) == '2' ||
-        DatosDocumento.at(1) == '2' ||
-        DatosDocumento.at(2) == '2' ||
-        DatosDocumento.at(3) == '2' ||
-        DatosDocumento.at(4) == '2'
-      ) {
-      } else {
-        alert('Debe indicar almenos un Documento que no Cumpla');
-        not = 0;
-      }
-    }
-    if (not == 1) {
-      /////////////////////////Guardar status//////////////////////////
-      for (let index = 0; index < documentos.length; index++) {
-        //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
-        var posicioninicialid = 0;
-        var posicionfinalid = iddocumento.indexOf('|');
-        var id = iddocumento.substring(posicioninicialid, posicionfinalid);
-        var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
+      const segui = values.validFunctionaltype;
 
-        var posicioninicialpath = 0;
-        var posicionfinalpath = pathdocumento.indexOf('/');
-        var nuevopath = pathdocumento.indexOf('|');
-        var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
-        var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
-
-        var datos = DatosDocumento.at(index);
-        if (datos == '1') {
-          datos = 'Cumple';
+      if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
+        if (
+          DatosDocumento.at(0) == '1' &&
+          DatosDocumento.at(1) == '1' &&
+          DatosDocumento.at(2) == '1' &&
+          DatosDocumento.at(3) == '1' &&
+          DatosDocumento.at(4) == '1'
+        ) {
+          const update = await api.updatelicencia(objJosn?.idSolicitud);
         } else {
-          datos = 'No Cumple';
+          alert('Todos los documentos deben de cumplir en caso de aprobacion');
+          not = 0;
         }
-
-        const json: IGestionTramite<any> = {
-          estado: {
-            idSolicitud: objJosn?.idSolicitud,
-            idDocumentoSoporte: id,
-            Path: documento,
-            Estado_Documento: datos,
-            tipoSeguimiento: values.validFunctionaltype,
-            Observaciones: values.observations
-          }
-        };
-
-        const resp = await api.AddGestion(json, not + '');
       }
-      /////////////////////////Enviar Notificacion//////////////////////////
-      let tipoSeguimiento: string = values.validFunctionaltype;
-      let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-      let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
-      //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
+      if (segui == 'fe691637-be8a-425f-a309-e2032221553f') {
+        if (
+          DatosDocumento.at(0) == '2' ||
+          DatosDocumento.at(1) == '2' ||
+          DatosDocumento.at(2) == '2' ||
+          DatosDocumento.at(3) == '2' ||
+          DatosDocumento.at(4) == '2'
+        ) {
+        } else {
+          alert('Debe indicar almenos un Documento que no Cumpla');
+          not = 0;
+        }
+      }
+      if (not == 1) {
+        /////////////////////////Guardar status//////////////////////////
+        for (let index = 0; index < documentos.length; index++) {
+          //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
+          var posicioninicialid = 0;
+          var posicionfinalid = iddocumento.indexOf('|');
+          var id = iddocumento.substring(posicioninicialid, posicionfinalid);
+          var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
 
-      let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
+          var posicioninicialpath = 0;
+          var posicionfinalpath = pathdocumento.indexOf('/');
+          var nuevopath = pathdocumento.indexOf('|');
+          var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
+          var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
 
-      let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
-      let idTramite = objJosn?.idTramite;
-      let cementerio = solicitud[0]['datosCementerio']['cementerio'];
-      let date = new Date();
-      let emailSolicitante = resumenSolicitud[0]['correoSolicitante'];
+          var datos = DatosDocumento.at(index);
+          if (datos == '1') {
+            datos = 'Cumple';
+          } else {
+            datos = 'No Cumple';
+          }
 
-      if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
-        //alert('aprobacion');
+          const json: IGestionTramite<any> = {
+            estado: {
+              idSolicitud: objJosn?.idSolicitud,
+              idDocumentoSoporte: id,
+              Path: documento,
+              Estado_Documento: datos,
+              tipoSeguimiento: values.validFunctionaltype,
+              Observaciones: values.observations
+            }
+          };
 
-        let codeUser = await api.getCodeUser();
-        let nameUser = await api.GetInformationUser(codeUser);
+          const resp = await api.AddGestion(json, not + '');
+        }
+        /////////////////////////Enviar Notificacion//////////////////////////
+        let tipoSeguimiento: string = values.validFunctionaltype;
+        let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+        let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud /*'ACF323FE-181C-4039-876D-07695F363C3C'*/);
+        //let solicitud = await api.GetSolicitud('69EF7A4C-CE0F-43AD-9D3E-E679204E0F0D');
 
-        let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName);
+        let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud /*'593E8100-80D2-4CC4-9286-06229E3811BA'*/);
 
-        //window.open(linkPDF, 'hola mundo');
+        let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
+        let idTramite = objJosn?.idTramite;
+        let cementerio = solicitud[0]['datosCementerio']['cementerio'];
+        let date = new Date();
+        let emailSolicitante = resumenSolicitud[0]['correoSolicitante'];
 
-        let datosDinamicosAprobacion = [
-          solicitud[0]['razonSocialSolicitante'],
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          objJosn.idControlTramite,
-          fechaSolicitud.substring(0, 10),
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          linkPDF
-        ];
+        if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
+          //alert('aprobacion');
 
-        let emailCementerio = resumenSolicitud[0]['correoCementerio'];
-        let datosDinamicosCementerio = [
-          cementerio,
-          resumenSolicitud[0]['numeroLicencia'],
-          date.toLocaleDateString(),
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          linkPDF
-        ];
+          let codeUser = await api.getCodeUser();
+          let nameUser = await api.GetInformationUser(codeUser);
 
-        let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
-        let datosDinamicosFuneraria = [
-          funeraria[0]['funeraria'],
-          resumenSolicitud[0]['numeroLicencia'],
-          date.toLocaleDateString(),
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          linkPDF
-        ];
+          let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName);
 
-        notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante);
-        notificarCementerio(datosDinamicosCementerio, emailCementerio);
-        notificarFuneraria(datosDinamicosFuneraria, emailFuneraria);
-        //notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
-      } else {
-        /*let datosDinamicos = {
+          //window.open(linkPDF, 'hola mundo');
+
+          let datosDinamicosAprobacion = [
+            solicitud[0]['razonSocialSolicitante'],
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            objJosn.idControlTramite,
+            fechaSolicitud.substring(0, 10),
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            linkPDF
+          ];
+
+          let emailCementerio = resumenSolicitud[0]['correoCementerio'];
+          let datosDinamicosCementerio = [
+            cementerio,
+            resumenSolicitud[0]['numeroLicencia'],
+            date.toLocaleDateString(),
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            linkPDF
+          ];
+
+          let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
+          let datosDinamicosFuneraria = [
+            funeraria[0]['funeraria'],
+            resumenSolicitud[0]['numeroLicencia'],
+            date.toLocaleDateString(),
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            linkPDF
+          ];
+
+          notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante);
+          notificarCementerio(datosDinamicosCementerio, emailCementerio);
+          notificarFuneraria(datosDinamicosFuneraria, emailFuneraria);
+          //notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
+        } else {
+          /*let datosDinamicos = {
         ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
         tipo_de_solicitud: getDescripcionTramite(idTramite.toLocaleUpperCase()),
         numero_de_solicitud: objJosn?.idSolicitud,
         fecha_de_solicitud: fechaSolicitud.substring(0, 10),
         observacion: values.Observations
       };*/
-        let datosDinamicosGenericos = [
-          solicitud[0]['razonSocialSolicitante'],
-          getDescripcionTramite(idTramite.toLocaleUpperCase()),
-          objJosn.idControlTramite,
-          fechaSolicitud.substring(0, 10),
-          values.observations
-        ];
+          let datosDinamicosGenericos = [
+            solicitud[0]['razonSocialSolicitante'],
+            getDescripcionTramite(idTramite.toLocaleUpperCase()),
+            objJosn.idControlTramite,
+            fechaSolicitud.substring(0, 10),
+            values.observations
+          ];
 
-        notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
+          notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
+        }
+        history.push('/tramites-servicios');
+        store.dispatch(SetResetViewLicence());
       }
-      history.push('/tramites-servicios');
-      store.dispatch(SetResetViewLicence());
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'FIRMA NO REGISTRADA',
+        text:
+          'Su firma no se encuentra registrada ' +
+          'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
+      });
     }
   };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -545,17 +559,29 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   ];
 
   const onPrevPDF = async () => {
-    const codeUser = await api.getCodeUser();
-    console.log('aqui estamos: ' + codeUser);
-    const nameUser = await api.GetInformationUser(codeUser);
-    const idSolicitud = objJosn?.idSolicitud;
-    const all = await api.GetSolicitud(idSolicitud);
-    let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, nameUser.fullName);
-    const solicitante = await api.GetResumenSolicitud(idSolicitud);
-    setsolicitante(solicitante[0]['nombreSolicitante']);
-    setUrlPdfLicence(linkPdf);
-    setNameUser(nameUser);
-    setIsModalVisiblePdf(true);
+    let bandera = await api.validarFirmaFuncionario(idUsuario);
+
+    if (bandera) {
+      const codeUser = await api.getCodeUser();
+      console.log('aqui estamos: ' + codeUser);
+      const nameUser = await api.GetInformationUser(codeUser);
+      const idSolicitud = objJosn?.idSolicitud;
+      const all = await api.GetSolicitud(idSolicitud);
+      let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, nameUser.fullName);
+      const solicitante = await api.GetResumenSolicitud(idSolicitud);
+      setsolicitante(solicitante[0]['nombreSolicitante']);
+      setUrlPdfLicence(linkPdf);
+      setNameUser(nameUser);
+      setIsModalVisiblePdf(true);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'FIRMA NO REGISTRADA',
+        text:
+          'Su firma no se encuentra registrada ' +
+          'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
+      });
+    }
   };
   const idcontrol = objJosn.idControlTramite;
   const tipotramite: string = objJosn.idTramite;

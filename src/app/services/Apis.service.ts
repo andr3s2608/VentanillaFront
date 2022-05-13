@@ -261,6 +261,13 @@ export class ApiService {
     return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador;
   };
 
+  validarFirmaFuncionario = (idTramitador: string) =>
+    get<any>({
+      endpoint: environments.local,
+      url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
+      id: '0'
+    });
+
   getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string): string => {
     return environments.inhcremacion + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador + '/' + nombreTramitador;
   };
