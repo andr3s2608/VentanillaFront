@@ -52,6 +52,8 @@ import { EyeOutlined } from '@ant-design/icons';
 export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [isModalValidarCertificado, setIsModalValidarCertificado] = useState<boolean>(false);
+  const [isDisabledElement, setIsDisabledElement] = useState<boolean>(false);
   const [nameUser, setNameUser] = useState<any>('');
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
   const [viewLicenceState, setViewLicenceState] = useState<any>();
@@ -110,6 +112,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         const typeList = await api.GetAllTypeValidation();
         setSupports(support);
         setType(typeList);
+      }
+
+      console.log('el número de la solicitud es: ' + objJosn?.certificado);
+
+      const all = await api.getCertificado(objJosn?.certificado);
+
+      if (!all) {
+        setIsModalValidarCertificado(true);
+        setIsDisabledElement(true);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -443,7 +454,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         <Button type='dashed' htmlType='button' onClick={onPrevStep}>
           Volver atrás
         </Button>
-        <Button type='primary' htmlType='submit'>
+        <Button type='primary' htmlType='submit' disabled={isDisabledElement}>
           Guardar
         </Button>
       </div>
@@ -599,7 +610,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           </Divider>
           <div className='fadeInLeft'>
             <InformacionFallecidoSeccion obj={objJosn} />
-            <InformacionMedicoCertificante obj={objJosn} />
+            <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
             <InformacionSolicitanteSeccion obj={objJosn} />
             <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
             <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
@@ -664,6 +675,28 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                   <p>Nombre del Solicitante : {solicitante} </p>
                 </div>
                 <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+              </Modal>
+
+              <Modal
+                title={<p className='text-center'>Notificación</p>}
+                visible={isModalValidarCertificado}
+                onCancel={() => setIsModalValidarCertificado(false)}
+                width={500}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                <div className='conteiner-fluid'>
+                  <div className='row'>
+                    <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
+                      El Número de certificado registrado NO existe
+                    </p>
+                  </div>
+                  <div className='row justify-content-md-center'>
+                    <Button type='primary' style={{ width: 60 }} onClick={() => setIsModalValidarCertificado(false)}>
+                      OK
+                    </Button>
+                  </div>
+                </div>
               </Modal>
             </div>
             <div>

@@ -14,7 +14,10 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
-export const InformacionMedicoCertificante = ({ obj }: any) => {
+export const InformacionMedicoCertificante = (props: any) => {
+  const { obj } = props;
+  console.log('el contenido es: ');
+  console.log(props);
   const [banderaBotonActualizarMedico, setMedico] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NROIDENT, setNROIDENT] = useState<string | undefined>();
@@ -111,7 +114,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='numeroIdentificacion'
           value={numeroIdentificacion}
-          disabled={false}
+          disabled={props.disabledField}
           onChange={(e) => cambioNumeroIdentificacion(e.target.value)}
         />
       )
@@ -123,7 +126,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='primernombre'
           value={primernombre}
-          disabled={false}
+          disabled={props.disabledField}
           onChange={(e) => cambioPrimerNombre(e.target.value)}
         />
       )
@@ -135,7 +138,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='segundonombre'
           value={segundonombre}
-          disabled={false}
+          disabled={props.disabledField}
           onChange={(e) => cambioSegundoNombre(e.target.value)}
         />
       )
@@ -147,7 +150,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='primerapellido'
           value={primerapellido}
-          disabled={false}
+          disabled={props.disabledField}
           onChange={(e) => cambioPrimerApellido(e.target.value)}
         />
       )
@@ -159,7 +162,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           type='text'
           name='segundoapellido'
           value={segundoapellido}
-          disabled={false}
+          disabled={props.disabledField}
           onChange={(e) => cambioSegundoApellido(e.target.value)}
         />
       )
@@ -210,7 +213,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           Datos de Quien Certifica la Muerte
           <Form.Item>
             <Button type='primary' className='ml-3 mt-2' onClick={() => onClickViewMedico()}>
-              Validar Medico
+              Validar Médico
             </Button>
           </Form.Item>
         </div>
