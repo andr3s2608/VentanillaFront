@@ -22,12 +22,15 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
+  const [correosol, setcorreosol] = useState<string>();
+  const [correofun, setcorreofun] = useState<string>();
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   const { obj, prop, form } = props;
   const lugarFuneraria = obj?.isLugar();
   const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
   const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
+  const [validacion, setvalidacion] = useState<string>('0');
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -40,8 +43,30 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         dominioService.get_type(ETipoDominio['Tipo Documento'])
       ]);
 
+      const userres = await api.getCodeUser();
+
+      const informationUser = await api.GetInformationUser(userres);
+
+      if (informationUser.tipoIdentificacion == 5) {
+        //form.setFieldsValue({ emailsolicitudadd: undefined });
+        //form.setFieldsValue({ emailfuneraria: undefined });
+        setcorreofun(informationUser.email);
+        //form.resetFields(['emailsolicitudadd']);
+        console.log('entrofun');
+        setvalidacion('1');
+        console.log(informationUser.email);
+      } else {
+        //form.setFieldsValue({ emailsolicitudadd: undefined });
+        //form.setFieldsValue({ emailfuneraria: undefined });
+        setcorreosol(informationUser.email);
+        console.log('entroper');
+        setvalidacion('1');
+        console.log(informationUser.email);
+      }
+
       const funeraria = await api.GetFunerarias();
       setLfunerarias(funeraria);
+
       setLTipoDocumento(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,6 +76,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   let validEmail = false;
   const onChange = (value: any) => {
     prop(validEmail);
+  };
+
+  const setearCampos = () => {
+    if (validacion === '1') {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const cambioemail = (e: any) => {
@@ -138,6 +171,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getLista();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -230,39 +264,59 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Email' initialValue={null} rules={[{ required: true, type: 'email', max: 50 }]} name='emailsolicitudadd'>
-        <Input
-          allowClear
-          placeholder='email@example.com'
-          type='email'
-          onKeyPress={(event) => {
-            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
-          autoComplete='off'
-          id='emailsol'
-        />
-      </Form.Item>
+      {setearCampos() && (
+        <>
+          <Form.Item
+            label='Correo familiar contratante'
+            initialValue={correosol}
+            rules={[{ required: true, type: 'email', max: 50 }]}
+            name='emailsolicitudadd'
+          >
+            <Input
+              allowClear
+              placeholder='Email Familiar'
+              value={correosol}
+              defaultValue={correosol}
+              type='email'
+              onKeyPress={(event) => {
+                if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              autoComplete='off'
+              id='emailsol'
+            />
+          </Form.Item>
+        </>
+      )}
+
       <div>{renderFormFuneria(lugarfuneraria)}</div>
-      <Form.Item
-        label='Email Funeraria y/o solicitante'
-        name='emailfuneraria'
-        rules={[{ required: true, type: 'email', max: 50 }]}
-      >
-        <Input
-          allowClear
-          placeholder='Email Funeraria'
-          type='email'
-          onKeyPress={(event) => {
-            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
-          //onChange={(e) => cambioemailFUN(e.target.value)}
-          autoComplete='off'
-        />
-      </Form.Item>
+
+      {setearCampos() && (
+        <>
+          <Form.Item
+            label='Email Funeraria y/o solicitante'
+            name='emailfuneraria'
+            initialValue={correofun}
+            rules={[{ required: true, type: 'email', max: 50 }]}
+          >
+            <Input
+              allowClear
+              placeholder='Email Funeraria'
+              value={correofun}
+              defaultValue={correofun}
+              type='email'
+              onKeyPress={(event) => {
+                if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              //onChange={(e) => cambioemailFUN(e.target.value)}
+              autoComplete='off'
+            />
+          </Form.Item>
+        </>
+      )}
     </>
   );
 };

@@ -254,7 +254,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             primerApellido: values.surname,
             segundoApellido: values.secondSurname,
             fechaNacimiento: values.dateOfBirth,
-            nacionalidad: values.nationalidad[0],
+            nacionalidad: values.nationalidad,
             segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatus,
@@ -466,6 +466,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     return [files, names];
   };
   const onSubmitFailed = () => setStatus('error');
+
+  const cambionac = (value: any) => console.log(value);
 
   const PruebaCertificado = async () => {
     let numero: string = form.getFieldValue('certificado');
@@ -887,7 +889,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             >
               <SelectComponent
                 options={l_paises}
-                placeholder='-- Elija una o varias --'
+                placeholder='-- Elija una nacionalidad --'
+                onChange={cambionac}
                 optionPropkey='id'
                 optionPropLabel='descripcion'
               />

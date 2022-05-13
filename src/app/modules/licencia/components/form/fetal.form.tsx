@@ -241,7 +241,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             primerApellido: values.surnamemother,
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
-            nacionalidad: values.nationalidadmother[0],
+            nacionalidad: values.nationalidadmother,
             segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
@@ -309,7 +309,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         razon = resp.razonSocial;
       } else {
         tipo = 'Natural';
-        razon = resp.fullName;
+        razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+        tipoid = values.fiscalia;
+        nroid = values.ndoc;
       }
       const dep = values.state;
       var mun = values.city;
@@ -1121,11 +1123,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               label='Nacionalidad de la Madre'
               name='nationalidadmother'
               initialValue={obj?.nationalidadmother ?? [idColombia]}
-              rules={[{ required: true, type: 'array', max: 1 }]}
+              rules={[{ required: true }]}
             >
               <SelectComponent
                 options={l_paises}
-                placeholder='-- Elija una o varias --'
+                placeholder='-- Elija una --'
                 optionPropkey='id'
                 optionPropLabel='descripcion'
               />
