@@ -1,4 +1,3 @@
-// Antd
 import Tabs from 'antd/es/tabs';
 
 // Componentes
@@ -11,11 +10,13 @@ const { TabPane } = Tabs;
 const PruebaPage = () => {
   return (
     <div className='fadeInTop container-fluid'>
-      <PageHeaderComponent title='Gestión de Firmas' />
+      <PageHeaderComponent title='Actualizar Datos' />
 
       <Tabs>
-        <TabPane tab='Gestión de Firmas' key='1'>
-          <GestionFirma props={1} />;
+        <TabPane tab='Actualizar Datos de Licencia' key='1'>
+          {
+            //<GestionFirma props={1} />
+          }
         </TabPane>
       </Tabs>
     </div>

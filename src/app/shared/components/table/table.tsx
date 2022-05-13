@@ -76,7 +76,7 @@ export const Gridview = (props: IDataSource) => {
         }, '');
       } else {
         const { persona } = datos;
-
+        console.log(datos);
         identify = '';
 
         for (let index = 0; index < datos.length; index++) {
@@ -97,13 +97,14 @@ export const Gridview = (props: IDataSource) => {
   if (Validacion == '1') {
     Renovar(undefined);
   }
-
+  /*
   const identificacion = () => {
     const posicioninicial = 0;
     var nroidentificacion = identify.substring(posicioninicial, identify.indexOf('|'));
     identify = identify.substring(identify.indexOf('|') + 1, identify.length);
     return nroidentificacion;
   };
+  */
   var structureColumns;
 
   const tiposolicitud = () => {
@@ -142,6 +143,13 @@ export const Gridview = (props: IDataSource) => {
       return idTramite;
     }
   };
+  /*
+            render: (Text: string) => (
+              <Form.Item label='' name=''>
+                <text>{identificacion()}</text>
+              </Form.Item>
+            );
+            */
   const boton = () => {
     if (Tipo.rol !== 'Ciudadano') {
       structureColumns = [
@@ -152,13 +160,8 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Documento del Fallecido',
-          dataIndex: '',
-          key: 'numeroDocumento',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{identificacion()}</text>
-            </Form.Item>
-          )
+          dataIndex: 'noIdentificacionSolicitante',
+          key: 'numeroDocumento'
         },
         {
           title: 'Funeraria y/o Nombre',
