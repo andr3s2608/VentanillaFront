@@ -121,10 +121,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         describe: <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} disabled />
       },
       {
-        title: 'Fecha de nacimiento',
-        describe: fechaNacimiento
-      },
-      {
         title: 'Hora de fallecimiento',
         describe: horaFallecido
       },
