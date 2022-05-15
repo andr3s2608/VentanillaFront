@@ -22,7 +22,7 @@ stages:
         azure_static_web_apps_api_token: $(deployment_token)
 
 
-- stage: ValidacionDesarrollo
+- stage: QA
   jobs:
   - job: waitForValidation
     displayName: Wait for external validation  
