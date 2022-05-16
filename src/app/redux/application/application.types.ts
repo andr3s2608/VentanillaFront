@@ -13,6 +13,7 @@ export interface IItemMenu {
   name: string;
   path?: string;
   children?: IItemMenu[];
+  fatherchildren?: IItemMenu[];
 }
 
 export type ApplicationActionTypes = ISetApplicationMenu | IResetApplication;

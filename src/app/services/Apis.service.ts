@@ -23,7 +23,7 @@ export class ApiService {
   personaJuridica = (tipoDominio: IPersonaNatural) =>
     post<IPersonaNatural>({ endpoint: this.endpoint, url: `v2/Persona/AddPersonaJuridica`, payload: tipoDominio, id: '0' });
 
-  GetMenuUser = () => get<Menu[]>({ endpoint: environments.security, url: `Security/GetMenuByUser/${this.oid}`, id: '0' });
+  GetMenuUser = () => get<Menu[]>({ endpoint: environments.localsecurity, url: `Security/GetMenuByUser/${this.oid}`, id: '0' });
 
   GetRoles = () => get<IRoles[]>({ endpoint: environments.security, url: `Security/GetRoleByIdUser/${this.oid}`, id: '0' });
 
