@@ -51,7 +51,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
     async () => {
       const myMenu = await api.GetMenuUser();
       const menu = MapperMenu.mapMenu(myMenu);
-      console.log(menu);
+
       dispatch(SetApplicationMenu(menu));
       await api.AddUser({
         oid: accountIdentifier,

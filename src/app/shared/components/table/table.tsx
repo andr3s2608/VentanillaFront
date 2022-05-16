@@ -76,7 +76,7 @@ export const Gridview = (props: IDataSource) => {
         }, '');
       } else {
         const { persona } = datos;
-        console.log(datos);
+
         identify = '';
 
         for (let index = 0; index < datos.length; index++) {
@@ -306,15 +306,13 @@ export const Gridview = (props: IDataSource) => {
     showModal();
   };
 
-  const onClickValidarInformacion = async ({ idSolicitud, iD_Control_Tramite }: { [x: string]: string }) => {
+  const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
-    const { idTramite } = data[0];
 
     localStorage.setItem('register', JSON.stringify(data));
 
     store.dispatch(SetResetViewLicence());
 
-    //history.push('/tramites-servicios/licencia/inhumacion-prueba');
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
   const onPageChange = (pagination: any) => {
