@@ -30,9 +30,8 @@ import { FilePdfOutlined } from '@ant-design/icons';
 export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
   const { prop, obj, id } = props;
   const [grid, setGrid] = useState<any[]>([]);
-  const [shown, setShown] = useState(false);
-  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const [urlPdf, setUrlPdf] = useState<any>('');
+  const [heightIframe, setHeightIframe] = useState<string>('');
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const solicitud = obj.idSolicitud;
@@ -51,6 +50,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   //
   useEffect(() => {
     getListas();
+    setHeightIframe('0vh');
   }, []);
 
   //desglosar descripcion de path
@@ -101,7 +101,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     //prop.datos(arrayarchivos);
   };
 
-  const onPrevPDF = async (DocumentsSupport: any) => {
+  const viewPDF = async (DocumentsSupport: any) => {
     /** Se consume end-point para obtener la solicitud a la que pertenece
      *  el documento, y saber el tipo de tramite de la solicitud
      * */
@@ -133,15 +133,12 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
 
     setUrlPdf(api.GetUrlPdf(pathFull));
-    /**
-     * Se despliega el pop up con el pdf dentro
-     */
-    setIsModalVisiblePdf(true);
+    setHeightIframe('1000vh');
   };
 
   const structureColumns = [
     {
-      title: 'Descripcion',
+      title: 'Descripción',
       dataIndex: '',
       key: 'descripcionpath',
       render: (Text: string) => (
@@ -154,7 +151,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
       title: 'Ver PDF',
       dataIndex: 'pdf',
       key: Math.random().toString(36).substring(2, 9),
-      render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrevPDF(row)} style={{ fontSize: '30px' }} />
+      render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
     },
     {
       title: 'Cumple?',
@@ -172,23 +169,25 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   ];
 
   return (
-    <>
-      <Divider orientation='left'>Documentos Cargados</Divider>
-      <div className='d-lg-flex align-items-start'>
-        <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
+    <div className='container'>
+      <div className='row'>
+        <Divider orientation='left'>Documentos Cargados</Divider>
       </div>
-
-      <Modal
-        title={<p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>Visualización de pdf</p>}
-        visible={isModalVisiblePdf}
-        onCancel={() => setIsModalVisiblePdf(false)}
-        width={1000}
-        okButtonProps={{ hidden: true }}
-        cancelText='Cerrar'
-      >
-        <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-      </Modal>
-    </>
+      <div className='row'>
+        <div className='col'>
+          <div className='d-lg-flex align-items-start'>
+            <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
+          </div>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col'>
+          <iframe src={urlPdf} frameBorder='0' scrolling='auto' height={heightIframe} width='100%'></iframe>
+        </div>
+      </div>
+      <br></br>
+      <br></br>
+    </div>
   );
 };
 
