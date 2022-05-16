@@ -19,6 +19,9 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   >(['', '', '', '', '']);
   const [numeroCertificado, setNumeroCertificado] = useState();
   const [defuncion, setdefuncion] = useState<string | undefined>();
+  const [esmadre, setesmadre] = useState<boolean>(false);
+  const [ciudadmadre, setciudadmadre] = useState<string | undefined>();
+  const [departamentomadre, setdepartamentomadre] = useState<string | undefined>();
   const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -45,6 +48,17 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       setdefuncion(iddepart[0].descripcion);
     }
 
+    if (obj?.idDepartamentoResidencia != undefined) {
+      const iddepartmadre = (await dep).filter((i) => i.idDepartamento == obj?.idDepartamentoResidencia);
+      const { idDepartamento } = iddepartmadre[0];
+      const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
+
+      const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
+      setdepartamentomadre(iddepartmadre[0].descripcion);
+      setciudadmadre(idmunimadre[0].descripcion);
+      setesmadre(true);
+    }
+
     const inf_fallecido = await api.GetInformacionFallecido(obj?.idSolicitud);
 
     setFallecido([
@@ -69,10 +83,10 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const numero = obj?.certificado;
-  const primernombre = obj?.name;
-  const segundonombre = obj?.secondName;
-  const primerapellido = obj?.surname;
-  const segundoapellido = obj?.secondSurname;
+  const primernombre = obj?.name ?? obj.namemother;
+  const segundonombre = obj?.secondName ?? obj.secondNamemother;
+  const primerapellido = obj?.surname ?? obj.surnamemother;
+  const segundoapellido = obj?.secondSurname ?? obj.secondSurnamemother;
   //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
 
@@ -104,6 +118,44 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       break;
   }
 
+  //madre
+
+  var datamadre = [
+    {
+      title: 'Primer Nombre',
+      describe: primernombre
+    },
+    {
+      title: 'Segundo Nombre',
+      describe: segundonombre
+    },
+    {
+      title: 'Primer Apellido',
+      describe: primerapellido
+    },
+    {
+      title: 'Segundo Apellido',
+      describe: segundoapellido
+    },
+    {
+      title: 'No. Identificacion.',
+      describe: idfallecido
+    },
+    {
+      title: 'Tipo de identificación',
+      describe: tipo_identificacion
+    },
+    {
+      title: 'Departamento de Residencia',
+      describe: departamentomadre
+    },
+    {
+      title: 'Ciudad de Residencia',
+      describe: ciudadmadre
+    }
+  ];
+
+  //fallecido o feto
   var data = [
     {
       title: 'Numero Certificado de Defuncion',
@@ -232,6 +284,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
             </Button>
           </Form.Item>
         </div>
+
         <Modal
           title={
             <p className='text-center text-dark text-uppercase mb-0 titulo'> validación número de certificado de defunción</p>
@@ -303,6 +356,22 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
           </List.Item>
         )}
       />
+      {esmadre && (
+        <>
+          <Divider orientation='left'>
+            <div className='contenedor'>datos de la Madre</div>
+          </Divider>
+          <List
+            grid={{ gutter: 16, column: 3 }}
+            dataSource={datamadre}
+            renderItem={(item) => (
+              <List.Item>
+                <List.Item.Meta title={item.title} description={item.describe} />
+              </List.Item>
+            )}
+          />
+        </>
+      )}
     </>
   );
 };

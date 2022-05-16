@@ -40,6 +40,24 @@ export const SidenavComponent: React.FC<BasicProps> = (props) => {
   const renderMenu = (items: IItemMenu[]) =>
     items.map((item, idx) => {
       const key = `${idx}_${item.name.replace(/\s/g, '_')}`;
+      if (item?.fatherchildren?.length) {
+        if (item?.children?.length) {
+          return (
+            <>
+              <Menu.SubMenu key={key} title={item.name} onTitleClick={onOpenChangeMenu}>
+                {renderMenu(item.fatherchildren)}
+                {renderMenu(item.children)}
+              </Menu.SubMenu>
+            </>
+          );
+        } else {
+          return (
+            <Menu.SubMenu key={key} title={item.name} onTitleClick={onOpenChangeMenu}>
+              {renderMenu(item.fatherchildren)}
+            </Menu.SubMenu>
+          );
+        }
+      }
       if (item?.children?.length) {
         return (
           <Menu.SubMenu key={key} title={item.name} onTitleClick={onOpenChangeMenu}>
