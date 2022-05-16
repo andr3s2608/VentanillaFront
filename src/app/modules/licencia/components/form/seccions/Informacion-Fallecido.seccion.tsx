@@ -280,7 +280,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
           datos del fallecido
           <Form.Item>
             <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
-              No. Certificado
+              Validar No. Certificado
             </Button>
           </Form.Item>
         </div>
