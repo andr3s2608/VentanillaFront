@@ -228,7 +228,7 @@ export class ApiService {
 
   agregarFirma = (payload: any) => {
     return post<any>({
-      endpoint: environments.local,
+      endpoint: environments.inhcremacion,
       url: 'Request/AddFirma',
       payload,
       id: '1'
@@ -258,12 +258,12 @@ export class ApiService {
   GeneratePDF = (idTramite: string) => `${environments.inhcremacion}GeneratePDF/GeneratePDF/${idTramite}`;
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
-    return environments.local + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador;
+    return environments.inhcremacion + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador;
   };
 
   validarFirmaFuncionario = (idTramitador: string) =>
     get<any>({
-      endpoint: environments.local,
+      endpoint: environments.inhcremacion,
       url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
       id: '0'
     });
