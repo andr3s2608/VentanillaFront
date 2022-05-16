@@ -12,7 +12,6 @@ import { Button, List, Modal } from 'antd';
 import Table from 'antd/es/table';
 import Divider from 'antd/es/divider';
 import moment from 'moment';
-
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
@@ -48,6 +47,7 @@ import { EditInhumacion } from './edit/Inhumacion';
 import { ValidationFuntional } from './seccions/validationfuntional';
 import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
+import '../../../../.././scss/antd/index.css';
 
 export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -591,12 +591,22 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
-            ID TRAMITE:{idcontrol}
-          </Divider>
-          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
-            TIPO DE SOLICITUD:{valor}
-          </Divider>
+          <div className='container text-center'>
+            <div className='row text-center'>
+              <div className='col-lg-12 col-md-12 col-sm-12 text-center'>
+                <div className='hero'>
+                  <div className='hero-info'>
+                    <p>
+                      ID TRAMITE: <span className='ml-2'>{idcontrol}</span>
+                    </p>
+                    <p>
+                      TIPO DE SOLICITUD: <span className='ml-2 text-uppercase'>{valor}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className='fadeInLeft'>
             <InformacionFallecidoSeccion obj={objJosn} />
             <InformacionMedicoCertificante obj={objJosn} />

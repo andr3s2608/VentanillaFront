@@ -404,13 +404,17 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         )}
       />
       <Divider orientation='left'>
-        <div className='contenedor'>
-          Datos del Cementerio
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewCementerio()}>
-              Validar Cementerio
-            </Button>
-          </Form.Item>
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 justify-content-center'>
+            <div className='contenedor'>
+              Datos del Cementerio
+              <Form.Item>
+                <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewCementerio()}>
+                  Validar Cementerio
+                </Button>
+              </Form.Item>
+            </div>
+          </div>
         </div>
       </Divider>
       <List

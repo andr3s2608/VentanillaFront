@@ -6,7 +6,7 @@ import moment from 'moment';
 import { List, Card, Layout, Button, Form, Modal, Table } from 'antd';
 import 'app/shared/components/table/estilos.css';
 // Componentes
-
+import '../../../../../../scss/antd/index.css';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { dominioService, ETipoDominio, IDominio, IMunicipio, IDepartamento } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -223,77 +223,78 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   };
   return (
     <>
-      <Divider orientation='left'>
-        <div className='contenedor'>
-          datos del fallecido
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
-              No. Certificado
-            </Button>
-          </Form.Item>
+      <div className='container-fluid '>
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 col-md-12 col-xs-12'>
+            <div className='d-flex justify-content-center'>
+              <Form.Item>
+                <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
+                  No. Certificado
+                </Button>
+              </Form.Item>
+            </div>
+          </div>
         </div>
-        <Modal
-          title={
-            <p className='text-center text-dark text-uppercase mb-0 titulo'> validación número de certificado de defunción</p>
-          }
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          width={1000}
-          okButtonProps={{ hidden: true }}
-          cancelText='Cerrar'
-        >
-          {valorR && (
-            <>
-              {valorR == 'El certificado registrado es válido' && (
-                <>
-                  <div className='col-lg-12'>
-                    <p
-                      id='messageMortuary'
-                      className='text-center mt-4'
-                      style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
-                    >
-                      {valorR}
-                    </p>
-                  </div>
-                </>
-              )}
-              {valorR == 'El certificado registrado es inválido' && (
-                <>
-                  <div className='col-lg-12'>
-                    <p
-                      id='messageMortuary'
-                      className='text-center mt-4'
-                      style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
-                    >
-                      {valorR}
-                    </p>
-                  </div>
-                </>
-              )}
-              {valorR == 'El certificado registrado es válido' && (
-                <>
-                  <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
-                    <tbody>
-                      <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
-                        <th>NOMBRE</th>
-                        <th>FECHA</th>
-                        <th>NÚMERO IDENTIFICACIÓN</th>
-                        <th>GENERO</th>
-                      </tr>
-                      <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
-                        <td>{NOMBRES}</td>
-                        <td>{FECHA_DEFUNCION}</td>
-                        <td>{NROIDENT}</td>
-                        <td>{SEXO}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </>
-              )}
-            </>
-          )}
-        </Modal>
-      </Divider>
+      </div>
+      <Modal
+        title={<p className='text-center text-dark text-uppercase mb-0 titulo'> validación número de certificado de defunción</p>}
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={1000}
+        okButtonProps={{ hidden: true }}
+        cancelText='Cerrar'
+      >
+        {valorR && (
+          <>
+            {valorR == 'El certificado registrado es válido' && (
+              <>
+                <div className='col-lg-12'>
+                  <p
+                    id='messageMortuary'
+                    className='text-center mt-4'
+                    style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                  >
+                    {valorR}
+                  </p>
+                </div>
+              </>
+            )}
+            {valorR == 'El certificado registrado es inválido' && (
+              <>
+                <div className='col-lg-12'>
+                  <p
+                    id='messageMortuary'
+                    className='text-center mt-4'
+                    style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                  >
+                    {valorR}
+                  </p>
+                </div>
+              </>
+            )}
+            {valorR == 'El certificado registrado es válido' && (
+              <>
+                <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                  <tbody>
+                    <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                      <th>NOMBRE</th>
+                      <th>FECHA</th>
+                      <th>NÚMERO IDENTIFICACIÓN</th>
+                      <th>GENERO</th>
+                    </tr>
+                    <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                      <td>{NOMBRES}</td>
+                      <td>{FECHA_DEFUNCION}</td>
+                      <td>{NROIDENT}</td>
+                      <td>{SEXO}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </>
+            )}
+          </>
+        )}
+      </Modal>
       <List
         grid={{ gutter: 16, column: 3 }}
         dataSource={data}
