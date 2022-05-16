@@ -15,7 +15,8 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
-export const InformacionMedicoCertificante = ({ obj }: any) => {
+export const InformacionMedicoCertificante = (props: any) => {
+  const { obj } = props;
   const [banderaBotonActualizarMedico, setMedico] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NROIDENT, setNROIDENT] = useState<string | undefined>();
@@ -115,7 +116,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           className='form-control'
           name='numeroIdentificacion'
           value={numeroIdentificacion}
-          disabled={true}
+          disabled={props.disabledField}
           onChange={(e) => cambioNumeroIdentificacion(e.target.value)}
         />
       )
@@ -128,7 +129,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           className='form-control'
           name='primernombre'
           value={primernombre}
-          disabled={true}
+          disabled={props.disabledField}
           onChange={(e) => cambioPrimerNombre(e.target.value)}
         />
       )
@@ -141,7 +142,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           name='segundonombre'
           className='form-control'
           value={segundonombre}
-          disabled={true}
+          disabled={props.disabledField}
           onChange={(e) => cambioSegundoNombre(e.target.value)}
         />
       )
@@ -154,7 +155,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           name='primerapellido'
           className='form-control'
           value={primerapellido}
-          disabled={true}
+          disabled={props.disabledField}
           onChange={(e) => cambioPrimerApellido(e.target.value)}
         />
       )
@@ -167,7 +168,7 @@ export const InformacionMedicoCertificante = ({ obj }: any) => {
           name='segundoapellido'
           className='form-control'
           value={segundoapellido}
-          disabled={true}
+          disabled={props.disabledField}
           onChange={(e) => cambioSegundoApellido(e.target.value)}
         />
       )

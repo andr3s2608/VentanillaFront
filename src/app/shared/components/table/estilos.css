@@ -113,8 +113,21 @@ table th {
   margin: 0 auto;
 }
 
-.no_margin {
+.no_margin_padding {
   margin: 0px;
+  padding: 0px;
+}
+
+.block {
+  display: block;
+}
+
+.anchoW1 {
+  width: 400px;
+}
+
+.anchoW2 {
+  width: 300px;
 }
 
 .margintop {
