@@ -16,8 +16,6 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const InformacionMedicoCertificante = (props: any) => {
   const { obj } = props;
-  console.log('el contenido es: ');
-  console.log(props);
   const [banderaBotonActualizarMedico, setMedico] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [NROIDENT, setNROIDENT] = useState<string | undefined>();

@@ -565,6 +565,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     setNameUser(nameUser);
     setIsModalVisiblePdf(true);
   };
+  const onModalNofificacion = () => {
+    setIsModalValidarCertificado(false);
+    history.push('/tramites-servicios');
+    console.log('se cerroo');
+  };
+
   const idcontrol = objJosn.idControlTramite;
   const tipotramite: string = objJosn.idTramite;
   var valor = '';
@@ -680,7 +686,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
               <Modal
                 title={<p className='text-center'>Notificación</p>}
                 visible={isModalValidarCertificado}
-                onCancel={() => setIsModalValidarCertificado(false)}
+                onCancel={onModalNofificacion}
+                onOk={onModalNofificacion}
                 width={500}
                 okButtonProps={{ hidden: true }}
                 cancelText='Cerrar'
@@ -692,7 +699,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                     </p>
                   </div>
                   <div className='row justify-content-md-center'>
-                    <Button type='primary' style={{ width: 60 }} onClick={() => setIsModalValidarCertificado(false)}>
+                    <Button type='primary' style={{ width: 60 }} onClick={onModalNofificacion}>
                       OK
                     </Button>
                   </div>
