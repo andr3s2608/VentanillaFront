@@ -4,8 +4,6 @@ export class MapperMenu {
     let menuPatch: any[] = [];
     menu.forEach((item: Menu) => {
       const fatherchildren = item.menuPadreHijo.map((menu2: Menu) => {
-        console.log(menu2.menuPadreHijo);
-
         const fatherchildren = menu2.menuPadreHijo.map((menu3: Menu) => {
           const children = menu3.menuHijo.map((menu: Menu) => {
             return {

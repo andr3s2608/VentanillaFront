@@ -45,6 +45,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
+import { EditFetal } from './edit/fetal';
 import { ValidationFuntional } from './seccions/validationfuntional';
 import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
@@ -74,7 +75,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
-  const objJosn: any = EditInhumacion('1');
+  const valid: any = EditInhumacion('1');
+  var objJosn: any = EditInhumacion('1');
+  if (valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' || valid.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e') {
+    objJosn = EditFetal();
+  } else {
+    objJosn = EditInhumacion('1');
+  }
 
   const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
@@ -449,7 +456,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       </div>
     </Form.Item>
   );
-  const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
+
   //#endregion
 
   const Lista = [
