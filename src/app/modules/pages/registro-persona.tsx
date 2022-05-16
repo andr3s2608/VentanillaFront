@@ -268,7 +268,7 @@ const RegistroPage: React.FC<any> = (props) => {
     } else {
       setAvenida(true);
     }
-    //build_direction(0, valor);
+    build_direction(0, valor);
   };
 
   const build_direction = (posicion: number, valor: string) => {
@@ -389,157 +389,169 @@ const RegistroPage: React.FC<any> = (props) => {
 
           <div className='container-flex'>
             <div className='row'>
-              <div className='col-7 form-group'>
-                <Form.Item label='Via Principal' name='ppla' rules={[{ required: true }]}>
-                  <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
+              <div className='col-5'>
+                <Form.Item
+                  className='block no_margin_padding anchoW1'
+                  label='Via Principal'
+                  name='ppla'
+                  rules={[{ required: true }]}
+                >
+                  <div className='block no_margin_padding'>
+                    <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
+                  </div>
                 </Form.Item>
               </div>
               <div className='col-3'>
-                <Form.Item label='Número' name='Num1' rules={[{ required: avenida, max: 3 }]}>
-                  {
-                    //<p className='text-center no_margin'>Número</p>
-                  }
-                  <Input
-                    id='23'
-                    allowClear
-                    type='text'
-                    placeholder=''
-                    autoComplete='off'
-                    maxLength={3}
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                <Form.Item
+                  className='block no_margin_padding anchoW2'
+                  label='Número'
+                  name='Num1'
+                  rules={[{ required: avenida, max: 3 }]}
+                >
+                  <div className='block no_margin_padding'>
+                    <Input
+                      id='23'
+                      allowClear
+                      type='text'
+                      placeholder=''
+                      autoComplete='off'
+                      maxLength={3}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                    onChange={(event) => {
-                      build_direction(1, event.target.value);
-                    }}
-                  />
+                      }}
+                      onChange={(event) => {
+                        build_direction(1, event.target.value);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
-              <div className='col-2'>
-                <Form.Item name='letra1' rules={[{ max: 1 }]}>
-                  <p className='text-center no_margin'>Letra</p>
-                  <SelectComponent
-                    options={letras}
-                    optionPropkey='key'
-                    optionPropLabel='key'
-                    onChange={(event) => {
-                      build_direction(2, event);
-                    }}
-                  />
+              <div className='col-4'>
+                <Form.Item className='block no_margin_padding anchoW2' label='Letra' name='letra1' rules={[{ max: 1 }]}>
+                  <div className='block no_margin_padding'>
+                    <SelectComponent
+                      options={letras}
+                      optionPropkey='key'
+                      optionPropLabel='key'
+                      onChange={(event) => {
+                        build_direction(2, event);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
             </div>
             <div className='row'>
               <div className='col-2'>
-                <Form.Item name='Bis' rules={[{ max: 3 }]}>
-                  <p className='text-center no_margin'>Bis</p>
-                  <SelectComponent
-                    options={[
-                      { key: 'Bis', value: 'Bis' },
-                      { key: ' ', value: ' ' }
-                    ]}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                    onChange={(event) => {
-                      build_direction(3, event);
-                    }}
-                  />
+                <Form.Item className='block no_margin_padding' label='Bis' name='Bis' rules={[{ max: 3 }]}>
+                  <div className='block no_margin_padding'>
+                    <SelectComponent
+                      options={[
+                        { key: 'Bis', value: 'Bis' },
+                        { key: ' ', value: ' ' }
+                      ]}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                      onChange={(event) => {
+                        build_direction(3, event);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item name='card1' rules={[{ max: 4 }]}>
-                  <p className='text-center no_margin'>Card</p>
-                  <SelectComponent
-                    options={direcionOrienta}
-                    optionPropkey='key'
-                    optionPropLabel='key'
-                    onChange={(event) => {
-                      build_direction(4, event);
-                    }}
-                  />
+                <Form.Item className='block no_margin_padding' label='Card' name='card1' rules={[{ max: 4 }]}>
+                  <div className='block no_margin_padding'>
+                    <SelectComponent
+                      options={direcionOrienta}
+                      optionPropkey='key'
+                      optionPropLabel='key'
+                      onChange={(event) => {
+                        build_direction(4, event);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
-                  {
-                    //<p className='text-center no_margin'>Número</p>
-                  }
-
-                  <Input
-                    allowClear
-                    type='text'
-                    placeholder=''
-                    autoComplete='off'
-                    maxLength={3}
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                <Form.Item className='block no_margin_padding' label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
+                  <div className='block no_margin_padding'>
+                    <Input
+                      allowClear
+                      type='text'
+                      placeholder=''
+                      autoComplete='off'
+                      maxLength={3}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                    onChange={(event) => {
-                      build_direction(5, event.target.value);
-                    }}
-                  />
+                      }}
+                      onChange={(event) => {
+                        build_direction(5, event.target.value);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item name='letra2' rules={[{ max: 1 }]}>
-                  <p className='text-center no_margin'>Letra</p>
-                  <SelectComponent
-                    options={letras}
-                    optionPropkey='key'
-                    optionPropLabel='key'
-                    onChange={(event) => {
-                      build_direction(6, event);
-                    }}
-                  />
+                <Form.Item className='block no_margin_padding' label='Letra' name='letra2' rules={[{ max: 1 }]}>
+                  <div className='block no_margin_padding'>
+                    <SelectComponent
+                      options={letras}
+                      optionPropkey='key'
+                      optionPropLabel='key'
+                      onChange={(event) => {
+                        build_direction(6, event);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item label='Placa' name='placa' rules={[{ required: true, max: 2 }]}>
-                  {
-                    //<p className='text-center no_margin'>Placa</p>
-                  }
-
-                  <Input
-                    allowClear
-                    placeholder=''
-                    autoComplete='off'
-                    maxLength={2}
-                    type='text'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                <Form.Item className='block no_margin_padding' label='Placa' name='placa' rules={[{ required: true, max: 2 }]}>
+                  <div className='block no_margin_padding'>
+                    <Input
+                      allowClear
+                      placeholder=''
+                      autoComplete='off'
+                      maxLength={2}
+                      type='text'
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                    onChange={(event) => {
-                      build_direction(7, event.target.value);
-                    }}
-                  />
+                      }}
+                      onChange={(event) => {
+                        build_direction(7, event.target.value);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
               <div className='col-2'>
-                <Form.Item name='card2'>
-                  <p className='text-center no_margin'>Card</p>
-                  <SelectComponent
-                    options={direcionOrienta}
-                    optionPropkey='key'
-                    optionPropLabel='key'
-                    onChange={(event) => {
-                      build_direction(8, event);
-                    }}
-                  />
+                <Form.Item className='block no_margin_padding' label='Card' name='card2'>
+                  <div className='block no_margin_padding'>
+                    <SelectComponent
+                      options={direcionOrienta}
+                      optionPropkey='key'
+                      optionPropLabel='key'
+                      onChange={(event) => {
+                        build_direction(8, event);
+                      }}
+                    />
+                  </div>
                 </Form.Item>
               </div>
             </div>
