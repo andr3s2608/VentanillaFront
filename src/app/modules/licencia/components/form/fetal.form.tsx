@@ -317,7 +317,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       var mun = values.city;
       switch (dep) {
         case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-          mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+          mun = '31211657-3386-420a-8620-f9C07a8ca491';
           break;
       }
 
@@ -325,7 +325,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       var munres = values.city;
       switch (depres) {
         case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-          munres = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+          munres = '31211657-3386-420a-8620-f9C07a8ca491';
           break;
       }
 
@@ -1135,7 +1135,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
               <SelectComponent
                 options={l_paises}
-                placeholder='-- Elija una o varias --'
+                placeholder='-- Elija una --'
                 optionPropkey='id'
                 optionPropLabel='descripcion'
               />

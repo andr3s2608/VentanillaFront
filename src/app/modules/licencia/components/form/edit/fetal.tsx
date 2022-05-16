@@ -20,6 +20,7 @@ const formatObjJson = (obj: any) => {
   const [certicador] = esMedico(persona);
   const jsonDt = {
     idTramite: obj.idTramite,
+    idControlTramite: obj.iD_Control_Tramite,
     idSolicitud: obj.idSolicitud,
     certificado: obj.numeroCertificado,
     date: obj.fechaDefuncion,

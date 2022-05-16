@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToggleSideNav } from 'app/redux/ui/ui.actions';
 import { AppState } from 'app/redux/app.reducers';
 import { IItemMenu } from 'app/redux/application/application.types';
-
+import '../../../../scss/antd/index.css';
 // Fragmentos
 const { Sider } = Layout;
 
@@ -39,16 +39,9 @@ export const SidenavComponent: React.FC<BasicProps> = (props) => {
 
   const renderMenu = (items: IItemMenu[]) =>
     items.map((item, idx) => {
-      console.log(items, 'Items');
       const key = `${idx}_${item.name.replace(/\s/g, '_')}`;
       if (item?.fatherchildren?.length) {
         if (item?.children?.length) {
-          {
-            console.log('entro con hijos/hermanos', item.fatherchildren);
-          }
-          {
-            console.log('entro con hijos', item.children);
-          }
           return (
             <>
               <Menu.SubMenu key={key} title={item.name} onTitleClick={onOpenChangeMenu}>
@@ -58,9 +51,6 @@ export const SidenavComponent: React.FC<BasicProps> = (props) => {
             </>
           );
         } else {
-          {
-            console.log('entro padre', item.fatherchildren);
-          }
           return (
             <Menu.SubMenu key={key} title={item.name} onTitleClick={onOpenChangeMenu}>
               {renderMenu(item.fatherchildren)}
@@ -84,8 +74,8 @@ export const SidenavComponent: React.FC<BasicProps> = (props) => {
     });
 
   return (
-    <Sider {...props} className='app-sidenav' trigger={null} collapsible collapsedWidth={0} collapsed={!sidenav} width={250}>
-      <Menu className='pt-3 pb-5' theme='dark' mode='inline' {...openKeys}>
+    <Sider {...props} className='app-sidenav' trigger={null} collapsible collapsedWidth={0} collapsed={!sidenav} width={395}>
+      <Menu className='pt-3 pb-5 mr-5' theme='dark' mode='inline' {...openKeys}>
         <Menu.Item key='home' onClick={onCloseSidenav}>
           <NavLink to='/'>Inicio</NavLink>
         </Menu.Item>

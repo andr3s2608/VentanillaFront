@@ -44,10 +44,26 @@ export const GestionFirma = ({ props }: any) => {
     setnroident(busqueda.numeroIdentificacion + '');
     setemailfun(email);
   };
-  const onSubmit = (values: any) => {
-    console.log(values.funcionariofirma.file);
+  const onSubmit = async (values: any) => {
+    let idUsuario = l_funcionarios.filter((x: { idPersona: string }) => x.idPersona == values.funcionario)[0]['oid'];
+    //getBase64(values.funcionariofirma.file);
 
-    getBase64(values.funcionariofirma.file);
+    let reader = new FileReader();
+    reader.readAsDataURL(values.funcionariofirma.file);
+    reader.onload = async function () {
+      //me.modelvalue = reader.result;
+      //console.log(reader.result);
+      //console.log(reader.result);
+      //console.log(base64);
+
+      await api.agregarFirma({
+        iD_Usuario: idUsuario,
+        firma: reader.result
+      });
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   };
   const onSubmitFailed = () => {
     setStatus('error');
@@ -63,19 +79,6 @@ export const GestionFirma = ({ props }: any) => {
       </div>
     </Form.Item>
   );
-
-  function getBase64(File: any) {
-    let file = File;
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      //me.modelvalue = reader.result;
-      console.log(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  }
 
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>

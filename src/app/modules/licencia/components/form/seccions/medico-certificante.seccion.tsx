@@ -5,7 +5,8 @@ import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
 import { List, Card, Layout, Button, Modal } from 'antd';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactDOM from 'react-dom';
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
@@ -96,13 +97,15 @@ export const InformacionMedicoCertificante = (props: any) => {
     {
       title: 'Tipo de Identificación',
       describe: (
-        <SelectComponent
-          options={l_tipo_identificacion}
-          optionPropkey='id'
-          optionPropLabel='descripcion'
-          value={tipoid}
-          disabled
-        />
+        <div className='col-lg-12'>
+          <SelectComponent
+            options={l_tipo_identificacion}
+            optionPropkey='id'
+            optionPropLabel='descripcion'
+            value={tipoid}
+            disabled
+          />
+        </div>
       )
     },
     {
@@ -110,6 +113,7 @@ export const InformacionMedicoCertificante = (props: any) => {
       describe: (
         <input
           type='text'
+          className='form-control'
           name='numeroIdentificacion'
           value={numeroIdentificacion}
           disabled={props.disabledField}
@@ -122,6 +126,7 @@ export const InformacionMedicoCertificante = (props: any) => {
       describe: (
         <input
           type='text'
+          className='form-control'
           name='primernombre'
           value={primernombre}
           disabled={props.disabledField}
@@ -135,6 +140,7 @@ export const InformacionMedicoCertificante = (props: any) => {
         <input
           type='text'
           name='segundonombre'
+          className='form-control'
           value={segundonombre}
           disabled={props.disabledField}
           onChange={(e) => cambioSegundoNombre(e.target.value)}
@@ -147,6 +153,7 @@ export const InformacionMedicoCertificante = (props: any) => {
         <input
           type='text'
           name='primerapellido'
+          className='form-control'
           value={primerapellido}
           disabled={props.disabledField}
           onChange={(e) => cambioPrimerApellido(e.target.value)}
@@ -159,6 +166,7 @@ export const InformacionMedicoCertificante = (props: any) => {
         <input
           type='text'
           name='segundoapellido'
+          className='form-control'
           value={segundoapellido}
           disabled={props.disabledField}
           onChange={(e) => cambioSegundoApellido(e.target.value)}
@@ -206,74 +214,80 @@ export const InformacionMedicoCertificante = (props: any) => {
   };
   return (
     <>
-      <Divider orientation='left'>
-        <div className='contenedor'>
-          Datos de Quien Certifica la Muerte
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-2' onClick={() => onClickViewMedico()}>
-              Validar Médico
-            </Button>
-          </Form.Item>
+      <div className='ant-container d-flex justify-content-center w-100'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>
+              <div className='contenedor'>
+                Datos de Quien Certifica la Muerte
+                <Form.Item>
+                  <Button type='primary' className='ml-3 mt-2' onClick={() => onClickViewMedico()}>
+                    Validar Medico
+                  </Button>
+                </Form.Item>
+              </div>
+              <Modal
+                title={<p className='text-center text-dark text-uppercase mb-0 titulo'>validar profesional</p>}
+                visible={isModalVisible}
+                onCancel={handleCancel}
+                width={1000}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                {valor && (
+                  <>
+                    {valor == 'El médico registrado es válido' && (
+                      <>
+                        <div className='col-lg-12'>
+                          <p
+                            id='messageMortuary'
+                            className='text-center mt-4'
+                            style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                          >
+                            {valor}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    {valor == 'El médico registrado es inválido' && (
+                      <>
+                        <div className='col-lg-12'>
+                          <p
+                            id='messageMortuary'
+                            className='text-center mt-4'
+                            style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                          >
+                            {valor}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    {valor == 'El médico registrado es válido' && (
+                      <>
+                        {' '}
+                        <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                          <tbody>
+                            <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                              <th>TIPO DE IDENTIFICACIÓN</th>
+                              <th>NÚMERO IDENTIFICACIÓN</th>
+                              <th>NOMBRE</th>
+                            </tr>
+                            <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                              <td>{TIPO_I}</td>
+                              <td>{NROIDENT}</td>
+                              <td>{NOMBRES}</td>
+                            </tr>
+                          </tbody>
+                        </table>{' '}
+                      </>
+                    )}
+                  </>
+                )}
+              </Modal>
+            </Divider>
+          </div>
         </div>
-        <Modal
-          title={<p className='text-center text-dark text-uppercase mb-0 titulo'>validar profesional</p>}
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          width={1000}
-          okButtonProps={{ hidden: true }}
-          cancelText='Cerrar'
-        >
-          {valor && (
-            <>
-              {valor == 'El médico registrado es válido' && (
-                <>
-                  <div className='col-lg-12'>
-                    <p
-                      id='messageMortuary'
-                      className='text-center mt-4'
-                      style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
-                    >
-                      {valor}
-                    </p>
-                  </div>
-                </>
-              )}
-              {valor == 'El médico registrado es inválido' && (
-                <>
-                  <div className='col-lg-12'>
-                    <p
-                      id='messageMortuary'
-                      className='text-center mt-4'
-                      style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
-                    >
-                      {valor}
-                    </p>
-                  </div>
-                </>
-              )}
-              {valor == 'El médico registrado es válido' && (
-                <>
-                  {' '}
-                  <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
-                    <tbody>
-                      <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
-                        <th>TIPO DE IDENTIFICACIÓN</th>
-                        <th>NÚMERO IDENTIFICACIÓN</th>
-                        <th>NOMBRE</th>
-                      </tr>
-                      <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
-                        <td>{TIPO_I}</td>
-                        <td>{NROIDENT}</td>
-                        <td>{NOMBRES}</td>
-                      </tr>
-                    </tbody>
-                  </table>{' '}
-                </>
-              )}
-            </>
-          )}
-        </Modal>
-      </Divider>
+      </div>
       <List
         grid={{ gutter: 16, column: 3 }}
         dataSource={data}

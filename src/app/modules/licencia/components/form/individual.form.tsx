@@ -219,7 +219,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var mun = values.city;
     switch (dep) {
       case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-        mun = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
+        mun = '31211657-3386-420a-8620-f9C07a8ca491';
         break;
     }
     var segunda = values.nationalidad2;
@@ -466,8 +466,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     return [files, names];
   };
   const onSubmitFailed = () => setStatus('error');
-
-  const cambionac = (value: any) => console.log(value);
 
   const PruebaCertificado = async () => {
     let numero: string = form.getFieldValue('certificado');
@@ -890,7 +888,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               <SelectComponent
                 options={l_paises}
                 placeholder='-- Elija una nacionalidad --'
-                onChange={cambionac}
                 optionPropkey='id'
                 optionPropLabel='descripcion'
               />

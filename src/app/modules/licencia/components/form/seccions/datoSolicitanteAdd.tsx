@@ -52,16 +52,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         //form.setFieldsValue({ emailfuneraria: undefined });
         setcorreofun(informationUser.email);
         //form.resetFields(['emailsolicitudadd']);
-        console.log('entrofun');
+
         setvalidacion('1');
-        console.log(informationUser.email);
       } else {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
         setcorreosol(informationUser.email);
-        console.log('entroper');
+
         setvalidacion('1');
-        console.log(informationUser.email);
       }
 
       const funeraria = await api.GetFunerarias();
