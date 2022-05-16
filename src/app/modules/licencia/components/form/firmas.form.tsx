@@ -23,8 +23,10 @@ export const GestionFirma = ({ props }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
+  const [selecciono, setselecciono] = useState<boolean>(false);
   const [l_funcionarios, setl_funcionarios] = useState<any>([]);
   const [nroident, setnroident] = useState<string>('');
+
   const [emailfun, setemailfun] = useState<string>('');
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
@@ -43,6 +45,7 @@ export const GestionFirma = ({ props }: any) => {
     const { email } = busqueda;
     setnroident(busqueda.numeroIdentificacion + '');
     setemailfun(email);
+    setselecciono(true);
   };
   const onSubmit = async (values: any) => {
     let idUsuario = l_funcionarios.filter((x: { idPersona: string }) => x.idPersona == values.funcionario)[0]['oid'];
@@ -96,12 +99,17 @@ export const GestionFirma = ({ props }: any) => {
           <Form.Item label='Funcionario' name='funcionario' rules={[{ required: true }]}>
             <SelectComponent options={l_funcionarios} optionPropkey='idPersona' optionPropLabel='fullName' onChange={Onchange} />
           </Form.Item>
-          <Form.Item label={'Número de Identificacion'} name='funcionarioid'>
-            <span className='ant-form-text'>{nroident}</span>
-          </Form.Item>
-          <Form.Item label={'Email'} name='funcionarioemail'>
-            <span className='ant-form-text'>{emailfun}</span>
-          </Form.Item>
+          {selecciono && (
+            <>
+              <Form.Item label={'Número de Identificacion'} name='funcionarioid'>
+                <span className='ant-form-text'>{nroident}</span>
+              </Form.Item>
+              <Form.Item label={'Email'} name='funcionarioemail'>
+                <span className='ant-form-text'>{emailfun}</span>
+              </Form.Item>
+            </>
+          )}
+
           <Form.Item label='Firma' name='funcionariofirma'>
             <Upload name='funcionariofirmaimg' maxCount={1} beforeUpload={() => false} listType='picture' accept='image/*'>
               <Button icon={<UploadOutlined />}>Seleccionar imagen</Button>

@@ -278,13 +278,11 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       <Divider orientation='left'>
         <div className='contenedor'>
           datos del fallecido
-          {/**
-           * <Form.Item>
+          <Form.Item>
             <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
               Validar No. Certificado
             </Button>
           </Form.Item>
-           */}
         </div>
 
         <Modal
