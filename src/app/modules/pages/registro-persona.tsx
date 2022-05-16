@@ -22,7 +22,7 @@ import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
-
+//import '../../../scss/antd/index.css';
 //Redux
 import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 
@@ -387,187 +387,201 @@ const RegistroPage: React.FC<any> = (props) => {
             type='info'
           />
 
-          <div className='container-flex'>
-            <div className='row'>
-              <div className='col-5'>
-                <Form.Item
-                  className='block no_margin_padding anchoW1'
-                  label='Via Principal'
-                  name='ppla'
-                  rules={[{ required: true }]}
-                >
-                  <div className='block no_margin_padding'>
-                    <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-3'>
-                <Form.Item
-                  className='block no_margin_padding anchoW2'
-                  label='Número'
-                  name='Num1'
-                  rules={[{ required: avenida, max: 3 }]}
-                >
-                  <div className='block no_margin_padding'>
-                    <Input
-                      id='23'
-                      allowClear
-                      type='text'
-                      placeholder=''
-                      autoComplete='off'
-                      maxLength={3}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                      onChange={(event) => {
-                        build_direction(1, event.target.value);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-4'>
-                <Form.Item className='block no_margin_padding anchoW2' label='Letra' name='letra1' rules={[{ max: 1 }]}>
-                  <div className='block no_margin_padding'>
-                    <SelectComponent
-                      options={letras}
-                      optionPropkey='key'
-                      optionPropLabel='key'
-                      onChange={(event) => {
-                        build_direction(2, event);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
+          <div className='form-row mt-5 text-center'>
+            <div className='form-group col-md-8 col-lg-8'>
+              <label htmlFor=''>
+                Via Principal{' '}
+                <span className='ml-2' style={{ color: '#FF6341' }}>
+                  (*)
+                </span>
+              </label>
+              <Form.Item label='' name='' rules={[{ required: true }]}>
+                <SelectComponent style={{ width: '530px' }} options={[]} optionPropkey='id' optionPropLabel='name' />
+              </Form.Item>
             </div>
-            <div className='row'>
-              <div className='col-2'>
-                <Form.Item className='block no_margin_padding' label='Bis' name='Bis' rules={[{ max: 3 }]}>
-                  <div className='block no_margin_padding'>
-                    <SelectComponent
-                      options={[
-                        { key: 'Bis', value: 'Bis' },
-                        { key: ' ', value: ' ' }
-                      ]}
-                      optionPropkey='key'
-                      optionPropLabel='value'
-                      onChange={(event) => {
-                        build_direction(3, event);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-2'>
-                <Form.Item className='block no_margin_padding' label='Card' name='card1' rules={[{ max: 4 }]}>
-                  <div className='block no_margin_padding'>
-                    <SelectComponent
-                      options={direcionOrienta}
-                      optionPropkey='key'
-                      optionPropLabel='key'
-                      onChange={(event) => {
-                        build_direction(4, event);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-2'>
-                <Form.Item className='block no_margin_padding' label='Número' name='Num2' rules={[{ required: true, max: 3 }]}>
-                  <div className='block no_margin_padding'>
-                    <Input
-                      allowClear
-                      type='text'
-                      placeholder=''
-                      autoComplete='off'
-                      maxLength={3}
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                      onChange={(event) => {
-                        build_direction(5, event.target.value);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-2'>
-                <Form.Item className='block no_margin_padding' label='Letra' name='letra2' rules={[{ max: 1 }]}>
-                  <div className='block no_margin_padding'>
-                    <SelectComponent
-                      options={letras}
-                      optionPropkey='key'
-                      optionPropLabel='key'
-                      onChange={(event) => {
-                        build_direction(6, event);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-2'>
-                <Form.Item className='block no_margin_padding' label='Placa' name='placa' rules={[{ required: true, max: 2 }]}>
-                  <div className='block no_margin_padding'>
-                    <Input
-                      allowClear
-                      placeholder=''
-                      autoComplete='off'
-                      maxLength={2}
-                      type='text'
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                      onChange={(event) => {
-                        build_direction(7, event.target.value);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
-              <div className='col-2'>
-                <Form.Item className='block no_margin_padding' label='Card' name='card2'>
-                  <div className='block no_margin_padding'>
-                    <SelectComponent
-                      options={direcionOrienta}
-                      optionPropkey='key'
-                      optionPropLabel='key'
-                      onChange={(event) => {
-                        build_direction(8, event);
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </div>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Num</label>
+              <span className='ml-2' style={{ color: '#FF6341' }}>
+                (*)
+              </span>
+              <Form.Item className='' label='' name='Num1' rules={[{ required: avenida, max: 3 }]}>
+                <Input
+                  style={{ width: '127px' }}
+                  id='23'
+                  allowClear
+                  type='text'
+                  placeholder=''
+                  autoComplete='off'
+                  maxLength={3}
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                  onChange={(event) => {
+                    build_direction(1, event.target.value);
+                  }}
+                />
+              </Form.Item>{' '}
             </div>
-            <div className='row margintop'>
-              <div className='col-10'>
-                <Form.Item name='dirreccion_completa' className='fullwidth'>
-                  <p className='text-center no_margin'>Dirección</p>
-                  <Input type='text' value={direccionCompleta} className='fullwidth' disabled />
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Letra</label>
+              <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
+                <SelectComponent
+                  style={{ width: '127px' }}
+                  options={letras}
+                  optionPropkey='key'
+                  optionPropLabel='key'
+                  onChange={(event) => {
+                    build_direction(2, event);
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='form-row mt-2 text-center'>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>BIS</label>
+              <Form.Item label='' name='Bis' rules={[{ max: 3 }]}>
+                <SelectComponent
+                  style={{ width: '127px' }}
+                  options={[
+                    { key: 'Bis', value: 'Bis' },
+                    { key: ' ', value: ' ' }
+                  ]}
+                  optionPropkey='key'
+                  optionPropLabel='value'
+                  onChange={(event) => {
+                    build_direction(3, event);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Card</label>
+              <Form.Item label='' name='card1' rules={[{ max: 4 }]}>
+                <SelectComponent
+                  style={{ width: '127px' }}
+                  options={direcionOrienta}
+                  optionPropkey='key'
+                  optionPropLabel='key'
+                  onChange={(event) => {
+                    build_direction(4, event);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Num</label>
+              <span className='ml-2' style={{ color: '#FF6341' }}>
+                (*)
+              </span>
+              <Form.Item label='' name='Num2' rules={[{ required: true, max: 3 }]}>
+                <Input
+                  style={{ width: '127px' }}
+                  allowClear
+                  type='text'
+                  placeholder=''
+                  autoComplete='off'
+                  maxLength={3}
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                  onChange={(event) => {
+                    build_direction(5, event.target.value);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Letra</label>
+              <Form.Item label='' name='letra2' rules={[{ max: 1 }]}>
+                <SelectComponent
+                  style={{ width: '127px' }}
+                  options={letras}
+                  optionPropkey='key'
+                  optionPropLabel='key'
+                  onChange={(event) => {
+                    build_direction(6, event);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Placa</label>
+              <span className='ml-2' style={{ color: '#FF6341' }}>
+                (*)
+              </span>
+              <Form.Item label='' name='placa' rules={[{ required: true, max: 2 }]}>
+                <Input
+                  style={{ width: '127px' }}
+                  allowClear
+                  placeholder=''
+                  autoComplete='off'
+                  maxLength={2}
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                  onChange={(event) => {
+                    build_direction(7, event.target.value);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-2 col-lg-2'>
+              <label htmlFor=''>Card</label>
+              <Form.Item label='' name='card2'>
+                <SelectComponent
+                  style={{ width: '127px' }}
+                  options={direcionOrienta}
+                  optionPropkey='key'
+                  optionPropLabel='key'
+                  onChange={(event) => {
+                    build_direction(8, event);
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='form-row text-center'>
+            <div className='form-group col-md-6 col-lg-6 tex'>
+              <div className='form-inline text-center'>
+                <label htmlFor='' className='text-center'>
+                  {' '}
+                  Dirección Completa
+                </label>
+                <span className='ml-2' style={{ color: '#FF6341' }}>
+                  (*)
+                </span>
+                <Form.Item name='dirreccion_completa'>
+                  <Input
+                    type='text'
+                    value={direccionCompleta}
+                    className='fullwidth form-control'
+                    disabled
+                    style={{ width: '635px' }}
+                  />
                 </Form.Item>
-              </div>
-              <div className='col-2 d-flex justify-content-start align-items-end'>
-                <Button type='primary'>Validar</Button>
+                <Button type='primary' style={{ marginTop: '-10px', marginRight: '-400px', marginLeft: '20px' }}>
+                  Confirmar Dirección
+                </Button>
               </div>
             </div>
           </div>
-
           <h4 className='app-subtitle mt-3'>Datos Demográficos.</h4>
 
           <Form.Item label='Fecha Nacimiento' name='date' rules={[{ required: true }]}>
