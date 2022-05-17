@@ -168,6 +168,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         title: 'Numero Certificado de Defuncion',
         describe: numero
       },
+
       {
         title: 'Fecha Defunción',
         describe: <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} disabled />
