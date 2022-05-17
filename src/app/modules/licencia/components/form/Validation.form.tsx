@@ -722,11 +722,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
               <Modal
                 title={<p className='text-center'>Notificación</p>}
                 visible={isModalValidarCertificado}
-                onCancel={onModalNofificacion}
-                onOk={onModalNofificacion}
                 width={500}
-                okButtonProps={{ hidden: true }}
-                cancelText='Cerrar'
+                onOk={onModalNofificacion}
               >
                 <div className='conteiner-fluid'>
                   <div className='row'>
