@@ -67,7 +67,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
   store.subscribe(() => {
     const { direccion } = store.getState();
-    setDireccionCompleta(direccion.toString());
+    setDireccionCompleta(direccion.join(' '));
   });
 
   const getListas2 = useCallback(
@@ -273,11 +273,12 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const build_direction = (posicion: number, valor: string) => {
     const { direccion } = store.getState();
+
     let direccion_completa: string[] = direccion;
     direccion_completa[posicion] = valor;
 
     store.dispatch(SetDireccion(direccion_completa));
-    setDireccionCompleta(direccion_completa.toString());
+    setDireccionCompleta(direccion_completa.join(' '));
   };
 
   return (
@@ -395,8 +396,14 @@ const RegistroPage: React.FC<any> = (props) => {
                   (*)
                 </span>
               </label>
-              <Form.Item label='' name='' rules={[{ required: true }]}>
-                <SelectComponent style={{ width: '530px' }} options={[]} optionPropkey='id' optionPropLabel='name' />
+              <Form.Item label='' name='ppla' rules={[{ required: true }]}>
+                <SelectComponent
+                  options={nomesclatura}
+                  style={{ width: '530px' }}
+                  optionPropkey='key'
+                  optionPropLabel='key'
+                  onChange={cambioavenida}
+                />
               </Form.Item>
             </div>
             <div className='form-group col-md-2 col-lg-2'>
@@ -567,15 +574,14 @@ const RegistroPage: React.FC<any> = (props) => {
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
-                <Form.Item name='dirreccion_completa'>
-                  <Input
-                    type='text'
-                    value={direccionCompleta}
-                    className='fullwidth form-control'
-                    disabled
-                    style={{ width: '635px' }}
-                  />
-                </Form.Item>
+                <Input
+                  type='text'
+                  value={direccionCompleta}
+                  style={{ width: '635px' }}
+                  className='fullwidth form-control'
+                  disabled
+                />
+
                 <Button type='primary' style={{ marginTop: '-10px', marginRight: '-400px', marginLeft: '20px' }}>
                   Confirmar Dirección
                 </Button>
