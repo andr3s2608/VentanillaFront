@@ -1,8 +1,8 @@
-import { environments } from '../../environments/environments';
 import { get } from './settings/http.service';
 
+const { REACT_APP_ENDPOINTV1 } = process.env;
 class DominioService {
-  private endpoint = environments.endpointV1;
+  private endpoint = REACT_APP_ENDPOINTV1 as string;
 
   get_type = (tipoDominio: ETipoDominio) =>
     get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}`, id: '0' });
