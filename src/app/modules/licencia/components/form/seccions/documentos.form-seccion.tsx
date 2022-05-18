@@ -10,7 +10,6 @@ import { EyeOutlined, UploadOutlined } from '@ant-design/icons';
 
 // Utilidades
 import { TypeIndividuo, TypeLicencia } from 'app/shared/utils/types.util';
-import { environments } from 'environments/environments';
 import { infoMessage } from 'app/services/settings/message.service';
 import { DocumentosIndividual } from './documentos/DocumentoIndividual';
 import { DocumentosFetal } from './documentos/DocumentoIFetal';
@@ -68,7 +67,7 @@ export const DocumentosFormSeccion: React.FC<IDocumentForm<any>> = (props) => {
 
     const [file]: any = files?.filter((p) => p.path.includes(fileString));
     if (file?.path !== undefined) {
-      const url = `${environments.blob}Storage/GetBlob/${path}${type}/${file?.path}.pdf`;
+      const url = `${process.env.blob}Storage/GetBlob/${path}${type}/${file?.path}.pdf`;
       window.open(url, 'descarga');
     }
     if (file?.path === undefined) {

@@ -10,7 +10,7 @@ import {EyeOutlined, UploadOutlined} from '@ant-design/icons';
 
 // Utilidades
 import {TypeIndividuo, TypeLicencia} from 'app/shared/utils/types.util';
-import {environments} from 'environments/environments';
+
 import {infoMessage} from 'app/services/settings/message.service';
 
 export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
