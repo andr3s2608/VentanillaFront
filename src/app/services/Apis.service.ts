@@ -22,6 +22,26 @@ export class ApiService {
   constructor(oid$: string) {
     this.oid = oid$;
   }
+  getIdUsuario = () => {
+    return this.oid;
+  };
+
+  ComprobarCertificado = (numero: string) =>
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarCertificado/${numero}`, id: '0' });
+
+  GetDocumentoFallecido = (numero: string, persona: string) =>
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
+
+  agregarFirma = (payload: any) => {
+    return post<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: 'Request/AddFirma',
+      payload,
+      id: '1'
+    });
+  };
+
+  getFuncionarios = () => get<any>({ endpoint: REACT_APP_SHARED as string, url: `v2/Persona/GetUsers`, id: '0' });
 
   personaNatural = (tipoDominio: IPersonaNatural) =>
     post<IPersonaNatural>({ endpoint: this.endpoint, url: `v2/Persona/AddPersonaNatural`, payload: tipoDominio, id: '0' });
@@ -249,17 +269,27 @@ export class ApiService {
 
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 
-  getLinkPDF = (idTramite: string, tramitador: string): string => {
-    return (REACT_APP_INHCREMACION as string) + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + tramitador;
+  getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
+    return (
+      (REACT_APP_INHCREMACION as string) +
+      'GeneratePDF/GeneratePDFPrev/' +
+      idTramite +
+      '/' +
+      idTramitador +
+      '/' +
+      nombreTramitador
+    );
   };
 
-  getLinkPDFNotificacion = (idTramite: string, tramitador: string): string => {
-    return (REACT_APP_INHCREMACION as string) + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador;
-
-validarFirmaFuncionario = (idTramitador: string) =>
+  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string): string => {
+    return (
+      (REACT_APP_INHCREMACION as string) + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador + '/' + nombreTramitador
+    );
+  };
+  validarFirmaFuncionario = (idTramitador: string) =>
     get<any>({
-      endpoint: environments.inhcremacion,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
       id: '0'
-    });  };
+    });
 }
