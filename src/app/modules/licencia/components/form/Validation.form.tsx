@@ -472,16 +472,20 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   //edit
   const Actions = () => (
-    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-      <div className='d-flex justify-content-between'>
-        <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-          Volver atrás
-        </Button>
-        <Button type='primary' htmlType='submit' disabled={isDisabledElement}>
-          Guardar
-        </Button>
+    <div className='container-fluid'>
+      <div className='row'>
+        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+          <div className='col-lg-12 col-sm-12 col-md-12 '>
+            <Button type='dashed' htmlType='button' onClick={onPrevStep} className='align-self-end'>
+              Volver atrás
+            </Button>
+            <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>
+              Guardar
+            </Button>
+          </div>
+        </Form.Item>
       </div>
-    </Form.Item>
+    </div>
   );
 
   //#endregion
@@ -633,117 +637,119 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   }
   const separacion = '                      ';
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Form
-          form={form}
-          className='mb-4 w-100'
-          {...layoutItems}
-          style={{ maxWidth: 800 }}
-          layout='horizontal'
-          onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
-        >
-          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
-            ID TRAMITE:{idcontrol}
-          </Divider>
-          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
-            TIPO DE SOLICITUD:{valor}
-          </Divider>
-          <div className='fadeInLeft'>
-            <InformacionFallecidoSeccion obj={objJosn} />
-            <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
-            <InformacionSolicitanteSeccion obj={objJosn} />
-            <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
-            <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
-            <div className='fadeInLeft'>
-              <div className='container-fluid'>
-                <div className='col-lg-12'>
-                  <Form.Item>
-                    <Button
-                      style={{ width: '50%' }}
-                      type='primary'
-                      onClick={() => onClickView(objJosn?.idSolicitud)}
-                      icon={<EyeOutlined width={100} />}
-                      size={'large'}
-                    >
-                      Seguimiento
-                    </Button>
-                  </Form.Item>
-                  <Form.Item>
-                    <Button
-                      style={{ width: '50%', float: 'right', marginTop: '-63px', marginRight: '-100px' }}
-                      type='primary'
-                      onClick={() => onPrevPDF()}
-                      icon={<EyeOutlined width={100} />}
-                      size={'large'}
-                      disabled={viewLicenceState}
-                    >
-                      Vista previa licencia
-                    </Button>
-                  </Form.Item>
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <div className='row'>
+            <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+              <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
+                  ID TRAMITE:{idcontrol}
+                </Divider>
+                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
+                  TIPO DE SOLICITUD:{valor}
+                </Divider>
+              </div>
+              <div className='fadeInLeft'>
+                <InformacionFallecidoSeccion obj={objJosn} />
+                <hr />
+                <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
+                <hr />
+                <InformacionSolicitanteSeccion obj={objJosn} />
+                <hr />
+                <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
+                <hr />
+                <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
+                <div className='fadeInLeft'>
+                  <div className='container-fluid'>
+                    <div className='col-lg-12'>
+                      <Form.Item>
+                        <Button
+                          style={{ width: '50%' }}
+                          type='primary'
+                          onClick={() => onClickView(objJosn?.idSolicitud)}
+                          icon={<EyeOutlined width={100} />}
+                          size={'large'}
+                        >
+                          Seguimiento
+                        </Button>
+                      </Form.Item>
+                      <Form.Item>
+                        <Button
+                          style={{ width: '50%', float: 'right', marginTop: '-63px', marginRight: '-100px' }}
+                          type='primary'
+                          onClick={() => onPrevPDF()}
+                          icon={<EyeOutlined width={100} />}
+                          size={'large'}
+                          disabled={viewLicenceState}
+                        >
+                          Vista previa licencia
+                        </Button>
+                      </Form.Item>
+                    </div>
+                  </div>
+
+                  <Modal
+                    title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Ventana de seguimiento y auditoria</p>}
+                    visible={isModalVisible}
+                    onCancel={handleCancel}
+                    width={1000}
+                    okButtonProps={{ hidden: true }}
+                    cancelText='Cerrar'
+                  >
+                    <Table
+                      className='text-center table'
+                      dataSource={dataTable}
+                      columns={columnFake}
+                      pagination={{ hideOnSinglePage: true }}
+                    />
+                  </Modal>
+
+                  <Modal
+                    title={
+                      <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                        Visualización de la licencia
+                      </p>
+                    }
+                    visible={isModalVisiblePdf}
+                    onCancel={() => setIsModalVisiblePdf(false)}
+                    width={1000}
+                    okButtonProps={{ hidden: true }}
+                    cancelText='Cerrar'
+                  >
+                    <div className='col-lg-12 text-center'>
+                      <p>Nombre del Solicitante : {solicitante} </p>
+                    </div>
+                    <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                  </Modal>
+
+                  <Modal
+                    title={<p className='text-center'>Notificación</p>}
+                    visible={isModalValidarCertificado}
+                    width={500}
+                    onOk={onModalNofificacion}
+                  >
+                    <div className='conteiner-fluid'>
+                      <div className='row'>
+                        <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
+                          El Número de certificado registrado NO existe
+                        </p>
+                      </div>
+                      <div className='row justify-content-md-center'>
+                        <Button type='primary' style={{ width: 60 }} onClick={onModalNofificacion}>
+                          OK
+                        </Button>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+                <div>
+                  <Actions />
                 </div>
               </div>
-
-              <Modal
-                title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Ventana de seguimiento y auditoria</p>}
-                visible={isModalVisible}
-                onCancel={handleCancel}
-                width={1000}
-                okButtonProps={{ hidden: true }}
-                cancelText='Cerrar'
-              >
-                <Table
-                  className='text-center table'
-                  dataSource={dataTable}
-                  columns={columnFake}
-                  pagination={{ hideOnSinglePage: true }}
-                />
-              </Modal>
-
-              <Modal
-                title={
-                  <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
-                    Visualización de la licencia
-                  </p>
-                }
-                visible={isModalVisiblePdf}
-                onCancel={() => setIsModalVisiblePdf(false)}
-                width={1000}
-                okButtonProps={{ hidden: true }}
-                cancelText='Cerrar'
-              >
-                <div className='col-lg-12 text-center'>
-                  <p>Nombre del Solicitante : {solicitante} </p>
-                </div>
-                <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-              </Modal>
-
-              <Modal
-                title={<p className='text-center'>Notificación</p>}
-                visible={isModalValidarCertificado}
-                width={500}
-                onOk={onModalNofificacion}
-              >
-                <div className='conteiner-fluid'>
-                  <div className='row'>
-                    <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
-                      El Número de certificado registrado NO existe
-                    </p>
-                  </div>
-                  <div className='row justify-content-md-center'>
-                    <Button type='primary' style={{ width: 60 }} onClick={onModalNofificacion}>
-                      OK
-                    </Button>
-                  </div>
-                </div>
-              </Modal>
-            </div>
-            <div>
-              <Actions />
-            </div>
+            </Form>
           </div>
-        </Form>
+        </div>
       </div>
     </div>
   );
@@ -830,7 +836,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   ) {
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
-
     const llavesAReemplazarCementerioYFuneraria = [
       '~:~nombre~:~',
       '~:~número_de_licencia~:~',
@@ -839,29 +844,24 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       '~:~tipo_de_licencia~:~',
       '~:~link_pdf~:~'
     ];
-
     const idPlantillaCementerioYFuneraria = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
-
     let plantillaCementerio = await api.getFormato(idPlantillaCementerioYFuneraria);
     let bodyCementerio = agregarValoresDinamicos(
       plantillaCementerio.valor,
       llavesAReemplazarCementerioYFuneraria,
       datosDinamicosCementerio
     );
-
     let plantillaFuneraria = await api.getFormato(idPlantillaCementerioYFuneraria);
     let bodyFuneraria = agregarValoresDinamicos(
       plantillaFuneraria.valor,
       llavesAReemplazarCementerioYFuneraria,
       datosDinamicosFuneraria
     );
-
     api.sendEmail({
       to: emailCementerio,
       subject: 'Notificación cementerio',
       body: bodyCementerio
     });
-
     api.sendEmail({
       to: emailFuneraria,
       subject: 'Notificación funeraria',
