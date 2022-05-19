@@ -5,11 +5,10 @@ import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
 import { List, Card, Layout, Button, Modal } from 'antd';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom';
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-
+import '../../../../../../scss/antd/index.css';
 // Services
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
@@ -97,15 +96,13 @@ export const InformacionMedicoCertificante = (props: any) => {
     {
       title: 'Tipo de Identificación',
       describe: (
-        <div className='col-lg-12'>
-          <SelectComponent
-            options={l_tipo_identificacion}
-            optionPropkey='id'
-            optionPropLabel='descripcion'
-            value={tipoid}
-            disabled
-          />
-        </div>
+        <SelectComponent
+          options={l_tipo_identificacion}
+          optionPropkey='id'
+          optionPropLabel='descripcion'
+          value={tipoid}
+          disabled
+        />
       )
     },
     {
@@ -289,7 +286,15 @@ export const InformacionMedicoCertificante = (props: any) => {
         </div>
       </div>
       <List
-        grid={{ gutter: 16, column: 3 }}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 3,
+          lg: 3,
+          xl: 3,
+          xxl: 3
+        }}
         dataSource={data}
         renderItem={(item) => (
           <List.Item>

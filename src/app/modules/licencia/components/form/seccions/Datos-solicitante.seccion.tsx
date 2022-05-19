@@ -373,18 +373,32 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   return (
     <>
-      <Divider orientation='left'>
-        <div className='contenedor'>
-          Datos de la Funeraria
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFuneraria()}>
-              Validar Funeraria
-            </Button>
-          </Form.Item>
+      <div className='ant-container d-flex justify-content-center w-100'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>
+              <div className='contenedor'>
+                Datos de la Funeraria
+                <Form.Item>
+                  <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFuneraria()}>
+                    Validar Funeraria
+                  </Button>
+                </Form.Item>
+              </div>
+            </Divider>
+          </div>
         </div>
-      </Divider>
+      </div>
       <List
-        grid={{ gutter: 16, column: 3 }}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 3,
+          lg: 3,
+          xl: 3,
+          xxl: 3
+        }}
         dataSource={funerarias}
         renderItem={(item) => (
           <List.Item>
@@ -393,9 +407,23 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         )}
       />
 
-      <Divider orientation='left'>Datos del Solicitante</Divider>
+      <div className='ant-container d-flex justify-content-center w-100'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>Datos del Solicitante</Divider>
+          </div>
+        </div>
+      </div>
       <List
-        grid={{ gutter: 16, column: 3 }}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 3,
+          lg: 3,
+          xl: 3,
+          xxl: 3
+        }}
         dataSource={data}
         renderItem={(item) => (
           <List.Item>
@@ -403,22 +431,36 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           </List.Item>
         )}
       />
-      <Divider orientation='left'>
-        <div className='row'>
-          <div className='col-lg-12 col-sm-12 justify-content-center'>
-            <div className='contenedor'>
-              Datos del Cementerio
-              <Form.Item>
-                <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewCementerio()}>
-                  Validar Cementerio
-                </Button>
-              </Form.Item>
-            </div>
+      <div className='ant-container d-flex justify-content-center w-100'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>
+              <div className='row'>
+                <div className='col-lg-12 col-sm-12 justify-content-center'>
+                  <div className='contenedor'>
+                    Datos del Cementerio
+                    <Form.Item>
+                      <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewCementerio()}>
+                        Validar Cementerio
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+            </Divider>
           </div>
         </div>
-      </Divider>
+      </div>
       <List
-        grid={{ gutter: 16, column: 3 }}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 3,
+          lg: 3,
+          xl: 3,
+          xxl: 3
+        }}
         dataSource={cementerios}
         renderItem={(item) => (
           <List.Item>

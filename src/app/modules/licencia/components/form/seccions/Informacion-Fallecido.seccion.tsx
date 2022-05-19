@@ -12,7 +12,8 @@ import { dominioService, ETipoDominio, IDominio, IMunicipio, IDepartamento } fro
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-
+import { classNames } from '@react-pdf-viewer/core';
+import '../../../../../../scss/antd/index.css';
 export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [[tipo_identificacion, edad, fechaNacimiento, horaFallecido, genero], setFallecido] = useState<
     [string, string, string, string, string]
@@ -276,80 +277,97 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   };
   return (
     <>
-      <Divider orientation='left'>
-        <div className='contenedor'>
-          datos del fallecido
-          <Form.Item>
-            <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
-              Validar No. Certificado
-            </Button>
-          </Form.Item>
-        </div>
+      <div className='ant-container d-flex justify-content-center w-100'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>
+              <div className='contenedor'>
+                datos del fallecido
+                <Form.Item>
+                  <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecido(obj?.certificado)}>
+                    Validar No. Certificado
+                  </Button>
+                </Form.Item>
+              </div>
 
-        <Modal
-          title={
-            <p className='text-center text-dark text-uppercase mb-0 titulo'> validación número de certificado de defunción</p>
-          }
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          width={1000}
-          okButtonProps={{ hidden: true }}
-          cancelText='Cerrar'
-        >
-          {valorR && (
-            <>
-              {valorR == 'El certificado registrado es válido' && (
-                <>
-                  <div className='col-lg-12'>
-                    <p
-                      id='messageMortuary'
-                      className='text-center mt-4'
-                      style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
-                    >
-                      {valorR}
-                    </p>
-                  </div>
-                </>
-              )}
-              {valorR == 'El certificado registrado es inválido' && (
-                <>
-                  <div className='col-lg-12'>
-                    <p
-                      id='messageMortuary'
-                      className='text-center mt-4'
-                      style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
-                    >
-                      {valorR}
-                    </p>
-                  </div>
-                </>
-              )}
-              {valorR == 'El certificado registrado es válido' && (
-                <>
-                  <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
-                    <tbody>
-                      <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
-                        <th>NOMBRE</th>
-                        <th>FECHA</th>
-                        <th>NÚMERO IDENTIFICACIÓN</th>
-                        <th>GENERO</th>
-                      </tr>
-                      <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
-                        <td>{NOMBRES}</td>
-                        <td>{FECHA_DEFUNCION}</td>
-                        <td>{NROIDENT}</td>
-                        <td>{SEXO}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </>
-              )}
-            </>
-          )}
-        </Modal>
-      </Divider>
+              <Modal
+                title={
+                  <p className='text-center text-dark text-uppercase mb-0 titulo'>
+                    {' '}
+                    validación número de certificado de defunción
+                  </p>
+                }
+                visible={isModalVisible}
+                onCancel={handleCancel}
+                width={1000}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                {valorR && (
+                  <>
+                    {valorR == 'El certificado registrado es válido' && (
+                      <>
+                        <div className='col-lg-12'>
+                          <p
+                            id='messageMortuary'
+                            className='text-center mt-4'
+                            style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                          >
+                            {valorR}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    {valorR == 'El certificado registrado es inválido' && (
+                      <>
+                        <div className='col-lg-12'>
+                          <p
+                            id='messageMortuary'
+                            className='text-center mt-4'
+                            style={{ color: 'red', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
+                          >
+                            {valorR}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    {valorR == 'El certificado registrado es válido' && (
+                      <>
+                        <table style={{ width: '100%', margin: 0, fontSize: 12 }}>
+                          <tbody>
+                            <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
+                              <th>NOMBRE</th>
+                              <th>FECHA</th>
+                              <th>NÚMERO IDENTIFICACIÓN</th>
+                              <th>GENERO</th>
+                            </tr>
+                            <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
+                              <td>{NOMBRES}</td>
+                              <td>{FECHA_DEFUNCION}</td>
+                              <td>{NROIDENT}</td>
+                              <td>{SEXO}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </>
+                    )}
+                  </>
+                )}
+              </Modal>
+            </Divider>
+          </div>
+        </div>
+      </div>
       <List
-        grid={{ gutter: 16, column: 3 }}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 3,
+          lg: 3,
+          xl: 3,
+          xxl: 3
+        }}
         dataSource={data}
         renderItem={(item) => (
           <List.Item>
@@ -359,11 +377,16 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       />
       {esmadre && (
         <>
-          <Divider orientation='left'>
-            <div className='contenedor'>datos de la Madre</div>
-          </Divider>
           <List
-            grid={{ gutter: 16, column: 3 }}
+            grid={{
+              gutter: 16,
+              xs: 1,
+              sm: 1,
+              md: 3,
+              lg: 3,
+              xl: 3,
+              xxl: 3
+            }}
             dataSource={datamadre}
             renderItem={(item) => (
               <List.Item>

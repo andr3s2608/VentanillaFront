@@ -25,8 +25,13 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
 
   return (
     <>
-      <Divider orientation='left'>Aprobar / Negar Licencia Inhumación</Divider>
-
+      <div className='ant-container d-flex justify-content-center w-100 mt-3'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>Aprobar / Negar Licencia Inhumación</Divider>
+          </div>
+        </div>
+      </div>
       <Form.Item label='Tipo Seguimiento' name='validFunctionaltype' rules={[{ required: true }]}>
         <SelectComponent onChange={onChange} options={type} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
