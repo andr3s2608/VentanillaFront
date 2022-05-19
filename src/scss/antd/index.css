@@ -4269,7 +4269,7 @@ a.ant-btn-sm {
   list-style: none;
   font-feature-settings: 'tnum';
   position: relative;
-  background: #fff;
+  background: red !important;
   border-radius: 3px;
 }
 .ant-card-rtl {
@@ -8205,6 +8205,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
 }
 .ant-form .ant-form-text {
   display: inline-block;
+  font-size: 15px;
   padding-right: 8px;
 }
 .ant-form-small .ant-form-item-label > label {
@@ -8254,7 +8255,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   position: relative;
   display: block;
   align-items: center;
-  height: 50px;
+  height: 70px;
   color: #3366cc;
   font-size: 15px;
   margin-right: 40px;
@@ -8798,6 +8799,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   display: block;
   flex: 0 0 33.33333333%;
   max-width: 33.33333333%;
+  background-color: #1890ff;
 }
 .ant-col-push-8 {
   left: 33.33333333%;
@@ -14940,6 +14942,7 @@ textarea.ant-input-number {
   flex: auto;
   /* fix firefox can't set height smaller than content on flex item */
   min-height: 0;
+  
 }
 .ant-layout-sider {
   position: relative;
@@ -14948,14 +14951,15 @@ textarea.ant-input-number {
   background: #001529;
   transition: all 0.2s;
 }
+
 .ant-layout-sider-children {
   height: 100%;
   margin-top: -0.1px;
-  padding-top: 0.1px;
 }
 .ant-layout-sider-has-trigger {
   padding-bottom: 48px;
 }
+
 .ant-layout-sider-right {
   order: 1;
 }
@@ -14967,7 +14971,7 @@ textarea.ant-input-number {
   color: #fff;
   line-height: 48px;
   text-align: center;
-  background: #002140;
+  background: red;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -15792,6 +15796,7 @@ textarea.ant-mentions {
 .ant-menu-horizontal .ant-menu-submenu-title {
   transition: border-color 0.3s, background 0.3s;
 }
+
 .ant-menu-item,
 .ant-menu-submenu-title {
   position: relative;
@@ -15802,6 +15807,7 @@ textarea.ant-mentions {
   cursor: pointer;
   transition: border-color 0.3s, background 0.3s, padding 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
+
 .ant-menu-item .ant-menu-item-icon,
 .ant-menu-submenu-title .ant-menu-item-icon,
 .ant-menu-item .anticon,

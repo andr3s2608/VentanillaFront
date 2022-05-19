@@ -115,13 +115,14 @@ export const Gridview = (props: IDataSource) => {
   if (Validacion == '1') {
     Renovar(undefined);
   }
-
+  /*
   const identificacion = () => {
     const posicioninicial = 0;
     var nroidentificacion = identify.substring(posicioninicial, identify.indexOf('|'));
     identify = identify.substring(identify.indexOf('|') + 1, identify.length);
     return nroidentificacion;
   };
+  */
   var structureColumns;
 
   const tiposolicitud = () => {
@@ -160,6 +161,13 @@ export const Gridview = (props: IDataSource) => {
       return idTramite;
     }
   };
+  /*
+            render: (Text: string) => (
+              <Form.Item label='' name=''>
+                <text>{identificacion()}</text>
+              </Form.Item>
+            );
+            */
   const boton = () => {
     if (Tipo.rol !== 'Ciudadano') {
       structureColumns = [
@@ -170,13 +178,8 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Documento del Fallecido',
-          dataIndex: '',
-          key: 'numeroDocumento',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{identificacion()}</text>
-            </Form.Item>
-          )
+          dataIndex: 'noIdentificacionSolicitante',
+          key: 'numeroDocumento'
         },
         {
           title: 'Funeraria y/o Nombre',
@@ -321,15 +324,13 @@ export const Gridview = (props: IDataSource) => {
     showModal();
   };
 
-  const onClickValidarInformacion = async ({ idSolicitud, iD_Control_Tramite }: { [x: string]: string }) => {
+  const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
-    const { idTramite } = data[0];
 
     localStorage.setItem('register', JSON.stringify(data));
 
     store.dispatch(SetResetViewLicence());
 
-    //history.push('/tramites-servicios/licencia/inhumacion-prueba');
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
   const onPageChange = (pagination: any, filters: any) => {
@@ -347,71 +348,10 @@ export const Gridview = (props: IDataSource) => {
     Renovar(array);
   };
 
-  const onStarFiltering = (pagination: any) => {
-    var valor: any = data.at(0);
-    var array: any[] = [];
-    let filtro = 248;
-    for (let index = 0; index < data.length; index++) {
-      //  console.log(data.at(index));
-      if (data.at(index).iD_Control_Tramite == filtro) {
-        valor = data.at(index);
-        array.push(valor);
-        console.log('ENCONTRADOR EL 248');
-        isFilter = true;
-        filterValue.push(valor);
-      }
-    }
-  };
-
-  const getDataFilter = (filters: any) => {
-    if (isFilter == true) {
-      return filterValue;
-    } else {
-      return data;
-    }
-  };
-
-  function busquedaFun(event: any) {
-    var input, filter, table, tr, td, td1, td2, td3, i, txtValue, txtValue1, txtValue2, txtValue3;
-    input = document.getElementById('busqueda');
-    filter = event.target.value;
-    table = document.getElementById('tableGen');
-    console.log('tabla ---' + table);
-    tr = table?.getElementsByTagName('tr');
-    console.log('Columna-----' + tr);
-    if (tr != null) {
-      console.log('Entro a la fila');
-      for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName('td')[0];
-        td1 = tr[i].getElementsByTagName('td')[1];
-        td2 = tr[i].getElementsByTagName('td')[2];
-        td3 = tr[i].getElementsByTagName('td')[3];
-        if (td || td1 || td2 || td3) {
-          txtValue = td.textContent || td.innerText;
-          txtValue1 = td1.textContent || td1.innerText;
-          txtValue2 = td2.textContent || td2.innerText;
-          txtValue3 = td3.textContent || td3.innerText;
-          if (
-            txtValue.toUpperCase().includes(filter.toUpperCase()) ||
-            txtValue1.toUpperCase().includes(filter.toUpperCase()) ||
-            txtValue2.toUpperCase().includes(filter.toUpperCase()) ||
-            txtValue3.toUpperCase().includes(filter.toUpperCase())
-          ) {
-            tr[i].style.display = '';
-            console.log('ENCONTRO FILA');
-          } else {
-            console.log('No encontro');
-            tr[i].style.display = 'none';
-          }
-        }
-      }
-    }
-  }
-
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
-        <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
+        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} onChange={onPageChange} />
       </div>
     </div>
   );
