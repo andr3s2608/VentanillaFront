@@ -58,6 +58,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       setdepartamentomadre(iddepartmadre[0].descripcion);
       setciudadmadre(idmunimadre[0].descripcion);
       setesmadre(true);
+      console.log('entro');
     }
 
     const inf_fallecido = await api.GetInformacionFallecido(obj?.idSolicitud);
@@ -97,25 +98,27 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const tipotramite: string = obj.idTramite;
   var valor = '';
+  console.log(tipotramite, ' tramite');
   switch (tipotramite) {
     case 'a289c362-e576-4962-962b-1c208afa0273':
       valor = 'Inhumacion Indivual';
+      //setesmadre(false);
 
       break;
     case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
       //inhumacion fetal
       valor = 'Inhumacion Fetal';
-
+      // setesmadre(true);
       break;
     case 'e69bda86-2572-45db-90dc-b40be14fe020':
       //cremacion individual
       valor = 'Cremacion Individual';
-
+      //  setesmadre(false);
       break;
     case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
       //cremacionfetal
       valor = 'Cremacion Fetal';
-
+      //setesmadre(true);
       break;
   }
 
@@ -377,6 +380,16 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       />
       {esmadre && (
         <>
+          <div className='ant-container d-flex justify-content-center w-100'>
+            <div className='ant-row text-center'>
+              <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+                <Divider orientation='left'>
+                  <div className='contenedor'>Datos de la Madre</div>
+                </Divider>
+              </div>
+            </div>
+          </div>
+
           <List
             grid={{
               gutter: 16,
