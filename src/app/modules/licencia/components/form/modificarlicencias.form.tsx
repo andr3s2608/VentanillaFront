@@ -35,6 +35,12 @@ export const ModificarLicencia = ({ props }: any) => {
   const [valores, setvalores] = useState<string>('tramite');
   const [date, setDate] = useState<any>();
   const [time, setTime] = useState<any>();
+  const [sexo, setsexo] = useState<any>();
+  const [[primerNombre, segundoNombre, primerApellido, segundoApellido], setnombres] = useState<[string, string, string, string]>(
+    ['', '', '', '']
+  );
+
+  const [certificado, setcertificado] = useState<any>();
   const [isHora, setIsHora] = useState<boolean>(true);
   const [check, setcheck] = useState<boolean>(true);
 
@@ -60,8 +66,13 @@ export const ModificarLicencia = ({ props }: any) => {
     } else {
       const solicitud = await api.getLicencia(id);
 
-      setDate(moment(solicitud[0]?.fechaDefuncion));
+      setcertificado(solicitud[0].numeroCertificado);
+      setDate(moment(solicitud[0].fechaDefuncion));
       setcheck(solicitud[0].sinEstablecer);
+      setTime(solicitud[0].hora);
+      setsexo(solicitud[0].idSexo);
+
+      setnombres(solicitud[0].persona[0]);
 
       if (solicitud[0]) console.log(solicitud[0].idTramite);
       //localStorage.setItem('register', JSON.stringify(solicitud));
@@ -136,7 +147,7 @@ export const ModificarLicencia = ({ props }: any) => {
           </Button>
           {licencia && (
             <>
-              <Form.Item label='Número de Certificado' name='numerocert'>
+              <Form.Item label='Número de Certificado' name='numerocert' rules={[{ required: true }]} initialValue={certificado}>
                 <Input
                   allowClear
                   placeholder='Número de Certificado'
@@ -168,6 +179,45 @@ export const ModificarLicencia = ({ props }: any) => {
                   />
                 </Form.Item>
               )}
+              <Form.Item label='Sexo' name='sex' initialValue={sexo} rules={[{ required: true }]}>
+                <Radio.Group>
+                  <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
+                  <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>
+                  <Radio value='0347ea5e-691e-44a0-87a5-b22d39f1ff94'>INDETERMINADO</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label='Primer Apellido' name='surname' rules={[{ required: true, max: 50 }]}>
+                <Input
+                  allowClear
+                  placeholder='Primer Apellido'
+                  autoComplete='off'
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label='Segundo Apellido' name='secondSurname' rules={[{ required: false, max: 50 }]}>
+                <Input
+                  allowClear
+                  placeholder='Segundo Apellido'
+                  autoComplete='off'
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
             </>
           )}
         </Form>

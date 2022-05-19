@@ -1,4 +1,4 @@
-import { Button, Modal } from 'antd';
+import { Alert, Button, Modal } from 'antd';
 import Form, { FormInstance } from 'antd/es/form';
 import Table from 'antd/es/table';
 import { IRoles } from 'app/Models/IRoles';
@@ -13,6 +13,10 @@ import moment from 'moment';
 //redux
 import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+
+//filter
+
+import { Console } from 'console';
 
 interface IDataSource {
   data: Array<any>;
@@ -30,6 +34,8 @@ export const Gridview = (props: IDataSource) => {
   const api = new ApiService(accountIdentifier);
   const [dataTable, setDataTable] = useState<[]>();
   const formatDate = 'MM-DD-YYYY';
+  var isFilter: boolean = false;
+  const filterValue: Array<any> = [];
 
   const getListas = useCallback(
     async () => {
@@ -59,6 +65,10 @@ export const Gridview = (props: IDataSource) => {
   var apellidos: any;
   var identify: string;
   var tipotramite: any;
+  var Filterfuneraria: string;
+  var FilterDoc: string;
+  var FilterId: string;
+  var FilterEstado: string;
 
   const Renovar = (datos: any) => {
     if (data.length == 0) {
@@ -315,7 +325,7 @@ export const Gridview = (props: IDataSource) => {
 
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
-  const onPageChange = (pagination: any) => {
+  const onPageChange = (pagination: any, filters: any) => {
     //alert(pagination.current);
 
     var valor: any = data.at(0);
@@ -330,10 +340,70 @@ export const Gridview = (props: IDataSource) => {
     Renovar(array);
   };
 
+  const onStarFiltering = (pagination: any) => {
+    var valor: any = data.at(0);
+    var array: any[] = [];
+    let filtro = 248;
+    for (let index = 0; index < data.length; index++) {
+      //  console.log(data.at(index));
+      if (data.at(index).iD_Control_Tramite == filtro) {
+        valor = data.at(index);
+        array.push(valor);
+        console.log('ENCONTRADOR EL 248');
+        isFilter = true;
+        filterValue.push(valor);
+      }
+    }
+  };
+
+  const getDataFilter = (filters: any) => {
+    if (isFilter == true) {
+      return filterValue;
+    } else {
+      return data;
+    }
+  };
+
+  function busquedaFun(event: any) {
+    var input, filter, table, tr, td, td1, td2, td3, i, txtValue, txtValue1, txtValue2, txtValue3;
+    input = document.getElementById('busqueda');
+    filter = event.target.value;
+    table = document.getElementById('tableGen');
+    console.log('tabla ---' + table);
+    tr = table?.getElementsByTagName('tr');
+    console.log('Columna-----' + tr);
+    if (tr != null) {
+      console.log('Entro a la fila');
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName('td')[0];
+        td1 = tr[i].getElementsByTagName('td')[1];
+        td2 = tr[i].getElementsByTagName('td')[2];
+        td3 = tr[i].getElementsByTagName('td')[3];
+        if (td || td1 || td2 || td3) {
+          txtValue = td.textContent || td.innerText;
+          txtValue1 = td1.textContent || td1.innerText;
+          txtValue2 = td2.textContent || td2.innerText;
+          txtValue3 = td3.textContent || td3.innerText;
+          if (
+            txtValue.toUpperCase().includes(filter.toUpperCase()) ||
+            txtValue1.toUpperCase().includes(filter.toUpperCase()) ||
+            txtValue2.toUpperCase().includes(filter.toUpperCase()) ||
+            txtValue3.toUpperCase().includes(filter.toUpperCase())
+          ) {
+            tr[i].style.display = '';
+            console.log('ENCONTRO FILA');
+          } else {
+            console.log('No encontro');
+            tr[i].style.display = 'none';
+          }
+        }
+      }
+    }
+  }
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
-        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} onChange={onPageChange} />
+        <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
       </div>
     </div>
   );
