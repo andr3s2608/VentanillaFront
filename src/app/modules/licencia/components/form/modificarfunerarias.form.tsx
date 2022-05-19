@@ -161,236 +161,243 @@ export const ModificarFuneraria = ({ props }: any) => {
   );
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Form
-          form={form}
-          className='mb-4 w-100'
-          {...layoutItems}
-          style={{ maxWidth: 800 }}
-          layout='horizontal'
-          onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
-        >
-          <Divider orientation='left'>Modificar Funeraria</Divider>
-          <p>Buscar por:</p>
-          <Radio.Group onChange={changeRadioButton} defaultValue={'Name'}>
-            <Radio value='Name'>Nombre de la Funeraria</Radio>
-            <Radio value='Id'>No. Identificación</Radio>
-          </Radio.Group>
-          <p></p>
-          <div className='row'>
-            <div className='col-6 '>
-              <Form.Item label='Funerarias' name='funeraria'>
-                <SelectComponent options={l_Funeraria} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-              </Form.Item>
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <div className='row justify-content-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+                <p
+                  style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
+                  className='text-uppercase font-weight-bold'
+                >
+                  Modificar Funeraria
+                </p>
+              </div>
             </div>
-            <div className='col-6'>
-              <Form.Item label='Número de Funeraria' name='funerariaid'>
-                <Input
-                  allowClear
-                  placeholder='Número'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
+            <div className='row mt-3 justify-content-center text-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
+                <Radio.Group onChange={changeRadioButton} defaultValue={'Name'}>
+                  <Radio value='Name'>Nombre de la Funeraria</Radio>
+                  <Radio value='Id'>No. Identificación</Radio>
+                </Radio.Group>
+              </div>
             </div>
-          </div>
 
-          <Button type='primary' onClick={BuscarCementerio}>
-            Buscar cementerio
-          </Button>
+            <div className='row mt-5 mr-5'>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <Form.Item label='Funerarias' name='funeraria'>
+                  <SelectComponent options={l_Funeraria} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12 '>
+                <Form.Item label='No. Funeraria' name='funerariaid'>
+                  <Input
+                    allowClear
+                    placeholder='Número'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
 
-          {selecciono && (
-            <>
-              <Form.Item label='Tipo Id Funeraria' initialValue={TipoIdF} name='tipoidf'>
-                <Input
-                  allowClear
-                  placeholder='Razón Social'
-                  autoComplete='off'
-                  value={TipoIdF + ''}
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
+            <div className='row ml-5'>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <Button type='primary' onClick={BuscarCementerio}>
+                  Buscar Funeraria
+                </Button>
+              </div>
+            </div>
 
-              <Form.Item label='Razon S' initialValue={RazonC} name='razon'>
-                <Input
-                  allowClear
-                  placeholder='Razón Social'
-                  autoComplete='off'
-                  value={RazonC + ''}
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z ]/.test(event.key)) {
+            {selecciono && (
+              <>
+                <Form.Item label='Tipo Id Funeraria' initialValue={TipoIdF} name='tipoidf'>
+                  <Input
+                    allowClear
+                    placeholder='Razón Social'
+                    autoComplete='off'
+                    value={TipoIdF + ''}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Dirección ' initialValue={DireccionC} name='direccion'>
-                <Input
-                  allowClear
-                  value={DireccionC}
-                  placeholder='Dirección'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z0-9#-]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Telefono ' initialValue={TelefonoC} name='telefono'>
-                <Input
-                  allowClear
-                  value={TelefonoC}
-                  placeholder='Telefono'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Nombre Propietario ' initialValue={NombrePropC} name='nombreprop'>
-                <Input
-                  allowClear
-                  value={NombrePropC}
-                  placeholder='Nombre Propietario'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z ]]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Tipo Documento Propietario ' initialValue={TipoPropC} name='tipoprop'>
-                <Input
-                  allowClear
-                  value={TipoPropC}
-                  placeholder='Tipo Documento Propietario'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z ]]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Nro Documento Propietario ' initialValue={NroIdenPropC} name='nroprop'>
-                <Input
-                  allowClear
-                  placeholder='Nro Documento Propietario'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Nro SalasFuneraria ' initialValue={NroSalas} name='nrosalas'>
-                <Input
-                  allowClear
-                  placeholder='Nro Salas Funeraria'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Nombre Representante ' initialValue={NombreRepC} name='nombrerep'>
-                <Input
-                  allowClear
-                  value={NombreRepC}
-                  placeholder='Nombre Representante'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z ]]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Tipo Documento Representante ' initialValue={TipoRepC} name='tiporep'>
-                <Input
-                  allowClear
-                  value={TipoRepC}
-                  placeholder='Tipo Documento Representante'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z ]]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Nro Documento Representante ' initialValue={NroIdenC} name='nrorep'>
-                <Input
-                  allowClear
-                  placeholder='Nro Documento Representante'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-            </>
-          )}
+                    }}
+                  />
+                </Form.Item>
 
-          <div>
-            <Actions />
-          </div>
-        </Form>
+                <Form.Item label='Razon S' initialValue={RazonC} name='razon'>
+                  <Input
+                    allowClear
+                    placeholder='Razón Social'
+                    autoComplete='off'
+                    value={RazonC + ''}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Dirección ' initialValue={DireccionC} name='direccion'>
+                  <Input
+                    allowClear
+                    value={DireccionC}
+                    placeholder='Dirección'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9#-]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Telefono ' initialValue={TelefonoC} name='telefono'>
+                  <Input
+                    allowClear
+                    value={TelefonoC}
+                    placeholder='Telefono'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nombre Propietario ' initialValue={NombrePropC} name='nombreprop'>
+                  <Input
+                    allowClear
+                    value={NombrePropC}
+                    placeholder='Nombre Propietario'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Tipo Documento Propietario ' initialValue={TipoPropC} name='tipoprop'>
+                  <Input
+                    allowClear
+                    value={TipoPropC}
+                    placeholder='Tipo Documento Propietario'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nro Documento Propietario ' initialValue={NroIdenPropC} name='nroprop'>
+                  <Input
+                    allowClear
+                    placeholder='Nro Documento Propietario'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nro SalasFuneraria ' initialValue={NroSalas} name='nrosalas'>
+                  <Input
+                    allowClear
+                    placeholder='Nro Salas Funeraria'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nombre Representante ' initialValue={NombreRepC} name='nombrerep'>
+                  <Input
+                    allowClear
+                    value={NombreRepC}
+                    placeholder='Nombre Representante'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Tipo Documento Representante ' initialValue={TipoRepC} name='tiporep'>
+                  <Input
+                    allowClear
+                    value={TipoRepC}
+                    placeholder='Tipo Documento Representante'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nro Documento Representante ' initialValue={NroIdenC} name='nrorep'>
+                  <Input
+                    allowClear
+                    placeholder='Nro Documento Representante'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </>
+            )}
+          </Form>
+        </div>
       </div>
     </div>
   );
