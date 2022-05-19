@@ -13,10 +13,9 @@ import moment from 'moment';
 //redux
 import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
-
 //filter
 
-import { Console } from 'console';
+//filter
 
 interface IDataSource {
   data: Array<any>;
@@ -65,6 +64,11 @@ export const Gridview = (props: IDataSource) => {
   var apellidos: any;
   var identify: string;
   var tipotramite: any;
+  var Filterfuneraria: string;
+  var FilterDoc: string;
+  var FilterId: string;
+  var FilterEstado: string;
+
   var Filterfuneraria: string;
   var FilterDoc: string;
   var FilterId: string;
@@ -327,7 +331,7 @@ export const Gridview = (props: IDataSource) => {
   };
   const onPageChange = (pagination: any, filters: any) => {
     //alert(pagination.current);
-
+    console.log(filters);
     var valor: any = data.at(0);
     var array: any[] = [];
     for (let index = 0; index < data.length; index++) {
@@ -409,7 +413,31 @@ export const Gridview = (props: IDataSource) => {
   );
 
   /*
+ // pagination={{ pageSize: 10 }} onChange={onPageChange}
 
+       <GridComponent
+          dataSource={data}
+          allowPaging={true}
+          pageSettings={{ pageSize: Paginas }}
+          allowFiltering={true}
+          filterSettings={filterOption}
+        >
+          <ColumnsDirective>
+            <ColumnDirective field='idTramite' headerText='Identificador Tramite' />
+            <ColumnDirective field='numeroDocumento' headerText='No. Documento' />
+            <ColumnDirective field='nombreCompleto' headerText='Razon Social' />
+            <ColumnDirective field='fechaSolicitud' headerText='Fecha de registro' />
+            <ColumnDirective field='estado' headerText='Estado del tramite' />
+            <ColumnDirective field='tipoSolicitud' headerText='Tipo de Solicitud' />
+          </ColumnsDirective>
+          <Inject services={[Filter]} />
+        </GridComponent>
+
+
+
+
+
+        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} onChange={onPageChange} />
 const structureColumns = [
     {
       title: 'Tipo Trámite',
