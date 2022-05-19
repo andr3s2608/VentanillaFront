@@ -62,6 +62,8 @@ export interface ResumenSolicitud {
   apellidoSolicitante: string;
   correoSolicitante: string;
   correoMedico: string;
+  cumpleCausa: boolean;
+  observacionCausa: string;
 }
 
 export interface DocumentosSoporte {
