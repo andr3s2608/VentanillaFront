@@ -54,11 +54,6 @@ export const GestionFirma = ({ props }: any) => {
     let reader = new FileReader();
     reader.readAsDataURL(values.funcionariofirma.file);
     reader.onload = async function () {
-      //me.modelvalue = reader.result;
-      //console.log(reader.result);
-      //console.log(reader.result);
-      //console.log(base64);
-
       await api.agregarFirma({
         iD_Usuario: idUsuario,
         firma: reader.result

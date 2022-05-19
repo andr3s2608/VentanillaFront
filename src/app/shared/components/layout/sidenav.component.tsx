@@ -74,8 +74,8 @@ export const SidenavComponent: React.FC<BasicProps> = (props) => {
     });
 
   return (
-    <Sider {...props} className='app-sidenav' trigger={null} collapsible collapsedWidth={0} collapsed={!sidenav} width={395}>
-      <Menu className='pt-3 pb-5 mr-5' theme='dark' mode='inline' {...openKeys}>
+    <Sider {...props} className='app-sidenav' trigger={null} collapsible collapsedWidth={0} collapsed={!sidenav} width={290}>
+      <Menu className='pt-3 pb-5 mr-5' theme='dark' mode='inline' {...openKeys} style={{ wordBreak: 'break-all' }}>
         <Menu.Item key='home' onClick={onCloseSidenav}>
           <NavLink to='/'>Inicio</NavLink>
         </Menu.Item>

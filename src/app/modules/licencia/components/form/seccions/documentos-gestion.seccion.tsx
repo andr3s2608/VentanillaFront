@@ -171,22 +171,18 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   return (
     <div className='container'>
       <div className='row'>
-        <Divider orientation='left'>Documentos Cargados</Divider>
-      </div>
-      <div className='row'>
-        <div className='col'>
-          <div className='d-lg-flex align-items-start'>
-            <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
-          </div>
+        <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+          <p style={{fontSize:'16px', color:'#3366cc', fontFamily:' Roboto'}}  className='text-uppercase font-weight-bold'>Documentos Cargados</p>
         </div>
       </div>
       <div className='row'>
-        <div className='col'>
-          <iframe src={urlPdf} frameBorder='0' scrolling='auto' height={heightIframe} width='100%'></iframe>
+        <div className='col-lg-6 col-sm-12 col-md-6'>
+          <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
+        </div>
+        <div className='col-lg-6 col-sm-12 col-md-6'>
+        <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='500px' width='100%'></iframe>
         </div>
       </div>
-      <br></br>
-      <br></br>
     </div>
   );
 };

@@ -18,6 +18,7 @@ Ejemplo: `lessc --js ./src/scss/antd/antd-theme.less ./src/scss/antd/index.css`
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+
 [class^='ant-']::-ms-clear,
 [class*='ant-']::-ms-clear,
 [class^='ant-'] input::-ms-clear,
@@ -14942,7 +14943,6 @@ textarea.ant-input-number {
   flex: auto;
   /* fix firefox can't set height smaller than content on flex item */
   min-height: 0;
-  
 }
 .ant-layout-sider {
   position: relative;
@@ -14953,7 +14953,7 @@ textarea.ant-input-number {
 }
 
 .ant-layout-sider-children {
-  height: 100%;
+  height: 80px !important;
   margin-top: -0.1px;
 }
 .ant-layout-sider-has-trigger {
@@ -25130,4 +25130,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-upload-list-rtl.ant-upload-list-picture-card .ant-upload-list-item-file + .ant-upload-list-item-name {
   margin: 8px 0 0;
   padding: 0;
+}
+
+.save{
+  margin-right: 350px !important;
 }

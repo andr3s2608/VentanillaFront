@@ -150,7 +150,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (solicitante: any) => {};
 
   const onSubmit = async (values: any) => {
-    const certificado = values.certificado;
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -206,14 +205,17 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var tipoid = resp.tipoIdentificacion + '';
     var nroid = resp.numeroIdentificacion + '';
     if (resp.tipoIdentificacion == 5) {
+      console.log('entro1');
       tipo = 'Juridica';
       razon = resp.razonSocial;
     } else {
+      console.log('entro 2');
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
+    console.log(tipoid, nroid, ' numero');
 
     const dep = values.state;
     var mun = values.city;
@@ -228,6 +230,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       segunda = '00000000-0000-0000-0000-000000000000';
     }
 
+    console.log(values.certificado, ' NUMERO CERTIFICADO');
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -254,7 +257,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             primerApellido: values.surname,
             segundoApellido: values.secondSurname,
             fechaNacimiento: values.dateOfBirth,
-            nacionalidad: values.nationalidad,
+            nacionalidad: values.nationalidad[0],
             segundanacionalidad: segunda,
             otroParentesco: null,
             idEstadoCivil: values.civilStatus,
@@ -336,7 +339,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           nombreSolicitante: values.namesolicitudadd,
           apellidoSolicitante: values.lastnamesolicitudadd,
           correoSolicitante: values.emailsolicitudadd,
-          correoMedico: ''
+          correoMedico: '',
+          cumpleCausa: true,
+          observacionCausa: ''
         },
 
         institucionCertificaFallecimiento: {
@@ -353,6 +358,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+    console.log(json);
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
     const formData = new FormData();
@@ -515,7 +521,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     if (numero == undefined) {
       numero = '0';
     }
-    onNextStep([...KeyFormMedicalSignature]);
+    if (numero.length >= longitudmedico) {
+      onNextStep([...KeyFormMedicalSignature]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: `El Número de Identificación del Medico debe tener mínimo ${longitudmedico} Dígitos o Caracteres`
+      });
+    }
   };
 
   const ValidacionAutorizador = () => {
@@ -777,537 +791,537 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
-            <LugarDefuncionFormSeccion form={form} obj={objJosn} />
-            <DeathInstituteFormSeccion
-              prop={getData}
-              obj={objJosn}
-              form={form}
-              datofiscal={true}
-              required={true}
-              tipoLicencia={tipoLicencia}
-            />
-
-            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-              <div className='d-flex justify-content-end'>
-                <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
-                  Siguiente
-                </Button>
-              </div>
-            </Form.Item>
-          </div>
-
-          <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
-            <Divider orientation='right'>Datos del Fallecido</Divider>
-            <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={objJosn?.name}>
-              <Input
-                allowClear
-                placeholder='Primer Nombre'
-                autoComplete='off'
-                type='text'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
+          <>
+            <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
+              <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
+              <LugarDefuncionFormSeccion form={form} obj={objJosn} />
+              <DeathInstituteFormSeccion
+                prop={getData}
+                obj={objJosn}
+                form={form}
+                datofiscal={true}
+                required={true}
+                tipoLicencia={tipoLicencia}
               />
-            </Form.Item>
-            <Form.Item
-              label='Segundo Nombre'
-              name='secondName'
-              rules={[{ required: false, max: 50 }]}
-              initialValue={objJosn?.secondName}
-            >
-              <Input
-                allowClear
-                placeholder='Segundo Nombre'
-                autoComplete='off'
-                type='text'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              label='Primer Apellido'
-              name='surname'
-              rules={[{ required: true, max: 50 }]}
-              initialValue={objJosn?.surname}
-            >
-              <Input
-                allowClear
-                placeholder='Primer Apellido'
-                autoComplete='off'
-                type='text'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              label='Segundo Apellido'
-              name='secondSurname'
-              rules={[{ required: false, max: 50 }]}
-              initialValue={objJosn?.secondSurname}
-            >
-              <Input
-                allowClear
-                placeholder='Segundo Apellido'
-                autoComplete='off'
-                type='text'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              label='Nacionalidad'
-              name='nationalidad'
-              initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
-              rules={[{ required: true }]}
-            >
-              <SelectComponent
-                options={l_paises}
-                placeholder='-- Elija una nacionalidad --'
-                optionPropkey='id'
-                optionPropLabel='descripcion'
-              />
-            </Form.Item>
-            <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
-              <SelectComponent
-                options={l_paises}
-                placeholder='-- Elija una o varias --'
-                optionPropkey='id'
-                optionPropLabel='descripcion'
-              />
-            </Form.Item>
-            <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]} initialValue={date}>
-              <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
-            </Form.Item>
-            <Form.Item
-              label='Tipo Identificación'
-              name='IDType'
-              initialValue={objJosn?.IDType ? objJosn?.IDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-              rules={[{ required: true }]}
-            >
-              <SelectComponent
-                options={l_tipos_documento}
-                onChange={cambiodocumento}
-                optionPropkey='id'
-                optionPropLabel='descripcion'
-              />
-            </Form.Item>
-            <Form.Item
-              label='Número de Identificación'
-              name='IDNumber'
-              initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
-              rules={[{ required: true }]}
-            >
-              <Input
-                allowClear
-                type='text'
-                placeholder='Número Identificación'
-                autoComplete='off'
-                pattern={tipocampo}
-                maxLength={longitudmaxima}
-                onKeyPress={(event) => {
-                  if (!tipocampovalidacion.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos invalidos',
-                    text:
-                      'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
-                      tipodocumento +
-                      ' solo se admiten valores ' +
-                      campo +
-                      ' de longitud entre ' +
-                      longitudminima +
-                      ' y ' +
-                      longitudmaxima
-                  });
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              label='Estado Civil'
-              name='civilStatus'
-              initialValue={objJosn?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}
-            >
-              <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-            <Form.Item
-              label='Nivel Educativo'
-              name='educationLevel'
-              initialValue={objJosn?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}
-            >
-              <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
 
-            <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
-              <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
+              <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                <div className='d-flex justify-content-end'>
+                  <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
+                    Siguiente
+                  </Button>
+                </div>
+              </Form.Item>
+            </div>
+          </>
 
-            <Form.Item label='Régimen' name='regimen' initialValue={objJosn?.regime ?? '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
-              <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-
-            <Form.Item
-              label='Tipo de Muerte'
-              name='deathType'
-              initialValue={objJosn?.deathType ?? '475c280d-67af-47b0-a8bc-de420f6ac740'}
-              rules={[{ required: true }]}
-            >
-              <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
-            </Form.Item>
-
-            {/* TODO: [2021-06-12] Definir los roles del usuario, es solo visible para funcionarios. */}
-            {false && (
-              <>
-                <Divider orientation='right'>Reconocido como...</Divider>
-
-                <Form.Item label='Tipo Identificación' name='knownIDType'>
-                  <SelectComponent
-                    options={l_tipos_documento}
-                    onChange={cambiodocumento}
-                    optionPropkey='id'
-                    optionPropLabel='descripcion'
-                  />
-                </Form.Item>
-
-                <Form.Item label='Número de Identificación' name='knownIDNumber'>
-                  <Input
-                    allowClear
-                    type='text'
-                    placeholder='Número Identificación'
-                    autoComplete='off'
-                    pattern={tipocampo}
-                    maxLength={longitudmaxima}
-                    onKeyPress={(event) => {
-                      if (!tipocampovalidacion.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
+          <>
+            <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
+              <Divider orientation='right'>Datos del Fallecido</Divider>
+              <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={objJosn?.name}>
+                <Input
+                  allowClear
+                  placeholder='Primer Nombre'
+                  autoComplete='off'
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                       event.preventDefault();
-                    }}
-                    onInvalid={() => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Datos invalidos',
-                        text:
-                          'Sección:Reconocido como \n recuerde que para el tipo de documento:' +
-                          tipodocumento +
-                          ' solo se admiten valores ' +
-                          campo +
-                          ' de longitud entre ' +
-                          longitudminima +
-                          ' y ' +
-                          longitudmaxima
-                      });
-                    }}
-                  />
-                </Form.Item>
-
-                <Form.Item label='Nombre' name='knownName'>
-                  <Input
-                    allowClear
-                    placeholder='Nombres y Apellidos completos'
-                    autoComplete='off'
-                    type='text'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label='Segundo Nombre'
+                name='secondName'
+                rules={[{ required: false, max: 50 }]}
+                initialValue={objJosn?.secondName}
+              >
+                <Input
+                  allowClear
+                  placeholder='Segundo Nombre'
+                  autoComplete='off'
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                       event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-              </>
-            )}
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label='Primer Apellido'
+                name='surname'
+                rules={[{ required: true, max: 50 }]}
+                initialValue={objJosn?.surname}
+              >
+                <Input
+                  allowClear
+                  placeholder='Primer Apellido'
+                  autoComplete='off'
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label='Segundo Apellido'
+                name='secondSurname'
+                rules={[{ required: false, max: 50 }]}
+                initialValue={objJosn?.secondSurname}
+              >
+                <Input
+                  allowClear
+                  placeholder='Segundo Apellido'
+                  autoComplete='off'
+                  type='text'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label='Nacionalidad'
+                name='nationalidad'
+                initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
+                rules={[{ required: true }]}
+              >
+                <SelectComponent
+                  options={l_paises}
+                  placeholder='-- Elija una nacionalidad --'
+                  optionPropkey='id'
+                  optionPropLabel='descripcion'
+                />
+              </Form.Item>
+              <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_paises}
+                  placeholder='-- Elija una o varias --'
+                  optionPropkey='id'
+                  optionPropLabel='descripcion'
+                />
+              </Form.Item>
+              <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]} initialValue={date}>
+                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
+              </Form.Item>
+              <Form.Item
+                label='Tipo Identificación'
+                name='IDType'
+                initialValue={objJosn?.IDType ? objJosn?.IDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+                rules={[{ required: true }]}
+              >
+                <SelectComponent
+                  options={l_tipos_documento}
+                  onChange={cambiodocumento}
+                  optionPropkey='id'
+                  optionPropLabel='descripcion'
+                />
+              </Form.Item>
+              <Form.Item
+                label='Número de Identificación'
+                name='IDNumber'
+                initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
+                rules={[{ required: true }]}
+              >
+                <Input
+                  allowClear
+                  type='text'
+                  placeholder='Número Identificación'
+                  autoComplete='off'
+                  pattern={tipocampo}
+                  maxLength={longitudmaxima}
+                  onKeyPress={(event) => {
+                    if (!tipocampovalidacion.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                  onInvalid={() => {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Datos invalidos',
+                      text:
+                        'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
+                        tipodocumento +
+                        ' solo se admiten valores ' +
+                        campo +
+                        ' de longitud entre ' +
+                        longitudminima +
+                        ' y ' +
+                        longitudmaxima
+                    });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label='Estado Civil'
+                name='civilStatus'
+                initialValue={objJosn?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}
+              >
+                <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
+              </Form.Item>
+              <Form.Item
+                label='Nivel Educativo'
+                name='educationLevel'
+                initialValue={objJosn?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}
+              >
+                <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
+              </Form.Item>
 
-            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-              <div className='d-flex justify-content-between'>
-                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                  Volver atrás
-                </Button>
-                <Button type='primary' htmlType='button' onClick={() => ValidacionFallecido()}>
-                  Siguiente
-                </Button>
-              </div>
-            </Form.Item>
-          </div>
+              <Form.Item label='Etnia' name='etnia' initialValue={objJosn?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
+                <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
+              </Form.Item>
 
-          <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
-            {isCremacion && (
-              <>
-                <Divider orientation='right'>Datos Del Familiar Que Autoriza Cremación</Divider>
+              <Form.Item label='Régimen' name='regimen' initialValue={objJosn?.regime ?? '848c6d53-6bda-4596-a889-8fdb0292f9e4'}>
+                <SelectComponent options={l_regimen} optionPropkey='id' optionPropLabel='descripcion' />
+              </Form.Item>
 
-                {hasCremacionAuth && (
-                  <div className='fadeInRight'>
-                    <Form.Item {...layoutWrapper}>
-                      <Alert
-                        message='Diligencie la información del familiar o persona que autoriza la cremación.'
-                        type='warning'
-                        showIcon
-                      />
-                    </Form.Item>
+              <Form.Item
+                label='Tipo de Muerte'
+                name='deathType'
+                initialValue={objJosn?.deathType ?? '475c280d-67af-47b0-a8bc-de420f6ac740'}
+                rules={[{ required: true }]}
+              >
+                <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
+              </Form.Item>
 
-                    <Form.Item
-                      label='Tipo Documento'
-                      name='authIDType'
-                      initialValue={objJosn?.authIDType ? objJosn?.authIDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                      rules={[{ required: true }]}
-                    >
-                      <SelectComponent
-                        options={l_tipos_documento}
-                        onChange={cambiodocumentoautoriza}
-                        optionPropkey='id'
-                        optionPropLabel='descripcion'
-                      />
-                    </Form.Item>
+              {/* TODO: [2021-06-12] Definir los roles del usuario, es solo visible para funcionarios. */}
+              {false && (
+                <>
+                  <Divider orientation='right'>Reconocido como...</Divider>
 
-                    <Form.Item
-                      label='Número de Identificación'
-                      name='mauthIDNumber'
-                      rules={[{ required: true }]}
-                      initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
-                    >
-                      <Input
-                        allowClear
-                        type='text'
-                        placeholder='Número Identificación'
-                        autoComplete='off'
-                        pattern={tipocampoautoriza}
-                        maxLength={longitudmaximaautoriza}
-                        onKeyPress={(event) => {
-                          if (!tipocampovalidacionautoriza.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
+                  <Form.Item label='Tipo Identificación' name='knownIDType'>
+                    <SelectComponent
+                      options={l_tipos_documento}
+                      onChange={cambiodocumento}
+                      optionPropkey='id'
+                      optionPropLabel='descripcion'
+                    />
+                  </Form.Item>
+
+                  <Form.Item label='Número de Identificación' name='knownIDNumber'>
+                    <Input
+                      allowClear
+                      type='text'
+                      placeholder='Número Identificación'
+                      autoComplete='off'
+                      pattern={tipocampo}
+                      maxLength={longitudmaxima}
+                      onKeyPress={(event) => {
+                        if (!tipocampovalidacion.test(event.key)) {
                           event.preventDefault();
-                        }}
-                        onInvalid={() => {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Datos invalidos',
-                            text:
-                              'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
-                              tipodocumentoautoriza +
-                              ' solo se admiten valores ' +
-                              campoautoriza +
-                              ' de longitud entre ' +
-                              longitudminimaautoriza +
-                              ' y ' +
-                              longitudmaximaautoriza
-                          });
-                        }}
-                      />
-                    </Form.Item>
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                      onInvalid={() => {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Datos invalidos',
+                          text:
+                            'Sección:Reconocido como \n recuerde que para el tipo de documento:' +
+                            tipodocumento +
+                            ' solo se admiten valores ' +
+                            campo +
+                            ' de longitud entre ' +
+                            longitudminima +
+                            ' y ' +
+                            longitudmaxima
+                        });
+                      }}
+                    />
+                  </Form.Item>
 
-                    <Form.Item
-                      label='Primer Nombre'
-                      name='authName'
-                      initialValue={objJosn?.authName ? objJosn?.authName : null}
-                      rules={[{ required: true, max: 50 }]}
-                    >
-                      <Input
-                        allowClear
-                        placeholder='Primer Nombre'
-                        autoComplete='off'
-                        type='text'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
+                  <Form.Item label='Nombre' name='knownName'>
+                    <Input
+                      allowClear
+                      placeholder='Nombres y Apellidos completos'
+                      autoComplete='off'
+                      type='text'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                           event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label='Segundo Nombre'
-                      initialValue={objJosn?.authSecondName ? objJosn?.authSecondName : null}
-                      rules={[{ max: 50 }]}
-                      name='authSecondName'
-                    >
-                      <Input
-                        allowClear
-                        placeholder='Segundo Nombre'
-                        autoComplete='off'
-                        type='text'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label='Primer Apellido'
-                      initialValue={objJosn?.authSurname ? objJosn?.authSurname : null}
-                      name='authSurname'
-                      rules={[{ required: true, max: 50 }]}
-                    >
-                      <Input
-                        allowClear
-                        placeholder='Primer Apellido'
-                        autoComplete='off'
-                        type='text'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      label='Segundo Apellido'
-                      initialValue={objJosn?.authSecondSurname ? objJosn?.authSecondSurname : null}
-                      name='authSecondSurname'
-                      rules={[{ max: 50 }]}
-                    >
-                      <Input
-                        allowClear
-                        placeholder='Segundo Apellido'
-                        autoComplete='off'
-                        type='text'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </>
+              )}
 
-                    <AutorizacionCremacion form={form} tipoLicencia={tipoLicencia} />
+              <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                <div className='d-flex justify-content-between'>
+                  <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                    Volver atrás
+                  </Button>
+                  <Button type='primary' htmlType='button' onClick={() => ValidacionFallecido()}>
+                    Siguiente
+                  </Button>
+                </div>
+              </Form.Item>
+            </div>
+          </>
 
-                    <Form.Item
-                      label='Parentesco'
-                      initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
-                      name='authParentesco'
-                      rules={[{ required: true }]}
-                    >
-                      <Radio.Group onChange={onChangeParentesco}>
-                        <Radio value='Padre / Madre'>Padre / Madre</Radio>
-                        <br />
-                        <Radio value='Hermano/a'>Hermano/a</Radio>
-                        <br />
-                        <Radio value='Hijo/a'>Hijo/a</Radio>
-                        <br />
-                        <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                        <br />
-                        <Radio value='Tío/a'>Tío/a</Radio>
-                        <br />
-                        <Radio value='Sobrino/a'>Sobrino/a</Radio>
-                        <br />
-                        <Radio value='Abuelo/a'>Abuelo/a</Radio>
-                        <br />
-                        <Radio value='Nieto/a'>Nieto/a</Radio>
-                        <br />
-                        <Radio value='Otro'>Otro</Radio>
-                      </Radio.Group>
-                    </Form.Item>
+          <>
+            <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
+              {isCremacion && (
+                <>
+                  <Divider orientation='right'>Datos Del Familiar Que Autoriza Cremación</Divider>
 
-                    {isOtherParentesco && (
+                  {hasCremacionAuth && (
+                    <div className='fadeInRight'>
+                      <Form.Item {...layoutWrapper}>
+                        <Alert
+                          message='Diligencie la información del familiar o persona que autoriza la cremación.'
+                          type='warning'
+                          showIcon
+                        />
+                      </Form.Item>
+
                       <Form.Item
-                        className='fadeInRight'
-                        label='Otro... ¿Cúal?'
-                        name='authOtherParentesco'
-                        initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
+                        label='Tipo Documento'
+                        name='authIDType'
+                        initialValue={objJosn?.authIDType ? objJosn?.authIDType : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                         rules={[{ required: true }]}
                       >
-                        <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
+                        <SelectComponent
+                          options={l_tipos_documento}
+                          onChange={cambiodocumentoautoriza}
+                          optionPropkey='id'
+                          optionPropLabel='descripcion'
+                        />
                       </Form.Item>
-                    )}
-                  </div>
-                )}
-              </>
-            )}
 
-            <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-            <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} />
-            <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+                      <Form.Item
+                        label='Número de Identificación'
+                        name='mauthIDNumber'
+                        rules={[{ required: true }]}
+                        initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
+                      >
+                        <Input
+                          allowClear
+                          type='text'
+                          placeholder='Número Identificación'
+                          autoComplete='off'
+                          pattern={tipocampoautoriza}
+                          maxLength={longitudmaximaautoriza}
+                          onKeyPress={(event) => {
+                            if (!tipocampovalidacionautoriza.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                          onInvalid={() => {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Datos invalidos',
+                              text:
+                                'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
+                                tipodocumentoautoriza +
+                                ' solo se admiten valores ' +
+                                campoautoriza +
+                                ' de longitud entre ' +
+                                longitudminimaautoriza +
+                                ' y ' +
+                                longitudmaximaautoriza
+                            });
+                          }}
+                        />
+                      </Form.Item>
 
-            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-              <div className='d-flex justify-content-between'>
-                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                  Volver atrás
-                </Button>
-                <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
-                  Siguiente
-                </Button>
-              </div>
-            </Form.Item>
-          </div>
+                      <Form.Item
+                        label='Primer Nombre'
+                        name='authName'
+                        initialValue={objJosn?.authName ? objJosn?.authName : null}
+                        rules={[{ required: true, max: 50 }]}
+                      >
+                        <Input
+                          allowClear
+                          placeholder='Primer Nombre'
+                          autoComplete='off'
+                          type='text'
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label='Segundo Nombre'
+                        initialValue={objJosn?.authSecondName ? objJosn?.authSecondName : null}
+                        rules={[{ max: 50 }]}
+                        name='authSecondName'
+                      >
+                        <Input
+                          allowClear
+                          placeholder='Segundo Nombre'
+                          autoComplete='off'
+                          type='text'
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label='Primer Apellido'
+                        initialValue={objJosn?.authSurname ? objJosn?.authSurname : null}
+                        name='authSurname'
+                        rules={[{ required: true, max: 50 }]}
+                      >
+                        <Input
+                          allowClear
+                          placeholder='Primer Apellido'
+                          autoComplete='off'
+                          type='text'
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label='Segundo Apellido'
+                        initialValue={objJosn?.authSecondSurname ? objJosn?.authSecondSurname : null}
+                        name='authSecondSurname'
+                        rules={[{ max: 50 }]}
+                      >
+                        <Input
+                          allowClear
+                          placeholder='Segundo Apellido'
+                          autoComplete='off'
+                          type='text'
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
 
-          <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
-            <MedicalSignatureFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+                      <AutorizacionCremacion form={form} tipoLicencia={tipoLicencia} />
 
-            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-              <div className='d-flex justify-content-between'>
-                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                  Volver atrás
-                </Button>
-                <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
-                  Siguiente
-                </Button>
-              </div>
-            </Form.Item>
-          </div>
+                      <Form.Item
+                        label='Parentesco'
+                        initialValue={objJosn?.authParentesco ? objJosn?.authParentesco : 'Cónyuge (Compañero/a Permanente)'}
+                        name='authParentesco'
+                        rules={[{ required: true }]}
+                      >
+                        <Radio.Group onChange={onChangeParentesco}>
+                          <Radio value='Padre / Madre'>Padre / Madre</Radio>
+                          <br />
+                          <Radio value='Hermano/a'>Hermano/a</Radio>
+                          <br />
+                          <Radio value='Hijo/a'>Hijo/a</Radio>
+                          <br />
+                          <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
+                          <br />
+                          <Radio value='Tío/a'>Tío/a</Radio>
+                          <br />
+                          <Radio value='Sobrino/a'>Sobrino/a</Radio>
+                          <br />
+                          <Radio value='Abuelo/a'>Abuelo/a</Radio>
+                          <br />
+                          <Radio value='Nieto/a'>Nieto/a</Radio>
+                          <br />
+                          <Radio value='Otro'>Otro</Radio>
+                        </Radio.Group>
+                      </Form.Item>
 
-          <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
-            <DocumentosFormSeccion obj={objJosn} tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
-            {!edit ? <Actions /> : null}
-          </div>
-          {edit ? (
-            <div className={`d-none fadeInRight ${current === 5 && 'd-block'}`}>
-              {
-                <>
-                  <ValidationFuntional idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
-                  <Actions />
+                      {isOtherParentesco && (
+                        <Form.Item
+                          className='fadeInRight'
+                          label='Otro... ¿Cúal?'
+                          name='authOtherParentesco'
+                          initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
+                          rules={[{ required: true }]}
+                        >
+                          <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
+                        </Form.Item>
+                      )}
+                    </div>
+                  )}
                 </>
-              }
+              )}
+
+              <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
+              <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} />
+              <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+
+              <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                <div className='d-flex justify-content-between'>
+                  <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                    Volver atrás
+                  </Button>
+                  <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
+                    Siguiente
+                  </Button>
+                </div>
+              </Form.Item>
             </div>
-          ) : null}
+          </>
+
+          <>
+            <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
+              <MedicalSignatureFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+
+              <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                <div className='d-flex justify-content-between'>
+                  <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                    Volver atrás
+                  </Button>
+                  <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
+                    Siguiente
+                  </Button>
+                </div>
+              </Form.Item>
+            </div>
+          </>
+
+          <>
+            <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
+              <DocumentosFormSeccion obj={objJosn} tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
+              <Actions />
+            </div>
+          </>
         </Form>
       </div>
     </div>
