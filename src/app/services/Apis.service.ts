@@ -12,7 +12,8 @@ const {
   REACT_APP_ENDPOINTV1,
   REACT_APP_NOTIFICACION,
   REACT_APP_BLOB,
-  REACT_APP_FORMATOS
+  REACT_APP_FORMATOS,
+  REACT_APP_LOCAL
 } = process.env;
 
 export class ApiService {
@@ -34,7 +35,7 @@ export class ApiService {
 
   agregarFirma = (payload: any) => {
     return post<any>({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: 'https://localhost:5001/api/',
       url: 'Request/AddFirma',
       payload,
       id: '1'
@@ -271,13 +272,7 @@ export class ApiService {
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
-      (REACT_APP_INHCREMACION as string) +
-      'GeneratePDF/GeneratePDFPrev/' +
-      idTramite +
-      '/' +
-      idTramitador +
-      '/' +
-      nombreTramitador
+      'https://localhost:5001/api/' + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador
     );
   };
 
@@ -288,7 +283,7 @@ export class ApiService {
   };
   validarFirmaFuncionario = (idTramitador: string) =>
     get<any>({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: 'https://localhost:5001/api/',
       url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
       id: '0'
     });
