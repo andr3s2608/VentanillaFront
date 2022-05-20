@@ -295,4 +295,79 @@ export class ApiService {
       url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
       id: '0'
     });
+
+  /**
+   * Servicio para la georreferenciación
+   *
+   */
+
+  geocoding = (payload: any) =>
+    post({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8'
+        }
+      },
+      confirmModal: false
+    });
+
+  getZonaSig = (payload: any) =>
+    post({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8'
+        }
+      },
+      confirmModal: false
+    });
+
+  getLocalidadSig = (payload: any) =>
+    post({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8'
+        }
+      },
+      confirmModal: false
+    });
+
+  getUpzSig = (payload: any) =>
+    post({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8'
+        }
+      },
+      confirmModal: false
+    });
+
+  getBarrioSig = (payload: any) =>
+    post({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8'
+        }
+      },
+      confirmModal: false
+    });
 }
