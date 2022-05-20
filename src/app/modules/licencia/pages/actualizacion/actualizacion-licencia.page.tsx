@@ -2,7 +2,7 @@ import Tabs from 'antd/es/tabs';
 
 // Componentes
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-import { GestionFirma } from 'app/modules/licencia/components/form/firmas.form';
+import { ModificarLicencia } from 'app/modules/licencia/components/form/modificarlicencias.form';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -14,9 +14,7 @@ const PruebaPage = () => {
 
       <Tabs>
         <TabPane tab='Actualizar Datos de Licencia' key='1'>
-          {
-            //<GestionFirma props={1} />
-          }
+          {<ModificarLicencia props={1} />}
         </TabPane>
       </Tabs>
     </div>

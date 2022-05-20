@@ -168,9 +168,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   }
 
   const onSubmit = async (values: any) => {
-    //let bandera = await api.validarFirmaFuncionario(idUsuario);
+    let bandera = await api.validarFirmaFuncionario(idUsuario);
 
-    if (true) {
+    if (bandera) {
       setStatus(undefined);
       const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
       const formatDate = 'MM-DD-YYYY';
