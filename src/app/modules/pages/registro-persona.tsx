@@ -67,7 +67,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
   store.subscribe(() => {
     const { direccion } = store.getState();
-    setDireccionCompleta(direccion.toString());
+    setDireccionCompleta(direccion.join(' '));
   });
 
   const getListas2 = useCallback(
@@ -246,20 +246,18 @@ const RegistroPage: React.FC<any> = (props) => {
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Datos invalidos',
-          text: 'Por favor Ingrese una Fecha de Nacimiento Valida Valido'
+          title: 'Datos inválidos',
+          text: 'Por favor ingrese una fecha de nacimiento valida'
         });
       }
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
-        text: 'Los Emails deben coincidir'
+        title: 'Datos inválidos',
+        text: 'Los emails deben coincidir'
       });
     }
   };
-
-  const onSubmitFailed = () => {};
 
   const cambioavenida = (value: any) => {
     const valor: string = value;
@@ -277,7 +275,7 @@ const RegistroPage: React.FC<any> = (props) => {
     direccion_completa[posicion] = valor;
 
     store.dispatch(SetDireccion(direccion_completa));
-    setDireccionCompleta(direccion_completa.toString());
+    setDireccionCompleta(direccion_completa.join(' '));
   };
 
   return (
@@ -298,7 +296,6 @@ const RegistroPage: React.FC<any> = (props) => {
           style={{ maxWidth: 800 }}
           layout='horizontal'
           onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
         >
           <BasicaInformacion form={form} />
           <h4 className='app-subtitle mt-3'>Datos Geográficos.</h4>
@@ -396,7 +393,7 @@ const RegistroPage: React.FC<any> = (props) => {
                 </span>
               </label>
               <Form.Item label='' name='' rules={[{ required: true }]}>
-                <SelectComponent style={{ width: '530px' }} options={[]} optionPropkey='id' optionPropLabel='name' />
+                <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
               </Form.Item>
             </div>
             <div className='form-group col-md-2 col-lg-2'>
@@ -567,15 +564,7 @@ const RegistroPage: React.FC<any> = (props) => {
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
-                <Form.Item name='dirreccion_completa'>
-                  <Input
-                    type='text'
-                    value={direccionCompleta}
-                    className='fullwidth form-control'
-                    disabled
-                    style={{ width: '635px' }}
-                  />
-                </Form.Item>
+                <input type='text' value={direccionCompleta} className='form-control' disabled style={{ width: '635px' }} />
                 <Button type='primary' style={{ marginTop: '-10px', marginRight: '-400px', marginLeft: '20px' }}>
                   Confirmar Dirección
                 </Button>
