@@ -582,6 +582,64 @@ const RegistroPage: React.FC<any> = (props) => {
               </div>
             </div>
           </div>
+
+          <Alert message='Información!' description='La dirección fue referenciada exitosamente.' type='info' />
+          <div className='form-row mt-4 text-center'>
+            <div className='form-group col-md-6'>
+              <label htmlFor=''>
+                zona{' '}
+                <span className='ml-2' style={{ color: '#FF6341' }}>
+                  (*)
+                </span>
+              </label>
+              <Form.Item name='dirreccion_completa'>
+                <Input type='text' value={direccionCompleta} className='fullwidth form-control' style={{ width: '395px' }} />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor=''>
+                Localidad{' '}
+                <span className='ml-2' style={{ color: '#FF6341' }}>
+                  (*)
+                </span>
+              </label>
+              <Form.Item name='dirreccion_completa'>
+                <Input type='text' value={direccionCompleta} className='fullwidth form-control' style={{ width: '395px' }} />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='form-row mt-4 text-center'>
+            <div className='form-group col-md-6'>
+              <label htmlFor=''>
+                Upz{' '}
+                <span className='ml-2' style={{ color: '#FF6341' }}>
+                  (*)
+                </span>
+              </label>
+              <Form.Item label='' name='card2'>
+                <SelectComponent
+                  style={{ width: '395px' }}
+                  options={direcionOrienta}
+                  optionPropkey='key'
+                  optionPropLabel='key'
+                  onChange={(event) => {
+                    build_direction(8, event);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='form-group col-md-6'>
+              <label htmlFor=''>
+                Barrio{' '}
+                <span className='ml-2' style={{ color: '#FF6341' }}>
+                  (*)
+                </span>
+              </label>
+              <Form.Item name='dirreccion_completa'>
+                <Input type='text' value={direccionCompleta} className='fullwidth form-control' style={{ width: '395px' }} />
+              </Form.Item>
+            </div>
+          </div>
           <h4 className='app-subtitle mt-3'>Datos Demográficos.</h4>
 
           <Form.Item label='Fecha Nacimiento' name='date' rules={[{ required: true }]}>
