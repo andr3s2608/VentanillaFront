@@ -79,6 +79,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
   const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
@@ -100,6 +101,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Regimen),
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
+
+      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      setCausaMuerte(causa['valor']);
+      //console.log('este es ' + causa['valor']);
 
       const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
@@ -150,6 +155,17 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (solicitante: any) => {};
 
   const onSubmit = async (values: any) => {
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    let observacionCausaMuerte = causaMuerte;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = ' ';
+    }
+
+    console.log(observacionCausaMuerte);
+
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -340,8 +356,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           apellidoSolicitante: values.lastnamesolicitudadd,
           correoSolicitante: values.emailsolicitudadd,
           correoMedico: '',
-          cumpleCausa: true,
-          observacionCausa: ''
+          cumpleCausa: banderaCausa,
+          observacionCausa: observacionCausaMuerte
         },
 
         institucionCertificaFallecimiento: {
@@ -793,7 +809,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}

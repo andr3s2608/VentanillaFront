@@ -60,6 +60,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
   //#region Listados
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
@@ -106,6 +107,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       ]);
       const mysRoles = await api.GetRoles();
       setroles(mysRoles);
+
+      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      setCausaMuerte(causa['valor']);
+      //console.log('este es ' + causa['valor']);.
 
       setUser(userRes);
       setLDepartamentos(departamentos);
@@ -155,6 +160,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (longitud: number) => {};
 
   const onSubmit = async (values: any) => {
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    let observacionCausaMuerte = causaMuerte;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = ' ';
+    }
+
+    console.log(observacionCausaMuerte);
+
     const certificado = values.certificado;
     if (certificado.length > 5) {
       ////////////Guarda Solicitud///////////
@@ -399,8 +415,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             apellidoSolicitante: values.lastnamesolicitudadd,
             correoSolicitante: values.emailsolicitudadd,
             correoMedico: '',
-            cumpleCausa: true,
-            observacionCausa: ''
+            cumpleCausa: banderaCausa,
+            observacionCausa: observacionCausaMuerte
           },
           institucionCertificaFallecimiento: {
             tipoIdentificacion: tipoidinst,
@@ -969,7 +985,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {current == 0 && (
             <>
               <div className='fadeInLeft'>
-                <GeneralInfoFormSeccion obj={obj} tipoLicencia={'Cremación'} />
+                <GeneralInfoFormSeccion obj={obj} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
                 <LugarDefuncionFormSeccion form={form} obj={obj} />
                 <DeathInstituteFormSeccion
                   prop={getData}
