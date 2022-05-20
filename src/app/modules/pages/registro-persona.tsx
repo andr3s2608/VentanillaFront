@@ -572,11 +572,11 @@ const RegistroPage: React.FC<any> = (props) => {
             </div>
           </div>
 
-          <Alert message='Información!' description='La dirección fue referenciada exitosamente.' type='info' />
+          <Alert message='Información!' description='La dirección fue georreferenciada exitosamente.' type='info' />
           <div className='form-row mt-4 text-center'>
             <div className='form-group col-md-6'>
               <label htmlFor=''>
-                zona{' '}
+                zona
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
@@ -587,7 +587,7 @@ const RegistroPage: React.FC<any> = (props) => {
             </div>
             <div className='form-group col-md-6'>
               <label htmlFor=''>
-                Localidad{' '}
+                Localidad
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
@@ -600,7 +600,7 @@ const RegistroPage: React.FC<any> = (props) => {
           <div className='form-row mt-4 text-center'>
             <div className='form-group col-md-6'>
               <label htmlFor=''>
-                Upz{' '}
+                Upz
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
@@ -619,7 +619,7 @@ const RegistroPage: React.FC<any> = (props) => {
             </div>
             <div className='form-group col-md-6'>
               <label htmlFor=''>
-                Barrio{' '}
+                Barrio
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
