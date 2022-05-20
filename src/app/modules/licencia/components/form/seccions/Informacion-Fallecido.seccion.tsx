@@ -377,6 +377,15 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       />
       {esmadre && (
         <>
+          <div className='ant-container d-flex justify-content-center w-100'>
+            <div className='ant-row text-center'>
+              <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+                <Divider orientation='left'>
+                  <div className='contenedor'>Datos de la Madre</div>
+                </Divider>
+              </div>
+            </div>
+          </div>
           <List
             grid={{
               gutter: 16,
