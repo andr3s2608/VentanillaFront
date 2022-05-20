@@ -33,7 +33,18 @@ export class ApiService {
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
 
   ObtenerSolicitud = (numero: string, tipo: string) =>
-    get<string>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarLicencia/${numero}/${tipo}`, id: '0' });
+    get<string>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/ConsultarLicencia/${numero}/${tipo}`,
+      id: '0'
+    });
+
+  ModificarCementerio = (numero: string, tipo: string, nombre: string) =>
+    post<string>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/ModificarCementerio/${numero}/${tipo}/${nombre}`,
+      id: '0'
+    });
 
   agregarFirma = (payload: any) => {
     return post<any>({
@@ -119,7 +130,7 @@ export class ApiService {
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id });
 
   putLicencia = (payload: any) =>
-    put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
+    put({ endpoint: 'https://localhost:5001/api/', url: 'Request/UpdateRequest', payload, id: '0' });
 
   uploadFiles = (payload: any) =>
     post({

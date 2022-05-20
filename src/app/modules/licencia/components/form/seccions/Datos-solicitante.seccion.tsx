@@ -46,13 +46,18 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [isModalVisiblef, setIsModalVisiblefuneraria] = useState(false);
   const [lugarfuneraria, setlugarfuneraria] = useState<string | undefined>();
   const [funeraria, setfuneraria] = useState<string | undefined>();
+  const [l_funeraria, setl_funeraria] = useState<any>();
+  const [l_cementerio, setl_cementerio] = useState<any>();
   const [paisfuneraria, setpaisfuneraria] = useState<string | undefined>();
   const [municipiofuneraria, setmunicipiofuneraria] = useState<string | undefined>();
   const [departamentofuneraria, setdepartamentofuneraria] = useState<string | undefined>();
 
-  const [[l_paises, l_departamento, l_cementerios, l_tipo_identificacion], setListas] = useState<
-    [IDominio[], IDepartamento[], ICementerio[], IDominio[]]
-  >([[], [], [], []]);
+  const [[l_paises, l_departamento, l_tipo_identificacion], setListas] = useState<[IDominio[], IDepartamento[], IDominio[]]>([
+    [],
+
+    [],
+    []
+  ]);
 
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
@@ -64,9 +69,10 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
       // dominioService.get_all_municipios_by_departamento(idMunicipio),
-      dominioService.get_cementerios_bogota(),
       dominioService.get_type(ETipoDominio['Tipo Documento'])
     ]);
+    const fun = await api.GetFunerarias();
+    const cem = await dominioService.get_cementerios_bogota();
 
     //Relacionado con el solicitante
     //Se guarda toda la informacion del Solicitante
@@ -113,7 +119,11 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       return `${result}${item.funeraria}`;
     }, '');
     setfuneraria(funeraria);
+    setl_cementerio(cem);
+    setl_funeraria(fun);
 
+    console.log(fun);
+    console.log(cem);
     /*
     var lugarfuneraria = Funerarias.reduce((result: any, item: any) => {
       return `${result}${item.funeraria}`;
@@ -180,7 +190,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const cementerios = [
     {
       title: 'Cementerio',
-      describe: cementerio
+      describe: <SelectComponent options={l_cementerio} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' value={cementerio} />
     },
     {
       title: 'Email Cementerio',
@@ -191,7 +201,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const funerarias = [
     {
       title: 'Funeraria',
-      describe: funeraria
+      describe: <SelectComponent options={l_funeraria} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' value={funeraria} />
     },
     {
       title: 'Email funeraria',

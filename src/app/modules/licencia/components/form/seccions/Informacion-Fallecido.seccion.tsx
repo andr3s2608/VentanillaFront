@@ -98,7 +98,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const tipotramite: string = obj.idTramite;
   var valor = '';
-  console.log(tipotramite, ' tramite');
   switch (tipotramite) {
     case 'a289c362-e576-4962-962b-1c208afa0273':
       valor = 'Inhumacion Indivual';
