@@ -443,6 +443,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       }
     };
 
+    console.log(json);
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
     const formData = new FormData();
