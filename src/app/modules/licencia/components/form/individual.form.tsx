@@ -83,6 +83,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
   const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
   const [l_tipos_documento_autoriza, settiposautoriza] = useState<any>();
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
@@ -105,11 +106,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
 
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settiposautoriza(nuevalista);
 
+
+const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      setCausaMuerte(causa['valor']);
+      //console.log('este es ' + causa['valor']);
       const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
       const informationUser = await api.GetInformationUser(userres);
@@ -159,6 +164,17 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (solicitante: any) => {};
 
   const onSubmit = async (values: any) => {
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    let observacionCausaMuerte = causaMuerte;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = ' ';
+    }
+
+    console.log(observacionCausaMuerte);
+
     setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -223,14 +239,17 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var tipoid = resp.tipoIdentificacion + '';
     var nroid = resp.numeroIdentificacion + '';
     if (resp.tipoIdentificacion == 5) {
+  
       tipo = 'Juridica';
       razon = resp.razonSocial;
     } else {
+    
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
+ 
 
     const dep = values.state;
     var mun = values.city;
@@ -245,6 +264,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       segunda = '00000000-0000-0000-0000-000000000000';
     }
     let persona: any[] = [];
+
 
     if (tipoLicencia === 'Inhumación') {
       persona = [
@@ -294,7 +314,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
     if (tipoLicencia === 'Cremación') {
       persona = [
-        //madre
+        //fallecido
         {
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: idnum,
@@ -303,7 +323,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surname,
           segundoApellido: values.secondSurname,
           fechaNacimiento: values.dateOfBirth,
-          nacionalidad: values.nationalidad[0],
+          nacionalidad: values.nationalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -424,8 +444,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           apellidoSolicitante: values.lastnamesolicitudadd,
           correoSolicitante: values.emailsolicitudadd,
           correoMedico: '',
-          cumpleCausa: true,
-          observacionCausa: ''
+          cumpleCausa: banderaCausa,
+          observacionCausa: observacionCausaMuerte
         },
 
         institucionCertificaFallecimiento: {
@@ -908,7 +928,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}

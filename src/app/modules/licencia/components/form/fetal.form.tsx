@@ -55,18 +55,20 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [inputVal, setInputVal] = useState('');
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
   //#region Listados
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [[l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<IDominio[][]>([]);
+  const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
+    IDominio[][]
+  >([]);
 
   const [type, setType] = useState<[]>([]);
   const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
@@ -80,7 +82,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [idupz, setidupz] = useState<string>('d869bc18-4fca-422a-9a09-a88d3911dc8c');
   const [idbarrio, setidbarrio] = useState<string>('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
-  const [l_tipos_documento, settipos] = useState<any>();
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   //const obj: any = EditFetal();
@@ -96,21 +98,19 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_localidades_bogota(),
         dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_upz_by_localidad(idlocalidad),
-
+        dominioService.get_type(ETipoDominio['Tipo Documento']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Pais),
         dominioService.get_type(ETipoDominio['Tipo de Muerte']),
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
-
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
-
-      settipos(nuevalista);
-
       const mysRoles = await api.GetRoles();
       setroles(mysRoles);
+
+      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      setCausaMuerte(causa['valor']);
+      //console.log('este es ' + causa['valor']);.
 
       setUser(userRes);
       setLDepartamentos(departamentos);
@@ -160,6 +160,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (longitud: number) => {};
 
   const onSubmit = async (values: any) => {
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    let observacionCausaMuerte = causaMuerte;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = ' ';
+    }
+
+    console.log(observacionCausaMuerte);
+
     const certificado = values.certificado;
     if (certificado.length > 5) {
       ////////////Guarda Solicitud///////////
@@ -167,17 +178,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setStatus(undefined);
       const formatDate = 'MM-DD-YYYY';
       const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
-
-      let idnum = values.IDNumber;
-      let idnumaut = values.mauthIDNumber;
-
-      if (sininformacion) {
-        idnum = 'Sin Información';
-      }
-      const tipoidaut = values.authIDType;
-      if (tipoidaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
-        idnumaut = 'Sin Información';
-      }
 
       const tipoinst = values.instTipoIdent;
       var tipoidinst = values.instTipoIdent;
@@ -190,44 +190,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         razonSocialins = 'Otros';
         numeroProtocoloins = '452022';
       }
-
       let persona: any[] = [];
       var segunda = values.nationalidad2;
 
       if (segunda == undefined) {
         segunda = '00000000-0000-0000-0000-000000000000';
-      }
-
-      const par = values.authParentesco;
-      var parentesco = '';
-      switch (par) {
-        case 'Padre / Madre':
-          parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
-          break;
-        case 'Hermano/a':
-          parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
-          break;
-        case 'Hijo/a':
-          parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
-          break;
-        case 'Cónyuge (Compañero/a Permanente)':
-          parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
-          break;
-        case 'Tío/a':
-          parentesco = '6880824b-39c2-4105-8195-c190885796d8';
-          break;
-        case 'Sobrino/a':
-          parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
-          break;
-        case 'Abuelo/a':
-          parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
-          break;
-        case 'Nieto/a':
-          parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
-          break;
-        case 'Otro':
-          parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
-          break;
       }
 
       if (tipoLicencia === 'Inhumación') {
@@ -236,15 +203,15 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             idPersona: obj?.idMadre,
             tipoIdentificacion: values.IDType,
-            numeroIdentificacion: idnum,
+            numeroIdentificacion: values.IDNumber,
             primerNombre: values.namemother,
             segundoNombre: values.secondNamemother,
             primerApellido: values.surnamemother,
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
-            nacionalidad: values.nationalidadmother,
+            nacionalidad: values.nationalidadmother[0],
             segundanacionalidad: segunda,
-            otroParentesco: parentesco,
+            otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
             idEtnia: values.etniamother,
@@ -284,7 +251,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             idPersona: obj?.idMadre,
             tipoIdentificacion: values.IDType,
-            numeroIdentificacion: idnum,
+            numeroIdentificacion: values.IDNumber,
             primerNombre: values.namemother,
             segundoNombre: values.secondNamemother,
             primerApellido: values.surnamemother,
@@ -292,7 +259,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             fechaNacimiento: moment(values.date).format(formatDate),
             nacionalidad: values.nationalidadmother,
             segundanacionalidad: segunda,
-            otroParentesco: parentesco,
+            otroParentesco: null,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
             idEtnia: values.etniamother,
@@ -305,7 +272,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             //idPersona: '',
             tipoIdentificacion: values.authIDType,
-            numeroIdentificacion: idnumaut,
+            numeroIdentificacion: values.mauthIDNumber,
             primerNombre: values.authName,
             segundoNombre: values.authSecondName,
             primerApellido: values.authSurname,
@@ -313,7 +280,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             fechaNacimiento: values.dateOfBirth,
             nacionalidad: '00000000-0000-0000-0000-000000000000',
             segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: parentesco, //lista parentesco
+            otroParentesco: null, //lista parentesco
             idEstadoCivil: '00000000-0000-0000-0000-000000000000',
             idNivelEducativo: '00000000-0000-0000-0000-000000000000',
             idEtnia: '00000000-0000-0000-0000-000000000000',
@@ -448,8 +415,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             apellidoSolicitante: values.lastnamesolicitudadd,
             correoSolicitante: values.emailsolicitudadd,
             correoMedico: '',
-            cumpleCausa: true,
-            observacionCausa: ''
+            cumpleCausa: banderaCausa,
+            observacionCausa: observacionCausaMuerte
           },
           institucionCertificaFallecimiento: {
             tipoIdentificacion: tipoidinst,
@@ -676,17 +643,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const ValidacionMadre = async () => {
     let numero: string = form.getFieldValue('IDNumber');
-    let tipo: string = form.getFieldValue('IDType');
     if (numero == undefined) {
       numero = '0';
     }
-    let busqueda: any = '';
-    if (tipo == '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
-      busqueda = null;
-    } else {
-      busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
-    }
-
+    const busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
     if (busqueda == null) {
       if (numero.length >= longitudminima) {
         onNextStep([
@@ -947,11 +907,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ IDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
-    setsininformacion(false);
-
-    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setsininformacion(true);
-    }
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
       setLongitudmaxima(10);
@@ -1027,8 +982,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <div className={`d-none fadeInRight ${current == 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion obj={obj} tipoLicencia={'Cremación'} />
+          <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
+            <GeneralInfoFormSeccion obj={obj} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
             <LugarDefuncionFormSeccion form={form} obj={obj} />
             <DeathInstituteFormSeccion
               prop={getData}
@@ -1057,7 +1012,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
           </div>
 
-          <div className={`d-none fadeInRight ${current == 1 && 'd-block'}`}>
+          <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
             <Divider orientation='right'> INFORMACIÓN DE LA MADRE</Divider>
             <Form.Item
               label='Tipo Identificación'
@@ -1076,7 +1031,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               label='Número de Identificación'
               initialValue={obj?.IDNumber}
               name='IDNumber'
-              rules={[{ required: !sininformacion, max: 25 }]}
+              rules={[{ required: true, max: 25 }]}
             >
               <Input
                 allowClear
@@ -1084,7 +1039,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Número Identificación'
                 autoComplete='off'
                 pattern={tipocampo}
-                disabled={sininformacion}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
                   if (!tipocampovalidacion.test(event.key)) {
@@ -1343,8 +1297,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-
-          <div className={`d-none fadeInRight ${current == 2 && 'd-block'}`}>
+          <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
             {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
@@ -1362,8 +1315,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-
-          <div className={`d-none fadeInRight ${current == 3 && 'd-block'}`}>
+          <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
             <MedicalSignatureFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -1377,8 +1329,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-
-          <div className={`d-none fadeInRight ${current == 4 && 'd-block'}`}>
+          <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
             <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
 
             <Actions />

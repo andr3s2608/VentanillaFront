@@ -7,9 +7,13 @@ import Divider from 'antd/es/divider';
 // Components
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import Switch from 'antd/es/switch';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { ITipoLicencia } from 'app/shared/utils/types.util';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+
+//redux
+import { ApiService } from 'app/services/Apis.service';
 
 export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) => {
   const { obj } = props;
@@ -17,6 +21,8 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const time = obj?.time !== undefined ? moment(obj?.time) : null;
   const check = obj?.check === undefined ? false : obj?.check;
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
 
   const onChangeSwitch = (check: any) => {
     setIsHora(!check);
@@ -57,6 +63,13 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
 
       <Divider orientation='right'>Información General</Divider>
 
+      <Form.Item label={'Causa Muerte - ' + props.causaMuerte} name='causaMuerte' initialValue={0} rules={[{ required: true }]}>
+        <Radio.Group>
+          <Radio value={1}>SI</Radio>
+          <Radio value={0}>NO</Radio>
+        </Radio.Group>
+      </Form.Item>
+
       <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
         <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
       </Form.Item>
@@ -95,5 +108,6 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
 
 interface IGeneralInfoProps<T> extends ITipoLicencia {
   obj: any;
+  causaMuerte?: string;
 }
 export const KeysForm = ['certificado', 'date', 'time', 'sex'];
