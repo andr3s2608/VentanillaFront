@@ -298,74 +298,77 @@ export class ApiService {
 
   /**
    * Servicio para la georreferenciación
-   *
    */
-
   geocoding = (payload: any) =>
-    post({
+    post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
       payload,
       id: '0',
       options: {
         headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8'
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
         }
       },
       confirmModal: false
     });
 
   getZonaSig = (payload: any) =>
-    post({
+    post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
       payload,
       id: '0',
       options: {
         headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8'
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
         }
       },
       confirmModal: false
     });
 
   getLocalidadSig = (payload: any) =>
-    post({
+    post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
       payload,
       id: '0',
       options: {
         headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8'
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
         }
       },
       confirmModal: false
     });
 
   getUpzSig = (payload: any) =>
-    post({
+    post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
       payload,
       id: '0',
       options: {
         headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8'
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
         }
       },
       confirmModal: false
     });
 
   getBarrioSig = (payload: any) =>
-    post({
+    post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
       payload,
       id: '0',
       options: {
         headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8'
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
         }
       },
       confirmModal: false
