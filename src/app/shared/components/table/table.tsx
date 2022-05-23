@@ -331,7 +331,7 @@ export const Gridview = (props: IDataSource) => {
   };
   const onPageChange = (pagination: any, filters: any) => {
     //alert(pagination.current);
-    console.log(filters);
+
     var valor: any = data.at(0);
     var array: any[] = [];
     for (let index = 0; index < data.length; index++) {
@@ -349,11 +349,10 @@ export const Gridview = (props: IDataSource) => {
     var array: any[] = [];
     let filtro = 248;
     for (let index = 0; index < data.length; index++) {
-      //  console.log(data.at(index));
       if (data.at(index).iD_Control_Tramite == filtro) {
         valor = data.at(index);
         array.push(valor);
-        console.log('ENCONTRADOR EL 248');
+
         isFilter = true;
         filterValue.push(valor);
       }
@@ -373,11 +372,10 @@ export const Gridview = (props: IDataSource) => {
     input = document.getElementById('busqueda');
     filter = event.target.value;
     table = document.getElementById('tableGen');
-    console.log('tabla ---' + table);
+
     tr = table?.getElementsByTagName('tr');
-    console.log('Columna-----' + tr);
+
     if (tr != null) {
-      console.log('Entro a la fila');
       for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName('td')[0];
         td1 = tr[i].getElementsByTagName('td')[1];
@@ -395,9 +393,7 @@ export const Gridview = (props: IDataSource) => {
             txtValue3.toUpperCase().includes(filter.toUpperCase())
           ) {
             tr[i].style.display = '';
-            console.log('ENCONTRO FILA');
           } else {
-            console.log('No encontro');
             tr[i].style.display = 'none';
           }
         }

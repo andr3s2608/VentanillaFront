@@ -141,7 +141,6 @@ export const ModificarFuneraria = ({ props }: any) => {
 
   const onSubmit = (values: any) => {
     if (selecciono) {
-      console.log(values.razon);
     }
   };
 

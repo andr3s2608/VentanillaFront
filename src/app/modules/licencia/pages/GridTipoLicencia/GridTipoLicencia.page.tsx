@@ -55,8 +55,6 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       let arraydatos = [];
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
 
-      console.log('DATOS');
-      console.log(resp);
       //setGrid(resp);
       setAllData(resp);
       setVisibleGrid('none');
@@ -87,9 +85,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
     setSelectedOption(value);
   };
-  function changeValuePicker(event: any) {
-    console.log('fecha seleccionada' + event.target.value);
-  }
+  function changeValuePicker(event: any) {}
   function onChangeFilter(event: any) {
     setVisibleAlert(false);
     setFilterText(event.target.value);
@@ -136,8 +132,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
             // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
             return new Date(f.fechaSolicitud).toDateString() == dateSelectedPicker;
           });
-          console.log('Busco por →' + dateSelectedPicker);
-          console.log(resultFilterFec);
+
           setGrid(resultFilterFec);
           setVisibleGrid('contents');
         } else {
