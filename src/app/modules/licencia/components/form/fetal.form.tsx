@@ -55,6 +55,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [inputVal, setInputVal] = useState('');
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
@@ -65,9 +66,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
-    IDominio[][]
-  >([]);
+  const [[l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<IDominio[][]>([]);
 
   const [type, setType] = useState<[]>([]);
   const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
@@ -81,7 +80,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [idupz, setidupz] = useState<string>('d869bc18-4fca-422a-9a09-a88d3911dc8c');
   const [idbarrio, setidbarrio] = useState<string>('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
-
+  const [l_tipos_documento, settipos] = useState<any>();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   //const obj: any = EditFetal();
@@ -97,13 +96,19 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_localidades_bogota(),
         dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_upz_by_localidad(idlocalidad),
-        dominioService.get_type(ETipoDominio['Tipo Documento']),
+
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Pais),
         dominioService.get_type(ETipoDominio['Tipo de Muerte']),
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
+
+      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+
+      settipos(nuevalista);
+
       const mysRoles = await api.GetRoles();
       setroles(mysRoles);
 
@@ -163,6 +168,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       const formatDate = 'MM-DD-YYYY';
       const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
 
+      let idnum = values.IDNumber;
+      let idnumaut = values.mauthIDNumber;
+
+      if (sininformacion) {
+        idnum = 'Sin Información';
+      }
+      const tipoidaut = values.authIDType;
+      if (tipoidaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+        idnumaut = 'Sin Información';
+      }
+
       const tipoinst = values.instTipoIdent;
       var tipoidinst = values.instTipoIdent;
       var numeroins = values.instNumIdent;
@@ -174,11 +190,44 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         razonSocialins = 'Otros';
         numeroProtocoloins = '452022';
       }
+
       let persona: any[] = [];
       var segunda = values.nationalidad2;
 
       if (segunda == undefined) {
         segunda = '00000000-0000-0000-0000-000000000000';
+      }
+
+      const par = values.authParentesco;
+      var parentesco = '';
+      switch (par) {
+        case 'Padre / Madre':
+          parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
+          break;
+        case 'Hermano/a':
+          parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
+          break;
+        case 'Hijo/a':
+          parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
+          break;
+        case 'Cónyuge (Compañero/a Permanente)':
+          parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
+          break;
+        case 'Tío/a':
+          parentesco = '6880824b-39c2-4105-8195-c190885796d8';
+          break;
+        case 'Sobrino/a':
+          parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
+          break;
+        case 'Abuelo/a':
+          parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
+          break;
+        case 'Nieto/a':
+          parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
+          break;
+        case 'Otro':
+          parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+          break;
       }
 
       if (tipoLicencia === 'Inhumación') {
@@ -187,15 +236,15 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             idPersona: obj?.idMadre,
             tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
+            numeroIdentificacion: idnum,
             primerNombre: values.namemother,
             segundoNombre: values.secondNamemother,
             primerApellido: values.surnamemother,
             segundoApellido: values.secondSurnamemother,
             fechaNacimiento: moment(values.date).format(formatDate),
-            nacionalidad: values.nationalidadmother[0],
+            nacionalidad: values.nationalidadmother,
             segundanacionalidad: segunda,
-            otroParentesco: null,
+            otroParentesco: parentesco,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
             idEtnia: values.etniamother,
@@ -235,7 +284,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             idPersona: obj?.idMadre,
             tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
+            numeroIdentificacion: idnum,
             primerNombre: values.namemother,
             segundoNombre: values.secondNamemother,
             primerApellido: values.surnamemother,
@@ -243,7 +292,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             fechaNacimiento: moment(values.date).format(formatDate),
             nacionalidad: values.nationalidadmother,
             segundanacionalidad: segunda,
-            otroParentesco: null,
+            otroParentesco: parentesco,
             idEstadoCivil: values.civilStatusmother,
             idNivelEducativo: values.educationLevelmother,
             idEtnia: values.etniamother,
@@ -256,7 +305,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             //idPersona: '',
             tipoIdentificacion: values.authIDType,
-            numeroIdentificacion: values.mauthIDNumber,
+            numeroIdentificacion: idnumaut,
             primerNombre: values.authName,
             segundoNombre: values.authSecondName,
             primerApellido: values.authSurname,
@@ -264,7 +313,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             fechaNacimiento: values.dateOfBirth,
             nacionalidad: '00000000-0000-0000-0000-000000000000',
             segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null, //lista parentesco
+            otroParentesco: parentesco, //lista parentesco
             idEstadoCivil: '00000000-0000-0000-0000-000000000000',
             idNivelEducativo: '00000000-0000-0000-0000-000000000000',
             idEtnia: '00000000-0000-0000-0000-000000000000',
@@ -627,10 +676,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const ValidacionMadre = async () => {
     let numero: string = form.getFieldValue('IDNumber');
+    let tipo: string = form.getFieldValue('IDType');
     if (numero == undefined) {
       numero = '0';
     }
-    const busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+    let busqueda: any = '';
+    if (tipo == '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+      busqueda = null;
+    } else {
+      busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+    }
+
     if (busqueda == null) {
       if (numero.length >= longitudminima) {
         onNextStep([
@@ -891,6 +947,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ IDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+    setsininformacion(false);
+
+    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setsininformacion(true);
+    }
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
       setLongitudmaxima(10);
@@ -966,385 +1027,362 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          {current == 0 && (
-            <>
-              <div className='fadeInLeft'>
-                <GeneralInfoFormSeccion obj={obj} tipoLicencia={'Cremación'} />
-                <LugarDefuncionFormSeccion form={form} obj={obj} />
-                <DeathInstituteFormSeccion
-                  prop={getData}
-                  obj={obj}
-                  form={form}
-                  datofiscal={true}
-                  required={false}
-                  tipoLicencia={tipoLicencia}
+          <div className={`d-none fadeInRight ${current == 0 && 'd-block'}`}>
+            <GeneralInfoFormSeccion obj={obj} tipoLicencia={'Cremación'} />
+            <LugarDefuncionFormSeccion form={form} obj={obj} />
+            <DeathInstituteFormSeccion
+              prop={getData}
+              obj={obj}
+              form={form}
+              datofiscal={true}
+              required={false}
+              tipoLicencia={tipoLicencia}
+            />
+            <Divider orientation='right'> Tipo de Muerte </Divider>
+            <Form.Item
+              label='Tipo de Muerte'
+              name='deathType'
+              initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
+              rules={[{ required: true }]}
+            >
+              <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+
+            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+              <div className='d-flex justify-content-end'>
+                <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
+                  Siguiente
+                </Button>
+              </div>
+            </Form.Item>
+          </div>
+
+          <div className={`d-none fadeInRight ${current == 1 && 'd-block'}`}>
+            <Divider orientation='right'> INFORMACIÓN DE LA MADRE</Divider>
+            <Form.Item
+              label='Tipo Identificación'
+              name='IDType'
+              rules={[{ required: true }]}
+              initialValue={obj?.IDType ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+            >
+              <SelectComponent
+                options={l_tipos_documento}
+                optionPropkey='id'
+                onChange={cambiodocumento}
+                optionPropLabel='descripcion'
+              />
+            </Form.Item>
+            <Form.Item
+              label='Número de Identificación'
+              initialValue={obj?.IDNumber}
+              name='IDNumber'
+              rules={[{ required: !sininformacion, max: 25 }]}
+            >
+              <Input
+                allowClear
+                type='text'
+                placeholder='Número Identificación'
+                autoComplete='off'
+                pattern={tipocampo}
+                disabled={sininformacion}
+                maxLength={longitudmaxima}
+                onKeyPress={(event) => {
+                  if (!tipocampovalidacion.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos invalidos',
+                    text:
+                      'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
+                      tipodocumento +
+                      ' solo se admiten valores ' +
+                      campo +
+                      ' de longitud entre ' +
+                      longitudminima +
+                      ' y ' +
+                      longitudmaxima
+                  });
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label='Primer Nombre'
+              name='namemother'
+              initialValue={obj?.namemother}
+              rules={[{ required: true, max: 50 }]}
+            >
+              <Input
+                allowClear
+                placeholder='Primer Nombre'
+                autoComplete='off'
+                type='text'
+                onKeyPress={(event) => {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+            <Form.Item label='Segundo Nombre' name='secondNamemother' initialValue={obj?.secondNamemother} rules={[{ max: 50 }]}>
+              <Input
+                allowClear
+                placeholder='Segundo Nombre'
+                autoComplete='off'
+                type='text'
+                onKeyPress={(event) => {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label='Primer Apellido'
+              name='surnamemother'
+              initialValue={obj?.surnamemother}
+              rules={[{ required: true, max: 50 }]}
+            >
+              <Input
+                allowClear
+                placeholder='Primer Apellido'
+                autoComplete='off'
+                type='text'
+                onKeyPress={(event) => {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+            <Form.Item
+              label='Segundo Apellido'
+              name='secondSurnamemother'
+              rules={[{ max: 50 }]}
+              initialValue={obj?.surnamemother}
+            >
+              <Input
+                allowClear
+                placeholder='Segundo Apellido'
+                autoComplete='off'
+                onKeyPress={(event) => {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label='Nacionalidad de la Madre'
+              name='nationalidadmother'
+              initialValue={obj?.nationalidadmother ?? [idColombia]}
+              rules={[{ required: true }]}
+            >
+              <SelectComponent
+                options={l_paises}
+                placeholder='-- Elija una --'
+                optionPropkey='id'
+                optionPropLabel='descripcion'
+              />
+            </Form.Item>
+            <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
+              <SelectComponent
+                options={l_paises}
+                placeholder='-- Elija una --'
+                optionPropkey='id'
+                optionPropLabel='descripcion'
+              />
+            </Form.Item>
+
+            <Form.Item
+              label='Estado Civil'
+              name='civilStatusmother'
+              initialValue={obj?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}
+            >
+              <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+            <Form.Item
+              label='Nivel Educativo'
+              name='educationLevelmother'
+              initialValue={obj?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}
+            >
+              <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+            <Form.Item label='Etnia' name='etniamother' initialValue={obj?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
+              <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
+            </Form.Item>
+
+            <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
+            <Form.Item
+              label='País de Residencia'
+              name='pais'
+              initialValue={obj?.residencia ?? idColombia}
+              rules={[{ required: true }]}
+            >
+              <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
+            </Form.Item>
+
+            <Form.Item
+              label='Departamento de Residencia'
+              initialValue={obj?.idDepartamentoResidencia ?? idDepartamentoBogota}
+              name='departamento'
+              rules={[{ required: isColombia }]}
+            >
+              <SelectComponent
+                options={l_departamentos}
+                optionPropkey='idDepartamento'
+                optionPropLabel='descripcion'
+                disabled={!isColombia}
+                onChange={onChangeDepartamento}
+              />
+            </Form.Item>
+
+            {isColombia ? (
+              <Form.Item label='Ciudad de Residencia' initialValue={idBogotac} name='ciudad' rules={[{ required: true }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  onChange={onChangeMunicipio}
+                  value={idBogotac}
+                  searchValue={idBogotac}
                 />
-                <Divider orientation='right'> Tipo de Muerte </Divider>
-                <Form.Item
-                  label='Tipo de Muerte'
-                  name='deathType'
-                  initialValue='475c280d-67af-47b0-a8bc-de420f6ac740'
-                  rules={[{ required: true }]}
-                >
-                  <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
-                </Form.Item>
-
-                <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                  <div className='d-flex justify-content-end'>
-                    <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
-                      Siguiente
-                    </Button>
-                  </div>
-                </Form.Item>
-              </div>
-            </>
-          )}
-          {current == 1 && (
-            <>
-              <div className='fadeInLeft'>
-                <Divider orientation='right'> INFORMACIÓN DE LA MADRE</Divider>
-                <Form.Item
-                  label='Tipo Identificación'
-                  name='IDType'
-                  rules={[{ required: true }]}
-                  initialValue={obj?.IDType ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                >
-                  <SelectComponent
-                    options={l_tipos_documento}
-                    optionPropkey='id'
-                    onChange={cambiodocumento}
-                    optionPropLabel='descripcion'
-                  />
-                </Form.Item>
-                <Form.Item
-                  label='Número de Identificación'
-                  initialValue={obj?.IDNumber}
-                  name='IDNumber'
-                  rules={[{ required: true, max: 25 }]}
-                >
-                  <Input
-                    allowClear
-                    type='text'
-                    placeholder='Número Identificación'
-                    autoComplete='off'
-                    pattern={tipocampo}
-                    maxLength={longitudmaxima}
-                    onKeyPress={(event) => {
-                      if (!tipocampovalidacion.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
+              </Form.Item>
+            ) : (
+              <Form.Item
+                label='Ciudad de Residencia'
+                name='ciudadfuera'
+                initialValue={obj?.idCiudadResidencia}
+                rules={[{ required: true }]}
+              >
+                <Input
+                  allowClear
+                  placeholder='Ciudad'
+                  autoComplete='off'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
                       event.preventDefault();
-                    }}
-                    onInvalid={() => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Datos invalidos',
-                        text:
-                          'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
-                          tipodocumento +
-                          ' solo se admiten valores ' +
-                          campo +
-                          ' de longitud entre ' +
-                          longitudminima +
-                          ' y ' +
-                          longitudmaxima
-                      });
-                    }}
-                  />
-                </Form.Item>
+                    }
+                  }}
+                />
+              </Form.Item>
+            )}
 
-                <Form.Item
-                  label='Primer Nombre'
-                  name='namemother'
-                  initialValue={obj?.namemother}
-                  rules={[{ required: true, max: 50 }]}
-                >
-                  <Input
-                    allowClear
-                    placeholder='Primer Nombre'
-                    autoComplete='off'
-                    type='text'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label='Segundo Nombre'
-                  name='secondNamemother'
-                  initialValue={obj?.secondNamemother}
-                  rules={[{ max: 50 }]}
-                >
-                  <Input
-                    allowClear
-                    placeholder='Segundo Nombre'
-                    autoComplete='off'
-                    type='text'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label='Primer Apellido'
-                  name='surnamemother'
-                  initialValue={obj?.surnamemother}
-                  rules={[{ required: true, max: 50 }]}
-                >
-                  <Input
-                    allowClear
-                    placeholder='Primer Apellido'
-                    autoComplete='off'
-                    type='text'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label='Segundo Apellido'
-                  name='secondSurnamemother'
-                  rules={[{ max: 50 }]}
-                  initialValue={obj?.surnamemother}
-                >
-                  <Input
-                    allowClear
-                    placeholder='Segundo Apellido'
-                    autoComplete='off'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
+            <Form.Item
+              label='Localidad de Residencia'
+              initialValue={obj?.idLocalidadResidencia ?? idlocalidad}
+              name='localidad'
+              rules={[{ required: isBogota }]}
+            >
+              <SelectComponent
+                options={l_localidades}
+                optionPropkey='idLocalidad'
+                optionPropLabel='descripcion'
+                disabled={!isBogota}
+                onChange={onChangeLocalidad}
+              />
+            </Form.Item>
 
-                <Form.Item
-                  label='Nacionalidad de la Madre'
-                  name='nationalidadmother'
-                  initialValue={obj?.nationalidadmother ?? [idColombia]}
-                  rules={[{ required: true }]}
-                >
-                  <SelectComponent
-                    options={l_paises}
-                    placeholder='-- Elija una --'
-                    optionPropkey='id'
-                    optionPropLabel='descripcion'
-                  />
-                </Form.Item>
-                <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_paises}
-                    placeholder='-- Elija una --'
-                    optionPropkey='id'
-                    optionPropLabel='descripcion'
-                  />
-                </Form.Item>
+            <Form.Item
+              label='Área de Residencia'
+              initialValue={obj?.idAreaResidencia ?? idupz}
+              name='area'
+              rules={[{ required: isBogota }]}
+            >
+              <SelectComponent
+                options={l_areas}
+                defaultValue={idupz}
+                optionPropkey='idUpz'
+                optionPropLabel='descripcion'
+                disabled={!isBogota}
+                onChange={onChangeArea}
+              />
+            </Form.Item>
 
-                <Form.Item
-                  label='Estado Civil'
-                  name='civilStatusmother'
-                  initialValue={obj?.civilStatus ?? '4c17996a-7113-4e17-a0fe-6fd7cd9bbcd1'}
-                >
-                  <SelectComponent options={l_estado_civil} optionPropkey='id' optionPropLabel='descripcion' />
-                </Form.Item>
-                <Form.Item
-                  label='Nivel Educativo'
-                  name='educationLevelmother'
-                  initialValue={obj?.educationLevel ?? '07ebd0bb-2b00-4a2b-8db5-4582eee1d285'}
-                >
-                  <SelectComponent options={l_nivel_educativo} optionPropkey='id' optionPropLabel='descripcion' />
-                </Form.Item>
-                <Form.Item label='Etnia' name='etniamother' initialValue={obj?.etnia ?? '60875c52-9b2a-4836-8bc7-2f3648f41f57'}>
-                  <SelectComponent options={l_etnia} optionPropkey='id' optionPropLabel='descripcion' />
-                </Form.Item>
-
-                <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
-                <Form.Item
-                  label='País de Residencia'
-                  name='pais'
-                  initialValue={obj?.residencia ?? idColombia}
-                  rules={[{ required: true }]}
-                >
-                  <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion' onChange={onChangePais} />
-                </Form.Item>
-
-                <Form.Item
-                  label='Departamento de Residencia'
-                  initialValue={obj?.idDepartamentoResidencia ?? idDepartamentoBogota}
-                  name='departamento'
-                  rules={[{ required: isColombia }]}
-                >
-                  <SelectComponent
-                    options={l_departamentos}
-                    optionPropkey='idDepartamento'
-                    optionPropLabel='descripcion'
-                    disabled={!isColombia}
-                    onChange={onChangeDepartamento}
-                  />
-                </Form.Item>
-
-                {isColombia ? (
-                  <Form.Item label='Ciudad de Residencia' initialValue={idBogotac} name='ciudad' rules={[{ required: true }]}>
-                    <SelectComponent
-                      options={l_municipios}
-                      optionPropkey='idMunicipio'
-                      optionPropLabel='descripcion'
-                      onChange={onChangeMunicipio}
-                      value={idBogotac}
-                      searchValue={idBogotac}
-                    />
-                  </Form.Item>
-                ) : (
-                  <Form.Item
-                    label='Ciudad de Residencia'
-                    name='ciudadfuera'
-                    initialValue={obj?.idCiudadResidencia}
-                    rules={[{ required: true }]}
-                  >
-                    <Input
-                      allowClear
-                      placeholder='Ciudad'
-                      autoComplete='off'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                    />
-                  </Form.Item>
-                )}
-
-                <Form.Item
-                  label='Localidad de Residencia'
-                  initialValue={obj?.idLocalidadResidencia ?? idlocalidad}
-                  name='localidad'
-                  rules={[{ required: isBogota }]}
-                >
-                  <SelectComponent
-                    options={l_localidades}
-                    optionPropkey='idLocalidad'
-                    optionPropLabel='descripcion'
-                    disabled={!isBogota}
-                    onChange={onChangeLocalidad}
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  label='Área de Residencia'
-                  initialValue={obj?.idAreaResidencia ?? idupz}
-                  name='area'
-                  rules={[{ required: isBogota }]}
-                >
-                  <SelectComponent
-                    options={l_areas}
-                    defaultValue={idupz}
-                    optionPropkey='idUpz'
-                    optionPropLabel='descripcion'
-                    disabled={!isBogota}
-                    onChange={onChangeArea}
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  label='Barrio de Residencia'
-                  initialValue={obj?.idBarrioResidencia ?? idbarrio}
-                  name='barrio'
-                  rules={[{ required: isBogota }]}
-                >
-                  <SelectComponent
-                    options={l_barrios}
-                    defaultValue={idbarrio}
-                    optionPropkey='idBarrio'
-                    optionPropLabel='descripcion'
-                    disabled={!isBogota}
-                  />
-                </Form.Item>
-                <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                  <div className='d-flex justify-content-between'>
-                    <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                      Volver atrás
-                    </Button>
-                    <Button type='primary' htmlType='button' onClick={() => ValidacionMadre()}>
-                      Siguiente
-                    </Button>
-                  </div>
-                </Form.Item>
+            <Form.Item
+              label='Barrio de Residencia'
+              initialValue={obj?.idBarrioResidencia ?? idbarrio}
+              name='barrio'
+              rules={[{ required: isBogota }]}
+            >
+              <SelectComponent
+                options={l_barrios}
+                defaultValue={idbarrio}
+                optionPropkey='idBarrio'
+                optionPropLabel='descripcion'
+                disabled={!isBogota}
+              />
+            </Form.Item>
+            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+              <div className='d-flex justify-content-between'>
+                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                  Volver atrás
+                </Button>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMadre()}>
+                  Siguiente
+                </Button>
               </div>
-            </>
-          )}
+            </Form.Item>
+          </div>
 
-          {current == 2 && (
-            <>
-              <div className='fadeInLeft'>
-                {tipoLicencia === 'Cremación' && (
-                  <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />
-                )}
+          <div className={`d-none fadeInRight ${current == 2 && 'd-block'}`}>
+            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />}
 
-                <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
-                <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
-                <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
+            <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
+            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
-                <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                  <div className='d-flex justify-content-between'>
-                    <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                      Volver atrás
-                    </Button>
-                    <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
-                      Siguiente
-                    </Button>
-                  </div>
-                </Form.Item>
+            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+              <div className='d-flex justify-content-between'>
+                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                  Volver atrás
+                </Button>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
+                  Siguiente
+                </Button>
               </div>
-            </>
-          )}
-          {current == 3 && (
-            <>
-              <div className='fadeInLeft'>
-                <MedicalSignatureFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            </Form.Item>
+          </div>
 
-                <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                  <div className='d-flex justify-content-between'>
-                    <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                      Volver atrás
-                    </Button>
-                    <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
-                      Siguiente
-                    </Button>
-                  </div>
-                </Form.Item>
-              </div>
-            </>
-          )}
-          {current == 4 && (
-            <>
-              <div className='fadeInLeft'>
-                <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
+          <div className={`d-none fadeInRight ${current == 3 && 'd-block'}`}>
+            <MedicalSignatureFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
-                <Actions />
+            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+              <div className='d-flex justify-content-between'>
+                <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                  Volver atrás
+                </Button>
+                <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
+                  Siguiente
+                </Button>
               </div>
-            </>
-          )}
+            </Form.Item>
+          </div>
+
+          <div className={`d-none fadeInRight ${current == 4 && 'd-block'}`}>
+            <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
+
+            <Actions />
+          </div>
         </Form>
       </div>
     </div>

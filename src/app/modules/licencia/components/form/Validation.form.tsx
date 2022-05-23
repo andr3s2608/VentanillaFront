@@ -124,7 +124,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setType(typeList);
       }
 
-      console.log('el número de la solicitud es: ' + objJosn?.certificado);
+
 
       const all = await api.getCertificado(objJosn?.certificado);
 
@@ -585,7 +585,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (bandera) {
       const codeUser = await api.getCodeUser();
-      console.log('aqui estamos: ' + codeUser);
+
       const nameUser = await api.GetInformationUser(codeUser);
       const idSolicitud = objJosn?.idSolicitud;
       const all = await api.GetSolicitud(idSolicitud);
@@ -608,7 +608,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const onModalNofificacion = () => {
     setIsModalValidarCertificado(false);
     history.push('/tramites-servicios');
-    console.log('se cerroo');
+
   };
 
   const idcontrol = objJosn.idControlTramite;

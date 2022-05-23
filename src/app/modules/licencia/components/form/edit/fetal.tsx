@@ -15,7 +15,7 @@ export const EditFetal = (): any => {
 };
 
 const formatObjJson = (obj: any) => {
-  const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio } = obj;
+  const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio, datosFuneraria } = obj;
   const [madre] = esMadre(persona);
   const [certicador] = esMedico(persona);
   const jsonDt = {
@@ -35,6 +35,8 @@ const formatObjJson = (obj: any) => {
     city: lugarDefuncion.idMunicipio,
     areaDef: lugarDefuncion.idAreaDefuncion,
     sitDef: lugarDefuncion.idSitioDefuncion,
+
+    idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
     instType: institucionCertificaFallecimiento.idTipoInstitucion,
     instTipoIdent: institucionCertificaFallecimiento.tipoIdentificacion,

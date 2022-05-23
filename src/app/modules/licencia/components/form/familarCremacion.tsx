@@ -54,8 +54,10 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
+  const [l_tipos_documento, settipos] = useState<any>();
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
@@ -65,9 +67,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
   const [user, setUser] = useState<any>();
-  const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
-    IDominio[][]
-  >([]);
+  const [[l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<IDominio[][]>([]);
 
   const getListas = useCallback(
     async () => {
@@ -75,14 +75,16 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
         api.getCodeUser(),
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
-        dominioService.get_type(ETipoDominio['Tipo Documento']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Pais),
         dominioService.get_type(ETipoDominio['Tipo de Muerte']),
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
+      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
+      settipos(nuevalista);
       const informationUser = await api.GetInformationUser(userres);
 
       setUser(userres);
@@ -164,6 +166,11 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
     form.setFieldsValue({ mauthIDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+    setsininformacion(false);
+
+    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setsininformacion(true);
+    }
 
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
@@ -235,7 +242,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
         />
       </Form.Item>
 
-      <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: true, max: 20 }]}>
+      <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: !sininformacion, max: 20 }]}>
         <Input
           allowClear
           type='text'
@@ -243,6 +250,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           autoComplete='off'
           pattern={tipocampo}
           maxLength={longitudmaxima}
+          disabled={sininformacion}
           onKeyPress={(event) => {
             if (!/[a-zA-Z0-9]/.test(event.key)) {
               event.preventDefault();

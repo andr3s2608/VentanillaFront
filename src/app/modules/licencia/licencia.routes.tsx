@@ -8,13 +8,17 @@ export const licenciaPath = '/tramites-servicios/licencia';
 export const tramiteServicePath = '/tramites-servicios';
 export const tramiteAdmin = '/tramites-administrador';
 export const updatepath = '/modificar';
+export const validaciondoc = '/validardocumento';
+
 export const tramiteServiceReport = '/reportes/rayosx';
 
 // LazyLoad Pages
 const LicenciaPruebaPage = lazy(() => import('./pages/gestion-tramite/gestion-inhumacion.page'));
 const AdministrationFirmasPage = lazy(() => import('./pages/administracion/administracion-firmas.page'));
 const AdministrationHorarioPage = lazy(() => import('./pages/administracion/administracion-horario.page'));
+const ValidarDocumentPage = lazy(() => import('./pages/validacion/validaciondocumentos.page'));
 const ModificarLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-licencia.page'));
+const ModificarMedicosPage = lazy(() => import('./pages/actualizacion/actualizacion-medicos.page'));
 const ModificarCementeriosPage = lazy(() => import('./pages/actualizacion/actualizacion-cementerios.page'));
 const ModificarFunerariasPage = lazy(() => import('./pages/actualizacion/actualizacion-funerarias.page'));
 const AdministrationNotificacionPage = lazy(() => import('./pages/administracion/administracion-notificaciones.page'));
@@ -82,5 +86,13 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${updatepath}/cementerios`,
     component: ModificarCementeriosPage
+  },
+  {
+    path: `${updatepath}/medicos`,
+    component: ModificarMedicosPage
+  },
+  {
+    path: `${validaciondoc}`,
+    component: ValidarDocumentPage
   }
 ];

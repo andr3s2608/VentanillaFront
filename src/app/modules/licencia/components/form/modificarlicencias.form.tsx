@@ -55,11 +55,20 @@ export const ModificarLicencia = ({ props }: any) => {
   useEffect(() => {
     getListas();
   }, []);
+  const ObtenerHora = (values: string) => {
+    const inicio: number = parseInt(values.substring(0, values.lastIndexOf(':')));
+    const fin: number = parseInt(values.substring(values.lastIndexOf(':') + 1, values.length));
 
+    const date = moment
+      .utc()
+      .hour(inicio) // numbers from 0 to 23
+      .minute(fin); // numbers from 0 to 59
+    return date;
+  };
   const BuscarSolicitud = async () => {
     const numero: string = form.getFieldValue('numero');
     const id = await api.ObtenerSolicitud(numero, valores);
-    console.log(id, ' id');
+
     if (id == null) {
       Swal.fire({
         icon: 'error',
@@ -72,7 +81,7 @@ export const ModificarLicencia = ({ props }: any) => {
       const solicitud = await api.getLicencia(id);
       const copia = [...solicitud];
       setobj(copia[0]);
-      console.log(solicitud[0]);
+
       setcertificado(solicitud[0].numeroCertificado);
       const fecha = solicitud[0].fechaDefuncion;
 
@@ -81,7 +90,7 @@ export const ModificarLicencia = ({ props }: any) => {
       if (solicitud[0].hora == 'Sin información') {
         setTime(moment(null));
       } else {
-        setTime(moment(solicitud[0].hora));
+        setTime(ObtenerHora(solicitud[0].hora + ''));
       }
       setsexo(solicitud[0].idSexo);
 
@@ -103,8 +112,6 @@ export const ModificarLicencia = ({ props }: any) => {
           break;
         }
       }
-
-      console.log(fecha);
 
       form.resetFields(['name', 'secondName', 'surname', 'secondSurname', 'numerocert', 'date', 'check', 'time', 'sex']);
       setLicencia(true);
@@ -165,7 +172,7 @@ export const ModificarLicencia = ({ props }: any) => {
       obj.persona[posicion].segundoNombre = values.secondName;
       obj.persona[posicion].primerApellido = values.surname;
       obj.persona[posicion].segundoApellido = values.secondSurname;
-      console.log(values.time._i);
+
       if (values.time._i == 'Fecha invalida') {
         obj.hora = 'Sin información';
       } else {
@@ -176,7 +183,6 @@ export const ModificarLicencia = ({ props }: any) => {
       obj.sinEstablecer = values.check;
 
       obj.idSexo = values.sex;
-      console.log(obj);
 
       await api.putLicencia(obj);
 
@@ -204,11 +210,9 @@ export const ModificarLicencia = ({ props }: any) => {
             break;
         }
         const support = await api.getSupportDocuments(obj.idSolicitud);
-        console.log(support.idDocumentoSoporte);
 
         const [doc] = support.filter((p: any) => p.path.includes('Otros_Documentos'));
 
-        console.log(doc.idDocumentoSoporte);
         const supportDocumentsEdit: any[] = [];
         const formData = new FormData();
 
@@ -233,6 +237,7 @@ export const ModificarLicencia = ({ props }: any) => {
           await api.uploadFiles(formData);
           await api.UpdateSupportDocuments(supportDocumentsEdit);
         }
+        setLicencia(false);
       }
     } else {
       Swal.fire({

@@ -42,14 +42,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [apellido, setapellido] = useState<string | undefined>();
   const [emailcementerio, setemailcementerio] = useState<string | undefined>();
   const [emailfuneraria, setemailfuneraria] = useState<string | undefined>();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isModalVisiblef, setIsModalVisiblefuneraria] = useState(false);
-  const [lugarfuneraria, setlugarfuneraria] = useState<string | undefined>();
+  const [iscementerio, setiscementerio] = useState(false);
+  const [isfuneraria, setisfuneraria] = useState(false);
+
   const [funeraria, setfuneraria] = useState<string | undefined>();
   const [l_funeraria, setl_funeraria] = useState<any>();
   const [l_cementerio, setl_cementerio] = useState<any>();
-  const [paisfuneraria, setpaisfuneraria] = useState<string | undefined>();
-  const [municipiofuneraria, setmunicipiofuneraria] = useState<string | undefined>();
+
+  const [nuevocementerio, setnuevocementerio] = useState<string | undefined>();
+  const [nuevafuneraria, setnuevafuneraria] = useState<string | undefined>();
   const [departamentofuneraria, setdepartamentofuneraria] = useState<string | undefined>();
 
   const [[l_paises, l_departamento, l_tipo_identificacion], setListas] = useState<[IDominio[], IDepartamento[], IDominio[]]>([
@@ -118,12 +119,10 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     var funeraria = Funerarias.reduce((result: any, item: any) => {
       return `${result}${item.funeraria}`;
     }, '');
-    setfuneraria(funeraria);
+
     setl_cementerio(cem);
     setl_funeraria(fun);
 
-    console.log(fun);
-    console.log(cem);
     /*
     var lugarfuneraria = Funerarias.reduce((result: any, item: any) => {
       return `${result}${item.funeraria}`;
@@ -145,6 +144,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     }, '');
     setdepartamentofuneraria(departamentofuneraria);
 */
+    setfuneraria(funeraria);
     setListas(resp);
   }, []);
 
@@ -154,6 +154,29 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const cementerio = obj?.cementerioLugar;
 
+  //Modificar funeraria y cementerio
+  const Onchangecementerio = (id: string) => {
+    if (id == cementerio) {
+      setiscementerio(false);
+    } else {
+      setnuevocementerio(id);
+      setiscementerio(true);
+    }
+  };
+  const Onchangefuneraria = (id: string) => {
+    if (id == funeraria) {
+      setisfuneraria(false);
+    } else {
+      setnuevafuneraria(id);
+      setisfuneraria(true);
+    }
+  };
+  const onClickModFuneraria = async () => {
+    const modificar = await api.ModificarCementerio(obj.idDatosfuneraria, 'funeraria', nuevafuneraria + '');
+  };
+  const onClickModCementerio = async () => {
+    const modificar = await api.ModificarCementerio(obj.idDatosCementerio, 'cementerio', nuevocementerio + '');
+  };
   //#endregion
 
   const data = [
@@ -190,7 +213,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const cementerios = [
     {
       title: 'Cementerio',
-      describe: <SelectComponent options={l_cementerio} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' value={cementerio} />
+      describe: (
+        <SelectComponent
+          options={l_cementerio}
+          optionPropkey='RAZON_S'
+          onChange={Onchangecementerio}
+          optionPropLabel='RAZON_S'
+          defaultValue={cementerio}
+        />
+      )
     },
     {
       title: 'Email Cementerio',
@@ -201,7 +232,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const funerarias = [
     {
       title: 'Funeraria',
-      describe: <SelectComponent options={l_funeraria} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' value={funeraria} />
+      describe: (
+        <SelectComponent
+          options={l_funeraria}
+          optionPropkey='RAZON_S'
+          defaultValue={funeraria}
+          onChange={Onchangefuneraria}
+          optionPropLabel='RAZON_S'
+        />
+      )
     },
     {
       title: 'Email funeraria',
@@ -394,6 +433,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
                     Validar Funeraria
                   </Button>
                 </Form.Item>
+                {isfuneraria && (
+                  <>
+                    <Form.Item>
+                      <Button type='primary' className='ml-3 mt-1' onClick={() => onClickModFuneraria()}>
+                        Modificar Funeraria
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
               </div>
             </Divider>
           </div>
@@ -454,6 +502,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
                         Validar Cementerio
                       </Button>
                     </Form.Item>
+                    {iscementerio && (
+                      <>
+                        <Form.Item>
+                          <Button type='primary' className='ml-3 mt-1' onClick={() => onClickModCementerio()}>
+                            Modificar Cementerio
+                          </Button>
+                        </Form.Item>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
