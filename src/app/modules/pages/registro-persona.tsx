@@ -28,7 +28,8 @@ import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 
 const RegistroPage: React.FC<any> = (props) => {
   const [direccionCompleta, setDireccionCompleta] = useState<string>('');
-  const [prueba, setPrueba] = useState<any>([]);
+  const [stateDisplayBox, setStateDisplayBox] = useState<string>('none');
+  const [stateDisplayButton, setStateDisplayButton] = useState<string>('inline');
   const history = useHistory();
   const [form] = Form.useForm<any>();
   const [isColombia, setIsColombia] = useState(true);
@@ -41,6 +42,11 @@ const RegistroPage: React.FC<any> = (props) => {
   const [l_municipiosres, setLMunicipiosres] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
+
+  const [listOfZona, setListOfZona] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
+  const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
+  const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
+  const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -67,7 +73,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
   store.subscribe(() => {
     const { direccion } = store.getState();
-    setDireccionCompleta(direccion.toString());
+    setDireccionCompleta(direccion.join(' '));
   });
 
   const getListas2 = useCallback(
@@ -124,8 +130,11 @@ const RegistroPage: React.FC<any> = (props) => {
     setLMunicipiosres(resp);
     if (value == '1') {
       setciudadBogota2('Bogotá D.C.');
+      setStateDisplayButton('inline');
     } else {
       setciudadBogota2('');
+      setStateDisplayButton('none');
+      setStateDisplayBox('none');
     }
   };
 
@@ -246,20 +255,18 @@ const RegistroPage: React.FC<any> = (props) => {
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Datos invalidos',
-          text: 'Por favor Ingrese una Fecha de Nacimiento Valida Valido'
+          title: 'Datos inválidos',
+          text: 'Por favor ingrese una fecha de nacimiento valida'
         });
       }
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
-        text: 'Los Emails deben coincidir'
+        title: 'Datos inválidos',
+        text: 'Los emails deben coincidir'
       });
     }
   };
-
-  const onSubmitFailed = () => {};
 
   const cambioavenida = (value: any) => {
     const valor: string = value;
@@ -277,7 +284,37 @@ const RegistroPage: React.FC<any> = (props) => {
     direccion_completa[posicion] = valor;
 
     store.dispatch(SetDireccion(direccion_completa));
-    setDireccionCompleta(direccion_completa.toString());
+    setDireccionCompleta(direccion_completa.join(' '));
+  };
+
+  const onGeocoding = async () => {
+    let via_principal = 'cr';
+    let numero = '106';
+    let letra = '';
+    let bis = '';
+    let card = '';
+    let numero_b = '53';
+    let letra_b = '';
+    let placa = '26';
+    let card_b = '';
+
+    if (form.getFieldValue('state') === 1) {
+      let XML = `
+      <?xml version="1.0" encoding="utf-8"?>
+      <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+        <soap12:Body>
+          <obtenerCodDireccion xmlns="http://200.75.49.126/WsDireccion">
+            <Direccion>${via_principal} ${numero} ${letra} ${bis} ${card} ${numero_b} ${letra_b} ${placa} ${card_b}</Direccion>
+          </obtenerCodDireccion>
+        </soap12:Body>
+      </soap12:Envelope>`;
+
+      //const algo = api.geocoding(XML);
+      //console.log(algo);
+      console.log('imprimiendo el formulario:');
+      console.log();
+      setStateDisplayBox('block');
+    }
   };
 
   return (
@@ -298,7 +335,6 @@ const RegistroPage: React.FC<any> = (props) => {
           style={{ maxWidth: 800 }}
           layout='horizontal'
           onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
         >
           <BasicaInformacion form={form} />
           <h4 className='app-subtitle mt-3'>Datos Geográficos.</h4>
@@ -390,13 +426,13 @@ const RegistroPage: React.FC<any> = (props) => {
           <div className='form-row mt-5 text-center'>
             <div className='form-group col-md-8 col-lg-8'>
               <label htmlFor=''>
-                Via Principal{' '}
+                Via Principal
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
               </label>
               <Form.Item label='' name='' rules={[{ required: true }]}>
-                <SelectComponent style={{ width: '530px' }} options={[]} optionPropkey='id' optionPropLabel='name' />
+                <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
               </Form.Item>
             </div>
             <div className='form-group col-md-2 col-lg-2'>
@@ -561,85 +597,87 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-group col-md-6 col-lg-6 tex'>
               <div className='form-inline text-center'>
                 <label htmlFor='' className='text-center'>
-                  {' '}
                   Dirección Completa
                 </label>
                 <span className='ml-2' style={{ color: '#FF6341' }}>
                   (*)
                 </span>
-                <Form.Item name='dirreccion_completa'>
-                  <Input
-                    type='text'
-                    value={direccionCompleta}
-                    className='fullwidth form-control'
-                    disabled
-                    style={{ width: '635px' }}
-                  />
-                </Form.Item>
-                <Button type='primary' style={{ marginTop: '-10px', marginRight: '-400px', marginLeft: '20px' }}>
+                <input type='text' value={direccionCompleta} className='form-control' disabled style={{ width: '635px' }} />
+                <Button
+                  type='primary'
+                  style={{ marginTop: '-10px', marginRight: '-400px', marginLeft: '20px', display: stateDisplayButton }}
+                  onClick={onGeocoding}
+                >
                   Confirmar Dirección
                 </Button>
               </div>
             </div>
           </div>
 
-          <Alert message='Información!' description='La dirección fue referenciada exitosamente.' type='info' />
-          <div className='form-row mt-4 text-center'>
-            <div className='form-group col-md-6'>
-              <label htmlFor=''>
-                zona{' '}
-                <span className='ml-2' style={{ color: '#FF6341' }}>
-                  (*)
-                </span>
-              </label>
-              <Form.Item name='dirreccion_completa'>
-                <Input type='text' value={direccionCompleta} className='fullwidth form-control' style={{ width: '395px' }} />
-              </Form.Item>
+          <div style={{ display: stateDisplayBox }}>
+            <Alert message='Información!' description='La dirección fue georreferenciada exitosamente.' type='info' />
+            <div className='form-row mt-4 text-center'>
+              <div className='form-group col-md-6'>
+                <label htmlFor=''>Zona</label>
+                <Form.Item label='' name='zona' initialValue={'id1'}>
+                  <SelectComponent
+                    style={{ width: '395px' }}
+                    options={listOfZona}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      console.log('Se cambio la zona');
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='form-group col-md-6'>
+                <label htmlFor=''>Localidad</label>
+                <Form.Item label='' name='localidad' initialValue={'id1'}>
+                  <SelectComponent
+                    style={{ width: '395px' }}
+                    options={listOfLocalidad}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      console.log('Se cambió la localidad');
+                    }}
+                  />
+                </Form.Item>
+              </div>
             </div>
-            <div className='form-group col-md-6'>
-              <label htmlFor=''>
-                Localidad{' '}
-                <span className='ml-2' style={{ color: '#FF6341' }}>
-                  (*)
-                </span>
-              </label>
-              <Form.Item name='dirreccion_completa'>
-                <Input type='text' value={direccionCompleta} className='fullwidth form-control' style={{ width: '395px' }} />
-              </Form.Item>
+            <div className='form-row mt-4 text-center'>
+              <div className='form-group col-md-6'>
+                <label htmlFor=''>Upz</label>
+                <Form.Item label='' name='upz' initialValue={'id1'}>
+                  <SelectComponent
+                    style={{ width: '395px' }}
+                    options={listOfUPZ}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      console.log('se cambió la UPZ');
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='form-group col-md-6'>
+                <label htmlFor=''>Barrio</label>
+                <Form.Item label='' name='barrio' initialValue={'id1'}>
+                  <SelectComponent
+                    style={{ width: '395px' }}
+                    options={listOfBarrio}
+                    optionPropkey='key'
+                    optionPropLabel='key'
+                    onChange={(event) => {
+                      console.log('Se cambio el barrio');
+                    }}
+                  />
+                </Form.Item>
+              </div>
             </div>
           </div>
-          <div className='form-row mt-4 text-center'>
-            <div className='form-group col-md-6'>
-              <label htmlFor=''>
-                Upz{' '}
-                <span className='ml-2' style={{ color: '#FF6341' }}>
-                  (*)
-                </span>
-              </label>
-              <Form.Item label='' name='card2'>
-                <SelectComponent
-                  style={{ width: '395px' }}
-                  options={direcionOrienta}
-                  optionPropkey='key'
-                  optionPropLabel='key'
-                  onChange={(event) => {
-                    build_direction(8, event);
-                  }}
-                />
-              </Form.Item>
-            </div>
-            <div className='form-group col-md-6'>
-              <label htmlFor=''>
-                Barrio{' '}
-                <span className='ml-2' style={{ color: '#FF6341' }}>
-                  (*)
-                </span>
-              </label>
-              <Form.Item name='dirreccion_completa'>
-                <Input type='text' value={direccionCompleta} className='fullwidth form-control' style={{ width: '395px' }} />
-              </Form.Item>
-            </div>
-          </div>
+
           <h4 className='app-subtitle mt-3'>Datos Demográficos.</h4>
 
           <Form.Item label='Fecha Nacimiento' name='date' rules={[{ required: true }]}>

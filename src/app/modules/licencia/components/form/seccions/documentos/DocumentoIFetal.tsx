@@ -265,79 +265,89 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
 
       {isEditOtros() && (
         <>
-          {files?.length ? (
-            <Form.Item
-              label='Ver Autorización del fiscal para cremar'
-              name='fileOficioIdentificacion'
-              valuePropName='fileList'
-              rules={[{ required: isEdit ? false : true }]}
-              // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
-              getValueFromEvent={normFile}
-            >
-              {' '}
-              <Button
-                type='default'
-                shape='round'
-                disabled={isFileViwerDisabled('Autorizacion_del_fiscal_para_cremar')}
-                style={{ marginRight: '10px' }}
-                icon={<EyeOutlined />}
-                size='middle'
-                onClick={() => onEventFile('Autorizacion_del_fiscal_para_cremar')}
-              />
-            </Form.Item>
-          ) : null}
+          {isCremacion && (
+            <>
+              {files?.length ? (
+                <Form.Item
+                  label='Ver Autorización del fiscal para cremar'
+                  name='fileOficioIdentificacion'
+                  valuePropName='fileList'
+                  rules={[{ required: isEdit ? false : true }]}
+                  // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
+                  getValueFromEvent={normFile}
+                >
+                  {' '}
+                  <Button
+                    type='default'
+                    shape='round'
+                    disabled={isFileViwerDisabled('Autorizacion_del_fiscal_para_cremar')}
+                    style={{ marginRight: '10px' }}
+                    icon={<EyeOutlined />}
+                    size='middle'
+                    onClick={() => onEventFile('Autorizacion_del_fiscal_para_cremar')}
+                  />
+                </Form.Item>
+              ) : null}
 
-          <Form.Item
-            label='Autorización de cremacion del fiscal'
-            name='fileOficioIdentificacion'
-            valuePropName='fileList'
-            rules={[{ required: isEdit ? false : true }]}
-            // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
-            getValueFromEvent={normFile}
-          >
-            <Upload
-              name='fileOficioIdentificacion'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
+              <Form.Item
+                label='Autorización de cremacion del fiscal'
+                name='fileOficioIdentificacion'
+                valuePropName='fileList'
+                rules={[{ required: isEdit ? false : true }]}
+                // extra={<Alert className='mt-2' message='Oficio de identificación fehaciente – Medicina Legal.' type='info' showIcon />}
+                getValueFromEvent={normFile}
+              >
+                <Upload
+                  name='fileOficioIdentificacion'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
 
-          {files?.length ? (
-            <Form.Item
-              label='Oficio de medicina legal al fiscal para cremar'
-              name='fileOrdenAuthFiscal'
-              valuePropName='fileList'
-              rules={[{ required: isEdit ? false : true }]}
-              getValueFromEvent={normFile}
-            >
-              {' '}
-              <Button
-                type='default'
-                shape='round'
-                disabled={isFileViwerDisabled('Oficio_de_medicina_legal_al_fiscal_para_cremar')}
-                style={{ marginRight: '10px' }}
-                icon={<EyeOutlined />}
-                size='middle'
-                onClick={() => onEventFile('Oficio_de_medicina_legal_al_fiscal_para_cremar')}
-              />
-            </Form.Item>
-          ) : null}
+              {files?.length ? (
+                <Form.Item
+                  label='Oficio de medicina legal al fiscal para cremar'
+                  name='fileOrdenAuthFiscal'
+                  valuePropName='fileList'
+                  rules={[{ required: isEdit ? false : true }]}
+                  getValueFromEvent={normFile}
+                >
+                  {' '}
+                  <Button
+                    type='default'
+                    shape='round'
+                    disabled={isFileViwerDisabled('Oficio_de_medicina_legal_al_fiscal_para_cremar')}
+                    style={{ marginRight: '10px' }}
+                    icon={<EyeOutlined />}
+                    size='middle'
+                    onClick={() => onEventFile('Oficio_de_medicina_legal_al_fiscal_para_cremar')}
+                  />
+                </Form.Item>
+              ) : null}
 
-          <Form.Item
-            label='Oficio de medicina legal al fiscal para cremar'
-            name='fileOrdenAuthFiscal'
-            valuePropName='fileList'
-            rules={[{ required: isEdit ? false : true }]}
-            getValueFromEvent={normFile}
-          >
-            <Upload name='fileOrdenAuthFiscal' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
+              <Form.Item
+                label='Oficio de medicina legal al fiscal para cremar'
+                name='fileOrdenAuthFiscal'
+                valuePropName='fileList'
+                rules={[{ required: isEdit ? false : true }]}
+                getValueFromEvent={normFile}
+              >
+                <Upload
+                  name='fileOrdenAuthFiscal'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
+            </>
+          )}
         </>
       )}
 

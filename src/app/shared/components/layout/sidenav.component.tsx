@@ -65,6 +65,8 @@ export const SidenavComponent: React.FC<BasicProps> = (props) => {
           </Menu.SubMenu>
         );
       } else {
+        {
+        }
         return (
           <Menu.Item key={key} onClick={onCloseSidenav}>
             <NavLink to={item.path || ''}>{item.name}</NavLink>
