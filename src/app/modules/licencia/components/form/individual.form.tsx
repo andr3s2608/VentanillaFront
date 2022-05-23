@@ -106,15 +106,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
 
-const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settiposautoriza(nuevalista);
 
-
-const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       setCausaMuerte(causa['valor']);
-      //console.log('este es ' + causa['valor']);
+
       const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
       const informationUser = await api.GetInformationUser(userres);
@@ -164,18 +163,16 @@ const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
   const getDataSolicitante = (solicitante: any) => {};
 
   const onSubmit = async (values: any) => {
+    setStatus(undefined);
     let causa = values.causaMuerte;
     let banderaCausa = true;
     let observacionCausaMuerte = causaMuerte;
 
     if (causa == 0) {
       banderaCausa = false;
-      observacionCausaMuerte = ' ';
+      observacionCausaMuerte = '';
     }
 
-    console.log(observacionCausaMuerte);
-
-    setStatus(undefined);
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
@@ -239,17 +236,14 @@ const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
     var tipoid = resp.tipoIdentificacion + '';
     var nroid = resp.numeroIdentificacion + '';
     if (resp.tipoIdentificacion == 5) {
-  
       tipo = 'Juridica';
       razon = resp.razonSocial;
     } else {
-    
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
- 
 
     const dep = values.state;
     var mun = values.city;
@@ -264,7 +258,6 @@ const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       segunda = '00000000-0000-0000-0000-000000000000';
     }
     let persona: any[] = [];
-
 
     if (tipoLicencia === 'Inhumación') {
       persona = [
@@ -314,7 +307,7 @@ const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
     }
     if (tipoLicencia === 'Cremación') {
       persona = [
-        //fallecido
+        //madre
         {
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: idnum,
@@ -323,7 +316,7 @@ const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
           primerApellido: values.surname,
           segundoApellido: values.secondSurname,
           fechaNacimiento: values.dateOfBirth,
-          nacionalidad: values.nationalidad,
+          nacionalidad: values.nationalidad[0],
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -463,7 +456,6 @@ const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       }
     };
 
-    console.log(json);
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
     const formData = new FormData();
