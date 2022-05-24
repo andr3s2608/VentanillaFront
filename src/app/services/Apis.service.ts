@@ -19,7 +19,7 @@ const {
 export class ApiService {
   endpoint = REACT_APP_SHARED as string;
   private oid = '';
-
+  private local = 'https://localhost:5001/';
   constructor(oid$: string) {
     this.oid = oid$;
   }
@@ -347,7 +347,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getZonaSig = (payload: any) =>
+  getZonaSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -362,7 +362,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getLocalidadSig = (payload: any) =>
+  getLocalidadSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -377,7 +377,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getUpzSig = (payload: any) =>
+  getUpzSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -392,7 +392,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getBarrioSig = (payload: any) =>
+  getBarrioSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -405,5 +405,37 @@ export class ApiService {
         }
       },
       confirmModal: false
+    });
+
+  /**
+   * servicios para retornar la lista de barrios, localidades, subred y upz de bases de datos
+   */
+
+  getListSubRedes = () =>
+    get<any>({
+      endpoint: this.local,
+      url: `api/v1/SubRed/GetSubRed`,
+      id: '0'
+    });
+
+  getListLocalidades = () =>
+    get<any>({
+      endpoint: this.local,
+      url: `api/v1/Localidad/GetAllLocalidad`,
+      id: '0'
+    });
+
+  getListUPZ = () =>
+    get<any>({
+      endpoint: this.local,
+      url: `api/v1/Upz/GetUpz`,
+      id: '0'
+    });
+
+  getListBarrios = () =>
+    get<any>({
+      endpoint: this.local,
+      url: `api/v1/Barrio/GetBarrios`,
+      id: '0'
     });
 }
