@@ -310,9 +310,7 @@ const RegistroPage: React.FC<any> = (props) => {
       </soap12:Envelope>`;
 
       //const algo = api.geocoding(XML);
-      //console.log(algo);
-      console.log('imprimiendo el formulario:');
-      console.log();
+
       setStateDisplayBox('block');
     }
   };
@@ -625,9 +623,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfZona}
                     optionPropkey='key'
                     optionPropLabel='key'
-                    onChange={(event) => {
-                      console.log('Se cambio la zona');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
@@ -639,9 +635,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfLocalidad}
                     optionPropkey='key'
                     optionPropLabel='key'
-                    onChange={(event) => {
-                      console.log('Se cambió la localidad');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
@@ -655,9 +649,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfUPZ}
                     optionPropkey='key'
                     optionPropLabel='key'
-                    onChange={(event) => {
-                      console.log('se cambió la UPZ');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
@@ -669,9 +661,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfBarrio}
                     optionPropkey='key'
                     optionPropLabel='key'
-                    onChange={(event) => {
-                      console.log('Se cambio el barrio');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>

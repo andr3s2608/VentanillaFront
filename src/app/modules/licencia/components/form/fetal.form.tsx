@@ -111,7 +111,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       setCausaMuerte(causa['valor']);
-      //console.log('este es ' + causa['valor']);.
 
       setUser(userRes);
       setLDepartamentos(departamentos);
@@ -170,318 +169,364 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       observacionCausaMuerte = ' ';
     }
 
-    console.log(observacionCausaMuerte);
-
     const certificado = values.certificado;
-    if (certificado.length > 5) {
-      ////////////Guarda Solicitud///////////
-      const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
-      setStatus(undefined);
-      const formatDate = 'MM-DD-YYYY';
-      const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
 
-      const tipoinst = values.instTipoIdent;
-      var tipoidinst = values.instTipoIdent;
-      var numeroins = values.instNumIdent;
-      var razonSocialins = values.instRazonSocial;
-      var numeroProtocoloins = values.instNumProtocolo;
-      if (tipoinst == undefined) {
-        tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
-        numeroins = '0';
-        razonSocialins = 'Otros';
-        numeroProtocoloins = '452022';
-      }
-      let persona: any[] = [];
-      var segunda = values.nationalidad2;
+    ////////////Guarda Solicitud///////////
+    const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
+    setStatus(undefined);
+    const formatDate = 'MM-DD-YYYY';
+    const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
 
-      if (segunda == undefined) {
-        segunda = '00000000-0000-0000-0000-000000000000';
-      }
+    const tipoinst = values.instTipoIdent;
+    var tipoidinst = values.instTipoIdent;
+    var numeroins = values.instNumIdent;
+    var razonSocialins = values.instRazonSocial;
+    var numeroProtocoloins = values.instNumProtocolo;
+    if (tipoinst == undefined) {
+      tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      numeroins = '0';
+      razonSocialins = 'Otros';
+      numeroProtocoloins = '452022';
+    }
+    let persona: any[] = [];
+    var segunda = values.nationalidad2;
 
-      let idnum = values.IDNumber;
-      let idnumaut = values.mauthIDNumber;
-      const tipoaut = values.authIDType;
+    if (segunda == undefined) {
+      segunda = '00000000-0000-0000-0000-000000000000';
+    }
 
-      if (sininformacion) {
-        idnum = 'Sin Información';
-      }
-      if (tipoaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
-        idnumaut = 'Sin Información';
-      }
+    let idnum = values.IDNumber;
+    let idnumaut = values.mauthIDNumber;
+    const tipoaut = values.authIDType;
 
-      if (tipoLicencia === 'Inhumación') {
-        persona = [
-          //madre
-          {
-            idPersona: obj?.idMadre,
-            tipoIdentificacion: values.IDType,
-            numeroIdentificacion: idnum,
-            primerNombre: values.namemother,
-            segundoNombre: values.secondNamemother,
-            primerApellido: values.surnamemother,
-            segundoApellido: values.secondSurnamemother,
-            fechaNacimiento: moment(values.date).format(formatDate),
-            nacionalidad: values.nationalidadmother[0],
-            segundanacionalidad: segunda,
-            otroParentesco: null,
-            idEstadoCivil: values.civilStatusmother,
-            idNivelEducativo: values.educationLevelmother,
-            idEtnia: values.etniamother,
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
+    if (sininformacion) {
+      idnum = 'Sin Información';
+    }
+    if (tipoaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+      idnumaut = 'Sin Información';
+    }
 
-          //certifica la defuncion
-          {
-            idPersona: obj?.idmedico,
-            tipoIdentificacion: values.medicalSignatureIDType,
-            numeroIdentificacion: values.medicalSignatureIDNumber,
-            primerNombre: values.medicalSignatureName,
-            segundoNombre: values.medicalSignatureSecondName,
-            primerApellido: values.medicalSignatureSurname,
-            segundoApellido: values.medicalSignatureSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null,
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'd8b0250b-2991-42a0-a672-8e3e45985500',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
-            idTipoProfesional: values.medicalSignatureProfesionalType
-          }
-        ];
-      }
-      if (tipoLicencia === 'Cremación') {
-        persona = [
-          //madre
-          {
-            idPersona: obj?.idMadre,
-            tipoIdentificacion: values.IDType,
-            numeroIdentificacion: idnum,
-            primerNombre: values.namemother,
-            segundoNombre: values.secondNamemother,
-            primerApellido: values.surnamemother,
-            segundoApellido: values.secondSurnamemother,
-            fechaNacimiento: moment(values.date).format(formatDate),
-            nacionalidad: values.nationalidadmother,
-            segundanacionalidad: segunda,
-            otroParentesco: null,
-            idEstadoCivil: values.civilStatusmother,
-            idNivelEducativo: values.educationLevelmother,
-            idEtnia: values.etniamother,
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
-          //authorizador cremacion
-          {
-            //idPersona: '',
-            tipoIdentificacion: values.authIDType,
-            numeroIdentificacion: idnumaut,
-            primerNombre: values.authName,
-            segundoNombre: values.authSecondName,
-            primerApellido: values.authSurname,
-            segundoApellido: values.authSecondSurname,
-            fechaNacimiento: values.dateOfBirth,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null, //lista parentesco
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
-          //certifica la defuncion
-          {
-            idPersona: obj?.idmedico,
-            tipoIdentificacion: values.medicalSignatureIDType,
-            numeroIdentificacion: values.medicalSignatureIDNumber,
-            primerNombre: values.medicalSignatureName,
-            segundoNombre: values.medicalSignatureSecondName,
-            primerApellido: values.medicalSignatureSurname,
-            segundoApellido: values.medicalSignatureSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null,
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: '00000000-0000-0000-0000-000000000000',
-            idTipoPersona: 'd8b0250b-2991-42a0-a672-8e3e45985500',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
-            idTipoProfesional: values.medicalSignatureProfesionalType
-          }
-        ];
-      }
-      //captura usuario logeado
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
-      var tipo = '';
-      var razon = '';
-      var tipoid = resp.tipoIdentificacion + '';
-      var nroid = resp.numeroIdentificacion + '';
-      if (resp.tipoIdentificacion == 5) {
-        tipo = 'Juridica';
-        razon = resp.razonSocial;
-      } else {
-        tipo = 'Natural';
-        razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
-        tipoid = values.fiscalia;
-        nroid = values.ndoc;
-      }
-      const dep = values.state;
-      var mun = values.city;
-      switch (dep) {
-        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-          mun = '31211657-3386-420a-8620-f9C07a8ca491';
-          break;
-      }
+    if (tipoLicencia === 'Inhumación') {
+      persona = [
+        //madre
+        {
+          idPersona: obj?.idMadre,
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: idnum,
+          primerNombre: values.namemother,
+          segundoNombre: values.secondNamemother,
+          primerApellido: values.surnamemother,
+          segundoApellido: values.secondSurnamemother,
+          fechaNacimiento: moment(values.date).format(formatDate),
+          nacionalidad: values.nationalidadmother,
+          segundanacionalidad: segunda,
+          otroParentesco: null,
+          idEstadoCivil: values.civilStatusmother,
+          idNivelEducativo: values.educationLevelmother,
+          idEtnia: values.etniamother,
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
 
-      const depres = values.departamento;
-      var munres = values.city;
-      switch (depres) {
-        case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-          munres = '31211657-3386-420a-8620-f9C07a8ca491';
-          break;
-      }
-
-      //JSon con lso datos seteadosde la solicitud
-      const json: IRegistroLicencia<any> = {
-        solicitud: {
-          idSolicitud: obj?.idSolicitud,
-          numeroCertificado: values.certificado,
-          fechaDefuncion: moment(values.date).format(formatDate),
-          sinEstablecer: values.check,
-          hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
-          idSexo: values.sex,
-          estadoSolicitud: values.validFunctionaltype ?? estadoSolicitud,
-          idPersonaVentanilla: Number(user), //numero de usuario registrado
-          idUsuarioSeguridad: accountIdentifier,
-          idTramite: tramite?.toString(),
-          idTipoMuerte: values.deathType,
-          tipoPersona: tipo,
-          tipoIdentificacionSolicitante: tipoid,
-          noIdentificacionSolicitante: nroid,
-          razonSocialSolicitante: razon,
-          persona,
-          lugarDefuncion: {
-            idLugarDefuncion: obj?.idLugarDefuncion,
-            idPais: values.country,
-            idDepartamento: values.state,
-            idMunicipio: mun,
-            idAreaDefuncion: values.areaDef,
-            idSitioDefuncion: values.sitDef
-          },
-          ubicacionPersona: {
-            idUbicacionPersona: obj?.idUbicacionPersona,
-            idPaisResidencia: values.pais,
-            idDepartamentoResidencia: values.departamento,
-            idCiudadResidencia: munres,
-            idLocalidadResidencia: values.localidad,
-            idAreaResidencia: values.area,
-            idBarrioResidencia: values.barrio
-          },
-          datosCementerio: {
-            idDatosCementerio: obj?.idDatosCementerio,
-            enBogota: values.cementerioLugar === 'Dentro de Bogotá',
-            fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
-            fueraPais: values.cementerioLugar === 'Fuera del País',
-            cementerio: values.cementerioBogota,
-            otroSitio: values.otro,
-            ciudad: values.cementerioCiudad,
-            idPais: values.cementerioPais,
-            idDepartamento: values.cementerioDepartamento,
-            idMunicipio: values.cementerioMunicipio
-          },
-
-          datosFuneraria: {
-            enBogota: true,
-            fueraBogota: false,
-            fueraPais: false,
-            funeraria: values.funerariaBogota,
-            otroSitio: values.otrofuneraria,
-            ciudad: values.funerariaCiudad,
-            idPais: values.funerariaPais,
-            idDepartamento: values.funerariaDepartamento,
-            idMunicipio: values.funerariaMunicipio
-          },
-
-          resumenSolicitud: {
-            correoCementerio: values.emailcementerio,
-            correoFuneraria: values.emailfuneraria,
-            tipoDocumentoSolicitante: values.fiscalia,
-            numeroDocumentoSolicitante: values.ndoc,
-            nombreSolicitante: values.namesolicitudadd,
-            apellidoSolicitante: values.lastnamesolicitudadd,
-            correoSolicitante: values.emailsolicitudadd,
-            correoMedico: '',
-            cumpleCausa: banderaCausa,
-            observacionCausa: observacionCausaMuerte
-          },
-          institucionCertificaFallecimiento: {
-            tipoIdentificacion: tipoidinst,
-            numeroIdentificacion: numeroins,
-            razonSocial: razonSocialins ?? '',
-            numeroProtocolo: numeroProtocoloins,
-            numeroActaLevantamiento: values.instNumActaLevantamiento,
-            fechaActa: moment(values.instFechaActa).format(formatDate),
-            seccionalFiscalia: values.instSeccionalFiscalia ?? '',
-            noFiscal: values.instNoFiscal,
-            idTipoInstitucion: values.instType
-          }
+        //certifica la defuncion
+        {
+          idPersona: obj?.idmedico,
+          tipoIdentificacion: values.medicalSignatureIDType,
+          numeroIdentificacion: values.medicalSignatureIDNumber,
+          primerNombre: values.medicalSignatureName,
+          segundoNombre: values.medicalSignatureSecondName,
+          primerApellido: values.medicalSignatureSurname,
+          segundoApellido: values.medicalSignatureSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null,
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'd8b0250b-2991-42a0-a672-8e3e45985500',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+          idTipoProfesional: values.medicalSignatureProfesionalType
         }
+      ];
+    }
+    if (tipoLicencia === 'Cremación') {
+      persona = [
+        //madre
+        {
+          idPersona: obj?.idMadre,
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: idnum,
+          primerNombre: values.namemother,
+          segundoNombre: values.secondNamemother,
+          primerApellido: values.surnamemother,
+          segundoApellido: values.secondSurnamemother,
+          fechaNacimiento: moment(values.date).format(formatDate),
+          nacionalidad: values.nationalidadmother,
+          segundanacionalidad: segunda,
+          otroParentesco: null,
+          idEstadoCivil: values.civilStatusmother,
+          idNivelEducativo: values.educationLevelmother,
+          idEtnia: values.etniamother,
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+        //authorizador cremacion
+        {
+          //idPersona: '',
+          tipoIdentificacion: values.authIDType,
+          numeroIdentificacion: idnumaut,
+          primerNombre: values.authName,
+          segundoNombre: values.authSecondName,
+          primerApellido: values.authSurname,
+          segundoApellido: values.authSecondSurname,
+          fechaNacimiento: values.dateOfBirth,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null, //lista parentesco
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+        //certifica la defuncion
+        {
+          idPersona: obj?.idmedico,
+          tipoIdentificacion: values.medicalSignatureIDType,
+          numeroIdentificacion: values.medicalSignatureIDNumber,
+          primerNombre: values.medicalSignatureName,
+          segundoNombre: values.medicalSignatureSecondName,
+          primerApellido: values.medicalSignatureSurname,
+          segundoApellido: values.medicalSignatureSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null,
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'd8b0250b-2991-42a0-a672-8e3e45985500',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+          idTipoProfesional: values.medicalSignatureProfesionalType
+        }
+      ];
+    }
+    //captura usuario logeado
+    const idUser = await api.getCodeUser();
+    const resp = await api.GetInformationUser(idUser);
+    var tipo = '';
+    var razon = '';
+    var tipoid = resp.tipoIdentificacion + '';
+    var nroid = resp.numeroIdentificacion + '';
+    if (resp.tipoIdentificacion == 5) {
+      tipo = 'Juridica';
+      razon = resp.razonSocial;
+    } else {
+      tipo = 'Natural';
+      razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+      tipoid = values.fiscalia;
+      nroid = values.ndoc;
+    }
+    const dep = values.state;
+    var mun = values.city;
+    switch (dep) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        mun = '31211657-3386-420a-8620-f9C07a8ca491';
+        break;
+    }
+
+    const depres = values.departamento;
+    var munres = values.city;
+    switch (depres) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        munres = '31211657-3386-420a-8620-f9C07a8ca491';
+        break;
+    }
+
+    //JSon con lso datos seteadosde la solicitud
+    const json: IRegistroLicencia<any> = {
+      solicitud: {
+        idSolicitud: obj?.idSolicitud,
+        numeroCertificado: values.certificado,
+        fechaDefuncion: moment(values.date).format(formatDate),
+        sinEstablecer: values.check,
+        hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
+        idSexo: values.sex,
+        estadoSolicitud: values.validFunctionaltype ?? estadoSolicitud,
+        idPersonaVentanilla: Number(user), //numero de usuario registrado
+        idUsuarioSeguridad: accountIdentifier,
+        idTramite: tramite?.toString(),
+        idTipoMuerte: values.deathType,
+        tipoPersona: tipo,
+        tipoIdentificacionSolicitante: tipoid,
+        noIdentificacionSolicitante: nroid,
+        razonSocialSolicitante: razon,
+        persona,
+        lugarDefuncion: {
+          idLugarDefuncion: obj?.idLugarDefuncion,
+          idPais: values.country,
+          idDepartamento: values.state,
+          idMunicipio: mun,
+          idAreaDefuncion: values.areaDef,
+          idSitioDefuncion: values.sitDef
+        },
+        ubicacionPersona: {
+          idUbicacionPersona: obj?.idUbicacionPersona,
+          idPaisResidencia: values.pais,
+          idDepartamentoResidencia: values.departamento,
+          idCiudadResidencia: munres,
+          idLocalidadResidencia: values.localidad,
+          idAreaResidencia: values.area,
+          idBarrioResidencia: values.barrio
+        },
+        datosCementerio: {
+          idDatosCementerio: obj?.idDatosCementerio,
+          enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+          fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+          fueraPais: values.cementerioLugar === 'Fuera del País',
+          cementerio: values.cementerioBogota,
+          otroSitio: values.otro,
+          ciudad: values.cementerioCiudad,
+          idPais: values.cementerioPais,
+          idDepartamento: values.cementerioDepartamento,
+          idMunicipio: values.cementerioMunicipio
+        },
+
+        datosFuneraria: {
+          enBogota: true,
+          fueraBogota: false,
+          fueraPais: false,
+          funeraria: values.funerariaBogota,
+          otroSitio: values.otrofuneraria,
+          ciudad: values.funerariaCiudad,
+          idPais: values.funerariaPais,
+          idDepartamento: values.funerariaDepartamento,
+          idMunicipio: values.funerariaMunicipio
+        },
+
+        resumenSolicitud: {
+          correoCementerio: values.emailcementerio,
+          correoFuneraria: values.emailfuneraria,
+          tipoDocumentoSolicitante: values.fiscalia,
+          numeroDocumentoSolicitante: values.ndoc,
+          nombreSolicitante: values.namesolicitudadd,
+          apellidoSolicitante: values.lastnamesolicitudadd,
+          correoSolicitante: values.emailsolicitudadd,
+          correoMedico: '',
+          cumpleCausa: banderaCausa,
+          observacionCausa: observacionCausaMuerte
+        },
+        institucionCertificaFallecimiento: {
+          tipoIdentificacion: tipoidinst,
+          numeroIdentificacion: numeroins,
+          razonSocial: razonSocialins ?? '',
+          numeroProtocolo: numeroProtocoloins,
+          numeroActaLevantamiento: values.instNumActaLevantamiento,
+          fechaActa: moment(values.instFechaActa).format(formatDate),
+          seccionalFiscalia: values.instSeccionalFiscalia ?? '',
+          noFiscal: values.instNoFiscal,
+          idTipoInstitucion: values.instType
+        }
+      }
+    };
+    //Guarde de documentos
+    const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
+    const formData = new FormData();
+    const supportDocuments: any[] = [];
+
+    if (isEdit) {
+      const resp = await api.putLicencia(json.solicitud);
+
+      const [files, names] = generateListFiles(values, container);
+      const supportDocumentsEdit: any[] = [];
+
+      files.forEach((item: any, i: number) => {
+        const name = names[i];
+
+        formData.append('file', item);
+        formData.append('nameFile', name + '_' + resp);
+
+        TypeDocument.forEach((item: any) => {
+          ///comprueba que documentos se subieron dependiendo de la solicitud
+          if (item.key === name.toString()) {
+            const [support] = supports.filter((p) => p.path.includes(item.key));
+
+            if (support !== undefined) {
+              supportDocumentsEdit.push({
+                idDocumentoSoporte: support.idDocumentoSoporte,
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}_${resp}`,
+                idUsuario: accountIdentifier,
+                fechaModificacion: new Date()
+              });
+            } else {
+              supportDocumentsEdit.push({
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}_${resp}`,
+                idUsuario: accountIdentifier
+              });
+            }
+          }
+        });
+      });
+
+      formData.append('containerName', container);
+      formData.append('oid', accountIdentifier);
+
+      if (supportDocumentsEdit.length) {
+        ///Guarde de documentos azure
+        await api.uploadFiles(formData);
+        //Guarde de documentos bd
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
+      }
+
+      const tramite = {
+        fechaRegistro: new Date(),
+        usuario: obj.idUsuario,
+        estado: values?.validFunctionaltype,
+        idSolicitud: json.solicitud.idSolicitud,
+        observacion: values?.descripcionvalidfuncional
       };
-      //Guarde de documentos
-      const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
-      const formData = new FormData();
-      const supportDocuments: any[] = [];
 
-      if (isEdit) {
-        const resp = await api.putLicencia(json.solicitud);
+      if (tramite.observacion !== '') {
+        await api.addSeguimiento(tramite);
+      }
 
+      localStorage.removeItem('register');
+    }
+    if (!isEdit) {
+      const resp = await api.postprueba(json);
+
+      if (resp) {
         const [files, names] = generateListFiles(values, container);
-        const supportDocumentsEdit: any[] = [];
 
-        files.forEach((item: any, i: number) => {
+        files.forEach((file: any, i: number) => {
           const name = names[i];
 
-          formData.append('file', item);
+          formData.append('file', file);
           formData.append('nameFile', name + '_' + resp);
 
           TypeDocument.forEach((item: any) => {
-            ///comprueba que documentos se subieron dependiendo de la solicitud
             if (item.key === name.toString()) {
-              const [support] = supports.filter((p) => p.path.includes(item.key));
-
-              if (support !== undefined) {
-                supportDocumentsEdit.push({
-                  idDocumentoSoporte: support.idDocumentoSoporte,
-                  idSolicitud: resp,
-                  idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}_${resp}`,
-                  idUsuario: accountIdentifier,
-                  fechaModificacion: new Date()
-                });
-              } else {
-                supportDocumentsEdit.push({
-                  idSolicitud: resp,
-                  idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}_${resp}`,
-                  idUsuario: accountIdentifier
-                });
-              }
+              supportDocuments.push({
+                idSolicitud: resp,
+                idTipoDocumentoSoporte: item.value,
+                path: `${accountIdentifier}/${name}_${resp}`,
+                idUsuario: accountIdentifier
+              });
             }
           });
         });
@@ -489,68 +534,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         formData.append('containerName', container);
         formData.append('oid', accountIdentifier);
 
-        if (supportDocumentsEdit.length) {
-          ///Guarde de documentos azure
-          await api.uploadFiles(formData);
-          //Guarde de documentos bd
-          await api.UpdateSupportDocuments(supportDocumentsEdit);
-        }
+        await api.uploadFiles(formData);
+        await api.AddSupportDocuments(supportDocuments);
 
-        const tramite = {
-          fechaRegistro: new Date(),
-          usuario: obj.idUsuario,
-          estado: values?.validFunctionaltype,
-          idSolicitud: json.solicitud.idSolicitud,
-          observacion: values?.descripcionvalidfuncional
-        };
-
-        if (tramite.observacion !== '') {
-          await api.addSeguimiento(tramite);
-        }
-
-        localStorage.removeItem('register');
+        form.resetFields();
       }
-      if (!isEdit) {
-        const resp = await api.postprueba(json);
-
-        if (resp) {
-          const [files, names] = generateListFiles(values, container);
-
-          files.forEach((file: any, i: number) => {
-            const name = names[i];
-
-            formData.append('file', file);
-            formData.append('nameFile', name + '_' + resp);
-
-            TypeDocument.forEach((item: any) => {
-              if (item.key === name.toString()) {
-                supportDocuments.push({
-                  idSolicitud: resp,
-                  idTipoDocumentoSoporte: item.value,
-                  path: `${accountIdentifier}/${name}_${resp}`,
-                  idUsuario: accountIdentifier
-                });
-              }
-            });
-          });
-
-          formData.append('containerName', container);
-          formData.append('oid', accountIdentifier);
-
-          await api.uploadFiles(formData);
-          await api.AddSupportDocuments(supportDocuments);
-
-          form.resetFields();
-        }
-      }
-      history.push('/tramites-servicios');
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Datos invalidos',
-        text: 'El número de Certificado debe tener mínimo 6 Dígitos'
-      });
     }
+    history.push('/tramites-servicios');
   };
 
   const PruebaCertificado = async () => {

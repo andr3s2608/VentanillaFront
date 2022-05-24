@@ -124,8 +124,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setType(typeList);
       }
 
-
-
       const all = await api.getCertificado(objJosn?.certificado);
 
       if (!all) {
@@ -271,7 +269,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           let codeUser = await api.getCodeUser();
           let nameUser = await api.GetInformationUser(codeUser);
 
-          let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName);
+          let codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+          let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName, codigo);
 
           //window.open(linkPDF, 'hola mundo');
 
@@ -608,7 +607,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const onModalNofificacion = () => {
     setIsModalValidarCertificado(false);
     history.push('/tramites-servicios');
-
   };
 
   const idcontrol = objJosn.idControlTramite;
