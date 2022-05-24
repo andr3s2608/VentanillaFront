@@ -413,29 +413,29 @@ export class ApiService {
 
   getListSubRedes = () =>
     get<any>({
-      endpoint: this.local,
-      url: `api/v1/SubRed/GetSubRed`,
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `SubRed/GetSubRed`,
       id: '0'
     });
 
   getListLocalidades = () =>
     get<any>({
-      endpoint: this.local,
-      url: `api/v1/Localidad/GetAllLocalidad`,
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `Localidad/GetAllLocalidad`,
       id: '0'
     });
 
   getListUPZ = () =>
     get<any>({
-      endpoint: this.local,
-      url: `api/v1/Upz/GetUpz`,
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `Upz/GetUpz`,
       id: '0'
     });
 
   getListBarrios = () =>
     get<any>({
-      endpoint: this.local,
-      url: `api/v1/Barrio/GetBarrios`,
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `Barrio/GetBarrios`,
       id: '0'
     });
 }
