@@ -125,6 +125,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       setsininformacion(true);
+      setLongitudminima(0);
     }
 
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {

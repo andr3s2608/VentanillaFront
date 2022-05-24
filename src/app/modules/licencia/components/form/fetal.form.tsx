@@ -60,6 +60,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [causaMuerte, setCausaMuerte] = useState<string>('');
   //#region Listados
 
@@ -197,13 +198,24 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         segunda = '00000000-0000-0000-0000-000000000000';
       }
 
+      let idnum = values.IDNumber;
+      let idnumaut = values.mauthIDNumber;
+      const tipoaut = values.authIDType;
+
+      if (sininformacion) {
+        idnum = 'Sin Información';
+      }
+      if (tipoaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+        idnumaut = 'Sin Información';
+      }
+
       if (tipoLicencia === 'Inhumación') {
         persona = [
           //madre
           {
             idPersona: obj?.idMadre,
             tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
+            numeroIdentificacion: idnum,
             primerNombre: values.namemother,
             segundoNombre: values.secondNamemother,
             primerApellido: values.surnamemother,
@@ -251,7 +263,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             idPersona: obj?.idMadre,
             tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
+            numeroIdentificacion: idnum,
             primerNombre: values.namemother,
             segundoNombre: values.secondNamemother,
             primerApellido: values.surnamemother,
@@ -272,7 +284,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           {
             //idPersona: '',
             tipoIdentificacion: values.authIDType,
-            numeroIdentificacion: values.mauthIDNumber,
+            numeroIdentificacion: idnumaut,
             primerNombre: values.authName,
             segundoNombre: values.authSecondName,
             primerApellido: values.authSurname,
@@ -643,10 +655,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const ValidacionMadre = async () => {
     let numero: string = form.getFieldValue('IDNumber');
+    let tipo: string = form.getFieldValue('IDType');
     if (numero == undefined) {
       numero = '0';
     }
-    const busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+    let busqueda: any = '';
+
+    if (tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+      busqueda = null;
+    } else {
+      busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+    }
     if (busqueda == null) {
       if (numero.length >= longitudminima) {
         onNextStep([
@@ -907,6 +926,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ IDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+    setsininformacion(false);
+    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setLongitudminima(0);
+      setsininformacion(true);
+    }
+
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
       setLongitudmaxima(10);
@@ -1031,7 +1056,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               label='Número de Identificación'
               initialValue={obj?.IDNumber}
               name='IDNumber'
-              rules={[{ required: true, max: 25 }]}
+              rules={[{ required: !sininformacion, max: 25 }]}
             >
               <Input
                 allowClear
@@ -1039,6 +1064,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Número Identificación'
                 autoComplete='off'
                 pattern={tipocampo}
+                disabled={sininformacion}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
                   if (!tipocampovalidacion.test(event.key)) {
