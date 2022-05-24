@@ -43,10 +43,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
 
-  const [listOfZona, setListOfZona] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-  const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-  const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-  const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
+  const [listOfZona, setListOfZona] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -288,15 +288,29 @@ const RegistroPage: React.FC<any> = (props) => {
   };
 
   const onGeocoding = async () => {
-    let via_principal = 'cr';
-    let numero = '106';
-    let letra = '';
-    let bis = '';
-    let card = '';
-    let numero_b = '53';
-    let letra_b = '';
-    let placa = '26';
-    let card_b = '';
+    const { direccion } = store.getState();
+    let [via_principal, numero, letra, bis, card, numero_b, letra_b, placa, card_b] = direccion;
+
+    switch (via_principal) {
+      case 'AK- Avenida Carrera':
+        via_principal = 'AK';
+        break;
+      case 'AC- Avenida Calle':
+        via_principal = 'AC';
+        break;
+      case 'CL- Calle':
+        via_principal = 'CL';
+        break;
+      case 'DG- Diagonal':
+        via_principal = 'DG';
+        break;
+      case 'KR- Carrera':
+        via_principal = 'KR';
+        break;
+      case 'TV- Transversal':
+        via_principal = 'TV';
+        break;
+    }
 
     if (form.getFieldValue('state') === 1) {
       let XML = `
@@ -309,10 +323,19 @@ const RegistroPage: React.FC<any> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-      //const algo = api.geocoding(XML);
-      //console.log(algo);
-      console.log('imprimiendo el formulario:');
-      console.log();
+      const algo = api.geocoding(XML);
+      console.log(algo);
+      const list_barrios = await api.getListBarrios();
+      const list_upz = await api.getListUPZ();
+      const list_localidades = await api.getListLocalidades();
+
+      //console.log(list_barrios);
+      //console.log(list_upz);
+      //console.log(list_localidades);
+      setListOfLocalidad(list_localidades);
+      setListOfUPZ(list_upz);
+      setListOfBarrio(list_barrios);
+
       setStateDisplayBox('block');
     }
   };
@@ -633,12 +656,12 @@ const RegistroPage: React.FC<any> = (props) => {
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Localidad</label>
-                <Form.Item label='' name='localidad' initialValue={'id1'}>
+                <Form.Item label='' name='localidad' initialValue={'ANTONIO NARIÑO'}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
-                    optionPropkey='key'
-                    optionPropLabel='key'
+                    optionPropkey='descripcion'
+                    optionPropLabel='descripcion'
                     onChange={(event) => {
                       console.log('Se cambió la localidad');
                     }}
@@ -649,12 +672,12 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Upz</label>
-                <Form.Item label='' name='upz' initialValue={'id1'}>
+                <Form.Item label='' name='upz' initialValue={'AMERICAS'}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
-                    optionPropkey='key'
-                    optionPropLabel='key'
+                    optionPropkey='descripcion'
+                    optionPropLabel='descripcion'
                     onChange={(event) => {
                       console.log('se cambió la UPZ');
                     }}
@@ -663,12 +686,12 @@ const RegistroPage: React.FC<any> = (props) => {
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Barrio</label>
-                <Form.Item label='' name='barrio' initialValue={'id1'}>
+                <Form.Item label='' name='barrio' initialValue={'ACACIAS USAQUEN'}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfBarrio}
-                    optionPropkey='key'
-                    optionPropLabel='key'
+                    optionPropkey='descripcion'
+                    optionPropLabel='descripcion'
                     onChange={(event) => {
                       console.log('Se cambio el barrio');
                     }}
