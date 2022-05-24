@@ -66,6 +66,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
+
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
@@ -76,9 +77,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
   const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(6);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{6,10}');
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
+  const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
   const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
+  const [l_tipos_documento_autoriza, settiposautoriza] = useState<any>();
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
@@ -100,6 +105,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_type(ETipoDominio.Regimen),
         dominioService.get_type(ETipoDominio['Tipo de Muerte'])
       ]);
+
+      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+
+      settiposautoriza(nuevalista);
+
+      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      setCausaMuerte(causa['valor']);
 
       const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
@@ -151,11 +164,29 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    let observacionCausaMuerte = causaMuerte;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = '';
+    }
+
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
     const idUser = await api.getCodeUser();
     const resp = await api.GetInformationUser(idUser);
+    let idnum = values.IDNumber;
+    let idnumaut = values.mauthIDNumber;
+
+    if (sininformacion) {
+      idnum = 'Sin Información';
+    }
+    if (sininformacionaut) {
+      idnumaut = 'Sin Información';
+    }
 
     const tipoinst = values.instTipoIdent;
     var tipoidinst = values.instTipoIdent;
@@ -205,17 +236,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var tipoid = resp.tipoIdentificacion + '';
     var nroid = resp.numeroIdentificacion + '';
     if (resp.tipoIdentificacion == 5) {
-      console.log('entro1');
       tipo = 'Juridica';
       razon = resp.razonSocial;
     } else {
-      console.log('entro 2');
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
-    console.log(tipoid, nroid, ' numero');
 
     const dep = values.state;
     var mun = values.city;
@@ -229,8 +257,121 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     if (segunda == undefined) {
       segunda = '00000000-0000-0000-0000-000000000000';
     }
+    let persona: any[] = [];
 
-    console.log(values.certificado, ' NUMERO CERTIFICADO');
+    if (tipoLicencia === 'Inhumación') {
+      persona = [
+        //fallecido
+        {
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: idnum,
+          primerNombre: values.name,
+          segundoNombre: values.secondName,
+          primerApellido: values.surname,
+          segundoApellido: values.secondSurname,
+          fechaNacimiento: values.dateOfBirth,
+          nacionalidad: values.nationalidad[0],
+          segundanacionalidad: segunda,
+          otroParentesco: null,
+          idEstadoCivil: values.civilStatus,
+          idNivelEducativo: values.educationLevel,
+          idEtnia: values.etnia,
+          idRegimen: values.regimen,
+          idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+          idParentesco: parentesco,
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+
+        //certifica la defuncion
+        {
+          tipoIdentificacion: values.medicalSignatureIDType,
+          numeroIdentificacion: values.medicalSignatureIDNumber,
+          primerNombre: values.medicalSignatureName,
+          segundoNombre: values.medicalSignatureSecondName,
+          primerApellido: values.medicalSignatureSurname,
+          segundoApellido: values.medicalSignatureSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null,
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: values.regimen,
+          idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+          idTipoProfesional: values.medicalSignatureProfesionalType
+        }
+      ];
+    }
+    if (tipoLicencia === 'Cremación') {
+      persona = [
+        //madre
+        {
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: idnum,
+          primerNombre: values.name,
+          segundoNombre: values.secondName,
+          primerApellido: values.surname,
+          segundoApellido: values.secondSurname,
+          fechaNacimiento: values.dateOfBirth,
+          nacionalidad: values.nationalidad[0],
+          segundanacionalidad: segunda,
+          otroParentesco: null,
+          idEstadoCivil: values.civilStatus,
+          idNivelEducativo: values.educationLevel,
+          idEtnia: values.etnia,
+          idRegimen: values.regimen,
+          idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+          idParentesco: parentesco,
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+        //authorizador cremacion
+        {
+          //idPersona: '',
+          tipoIdentificacion: values.authIDType,
+          numeroIdentificacion: idnumaut,
+          primerNombre: values.authName,
+          segundoNombre: values.authSecondName,
+          primerApellido: values.authSurname,
+          segundoApellido: values.authSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: parentesco, //lista parentesco
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: '00000000-0000-0000-0000-000000000000',
+          idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+        },
+        //certifica la defuncion
+        {
+          tipoIdentificacion: values.medicalSignatureIDType,
+          numeroIdentificacion: values.medicalSignatureIDNumber,
+          primerNombre: values.medicalSignatureName,
+          segundoNombre: values.medicalSignatureSecondName,
+          primerApellido: values.medicalSignatureSurname,
+          segundoApellido: values.medicalSignatureSecondSurname,
+          fechaNacimiento: null,
+          nacionalidad: '00000000-0000-0000-0000-000000000000',
+          segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+          otroParentesco: null,
+          idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+          idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+          idEtnia: '00000000-0000-0000-0000-000000000000',
+          idRegimen: values.regimen,
+          idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
+          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
+          idTipoProfesional: values.medicalSignatureProfesionalType
+        }
+      ];
+    }
+
     const json: IRegistroLicencia<any> = {
       solicitud: {
         numeroCertificado: values.certificado,
@@ -247,51 +388,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         tipoIdentificacionSolicitante: tipoid,
         noIdentificacionSolicitante: nroid,
         razonSocialSolicitante: razon,
-        persona: [
-          //fallecido
-          {
-            tipoIdentificacion: values.IDType,
-            numeroIdentificacion: values.IDNumber,
-            primerNombre: values.name,
-            segundoNombre: values.secondName,
-            primerApellido: values.surname,
-            segundoApellido: values.secondSurname,
-            fechaNacimiento: values.dateOfBirth,
-            nacionalidad: values.nationalidad[0],
-            segundanacionalidad: segunda,
-            otroParentesco: null,
-            idEstadoCivil: values.civilStatus,
-            idNivelEducativo: values.educationLevel,
-            idEtnia: values.etnia,
-            idRegimen: values.regimen,
-            idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-            idParentesco: parentesco,
-            idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-          },
-          //authorizador cremacion
-
-          //certifica la defuncion
-          {
-            tipoIdentificacion: values.medicalSignatureIDType,
-            numeroIdentificacion: values.medicalSignatureIDNumber,
-            primerNombre: values.medicalSignatureName,
-            segundoNombre: values.medicalSignatureSecondName,
-            primerApellido: values.medicalSignatureSurname,
-            segundoApellido: values.medicalSignatureSecondSurname,
-            fechaNacimiento: null,
-            nacionalidad: '00000000-0000-0000-0000-000000000000',
-            segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-            otroParentesco: null,
-            idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-            idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-            idEtnia: '00000000-0000-0000-0000-000000000000',
-            idRegimen: values.regimen,
-            idTipoPersona: 'D8B0250B-2991-42A0-A672-8E3E45985500',
-            idParentesco: '00000000-0000-0000-0000-000000000000',
-            idLugarExpedicion: '1e05f64f-5e41-4252-862c-5505dbc3931c', //values.medicalSignatureIDExpedition,
-            idTipoProfesional: values.medicalSignatureProfesionalType
-          }
-        ],
+        persona,
         lugarDefuncion: {
           idPais: values.country,
           idDepartamento: values.state,
@@ -340,8 +437,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           apellidoSolicitante: values.lastnamesolicitudadd,
           correoSolicitante: values.emailsolicitudadd,
           correoMedico: '',
-          cumpleCausa: true,
-          observacionCausa: ''
+          cumpleCausa: banderaCausa,
+          observacionCausa: observacionCausaMuerte
         },
 
         institucionCertificaFallecimiento: {
@@ -358,7 +455,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-    console.log(json);
+
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
     const formData = new FormData();
@@ -576,10 +673,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const ValidacionFallecido = async () => {
     let numero: string = form.getFieldValue('IDNumber');
-    if (numero == undefined) {
+    let tipo: string = form.getFieldValue('IDType');
+
+    if (numero == undefined || numero == '') {
       numero = '0';
     }
-    const busqueda = await api.GetDocumentoFallecido(numero, '01F64F02-373B-49D4-8CB1-CB677F74292C');
+    let busqueda: any = '';
+
+    if (tipo == '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+      busqueda = null;
+    } else {
+      busqueda = await api.GetDocumentoFallecido(numero, '01F64F02-373B-49D4-8CB1-CB677F74292C');
+    }
+
     if (busqueda == null) {
       if (numero.length >= longitudminima) {
         onNextStep([
@@ -670,47 +776,64 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //#endregion
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
-    form.setFieldsValue({ IDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
-    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-      setLongitudminima(6);
+    setsininformacion(false);
+
+    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setsininformacion(true);
+      setLongitudminima(0);
+    }
+
+    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
+      setLongitudminima(2);
       setLongitudmaxima(10);
-      setTipocampo('[0-9]{6,10}');
+      setTipocampo('[0-9]{2,10}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
-      setTipodocumento('Cédula de Ciudadanía');
+      setTipodocumento('Tipo de Protocolo');
+      form.setFieldsValue({ IDNumber: '8001508610' });
     } else {
-      if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
-        setLongitudminima(10);
-        setLongitudmaxima(11);
-        setTipocampo('[0-9]{10,11}');
+      form.setFieldsValue({ IDNumber: undefined });
+      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+        setLongitudminima(6);
+        setLongitudmaxima(10);
+        setTipocampo('[0-9]{6,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
-        setTipodocumento('Tarjeta de Identidad ');
+        setTipodocumento('Cédula de Ciudadanía');
       } else {
-        if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-          setLongitudminima(15);
-          setLongitudmaxima(15);
-          setTipocampo('[0-9]{15,15}');
+        if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+          setLongitudminima(10);
+          setLongitudmaxima(11);
+          setTipocampo('[0-9]{10,11}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
-          setTipodocumento('Permiso Especial de Permanencia');
+          setTipodocumento('Tarjeta de Identidad ');
         } else {
-          if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-            setLongitudminima(10);
-            setLongitudmaxima(11);
-            setTipocampo('[a-zA-Z0-9]{10,11}');
-            setTipocampovalidacion(/[a-zA-Z0-9]/);
-            setCampo('AlfaNuméricos(Numéros y letras)');
-            setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+          if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+            setLongitudminima(15);
+            setLongitudmaxima(15);
+            setTipocampo('[0-9]{15,15}');
+            setTipocampovalidacion(/[0-9]/);
+            setCampo('Numéricos');
+            setTipodocumento('Permiso Especial de Permanencia');
           } else {
-            setLongitudminima(6);
-            setLongitudmaxima(10);
-            setTipocampo('[a-zA-Z0-9]{6,10}');
-            setTipocampovalidacion(/[a-zA-Z0-9]/);
-            setCampo('AlfaNuméricos(Numéros y letras)');
-            setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+            if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+              setLongitudminima(10);
+              setLongitudmaxima(11);
+              setTipocampo('[a-zA-Z0-9]{10,11}');
+              setTipocampovalidacion(/[a-zA-Z0-9]/);
+              setCampo('AlfaNuméricos(Numéros y letras)');
+              setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            } else {
+              setLongitudminima(6);
+              setLongitudmaxima(10);
+              setTipocampo('[a-zA-Z0-9]{6,10}');
+              setTipocampovalidacion(/[a-zA-Z0-9]/);
+              setCampo('AlfaNuméricos(Numéros y letras)');
+              setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+            }
           }
         }
       }
@@ -720,6 +843,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     form.setFieldsValue({ mauthIDNumber: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+    setsininformacionaut(false);
+
+    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setsininformacionaut(true);
+       setLongitudminimaautoriza(0);
+    }
 
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminimaautoriza(6);
@@ -793,7 +922,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}
@@ -933,18 +1062,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
-              <Form.Item
-                label='Número de Identificación'
-                name='IDNumber'
-                initialValue={objJosn?.IDNumber !== undefined ? objJosn?.IDNumber : null}
-                rules={[{ required: true }]}
-              >
+              <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: !sininformacion }]}>
                 <Input
                   allowClear
                   type='text'
                   placeholder='Número Identificación'
                   autoComplete='off'
                   pattern={tipocampo}
+                  disabled={sininformacion}
                   maxLength={longitudmaxima}
                   onKeyPress={(event) => {
                     if (!tipocampovalidacion.test(event.key)) {
@@ -1106,7 +1231,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         rules={[{ required: true }]}
                       >
                         <SelectComponent
-                          options={l_tipos_documento}
+                          options={l_tipos_documento_autoriza}
                           onChange={cambiodocumentoautoriza}
                           optionPropkey='id'
                           optionPropLabel='descripcion'
@@ -1116,7 +1241,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       <Form.Item
                         label='Número de Identificación'
                         name='mauthIDNumber'
-                        rules={[{ required: true }]}
+                        rules={[{ required: !sininformacionaut }]}
                         initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
                       >
                         <Input
@@ -1125,6 +1250,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           placeholder='Número Identificación'
                           autoComplete='off'
                           pattern={tipocampoautoriza}
+                          disabled={sininformacion}
                           maxLength={longitudmaximaautoriza}
                           onKeyPress={(event) => {
                             if (!tipocampovalidacionautoriza.test(event.key)) {

@@ -12,7 +12,8 @@ const {
   REACT_APP_ENDPOINTV1,
   REACT_APP_NOTIFICACION,
   REACT_APP_BLOB,
-  REACT_APP_FORMATOS
+  REACT_APP_FORMATOS,
+  REACT_APP_LOCAL
 } = process.env;
 
 export class ApiService {
@@ -33,11 +34,22 @@ export class ApiService {
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
 
   ObtenerSolicitud = (numero: string, tipo: string) =>
-    get<string>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarLicencia/${numero}/${tipo}`, id: '0' });
+    get<string>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/ConsultarLicencia/${numero}/${tipo}`,
+      id: '0'
+    });
+
+  ModificarCementerio = (numero: string, tipo: string, nombre: string) =>
+    post<string>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/ModificarCementerio/${numero}/${tipo}/${nombre}`,
+      id: '0'
+    });
 
   agregarFirma = (payload: any) => {
     return post<any>({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: 'https://localhost:5001/api/',
       url: 'Request/AddFirma',
       payload,
       id: '1'
@@ -274,13 +286,7 @@ export class ApiService {
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
-      (REACT_APP_INHCREMACION as string) +
-      'GeneratePDF/GeneratePDFPrev/' +
-      idTramite +
-      '/' +
-      idTramitador +
-      '/' +
-      nombreTramitador
+      'https://localhost:5001/api/' + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador
     );
   };
 
@@ -291,8 +297,86 @@ export class ApiService {
   };
   validarFirmaFuncionario = (idTramitador: string) =>
     get<any>({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: 'https://localhost:5001/api/',
       url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
       id: '0'
+    });
+
+  /**
+   * Servicio para la georreferenciación
+   */
+  geocoding = (payload: any) =>
+    post<any>({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        }
+      },
+      confirmModal: false
+    });
+
+  getZonaSig = (payload: any) =>
+    post<any>({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        }
+      },
+      confirmModal: false
+    });
+
+  getLocalidadSig = (payload: any) =>
+    post<any>({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        }
+      },
+      confirmModal: false
+    });
+
+  getUpzSig = (payload: any) =>
+    post<any>({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        }
+      },
+      confirmModal: false
+    });
+
+  getBarrioSig = (payload: any) =>
+    post<any>({
+      endpoint: 'http://sig.saludcapital.gov.co/',
+      url: 'wsdireccion/direccion.asmx',
+      payload,
+      id: '0',
+      options: {
+        headers: {
+          'Content-Type': 'application/soap+xml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        }
+      },
+      confirmModal: false
     });
 }

@@ -46,6 +46,7 @@ export class MapperMenu {
       });
       const json = {
         name: item.titulo,
+        path: item.path,
         fatherchildren,
         children
       };

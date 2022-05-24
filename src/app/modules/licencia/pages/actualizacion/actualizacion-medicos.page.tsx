@@ -1,9 +1,8 @@
-// Antd
 import Tabs from 'antd/es/tabs';
 
 // Componentes
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-import { HorariosGestion } from 'app/modules/licencia/components/form/horarios.form';
+import { ModificarMedico } from 'app/modules/licencia/components/form/modificarmedicos.form';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -11,15 +10,15 @@ const { TabPane } = Tabs;
 const PruebaPage = () => {
   return (
     <div className='fadeInTop container-fluid'>
-      <PageHeaderComponent title='Gestion de Horario de Atención' />
+      <PageHeaderComponent title='Actualizar Datos' />
 
       <Tabs>
-        <TabPane tab='Gestion de Horario de Atención' key='1'>
-          <HorariosGestion props={1} />;
+        <TabPane tab='Actualizar Datos de Medico' key='1'>
+          <ModificarMedico props={1} />;
         </TabPane>
       </Tabs>
     </div>
   );
 };
-
+//
 export default PruebaPage;

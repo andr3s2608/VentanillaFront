@@ -17,7 +17,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import Swal from 'sweetalert2';
 
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
-  const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
+  const [[l_tipo_profesional], setLTipoDocumento] = useState<IDominio[][]>([[]]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(6);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
@@ -26,7 +26,9 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [correofun, setcorreofun] = useState<string>();
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const { obj, prop, form } = props;
+  const [l_tipo_documento, settipos] = useState<any>();
   const lugarFuneraria = obj?.isLugar();
   const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
   const [l_funerarias, setLfunerarias] = useState<ICementerio[]>([]);
@@ -38,11 +40,11 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   const getLista = useCallback(
     async () => {
-      const resp = await Promise.all([
-        dominioService.get_type(ETipoDominio['Tipo de Profesional']),
-        dominioService.get_type(ETipoDominio['Tipo Documento'])
-      ]);
+      const resp = await Promise.all([dominioService.get_type(ETipoDominio['Tipo de Profesional'])]);
 
+      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+      settipos(nuevalista);
       const userres = await api.getCodeUser();
 
       const informationUser = await api.GetInformationUser(userres);
@@ -118,6 +120,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     form.setFieldsValue({ ndoc: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
+
+    setsininformacion(false);
+
+    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setsininformacion(true);
+      setLongitudminima(0);
+    }
+
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(6);
       setLongitudmaxima(10);
@@ -195,13 +205,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
 
-      <Form.Item label='Numero documento' required={true} name='ndoc'>
+      <Form.Item label='Numero documento' required={!sininformacion} name='ndoc'>
         <Input
           allowClear
           type='text'
           placeholder='Número Identificación'
           autoComplete='off'
           pattern={tipocampo}
+          disabled={sininformacion}
           maxLength={longitudmaxima}
           onKeyPress={(event) => {
             if (!tipocampovalidacion.test(event.key)) {

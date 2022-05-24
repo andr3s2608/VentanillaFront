@@ -15,7 +15,15 @@ export const EditInhumacion = (id: String) => {
 };
 
 const formatObjJson = (obj: any, id: String) => {
-  const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio, resumenSolicitud } = obj;
+  const {
+    institucionCertificaFallecimiento,
+    lugarDefuncion,
+    persona,
+    ubicacionPersona,
+    datosCementerio,
+    resumenSolicitud,
+    datosFuneraria
+  } = obj;
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
   //en caso de que no exista un fallecido, se tomara el de la madre
@@ -37,6 +45,8 @@ const formatObjJson = (obj: any, id: String) => {
       check: obj.sinEstablecer,
       sex: obj.idSexo,
       idSolicitud: obj.idSolicitud,
+
+      idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
       country: lugarDefuncion.idPais,
       state: lugarDefuncion.idDepartamento,
@@ -120,6 +130,8 @@ const formatObjJson = (obj: any, id: String) => {
       city: lugarDefuncion.idMunicipio,
       areaDef: lugarDefuncion.idAreaDefuncion,
       sitDef: lugarDefuncion.idSitioDefuncion,
+
+      idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
       instType: institucionCertificaFallecimiento.idTipoInstitucion,
       instTipoIdent: institucionCertificaFallecimiento.tipoIdentificacion,
