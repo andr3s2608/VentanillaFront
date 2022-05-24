@@ -644,9 +644,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfZona}
                     optionPropkey='key'
                     optionPropLabel='key'
-                    onChange={(event) => {
-                      console.log('Se cambio la zona');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>

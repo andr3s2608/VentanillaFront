@@ -18,7 +18,7 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 
 //Redux
 import { store } from 'app/redux/app.reducers';
-import { UploadOutlined } from '@ant-design/icons';
+import { AimOutlined, UploadOutlined } from '@ant-design/icons';
 import { Input, Radio } from 'antd';
 
 export const ValidarDocumentos = ({ props }: any) => {
@@ -50,7 +50,10 @@ export const ValidarDocumentos = ({ props }: any) => {
 
   const BuscarCementerio = async () => {
     const idsol: string = form.getFieldValue('nrodocumento');
-    const solicitud = await api.getLicencia(idsol);
+    const getidtramite = await api.Obteneridcontroltramite(idsol);
+    const getidsol = await api.ObtenerSolicitud(getidtramite.idControlTramite, 'tramite');
+
+    const solicitud = await api.getLicencia(getidsol);
     if (idsol == null) {
       Swal.fire({
         icon: 'error',

@@ -40,6 +40,19 @@ export class ApiService {
       id: '0'
     });
 
+  ObtenerCodigoVerificacion = (numero: string) =>
+    get<string>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/ValidacionDocumentos/getIdUnico/${numero}`,
+      id: '0'
+    });
+  Obteneridcontroltramite = (numero: string) =>
+    get<any>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/ValidacionDocumentos/validationString/${numero}`,
+      id: '0'
+    });
+
   ModificarCementerio = (numero: string, tipo: string, nombre: string) =>
     post<string>({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -49,7 +62,7 @@ export class ApiService {
 
   agregarFirma = (payload: any) => {
     return post<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_INHCREMACION as string,
       url: 'Request/AddFirma',
       payload,
       id: '1'
@@ -286,18 +299,32 @@ export class ApiService {
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
-      'https://localhost:5001/api/' + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador
+      (REACT_APP_INHCREMACION as string) +
+      'GeneratePDF/GeneratePDFPrev/' +
+      idTramite +
+      '/' +
+      idTramitador +
+      '/' +
+      nombreTramitador
     );
   };
 
-  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string): string => {
+  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): string => {
     return (
-      (REACT_APP_INHCREMACION as string) + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador + '/' + nombreTramitador
+      (REACT_APP_INHCREMACION as string) +
+      'GeneratePDF/GeneratePDF/' +
+      idTramite +
+      '/' +
+      tramitador +
+      '/' +
+      nombreTramitador +
+      '/' +
+      codigo
     );
   };
   validarFirmaFuncionario = (idTramitador: string) =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Seguimiento/ValidarFirmaFuncionarioByIdUsuario/${idTramitador}`,
       id: '0'
     });
