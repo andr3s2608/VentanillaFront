@@ -319,19 +319,15 @@ const RegistroPage: React.FC<any> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-      const algo = api.geocoding(XML);
-      console.log(algo);
+      //const algo = api.geocoding(XML);
+      //console.log(algo);
       const list_barrios = await api.getListBarrios();
       const list_upz = await api.getListUPZ();
       const list_localidades = await api.getListLocalidades();
 
-      //console.log(list_barrios);
-      //console.log(list_upz);
-      //console.log(list_localidades);
       setListOfLocalidad(list_localidades);
       setListOfUPZ(list_upz);
       setListOfBarrio(list_barrios);
-
       setStateDisplayBox('block');
     }
   };
