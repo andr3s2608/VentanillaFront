@@ -2,7 +2,7 @@
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 
 // Utilidades
-import { direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
+import { EstadoCivil, direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
@@ -16,14 +16,12 @@ import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { dominioService } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
-import { EstadoCivil } from 'app/shared/utils/constants.util';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
-//import '../../../scss/antd/index.css';
-//Redux
+
 import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 
 const RegistroPage: React.FC<any> = (props) => {
@@ -42,12 +40,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const [l_municipiosres, setLMunicipiosres] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
-
   const [listOfZona, setListOfZona] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
-
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
