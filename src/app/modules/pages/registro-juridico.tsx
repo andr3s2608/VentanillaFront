@@ -111,6 +111,7 @@ const RegistroPage: React.FC<any> = (props) => {
         store.dispatch(SetGrid({ key: 'relaodMenu' }));
 
         Swal.fire({
+          icon: 'success',
           title: 'Usuario Registrado',
           text: 'El Usuario ' + value.razonsocial + ' ha sido Registrado de manera exitosa',
           showClass: {
@@ -118,8 +119,7 @@ const RegistroPage: React.FC<any> = (props) => {
           },
           hideClass: {
             popup: 'animate__animated animate__fadeOutUp'
-          },
-          icon: 'info'
+          }
         });
         history.push('/');
       }

@@ -146,6 +146,13 @@ export class ApiService {
   putLicencia = (payload: any) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
 
+  ModificarConstante = (constante: string, valor: string, validacion: string) =>
+    put({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/UpdateConstante/${constante}/${valor}`,
+      id: validacion
+    });
+
   uploadFiles = (payload: any) =>
     post({
       endpoint: REACT_APP_BLOB as string,

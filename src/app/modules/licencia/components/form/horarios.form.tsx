@@ -66,13 +66,40 @@ export const HorariosGestion = ({ props }: any) => {
     return date;
   };
 
+  const AsignarCero = (values: string) => {
+    const inicio: number = parseInt(values.substring(0, values.lastIndexOf(':')));
+    const fin: String = values.substring(values.lastIndexOf(':'), values.length);
+
+    let valor = '';
+    if (inicio < 10) {
+      valor = '0' + inicio + fin;
+    } else {
+      valor = '' + inicio + fin;
+    }
+
+    return valor;
+  };
   useEffect(() => {
     getListas();
   }, []);
 
-  const onSubmit = (values: any) => {
-    if (selecciono) {
-    }
+  const onSubmit = async (values: any) => {
+    const iniciolv = AsignarCero(moment(values.iniciosemana).format('LT'));
+    const finlv = AsignarCero(moment(values.finsemana).format('LT'));
+    const iniciosd = AsignarCero(moment(values.iniciofinsemana).format('LT'));
+    const finsd = AsignarCero(moment(values.findesemana).format('LT'));
+
+    console.log();
+    await api.ModificarConstante('5DF03735-503B-4D22-8169-E4FCDD19DA26', iniciolv, '0');
+    await api.ModificarConstante('818AA32D-C90D-45D0-975F-486D069F7CB1', finlv, '1');
+    await api.ModificarConstante('CE62162E-5E79-4E05-AEDE-276B6C89D886', iniciosd, '1');
+    await api.ModificarConstante('A196007F-BCCB-4160-B345-1F8605949E46', finsd, '1');
+    Swal.fire({
+      icon: 'success',
+
+      title: 'Horario Modiicado',
+      text: 'Se han modificado los horarios de atención exitosamente'
+    });
   };
 
   const onSubmitFailed = () => {
