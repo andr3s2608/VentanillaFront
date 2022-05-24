@@ -141,7 +141,7 @@ export const ModificarCementerio = ({ props }: any) => {
                   style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
                   className='text-uppercase font-weight-bold'
                 >
-                  Modificar Cementerio
+                  Modificar Cementerio Oracle
                 </p>
               </div>
             </div>

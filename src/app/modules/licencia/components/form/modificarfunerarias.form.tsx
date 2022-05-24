@@ -170,7 +170,7 @@ export const ModificarFuneraria = ({ props }: any) => {
                   style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
                   className='text-uppercase font-weight-bold'
                 >
-                  Modificar Funeraria
+                  Modificar Funeraria Oracle
                 </p>
               </div>
             </div>

@@ -105,7 +105,7 @@ export const ModificarMedico = ({ props }: any) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <Divider orientation='left'>Modificar Licencia</Divider>
+          <Divider orientation='left'>Modificar Medicos Oracle</Divider>
 
           <div className='row'>
             <div className='col-6'>

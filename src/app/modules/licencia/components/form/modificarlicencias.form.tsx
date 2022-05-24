@@ -285,7 +285,7 @@ export const ModificarLicencia = ({ props }: any) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <Divider orientation='left'>Modificar Licencia</Divider>
+          <Divider orientation='left'>Modificar Licencia Azure</Divider>
           <p>Buscar por:</p>
           <Radio.Group onChange={changeRadioButton} defaultValue={'tramite'}>
             <Radio value='tramite'>Número de tramite</Radio>

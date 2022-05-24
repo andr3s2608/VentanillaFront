@@ -44,6 +44,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [emailfuneraria, setemailfuneraria] = useState<string | undefined>();
   const [iscementerio, setiscementerio] = useState(false);
   const [isfuneraria, setisfuneraria] = useState(false);
+  const [cargofuneraria, setcargofuneraria] = useState(false);
 
   const [funeraria, setfuneraria] = useState<string | undefined>();
   const [l_funeraria, setl_funeraria] = useState<any>();
@@ -144,7 +145,9 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     }, '');
     setdepartamentofuneraria(departamentofuneraria);
 */
+
     setfuneraria(funeraria);
+    setcargofuneraria(true);
     setListas(resp);
   }, []);
 
@@ -447,23 +450,25 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           </div>
         </div>
       </div>
-      <List
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 1,
-          md: 3,
-          lg: 3,
-          xl: 3,
-          xxl: 3
-        }}
-        dataSource={funerarias}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta title={item.title} description={item.describe} />
-          </List.Item>
-        )}
-      />
+      {cargofuneraria && (
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3
+          }}
+          dataSource={funerarias}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta title={item.title} description={item.describe} />
+            </List.Item>
+          )}
+        />
+      )}
 
       <div className='ant-container d-flex justify-content-center w-100'>
         <div className='ant-row text-center'>

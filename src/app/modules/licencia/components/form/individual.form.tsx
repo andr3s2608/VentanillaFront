@@ -781,58 +781,58 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacion(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setsininformacion(true);
       setLongitudminima(0);
-    }
-
-    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
-      setLongitudminima(2);
-      setLongitudmaxima(10);
-      setTipocampo('[0-9]{2,10}');
-      setTipocampovalidacion(/[0-9]/);
-      setCampo('Numéricos');
-      setTipodocumento('Tipo de Protocolo');
-      form.setFieldsValue({ IDNumber: '8001508610' });
+      setsininformacion(true);
     } else {
-      form.setFieldsValue({ IDNumber: undefined });
-      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminima(6);
+      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
+        setLongitudminima(2);
         setLongitudmaxima(10);
-        setTipocampo('[0-9]{6,10}');
+        setTipocampo('[0-9]{2,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
-        setTipodocumento('Cédula de Ciudadanía');
+        setTipodocumento('Tipo de Protocolo');
+        form.setFieldsValue({ IDNumber: '8001508610' });
       } else {
-        if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
-          setLongitudminima(10);
-          setLongitudmaxima(11);
-          setTipocampo('[0-9]{10,11}');
+        form.setFieldsValue({ IDNumber: undefined });
+        if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+          setLongitudminima(6);
+          setLongitudmaxima(10);
+          setTipocampo('[0-9]{6,10}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
-          setTipodocumento('Tarjeta de Identidad ');
+          setTipodocumento('Cédula de Ciudadanía');
         } else {
-          if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-            setLongitudminima(15);
-            setLongitudmaxima(15);
-            setTipocampo('[0-9]{15,15}');
+          if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+            setLongitudminima(10);
+            setLongitudmaxima(11);
+            setTipocampo('[0-9]{10,11}');
             setTipocampovalidacion(/[0-9]/);
             setCampo('Numéricos');
-            setTipodocumento('Permiso Especial de Permanencia');
+            setTipodocumento('Tarjeta de Identidad ');
           } else {
-            if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-              setLongitudminima(10);
-              setLongitudmaxima(11);
-              setTipocampo('[a-zA-Z0-9]{10,11}');
-              setTipocampovalidacion(/[a-zA-Z0-9]/);
-              setCampo('AlfaNuméricos(Numéros y letras)');
-              setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+              setLongitudminima(15);
+              setLongitudmaxima(15);
+              setTipocampo('[0-9]{15,15}');
+              setTipocampovalidacion(/[0-9]/);
+              setCampo('Numéricos');
+              setTipodocumento('Permiso Especial de Permanencia');
             } else {
-              setLongitudminima(6);
-              setLongitudmaxima(10);
-              setTipocampo('[a-zA-Z0-9]{6,10}');
-              setTipocampovalidacion(/[a-zA-Z0-9]/);
-              setCampo('AlfaNuméricos(Numéros y letras)');
-              setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+              if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+                setLongitudminima(10);
+                setLongitudmaxima(11);
+                setTipocampo('[a-zA-Z0-9]{10,11}');
+                setTipocampovalidacion(/[a-zA-Z0-9]/);
+                setCampo('AlfaNuméricos(Numéros y letras)');
+                setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+              } else {
+                setLongitudminima(6);
+                setLongitudmaxima(10);
+                setTipocampo('[a-zA-Z0-9]{6,10}');
+                setTipocampovalidacion(/[a-zA-Z0-9]/);
+                setCampo('AlfaNuméricos(Numéros y letras)');
+                setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+              }
             }
           }
         }
@@ -847,47 +847,47 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       setsininformacionaut(true);
-       setLongitudminimaautoriza(0);
-    }
-
-    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-      setLongitudminimaautoriza(6);
-      setLongitudmaximaautoriza(10);
-      setTipocampoautoriza('[0-9]{6,10}');
-      setTipocampovalidacionautoriza(/[0-9]/);
-      setCampoautoriza('Numéricos');
-      setTipodocumentoautoriza('Cédula de Ciudadanía');
+      setLongitudminimaautoriza(0);
     } else {
-      if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
-        setLongitudminimaautoriza(10);
-        setLongitudmaximaautoriza(11);
-        setTipocampoautoriza('[0-9]{10,11}');
+      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+        setLongitudminimaautoriza(6);
+        setLongitudmaximaautoriza(10);
+        setTipocampoautoriza('[0-9]{6,10}');
         setTipocampovalidacionautoriza(/[0-9]/);
         setCampoautoriza('Numéricos');
-        setTipodocumentoautoriza('Tarjeta de Identidad ');
+        setTipodocumentoautoriza('Cédula de Ciudadanía');
       } else {
-        if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-          setLongitudminimaautoriza(15);
-          setLongitudmaximaautoriza(15);
-          setTipocampoautoriza('[0-9]{15,15}');
+        if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+          setLongitudminimaautoriza(10);
+          setLongitudmaximaautoriza(11);
+          setTipocampoautoriza('[0-9]{10,11}');
           setTipocampovalidacionautoriza(/[0-9]/);
           setCampoautoriza('Numéricos');
-          setTipodocumentoautoriza('Permiso Especial de Permanencia');
+          setTipodocumentoautoriza('Tarjeta de Identidad ');
         } else {
-          if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-            setLongitudminimaautoriza(10);
-            setLongitudmaximaautoriza(11);
-            setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
-            setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
-            setCampoautoriza('AlfaNuméricos(Numéros y letras)');
-            setTipodocumentoautoriza('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+          if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+            setLongitudminimaautoriza(15);
+            setLongitudmaximaautoriza(15);
+            setTipocampoautoriza('[0-9]{15,15}');
+            setTipocampovalidacionautoriza(/[0-9]/);
+            setCampoautoriza('Numéricos');
+            setTipodocumentoautoriza('Permiso Especial de Permanencia');
           } else {
-            setLongitudminimaautoriza(6);
-            setLongitudmaximaautoriza(10);
-            setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
-            setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
-            setCampoautoriza('AlfaNuméricos(Numéros y letras)');
-            setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+            if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+              setLongitudminimaautoriza(10);
+              setLongitudmaximaautoriza(11);
+              setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
+              setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+              setCampoautoriza('AlfaNuméricos(Numéros y letras)');
+              setTipodocumentoautoriza('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            } else {
+              setLongitudminimaautoriza(6);
+              setLongitudmaximaautoriza(10);
+              setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
+              setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+              setCampoautoriza('AlfaNuméricos(Numéros y letras)');
+              setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+            }
           }
         }
       }
