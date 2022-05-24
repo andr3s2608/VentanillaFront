@@ -148,7 +148,7 @@ export class ApiService {
 
   ModificarConstante = (constante: string, valor: string, validacion: string) =>
     put({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/UpdateConstante/${constante}/${valor}`,
       id: validacion
     });
