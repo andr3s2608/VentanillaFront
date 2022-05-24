@@ -169,6 +169,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
     setsininformacion(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setLongitudminima(0);
       setsininformacion(true);
     }
 

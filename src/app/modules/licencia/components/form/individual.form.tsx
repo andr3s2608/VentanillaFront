@@ -83,6 +83,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
   const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
   const [l_tipos_documento_autoriza, settiposautoriza] = useState<any>();
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
@@ -109,6 +110,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settiposautoriza(nuevalista);
+
+      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      setCausaMuerte(causa['valor']);
 
       const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
@@ -160,6 +164,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    let observacionCausaMuerte = causaMuerte;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = '';
+    }
+
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
@@ -424,8 +437,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           apellidoSolicitante: values.lastnamesolicitudadd,
           correoSolicitante: values.emailsolicitudadd,
           correoMedico: '',
-          cumpleCausa: true,
-          observacionCausa: ''
+          cumpleCausa: banderaCausa,
+          observacionCausa: observacionCausaMuerte
         },
 
         institucionCertificaFallecimiento: {
@@ -769,6 +782,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       setsininformacion(true);
+      setLongitudminima(0);
     }
 
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
@@ -833,6 +847,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       setsininformacionaut(true);
+       setLongitudminimaautoriza(0);
     }
 
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -907,7 +922,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} tipoLicencia={'Cremación'} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}
