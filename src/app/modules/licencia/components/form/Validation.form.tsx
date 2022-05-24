@@ -124,8 +124,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setType(typeList);
       }
 
-
-
       const all = await api.getCertificado(objJosn?.certificado);
 
       if (!all) {
@@ -608,7 +606,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const onModalNofificacion = () => {
     setIsModalValidarCertificado(false);
     history.push('/tramites-servicios');
-
   };
 
   const idcontrol = objJosn.idControlTramite;

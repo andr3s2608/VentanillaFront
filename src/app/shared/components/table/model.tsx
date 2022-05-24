@@ -40,7 +40,7 @@ export const dataFake = [
     fecha: '06-09-2021',
     usuario: 'klramirez',
     estado: 'Aprobado validador documento',
-    observacion: 'Validacion de documentos por parte del validador de documentos'
+    observacion: 'documentos por parte del validador de documentos'
   }
 ];
 export const columnFake = [
