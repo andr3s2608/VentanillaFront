@@ -436,17 +436,22 @@ export const ModificarLicencia = ({ props }: any) => {
                 />
               </Form.Item>
               {nn && (
-                <Form.Item label='Otros' name='fileOtrosDocumentos' rules={[{ required: true }]}>
-                  <Upload
-                    name='fileOtrosDocumentos'
-                    maxCount={1}
-                    beforeUpload={() => false}
-                    listType='text'
-                    accept='application/pdf'
-                  >
-                    <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-                  </Upload>
-                </Form.Item>
+                <>
+                  <Form.Item label='Observaciones.' name='observations' rules={[{ required: true }]}>
+                    <Input.TextArea style={{ width: 500 }} />
+                  </Form.Item>
+                  <Form.Item label='Otros' name='fileOtrosDocumentos' rules={[{ required: true }]}>
+                    <Upload
+                      name='fileOtrosDocumentos'
+                      maxCount={1}
+                      beforeUpload={() => false}
+                      listType='text'
+                      accept='application/pdf'
+                    >
+                      <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                    </Upload>
+                  </Form.Item>
+                </>
               )}
               <div>
                 <Actions />
