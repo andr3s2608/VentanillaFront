@@ -121,7 +121,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
         const resultFilterNom = allData.filter(function (f) {
           var filtro = FilterText != undefined ? FilterText : '';
           var solicitud = f.razonSocialSolicitante != undefined ? f.razonSocialSolicitante : '';
-          return solicitud.toUpperCase().trim() == filtro.toUpperCase().trim();
+          return solicitud.toUpperCase().trim().includes(filtro.toUpperCase().trim());
         });
         setGrid(resultFilterNom);
         setVisibleGrid('contents');
@@ -202,7 +202,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
           <option selected disabled>
             Seleccione una opción.
           </option>
-          <option value='idSol'>Id Solicitud</option>
+          <option value='idSol'>Id Tramite</option>
           <option value='docFallec'>Documento del fallecido</option>
           <option value='funOnombre'>Funeraria o Nombre</option>
           <option value='fechaReg'>Fecha de registro</option>
