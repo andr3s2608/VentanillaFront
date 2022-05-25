@@ -179,33 +179,35 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   }
 
   return (
-    <div className='container-fluid mt-5 py-5 fadeInTop'>
+    <div className='container-fluid mt-5  fadeInTop '>
       <div className='card'>
         <div className='card-body'>
-          <div className='row align-items-center'>
-            <div className='col-gl-4 col-md-4 col-sm-12'>
-              <Form.Item label='' name='' rules={[{ required: true }]}>
-                <SelectComponent
-                  className='ml-5'
-                  id='filter'
-                  onChange={selectChange}
-                  options={[
-                    { key: 'idSol', value: 'Id Tramite' },
-                    { key: 'docFallec', value: 'Documento del fallecido' },
-                    { key: 'funOnombre', value: 'Funeraria o Nombre' },
-                    { key: 'fechaReg', value: 'Fecha de registro' },
-                    { key: 'inhuIndi', value: 'Inhumación Indivual' },
-                    { key: 'inhuFetal', value: 'Inhumación Fetal' },
-                    { key: 'cremInd', value: 'Cremación Individual' },
-                    { key: 'cremFetal', value: 'Cremación Fetal' },
-                    { key: 'todos', value: 'Todos' }
-                  ]}
-                  optionPropkey='key'
-                  optionPropLabel='value'
-                />
-              </Form.Item>
+          <div className='row h-100 justify-content-center align-items-center'>
+            <div className='col-gl-6 col-md-6 col-sm-12'>
+              <div style={{ margin: '0 auto', display: 'block' }}>
+                <Form.Item label='' name='' rules={[{ required: true }]}>
+                  <SelectComponent
+                    className='ml-3'
+                    id='filter'
+                    onChange={selectChange}
+                    options={[
+                      { key: 'idSol', value: 'Id Tramite' },
+                      { key: 'docFallec', value: 'Documento del fallecido' },
+                      { key: 'funOnombre', value: 'Funeraria o Nombre' },
+                      { key: 'fechaReg', value: 'Fecha de registro' },
+                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                      { key: 'inhuFetal', value: 'Inhumación Fetal' },
+                      { key: 'cremInd', value: 'Cremación Individual' },
+                      { key: 'cremFetal', value: 'Cremación Fetal' },
+                      { key: 'todos', value: 'Todos' }
+                    ]}
+                    optionPropkey='key'
+                    optionPropLabel='value'
+                  />
+                </Form.Item>
+              </div>
             </div>
-            <div className='col-lg-4 col-md-4 col-sm-12'>
+            <div className='col-lg-3 col-md-3 col-sm-12'>
               <Form.Item label='' name='' rules={[{ required: true }]}>
                 <Input
                   id='busqueda'
@@ -230,16 +232,16 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
                 />
               </Form.Item>
             </div>
-            <div className='col-lg-4 col-sm-12 col-md-4 text-center'>
+            <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 ml-5'>
               <Button type='primary' htmlType='submit' onClick={busquedaFun}>
                 Buscar
               </Button>
             </div>
           </div>
-          <div className='row mt-5'>
+          <div className='row' style={{ marginTop: '-8px' }}>
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
-                <Tabs>
+                <Tabs style={{ border: 'none' }}>
                   <TabPane tab='' key='1'>
                     <Gridview data={grid} />
                   </TabPane>
