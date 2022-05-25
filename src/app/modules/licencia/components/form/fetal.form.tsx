@@ -654,7 +654,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     if (tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
       busqueda = null;
     } else {
-      busqueda = await api.GetDocumentoFallecido(numero, '342D934B-C316-46CB-A4F3-3AAC5845D246');
+      busqueda = null;
     }
     if (busqueda == null) {
       if (numero.length >= longitudminima) {
@@ -1094,7 +1094,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -1110,7 +1110,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -1131,7 +1131,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 autoComplete='off'
                 type='text'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}
@@ -1151,7 +1151,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 placeholder='Segundo Apellido'
                 autoComplete='off'
                 onKeyPress={(event) => {
-                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                  if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                     event.preventDefault();
                   }
                 }}

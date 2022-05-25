@@ -10,6 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import moment from 'moment';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import Input from 'antd/es/input/Input';
+import Button from 'antd/es/button/button';
 
 const { TabPane } = Tabs;
 
@@ -70,8 +73,9 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
     */
   };
-  const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
+  const selectChange = (event: any) => {
+    console.log(event, 'click');
+    const value = event;
     setVisibleAlert(false);
     if (value == 'fechaReg') {
       setVisiblePicker('block');
@@ -175,73 +179,75 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   }
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div
-        id='idAlert'
-        className='alert alert-danger justify-content-center'
-        role={'alert'}
-        style={{ display: visibleAlerta == false ? 'none' : 'block' }}
-      >
-        <h1>
-          {' '}
-          <strong>¡Importante!</strong>
-        </h1>{' '}
-        <br />
-        <h3>{textAlerta == undefined ? '' : textAlerta.toUpperCase()}</h3>
-        <button type='button' className='close' aria-label='Close' onClick={closeAlert}>
-          <span aria-hidden='true'>&times;</span>
-        </button>
-      </div>
-      <div className='d-flex gap-5 justify-content-center'>
-        <select name='selection' id='filter' onChange={selectChange} className='custom-select custom-select-lg mb-3'>
-          <option selected disabled>
-            Seleccione una opción.
-          </option>
-          <option value='idSol'>Id Tramite</option>
-          <option value='docFallec'>Documento del fallecido</option>
-          <option value='funOnombre'>Funeraria o Nombre</option>
-          <option value='fechaReg'>Fecha de registro</option>
-          <option value='inhuIndi'>Inhumación Indivual</option>
-          <option value='inhuFetal'>Inhumación Fetal</option>
-          <option value='cremInd'>Cremación Individual</option>
-          <option value='cremFetal'>Cremación Fetal</option>
-          <option value='todos'>Todos</option>
-        </select>
-        <input
-          id='busqueda'
-          placeholder='Filtro de busqueda en la tabla'
-          className='form-control'
-          onChange={onChangeFilter}
-          style={{ display: visiblePicker != 'none' ? 'none' : 'block' }}
-          disabled={disableFilter == true ? true : false}
-        ></input>
-        <DatepickerComponent
-          id='datePicker'
-          picker='date'
-          dateDisabledType='default'
-          dateFormatType='default'
-          style={{ display: visiblePicker == 'none' ? 'none' : 'block' }}
-          className='form-control'
-          onChange={(date) => {
-            setVisibleAlert(false);
-            const d = new Date(moment(date).format('MM-DD-YYYY')).toDateString();
-            setDate(d);
-          }}
-        />
-
-        <div style={{ display: 'contents' }}>
-          <button type='button' onClick={busquedaFun} style={{ backgroundColor: 'white', width: '85px' }}>
-            Buscar datos
-          </button>
+    <div className='container-fluid mt-5 py-5 fadeInTop'>
+      <div className='card'>
+        <div className='card-body'>
+          <div className='row align-items-center'>
+            <div className='col-gl-4 col-md-4 col-sm-12'>
+              <Form.Item label='' name='' rules={[{ required: true }]}>
+                <SelectComponent
+                  className='ml-5'
+                  id='filter'
+                  onChange={selectChange}
+                  options={[
+                    { key: 'idSol', value: 'Id Tramite' },
+                    { key: 'docFallec', value: 'Documento del fallecido' },
+                    { key: 'funOnombre', value: 'Funeraria o Nombre' },
+                    { key: 'fechaReg', value: 'Fecha de registro' },
+                    { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                    { key: 'inhuFetal', value: 'Inhumación Fetal' },
+                    { key: 'cremInd', value: 'Cremación Individual' },
+                    { key: 'cremFetal', value: 'Cremación Fetal' },
+                    { key: 'todos', value: 'Todos' }
+                  ]}
+                  optionPropkey='key'
+                  optionPropLabel='value'
+                />
+              </Form.Item>
+            </div>
+            <div className='col-lg-4 col-md-4 col-sm-12'>
+              <Form.Item label='' name='' rules={[{ required: true }]}>
+                <Input
+                  id='busqueda'
+                  placeholder='Filtro de busqueda en la tabla'
+                  className='form-control ml-5'
+                  onChange={onChangeFilter}
+                  style={{ display: visiblePicker != 'none' ? 'none' : 'block' }}
+                  disabled={disableFilter == true ? true : false}
+                />
+                <DatepickerComponent
+                  id='datePicker'
+                  picker='date'
+                  dateDisabledType='default'
+                  dateFormatType='default'
+                  style={{ display: visiblePicker == 'none' ? 'none' : 'block' }}
+                  className='form-control'
+                  onChange={(date) => {
+                    setVisibleAlert(false);
+                    const d = new Date(moment(date).format('MM-DD-YYYY')).toDateString();
+                    setDate(d);
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <div className='col-lg-4 col-sm-12 col-md-4 text-center'>
+              <Button type='primary' htmlType='submit' onClick={busquedaFun}>
+                Buscar
+              </Button>
+            </div>
+          </div>
+          <div className='row mt-5'>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
+                <Tabs>
+                  <TabPane tab='' key='1'>
+                    <Gridview data={grid} />
+                  </TabPane>
+                </Tabs>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
-        <PageHeaderComponent title='Maestro detalle' subTitle='Consulte el trámite de los certificados. ' />
-        <Tabs>
-          <TabPane tab='' key='1'>
-            <Gridview data={grid} />
-          </TabPane>
-        </Tabs>
       </div>
     </div>
   );

@@ -1290,7 +1290,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           autoComplete='off'
                           type='text'
                           onKeyPress={(event) => {
-                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                               event.preventDefault();
                             }
                           }}
@@ -1311,7 +1311,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           autoComplete='off'
                           type='text'
                           onKeyPress={(event) => {
-                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ  ]/.test(event.key)) {
                               event.preventDefault();
                             }
                           }}
@@ -1332,7 +1332,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           autoComplete='off'
                           type='text'
                           onKeyPress={(event) => {
-                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                               event.preventDefault();
                             }
                           }}
@@ -1353,7 +1353,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           autoComplete='off'
                           type='text'
                           onKeyPress={(event) => {
-                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                               event.preventDefault();
                             }
                           }}
