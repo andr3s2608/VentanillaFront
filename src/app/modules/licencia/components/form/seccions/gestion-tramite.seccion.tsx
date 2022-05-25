@@ -42,7 +42,7 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
                 options={type}
                 optionPropkey='id'
                 optionPropLabel='descripcion'
-                style={{ width: '1140px' }}
+                style={{ width: '360px' }}
               />
             </Form.Item>
           </div>
@@ -51,7 +51,7 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
           <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>
             <label htmlFor=''>Observaciones</label>
             <Form.Item label='' name='observations' rules={[{ required: true }]}>
-              <Input.TextArea rows={5} />
+              <Input.TextArea rows={5} style={{ width: '360px' }} />
             </Form.Item>
           </div>
         </div>
