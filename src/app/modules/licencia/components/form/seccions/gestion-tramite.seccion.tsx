@@ -25,19 +25,37 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
 
   return (
     <>
-      <div className='ant-container d-flex justify-content-center w-100 mt-3'>
-        <div className='ant-row text-center'>
-          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
-            <Divider orientation='left'>Aprobar / Negar Licencia Inhumación</Divider>
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+            <p style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }} className='text-uppercase font-weight-bold'>
+              Aprobar / Negar Licencia Inhumación
+            </p>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>
+            <label htmlFor=''>Tipo Seguimiento</label>
+            <Form.Item label='' name='validFunctionaltype' rules={[{ required: true }]}>
+              <SelectComponent
+                onChange={onChange}
+                options={type}
+                optionPropkey='id'
+                optionPropLabel='descripcion'
+                style={{ width: '1140px' }}
+              />
+            </Form.Item>
+          </div>
+        </div>
+        <div className='row mt-2 prueba'>
+          <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>
+            <label htmlFor=''>Observaciones</label>
+            <Form.Item label='' name='observations' rules={[{ required: true }]}>
+              <Input.TextArea rows={5} />
+            </Form.Item>
           </div>
         </div>
       </div>
-      <Form.Item label='Tipo Seguimiento' name='validFunctionaltype' rules={[{ required: true }]}>
-        <SelectComponent onChange={onChange} options={type} optionPropkey='id' optionPropLabel='descripcion' />
-      </Form.Item>
-      <Form.Item label='Observaciones.' name='observations' rules={[{ required: true }]}>
-        <Input.TextArea style={{ width: 500 }} />
-      </Form.Item>
     </>
   );
 };

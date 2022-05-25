@@ -494,6 +494,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           </List.Item>
         )}
       />
+      <hr />
       <div className='ant-container d-flex justify-content-center w-100'>
         <div className='ant-row text-center'>
           <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>

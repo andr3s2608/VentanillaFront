@@ -4358,6 +4358,7 @@ a.ant-btn-sm {
 }
 .ant-card-body {
   padding: 24px;
+  background: #08979c !important;
 }
 .ant-card-body::before {
   display: table;
@@ -25132,12 +25133,16 @@ div.ant-typography-edit-content.ant-typography-rtl {
   padding: 0;
 }
 
-.save{
+.save {
   margin-right: 350px !important;
 }
 
-.center-block{
+.center-block {
   margin: 0 auto;
   float: none;
   margin-right: 200px;
+}
+
+.prueba{
+  width: 1140px !important;
 }
