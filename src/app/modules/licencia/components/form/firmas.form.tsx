@@ -13,6 +13,7 @@ import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import Upload from 'antd/es/upload';
 import Button from 'antd/es/button';
+import Swal from 'sweetalert2';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 
 //Redux
@@ -57,6 +58,13 @@ export const GestionFirma = ({ props }: any) => {
       await api.agregarFirma({
         iD_Usuario: idUsuario,
         firma: reader.result
+      });
+      setselecciono(false);
+      Swal.fire({
+        icon: 'success',
+
+        title: 'Firma Modificada',
+        text: 'Se han modificado la firma exitosamente'
       });
     };
     reader.onerror = function (error) {

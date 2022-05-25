@@ -345,7 +345,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           idEtnia: '00000000-0000-0000-0000-000000000000',
           idRegimen: '00000000-0000-0000-0000-000000000000',
           idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-          idParentesco: '00000000-0000-0000-0000-000000000000',
+          idParentesco: parentesco,
           idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
         },
         //certifica la defuncion
@@ -953,7 +953,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   autoComplete='off'
                   type='text'
                   onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -974,7 +974,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   autoComplete='off'
                   type='text'
                   onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -995,7 +995,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   autoComplete='off'
                   type='text'
                   onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -1016,7 +1016,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   autoComplete='off'
                   type='text'
                   onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}

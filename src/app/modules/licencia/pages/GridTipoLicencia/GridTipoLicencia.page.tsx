@@ -180,6 +180,10 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
   return (
     <div className='container-fluid mt-5  fadeInTop '>
+      <PageHeaderComponent
+        title='Listado de Solicitudes Inhumación-Cremación'
+        subTitle='Seleccione el filtro de busqueda para enlistar las solicitudes'
+      />
       <div className='card'>
         <div className='card-body'>
           <div className='row h-100 justify-content-center align-items-center'>
