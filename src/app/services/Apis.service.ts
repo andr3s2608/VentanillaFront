@@ -140,8 +140,8 @@ export class ApiService {
 
   postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
 
-  AddGestion = (payload: any, id: string) =>
-    post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id });
+  AddGestion = (payload: any, idvalidacion: string) =>
+    post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
 
   putLicencia = (payload: any) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });

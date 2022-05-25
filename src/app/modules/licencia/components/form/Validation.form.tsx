@@ -216,6 +216,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
       if (not == 1) {
         /////////////////////////Guardar status//////////////////////////
+        not = 0;
         for (let index = 0; index < documentos.length; index++) {
           //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
           var posicioninicialid = 0;
@@ -230,6 +231,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
 
           var datos = DatosDocumento.at(index);
+
           if (datos == '1') {
             datos = 'Cumple';
           } else {
@@ -248,6 +250,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           };
 
           const resp = await api.AddGestion(json, not + '');
+          not = 1;
         }
         /////////////////////////Enviar Notificacion//////////////////////////
         let tipoSeguimiento: string = values.validFunctionaltype;
