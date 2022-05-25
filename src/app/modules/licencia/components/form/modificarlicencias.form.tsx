@@ -238,6 +238,12 @@ export const ModificarLicencia = ({ props }: any) => {
           await api.UpdateSupportDocuments(supportDocumentsEdit);
         }
         setLicencia(false);
+        Swal.fire({
+          icon: 'success',
+
+          title: 'Solicitud Modificada',
+          text: 'Se han modificado la Solicitud exitosamente'
+        });
       }
     } else {
       Swal.fire({
@@ -379,7 +385,7 @@ export const ModificarLicencia = ({ props }: any) => {
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -400,7 +406,7 @@ export const ModificarLicencia = ({ props }: any) => {
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -421,7 +427,7 @@ export const ModificarLicencia = ({ props }: any) => {
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -442,7 +448,7 @@ export const ModificarLicencia = ({ props }: any) => {
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

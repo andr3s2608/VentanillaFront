@@ -179,71 +179,77 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   }
 
   return (
-    <div className='container-fluid mt-5 py-5 fadeInTop'>
-      <div className='card'>
-        <div className='card-body'>
-          <div className='row align-items-center'>
-            <div className='col-gl-4 col-md-4 col-sm-12'>
-              <Form.Item label='' name='' rules={[{ required: true }]}>
-                <SelectComponent
-                  className='ml-5'
-                  id='filter'
-                  onChange={selectChange}
-                  options={[
-                    { key: 'idSol', value: 'Id Tramite' },
-                    { key: 'docFallec', value: 'Documento del fallecido' },
-                    { key: 'funOnombre', value: 'Funeraria o Nombre' },
-                    { key: 'fechaReg', value: 'Fecha de registro' },
-                    { key: 'inhuIndi', value: 'Inhumación Indivual' },
-                    { key: 'inhuFetal', value: 'Inhumación Fetal' },
-                    { key: 'cremInd', value: 'Cremación Individual' },
-                    { key: 'cremFetal', value: 'Cremación Fetal' },
-                    { key: 'todos', value: 'Todos' }
-                  ]}
-                  optionPropkey='key'
-                  optionPropLabel='value'
-                />
-              </Form.Item>
+    <div className='fadeInTop container-fluid'>
+      <PageHeaderComponent
+        title='Listado de Solicitudes Inhumación-Cremación'
+        subTitle='Seleccione el filtro de busqueda para enlistar las solicitudes'
+      />
+      <div className='container-fluid mt-5 py-5 fadeInTop'>
+        <div className='card'>
+          <div className='card-body'>
+            <div className='row align-items-center'>
+              <div className='col-gl-4 col-md-4 col-sm-12'>
+                <Form.Item label='' name='' rules={[{ required: true }]}>
+                  <SelectComponent
+                    className='ml-5'
+                    id='filter'
+                    onChange={selectChange}
+                    options={[
+                      { key: 'idSol', value: 'Id Tramite' },
+                      { key: 'docFallec', value: 'Documento del fallecido' },
+                      { key: 'funOnombre', value: 'Funeraria o Nombre' },
+                      { key: 'fechaReg', value: 'Fecha de registro' },
+                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                      { key: 'inhuFetal', value: 'Inhumación Fetal' },
+                      { key: 'cremInd', value: 'Cremación Individual' },
+                      { key: 'cremFetal', value: 'Cremación Fetal' },
+                      { key: 'todos', value: 'Todos' }
+                    ]}
+                    optionPropkey='key'
+                    optionPropLabel='value'
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item label='' name='' rules={[{ required: true }]}>
+                  <Input
+                    id='busqueda'
+                    placeholder='Filtro de busqueda en la tabla'
+                    className='form-control ml-5'
+                    onChange={onChangeFilter}
+                    style={{ display: visiblePicker != 'none' ? 'none' : 'block' }}
+                    disabled={disableFilter == true ? true : false}
+                  />
+                  <DatepickerComponent
+                    id='datePicker'
+                    picker='date'
+                    dateDisabledType='default'
+                    dateFormatType='default'
+                    style={{ display: visiblePicker == 'none' ? 'none' : 'block' }}
+                    className='form-control'
+                    onChange={(date) => {
+                      setVisibleAlert(false);
+                      const d = new Date(moment(date).format('MM-DD-YYYY')).toDateString();
+                      setDate(d);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-4 col-sm-12 col-md-4 text-center'>
+                <Button type='primary' htmlType='submit' onClick={busquedaFun}>
+                  Buscar
+                </Button>
+              </div>
             </div>
-            <div className='col-lg-4 col-md-4 col-sm-12'>
-              <Form.Item label='' name='' rules={[{ required: true }]}>
-                <Input
-                  id='busqueda'
-                  placeholder='Filtro de busqueda en la tabla'
-                  className='form-control ml-5'
-                  onChange={onChangeFilter}
-                  style={{ display: visiblePicker != 'none' ? 'none' : 'block' }}
-                  disabled={disableFilter == true ? true : false}
-                />
-                <DatepickerComponent
-                  id='datePicker'
-                  picker='date'
-                  dateDisabledType='default'
-                  dateFormatType='default'
-                  style={{ display: visiblePicker == 'none' ? 'none' : 'block' }}
-                  className='form-control'
-                  onChange={(date) => {
-                    setVisibleAlert(false);
-                    const d = new Date(moment(date).format('MM-DD-YYYY')).toDateString();
-                    setDate(d);
-                  }}
-                />
-              </Form.Item>
-            </div>
-            <div className='col-lg-4 col-sm-12 col-md-4 text-center'>
-              <Button type='primary' htmlType='submit' onClick={busquedaFun}>
-                Buscar
-              </Button>
-            </div>
-          </div>
-          <div className='row mt-5'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
-                <Tabs>
-                  <TabPane tab='' key='1'>
-                    <Gridview data={grid} />
-                  </TabPane>
-                </Tabs>
+            <div className='row mt-5'>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
+                  <Tabs>
+                    <TabPane tab='' key='1'>
+                      <Gridview data={grid} />
+                    </TabPane>
+                  </Tabs>
+                </div>
               </div>
             </div>
           </div>
