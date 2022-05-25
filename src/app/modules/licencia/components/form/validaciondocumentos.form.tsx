@@ -127,35 +127,103 @@ export const ValidarDocumentos = ({ props }: any) => {
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body'>
-          <div className='row justify-content-center'>
-            <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
-              <p
-                style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
-                className='text-uppercase font-weight-bold'
-              >
-                Validación de Documentos
-              </p>
-              <p
-                style={{ fontSize: '12px', color: '#3366cc', fontFamily: ' Roboto' }}
-                className='text-uppercase font-weight-bold'
-              >
-                En esta sección puede validar la autenticidad del documento emitido por esta entidad. <br /> Por favor digite el
-                código de verificación que viene anexo en el documento
-              </p>
-            </div>
-          </div>
-          <div className='row mt-5 mr-5'>
-            <div className='col-lg-4 col-md-4 col-sm-12'>
-              <Form.Item label='Cementerios' name='cementerio'>
-                <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-              </Form.Item>
-            </div>
-            <div className='col-lg-8 col-md-8 col-sm-12 '>
-              <Button type='primary' onClick={BuscarCementerio}>
-                Buscar cementerio
-              </Button>
-            </div>
-          </div>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            {!selecciono && (
+              <>
+                <div className='row justify-content-center'>
+                  <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+                    <p
+                      style={{
+                        fontSize: '16px',
+                        color: '#3366cc',
+                        fontFamily: ' Roboto'
+                      }}
+                      className='text-uppercase font-weight-bold'
+                    >
+                      Validación de Documentos
+                    </p>
+                  </div>
+                </div>
+                <div className='row justify-content-center'>
+                  <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+                    <p
+                      style={{
+                        fontSize: '13px',
+                        color: '#3366cc',
+                        fontFamily: ' Roboto'
+                      }}
+                      className='text-uppercase font-weight-bold'
+                    >
+                      En esta sección puede validar la autenticidad del documento emitido por esta entidad. <br /> Por favor
+                      digite el código de verificación que viene anexo en el documento
+                    </p>
+                  </div>
+                </div>
+                <div className='row mt-3'>
+                  <div className='col-lg-6 col-sm-12 center-block'>
+                    <Form.Item name='nrodocumento'>
+                      <Input
+                        allowClear
+                        placeholder='Ingrese el Código de Verificación'
+                        autoComplete='off'
+                        onKeyPress={(event) => {
+                          if (!/[0-9a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className='row mt-3 justify-content-center text-center'>
+                  <Button type='primary' onClick={BuscarCementerio}>
+                    Consultar
+                  </Button>
+                </div>
+              </>
+            )}
+            {selecciono && (
+              <>
+                <Form.Item name='codigo'>
+                  <span className='ant-form-text'>{codigo}</span>
+                </Form.Item>
+
+                <Form.Item label='ID Trámite' name='idtramite'>
+                  <span className='ant-form-text'>{idTramite}</span>
+                </Form.Item>
+                <Form.Item label='Fecha de Solicitud ' initialValue={fechasol} name='fecsol'>
+                  <span className='ant-form-text'>{fechasol}</span>
+                </Form.Item>
+                <Form.Item label='Numero de Identificación ' initialValue={numeroid} name='telefono'>
+                  <span className='ant-form-text'>{numeroid}</span>
+                </Form.Item>
+                <Form.Item label='Nombres y Apellidos Solicitante ' initialValue={nombre} name='nombresol'>
+                  <span className='ant-form-text'>{nombre}</span>
+                </Form.Item>
+                <Form.Item label='Nro de Licencia ' initialValue={numerolic} name='tiporep'>
+                  <span className='ant-form-text'>{numerolic}</span>
+                </Form.Item>
+                <Form.Item label='Fecha de Licencia ' initialValue={fechaapsol} name='fecsol'>
+                  <span className='ant-form-text'>{fechaapsol}</span>
+                </Form.Item>
+                <Form.Item label='Estado del Trámite ' initialValue={estado} name='estado'>
+                  <span className='ant-form-text'>{estado}</span>
+                </Form.Item>
+                <Form.Item label='Tipo de Trámite ' initialValue={tiposoli} name='tipotram'>
+                  <span className='ant-form-text'>{tiposoli}</span>
+                </Form.Item>
+                <div className='row justify-content-center'>
+                  <div className='row ml-5'>
+                    <div className='col-lg-12 col-sm-12 col-md-12'>
+                      <Button type='primary' onClick={Regresar}>
+                        Regresar
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </Form>
         </div>
       </div>
     </div>

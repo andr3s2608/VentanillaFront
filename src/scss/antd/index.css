@@ -25136,6 +25136,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin-right: 350px !important;
 }
 
-.hola{
- display: none;
+.center-block{
+  margin: 0 auto;
+  float: none;
+  margin-right: 200px;
 }

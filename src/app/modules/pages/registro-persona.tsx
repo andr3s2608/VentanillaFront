@@ -2,7 +2,7 @@
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 
 // Utilidades
-import { direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
+import { EstadoCivil, direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
@@ -16,14 +16,12 @@ import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { dominioService } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
-import { EstadoCivil } from 'app/shared/utils/constants.util';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
-//import '../../../scss/antd/index.css';
-//Redux
+
 import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 
 const RegistroPage: React.FC<any> = (props) => {
@@ -42,12 +40,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const [l_municipiosres, setLMunicipiosres] = useState<IMunicipio[]>([]);
   const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
   const [avenida, setAvenida] = useState<boolean>(true);
-
-  const [listOfZona, setListOfZona] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-  const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-  const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-  const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ key: 'id1', value: 'default' }]);
-
+  const [listOfZona, setListOfZona] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
@@ -240,6 +236,7 @@ const RegistroPage: React.FC<any> = (props) => {
           localStorage.setItem(accountIdentifier, resApi.toString());
           store.dispatch(SetGrid({ key: 'relaodMenu' }));
           Swal.fire({
+            icon: 'success',
             title: 'Usuario Registrado',
             text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
             showClass: {
@@ -247,8 +244,7 @@ const RegistroPage: React.FC<any> = (props) => {
             },
             hideClass: {
               popup: 'animate__animated animate__fadeOutUp'
-            },
-            icon: 'info'
+            }
           });
           history.push('/');
         }
@@ -288,15 +284,29 @@ const RegistroPage: React.FC<any> = (props) => {
   };
 
   const onGeocoding = async () => {
-    let via_principal = 'cr';
-    let numero = '106';
-    let letra = '';
-    let bis = '';
-    let card = '';
-    let numero_b = '53';
-    let letra_b = '';
-    let placa = '26';
-    let card_b = '';
+    const { direccion } = store.getState();
+    let [via_principal, numero, letra, bis, card, numero_b, letra_b, placa, card_b] = direccion;
+
+    switch (via_principal) {
+      case 'AK- Avenida Carrera':
+        via_principal = 'AK';
+        break;
+      case 'AC- Avenida Calle':
+        via_principal = 'AC';
+        break;
+      case 'CL- Calle':
+        via_principal = 'CL';
+        break;
+      case 'DG- Diagonal':
+        via_principal = 'DG';
+        break;
+      case 'KR- Carrera':
+        via_principal = 'KR';
+        break;
+      case 'TV- Transversal':
+        via_principal = 'TV';
+        break;
+    }
 
     if (form.getFieldValue('state') === 1) {
       let XML = `
@@ -311,8 +321,13 @@ const RegistroPage: React.FC<any> = (props) => {
 
       //const algo = api.geocoding(XML);
       //console.log(algo);
-      console.log('imprimiendo el formulario:');
-      console.log();
+      const list_barrios = await api.getListBarrios();
+      const list_upz = await api.getListUPZ();
+      const list_localidades = await api.getListLocalidades();
+
+      setListOfLocalidad(list_localidades);
+      setListOfUPZ(list_upz);
+      setListOfBarrio(list_barrios);
       setStateDisplayBox('block');
     }
   };
@@ -625,20 +640,18 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfZona}
                     optionPropkey='key'
                     optionPropLabel='key'
-                    onChange={(event) => {
-                      console.log('Se cambio la zona');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Localidad</label>
-                <Form.Item label='' name='localidad' initialValue={'id1'}>
+                <Form.Item label='' name='localidad' initialValue={'ANTONIO NARIÑO'}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
-                    optionPropkey='key'
-                    optionPropLabel='key'
+                    optionPropkey='descripcion'
+                    optionPropLabel='descripcion'
                     onChange={(event) => {
                       console.log('Se cambió la localidad');
                     }}
@@ -649,12 +662,12 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Upz</label>
-                <Form.Item label='' name='upz' initialValue={'id1'}>
+                <Form.Item label='' name='upz' initialValue={'AMERICAS'}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
-                    optionPropkey='key'
-                    optionPropLabel='key'
+                    optionPropkey='descripcion'
+                    optionPropLabel='descripcion'
                     onChange={(event) => {
                       console.log('se cambió la UPZ');
                     }}
@@ -663,12 +676,12 @@ const RegistroPage: React.FC<any> = (props) => {
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Barrio</label>
-                <Form.Item label='' name='barrio' initialValue={'id1'}>
+                <Form.Item label='' name='barrio' initialValue={'ACACIAS USAQUEN'}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfBarrio}
-                    optionPropkey='key'
-                    optionPropLabel='key'
+                    optionPropkey='descripcion'
+                    optionPropLabel='descripcion'
                     onChange={(event) => {
                       console.log('Se cambio el barrio');
                     }}

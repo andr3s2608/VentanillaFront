@@ -12,13 +12,14 @@ const {
   REACT_APP_ENDPOINTV1,
   REACT_APP_NOTIFICACION,
   REACT_APP_BLOB,
-  REACT_APP_FORMATOS
+  REACT_APP_FORMATOS,
+  REACT_APP_LOCAL
 } = process.env;
 
 export class ApiService {
   endpoint = REACT_APP_SHARED as string;
   private oid = '';
-
+  private local = 'https://localhost:5001/';
   constructor(oid$: string) {
     this.oid = oid$;
   }
@@ -36,6 +37,19 @@ export class ApiService {
     get<string>({
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/ConsultarLicencia/${numero}/${tipo}`,
+      id: '0'
+    });
+
+  ObtenerCodigoVerificacion = (numero: string) =>
+    get<string>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/ValidacionDocumentos/getIdUnico/${numero}`,
+      id: '0'
+    });
+  Obteneridcontroltramite = (numero: string) =>
+    get<any>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/ValidacionDocumentos/validationString/${numero}`,
       id: '0'
     });
 
@@ -131,6 +145,13 @@ export class ApiService {
 
   putLicencia = (payload: any) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
+
+  ModificarConstante = (constante: string, valor: string, validacion: string) =>
+    put({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/UpdateConstante/${constante}/${valor}`,
+      id: validacion
+    });
 
   uploadFiles = (payload: any) =>
     post({
@@ -295,9 +316,17 @@ export class ApiService {
     );
   };
 
-  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string): string => {
+  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): string => {
     return (
-      (REACT_APP_INHCREMACION as string) + 'GeneratePDF/GeneratePDF/' + idTramite + '/' + tramitador + '/' + nombreTramitador
+      (REACT_APP_INHCREMACION as string) +
+      'GeneratePDF/GeneratePDF/' +
+      idTramite +
+      '/' +
+      tramitador +
+      '/' +
+      nombreTramitador +
+      '/' +
+      codigo
     );
   };
   validarFirmaFuncionario = (idTramitador: string) =>
@@ -325,7 +354,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getZonaSig = (payload: any) =>
+  getZonaSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -340,7 +369,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getLocalidadSig = (payload: any) =>
+  getLocalidadSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -355,7 +384,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getUpzSig = (payload: any) =>
+  getUpzSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -370,7 +399,7 @@ export class ApiService {
       confirmModal: false
     });
 
-  getBarrioSig = (payload: any) =>
+  getBarrioSIG = (payload: any) =>
     post<any>({
       endpoint: 'http://sig.saludcapital.gov.co/',
       url: 'wsdireccion/direccion.asmx',
@@ -383,5 +412,37 @@ export class ApiService {
         }
       },
       confirmModal: false
+    });
+
+  /**
+   * servicios para retornar la lista de barrios, localidades, subred y upz de bases de datos
+   */
+
+  getListSubRedes = () =>
+    get<any>({
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `SubRed/GetSubRed`,
+      id: '0'
+    });
+
+  getListLocalidades = () =>
+    get<any>({
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `Localidad/GetAllLocalidad`,
+      id: '0'
+    });
+
+  getListUPZ = () =>
+    get<any>({
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `Upz/GetUpz`,
+      id: '0'
+    });
+
+  getListBarrios = () =>
+    get<any>({
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `Barrio/GetBarrios`,
+      id: '0'
     });
 }

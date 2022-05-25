@@ -274,186 +274,208 @@ export const ModificarLicencia = ({ props }: any) => {
   );
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Form
-          form={form}
-          className='mb-4 w-100'
-          {...layoutItems}
-          style={{ maxWidth: 800 }}
-          layout='horizontal'
-          onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
-        >
-          <Divider orientation='left'>Modificar Licencia</Divider>
-          <p>Buscar por:</p>
-          <Radio.Group onChange={changeRadioButton} defaultValue={'tramite'}>
-            <Radio value='tramite'>Número de tramite</Radio>
-            <Radio value='certificado'>Número de Certificado</Radio>
-            <Radio value='fallecido'>Número de Identificación</Radio>
-          </Radio.Group>
-          <p></p>
-          <div className='row'>
-            <div className='col-6'>
-              <Form.Item label='Número' name='numero'>
-                <Input
-                  allowClear
-                  placeholder='Número'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <div className='row justify-content-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+                <p
+                  style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
+                  className='text-uppercase font-weight-bold'
+                >
+                  Modificar Licencia Azure
+                </p>
+              </div>
             </div>
-          </div>
-          <Button type='primary' onClick={BuscarSolicitud}>
-            Buscar Solicitud
-          </Button>
-          {licencia && (
-            <>
-              <Form.Item label='Número de Certificado' name='numerocert' rules={[{ required: true }]} initialValue={certificado}>
-                <Input
-                  allowClear
-                  placeholder='Número de Certificado'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
+            <div className='row mt-3 justify-content-center text-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
+                <Radio.Group onChange={changeRadioButton} defaultValue={'tramite'}>
+                  <Radio value='tramite'>Número de tramite</Radio>
+                  <Radio value='certificado'>Número de Certificado</Radio>
+                  <Radio value='fallecido'>Número de Identificación</Radio>
+                </Radio.Group>
+              </div>
+            </div>
+
+            <div className='row mt-5 mr-5 justify-content-center'>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <Form.Item label='Número' name='numero'>
+                  <Input
+                    allowClear
+                    placeholder='Número'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
-                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
-              </Form.Item>
-              <Form.Item label='Sin Establecer' name='check'>
-                <Switch onChange={onChangeSwitch} defaultChecked={check} />
-              </Form.Item>
-              {isHora && (
-                <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time}>
-                  <DatepickerComponent
-                    picker='time'
-                    dateDisabledType='default'
-                    dateFormatType='time'
-                    value={time}
-                    placeholder='-- Elija una hora --'
+                    }}
                   />
                 </Form.Item>
-              )}
-              <Form.Item label='Sexo' name='sex' initialValue={sexo} rules={[{ required: true }]}>
-                <Radio.Group>
-                  <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
-                  <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>
-                  <Radio value='0347ea5e-691e-44a0-87a5-b22d39f1ff94'>INDETERMINADO</Radio>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={primerNombre}>
-                <Input
-                  allowClear
-                  placeholder='Primer Nombre'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                label='Segundo Nombre'
-                name='secondName'
-                rules={[{ required: false, max: 50 }]}
-                initialValue={segundoNombre}
-              >
-                <Input
-                  allowClear
-                  placeholder='Segundo Nombre'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                label='Primer Apellido'
-                name='surname'
-                rules={[{ required: true, max: 50 }]}
-                initialValue={primerApellido}
-              >
-                <Input
-                  allowClear
-                  placeholder='Primer Apellido'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item
-                label='Segundo Apellido'
-                name='secondSurname'
-                rules={[{ required: false, max: 50 }]}
-                initialValue={segundoApellido}
-              >
-                <Input
-                  allowClear
-                  placeholder='Segundo Apellido'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              {nn && (
-                <Form.Item label='Otros' name='fileOtrosDocumentos' rules={[{ required: true }]}>
-                  <Upload
-                    name='fileOtrosDocumentos'
-                    maxCount={1}
-                    beforeUpload={() => false}
-                    listType='text'
-                    accept='application/pdf'
-                  >
-                    <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-                  </Upload>
-                </Form.Item>
-              )}
-              <div>
-                <Actions />
               </div>
-            </>
-          )}
-        </Form>
+            </div>
+
+            <div className='row ml-5'>
+              <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+                <Button type='primary' onClick={BuscarSolicitud}>
+                  Buscar Solicitud
+                </Button>
+              </div>
+            </div>
+            {licencia && (
+              <>
+                <Form.Item
+                  label='Número de Certificado'
+                  name='numerocert'
+                  rules={[{ required: true }]}
+                  initialValue={certificado}
+                >
+                  <Input
+                    allowClear
+                    placeholder='Número de Certificado'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
+                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
+                </Form.Item>
+                <Form.Item label='Sin Establecer' name='check'>
+                  <Switch onChange={onChangeSwitch} defaultChecked={check} />
+                </Form.Item>
+                {isHora && (
+                  <Form.Item label='Hora' name='time' rules={[{ required: isHora }]} initialValue={time}>
+                    <DatepickerComponent
+                      picker='time'
+                      dateDisabledType='default'
+                      dateFormatType='time'
+                      value={time}
+                      placeholder='-- Elija una hora --'
+                    />
+                  </Form.Item>
+                )}
+                <Form.Item label='Sexo' name='sex' initialValue={sexo} rules={[{ required: true }]}>
+                  <Radio.Group>
+                    <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
+                    <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>
+                    <Radio value='0347ea5e-691e-44a0-87a5-b22d39f1ff94'>INDETERMINADO</Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={primerNombre}>
+                  <Input
+                    allowClear
+                    placeholder='Primer Nombre'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label='Segundo Nombre'
+                  name='secondName'
+                  rules={[{ required: false, max: 50 }]}
+                  initialValue={segundoNombre}
+                >
+                  <Input
+                    allowClear
+                    placeholder='Segundo Nombre'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label='Primer Apellido'
+                  name='surname'
+                  rules={[{ required: true, max: 50 }]}
+                  initialValue={primerApellido}
+                >
+                  <Input
+                    allowClear
+                    placeholder='Primer Apellido'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label='Segundo Apellido'
+                  name='secondSurname'
+                  rules={[{ required: false, max: 50 }]}
+                  initialValue={segundoApellido}
+                >
+                  <Input
+                    allowClear
+                    placeholder='Segundo Apellido'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                {nn && (
+                  <>
+                    <Form.Item label='Observaciones.' name='observations' rules={[{ required: true }]}>
+                      <Input.TextArea style={{ width: 500 }} />
+                    </Form.Item>
+                    <Form.Item label='Otros' name='fileOtrosDocumentos' rules={[{ required: true }]}>
+                      <Upload
+                        name='fileOtrosDocumentos'
+                        maxCount={1}
+                        beforeUpload={() => false}
+                        listType='text'
+                        accept='application/pdf'
+                      >
+                        <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                      </Upload>
+                    </Form.Item>
+                  </>
+                )}
+                <div>
+                  <Actions />
+                </div>
+              </>
+            )}
+          </Form>
+        </div>
       </div>
     </div>
   );

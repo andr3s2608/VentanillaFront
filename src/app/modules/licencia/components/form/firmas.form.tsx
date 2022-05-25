@@ -79,41 +79,63 @@ export const GestionFirma = ({ props }: any) => {
   );
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Form
-          form={form}
-          className='mb-4 w-100'
-          {...layoutItems}
-          style={{ maxWidth: 800 }}
-          layout='horizontal'
-          onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
-        >
-          <Divider orientation='left'>Añadir o Modificar Firmas</Divider>
-          <Form.Item label='Funcionario' name='funcionario' rules={[{ required: true }]}>
-            <SelectComponent options={l_funcionarios} optionPropkey='idPersona' optionPropLabel='fullName' onChange={Onchange} />
-          </Form.Item>
-          {selecciono && (
-            <>
-              <Form.Item label={'Número de Identificacion'} name='funcionarioid'>
-                <span className='ant-form-text'>{nroident}</span>
-              </Form.Item>
-              <Form.Item label={'Email'} name='funcionarioemail'>
-                <span className='ant-form-text'>{emailfun}</span>
-              </Form.Item>
-            </>
-          )}
+    <div className='container-fluid fadeInTop'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <div className='row justify-content-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+                <p
+                  style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
+                  className='text-uppercase font-weight-bold'
+                >
+                  Añadir o Modificar Firmas
+                </p>
+              </div>
+            </div>
+            <div className='row justify-content-center mt-5'>
+              <div className='col-lg-6 col-sm-12 col-md-6 justify-content-center text-center'>
+                <Form.Item label='Funcionario' name='funcionario' rules={[{ required: true }]}>
+                  <SelectComponent
+                    options={l_funcionarios}
+                    optionPropkey='idPersona'
+                    optionPropLabel='fullName'
+                    onChange={Onchange}
+                  />
+                </Form.Item>
+                {selecciono && (
+                  <>
+                    <Form.Item label={'Número de Identificacion'} name='funcionarioid'>
+                      <span className='ant-form-text'>{nroident}</span>
+                    </Form.Item>
+                    <Form.Item label={'Email'} name='funcionarioemail'>
+                      <span className='ant-form-text'>{emailfun}</span>
+                    </Form.Item>
+                  </>
+                )}
 
-          <Form.Item label='Firma' name='funcionariofirma'>
-            <Upload name='funcionariofirmaimg' maxCount={1} beforeUpload={() => false} listType='picture' accept='image/*'>
-              <Button icon={<UploadOutlined />}>Seleccionar imagen</Button>
-            </Upload>
-          </Form.Item>
-          <div>
-            <Actions />
-          </div>
-        </Form>
+                <div className='row justify-content-center'>
+                  <div className='col-lg-6 col-m-6 col-sm-12'>
+                    <Form.Item label='Firma' name='funcionariofirma'>
+                      <Upload
+                        name='funcionariofirmaimg'
+                        maxCount={1}
+                        beforeUpload={() => false}
+                        listType='picture'
+                        accept='image/*'
+                      >
+                        <Button icon={<UploadOutlined />}>Seleccionar imagen</Button>
+                      </Upload>
+                    </Form.Item>
+                  </div>
+                </div>
+                <div>
+                  <Actions />
+                </div>
+              </div>
+            </div>
+          </Form>
+        </div>
       </div>
     </div>
   );

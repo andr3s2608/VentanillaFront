@@ -269,7 +269,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           let codeUser = await api.getCodeUser();
           let nameUser = await api.GetInformationUser(codeUser);
 
-          let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName);
+          let codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+          let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName, codigo);
 
           //window.open(linkPDF, 'hola mundo');
 

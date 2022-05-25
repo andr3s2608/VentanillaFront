@@ -170,7 +170,7 @@ export const ModificarFuneraria = ({ props }: any) => {
                   style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
                   className='text-uppercase font-weight-bold'
                 >
-                  Modificar Funeraria
+                  Modificar Funeraria Oracle
                 </p>
               </div>
             </div>
@@ -209,8 +209,8 @@ export const ModificarFuneraria = ({ props }: any) => {
               </div>
             </div>
 
-            <div className='row ml-5'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='row ml-5 justify-content-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
                 <Button type='primary' onClick={BuscarCementerio}>
                   Buscar Funeraria
                 </Button>
@@ -393,6 +393,9 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
+                <div>
+                  <Actions />
+                </div>
               </>
             )}
           </Form>

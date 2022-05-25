@@ -94,122 +94,129 @@ export const ModificarMedico = ({ props }: any) => {
   );
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Form
-          form={form}
-          className='mb-4 w-100'
-          {...layoutItems}
-          style={{ maxWidth: 800 }}
-          layout='horizontal'
-          onFinish={onSubmit}
-          onFinishFailed={onSubmitFailed}
-        >
-          <Divider orientation='left'>Modificar Licencia</Divider>
-
-          <div className='row'>
-            <div className='col-6'>
-              <Form.Item label='Número de Identificación' name='numeroid'>
-                <Input
-                  allowClear
-                  placeholder='Número'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-            </div>
-          </div>
-          <Button type='primary' onClick={BuscarMedico}>
-            Buscar Medico
-          </Button>
-          {encontro && (
-            <>
-              <Form.Item label='Número de Identificación' name='numeroidform' initialValue={nroid} rules={[{ required: true }]}>
-                <Input
-                  allowClear
-                  placeholder='Número de Identificación'
-                  autoComplete='off'
-                  onKeyPress={(event) => {
-                    if (!/[0-9a-zA-Z]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label='Tipo de Identificación'
-                name='tipoid'
-                rules={[{ required: false, max: 50 }]}
-                initialValue={tipoid}
-              >
-                <Input
-                  allowClear
-                  placeholder='Tipo de Identificación'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={nombre}>
-                <Input
-                  allowClear
-                  placeholder='Nombre'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label='Fecha de Nacimiento' name='date' rules={[{ required: true }]} initialValue={fechanac}>
-                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={fechanac} />
-              </Form.Item>
-
-              <Form.Item label='Sitio de Expedición' name='sitio' rules={[{ required: true, max: 50 }]} initialValue={sitioexp}>
-                <Input
-                  allowClear
-                  placeholder='Primer Apellido'
-                  autoComplete='off'
-                  type='text'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
-              <div>
-                <Actions />
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <div className='row justify-content-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+                <p
+                  style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
+                  className='text-uppercase font-weight-bold'
+                >
+                  Modificar Medicos Oracle
+                </p>
               </div>
-            </>
-          )}
-        </Form>
+            </div>
+            <div className='row mt-3 justify-content-center text-center'>
+              <div className='col-lg-6 col-sm-12 col-md-6'>
+                <Form.Item label='Número' name='numeroid'>
+                  <Input
+                    allowClear
+                    placeholder='Número'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+
+            <div className='row ml-5'>
+              <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+                <Button type='primary' onClick={BuscarMedico}>
+                  Buscar Medico
+                </Button>
+              </div>
+            </div>
+            {encontro && (
+              <>
+                <Form.Item label='Número de Identificación' name='numeroidform' initialValue={nroid} rules={[{ required: true }]}>
+                  <Input
+                    allowClear
+                    placeholder='Número de Identificación'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label='Tipo de Identificación'
+                  name='tipoid'
+                  rules={[{ required: false, max: 50 }]}
+                  initialValue={tipoid}
+                >
+                  <Input
+                    allowClear
+                    placeholder='Tipo de Identificación'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={nombre}>
+                  <Input
+                    allowClear
+                    placeholder='Nombre'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Fecha de Nacimiento' name='date' rules={[{ required: true }]} initialValue={fechanac}>
+                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={fechanac} />
+                </Form.Item>
+
+                <Form.Item label='Sitio de Expedición' name='sitio' rules={[{ required: true, max: 50 }]} initialValue={sitioexp}>
+                  <Input
+                    allowClear
+                    placeholder='Primer Apellido'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <div>
+                  <Actions />
+                </div>
+              </>
+            )}
+          </Form>
+        </div>
       </div>
     </div>
   );

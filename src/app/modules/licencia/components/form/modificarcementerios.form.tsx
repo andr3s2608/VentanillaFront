@@ -141,7 +141,7 @@ export const ModificarCementerio = ({ props }: any) => {
                   style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
                   className='text-uppercase font-weight-bold'
                 >
-                  Modificar Cementerio
+                  Modificar Cementerio Oracle
                 </p>
               </div>
             </div>
@@ -181,7 +181,7 @@ export const ModificarCementerio = ({ props }: any) => {
             </div>
 
             <div className='row ml-5'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
+              <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
                 <Button type='primary' onClick={BuscarCementerio}>
                   Buscar cementerio
                 </Button>
