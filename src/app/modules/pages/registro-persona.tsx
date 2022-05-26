@@ -712,10 +712,6 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfUPZ}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-<<<<<<< HEAD
-=======
-                    onChange={(event) => {}}
->>>>>>> e88fecc9ee940a34ac41d0ff06979d456956c085
                   />
                 </Form.Item>
               </div>
@@ -727,10 +723,6 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfBarrio}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-<<<<<<< HEAD
-=======
-                    onChange={(event) => {}}
->>>>>>> e88fecc9ee940a34ac41d0ff06979d456956c085
                   />
                 </Form.Item>
               </div>
