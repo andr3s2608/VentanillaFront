@@ -1008,7 +1008,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinish={onSubmit}
           onFinishFailed={onSubmitFailed}
         >
-          <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
+          <div className={`${current != 0 && 'd-none'} fadeInRight ${current === 0 && 'd-block'}`}>
             <GeneralInfoFormSeccion obj={obj} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
             <LugarDefuncionFormSeccion form={form} obj={obj} />
             <DeathInstituteFormSeccion
@@ -1038,7 +1038,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
           </div>
 
-          <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
+          <div className={`${current != 1 && 'd-none'} fadeInRight ${current === 1 && 'd-block'}`}>
             <Divider orientation='right'> INFORMACIÓN DE LA MADRE</Divider>
             <Form.Item
               label='Tipo Identificación'
@@ -1324,7 +1324,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-          <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
+          <div className={`${current != 2 && 'd-none'} fadeInRight ${current === 2 && 'd-block'}`}>
             {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
@@ -1342,7 +1342,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-          <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
+          <div className={`${current != 3 && 'd-none'} fadeInRight ${current === 3 && 'd-block'}`}>
             <MedicalSignatureFormSeccion prop={getData} obj={obj} form={form} tipoLicencia={tipoLicencia} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -1356,7 +1356,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               </div>
             </Form.Item>
           </div>
-          <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
+          <div className={`${current != 4 && 'd-none'} fadeInRight ${current === 4 && 'd-block'}`}>
             <DocumentosFormSeccion obj={obj} files={supports} tipoLicencia={tipoLicencia} tipoIndividuo='Fetal' form={form} />
 
             <Actions />

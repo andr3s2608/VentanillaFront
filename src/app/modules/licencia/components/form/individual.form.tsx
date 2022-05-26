@@ -921,7 +921,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <>
-            <div className={`d-none fadeInRight ${current === 0 && 'd-block'}`}>
+            <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
               <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
@@ -932,7 +932,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 required={true}
                 tipoLicencia={tipoLicencia}
               />
-
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                 <div className='d-flex justify-content-end'>
                   <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
@@ -944,7 +943,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </>
 
           <>
-            <div className={`d-none fadeInRight ${current === 1 && 'd-block'}`}>
+            <div className={`${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
               <Divider orientation='right'>Datos del Fallecido</Divider>
               <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={objJosn?.name}>
                 <Input
@@ -1209,7 +1208,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </>
 
           <>
-            <div className={`d-none fadeInRight ${current === 2 && 'd-block'}`}>
+            <div className={`${current != 2 && 'd-none'} fadeInRight ${current == 2 && 'd-block'}`}>
               {isCremacion && (
                 <>
                   <Divider orientation='right'>Datos Del Familiar Que Autoriza Cremación</Divider>
@@ -1426,7 +1425,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </>
 
           <>
-            <div className={`d-none fadeInRight ${current === 3 && 'd-block'}`}>
+            <div className={` ${current != 3 && 'd-none'} fadeInRight ${current == 3 && 'd-block'}`}>
               <MedicalSignatureFormSeccion prop={getData} obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
 
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -1443,7 +1442,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           </>
 
           <>
-            <div className={`d-none fadeInRight ${current === 4 && 'd-block'}`}>
+            <div className={`${current != 4 && 'd-none'} fadeInRight ${current == 4 && 'd-block'}`}>
               <DocumentosFormSeccion obj={objJosn} tipoLicencia={tipoLicencia} tipoIndividuo='Individual' form={form} />
               <Actions />
             </div>

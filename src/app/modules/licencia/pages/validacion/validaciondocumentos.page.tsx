@@ -11,10 +11,10 @@ const { TabPane } = Tabs;
 const PruebaPage = () => {
   return (
     <div className='fadeInTop container-fluid'>
-      <PageHeaderComponent title='Validar Tramite' />
+      <PageHeaderComponent title='Validar Documento' />
 
       <Tabs>
-        <TabPane tab='Registro' key='1'>
+        <TabPane>
           <ValidarDocumentos props={1} />
         </TabPane>
       </Tabs>

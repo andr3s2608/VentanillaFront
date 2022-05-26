@@ -93,7 +93,7 @@ export const ValidarDocumentos = ({ props }: any) => {
 
             break;
         }
-        const idtram = `El documento con código de verificación ${solicitud[0].iD_Control_Tramite}, se encuentra asociado a la siguiente información:`;
+        const idtram = `El documento con código de verificación ${idsol}, se encuentra asociado a la siguiente información:`;
 
         setDatos([
           solicitud[0].iD_Control_Tramite,

@@ -8,7 +8,7 @@ export interface UIState {
 /** Estado inicial del UI */
 const initialState: UIState = {
   loading: false,
-  sidenav: true
+  sidenav: false
 };
 
 function UIReducer(state = initialState, action: UIActionTypes): UIState {
