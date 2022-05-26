@@ -4358,6 +4358,7 @@ a.ant-btn-sm {
 }
 .ant-card-body {
   padding: 24px;
+  background: #08979c !important;
 }
 .ant-card-body::before {
   display: table;
@@ -14921,6 +14922,7 @@ textarea.ant-input-number {
 .ant-layout.ant-layout-has-sider > .ant-layout,
 .ant-layout.ant-layout-has-sider > .ant-layout-content {
   width: 0;
+  padding-left: 40px !important;
 }
 .ant-layout-header,
 .ant-layout-footer {
@@ -25132,12 +25134,10 @@ div.ant-typography-edit-content.ant-typography-rtl {
   padding: 0;
 }
 
-.save{
+.save {
   margin-right: 350px !important;
 }
 
-.center-block{
-  margin: 0 auto;
-  float: none;
-  margin-right: 200px;
+.center-block {
+ margin-left: 70px;
 }

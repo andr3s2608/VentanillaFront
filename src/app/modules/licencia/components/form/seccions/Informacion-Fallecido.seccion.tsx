@@ -88,6 +88,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const segundonombre = obj?.secondName ?? obj.secondNamemother;
   const primerapellido = obj?.surname ?? obj.surnamemother;
   const segundoapellido = obj?.secondSurname ?? obj.secondSurnamemother;
+  const generosolicitud = obj.sex;
   //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
 
@@ -183,6 +184,10 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         describe: (
           <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' value={tipo} disabled />
         )
+      },
+      {
+        title: 'Genero',
+        describe: generosolicitud
       }
     ];
     data = datanueva;
@@ -238,7 +243,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       },
       {
         title: 'Genero',
-        describe: genero
+        describe: generosolicitud
       },
       {
         title: 'Tipo de Muerte',

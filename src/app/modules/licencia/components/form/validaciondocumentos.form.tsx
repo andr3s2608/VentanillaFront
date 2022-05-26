@@ -50,52 +50,66 @@ export const ValidarDocumentos = ({ props }: any) => {
 
   const BuscarCementerio = async () => {
     const idsol: string = form.getFieldValue('nrodocumento');
-    const solicitud = await api.getLicencia(idsol);
-    if (idsol == null) {
+    if (idsol == undefined || idsol == '' || idsol == ' ') {
       Swal.fire({
         icon: 'error',
 
         title: 'Datos invalidos',
-        text: 'No se encontro el código de verificación, por favor verifiquelo '
+        text: 'Debe Ingresar un Codigo de Verificación'
       });
     } else {
-      let valor = '';
-      switch (solicitud[0].idTramite) {
-        case 'a289c362-e576-4962-962b-1c208afa0273':
-          valor = 'Inhumación Indivual';
+      const getidtramite = await api.Obteneridcontroltramite(idsol);
 
-          break;
-        case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-          //inhumacion fetal
-          valor = 'Inhumación Fetal';
+      if (getidtramite == null) {
+        Swal.fire({
+          icon: 'error',
 
-          break;
-        case 'e69bda86-2572-45db-90dc-b40be14fe020':
-          //cremacion individual
-          valor = 'Cremación Individual';
+          title: 'Datos invalidos',
+          text: 'No se encontro el código de verificación, por favor verifiquelo '
+        });
+      } else {
+        const getidsol = await api.ObtenerSolicitud(getidtramite.idControlTramite, 'tramite');
 
-          break;
-        case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-          //cremacionfetal
-          valor = 'Cremación Fetal ';
+        const solicitud = await api.getLicencia(getidsol);
+        let valor = '';
+        switch (solicitud[0].idTramite) {
+          case 'a289c362-e576-4962-962b-1c208afa0273':
+            valor = 'Inhumación Indivual';
 
-          break;
+            break;
+          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+            //inhumacion fetal
+            valor = 'Inhumación Fetal';
+
+            break;
+          case 'e69bda86-2572-45db-90dc-b40be14fe020':
+            //cremacion individual
+            valor = 'Cremación Individual';
+
+            break;
+          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+            //cremacionfetal
+            valor = 'Cremación Fetal ';
+
+            break;
+        }
+        const idtram = `El documento con código de verificación ${solicitud[0].iD_Control_Tramite}, se encuentra asociado a la siguiente información:`;
+
+        setDatos([
+          solicitud[0].iD_Control_Tramite,
+          solicitud[0].fechaSolicitud,
+          solicitud[0].resumenSolicitud.numeroDocumentoSolicitante,
+          solicitud[0].resumenSolicitud.nombreSolicitante + ' ' + solicitud[0].resumenSolicitud.apellidoSolicitante,
+          solicitud[0].resumenSolicitud.numeroLicencia,
+          solicitud[0].resumenSolicitud.fechaLicencia,
+          'Aprobado y firmado',
+          valor
+        ]);
+        setcodigo(idtram);
+        setselecciono(true);
       }
-      const idtram = `El documento con código de verificación ${solicitud[0].iD_Control_Tramite}, se encuentra asociado a la siguiente información:`;
-
-      setDatos([
-        solicitud[0].iD_Control_Tramite,
-        solicitud[0].fechaSolicitud,
-        solicitud[0].resumenSolicitud.numeroDocumentoSolicitante,
-        solicitud[0].resumenSolicitud.nombreSolicitante + ' ' + solicitud[0].resumenSolicitud.apellidoSolicitante,
-        solicitud[0].resumenSolicitud.numeroLicencia,
-        solicitud[0].resumenSolicitud.fechaLicencia,
-        'Aprobado y firmado',
-        valor
-      ]);
-      setcodigo(idtram);
     }
-    setselecciono(true);
+
     //form.resetFields(['razon', 'direccion', 'telefono', 'nombrerep', 'tiporep', 'nrorep']);
   };
 
@@ -159,10 +173,11 @@ export const ValidarDocumentos = ({ props }: any) => {
                     </p>
                   </div>
                 </div>
-                <div className='row mt-3'>
-                  <div className='col-lg-6 col-sm-12 center-block'>
+                <div className='row mt-3 d-flex justify-content-center'>
+                  <div className='col-lg-6 col-sm-12'>
                     <Form.Item name='nrodocumento'>
                       <Input
+                        className=' center-block'
                         allowClear
                         placeholder='Ingrese el Código de Verificación'
                         autoComplete='off'
@@ -203,7 +218,7 @@ export const ValidarDocumentos = ({ props }: any) => {
                 <Form.Item label='Nro de Licencia ' initialValue={numerolic} name='tiporep'>
                   <span className='ant-form-text'>{numerolic}</span>
                 </Form.Item>
-                <Form.Item label='Fecha de Licencia ' initialValue={fechaapsol} name='fecsol'>
+                <Form.Item label='Fecha de Licencia ' initialValue={fechaapsol} name='fecapsol'>
                   <span className='ant-form-text'>{fechaapsol}</span>
                 </Form.Item>
                 <Form.Item label='Estado del Trámite ' initialValue={estado} name='estado'>

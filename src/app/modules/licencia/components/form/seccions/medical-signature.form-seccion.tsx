@@ -145,7 +145,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -161,7 +161,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -182,7 +182,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
@@ -202,7 +202,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           autoComplete='off'
           type='text'
           onKeyPress={(event) => {
-            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
               event.preventDefault();
             }
           }}
