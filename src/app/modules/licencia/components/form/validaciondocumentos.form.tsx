@@ -173,10 +173,11 @@ export const ValidarDocumentos = ({ props }: any) => {
                     </p>
                   </div>
                 </div>
-                <div className='row mt-3'>
-                  <div className='col-lg-6 col-sm-12 center-block'>
+                <div className='row mt-3 d-flex justify-content-center'>
+                  <div className='col-lg-6 col-sm-12'>
                     <Form.Item name='nrodocumento'>
                       <Input
+                        className=' center-block'
                         allowClear
                         placeholder='Ingrese el Código de Verificación'
                         autoComplete='off'
