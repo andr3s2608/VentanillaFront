@@ -652,9 +652,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfLocalidad}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {
-                      console.log('Se cambió la localidad');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
@@ -668,9 +666,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfUPZ}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {
-                      console.log('se cambió la UPZ');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
@@ -682,9 +678,7 @@ const RegistroPage: React.FC<any> = (props) => {
                     options={listOfBarrio}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {
-                      console.log('Se cambio el barrio');
-                    }}
+                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>

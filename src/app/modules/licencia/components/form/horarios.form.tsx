@@ -89,7 +89,6 @@ export const HorariosGestion = ({ props }: any) => {
     const iniciosd = AsignarCero(moment(values.iniciofinsemana).format('LT'));
     const finsd = AsignarCero(moment(values.findesemana).format('LT'));
 
-    console.log();
     await api.ModificarConstante('5DF03735-503B-4D22-8169-E4FCDD19DA26', iniciolv, '0');
     await api.ModificarConstante('818AA32D-C90D-45D0-975F-486D069F7CB1', finlv, '1');
     await api.ModificarConstante('CE62162E-5E79-4E05-AEDE-276B6C89D886', iniciosd, '1');

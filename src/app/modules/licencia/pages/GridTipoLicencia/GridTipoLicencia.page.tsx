@@ -44,7 +44,8 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
   useEffect(() => {
     getListas();
-
+    setDisableFilter(true);
+    setSelectedOption('todos');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -58,9 +59,9 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       let arraydatos = [];
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
 
-      //setGrid(resp);
+      setGrid(resp);
       setAllData(resp);
-      setVisibleGrid('none');
+      setVisibleGrid('contents');
     }
     setVisiblePicker('none');
     setVisibleAlert(false);
@@ -74,7 +75,6 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     */
   };
   const selectChange = (event: any) => {
-    console.log(event, 'click');
     const value = event;
     setVisibleAlert(false);
     if (value == 'fechaReg') {
@@ -189,11 +189,12 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
           <div className='row h-100 justify-content-center align-items-center'>
             <div className='col-gl-6 col-md-6 col-sm-12'>
               <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='' name='' rules={[{ required: true }]}>
+                <Form.Item label='' name='' initialValue={'Todos'} rules={[{ required: true }]}>
                   <SelectComponent
                     className='ml-3'
                     id='filter'
                     onChange={selectChange}
+                    defaultValue={'todos'}
                     options={[
                       { key: 'idSol', value: 'Id Tramite' },
                       { key: 'docFallec', value: 'Documento del fallecido' },

@@ -59,7 +59,7 @@ export const ValidarDocumentos = ({ props }: any) => {
       });
     } else {
       const getidtramite = await api.Obteneridcontroltramite(idsol);
-      console.log(getidtramite + ' gettram');
+
       if (getidtramite == null) {
         Swal.fire({
           icon: 'error',

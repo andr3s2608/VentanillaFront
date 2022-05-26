@@ -208,7 +208,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       describe: apellido
     },
     {
-      title: 'Email',
+      title: 'Correo Familiar Contratante',
       describe: emailsolicitante
     }
   ];
