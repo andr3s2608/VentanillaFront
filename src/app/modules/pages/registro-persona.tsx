@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
 
 import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
+import { ConsoleSqlOutlined, ContactsOutlined } from '@ant-design/icons';
 
 const RegistroPage: React.FC<any> = (props) => {
   const [direccionCompleta, setDireccionCompleta] = useState<string>('');
@@ -44,6 +45,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [initialValueZona, setInitialValueZona] = useState<any>('id1');
+  const [initialValueLocalidad, setInitialValueLocalidad] = useState<any>('ANTONIO NARIÑO');
+  const [initialValueUPZ, setInitialValueUPZ] = useState<any>('AMERICAS');
+  const [initialValueBarrio, setInitialValueBarrio] = useState<any>('ACACIAS USAQUEN');
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
@@ -274,6 +279,18 @@ const RegistroPage: React.FC<any> = (props) => {
     build_direction(0, valor);
   };
 
+  const onTransformar = () => {
+    console.log('si está entrando');
+    setInitialValueZona('id1');
+    setInitialValueLocalidad('ENGATIVA');
+    setInitialValueUPZ('ENGATIVA');
+    setInitialValueBarrio('ALAMEDA');
+    console.log(initialValueZona);
+    console.log(initialValueLocalidad);
+    console.log(initialValueUPZ);
+    console.log(initialValueBarrio);
+  };
+
   const build_direction = (posicion: number, valor: string) => {
     const { direccion } = store.getState();
     let direccion_completa: string[] = direccion;
@@ -319,16 +336,41 @@ const RegistroPage: React.FC<any> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-      //const algo = api.geocoding(XML);
-      //console.log(algo);
-      const list_barrios = await api.getListBarrios();
-      const list_upz = await api.getListUPZ();
-      const list_localidades = await api.getListLocalidades();
+      // const algo = api.geocoding(XML);
+      // console.log(algo);
 
-      setListOfLocalidad(list_localidades);
-      setListOfUPZ(list_upz);
-      setListOfBarrio(list_barrios);
-      setStateDisplayBox('block');
+      let idZona = 0;
+      let idLocalidad = 10;
+      let idUPZ = 74;
+      let idBarrio = '10119BD';
+
+      console.log('esto primero');
+      const list_barrios: Array<any> = await api.getListBarrios();
+      const list_upz: Array<any> = await api.getListUPZ();
+      const list_localidades: Array<any> = await api.getListLocalidades();
+      console.log('esto segundo');
+      //let resultSearchZona = list_barrios.filter((result:any) => { result.idLocalidad == idLocalidad });
+      const [resultSearchLocalidad] = list_localidades.filter((result: any) => result.locId == idLocalidad);
+      const [resultSearchUPZ] = list_upz.filter((result: any) => result.upzId == idUPZ);
+      const [resultSearchBarrio] = list_barrios.filter((result: any) => result.upzId == idUPZ);
+
+      await setListOfLocalidad(list_localidades);
+      await setListOfUPZ(list_upz);
+      await setListOfBarrio(list_barrios);
+      await setStateDisplayBox('block');
+
+      console.log(resultSearchLocalidad);
+      console.log(resultSearchUPZ);
+      console.log(resultSearchBarrio);
+
+      console.log(list_localidades);
+      console.log(list_upz);
+      console.log(list_barrios);
+
+      console.log(initialValueBarrio);
+      console.log(initialValueZona);
+      console.log(initialValueUPZ);
+      console.log(initialValueLocalidad);
     }
   };
 
@@ -625,6 +667,13 @@ const RegistroPage: React.FC<any> = (props) => {
                 >
                   Confirmar Dirección
                 </Button>
+                <Button
+                  type='primary'
+                  style={{ marginTop: '-10px', marginRight: '-400px', marginLeft: '20px', display: stateDisplayButton }}
+                  onClick={onTransformar}
+                >
+                  Probar
+                </Button>
               </div>
             </div>
           </div>
@@ -634,27 +683,18 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Zona</label>
-                <Form.Item label='' name='zona' initialValue={'id1'}>
-                  <SelectComponent
-                    style={{ width: '395px' }}
-                    options={listOfZona}
-                    optionPropkey='key'
-                    optionPropLabel='key'
-                    onChange={(event) => {}}
-                  />
+                <Form.Item label='' name='zona' initialValue={initialValueZona}>
+                  <SelectComponent style={{ width: '395px' }} options={listOfZona} optionPropkey='key' optionPropLabel='key' />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Localidad</label>
-                <Form.Item label='' name='localidad' initialValue={'ANTONIO NARIÑO'}>
+                <Form.Item label='' name='localidad' initialValue={initialValueLocalidad}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {
-                      console.log('Se cambió la localidad');
-                    }}
                   />
                 </Form.Item>
               </div>
@@ -662,29 +702,23 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Upz</label>
-                <Form.Item label='' name='upz' initialValue={'AMERICAS'}>
+                <Form.Item label='' name='upz' initialValue={initialValueUPZ}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {
-                      console.log('se cambió la UPZ');
-                    }}
                   />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Barrio</label>
-                <Form.Item label='' name='barrio' initialValue={'ACACIAS USAQUEN'}>
+                <Form.Item label='' name='barrio' initialValue={initialValueBarrio}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfBarrio}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {
-                      console.log('Se cambio el barrio');
-                    }}
                   />
                 </Form.Item>
               </div>
