@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Divider from 'antd/es/divider';
 import { List, Button, Form, Modal, Radio, Table } from 'antd';
 import 'app/shared/components/table/estilos.css';
+import Swal from 'sweetalert2';
 // Componentes
 
 import { dominioService, ETipoDominio, IDominio, IDepartamento, ICementerio, IMunicipio } from 'app/services/dominio.service';
@@ -175,10 +176,42 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     }
   };
   const onClickModFuneraria = async () => {
-    const modificar = await api.ModificarCementerio(obj.idDatosfuneraria, 'funeraria', nuevafuneraria + '');
+    if (nuevafuneraria == undefined) {
+      Swal.fire({
+        icon: 'error',
+
+        title: 'Datos Invalidos',
+        text: 'Debe Seleccionar alguna Funeraria'
+      });
+    } else {
+      const modificar = await api.ModificarCementerio(obj.idDatosfuneraria, 'funeraria', nuevafuneraria + '');
+      setisfuneraria(false);
+      Swal.fire({
+        icon: 'success',
+
+        title: 'Funeraria Modificada',
+        text: 'Se modificado la Funeraria exitosamente'
+      });
+    }
   };
   const onClickModCementerio = async () => {
-    const modificar = await api.ModificarCementerio(obj.idDatosCementerio, 'cementerio', nuevocementerio + '');
+    if (nuevocementerio == undefined) {
+      Swal.fire({
+        icon: 'error',
+
+        title: 'Datos Invalidos',
+        text: 'Debe Seleccionar alguna Funeraria'
+      });
+    } else {
+      const modificar = await api.ModificarCementerio(obj.idDatosCementerio, 'cementerio', nuevocementerio + '');
+      setiscementerio(false);
+      Swal.fire({
+        icon: 'success',
+
+        title: 'Funeraria Modiicada',
+        text: 'Se modificado la Funeraria exitosamente'
+      });
+    }
   };
   //#endregion
 

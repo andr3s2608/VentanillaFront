@@ -52,7 +52,9 @@ export const Gridview = (props: IDataSource) => {
 
   useEffect(() => {
     getListas();
-
+    return () => {
+      localStorage.removeItem('register');
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

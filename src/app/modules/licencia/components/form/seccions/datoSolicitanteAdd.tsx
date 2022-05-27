@@ -125,8 +125,13 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     setsininformacion(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setLongitudminima(6);
+      setLongitudmaxima(15);
+      setTipocampo('[a-zA-Z0-9]{10,11}');
+      setTipocampovalidacion(/[a-zA-Z0-9]/);
+      setTipodocumento('Sin Información');
+      setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
-      setLongitudminima(0);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
         setLongitudminima(6);

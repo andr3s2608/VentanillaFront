@@ -96,7 +96,7 @@ export const HorariosGestion = ({ props }: any) => {
     Swal.fire({
       icon: 'success',
 
-      title: 'Horario Modiicado',
+      title: 'Horario Modificado',
       text: 'Se han modificado los horarios de atención exitosamente'
     });
   };
