@@ -8,7 +8,7 @@ import Form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { BasicaInformacion } from './components/form/BasicaInformacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useReducer } from 'react';
 import { IDepartamento, IMunicipio } from 'app/services/dominio.service';
 import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
 
 import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
+import { ConsoleSqlOutlined, ContactsOutlined } from '@ant-design/icons';
 
 const RegistroPage: React.FC<any> = (props) => {
   const [direccionCompleta, setDireccionCompleta] = useState<string>('');
@@ -44,6 +45,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [initialValueZona, setInitialValueZona] = useState<any>('NORTE');
+  const [initialValueLocalidad, setInitialValueLocalidad] = useState<any>('BOSA');
+  const [initialValueUPZ, setInitialValueUPZ] = useState<any>('AMERICAS');
+  const [initialValueBarrio, setInitialValueBarrio] = useState<any>('ACACIAS USAQUEN');
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
@@ -319,16 +324,34 @@ const RegistroPage: React.FC<any> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-      //const algo = api.geocoding(XML);
-      //console.log(algo);
-      const list_barrios = await api.getListBarrios();
-      const list_upz = await api.getListUPZ();
-      const list_localidades = await api.getListLocalidades();
+      // const algo = api.geocoding(XML);
+      // console.log(algo);
 
+      let idZona = 4;
+      let idLocalidad = 10;
+      let idUPZ = 74;
+      let idBarrio = '10119BD';
+
+      const list_zona: Array<any> = await api.getListSubRedes();
+      const list_barrios: Array<any> = await api.getListBarrios();
+      const list_upz: Array<any> = await api.getListUPZ();
+      const list_localidades: Array<any> = await api.getListLocalidades();
+
+      setListOfZona(list_zona);
       setListOfLocalidad(list_localidades);
       setListOfUPZ(list_upz);
       setListOfBarrio(list_barrios);
       setStateDisplayBox('block');
+
+      setInitialValueZona(idZona);
+      setInitialValueLocalidad(idLocalidad);
+      setInitialValueUPZ(idUPZ);
+      setInitialValueBarrio(idBarrio);
+
+      console.log(initialValueBarrio);
+      console.log(initialValueZona);
+      console.log(initialValueUPZ);
+      console.log(initialValueLocalidad);
     }
   };
 
@@ -634,25 +657,25 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Zona</label>
-                <Form.Item label='' name='zona' initialValue={'id1'}>
+                {initialValueZona}
+                <Form.Item label='' name='zona' initialValue={initialValueZona}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfZona}
-                    optionPropkey='key'
-                    optionPropLabel='key'
-                    onChange={(event) => {}}
+                    optionPropkey='idSubRed'
+                    optionPropLabel='nombre'
                   />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Localidad</label>
-                <Form.Item label='' name='localidad' initialValue={'ANTONIO NARIÑO'}>
+                {initialValueLocalidad}
+                <Form.Item label='' name='localidad' initialValue={initialValueLocalidad}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
-                    optionPropkey='descripcion'
+                    optionPropkey='locId'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
@@ -660,25 +683,25 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Upz</label>
-                <Form.Item label='' name='upz' initialValue={'AMERICAS'}>
+                {initialValueUPZ}
+                <Form.Item label='' name='upz' initialValue={initialValueUPZ}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
                     optionPropkey='descripcion'
                     optionPropLabel='descripcion'
-                    onChange={(event) => {}}
                   />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Barrio</label>
-                <Form.Item label='' name='barrio' initialValue={'ACACIAS USAQUEN'}>
+                {initialValueBarrio}
+                <Form.Item label='' name='barrio' initialValue={initialValueBarrio}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfBarrio}
-                    optionPropkey='descripcion'
-                    optionPropLabel='descripcion'
-                    onChange={(event) => {}}
+                    optionPropkey='id_barrio'
+                    optionPropLabel='nombre_barrio'
                   />
                 </Form.Item>
               </div>
