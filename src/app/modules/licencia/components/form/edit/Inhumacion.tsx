@@ -6,12 +6,13 @@ export const EditInhumacion = (id: String) => {
     const [obj] = json;
 
     return formatObjJson(obj, id);
+  } else {
+    return {
+      isLugar: () => {
+        return 'Dentro de Bogotá';
+      }
+    };
   }
-  return {
-    isLugar: () => {
-      return 'Dentro de Bogotá';
-    }
-  };
 };
 
 const formatObjJson = (obj: any, id: String) => {

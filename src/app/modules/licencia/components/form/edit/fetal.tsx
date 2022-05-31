@@ -2,16 +2,18 @@ import { IRegistroLicencia } from 'app/Models/IRegistroLicencia';
 
 export const EditFetal = (): any => {
   const data = localStorage.getItem('register');
+
   if (data) {
     const json = JSON.parse(data);
     const [obj] = json;
     return formatObjJson(obj);
+  } else {
+    return {
+      isLugar: () => {
+        return 'Dentro de Bogotá';
+      }
+    };
   }
-  return {
-    isLugar: () => {
-      return 'Dentro de Bogotá';
-    }
-  };
 };
 
 const formatObjJson = (obj: any) => {

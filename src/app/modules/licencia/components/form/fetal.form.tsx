@@ -929,7 +929,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const valorupper = valor.toUpperCase();
     setsininformacion(false);
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setLongitudminima(0);
+      setLongitudminima(6);
+      setLongitudmaxima(15);
+      setTipocampo('[a-zA-Z0-9]{10,11}');
+      setTipocampovalidacion(/[a-zA-Z0-9]/);
+      setTipodocumento('Sin Información');
+      setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -1053,19 +1058,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 optionPropLabel='descripcion'
               />
             </Form.Item>
-            <Form.Item
-              label='Número de Identificación'
-              initialValue={obj?.IDNumber}
-              name='IDNumber'
-              rules={[{ required: !sininformacion, max: 25 }]}
-            >
+            <Form.Item label='Número de Identificación' initialValue={obj?.IDNumber} name='IDNumber' rules={[{ required: true }]}>
               <Input
                 allowClear
                 type='text'
                 placeholder='Número Identificación'
                 autoComplete='off'
                 pattern={tipocampo}
-                disabled={sininformacion}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
                   if (!tipocampovalidacion.test(event.key)) {

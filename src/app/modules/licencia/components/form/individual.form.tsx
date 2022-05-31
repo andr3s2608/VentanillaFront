@@ -781,7 +781,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacion(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setLongitudminima(0);
+      setLongitudminima(6);
+      setLongitudmaxima(15);
+      setTipocampo('[a-zA-Z0-9]{10,11}');
+      setTipocampovalidacion(/[a-zA-Z0-9]/);
+      setTipodocumento('Sin Información');
+      setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
@@ -846,8 +851,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacionaut(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      setLongitudminimaautoriza(6);
+      setLongitudmaximaautoriza(15);
+      setTipodocumentoautoriza('Sin Información');
+      setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
+      setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+      setCampoautoriza('AlfaNuméricos(Numéros y letras)');
       setsininformacionaut(true);
-      setLongitudminimaautoriza(0);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
         setLongitudminimaautoriza(6);
@@ -1061,14 +1071,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
-              <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: !sininformacion }]}>
+              <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true }]}>
                 <Input
                   allowClear
                   type='text'
                   placeholder='Número Identificación'
                   autoComplete='off'
                   pattern={tipocampo}
-                  disabled={sininformacion}
                   maxLength={longitudmaxima}
                   onKeyPress={(event) => {
                     if (!tipocampovalidacion.test(event.key)) {
@@ -1240,7 +1249,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       <Form.Item
                         label='Número de Identificación'
                         name='mauthIDNumber'
-                        rules={[{ required: !sininformacionaut }]}
+                        rules={[{ required: true }]}
                         initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
                       >
                         <Input
@@ -1249,7 +1258,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           placeholder='Número Identificación'
                           autoComplete='off'
                           pattern={tipocampoautoriza}
-                          disabled={sininformacion}
                           maxLength={longitudmaximaautoriza}
                           onKeyPress={(event) => {
                             if (!tipocampovalidacionautoriza.test(event.key)) {
