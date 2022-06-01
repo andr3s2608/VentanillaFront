@@ -237,14 +237,14 @@ export const ModificarLicencia = ({ props }: any) => {
           await api.uploadFiles(formData);
           await api.UpdateSupportDocuments(supportDocumentsEdit);
         }
-        setLicencia(false);
-        Swal.fire({
-          icon: 'success',
-
-          title: 'Solicitud Modificada',
-          text: 'Se han modificado la Solicitud exitosamente'
-        });
       }
+      setLicencia(false);
+      Swal.fire({
+        icon: 'success',
+
+        title: 'Solicitud Modificada',
+        text: 'Se han modificado la Solicitud exitosamente'
+      });
     } else {
       Swal.fire({
         title: 'Usuario Registrado',
