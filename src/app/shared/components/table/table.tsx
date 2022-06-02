@@ -1,7 +1,7 @@
 import { Alert, Button, Modal } from 'antd';
 import Form, { FormInstance } from 'antd/es/form';
 import Table from 'antd/es/table';
-import { IRoles } from 'app/Models/IRoles';
+import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { useCallback, useEffect, useState } from 'react';
