@@ -138,7 +138,7 @@ export class ApiService {
   postLicencia = (payload: any) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
 
-  postprueba = (payload: any) => post({ endpoint: 'https://localhost:5001/api/', url: 'Request/AddRquest', payload, id: '0' });
+  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
 
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
