@@ -161,7 +161,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
   };
   const getDataSolicitante = (solicitante: any) => {};
-
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     let causa = values.causaMuerte;
@@ -270,7 +269,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surname,
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
-          nacionalidad: values.nationalidad,
+          nacionalidad: values.nationalidad[0],
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -307,7 +306,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
     if (tipoLicencia === 'Cremación') {
       persona = [
-        //fallecido
+        //madre
         {
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: idnum,
@@ -316,7 +315,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surname,
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
-          nacionalidad: values.nationalidad,
+          nacionalidad: values.nationalidad[0],
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -377,7 +376,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         numeroCertificado: values.certificado,
         fechaDefuncion: moment(values.date).format(formatDate),
         sinEstablecer: values.check,
-        hora: values.check === true ? 'Sin Información' : moment(values.time).format('LT'),
+        hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
         idSexo: values.sex,
         estadoSolicitud: estadoSolicitud,
         idPersonaVentanilla: Number(user), //numero de usuario registrado
