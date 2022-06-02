@@ -45,6 +45,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [emailfuneraria, setemailfuneraria] = useState<string | undefined>();
   const [iscementerio, setiscementerio] = useState(false);
   const [isfuneraria, setisfuneraria] = useState(false);
+  const [isfuera, setisfuera] = useState(false);
   const [cargofuneraria, setcargofuneraria] = useState(false);
 
   const [funeraria, setfuneraria] = useState<string | undefined>();
@@ -147,6 +148,9 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     setdepartamentofuneraria(departamentofuneraria);
 */
 
+    if (cementerio == 'Sin Información') {
+      setisfuera(true);
+    }
     setfuneraria(funeraria);
     setcargofuneraria(true);
     setListas(resp);
@@ -255,6 +259,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
           optionPropkey='RAZON_S'
           onChange={Onchangecementerio}
           optionPropLabel='RAZON_S'
+          disabled={isfuera}
           defaultValue={cementerio}
         />
       )

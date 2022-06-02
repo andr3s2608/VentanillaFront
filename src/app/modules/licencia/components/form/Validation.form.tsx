@@ -8,7 +8,7 @@ import Alert from 'antd/es/alert';
 import Swal from 'sweetalert2';
 import Steps from 'antd/es/steps';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
-import { columnFake } from 'app/shared/components/table/model';
+
 import { Button, List, Modal } from 'antd';
 import Table from 'antd/es/table';
 import Divider from 'antd/es/divider';
