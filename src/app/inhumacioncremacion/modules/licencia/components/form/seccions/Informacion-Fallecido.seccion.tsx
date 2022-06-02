@@ -51,14 +51,21 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     }
 
     if (obj?.idDepartamentoResidencia != undefined) {
-      const iddepartmadre = (await dep).filter((i) => i.idDepartamento == obj?.idDepartamentoResidencia);
-      const { idDepartamento } = iddepartmadre[0];
-      const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
+      if (obj.residencia == '1e05f64f-5e41-4252-862c-5505dbc3931c') {
+        const iddepartmadre = (await dep).filter((i) => i.idDepartamento == obj?.idDepartamentoResidencia);
+        const { idDepartamento } = iddepartmadre[0];
+        const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
 
-      const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
-      setdepartamentomadre(iddepartmadre[0].descripcion);
-      setciudadmadre(idmunimadre[0].descripcion);
-      setesmadre(true);
+        const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
+
+        setdepartamentomadre(iddepartmadre[0].descripcion);
+        setciudadmadre(idmunimadre[0].descripcion);
+        setesmadre(true);
+      } else {
+        setdepartamentomadre('Fuera del País');
+        setciudadmadre('Fuera del País');
+        setesmadre(true);
+      }
     }
 
     const inf_fallecido = await api.GetInformacionFallecido(obj?.idSolicitud);

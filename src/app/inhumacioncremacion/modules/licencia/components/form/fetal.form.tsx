@@ -370,7 +370,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       nroid = values.ndoc;
     }
     const dep = values.state;
-    var mun = values.city;
+
+    var mun = values.ciudad;
     switch (dep) {
       case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
@@ -378,7 +379,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     const depres = values.departamento;
-    var munres = values.city;
+    var munres = values.ciudad;
     switch (depres) {
       case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
         munres = '31211657-3386-420a-8620-f9C07a8ca491';
