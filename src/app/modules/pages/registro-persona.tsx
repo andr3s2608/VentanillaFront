@@ -657,7 +657,7 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Zona</label>
-                {initialValueZona}
+
                 <Form.Item label='' name='zona' initialValue={initialValueZona}>
                   <SelectComponent
                     style={{ width: '395px' }}
@@ -669,7 +669,7 @@ const RegistroPage: React.FC<any> = (props) => {
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Localidad</label>
-                {initialValueLocalidad}
+
                 <Form.Item label='' name='localidad' initialValue={initialValueLocalidad}>
                   <SelectComponent
                     style={{ width: '395px' }}
@@ -683,7 +683,7 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Upz</label>
-                {initialValueUPZ}
+
                 <Form.Item label='' name='upz' initialValue={initialValueUPZ}>
                   <SelectComponent
                     style={{ width: '395px' }}
@@ -695,7 +695,7 @@ const RegistroPage: React.FC<any> = (props) => {
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Barrio</label>
-                {initialValueBarrio}
+
                 <Form.Item label='' name='barrio' initialValue={initialValueBarrio}>
                   <SelectComponent
                     style={{ width: '395px' }}
