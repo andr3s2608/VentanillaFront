@@ -16,10 +16,10 @@ class DominioService {
   //get_municipios_by_departamento = (idDepartamento: string) =>
   //get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetMunicipioByIdDepartamento/${idDepartamento}`, id: '0' });
 
-  get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidad`, id: '0' });
+  get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidadCommons`, id: '0' });
 
   get_upz_by_localidad = (idLocalidad: string) =>
-    get<IUpz[]>({ endpoint: this.endpoint, url: `Upz/GetUpzByIdLocalidad/${idLocalidad}`, id: '0' });
+    get<IUpz[]>({ endpoint: this.endpoint, url: `Upz/GetUpzByLocalidadCommons/${idLocalidad}`, id: '0' });
 
   get_barrio_by_upz = (idUpz: string) =>
     get<IBarrio[]>({ endpoint: this.endpoint, url: `Barrio/GetBarrioByIdUpz/${idUpz}`, id: '0' });

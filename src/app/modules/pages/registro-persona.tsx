@@ -462,7 +462,7 @@ const RegistroPage: React.FC<any> = (props) => {
           />
 
           <div className='form-row mt-5 text-center'>
-            <div className='form-group col-md-8 col-lg-8'>
+            <div className='form-group col-md-8 col-lg-8 text-center'>
               <label htmlFor=''>
                 Via Principal
                 <span className='ml-2' style={{ color: '#FF6341' }}>
