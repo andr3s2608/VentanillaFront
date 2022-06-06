@@ -5,7 +5,7 @@ import { IRoles } from 'app/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { useCallback, useEffect, useState } from 'react';
-import { columnFake, dataFake } from './model';
+
 import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import moment from 'moment';
@@ -52,9 +52,7 @@ export const Gridview = (props: IDataSource) => {
 
   useEffect(() => {
     getListas();
-    return () => {
-      localStorage.removeItem('register');
-    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

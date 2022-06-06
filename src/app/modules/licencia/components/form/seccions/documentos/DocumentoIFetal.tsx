@@ -277,41 +277,40 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
         </Upload>
       </Form.Item>
 
-      {files?.length ? (
-        <Form.Item
-          label='Ver Documento del familiar'
-          name='fileAuthCremacion'
-          valuePropName='fileList'
-          rules={[{ required: isEdit ? false : true }]}
-          getValueFromEvent={normFile}
-        >
-          <Button
-            type='default'
-            shape='round'
-            disabled={isFileViwerDisabled('Documento_del_familiar')}
-            style={{ marginRight: '10px' }}
-            icon={<EyeOutlined />}
-            size='middle'
-            onClick={() => onEventFile('Documento_del_familiar')}
-          />
-        </Form.Item>
-      ) : null}
-
-      <Form.Item
-        label='Documento del familiar'
-        name='fileAuthCremacion'
-        valuePropName='fileList'
-        rules={[{ required: isEdit ? false : true }]}
-        getValueFromEvent={normFile}
-      >
-        <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
-
-      {isEditOtros() && (
+      {isCremacion && (
         <>
-          {isCremacion && (
+          {files?.length ? (
+            <Form.Item
+              label='Ver Documento del familiar'
+              name='fileAuthCremacion'
+              valuePropName='fileList'
+              rules={[{ required: isEdit ? false : true }]}
+              getValueFromEvent={normFile}
+            >
+              <Button
+                type='default'
+                shape='round'
+                disabled={isFileViwerDisabled('Documento_del_familiar')}
+                style={{ marginRight: '10px' }}
+                icon={<EyeOutlined />}
+                size='middle'
+                onClick={() => onEventFile('Documento_del_familiar')}
+              />
+            </Form.Item>
+          ) : null}
+
+          <Form.Item
+            label='Documento del familiar'
+            name='fileAuthCremacion'
+            valuePropName='fileList'
+            rules={[{ required: isEdit ? false : true }]}
+            getValueFromEvent={normFile}
+          >
+            <Upload name='fileAuthCremacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+          {isEditOtros() && (
             <>
               {files?.length ? (
                 <Form.Item

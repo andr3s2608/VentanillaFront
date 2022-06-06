@@ -44,9 +44,7 @@ export class MapperMenu {
           path: menu.path
         };
       });
-      {
-        console.log(item.titulo, ' Titulo');
-      }
+
       const json = {
         name: item.titulo,
         path: item.path,

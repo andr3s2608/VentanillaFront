@@ -360,7 +360,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     placeholder='Número de oficio de medicina legal'
                     autoComplete='off'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                      if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

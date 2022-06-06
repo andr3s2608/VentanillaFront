@@ -8,7 +8,7 @@ import Alert from 'antd/es/alert';
 import Swal from 'sweetalert2';
 import Steps from 'antd/es/steps';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
-import { columnFake } from 'app/shared/components/table/model';
+
 import { Button, List, Modal } from 'antd';
 import Table from 'antd/es/table';
 import Divider from 'antd/es/divider';
@@ -80,6 +80,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   //create o edit
   const valid: any = EditInhumacion('1');
   var objJosn: any = EditInhumacion('1');
+
   if (valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' || valid.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e') {
     objJosn = EditFetal();
   } else {
@@ -139,9 +140,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     store.dispatch(SetResetViewLicence());
-    return () => {
-      localStorage.removeItem('register');
-    };
   }, []);
 
   //#endregion

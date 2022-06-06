@@ -245,11 +245,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: idnum,
           primerNombre: values.namemother,
-          segundoNombre: values.secondNamemother,
+          segundoNombre: values.secondNamemother ?? '',
           primerApellido: values.surnamemother,
-          segundoApellido: values.secondSurnamemother,
+          segundoApellido: values.secondSurnamemother ?? '',
           fechaNacimiento: moment(values.date).format(formatDate),
-          nacionalidad: values.nationalidadmother,
+          nacionalidad: values.nationalidadmother[0],
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
           idEstadoCivil: values.civilStatusmother,
@@ -267,9 +267,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           tipoIdentificacion: values.medicalSignatureIDType,
           numeroIdentificacion: values.medicalSignatureIDNumber,
           primerNombre: values.medicalSignatureName,
-          segundoNombre: values.medicalSignatureSecondName,
+          segundoNombre: values.medicalSignatureSecondName ?? '',
           primerApellido: values.medicalSignatureSurname,
-          segundoApellido: values.medicalSignatureSecondSurname,
+          segundoApellido: values.medicalSignatureSecondSurname ?? '',
           fechaNacimiento: null,
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
@@ -293,11 +293,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           tipoIdentificacion: values.IDType,
           numeroIdentificacion: idnum,
           primerNombre: values.namemother,
-          segundoNombre: values.secondNamemother,
+          segundoNombre: values.secondNamemother ?? '',
           primerApellido: values.surnamemother,
-          segundoApellido: values.secondSurnamemother,
+          segundoApellido: values.secondSurnamemother ?? '',
           fechaNacimiento: moment(values.date).format(formatDate),
-          nacionalidad: values.nationalidadmother,
+          nacionalidad: values.nationalidadmother[0],
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
           idEstadoCivil: values.civilStatusmother,
@@ -314,9 +314,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           tipoIdentificacion: values.authIDType,
           numeroIdentificacion: idnumaut,
           primerNombre: values.authName,
-          segundoNombre: values.authSecondName,
+          segundoNombre: values.authSecondName ?? '',
           primerApellido: values.authSurname,
-          segundoApellido: values.authSecondSurname,
+          segundoApellido: values.authSecondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
@@ -335,9 +335,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           tipoIdentificacion: values.medicalSignatureIDType,
           numeroIdentificacion: values.medicalSignatureIDNumber,
           primerNombre: values.medicalSignatureName,
-          segundoNombre: values.medicalSignatureSecondName,
+          segundoNombre: values.medicalSignatureSecondName ?? '',
           primerApellido: values.medicalSignatureSurname,
-          segundoApellido: values.medicalSignatureSecondSurname,
+          segundoApellido: values.medicalSignatureSecondSurname ?? '',
           fechaNacimiento: null,
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
@@ -370,7 +370,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       nroid = values.ndoc;
     }
     const dep = values.state;
-    var mun = values.city;
+    var mun = values.ciudad;
     switch (dep) {
       case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
@@ -378,7 +378,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     const depres = values.departamento;
-    var munres = values.city;
+    var munres = values.ciudad;
     switch (depres) {
       case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
         munres = '31211657-3386-420a-8620-f9C07a8ca491';
@@ -426,7 +426,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           enBogota: values.cementerioLugar === 'Dentro de Bogotá',
           fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
           fueraPais: values.cementerioLugar === 'Fuera del País',
-          cementerio: values.cementerioBogota,
+          cementerio: values.cementerioBogota ?? 'Sin Información',
           otroSitio: values.otro,
           ciudad: values.cementerioCiudad,
           idPais: values.cementerioPais,
@@ -929,7 +929,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const valorupper = valor.toUpperCase();
     setsininformacion(false);
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setLongitudminima(0);
+      setLongitudminima(6);
+      setLongitudmaxima(15);
+      setTipocampo('[a-zA-Z0-9]{10,11}');
+      setTipocampovalidacion(/[a-zA-Z0-9]/);
+      setTipodocumento('Sin Información');
+      setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
@@ -1053,19 +1058,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 optionPropLabel='descripcion'
               />
             </Form.Item>
-            <Form.Item
-              label='Número de Identificación'
-              initialValue={obj?.IDNumber}
-              name='IDNumber'
-              rules={[{ required: !sininformacion, max: 25 }]}
-            >
+            <Form.Item label='Número de Identificación' initialValue={obj?.IDNumber} name='IDNumber' rules={[{ required: true }]}>
               <Input
                 allowClear
                 type='text'
                 placeholder='Número Identificación'
                 autoComplete='off'
                 pattern={tipocampo}
-                disabled={sininformacion}
                 maxLength={longitudmaxima}
                 onKeyPress={(event) => {
                   if (!tipocampovalidacion.test(event.key)) {

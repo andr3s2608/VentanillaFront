@@ -69,11 +69,6 @@ const RegistroPage: React.FC<any> = (props) => {
       const list_upz: Array<any> = await api.getListUPZ();
       const list_localidades: Array<any> = await api.getListLocalidades();
 
-      console.log(list_zona);
-      console.log(list_barrios);
-      console.log(list_upz);
-      console.log(list_localidades);
-
       setListOfZona(list_zona);
       setListOfLocalidad(list_localidades);
       setListOfUPZ(list_upz);
@@ -465,7 +460,7 @@ const RegistroPage: React.FC<any> = (props) => {
           />
 
           <div className='form-row mt-5 text-center'>
-            <div className='form-group col-md-8 col-lg-8'>
+            <div className='form-group col-md-8 col-lg-8 text-center'>
               <label htmlFor=''>
                 Via Principal
                 <span className='ml-2' style={{ color: '#FF6341' }}>
