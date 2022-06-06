@@ -45,10 +45,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
   const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
-  const [initialValueZona, setInitialValueZona] = useState<any>('NORTE');
-  const [initialValueLocalidad, setInitialValueLocalidad] = useState<any>('BOSA');
-  const [initialValueUPZ, setInitialValueUPZ] = useState<any>('AMERICAS');
-  const [initialValueBarrio, setInitialValueBarrio] = useState<any>('ACACIAS USAQUEN');
+  const [initialValueZona, setInitialValueZona] = useState<any>();
+  const [initialValueLocalidad, setInitialValueLocalidad] = useState<any>();
+  const [initialValueUPZ, setInitialValueUPZ] = useState<any>();
+  const [initialValueBarrio, setInitialValueBarrio] = useState<any>();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
@@ -64,7 +64,22 @@ const RegistroPage: React.FC<any> = (props) => {
         api.getPaises()
       ]);
 
+      const list_zona: Array<any> = await api.getListSubRedes();
+      const list_barrios: Array<any> = await api.getListBarrios();
+      const list_upz: Array<any> = await api.getListUPZ();
+      const list_localidades: Array<any> = await api.getListLocalidades();
+
+      console.log(list_zona);
+      console.log(list_barrios);
+      console.log(list_upz);
+      console.log(list_localidades);
+
+      setListOfZona(list_zona);
+      setListOfLocalidad(list_localidades);
+      setListOfUPZ(list_upz);
+      setListOfBarrio(list_barrios);
       setLMunicipios(municipios);
+
       setLMunicipiosres(municipios);
       setListas(resp);
     },
@@ -332,29 +347,17 @@ const RegistroPage: React.FC<any> = (props) => {
       let idUPZ = 74;
       let idBarrio = '10119BD';
 
-      const list_zona: Array<any> = await api.getListSubRedes();
-      const list_barrios: Array<any> = await api.getListBarrios();
-      const list_upz: Array<any> = await api.getListUPZ();
-      const list_localidades: Array<any> = await api.getListLocalidades();
-
-      setListOfZona(list_zona);
-      setListOfLocalidad(list_localidades);
-      setListOfUPZ(list_upz);
-      setListOfBarrio(list_barrios);
-      setStateDisplayBox('block');
-
       setInitialValueZona(idZona);
       setInitialValueLocalidad(idLocalidad);
       setInitialValueUPZ(idUPZ);
       setInitialValueBarrio(idBarrio);
+      setStateDisplayBox('block');
 
-      console.log(initialValueBarrio);
-      console.log(initialValueZona);
-      console.log(initialValueUPZ);
-      console.log(initialValueLocalidad);
+      form.resetFields(['localidad', 'zona', 'barrio', 'upz']);
     }
   };
 
+  console.log('renderrrrr');
   return (
     <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
@@ -657,25 +660,25 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Zona</label>
-                {initialValueZona}
                 <Form.Item label='' name='zona' initialValue={initialValueZona}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfZona}
                     optionPropkey='idSubRed'
                     optionPropLabel='nombre'
+                    defaultValue={initialValueZona}
                   />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Localidad</label>
-                {initialValueLocalidad}
                 <Form.Item label='' name='localidad' initialValue={initialValueLocalidad}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
-                    optionPropkey='locId'
-                    optionPropLabel='descripcion'
+                    optionPropkey='idLocalidad'
+                    optionPropLabel='nombre'
+                    defaultValue={initialValueLocalidad}
                   />
                 </Form.Item>
               </div>
@@ -683,25 +686,25 @@ const RegistroPage: React.FC<any> = (props) => {
             <div className='form-row mt-4 text-center'>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Upz</label>
-                {initialValueUPZ}
                 <Form.Item label='' name='upz' initialValue={initialValueUPZ}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
-                    optionPropkey='descripcion'
-                    optionPropLabel='descripcion'
+                    optionPropkey='id_upz'
+                    optionPropLabel='nom_upz'
+                    defaultValue={initialValueUPZ}
                   />
                 </Form.Item>
               </div>
               <div className='form-group col-md-6'>
                 <label htmlFor=''>Barrio</label>
-                {initialValueBarrio}
                 <Form.Item label='' name='barrio' initialValue={initialValueBarrio}>
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfBarrio}
                     optionPropkey='id_barrio'
                     optionPropLabel='nombre_barrio'
+                    defaultValue={initialValueBarrio}
                   />
                 </Form.Item>
               </div>
