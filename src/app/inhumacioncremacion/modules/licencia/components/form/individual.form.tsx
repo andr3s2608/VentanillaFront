@@ -944,7 +944,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               />
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                 <div className='d-flex justify-content-end'>
-                  <Button type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
+                  <Button href='#ancla-1' type='primary' htmlType='button' onClick={() => PruebaCertificado()}>
                     Siguiente
                   </Button>
                 </div>
@@ -1208,7 +1208,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                     Volver atrás
                   </Button>
-                  <Button type='primary' htmlType='button' onClick={() => ValidacionFallecido()}>
+                  <Button href='#ancla-1' type='primary' htmlType='button' onClick={() => ValidacionFallecido()}>
                     Siguiente
                   </Button>
                 </div>
@@ -1424,7 +1424,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                     Volver atrás
                   </Button>
-                  <Button type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
+                  <Button href='#ancla-1' type='primary' htmlType='button' onClick={() => ValidacionAutorizador()}>
                     Siguiente
                   </Button>
                 </div>
@@ -1441,7 +1441,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   <Button type='dashed' htmlType='button' onClick={onPrevStep}>
                     Volver atrás
                   </Button>
-                  <Button type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
+                  <Button href='#ancla-1' type='primary' htmlType='button' onClick={() => ValidacionMedico()}>
                     Siguiente
                   </Button>
                 </div>
