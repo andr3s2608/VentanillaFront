@@ -63,7 +63,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
 
       <Divider orientation='right'>Información General</Divider>
 
-      <Form.Item label={'Causa Muerte - ' + props.causaMuerte} name='causaMuerte' initialValue={0} rules={[{ required: true }]}>
+      <Form.Item label='Emergencia Sanitaria' name='causaMuerte' initialValue={0} rules={[{ required: true }]}>
         <Radio.Group>
           <Radio value={1}>SI</Radio>
           <Radio value={0}>NO</Radio>
