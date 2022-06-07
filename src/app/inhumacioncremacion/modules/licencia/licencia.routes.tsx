@@ -5,8 +5,11 @@ import { IRouteProps } from 'app/shared/components/router/access.route';
 
 /** Path principal del modulo. */
 export const licenciaPath = '/tramites-servicios/licencia';
+export const RevisionPath = '/tramites-servicios/Revision';
 export const tramiteServicePath = '/tramites-servicios';
+export const tramiteServiceAguasPath = '/tramites-servicios-aguas';
 export const tramiteAdmin = '/tramites-administrador';
+export const notificacion = '/notificacion';
 export const updatepath = '/modificar';
 export const validaciondoc = '/validardocumento';
 
@@ -29,6 +32,22 @@ const LicenciaCremacionFetalPage = lazy(() => import('./pages/cremacion-fetal/cr
 const LicenciaInhumacionFetalPage = lazy(() => import('./pages/inhumacion-fetal/inhumacion-fetal.page'));
 const MaestroPage = lazy(() => import('./pages/GridTipoLicencia/GridTipoLicencia.page'));
 const ReportPage = lazy(() => import('./pages/report/report.page'));
+//////Aguas////
+const BandejaAguas = lazy(() => import('../../../aguasconsumo/pages/bandejas/RedireccionarBandeja.page'));
+//-gestion
+const RevisarCoordinador = lazy(() => import('../../../aguasconsumo/pages/gestion/revisionSolicitudCoordinador.page'));
+const RevisarGestion = lazy(() => import('../../../aguasconsumo/pages/gestion/revisarSolicitudGestion.page'));
+const AprobarTramite = lazy(() => import('../../../aguasconsumo/pages/gestion/aprobarTramite.page'));
+///notificaciones
+const NotificacionUsuario = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionUsuario.page'));
+const NotificacionBandeja = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionBandeja.page'));
+//Solicitudes
+const SolicitarRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/solicitarRevision.page'));
+const VistaRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/vistaRevision.page'));
+const PrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/primeraVez.page'));
+const SegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/segundaVez.page'));
+const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionPrimera.page'));
+const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionSegunda.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
   {
@@ -94,5 +113,50 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${validaciondoc}`,
     component: ValidarDocumentPage
+  },
+  /////////Aguas//////
+  {
+    path: `${tramiteServiceAguasPath}`,
+    component: BandejaAguas
+  },
+  {
+    path: `${RevisionPath}/revisar-solicitud`,
+    component: RevisarCoordinador
+  },
+  {
+    path: `${RevisionPath}/gestionar-solicitud`,
+    component: RevisarGestion
+  },
+  {
+    path: `${RevisionPath}/aprobar-tramite`,
+    component: AprobarTramite
+  },
+  {
+    path: `${notificacion}`,
+    component: NotificacionUsuario
+  },
+  {
+    path: `${RevisionPath}/solicitar-revision`,
+    component: SolicitarRevision
+  },
+  {
+    path: `${RevisionPath}/vista-revision`,
+    component: VistaRevision
+  },
+  {
+    path: `${RevisionPath}/primera-vez`,
+    component: PrimeraVez
+  },
+  {
+    path: `${RevisionPath}/segunda-vez`,
+    component: SegundaVez
+  },
+  {
+    path: `${RevisionPath}/renovacion-primera-vez`,
+    component: RenovacionPrimeraVez
+  },
+  {
+    path: `${RevisionPath}/renovacion-segunda-vez`,
+    component: RenovacionSegundaVez
   }
 ];

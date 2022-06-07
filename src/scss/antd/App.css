@@ -1,0 +1,116 @@
+* {
+  text-decoration: none !important;
+}
+.navbar {
+  border-bottom: 3px solid rgb(4, 195, 209);
+  background-color: #cbcbcb !important;
+  color: #000;
+  font-weight: 500;
+}
+
+.img-bogota img {
+  width: 60%;
+  display: flex;
+  float: left;
+  margin-top: -30px;
+}
+
+.img-profile {
+  position: relative;
+}
+
+.img-profile img {
+  width: 20%;
+  float: right;
+  margin-top: -30px;
+}
+
+.info-usuario {
+  position: absolute;
+  bottom: -120px;
+  right: 16px;
+  font-size: 18px;
+  margin-right: -1px;
+}
+
+.breadcrumb {
+  background-color: rgb(255, 255, 255);
+}
+
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  font-family: 'fontAwesome';
+  font-weight: bold;
+  content: '\f105';
+  color: #000;
+}
+
+.breadcrumb .breadcrumb-item a {
+  color: #0055ff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.breadcrumb > .active {
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ubi-menu .panel a {
+  background-color: #cbcbcb !important;
+}
+
+.ubi-menu .panel a {
+  color: #000;
+  border-bottom: 3px solid rgb(4, 195, 209);
+}
+
+.panel > .active {
+  color: #0055ff;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.info-tramite p {
+  color: #4111a8;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mb-0 > a {
+  display: block;
+  position: relative;
+  color: #000;
+  font-weight: 700;
+  font-size: 19px;
+  text-decoration: none;
+}
+
+.mb-0 > a:after {
+  content: '\f078';
+  /* fa-chevron-down */
+  font-family: 'FontAwesome';
+  position: absolute;
+  right: 0;
+  color: #000;
+}
+
+.mb-0 > a[aria-expanded='true']:after {
+  content: '\f077';
+  color: #000;
+  /* fa-chevron-up */
+}
+
+.mb-0 > a[aria-expanded='true']:after {
+  content: '\f077';
+  color: #000;
+  /* fa-chevron-up */
+}
+
+#accordion .button {
+  width: 40%;
+  margin-right: 210px !important;
+}
