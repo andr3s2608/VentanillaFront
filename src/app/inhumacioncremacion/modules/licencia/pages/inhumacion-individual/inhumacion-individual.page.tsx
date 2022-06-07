@@ -181,7 +181,7 @@ const InhumacionIndividualPage = () => {
         title='Licencia Inhumación - Individual'
         subTitle='Consulte el trámite de los certificados o registre una nueva solicitud.'
       />
-
+      <p id='ancla-1'></p>
       <Tabs>
         {/* <TabPane tab='Certificados' key='1'>
           <div className='card card-body py-5 mb-4 fadeInTop'>
