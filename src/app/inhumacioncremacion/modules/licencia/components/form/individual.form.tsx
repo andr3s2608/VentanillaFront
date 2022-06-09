@@ -181,11 +181,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     let idnum = values.IDNumber;
     let idnumaut = values.mauthIDNumber;
 
-    if (sininformacion) {
-      idnum = 'Sin Información';
+    if (sininformacion && idnum == undefined) {
+      idnum = ' ';
     }
-    if (sininformacionaut) {
-      idnumaut = 'Sin Información';
+    if (sininformacionaut && idnumaut == undefined) {
+      idnumaut = ' ';
     }
 
     const tipoinst = values.instTipoIdent;
@@ -781,6 +781,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacion(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      form.setFieldsValue({ IDNumber: undefined });
       setLongitudminima(6);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{10,11}');
@@ -1071,7 +1072,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
-              <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: true }]}>
+              <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: !sininformacion }]}>
                 <Input
                   allowClear
                   type='text'
@@ -1249,7 +1250,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       <Form.Item
                         label='Número de Identificación'
                         name='mauthIDNumber'
-                        rules={[{ required: true }]}
+                        rules={[{ required: !sininformacionaut }]}
                         initialValue={objJosn?.mauthIDNumber ? objJosn?.mauthIDNumber : null}
                       >
                         <Input

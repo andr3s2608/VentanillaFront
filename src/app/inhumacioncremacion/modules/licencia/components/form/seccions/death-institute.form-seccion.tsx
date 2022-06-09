@@ -215,6 +215,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               placeholder='Número de protocolo'
               autoComplete='off'
               type='text'
+              maxLength={10}
               onKeyPress={(event) => {
                 if (!/[0-9]/.test(event.key)) {
                   event.preventDefault();
@@ -359,6 +360,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     allowClear
                     placeholder='Número de oficio de medicina legal'
                     autoComplete='off'
+                    maxLength={10}
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
@@ -379,6 +381,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     allowClear
                     placeholder='numberFiscal'
                     autoComplete='off'
+                    maxLength={7}
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();

@@ -1,5 +1,4 @@
-import { SegundaU } from 'app/aguasconsumo/Components/SegundaU';
-import { RevisarSc } from 'app/aguasconsumo/Components/RevisarSc';
+import { Servicios } from 'app/aguasconsumo/Components/Servicios';
 
 import Tabs from 'antd/es/tabs';
 
@@ -12,7 +11,7 @@ const SolicitarRevision: React.FC<any> = (props: any) => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      <Tabs>{<RevisarSc />}</Tabs>
+      <Tabs>{<Servicios />}</Tabs>
     </div>
   );
 };

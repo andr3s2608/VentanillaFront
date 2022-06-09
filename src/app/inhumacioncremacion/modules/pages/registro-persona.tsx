@@ -347,11 +347,6 @@ const RegistroPage: React.FC<any> = (props) => {
       setInitialValueLocalidad(idLocalidad);
       setInitialValueUPZ(idUPZ);
       setInitialValueBarrio(idBarrio);
-
-      console.log(initialValueBarrio);
-      console.log(initialValueZona);
-      console.log(initialValueUPZ);
-      console.log(initialValueLocalidad);
     }
   };
 

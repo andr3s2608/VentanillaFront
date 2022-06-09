@@ -256,7 +256,6 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           autoComplete='off'
           pattern={tipocampo}
           maxLength={longitudmaxima}
-          disabled={sininformacion}
           onKeyPress={(event) => {
             if (!/[a-zA-Z0-9]/.test(event.key)) {
               event.preventDefault();

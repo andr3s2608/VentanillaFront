@@ -3,7 +3,7 @@ import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 
-const Servicios = () => {
+export const Servicios = () => {
   return (
     <section className='info-panel'>
       <div className='container'>
@@ -437,5 +437,3 @@ const Servicios = () => {
     </section>
   );
 };
-
-export default Servicios;

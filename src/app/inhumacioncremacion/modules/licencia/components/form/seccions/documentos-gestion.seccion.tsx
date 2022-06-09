@@ -36,6 +36,39 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   const api = new ApiService(accountIdentifier);
   const solicitud = obj.idSolicitud;
 
+  const arrayinhind: any = [
+    '19A11490-261C-4114-9152-23C2B991CB36',
+    '9C4E62A4-EE76-4BA1-8DBE-8BE172E23788',
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '79320AF6-943C-43BF-87D1-847B625F6203'
+  ];
+  const arrayinhfet: any = [
+    '19A11490-261C-4114-9152-23C2B991CB36',
+    'D2D3ABA7-3B92-446A-AA8C-80A75DE246A7',
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '79320AF6-943C-43BF-87D1-847B625F6203'
+  ];
+  const arraycremind: any = [
+    '19A11490-261C-4114-9152-23C2B991CB36',
+    '9C4E62A4-EE76-4BA1-8DBE-8BE172E23788',
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    'F67F1C4E-A6A5-4257-A995-17A926801F7C',
+    'D6524742-E32D-4548-AB21-7A9CBB367926',
+    'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
+    '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
+    '79320AF6-943C-43BF-87D1-847B625F6203'
+  ];
+  const arraycremfet: any = [
+    '19A11490-261C-4114-9152-23C2B991CB36',
+    'D2D3ABA7-3B92-446A-AA8C-80A75DE246A7',
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    'F67F1C4E-A6A5-4257-A995-17A926801F7C',
+    'D6524742-E32D-4548-AB21-7A9CBB367926',
+    'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
+    '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
+    '79320AF6-943C-43BF-87D1-847B625F6203'
+  ];
+
   var arrayarchivos: any[] = ['1', '1', '1', '1', '1'];
   const getListas = useCallback(async () => {
     await GetValidateRol();
@@ -44,7 +77,85 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   const GetValidateRol = async () => {
     const resp = await api.getSupportDocuments(solicitud);
 
-    setGrid(resp);
+    switch (obj.idTramite) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        /*El contenedor es de inhumacion indivual */
+
+        var array: any[] = [];
+
+        for (let index = 0; index < arrayinhind.length; index++) {
+          const documento: string = arrayinhind[index];
+
+          for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+            const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+            if (bd.toUpperCase() == documento) {
+              array.push(resp[indexinterno]);
+              break;
+            }
+          }
+        }
+
+        setGrid(array);
+
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        /*El contenedor es de inhumacion fetal */
+
+        var array: any[] = [];
+
+        for (let index = 0; index < arrayinhfet.length; index++) {
+          const documento: string = arrayinhfet[index];
+
+          for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+            const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+            if (bd.toUpperCase() == documento) {
+              array.push(resp[indexinterno]);
+              break;
+            }
+          }
+        }
+
+        setGrid(array);
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        /*El contenedor es de cremacion individual */
+
+        var array: any[] = [];
+
+        for (let index = 0; index < arraycremind.length; index++) {
+          const documento: string = arraycremind[index];
+
+          for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+            const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+            if (bd.toUpperCase() == documento) {
+              array.push(resp[indexinterno]);
+              break;
+            }
+          }
+        }
+
+        setGrid(array);
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        /*El contenedor es de cremacionfetal */
+
+        var array: any[] = [];
+
+        for (let index = 0; index < arraycremfet.length; index++) {
+          const documento: string = arraycremfet[index];
+
+          for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+            const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+            if (bd.toUpperCase() == documento) {
+              array.push(resp[indexinterno]);
+              break;
+            }
+          }
+        }
+
+        setGrid(array);
+        break;
+    }
   };
 
   //
@@ -172,7 +283,9 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     <div className='container'>
       <div className='row'>
         <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
-          <p style={{fontSize:'16px', color:'#3366cc', fontFamily:' Roboto'}}  className='text-uppercase font-weight-bold'>Documentos Cargados</p>
+          <p style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }} className='text-uppercase font-weight-bold'>
+            Documentos Cargados
+          </p>
         </div>
       </div>
       <div className='row'>
@@ -180,7 +293,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
           <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
         </div>
         <div className='col-lg-6 col-sm-12 col-md-6'>
-        <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='500px' width='100%'></iframe>
+          <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='500px' width='100%'></iframe>
         </div>
       </div>
     </div>

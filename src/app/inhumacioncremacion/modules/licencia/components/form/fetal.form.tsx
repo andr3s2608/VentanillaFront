@@ -199,11 +199,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     let idnumaut = values.mauthIDNumber;
     const tipoaut = values.authIDType;
 
-    if (sininformacion) {
-      idnum = 'Sin Información';
+    if (sininformacion && idnum == undefined) {
+      idnum = ' ';
     }
-    if (tipoaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
-      idnumaut = 'Sin Información';
+    if (tipoaut == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25' && idnumaut == undefined) {
+      idnumaut = ' ';
     }
     const par = values.authParentesco;
     var parentesco = '';
@@ -1059,7 +1059,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 optionPropLabel='descripcion'
               />
             </Form.Item>
-            <Form.Item label='Número de Identificación' initialValue={obj?.IDNumber} name='IDNumber' rules={[{ required: true }]}>
+            <Form.Item
+              label='Número de Identificación'
+              initialValue={obj?.IDNumber}
+              name='IDNumber'
+              rules={[{ required: !sininformacion }]}
+            >
               <Input
                 allowClear
                 type='text'
