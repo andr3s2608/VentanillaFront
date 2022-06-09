@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
-import Input from 'antd/es/input';
+
 import Divider from 'antd/es/divider';
 import { List, Card, Layout, Button, Modal } from 'antd';
-import ReactDOM from 'react-dom';
+
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import '../../../../../../../scss/antd/index.css';

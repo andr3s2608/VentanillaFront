@@ -161,7 +161,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
   };
   const getDataSolicitante = (solicitante: any) => {};
-
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     let causa = values.causaMuerte;
