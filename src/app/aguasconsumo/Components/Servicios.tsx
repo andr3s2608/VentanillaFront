@@ -2,8 +2,11 @@ import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
+import Button from 'antd/es/button';
+import { useHistory } from 'react-router';
 
 export const Servicios = () => {
+  const history = useHistory();
   return (
     <section className='info-panel'>
       <div className='container'>
@@ -422,6 +425,15 @@ export const Servicios = () => {
           </div>
 
           <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
+            <Button
+              type='primary'
+              htmlType='button'
+              onClick={() => {
+                history.push('/tramites-servicios/Revision/revisar-solicitud');
+              }}
+            >
+              Enviar
+            </Button>
             <button className='ml-4 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
               Enviar
             </button>
