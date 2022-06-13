@@ -127,7 +127,7 @@ export const VistaRu = () => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Estado</p>
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                       <option>En radicación</option>
@@ -136,13 +136,13 @@ export const VistaRu = () => {
                 </div>
               </div>
             </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Actividad actual</p>
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Solicitud de revisión en campo</option>
+                      <option>Persona Natural</option>
                     </select>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export const VistaRu = () => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Usuario asignado</p>
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                       <option>CGONZALEZL</option>
@@ -182,7 +182,7 @@ export const VistaRu = () => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Subred de jurisdicción </p>
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group '>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                       <option>Seleccione</option>
@@ -201,10 +201,10 @@ export const VistaRu = () => {
                 </p>
               </div>
 
-              <div className='col-lg-6col-sm-4 col-md-6 mt-2 mr-5' style={{ marginLeft: '-10px' }}>
+              <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
                 <div className='panel-search'>
-                  <p>Tipo de solicitante*</p>
-                  <div className='form-group gov-co-form-group ml-2'>
+                  <p className='mt-5 ml-1'>Tipo de solicitante*</p>
+                  <div className='form-group gov-co-form-group'>
                     <div className='gov-co-dropdown'>
                       <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                         <option>Persona Natural</option>
@@ -218,10 +218,10 @@ export const VistaRu = () => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
               <div className='panel-search'>
                 <p>Tipo de documento</p>
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Item</option>
+                      <option>Persona Natural</option>
                     </select>
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export const VistaRu = () => {
                 </div>
               </div>
             </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Segundo nombre</p>
                 <div className='form-group gov-co-form-group'>
@@ -369,7 +369,7 @@ export const VistaRu = () => {
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                      if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -406,8 +406,8 @@ export const VistaRu = () => {
                     />
                   </div>
                 </div>
-                <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '40px', marginLeft: '12px' }}>
-                  <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
+                <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '12px' }}>
+                  <button className='ml-4 mr-3 float-right button btn btn-round btn-high' style={{ backgroundColor: '#BABABA' }}>
                     Buscar
                   </button>
                 </div>
@@ -433,7 +433,7 @@ export const VistaRu = () => {
                 </div>
               </div>
             </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Municipio</p>
                 <div className='form-group gov-co-form-group'>

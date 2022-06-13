@@ -354,66 +354,6 @@ export class ApiService {
       confirmModal: false
     });
 
-  getZonaSIG = (payload: any) =>
-    post<any>({
-      endpoint: 'http://sig.saludcapital.gov.co/',
-      url: 'wsdireccion/direccion.asmx',
-      payload,
-      id: '0',
-      options: {
-        headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8',
-          'Access-Control-Allow-Origin': '*'
-        }
-      },
-      confirmModal: false
-    });
-
-  getLocalidadSIG = (payload: any) =>
-    post<any>({
-      endpoint: 'http://sig.saludcapital.gov.co/',
-      url: 'wsdireccion/direccion.asmx',
-      payload,
-      id: '0',
-      options: {
-        headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8',
-          'Access-Control-Allow-Origin': '*'
-        }
-      },
-      confirmModal: false
-    });
-
-  getUpzSIG = (payload: any) =>
-    post<any>({
-      endpoint: 'http://sig.saludcapital.gov.co/',
-      url: 'wsdireccion/direccion.asmx',
-      payload,
-      id: '0',
-      options: {
-        headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8',
-          'Access-Control-Allow-Origin': '*'
-        }
-      },
-      confirmModal: false
-    });
-
-  getBarrioSIG = (payload: any) =>
-    post<any>({
-      endpoint: 'http://sig.saludcapital.gov.co/',
-      url: 'wsdireccion/direccion.asmx',
-      payload,
-      id: '0',
-      options: {
-        headers: {
-          'Content-Type': 'application/soap+xml; charset=utf-8',
-          'Access-Control-Allow-Origin': '*'
-        }
-      },
-      confirmModal: false
-    });
-
   /**
    * servicios para retornar la lista de barrios, localidades, subred y upz de bases de datos
    */

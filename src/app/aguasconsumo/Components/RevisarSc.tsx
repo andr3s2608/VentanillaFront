@@ -128,13 +128,13 @@ export const RevisarSc = () => {
               </div>
             </div>
 
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
               <div className='panel-search'>
                 <p>Estado</p>
 
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
-                    <div className='form-group gov-co-form-group ml-2'>
+                    <div className='form-group gov-co-form-group '>
                       <div className='gov-co-dropdown'>
                         <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                           <option>En radicación</option>
@@ -380,7 +380,7 @@ export const RevisarSc = () => {
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                      if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -417,7 +417,7 @@ export const RevisarSc = () => {
                     />
                   </div>
                 </div>
-                <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '40px', marginLeft: '12px' }}>
+                <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '12px' }}>
                   <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
                     Buscar
                   </button>

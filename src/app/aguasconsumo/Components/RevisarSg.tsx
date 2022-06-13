@@ -105,7 +105,7 @@ export const RevisarSg = () => {
 
                 <p className='mt-3'>Estado</p>
 
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group '>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                       <option>En revisión</option>

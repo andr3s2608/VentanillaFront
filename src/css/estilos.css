@@ -4,7 +4,7 @@
 
 .navbar {
   border-bottom: 3px solid rgb(4, 195, 209);
-  background-color: #cbcbcb !important;
+  background-color: #CBCBCB !important;
   color: #000;
   font-weight: 500;
 }
@@ -35,18 +35,18 @@
 }
 
 .breadcrumb {
-  background-color: #f0f2f5;
+  background-color: rgb(255, 255, 255);
 }
 
 .breadcrumb .breadcrumb-item+.breadcrumb-item::before {
   font-family: 'fontAwesome';
   font-weight: bold;
-  content: '\f105';
+  content: "\f105";
   color: #000;
 }
 
 .breadcrumb .breadcrumb-item a {
-  color: #0055ff;
+  color: #0055FF;
   font-size: 18px;
   font-weight: 600;
 }
@@ -59,7 +59,7 @@
 }
 
 .ubi-menu .panel a {
-  background-color: #cbcbcb !important;
+  background-color: #CBCBCB !important;
 }
 
 .ubi-menu .panel a {
@@ -68,14 +68,15 @@
 }
 
 .panel>.active {
-  color: #0055ff;
+  color: #0055FF;
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
 }
 
+
 .info-tramite p {
-  color: #4111a8;
+  color: #4111A8;
   font-size: 20px;
   font-weight: 600;
   text-decoration: none;
@@ -91,7 +92,7 @@
 }
 
 .mb-0>a:after {
-  content: '\f078';
+  content: "\f078";
   /* fa-chevron-down */
   font-family: 'FontAwesome';
   position: absolute;
@@ -99,14 +100,14 @@
   color: #000;
 }
 
-.mb-0>a[aria-expanded='true']:after {
-  content: '\f077';
+.mb-0>a[aria-expanded="true"]:after {
+  content: "\f077";
   color: #000;
   /* fa-chevron-up */
 }
 
-.mb-0>a[aria-expanded='true']:after {
-  content: '\f077';
+.mb-0>a[aria-expanded="true"]:after {
+  content: "\f077";
   color: #000;
   /* fa-chevron-up */
 }

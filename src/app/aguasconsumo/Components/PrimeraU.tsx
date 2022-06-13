@@ -132,9 +132,9 @@ export const PrimeraU = () => {
                 </p>
               </div>
             </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
               <div className='panel-search'>
-                <div className='form-group gov-co-form-group ml-2'>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                       <option>Primera vez</option>
@@ -147,7 +147,7 @@ export const PrimeraU = () => {
           <div className='row mt-5'>
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Tipo de fuente*</p>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option>Superficial</option>
@@ -220,7 +220,7 @@ export const PrimeraU = () => {
                 />
               </div>
             </div>
-            <div className='col-lg-3 col-md-3 col-sm-12'>
+            <div className='col-lg-3 col-md-3 col-sm-12 mt-3'>
               <br />
               <div className='form-group gov-co-form-group'>
                 <input
@@ -237,7 +237,7 @@ export const PrimeraU = () => {
                 />
               </div>
             </div>
-            <div className='col-lg-2 col-md-2 col-sm-12'>
+            <div className='col-lg-2 col-md-2 col-sm-12 mt-3'>
               <br />
               <div className='form-group gov-co-form-group'>
                 <input
@@ -257,12 +257,12 @@ export const PrimeraU = () => {
             <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
               <p>Descripción de la fuente*</p>
               <div className='form-group gov-co-form-group'>
-                <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
+                <textarea className='form-control' id='exampleFormControlTextarea1' rows={5}></textarea>
               </div>
             </div>
             <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
               <p>Autoridad ambiental que otorga la concesión</p>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group '>
                 <div className='gov-co-dropdown'>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option>SDA- Secretaría distrital de ambiente</option>
@@ -275,7 +275,7 @@ export const PrimeraU = () => {
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div className='info-tramite mt-2'>
                 <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                  Información de acueductos que captan la misma fuente. <br />{' '}
+                  Información de acueductos que captan la misma fuente. . <br />{' '}
                   <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                 </p>
               </div>
@@ -284,7 +284,7 @@ export const PrimeraU = () => {
           <div className='row mt-3'>
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Departamento*</p>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group '>
                 <div className='gov-co-dropdown'>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option>Bogotá</option>
@@ -292,7 +292,7 @@ export const PrimeraU = () => {
                 </div>
               </div>
               <p className='mt-3'>Localidad o vereda*</p>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option>Seleccione</option>
@@ -302,7 +302,7 @@ export const PrimeraU = () => {
             </div>
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Municipio*</p>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option> Bogotá</option>
@@ -310,7 +310,7 @@ export const PrimeraU = () => {
                 </div>
               </div>
               <p className='mt-3'>Sector*</p>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group '>
                 <div className='gov-co-dropdown'>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option>Seleccione</option>
@@ -338,7 +338,7 @@ export const PrimeraU = () => {
                 />
               </div>
             </div>
-            <div className='col-lg-4 col-md-4 col-sm-12 mt-4'>
+            <div className='col-lg-4 col-md-4 col-sm-12' style={{ marginTop: '33px' }}>
               <br />
               <div className='form-group gov-co-form-group'>
                 <input

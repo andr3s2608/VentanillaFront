@@ -26,15 +26,15 @@ export const Servicios = () => {
           </div>
         </div>
         <div className='row mt-2'>
-          <div className='col-lg-10 col-sm-12 col-md-10'>
+          <div className='col-lg-6 col-sm-12 col-md-6'>
             <div className='info-secion'>
-              <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
+              <nav aria-label='breadcrumb'>
                 <ol className='breadcrumb'>
                   <li className='breadcrumb-item'>
                     <a href='#'>Inicio</a>
                   </li>
                   <li className='breadcrumb-item'>
-                    <a href='#'>Solicitar autorización sanitaria para la concesión de aguas</a>
+                    <a href='#'>Bandeja de entrada</a>
                   </li>
                   <li className='breadcrumb-item active' aria-current='page'>
                     Revisar solicitud
@@ -44,26 +44,30 @@ export const Servicios = () => {
             </div>
           </div>
         </div>
-        <div className='row'>
-          <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-            <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-              <nav className='nav panel'>
-                <a className='nav-link active' href='#'>
-                  1. Solicitar revisión
-                </a>
-                <a className='nav-link' href='#'>
-                  2. Crear Solicitud
-                </a>
-                <a className='nav-link' href='#'>
-                  3. En gestión
-                </a>
-                <a className='nav-link disabled' href='#'>
-                  4. Respuesta
-                </a>
-              </nav>
+        <section className='panel-menu'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
+                  <nav className='nav panel'>
+                    <a className='nav-link active' href='#'>
+                      1. Solicitar revisión{' '}
+                    </a>
+                    <a className='nav-link' href='#'>
+                      2. Crear Solicitud
+                    </a>
+                    <a className='nav-link' href='#'>
+                      3. En gestión
+                    </a>
+                    <a className='nav-link disabled' href='#'>
+                      4. Respuesta
+                    </a>
+                  </nav>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
         <div className='row'>
           <div className='col-lg-12 col-md-12'>
             <div className='info-tramite mt-3 ml-2'>
@@ -81,7 +85,7 @@ export const Servicios = () => {
           </div>
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Número de trámite</p>
+              <p className='ml-2'>Número de trámite</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <input
                   type='text'
@@ -100,7 +104,7 @@ export const Servicios = () => {
           </div>
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Tipo de trámite</p>
+              <p className='ml-2'>Tipo de trámite</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <input
                   type='text'
@@ -126,10 +130,10 @@ export const Servicios = () => {
               </p>
             </div>
 
-            <div className='col-lg-6col-sm-4 col-md-6 mt-2 mr-5' style={{ marginLeft: '-18px' }}>
+            <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
               <div className='panel-search'>
-                <p className='mt-5 ml-2'>Tipo de solicitante*</p>
-                <div className='form-group gov-co-form-group ml-2'>
+                <p className='mt-5'>Tipo de solicitante*</p>
+                <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                       <option>Persona Natural</option>
@@ -294,7 +298,7 @@ export const Servicios = () => {
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                    if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -331,7 +335,7 @@ export const Servicios = () => {
                   />
                 </div>
               </div>
-              <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '40px', marginLeft: '12px' }}>
+              <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '12px' }}>
                 <button className='ml-4 mr-3 float-right button btn btn-round btn-high' style={{ backgroundColor: '#BABABA' }}>
                   Buscar
                 </button>
@@ -426,6 +430,8 @@ export const Servicios = () => {
 
           <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
             <Button
+              className='ml-4 float-right button btn btn-default'
+              style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
               type='primary'
               htmlType='button'
               onClick={() => {
@@ -434,9 +440,6 @@ export const Servicios = () => {
             >
               Enviar
             </Button>
-            <button className='ml-4 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
-              Enviar
-            </button>
             <button className='float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
               Guardar
             </button>

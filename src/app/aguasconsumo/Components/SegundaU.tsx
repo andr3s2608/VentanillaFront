@@ -496,7 +496,9 @@ export const SegundaU = () => {
                 </button>
               </div>
               <div id='accordion' className='mt-3'>
-                <button className=' button btn btn-default' style={{ backgroundColor: '#BABABA' }}></button>
+                <button className=' button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+                  Borrar
+                </button>
               </div>
             </div>
           </div>
