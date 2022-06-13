@@ -1,4 +1,4 @@
-import { Menu } from '../../Models/IMenu';
+import { Menu } from 'app/inhumacioncremacion/Models/IMenu';
 export class MapperMenu {
   static mapMenu(menu: Menu[]): any[] {
     let menuPatch: any[] = [];

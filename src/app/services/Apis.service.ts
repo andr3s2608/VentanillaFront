@@ -1,9 +1,9 @@
 import { get, post, put } from './settings/http.service';
-import { IPersonaNatural } from 'app/Models/IPersonaNatural';
-import { IRoles } from 'app/Models/IRoles';
-import { Menu } from 'app/Models/IMenu';
-import { IinformatioUser } from 'app/Models/IInformatioUser';
-import { Iformato } from 'app/Models/IFormato';
+import { IPersonaNatural } from 'app/inhumacioncremacion/Models/IPersonaNatural';
+import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+import { Menu } from 'app/inhumacioncremacion/Models/IMenu';
+import { IinformatioUser } from 'app/inhumacioncremacion/Models/IInformatioUser';
+import { Iformato } from 'app/inhumacioncremacion/Models/IFormato';
 
 const {
   REACT_APP_SECURITY,
