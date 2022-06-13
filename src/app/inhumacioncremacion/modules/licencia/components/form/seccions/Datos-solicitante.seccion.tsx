@@ -343,17 +343,23 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         setValor('El cementerio registrado es inválido');
       }
     } else if (IdOrNameGraveyard == 'Name') {
-      const result = all.find((cementerio: any) => cementerio.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
+      const result = all.find((cementerio: any) => cementerio.RAZON_S.toUpperCase().includes(RAZON_S.trim().toUpperCase()));
       if (result) {
-        const Oracle = (await consulta).filter((cementerio: any) => cementerio.RAZON_S == RAZON_S.trim().toUpperCase());
+        //const Oracle = (await consulta).filter((cementerio: any) => cementerio.RAZON_S == RAZON_S.trim().toUpperCase());
+        let array: any[] = [];
 
+        if (!result.isArray) {
+          array.push(result);
+        } else {
+          array = result;
+        }
         setCementerioDatos([
-          Oracle[0].RAZON_S + '',
-          Oracle[0].DIRECCION + '',
-          Oracle[0].TELEFONO_1 + '',
-          Oracle[0].NOMBRE_REP + '',
-          Oracle[0].TIPO_I_REP + '',
-          Oracle[0].NROIDENT_REP + ''
+          array[0].RAZON_S + '',
+          array[0].DIRECCION + '',
+          array[0].TELEFONO_1 + '',
+          array[0].NOMBRE_REP + '',
+          array[0].TIPO_I_REP + '',
+          array[0].NROIDENT_REP + ''
         ]);
 
         setValor('El cementerio registrado es válido');
@@ -372,7 +378,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const onClickValidarfuneraria = async () => {
     const all = await api.GetFunerarias();
-    const consulta = api.GetFunerarias();
+    const consulta = await api.GetFunerarias();
 
     if (IdOrNameMortuary == 'Id') {
       const result = all.find((funeraria: any) => funeraria.NROIDENT == parseInt(NROIDENT));
@@ -401,26 +407,34 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         setValor('La funeraria registrada es inválida');
       }
     } else if (IdOrNameMortuary == 'Name') {
-      const result = all.find((funeraria: any) => funeraria.RAZON_S.toUpperCase() == RAZON_S.trim().toUpperCase());
+      const result = all.find((funeraria: any) => funeraria.RAZON_S.toUpperCase().includes(RAZON_S.trim().toUpperCase()));
+      console.log(result, ' Resultado');
       if (result) {
-        const Oracle = (await consulta).filter((funeraria: any) => funeraria.RAZON_S == RAZON_S.trim().toUpperCase());
+        // const Oracle = (await consulta).filter((funeraria: any) => funeraria.RAZON_S).includes(RAZON_S.trim().toUpperCase());
+        let array: any[] = [];
+
+        if (!result.isArray) {
+          array.push(result);
+        } else {
+          array = result;
+        }
 
         setFunerariaDatos1([
-          Oracle[0].TIPO_I + '',
-          Oracle[0].NROIDENT + '',
-          Oracle[0].RAZON_S + '',
-          Oracle[0].DIRECCION + '',
-          Oracle[0].TELEFONO_1 + '',
-          Oracle[0].TIPO_I_PROP + ''
+          array[0].TIPO_I + '',
+          array[0].NROIDENT + '',
+          array[0].RAZON_S + '',
+          array[0].DIRECCION + '',
+          array[0].TELEFONO_1 + '',
+          array[0].TIPO_I_PROP + ''
         ]);
 
         setFunerariaDatos2([
-          Oracle[0].NROIDENT_PROP + '',
-          Oracle[0].NOMBRE_PROP + '',
-          Oracle[0].NUM_SALAS + '',
-          Oracle[0].TIPO_I_REP + '',
-          Oracle[0].NROIDENT_REP + '',
-          Oracle[0].NOMBRE_REP + ''
+          array[0].NROIDENT_PROP + '',
+          array[0].NOMBRE_PROP + '',
+          array[0].NUM_SALAS + '',
+          array[0].TIPO_I_REP + '',
+          array[0].NROIDENT_REP + '',
+          array[0].NOMBRE_REP + ''
         ]);
         setValor('La funeraria registrada es válida');
       } else {

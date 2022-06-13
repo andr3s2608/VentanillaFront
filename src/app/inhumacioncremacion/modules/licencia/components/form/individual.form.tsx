@@ -45,6 +45,7 @@ import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { ValidationFuntional } from './seccions/validationfuntional';
+import { time } from 'console';
 
 const { Step } = Steps;
 
@@ -60,6 +61,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
   const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
+  const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
   const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
@@ -671,60 +673,68 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const ValidacionFallecido = async () => {
-    let numero: string = form.getFieldValue('IDNumber');
-    let tipo: string = form.getFieldValue('IDType');
+    if (datecorrect) {
+      let numero: string = form.getFieldValue('IDNumber');
+      let tipo: string = form.getFieldValue('IDType');
 
-    if (numero == undefined || numero == '') {
-      numero = '0';
-    }
-    let busqueda: any = '';
+      if (numero == undefined || numero == '') {
+        numero = '0';
+      }
+      let busqueda: any = '';
 
-    if (tipo == '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
-      busqueda = null;
-    } else {
-      busqueda = await api.GetDocumentoFallecido(numero, '01F64F02-373B-49D4-8CB1-CB677F74292C');
-    }
+      if (tipo == '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || tipo == 'c087d833-3cfb-460f-aa78-e5cf2fe83f25') {
+        busqueda = null;
+      } else {
+        busqueda = await api.GetDocumentoFallecido(numero, '01F64F02-373B-49D4-8CB1-CB677F74292C');
+      }
 
-    if (busqueda == null) {
-      if (numero.length >= longitudminima) {
-        onNextStep([
-          'name',
-          'secondName',
-          'surname',
-          'secondSurname',
-          'nationalidad',
-          'dateOfBirth',
-          'IDType',
-          'IDNumber',
-          'civilStatus',
-          'educationLevel',
-          'etnia',
-          'age',
-          'unitAge',
-          'regime',
-          'knownIDType',
-          'knownIDNumber',
-          'knownName',
-          'deathType'
-        ]);
+      if (busqueda == null) {
+        if (numero.length >= longitudminima) {
+          onNextStep([
+            'name',
+            'secondName',
+            'surname',
+            'secondSurname',
+            'nationalidad',
+            'dateOfBirth',
+            'IDType',
+            'IDNumber',
+            'civilStatus',
+            'educationLevel',
+            'etnia',
+            'age',
+            'unitAge',
+            'regime',
+            'knownIDType',
+            'knownIDNumber',
+            'knownName',
+            'deathType'
+          ]);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos invalidos',
+            text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
+          });
+        }
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Datos invalidos',
-          text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
+          title: 'Usuario Registrado',
+          text: 'El Número de Identificación del Fallecido ya se Encuentra Registrado',
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          },
+          icon: 'info'
         });
       }
     } else {
       Swal.fire({
-        title: 'Usuario Registrado',
-        text: 'El Número de Identificación del Fallecido ya se Encuentra Registrado',
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp'
-        },
-        icon: 'info'
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: `Debe ingresar una fecha de nacimiento valida`
       });
     }
   };
@@ -772,6 +782,29 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     </Form.Item>
   );
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
+
+  const FechaNacimiento = (value: any) => {
+    const fecha = moment(value);
+    let valor = form.getFieldValue('date');
+    let fechadef = moment(valor);
+
+    if (!fecha.isBefore(fechadef)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos invalidos',
+        text: `La fecha de nacimiento debe ser mayor a: ${fechadef.calendar()}`
+      });
+      setdatecorrect(false);
+    } else {
+      setdatecorrect(true);
+    }
+    console.log(fecha.isBefore(fechadef));
+    console.log(fecha.calendar());
+    console.log(fechadef.calendar());
+    console.log(fecha.get('date'));
+    console.log(fechadef.get('date'));
+  };
+
   //#endregion
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
@@ -1056,7 +1089,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 />
               </Form.Item>
               <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]} initialValue={date}>
-                <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} />
+                <DatepickerComponent
+                  picker='date'
+                  onChange={FechaNacimiento}
+                  dateDisabledType='before'
+                  dateFormatType='default'
+                  value={date}
+                />
               </Form.Item>
               <Form.Item
                 label='Tipo Identificación'

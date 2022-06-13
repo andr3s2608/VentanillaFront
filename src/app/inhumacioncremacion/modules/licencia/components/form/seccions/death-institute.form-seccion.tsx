@@ -329,7 +329,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     placeholder='Nombre'
                     autoComplete='off'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -345,7 +345,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     placeholder='Apellido'
                     autoComplete='off'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
