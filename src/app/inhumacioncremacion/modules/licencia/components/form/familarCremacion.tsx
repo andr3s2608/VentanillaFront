@@ -267,7 +267,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
-              title: 'Datos invalidos',
+              title: 'Datos inválidos',
               text:
                 'Sección:Datos Del Familiar Que Autoriza la Cremación \n recuerde que para el tipo de documento: ' +
                 tipodocumento +

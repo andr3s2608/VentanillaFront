@@ -563,6 +563,8 @@ export const SegundaU = () => {
             </div>
             <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
               <Button
+                className='ml-3 float-right button btn btn-default'
+                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                 type='primary'
                 htmlType='button'
                 onClick={() => {
@@ -571,10 +573,16 @@ export const SegundaU = () => {
               >
                 Enviar
               </Button>
-              <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+              <button
+                className='ml-4 mr-3 float-right button btn btn-default'
+                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+              >
                 Guardar
               </button>
-              <button className='float-right button btn btn-default' style={{ backgroundColor: 'BABABA' }}>
+              <button
+                className='float-right button btn btn-default'
+                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+              >
                 Cancelar
               </button>
             </div>

@@ -231,7 +231,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
-              title: 'Datos invalidos',
+              title: 'Datos inválidos',
               text:
                 'Sección: DATOS DEL SOLICITANTE Y/O FUNERARIA \n recuerde que para el tipo de documento: ' +
                 tipodocumento +

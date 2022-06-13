@@ -193,7 +193,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           DatosDocumento.at(3) == '1' &&
           DatosDocumento.at(4) == '1'
         ) {
-          const update = await api.updatelicencia(objJosn?.idSolicitud);
+          not = 1;
         } else {
           alert('Todos los documentos deben de cumplir en caso de aprobacion');
           not = 0;
@@ -250,6 +250,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           const resp = await api.AddGestion(json, not + '');
           not = 1;
         }
+        const update = await api.updatelicencia(objJosn?.idSolicitud);
         /////////////////////////Enviar Notificacion//////////////////////////
         let tipoSeguimiento: string = values.validFunctionaltype;
         let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);

@@ -457,6 +457,8 @@ export const PrimeraU = () => {
           <div className='row mt-4'>
             <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
               <Button
+                className='ml-3 float-right button btn btn-default'
+                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                 type='primary'
                 htmlType='button'
                 onClick={() => {

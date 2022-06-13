@@ -593,14 +593,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Datos invalidos',
+            title: 'Datos inválidos',
             text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
           });
         }
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Datos invalidos',
+          title: 'Datos inválidos',
           text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
         });
       }
@@ -628,7 +628,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `El Número de Identificación del Medico debe tener mínimo ${longitudmedico} Dígitos o Caracteres`
       });
     }
@@ -662,14 +662,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Datos invalidos',
+          title: 'Datos inválidos',
           text: `El Número de Identificación del Solicitante debe tener mínimo ${longitudsolicitante} Dígitos o Caracteres`
         });
       }
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `El Número de Identificación del Familiar que Autoriza debe tener mínimo ${longitudfamiliaraut} Dígitos o Caracteres`
       });
     }
@@ -704,7 +704,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
       });
     }
@@ -1083,7 +1083,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 onInvalid={() => {
                   Swal.fire({
                     icon: 'error',
-                    title: 'Datos invalidos',
+                    title: 'Datos inválidos',
                     text:
                       'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
                       tipodocumento +

@@ -654,15 +654,6 @@ export const Aprobar = () => {
                         </div>
                         <div className='row mt-4'>
                           <div className='col-lg-12 col-md-12 col-sm-1'>
-                            <Button
-                              type='primary'
-                              htmlType='button'
-                              onClick={() => {
-                                history.push('/notificacion');
-                              }}
-                            >
-                              Enviar
-                            </Button>
                             <button
                               className='btn btn-default'
                               style={{
@@ -685,6 +676,21 @@ export const Aprobar = () => {
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div className='row mt-4'>
+                  <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+                    <Button
+                      className='ml-3 float-right button btn btn-default'
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      type='primary'
+                      htmlType='button'
+                      onClick={() => {
+                        history.push('/notificacion');
+                      }}
+                    >
+                      Enviar
+                    </Button>
                   </div>
                 </div>
               </div>

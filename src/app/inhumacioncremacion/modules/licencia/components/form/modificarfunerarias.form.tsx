@@ -65,7 +65,7 @@ export const ModificarFuneraria = ({ props }: any) => {
       setselecciono(false);
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: 'Debe seleccionar una funeraria o ingresar un numero de funeraria'
       });
     } else {
@@ -113,8 +113,8 @@ export const ModificarFuneraria = ({ props }: any) => {
           setselecciono(false);
           Swal.fire({
             icon: 'error',
-            title: 'Datos invalidos',
-            text: 'No se encontro la funeraria solicitada'
+            title: 'Datos inválidos',
+            text: 'No se encontró la funeraria solicitada'
           });
         }
       }

@@ -54,7 +54,7 @@ export const ValidarDocumentos = ({ props }: any) => {
       Swal.fire({
         icon: 'error',
 
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: 'Debe Ingresar un Codigo de Verificación'
       });
     } else {
@@ -64,8 +64,8 @@ export const ValidarDocumentos = ({ props }: any) => {
         Swal.fire({
           icon: 'error',
 
-          title: 'Datos invalidos',
-          text: 'No se encontro el código de verificación, por favor verifiquelo '
+          title: 'Datos inválidos',
+          text: 'No se encontró el código de verificación, por favor verifíquelo '
         });
       } else {
         const getidsol = await api.ObtenerSolicitud(getidtramite.idControlTramite, 'tramite');

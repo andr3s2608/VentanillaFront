@@ -53,7 +53,7 @@ export const ModificarCementerio = ({ props }: any) => {
       setselecciono(false);
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: 'Debe seleccionar un cementerio o ingresar un numero de cementerio'
       });
     } else {
@@ -91,8 +91,8 @@ export const ModificarCementerio = ({ props }: any) => {
           setselecciono(false);
           Swal.fire({
             icon: 'error',
-            title: 'Datos invalidos',
-            text: 'No se encontro el cementerio solicitado'
+            title: 'Datos inválidos',
+            text: 'No se encontró el cementerio solicitado'
           });
         }
       }

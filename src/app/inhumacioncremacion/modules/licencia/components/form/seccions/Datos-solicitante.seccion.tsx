@@ -184,7 +184,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       Swal.fire({
         icon: 'error',
 
-        title: 'Datos Invalidos',
+        title: 'Datos inválidos',
         text: 'Debe Seleccionar alguna Funeraria'
       });
     } else {
@@ -203,7 +203,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       Swal.fire({
         icon: 'error',
 
-        title: 'Datos Invalidos',
+        title: 'Datos inválidos',
         text: 'Debe Seleccionar alguna Funeraria'
       });
     } else {

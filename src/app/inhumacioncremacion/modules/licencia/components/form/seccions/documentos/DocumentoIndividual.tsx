@@ -60,7 +60,7 @@ export const DocumentosIndividual: React.FC<IDocumentForm<any>> = (props) => {
     }
     if (file?.path === undefined) {
       const confirm = await infoMessage({
-        content: '¿No se encontro el archivo solicitado?',
+        content: '¿No se encontró el archivo solicitado?',
         okType: 'default'
       });
     }

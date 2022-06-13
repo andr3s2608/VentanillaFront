@@ -111,7 +111,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
-              title: 'Datos invalidos',
+              title: 'Datos inválidos',
               text:
                 'Sección:Datos de Quien Certifica la defunción - Medico \n recuerde que para el tipo de documento: ' +
                 tipodocumento +

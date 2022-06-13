@@ -197,7 +197,7 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           onInvalid={() => {
             Swal.fire({
               icon: 'error',
-              title: 'Datos invalidos',
+              title: 'Datos inválidos',
               text:
                 'Sección:Datos Básicos \n recuerde que para el tipo de documento:' +
                 tipodocumento +

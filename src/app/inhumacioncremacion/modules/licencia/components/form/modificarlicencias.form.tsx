@@ -69,8 +69,8 @@ export const ModificarLicencia = ({ props }: any) => {
       Swal.fire({
         icon: 'error',
 
-        title: 'Datos invalidos',
-        text: 'No se encontro el número de ' + valores + ', por favor verifiquelo de nuevo'
+        title: 'Datos inválidos',
+        text: 'No se encontró el número de ' + valores + ', por favor verifíquelo de nuevo'
       });
       setLicencia(false);
     } else {

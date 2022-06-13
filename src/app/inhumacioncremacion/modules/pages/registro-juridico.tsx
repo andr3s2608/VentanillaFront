@@ -126,7 +126,7 @@ const RegistroPage: React.FC<any> = (props) => {
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: 'Los Emails deben coincidir'
       });
     }
@@ -223,7 +223,7 @@ const RegistroPage: React.FC<any> = (props) => {
               onInvalid={() => {
                 Swal.fire({
                   icon: 'error',
-                  title: 'Datos invalidos',
+                  title: 'Datos inválidos',
                   text:
                     'Sección:Datos Básicos \n recuerde que para el tipo de documento: ' +
                     tipodocumento +

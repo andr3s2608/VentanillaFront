@@ -51,8 +51,8 @@ export const ModificarMedico = ({ props }: any) => {
       Swal.fire({
         icon: 'error',
 
-        title: 'Datos invalidos',
-        text: 'No se encontro el número de  identificación del medico'
+        title: 'Datos inválidos',
+        text: 'No se encontró el número de  identificación del medico'
       });
       setEncontro(false);
     } else {

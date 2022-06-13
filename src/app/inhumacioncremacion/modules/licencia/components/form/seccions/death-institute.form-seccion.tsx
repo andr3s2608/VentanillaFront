@@ -181,7 +181,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               onInvalid={() => {
                 Swal.fire({
                   icon: 'error',
-                  title: 'Datos invalidos',
+                  title: 'Datos inválidos',
                   text:
                     'Sección:Institución que Certifica el Fallecimiento \n recuerde que para el tipo de documento4:' +
                     tipodocumento +

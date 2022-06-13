@@ -588,14 +588,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Datos invalidos',
+            title: 'Datos inválidos',
             text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
           });
         }
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Datos invalidos',
+          title: 'Datos inválidos',
           text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
         });
       }
@@ -624,7 +624,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `El Número de Identificación del Medico debe tener mínimo ${longitudmedico} Dígitos o Caracteres`
       });
     }
@@ -659,14 +659,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Datos invalidos',
+          title: 'Datos inválidos',
           text: `El Número de Identificación del Solicitante debe tener mínimo ${longitudsolicitante} Dígitos o Caracteres`
         });
       }
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `El Número de Identificación del Autorizador debe tener mínimo ${longitudminimaautoriza} Dígitos o Caracteres`
       });
     }
@@ -713,7 +713,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Datos invalidos',
+            title: 'Datos inválidos',
             text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
           });
         }
@@ -733,7 +733,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `Debe ingresar una fecha de nacimiento valida`
       });
     }
@@ -791,7 +791,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     if (!fecha.isBefore(fechadef)) {
       Swal.fire({
         icon: 'error',
-        title: 'Datos invalidos',
+        title: 'Datos inválidos',
         text: `La fecha de nacimiento debe ser mayor a: ${fechadef.calendar()}`
       });
       setdatecorrect(false);
@@ -1129,7 +1129,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   onInvalid={() => {
                     Swal.fire({
                       icon: 'error',
-                      title: 'Datos invalidos',
+                      title: 'Datos inválidos',
                       text:
                         'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
                         tipodocumento +
@@ -1208,7 +1208,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       onInvalid={() => {
                         Swal.fire({
                           icon: 'error',
-                          title: 'Datos invalidos',
+                          title: 'Datos inválidos',
                           text:
                             'Sección:Reconocido como \n recuerde que para el tipo de documento:' +
                             tipodocumento +
@@ -1309,7 +1309,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                           onInvalid={() => {
                             Swal.fire({
                               icon: 'error',
-                              title: 'Datos invalidos',
+                              title: 'Datos inválidos',
                               text:
                                 'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
                                 tipodocumentoautoriza +
