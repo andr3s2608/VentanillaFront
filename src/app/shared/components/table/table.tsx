@@ -273,6 +273,17 @@ export const Gridview = (props: IDataSource) => {
               <text>{tiposolicitud()}</text>
             </Form.Item>
           )
+        },
+        {
+          title: 'Gestión',
+          key: 'Acciones',
+          render: (row: any) => {
+            return (
+              <Button type='primary' style={{ marginLeft: '5px' }} icon={<CheckOutlined />}>
+                Gestionar
+              </Button>
+            );
+          }
         }
       ];
     }
