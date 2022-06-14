@@ -136,9 +136,9 @@ const RegistroPage: React.FC<any> = (props) => {
     form.setFieldsValue({ nit: undefined });
     const valor: string = value;
     if (valor == '1') {
-      setLongitudminima(6);
+      setLongitudminima(5);
       setLongitudmaxima(10);
-      setTipocampo('[0-9]{6,10}');
+      setTipocampo('[0-9]{5,10}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
