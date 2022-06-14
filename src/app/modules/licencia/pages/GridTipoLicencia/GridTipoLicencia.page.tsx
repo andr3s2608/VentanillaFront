@@ -112,7 +112,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
         const resultFilterDoc = allData.filter(function (f) {
           var filtro = FilterText != undefined ? FilterText : '';
           var solicitud = f.noIdentificacionSolicitante != undefined ? f.noIdentificacionSolicitante : '';
-          return solicitud.toUpperCase().trim() == filtro.toUpperCase().trim();
+          return solicitud.toUpperCase().trim().includes(filtro.toUpperCase().trim());
         });
         setGrid(resultFilterDoc);
         setVisibleGrid('contents');
