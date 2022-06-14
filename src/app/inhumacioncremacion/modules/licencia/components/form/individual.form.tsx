@@ -70,15 +70,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [type, setType] = useState<[]>([]);
 
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(6);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [longitudminima, setLongitudminima] = useState<number>(5);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
-  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(6);
-  const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{6,10}');
+  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
+  const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{5,10}');
   const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
@@ -814,9 +814,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(6);
+      setLongitudminima(5);
       setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{10,11}');
+      setTipocampo('[a-zA-Z0-9]{5,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
       setTipodocumento('Sin Información');
       setCampo('AlfaNuméricos(Numéros y letras)');
@@ -833,9 +833,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       } else {
         form.setFieldsValue({ IDNumber: undefined });
         if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-          setLongitudminima(6);
+          setLongitudminima(5);
           setLongitudmaxima(10);
-          setTipocampo('[0-9]{6,10}');
+          setTipocampo('[0-9]{5,10}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Cédula de Ciudadanía');
@@ -884,16 +884,16 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacionaut(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setLongitudminimaautoriza(6);
+      setLongitudminimaautoriza(5);
       setLongitudmaximaautoriza(15);
       setTipodocumentoautoriza('Sin Información');
-      setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
+      setTipocampoautoriza('[a-zA-Z0-9]{5,15}');
       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
       setCampoautoriza('AlfaNuméricos(Numéros y letras)');
       setsininformacionaut(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminimaautoriza(6);
+        setLongitudminimaautoriza(5);
         setLongitudmaximaautoriza(10);
         setTipocampoautoriza('[0-9]{6,10}');
         setTipocampovalidacionautoriza(/[0-9]/);

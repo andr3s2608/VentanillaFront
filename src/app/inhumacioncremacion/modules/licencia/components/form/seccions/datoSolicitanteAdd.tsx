@@ -19,8 +19,8 @@ import Swal from 'sweetalert2';
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [[l_tipo_profesional], setLTipoDocumento] = useState<IDominio[][]>([[]]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(6);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{6,10}');
+  const [longitudminima, setLongitudminima] = useState<number>(5);
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [correosol, setcorreosol] = useState<string>();
   const [correofun, setcorreofun] = useState<string>();
@@ -125,18 +125,18 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     setsininformacion(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      setLongitudminima(6);
+      setLongitudminima(5);
       setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{10,11}');
+      setTipocampo('[a-zA-Z0-9]{5,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
       setTipodocumento('Sin Información');
       setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminima(6);
+        setLongitudminima(5);
         setLongitudmaxima(10);
-        setTipocampo('[0-9]{6,10}');
+        setTipocampo('[0-9]{5,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Cédula de Ciudadanía');
