@@ -9,7 +9,6 @@ import { Servicios } from '../../app/aguasconsumo/Components/Servicios';
 import Footer from '../../app/shared/components/layoutAguas/Footer';
 
 function App() {
-  console.log('entrotsx');
   return (
     <BrowserRouter>
       <NavBar />

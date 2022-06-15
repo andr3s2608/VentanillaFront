@@ -74,7 +74,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
-  const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String]>(['1', '1', '1', '1', '1']);
+  const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String, String, String, String]>([
+    '1',
+    '1',
+    '1',
+    '1',
+    '1',
+    '1',
+    '1',
+    '1'
+  ]);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
   //create o edit
@@ -212,6 +221,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           not = 0;
         }
       }
+
       if (not == 1) {
         /////////////////////////Guardar status//////////////////////////
         not = 0;
@@ -349,8 +359,17 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     setIsModalVisible(false);
   };
   //Metodo que captura que documento marco el usuario como cumple o no cumple
-  const getData = (rowData: any) => {
-    setDatosDocumento(rowData);
+  const getData = (rowData: string, valor: string) => {
+    const array: any = [];
+
+    for (let index = 0; index < DatosDocumento.length; index++) {
+      if (index == parseInt(rowData)) {
+        array.push(valor);
+      } else {
+        array.push(DatosDocumento.at(index));
+      }
+    }
+    setDatosDocumento(array);
   };
   const generateListFiles = (values: any) => {
     const Objs = [];

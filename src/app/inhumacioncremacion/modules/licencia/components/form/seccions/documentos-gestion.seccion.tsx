@@ -69,7 +69,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     '79320AF6-943C-43BF-87D1-847B625F6203'
   ];
 
-  var arrayarchivos: any[] = ['1', '1', '1', '1', '1'];
+  let arrayarchivos: any[] = ['1', '1', '1', '1', '1', '1', '1', '1'];
   const getListas = useCallback(async () => {
     await GetValidateRol();
   }, []);
@@ -208,7 +208,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     arrayarchivos[posicion] = value.target.value;
 
     //envia a validation.form el array con el estado de los documentos
-    prop(arrayarchivos);
+    prop(posicion, value.target.value + '');
     //prop.datos(arrayarchivos);
   };
 

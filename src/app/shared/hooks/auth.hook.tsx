@@ -14,6 +14,8 @@ import { ModuleLayout } from 'app/inhumacioncremacion/modules/module.layout';
 export const useAuthProvider = () => {
   const bodyFunction = (dataFunction: IAzureADFunctionProps) => {
     const { authenticationState, login, logout } = dataFunction;
+    console.log(dataFunction.login.toString, 'data');
+    // console.log(login, 'Login');
     switch (authenticationState) {
       case AuthenticationState.Authenticated:
         return (
