@@ -208,7 +208,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     arrayarchivos[posicion] = value.target.value;
 
     //envia a validation.form el array con el estado de los documentos
-    prop(posicion, value.target.value + '');
+    prop(posicion + '', value.target.value + '');
     //prop.datos(arrayarchivos);
   };
 
