@@ -798,11 +798,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       setdatecorrect(true);
     }
-    console.log(fecha.isBefore(fechadef));
-    console.log(fecha.calendar());
-    console.log(fechadef.calendar());
-    console.log(fecha.get('date'));
-    console.log(fechadef.get('date'));
   };
 
   //#endregion

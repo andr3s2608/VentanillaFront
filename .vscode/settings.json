@@ -8,5 +8,15 @@
   "editor.rulers": [130],
   "cSpell.language": "en, es",
   "cSpell.allowCompoundWords": true,
-  "cSpell.words": ["antd", "Informacion", "Msal", "Razon", "Refactorización", "Sider"]
+  "cSpell.words": ["antd", "Informacion", "Msal", "Razon", "Refactorización", "Sider"],
+  "search.exclude": {
+    "**/node_modules": false
+  },
+  "files.exclude": {
+    "**/.DS_Store": false,
+    "**/.git": false,
+    "**/.hg": false,
+    "**/.svn": false,
+    "**/CVS": false
+  }
 }
