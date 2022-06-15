@@ -1,41 +1,33 @@
-import { Alert, Button, Modal } from 'antd';
-import Form, { FormInstance } from 'antd/es/form';
-import Table from 'antd/es/table';
-import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
-import { ApiService } from 'app/services/Apis.service';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import { useCallback, useEffect, useState } from 'react';
-
 import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
-import moment from 'moment';
-
-//redux
-import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
-//filter
-
-//filter
-
-interface IDataSource {
-  data: Array<any>;
-}
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+import { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import Form, { FormInstance } from 'antd/es/form';
+import { store } from 'app/redux/app.reducers';
+import { Alert, Button, Modal } from 'antd';
+import { useHistory } from 'react-router';
+import Input from 'antd/es/input';
+import Table from 'antd/es/table';
+import moment from 'moment';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
-  const [dataOfGrid, setDataOfGrid] = useState<any[]>();
+  const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
+  const [observacion, setObservacion] = useState<string>('default');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { accountIdentifier } = authProvider.getAccount();
+  const [Validacion, setValidacion] = useState<string>('0');
   const [solicitud, setSolicitud] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [Validacion, setValidacion] = useState<string>('0');
-  const Paginas: number = 10;
-  const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [dataTable, setDataTable] = useState<[]>();
   const formatDate = 'MM-DD-YYYY';
   var isFilter: boolean = false;
   const filterValue: Array<any> = [];
+  const Paginas: number = 10;
 
   const getListas = useCallback(
     async () => {
@@ -68,6 +60,20 @@ export const Gridview = (props: IDataSource) => {
   var FilterDoc: string;
   var FilterId: string;
   var FilterEstado: string;
+
+  const guardarCambiosDocumentos = () => {
+    setVisibleDocumentoGestion(false);
+  };
+
+  const onGestionarDocumento = async (elemento: any) => {
+    if (elemento.idSolicitud) {
+      const [resultResponse] = await api.getDocumentosRechazados(elemento.idSolicitud);
+      setObservacion(resultResponse.observaciones);
+      console.log('las observaciones son: ', resultResponse.observaciones);
+      console.log(resultResponse);
+    }
+    setVisibleDocumentoGestion(true);
+  };
 
   const Renovar = (datos: any) => {
     if (data.length == 0) {
@@ -265,14 +271,21 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Gestión',
           key: 'Acciones',
-          render: (row: any) => {
-            return row.solicitud == 'Documentos Inconsistentes' ? (
-              <>
-                <Button type='primary' style={{ marginLeft: '5px' }} icon={<CheckOutlined />}>
+          render: (_: any, row: any, index: any) => {
+            if (row.solicitud == 'Documentos Inconsistentes') {
+              return (
+                <Button
+                  type='primary'
+                  style={{ marginLeft: '5px' }}
+                  icon={<CheckOutlined />}
+                  onClick={() => onGestionarDocumento(row)}
+                >
                   Gestionar
                 </Button>
-              </>
-            ) : null;
+              );
+            } else {
+              return null;
+            }
           }
         }
       ];
@@ -406,6 +419,25 @@ export const Gridview = (props: IDataSource) => {
       <div className='d-lg-flex align-items-start'>
         <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
       </div>
+      <Modal
+        title={<p className='text-center'>Gestión de Documentos</p>}
+        visible={isVisibleDocumentoGestion}
+        width={800}
+        onOk={guardarCambiosDocumentos}
+        onCancel={() => setVisibleDocumentoGestion(false)}
+      >
+        <div className='conteiner-fluid'>
+          <div className='row'>
+            <strong>Observaciones:</strong>
+            <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+          </div>
+          <div className='row justify-content-md-center'>
+            <hr />
+            <strong>Lista de documentos:</strong>
+            <p>lista de documentos</p>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 
@@ -523,3 +555,20 @@ const structureColumns = [
   );
   */
 };
+
+interface solicitud {
+  estadoSolicitud: string;
+  fechaSolicitud: string;
+  iD_Control_Tramite: string;
+  idSolicitud: string;
+  noIdentificacionSolicitante: string;
+  nroIdentificacionFallecido: string;
+  numeroCertificado: string;
+  razonSocialSolicitante: string;
+  solicitud: string;
+  tramite: string;
+}
+
+interface IDataSource {
+  data: Array<any>;
+}
