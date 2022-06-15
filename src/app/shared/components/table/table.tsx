@@ -24,6 +24,7 @@ interface IDataSource {
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
+  const [dataOfGrid, setDataOfGrid] = useState<any[]>();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [solicitud, setSolicitud] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
@@ -39,21 +40,15 @@ export const Gridview = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
-
       setroles(mysRoles);
-
       setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  //const getMenu = UpdateMenu();
-
   useEffect(() => {
     getListas();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [Tipo] = roles;
@@ -111,14 +106,7 @@ export const Gridview = (props: IDataSource) => {
   if (Validacion == '1') {
     Renovar(undefined);
   }
-  /*
-  const identificacion = () => {
-    const posicioninicial = 0;
-    var nroidentificacion = identify.substring(posicioninicial, identify.indexOf('|'));
-    identify = identify.substring(identify.indexOf('|') + 1, identify.length);
-    return nroidentificacion;
-  };
-  */
+
   var structureColumns;
 
   const tiposolicitud = () => {
@@ -157,13 +145,7 @@ export const Gridview = (props: IDataSource) => {
       return idTramite;
     }
   };
-  /*
-            render: (Text: string) => (
-              <Form.Item label='' name=''>
-                <text>{identificacion()}</text>
-              </Form.Item>
-            );
-            */
+
   const boton = () => {
     if (Tipo.rol !== 'Ciudadano') {
       structureColumns = [
@@ -258,11 +240,17 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tramite}</text>
-            </Form.Item>
-          )
+          render: (row: any) => {
+            return row.solicitud == 'Registro Usuario Externo' ? (
+              <Form.Item label='' name=''>
+                <text>{tramite}</text>
+              </Form.Item>
+            ) : (
+              <Form.Item label='' name=''>
+                <text>{row.solicitud}</text>
+              </Form.Item>
+            );
+          }
         },
         {
           title: 'Tipo Solicitud',
@@ -278,11 +266,13 @@ export const Gridview = (props: IDataSource) => {
           title: 'Gestión',
           key: 'Acciones',
           render: (row: any) => {
-            return (
-              <Button type='primary' style={{ marginLeft: '5px' }} icon={<CheckOutlined />}>
-                Gestionar
-              </Button>
-            );
+            return row.solicitud == 'Documentos Inconsistentes' ? (
+              <>
+                <Button type='primary' style={{ marginLeft: '5px' }} icon={<CheckOutlined />}>
+                  Gestionar
+                </Button>
+              </>
+            ) : null;
           }
         }
       ];
@@ -292,7 +282,7 @@ export const Gridview = (props: IDataSource) => {
     boton();
   }
 
-  const tramite = 'En tramite';
+  let tramite = 'En tramite';
   /*
   render: (Text: string) => (
     <Form.Item label='' name=''>

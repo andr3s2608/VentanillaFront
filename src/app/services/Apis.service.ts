@@ -208,6 +208,13 @@ export class ApiService {
       id: '0'
     });
 
+  getDocumentosRechazados = (idSolicitud: string) =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetDocumentosRechazados/${idSolicitud}`,
+      id: '0'
+    });
+
   GetInformationUser = (userId: string) =>
     get<IinformatioUser>({ endpoint: this.endpoint, url: `v2/Persona/GetInfoUserById/${userId}`, id: '0' });
 
