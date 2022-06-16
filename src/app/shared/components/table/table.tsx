@@ -1,4 +1,4 @@
-import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined } from '@ant-design/icons';
+import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined, UploadOutlined } from '@ant-design/icons';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import Form, { FormInstance } from 'antd/es/form';
 import { store } from 'app/redux/app.reducers';
-import { Alert, Button, Modal } from 'antd';
+import { Alert, Button, Modal, Upload } from 'antd';
 import { useHistory } from 'react-router';
 import Input from 'antd/es/input';
 import Table from 'antd/es/table';
@@ -17,6 +17,7 @@ export const Gridview = (props: IDataSource) => {
   const { data } = props;
   const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
   const [observacion, setObservacion] = useState<string>('default');
+  const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { accountIdentifier } = authProvider.getAccount();
   const [Validacion, setValidacion] = useState<string>('0');
@@ -65,11 +66,11 @@ export const Gridview = (props: IDataSource) => {
     setVisibleDocumentoGestion(false);
   };
 
-  const onGestionarDocumento = async (elemento: any) => {
-    if (elemento.idSolicitud) {
-      const [resultResponse] = await api.getDocumentosRechazados(elemento.idSolicitud);
-      setObservacion(resultResponse.observaciones);
-      console.log('las observaciones son: ', resultResponse.observaciones);
+  const onGestionarDocumento = async (document: Document) => {
+    if (document.idSolicitud) {
+      const resultResponse: Array<Document> = await api.getDocumentosRechazados(document.idSolicitud);
+      setObservacion(resultResponse[0].observaciones);
+      setListadoDocumento(resultResponse);
       console.log(resultResponse);
     }
     setVisibleDocumentoGestion(true);
@@ -414,6 +415,7 @@ export const Gridview = (props: IDataSource) => {
       }
     }
   }
+
   return (
     <div className='card card-body py-5 mb-4 fadeInTop'>
       <div className='d-lg-flex align-items-start'>
@@ -434,12 +436,28 @@ export const Gridview = (props: IDataSource) => {
           <div className='row justify-content-md-center'>
             <hr />
             <strong>Lista de documentos:</strong>
-            <p>lista de documentos</p>
+            <ComponentUploadDocument listDocument={listadoDocumento} />
           </div>
         </div>
       </Modal>
     </div>
   );
+
+  function ComponentUploadDocument(props: ListDocument) {
+    return (
+      <Form className='mb-4 w-100' layout='horizontal'>
+        {props.listDocument.map((item) => {
+          return (
+            <Form.Item label={item.tipo_documento} name='fileCCFallecido' valuePropName='fileList'>
+              <Upload name='fileCCFallecido' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+          );
+        })}
+      </Form>
+    );
+  }
 
   /*
  // pagination={{ pageSize: 10 }} onChange={onPageChange}
@@ -567,6 +585,24 @@ interface solicitud {
   razonSocialSolicitante: string;
   solicitud: string;
   tramite: string;
+}
+
+interface Document {
+  estado_Documento: string;
+  fecha_registro: string;
+  fecha_ultima_modificacion: string;
+  idDocumentoSoporte: string;
+  idEstadoDocumento: string;
+  idSolicitud: string;
+  observaciones: string;
+  path: string;
+  tipoSeguimiento: string;
+  tipoSeguimientoDescripcion: string;
+  tipo_documento: string;
+}
+
+interface ListDocument {
+  listDocument: Array<Document>;
 }
 
 interface IDataSource {

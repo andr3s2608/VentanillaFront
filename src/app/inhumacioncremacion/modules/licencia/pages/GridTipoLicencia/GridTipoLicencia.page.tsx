@@ -178,6 +178,13 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
   }
 
+  function ComponentUploadDocument() {
+    return (
+      <>
+        <p>algo que va aqui</p>
+      </>
+    );
+  }
   return (
     <div className='container-fluid mt-5  fadeInTop '>
       <PageHeaderComponent
