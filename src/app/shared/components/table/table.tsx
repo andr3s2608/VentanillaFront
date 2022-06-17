@@ -16,19 +16,14 @@ export const Gridview = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
   const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
-  const [observacion, setObservacion] = useState<string>('default');
   const [tipoSolicitud, setTipoSolicitud] = useState<string>('default-tiposolicitud');
   const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
   const [Validacion, setValidacion] = useState<string>('0');
-  const [solicitud, setSolicitud] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
+
   const api = new ApiService(accountIdentifier);
-  const [dataTable, setDataTable] = useState<[]>();
-  const formatDate = 'MM-DD-YYYY';
-  var isFilter: boolean = false;
-  const filterValue: Array<any> = [];
   const Paginas: number = 10;
 
   const getListas = useCallback(
@@ -286,41 +281,31 @@ export const Gridview = (props: IDataSource) => {
     const data = await api.getLicencia(idSolicitud);
 
     localStorage.setItem('register', JSON.stringify(data));
-
     store.dispatch(SetResetViewLicence());
-
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
 
-  const generateListFiles = (values: any) => {
+  const getNamesAndBlobForm = (values: any) => {
+    const { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
     const Objs = [];
 
-    const {
-      fileCertificadoDefuncion,
-      fileCCFallecido,
-      fileOtrosDocumentos,
-      fileAuthCCFamiliar,
-      fileAuthCremacion,
-      fileOficioIdentificacion,
-      fileOrdenAuthFiscal,
-      fileActaNotarialFiscal
-    } = values;
+    Objs.push({ file: CD, name: 'Certificado_Defuncion' });
+    Objs.push({ file: DM, name: 'Otros_Documentos' });
+    Objs.push({ file: OD, name: 'Documento_madre' });
+    Objs.push({ file: ANFI, name: 'Acta_Notarial_del_Fiscal' });
+    Objs.push({ file: DFALL, name: 'Documento_del_fallecido' });
+    Objs.push({ file: ACF, name: 'Autorizacion_de_cremacion_del_familiar' });
+    Objs.push({ file: DFAMI, name: 'Documento_del_familiar' });
+    Objs.push({ file: AFC, name: 'Autorizacion_del_fiscal_para_cremar' });
+    Objs.push({ file: OML, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
 
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
-    Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
-    Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
-    Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
-    Objs.push({ file: fileAuthCremacion, name: 'Documento_del_familiar' });
-    Objs.push({ file: fileOficioIdentificacion, name: 'Autorizacion_del_fiscal_para_cremar' });
-    Objs.push({ file: fileOrdenAuthFiscal, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
-    Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
-
-    const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
-    const files: Blob[] = filesName.map((item) => {
+    const filesLoaded = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
+    const files: Blob[] = filesLoaded.map((item) => {
       const [file] = item.file;
       return file.originFileObj;
     });
-    const names: string[] = filesName.map((item) => item.name);
+    const names: string[] = filesLoaded.map((item) => item.name);
+
     return [files, names];
   };
 
@@ -352,11 +337,11 @@ export const Gridview = (props: IDataSource) => {
      * al que se debe enviar los archivos
      */
     switch (tipoSolicitud) {
-      case 'dsfsd':
-        container = '';
+      case 'Inhumacion Individual':
+        container = 'inhumacionindividual';
         break;
-      case 'sdfs':
-        container = '';
+      case 'Cremacion Individual':
+        container = 'cremacionindividual';
         break;
       case 'sdfsdf':
         container = '';
@@ -368,43 +353,104 @@ export const Gridview = (props: IDataSource) => {
 
     /** Se verifica que se encontró un contenedor donde almacenar los documentos */
     if (container) {
-      console.log('Se encontró un contenedor donde almacenar');
+      console.log('Se encontró un contenedor donde almacenar, los datos pertenecen a un contenedor de: ', container);
       formData.append('containerName', container);
       formData.append('oid', accountIdentifierSession);
 
-      const [files, names] = generateListFiles(form);
+      const [files, names] = getNamesAndBlobForm(form);
       const supportDocumentsEdit: any[] = [];
 
+      /** Se itera por cada archivo subido por el cliente y se hace mapeo entre el blob y el nombre
+       *  que debe tener el archivo
+       */
       files.forEach((item: any, i: number) => {
-        const name = names[i];
+        const name: string = names[i] + '';
+        for (let j = 0; j < listDocument.length; j++) {
+          if (listDocument[j].path.includes(name)) {
+            const [, nameFile] = listDocument[j].path.split('/');
+            formData.append('file', item);
+            formData.append('nameFile', nameFile);
+            console.log('La el mapeo de nombre y archivo es el siguiente:');
+            console.log(nameFile, item);
 
-        formData.append('file', item);
-        formData.append('nameFile', name);
-        console.log(item);
-        console.log(name);
+            supportDocumentsEdit.push({
+              idDocumentoSoporte: listDocument[j].idDocumentoSoporte,
+              fechaModificacion: new Date()
+            });
+          }
+        }
       });
 
+      console.log('============= form data ===========');
+      console.log(formData.values());
+      console.log('=========== suppor document ======0');
+      console.log(supportDocumentsEdit);
+      /** Verifica que hay archivos ha subir  y a su vez sirve para validar que se agregue la meta data a cada
+       *  uno de los archivos y se mandan a base de datos
+       * */
       if (supportDocumentsEdit.length) {
-        await api.uploadFiles(formData);
-        await api.UpdateSupportDocuments(supportDocumentsEdit);
+        console.log('se mando a servidor');
+        //await api.uploadFiles(formData);
+        //await api.UpdateSupportDocuments(supportDocumentsEdit);
       }
     }
   };
 
   /** Componente de función que se usa para la gestionar la actualización de documentos inconsistente*/
   function ComponentUpdateDocument(props: DataComponentUpdate) {
+    function GUIDtoString(cadena: string) {
+      switch (cadena) {
+        /** GUID que corresponde a Certificado de defunción */
+        case '19a11490-261c-4114-9152-23c2b991cb36':
+          return 'CD';
+
+        /** GUID que corresponde al Documento de la madre */
+        case 'd2d3aba7-3b92-446a-aa8c-80a75de246a7':
+          return 'DM';
+
+        /** GUID que corresponde a Otros Documentos */
+        case 'abe33c1d-9370-4189-9e81-597e5b643481':
+          return 'OD';
+
+        /** GUID que corresponde al Acta Notarial del Fiscal */
+        case '79320af6-943c-43bf-87d1-847b625f6203':
+          return 'ANFI';
+
+        /** GUID que corresponde al Documento del fallecido */
+        case '9c4e62a4-ee76-4ba1-8dbe-8be172e23788':
+          return 'DFALL';
+
+        /** GUID que corresponde a Autorización de Cremación del familiar */
+        case 'f67f1c4e-a6a5-4257-a995-17a926801f7c':
+          return 'ACF';
+
+        /** GUID que corresponde al Documento del familiar */
+        case 'd6524742-e32d-4548-ab21-7a9cbb367926':
+          return 'DFAMI';
+
+        /** GUID que corresponde a Autorización del fiscal para cremar */
+        case 'c659a063-e8a3-4f23-9a61-575afb1e1c2b':
+          return 'AFC';
+
+        /** GUID que corresponde a Oficio de Medicinal Legal al fiscal para cremar */
+        case '1266f06c-0bc1-4cf8-ba51-5e889d5e8178':
+          return 'OML';
+      }
+      return 'default';
+    }
+
     return (
       <Form className='mb-4 w-100' layout='horizontal' onFinish={(form) => SubmitDocuments(form, props)}>
         {props.listDocument.map((item) => {
           return (
             <Form.Item
               label={item.tipo_documento}
-              name={item.tipo_documento.replace(/\s+/g, '')}
+              name={GUIDtoString(item.idTipoDocumento)}
               valuePropName='fileList'
               getValueFromEvent={normFile}
             >
               <Upload
-                name={item.tipo_documento.replace(/\s+/g, '')}
+                name={GUIDtoString(item.idTipoDocumento)}
                 maxCount={1}
                 beforeUpload={() => false}
                 listType='text'
@@ -467,6 +513,7 @@ interface Solicitud {
 }
 
 interface Document {
+  idTipoDocumento: string;
   estado_Documento: string;
   fecha_registro: string;
   fecha_ultima_modificacion: string;
