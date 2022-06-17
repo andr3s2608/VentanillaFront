@@ -103,6 +103,13 @@ export const ModificarCementerio = ({ props }: any) => {
 
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
+
+    if (values.target.value + '' == 'Name') {
+      form.setFieldsValue({ cementerioid: undefined });
+    }
+
+    form.resetFields(['razon', 'direccion', 'telefono', 'nombrerep', 'tiporep', 'nrorep']);
+    setselecciono(false);
   };
 
   const onSubmit = (values: any) => {

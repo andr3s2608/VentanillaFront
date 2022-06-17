@@ -137,6 +137,24 @@ export const ModificarFuneraria = ({ props }: any) => {
 
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
+    if (values.target.value + '' == 'Name') {
+      form.setFieldsValue({ funerariaid: undefined });
+    }
+
+    setselecciono(false);
+    form.resetFields([
+      'tipoidf',
+      'razon',
+      'direccion',
+      'telefono',
+      'nombreprop',
+      'tipoprop',
+      'nroprop',
+      'nrosalas',
+      'nombrerep',
+      'tiporep',
+      'nrorep'
+    ]);
   };
 
   const onSubmit = (values: any) => {
