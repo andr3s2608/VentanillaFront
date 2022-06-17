@@ -485,31 +485,39 @@ export const Gridview = (props: IDataSource) => {
   }
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
-      </div>
-
-      {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
-      <Modal
-        title={<p className='text-center'>Gestión de Documentos</p>}
-        visible={isVisibleDocumentoGestion}
-        width={800}
-        onCancel={() => setVisibleDocumentoGestion(false)}
-        footer={[]}
-      >
-        <div className='conteiner-fluid'>
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
           <div className='row'>
-            <strong>Observaciones:</strong>
-            <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
+            </div>
           </div>
-          <div className='row justify-content-md-center'>
-            <hr />
-            <strong>Lista de documentos:</strong>
-            <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+          <div className='row'>
+            {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+            <Modal
+              title={<p className='text-center'>Gestión de Documentos</p>}
+              visible={isVisibleDocumentoGestion}
+              width={800}
+              onCancel={() => setVisibleDocumentoGestion(false)}
+              footer={[]}
+            >
+              <div className='row'>
+                <div className='col-gl-12 col-sm-12 col-md-12'>
+                  <label>Observaciones:</label>
+                  <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+                </div>
+              </div>
+              <div className='row  justify-content-md-center'>
+                <label>Lista de documentos:</label>
+                <div className='col-lg-12 col-sm-12 col-md-12'>
+                  <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+                </div>
+              </div>
+            </Modal>
           </div>
         </div>
-      </Modal>
+      </div>
     </div>
   );
 };
