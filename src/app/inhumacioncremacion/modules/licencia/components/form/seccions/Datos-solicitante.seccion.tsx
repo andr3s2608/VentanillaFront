@@ -408,7 +408,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       }
     } else if (IdOrNameMortuary == 'Name') {
       const result = all.find((funeraria: any) => funeraria.RAZON_S.toUpperCase().includes(RAZON_S.trim().toUpperCase()));
-      console.log(result, ' Resultado');
+
       if (result) {
         // const Oracle = (await consulta).filter((funeraria: any) => funeraria.RAZON_S).includes(RAZON_S.trim().toUpperCase());
         let array: any[] = [];
