@@ -1,4 +1,11 @@
-import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  CheckOutlined,
+  ConsoleSqlOutlined,
+  EyeOutlined,
+  FilePdfOutlined,
+  FileTextOutlined,
+  UploadOutlined
+} from '@ant-design/icons';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -285,13 +292,17 @@ export const Gridview = (props: IDataSource) => {
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
 
-  const getNamesAndBlobForm = (values: any) => {
-    const { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
+  const getNamesAndBlobForm = (values: any, tipoSolitudIN: string) => {
+    let { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
     const Objs = [];
 
+    if (tipoSolitudIN == 'Cremacion Fetal' || tipoSolitudIN == 'Inhumacion Fetal') {
+      DFALL = DM;
+    }
+
     Objs.push({ file: CD, name: 'Certificado_Defuncion' });
-    Objs.push({ file: DM, name: 'Otros_Documentos' });
-    Objs.push({ file: OD, name: 'Documento_madre' });
+    Objs.push({ file: DM, name: 'Documento_madre' });
+    Objs.push({ file: OD, name: 'Otros_Documentos' });
     Objs.push({ file: ANFI, name: 'Acta_Notarial_del_Fiscal' });
     Objs.push({ file: DFALL, name: 'Documento_del_fallecido' });
     Objs.push({ file: ACF, name: 'Autorizacion_de_cremacion_del_familiar' });
@@ -333,6 +344,8 @@ export const Gridview = (props: IDataSource) => {
     const formData = new FormData();
     let container = null;
 
+    console.log('======= el id de esta solicitud es =======');
+    console.log(listDocument[0].idSolicitud);
     /**De acuerdo al tipo de solicitud se asigna el nombre del contenedor de Azure Storage Blob
      * al que se debe enviar los archivos
      */
@@ -343,13 +356,17 @@ export const Gridview = (props: IDataSource) => {
       case 'Cremacion Individual':
         container = 'cremacionindividual';
         break;
-      case 'sdfsdf':
-        container = '';
+      case 'Cremacion Fetal':
+        container = 'cremacionfetal';
         break;
-      case 'aldf':
-        container = 'sd';
+      case 'Inhumacion Fetal':
+        container = 'inhumacionfetal';
         break;
     }
+
+    /** muestro en otro ventana el pdf viejo  */
+    let url = api.GetUrlPdf(container + '/' + listDocument[0].path + '.pdf');
+    window.open(url);
 
     /** Se verifica que se encontró un contenedor donde almacenar los documentos */
     if (container) {
@@ -357,7 +374,7 @@ export const Gridview = (props: IDataSource) => {
       formData.append('containerName', container);
       formData.append('oid', accountIdentifierSession);
 
-      const [files, names] = getNamesAndBlobForm(form);
+      const [files, names] = getNamesAndBlobForm(form, tipoSolicitud);
       const supportDocumentsEdit: any[] = [];
 
       /** Se itera por cada archivo subido por el cliente y se hace mapeo entre el blob y el nombre
@@ -370,7 +387,7 @@ export const Gridview = (props: IDataSource) => {
             const [, nameFile] = listDocument[j].path.split('/');
             formData.append('file', item);
             formData.append('nameFile', nameFile);
-            console.log('La el mapeo de nombre y archivo es el siguiente:');
+            console.log('El mapeo de nombre y archivo es el siguiente:');
             console.log(nameFile, item);
 
             supportDocumentsEdit.push({
@@ -381,6 +398,8 @@ export const Gridview = (props: IDataSource) => {
         }
       });
 
+      console.log('======= la fecha de este host es =======');
+      console.log(new Date());
       console.log('============= form data ===========');
       console.log(formData.values());
       console.log('=========== suppor document ======0');
@@ -390,10 +409,13 @@ export const Gridview = (props: IDataSource) => {
        * */
       if (supportDocumentsEdit.length) {
         console.log('se mando a servidor');
-        //await api.uploadFiles(formData);
-        //await api.UpdateSupportDocuments(supportDocumentsEdit);
+        await api.uploadFiles(formData);
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
       }
     }
+    /** muestro en otro ventana el pdf nuevo  */
+    let url2 = api.GetUrlPdf(container + '/' + listDocument[0].path + '.pdf');
+    window.open(url2);
   };
 
   /** Componente de función que se usa para la gestionar la actualización de documentos inconsistente*/
