@@ -1,5 +1,6 @@
 import { Form, Grid } from 'antd';
 import Tabs from 'antd/es/tabs';
+
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';

@@ -200,7 +200,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           DatosDocumento.at(1) == '1' &&
           DatosDocumento.at(2) == '1' &&
           DatosDocumento.at(3) == '1' &&
-          DatosDocumento.at(4) == '1'
+          DatosDocumento.at(4) == '1' &&
+          DatosDocumento.at(5) == '1' &&
+          DatosDocumento.at(6) == '1' &&
+          DatosDocumento.at(7) == '1'
         ) {
           not = 1;
         } else {
@@ -214,7 +217,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           DatosDocumento.at(1) == '2' ||
           DatosDocumento.at(2) == '2' ||
           DatosDocumento.at(3) == '2' ||
-          DatosDocumento.at(4) == '2'
+          DatosDocumento.at(4) == '2' ||
+          DatosDocumento.at(5) == '2' ||
+          DatosDocumento.at(6) == '2' ||
+          DatosDocumento.at(7) == '2'
         ) {
         } else {
           alert('Debe indicar almenos un Documento que no Cumpla');
