@@ -364,10 +364,6 @@ export const Gridview = (props: IDataSource) => {
         break;
     }
 
-    /** muestro en otro ventana el pdf viejo  */
-    let url = api.GetUrlPdf(container + '/' + listDocument[0].path + '.pdf');
-    window.open(url);
-
     /** Se verifica que se encontró un contenedor donde almacenar los documentos */
     if (container) {
       console.log('Se encontró un contenedor donde almacenar, los datos pertenecen a un contenedor de: ', container);
@@ -413,9 +409,6 @@ export const Gridview = (props: IDataSource) => {
         await api.UpdateSupportDocuments(supportDocumentsEdit);
       }
     }
-    /** muestro en otro ventana el pdf nuevo  */
-    let url2 = api.GetUrlPdf(container + '/' + listDocument[0].path + '.pdf');
-    window.open(url2);
   };
 
   /** Componente de función que se usa para la gestionar la actualización de documentos inconsistente*/
