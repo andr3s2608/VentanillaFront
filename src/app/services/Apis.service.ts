@@ -215,6 +215,14 @@ export class ApiService {
       id: '0'
     });
 
+  updateStateRequest = (idSolicitud: string, idEstado: string) =>
+    put<any>({
+      //endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/UpdateStateRequest/${idSolicitud}/${idEstado}`,
+      id: '1'
+    });
+
   GetInformationUser = (userId: string) =>
     get<IinformatioUser>({ endpoint: this.endpoint, url: `v2/Persona/GetInfoUserById/${userId}`, id: '0' });
 
