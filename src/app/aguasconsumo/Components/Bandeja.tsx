@@ -2,7 +2,8 @@ import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
-
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 export const Bandeja = () => {
   return (
     <section className='info-panel'>
@@ -123,26 +124,28 @@ export const Bandeja = () => {
                       <div className='col-lg-6 col-md-6 col-sm-12'>
                         <div className='form-group gov-co-form-group ml-2'>
                           <div className='gov-co-dropdown'>
-                            <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                              <option>Seleccione</option>
-                            </select>
+                            <Form.Item>
+                              <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                            </Form.Item>
                           </div>
                         </div>
                       </div>
                       <div className='col-md-6 col-lg-6 col-sm-12'>
                         <div className='form-group gov-co-form-group'>
-                          <input
-                            type='text'
-                            className='form-control gov-co-form-control'
-                            onKeyPress={(event) => {
-                              if (!/[a-zA-Z]/.test(event.key)) {
+                          <Form.Item>
+                            <input
+                              type='text'
+                              className='form-control gov-co-form-control'
+                              onKeyPress={(event) => {
+                                if (!/[a-zA-Z]/.test(event.key)) {
+                                  event.preventDefault();
+                                }
+                              }}
+                              onPaste={(event) => {
                                 event.preventDefault();
-                              }
-                            }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
-                          />
+                              }}
+                            />
+                          </Form.Item>
                         </div>
                       </div>
                     </div>
@@ -190,23 +193,25 @@ export const Bandeja = () => {
                     <p className='mt-4'>Filtrar por:</p>
                     <div className='row'>
                       <div className='col-lg-6 col-md-6 col-sm-12'>
-                        <select name='' id='' className='form-control'>
-                          <option value=''>Escoger</option>
-                        </select>
+                        <Form.Item>
+                          <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                        </Form.Item>
                       </div>
                       <div className='col-md-6 col-lg-6 col-sm-12'>
-                        <input
-                          type='text'
-                          className='form-control'
-                          onKeyPress={(event) => {
-                            if (!/[a-zA-Z]/.test(event.key)) {
+                        <Form.Item>
+                          <input
+                            type='text'
+                            className='form-control'
+                            onKeyPress={(event) => {
+                              if (!/[a-zA-Z]/.test(event.key)) {
+                                event.preventDefault();
+                              }
+                            }}
+                            onPaste={(event) => {
                               event.preventDefault();
-                            }
-                          }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
-                        />
+                            }}
+                          />
+                        </Form.Item>
                       </div>
                     </div>
                   </div>

@@ -2,6 +2,8 @@ import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const Notificar = () => {
   return (
@@ -87,18 +89,20 @@ export const Notificar = () => {
               <div className='panel-search'>
                 <p>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -106,18 +110,20 @@ export const Notificar = () => {
               <div className='panel-search'>
                 <p>Tipo trámite</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -145,18 +151,20 @@ export const Notificar = () => {
               <div className='panel-search'>
                 <p>Caudal diseño (L/S)</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -164,18 +172,20 @@ export const Notificar = () => {
               <div className='panel-search'>
                 <p>Caudal tratado (L/S)</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -210,35 +220,39 @@ export const Notificar = () => {
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Caudal de diseño (L/s)</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Caudal de tratado (L/s)</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -353,18 +367,20 @@ export const Notificar = () => {
             <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
               <p>Descripción de otro componente del sistema de tratamiento</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -374,34 +390,38 @@ export const Notificar = () => {
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -411,34 +431,38 @@ export const Notificar = () => {
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -549,18 +573,20 @@ export const Notificar = () => {
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Estado de la revisión </p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-sm-12 col-md-4 text-center mt-5'>

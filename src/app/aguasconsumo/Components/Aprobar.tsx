@@ -4,6 +4,8 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const Aprobar = () => {
   const history = useHistory();
@@ -89,41 +91,45 @@ export const Aprobar = () => {
               <div className='panel-search'>
                 <p className='mt-3'>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
                 <p className='mt-3'>Estado</p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>En revisión</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- En revisión --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
                 <p className='mt-3'>Actividad siguiente</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -131,34 +137,36 @@ export const Aprobar = () => {
               <div className='panel-search'>
                 <p>Tipo trámite</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
 
                 <p className='mt-3'>Actividad actual</p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Validación de requisitos - Revisor</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- Validación de requisitos - Revisor --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
                 <p className='mt-3'>Usuario Asignado</p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>CGONZALEZL</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- CGONZALEZL --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -216,9 +224,9 @@ export const Aprobar = () => {
                             <p className='mt-3'>Tipo de solicitud de concesión*</p>
                             <div className='form-group gov-co-form-group ml-2'>
                               <div className='gov-co-dropdown'>
-                                <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                  <option>Tipo de fuente</option>
-                                </select>
+                                <Form.Item>
+                                  <SelectComponent placeholder='-- Tipo de fuente --' options={[]} optionPropkey={''} />
+                                </Form.Item>
                               </div>
                             </div>
                           </div>
@@ -228,50 +236,54 @@ export const Aprobar = () => {
                             <p className='mt-3'>Tipo de fuente*</p>
                             <div className='form-group gov-co-form-group ml-2'>
                               <div className='gov-co-dropdown'>
-                                <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                  <option>Superficial</option>
-                                </select>
+                                <Form.Item>
+                                  <SelectComponent placeholder='-- Superficial --' options={[]} optionPropkey={''} />
+                                </Form.Item>
                               </div>
                             </div>
                             <p className='mt-2'>Descripción de otra fuente</p>
                             <div className='form-group gov-co-form-group'>
-                              <input
-                                type='text'
-                                className='form-control gov-co-form-control'
-                                onKeyPress={(event) => {
-                                  if (!/[a-zA-Z]/.test(event.key)) {
+                              <Form.Item>
+                                <input
+                                  type='text'
+                                  className='form-control gov-co-form-control'
+                                  onKeyPress={(event) => {
+                                    if (!/[a-zA-Z]/.test(event.key)) {
+                                      event.preventDefault();
+                                    }
+                                  }}
+                                  onPaste={(event) => {
                                     event.preventDefault();
-                                  }
-                                }}
-                                onPaste={(event) => {
-                                  event.preventDefault();
-                                }}
-                              />
+                                  }}
+                                />
+                              </Form.Item>
                             </div>
                           </div>
                           <div className='col-md-6 col-lg-6 col-sm-12'>
                             <p className='mt-3'>Subcategoria de fuente*</p>
                             <div className='form-group gov-co-form-group ml-2'>
                               <div className='gov-co-dropdown'>
-                                <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                  <option>Caño</option>
-                                </select>
+                                <Form.Item>
+                                  <SelectComponent placeholder='-- Caño --' options={[]} optionPropkey={''} />
+                                </Form.Item>
                               </div>
                             </div>
                             <p className='mt-2'>Nombre de la fuente</p>
                             <div className='form-group gov-co-form-group'>
-                              <input
-                                type='text'
-                                className='form-control gov-co-form-control'
-                                onKeyPress={(event) => {
-                                  if (!/[a-zA-Z]/.test(event.key)) {
+                              <Form.Item>
+                                <input
+                                  type='text'
+                                  className='form-control gov-co-form-control'
+                                  onKeyPress={(event) => {
+                                    if (!/[a-zA-Z]/.test(event.key)) {
+                                      event.preventDefault();
+                                    }
+                                  }}
+                                  onPaste={(event) => {
                                     event.preventDefault();
-                                  }
-                                }}
-                                onPaste={(event) => {
-                                  event.preventDefault();
-                                }}
-                              />
+                                  }}
+                                />
+                              </Form.Item>
                             </div>
                           </div>
                         </div>
@@ -281,50 +293,56 @@ export const Aprobar = () => {
                           </div>
                           <div className='col-md-4 col-lg-4 col-sm-12'>
                             <div className='form-group gov-co-form-group'>
-                              <input
-                                type='text'
-                                className='form-control gov-co-form-control'
-                                onKeyPress={(event) => {
-                                  if (!/[a-zA-Z]/.test(event.key)) {
+                              <Form.Item>
+                                <input
+                                  type='text'
+                                  className='form-control gov-co-form-control'
+                                  onKeyPress={(event) => {
+                                    if (!/[a-zA-Z]/.test(event.key)) {
+                                      event.preventDefault();
+                                    }
+                                  }}
+                                  onPaste={(event) => {
                                     event.preventDefault();
-                                  }
-                                }}
-                                onPaste={(event) => {
-                                  event.preventDefault();
-                                }}
-                              />
+                                  }}
+                                />
+                              </Form.Item>
                             </div>
                           </div>
                           <div className='col-md-4 col-lg-4 col-sm-12'>
                             <div className='form-group gov-co-form-group'>
-                              <input
-                                type='text'
-                                className='form-control gov-co-form-control'
-                                onKeyPress={(event) => {
-                                  if (!/[a-zA-Z]/.test(event.key)) {
+                              <Form.Item>
+                                <input
+                                  type='text'
+                                  className='form-control gov-co-form-control'
+                                  onKeyPress={(event) => {
+                                    if (!/[a-zA-Z]/.test(event.key)) {
+                                      event.preventDefault();
+                                    }
+                                  }}
+                                  onPaste={(event) => {
                                     event.preventDefault();
-                                  }
-                                }}
-                                onPaste={(event) => {
-                                  event.preventDefault();
-                                }}
-                              />
+                                  }}
+                                />
+                              </Form.Item>
                             </div>
                           </div>
                           <div className='col-md-4 col-lg-4 col-sm-12'>
                             <div className='form-group gov-co-form-group'>
-                              <input
-                                type='text'
-                                className='form-control gov-co-form-control'
-                                onKeyPress={(event) => {
-                                  if (!/[a-zA-Z]/.test(event.key)) {
+                              <Form.Item>
+                                <input
+                                  type='text'
+                                  className='form-control gov-co-form-control'
+                                  onKeyPress={(event) => {
+                                    if (!/[a-zA-Z]/.test(event.key)) {
+                                      event.preventDefault();
+                                    }
+                                  }}
+                                  onPaste={(event) => {
                                     event.preventDefault();
-                                  }
-                                }}
-                                onPaste={(event) => {
-                                  event.preventDefault();
-                                }}
-                              />
+                                  }}
+                                />
+                              </Form.Item>
                             </div>
                           </div>
                         </div>
@@ -333,14 +351,18 @@ export const Aprobar = () => {
                             <p>Descripción de la fuente</p>
 
                             <div className='form-group gov-co-form-group'>
-                              <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
+                              <Input.TextArea defaultValue='default' rows={5} />
                             </div>
                             <p className='mt-3'>Autoridad ambiental que otorga la concesión</p>
                             <div className='form-group gov-co-form-group ml-2'>
                               <div className='gov-co-dropdown'>
-                                <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                  <option>SDA - Distrital de Ambiente</option>
-                                </select>
+                                <Form.Item>
+                                  <SelectComponent
+                                    placeholder='-- SDA - Distrital de Ambiente --'
+                                    options={[]}
+                                    optionPropkey={''}
+                                  />
+                                </Form.Item>
                               </div>
                             </div>
                           </div>
@@ -525,9 +547,14 @@ export const Aprobar = () => {
                             <p>Tipo de Notificación*</p>
                             <div className='form-group gov-co-form-group ml-2'>
                               <div className='gov-co-dropdown'>
-                                <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                  <option>Notificación Interna</option>
-                                </select>
+                                <Form.Item>
+                                  <SelectComponent
+                                    placeholder='-- Notificación Interna --'
+                                    options={[]}
+                                    optionPropkey={''}
+                                    className='form-control'
+                                  />
+                                </Form.Item>
                               </div>
                             </div>
                           </div>
