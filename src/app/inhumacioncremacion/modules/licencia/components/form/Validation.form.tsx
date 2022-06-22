@@ -366,6 +366,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           break;
       }
 
+      console.log(DatosDocumento);
+      console.log(documentos);
+
       // let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
 
       var iddocumento: string = documentos.reduce((result: any, item: any) => {
@@ -390,7 +393,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           DatosDocumento.at(6) == '1' &&
           DatosDocumento.at(7) == '1'
         ) {
-          not = 1;
+          not = 2;
         } else {
           alert('Todos los documentos deben de cumplir en caso de aprobacion');
           not = 0;
@@ -413,9 +416,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
       }
 
-      if (not == 1) {
+      if (not >= 1) {
         /////////////////////////Guardar status//////////////////////////
-        not = 0;
+        let aux = 0;
         for (let index = 0; index < documentos.length; index++) {
           //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
           var posicioninicialid = 0;
@@ -448,10 +451,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             }
           };
 
-          const resp = await api.AddGestion(json, not + '');
-          not = 1;
+          const resp = await api.AddGestion(json, aux + '');
+          aux = 1;
         }
-        const update = await api.updatelicencia(objJosn?.idSolicitud);
+        if (not == 2) {
+          const update = await api.updatelicencia(objJosn?.idSolicitud);
+        }
         /////////////////////////Enviar Notificacion//////////////////////////
         let tipoSeguimiento: string = values.validFunctionaltype;
         let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);

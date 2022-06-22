@@ -296,12 +296,12 @@ export const Gridview = (props: IDataSource) => {
     let { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
     const Objs = [];
 
-    if (tipoSolitudIN == 'Cremacion Fetal' || tipoSolitudIN == 'Inhumacion Fetal') {
+    /*if (tipoSolitudIN == 'Cremacion Fetal' || tipoSolitudIN == 'Inhumacion Fetal') {
       DFALL = DM;
-    }
+    }*/
 
     Objs.push({ file: CD, name: 'Certificado_Defuncion' });
-    Objs.push({ file: DM, name: 'Documento_madre' });
+    Objs.push({ file: DM, name: 'Documento_de_la_Madre' });
     Objs.push({ file: OD, name: 'Otros_Documentos' });
     Objs.push({ file: ANFI, name: 'Acta_Notarial_del_Fiscal' });
     Objs.push({ file: DFALL, name: 'Documento_del_fallecido' });
@@ -477,7 +477,7 @@ export const Gridview = (props: IDataSource) => {
           );
         })}
 
-        <Button style={{ margin: 10 }} type='primary' htmlType='submit'>
+        <Button style={{ margin: 10 }} type='primary' htmlType='submit' onClick={() => setVisibleDocumentoGestion(false)}>
           Guardar
         </Button>
       </Form>
