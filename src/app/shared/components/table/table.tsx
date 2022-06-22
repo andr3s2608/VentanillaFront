@@ -478,11 +478,7 @@ export const Gridview = (props: IDataSource) => {
           );
         })}
 
-<<<<<<< HEAD
         <Button style={{ margin: 10 }} type='primary' htmlType='submit' onClick={() => setVisibleDocumentoGestion(false)}>
-=======
-        <Button type='primary' htmlType='submit'>
->>>>>>> 603ec7affe8d660438052244f4cac4c36bec517a
           Guardar
         </Button>
       </Form>
