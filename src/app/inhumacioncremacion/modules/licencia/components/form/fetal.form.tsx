@@ -187,6 +187,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       numeroins = '0';
       razonSocialins = 'Otros';
       numeroProtocoloins = '452022';
+    } else {
+      tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
     }
     let persona: any[] = [];
     var segunda = values.nationalidad2;

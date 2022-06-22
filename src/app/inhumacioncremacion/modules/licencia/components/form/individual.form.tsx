@@ -200,6 +200,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       razonSocialins = 'Otros';
       numeroProtocoloins = '452022';
     }
+    else
+    {
+     tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      }
     const par = values.authParentesco;
     var parentesco = '';
     switch (par) {

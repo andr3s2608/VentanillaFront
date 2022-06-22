@@ -144,7 +144,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Tipo Identificación'
             name='instTipoIdent'
-            initialValue={obj?.instTipoIdent ? obj?.instTipoIdent : defaultValues.identity}
+            initialValue={obj?.instTipoIdent ? obj?.instTipoIdent : 'NIT'}
             rules={[{ required: true }]}
           >
             <SelectComponent
@@ -277,7 +277,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <>
             <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-            <Form.Item label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: true, max: 10 }]}>
+            <Form.Item label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: false, max: 10 }]}>
               <Input
                 allowClear
                 placeholder='Nueva acta de Levantamiento'
@@ -294,7 +294,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Fecha de Acta' required={true} name='DateAct'>
+            <Form.Item label='Fecha de Acta' required={false} name='DateAct'>
               <DatepickerComponent
                 picker='date'
                 dateDisabledType='before'
@@ -306,7 +306,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false, max: 20 }]}>
               <SelectComponent options={[]} optionPropkey='id' optionPropLabel='name' />
             </Form.Item>
-            <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: true, max: 5 }]}>
+            <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
               <Input
                 allowClear
                 placeholder='No. Fiscal'

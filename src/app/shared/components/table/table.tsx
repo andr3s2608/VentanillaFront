@@ -455,7 +455,7 @@ export const Gridview = (props: IDataSource) => {
     }
 
     return (
-      <Form className='mb-4 w-100' layout='horizontal' onFinish={(form) => SubmitDocuments(form, props)}>
+      <Form layout='horizontal' onFinish={(form) => SubmitDocuments(form, props)}>
         {props.listDocument.map((item) => {
           return (
             <Form.Item
@@ -470,6 +470,7 @@ export const Gridview = (props: IDataSource) => {
                 beforeUpload={() => false}
                 listType='text'
                 accept='application/pdf'
+                className='float-right'
               >
                 <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
               </Upload>
@@ -477,7 +478,11 @@ export const Gridview = (props: IDataSource) => {
           );
         })}
 
+<<<<<<< HEAD
         <Button style={{ margin: 10 }} type='primary' htmlType='submit' onClick={() => setVisibleDocumentoGestion(false)}>
+=======
+        <Button type='primary' htmlType='submit'>
+>>>>>>> 603ec7affe8d660438052244f4cac4c36bec517a
           Guardar
         </Button>
       </Form>
@@ -509,8 +514,8 @@ export const Gridview = (props: IDataSource) => {
                 </div>
               </div>
               <div className='row  justify-content-md-center'>
-                <label>Lista de documentos:</label>
-                <div className='col-lg-12 col-sm-12 col-md-12'>
+                <label className='mt-3'>Lista de documentos:</label>
+                <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
                   <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
                 </div>
               </div>
