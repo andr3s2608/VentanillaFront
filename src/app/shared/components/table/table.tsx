@@ -29,7 +29,6 @@ export const Gridview = (props: IDataSource) => {
   const { accountIdentifier } = authProvider.getAccount();
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
-
   const api = new ApiService(accountIdentifier);
   const Paginas: number = 10;
 
@@ -344,8 +343,6 @@ export const Gridview = (props: IDataSource) => {
     const formData = new FormData();
     let container = null;
 
-    console.log('======= el id de esta solicitud es =======');
-    console.log(listDocument[0].idSolicitud);
     /**De acuerdo al tipo de solicitud se asigna el nombre del contenedor de Azure Storage Blob
      * al que se debe enviar los archivos
      */
@@ -366,7 +363,6 @@ export const Gridview = (props: IDataSource) => {
 
     /** Se verifica que se encontró un contenedor donde almacenar los documentos */
     if (container) {
-      console.log('Se encontró un contenedor donde almacenar, los datos pertenecen a un contenedor de: ', container);
       formData.append('containerName', container);
       formData.append('oid', accountIdentifierSession);
 
@@ -383,8 +379,6 @@ export const Gridview = (props: IDataSource) => {
             const [, nameFile] = listDocument[j].path.split('/');
             formData.append('file', item);
             formData.append('nameFile', nameFile);
-            console.log('El mapeo de nombre y archivo es el siguiente:');
-            console.log(nameFile, item);
 
             supportDocumentsEdit.push({
               idDocumentoSoporte: listDocument[j].idDocumentoSoporte,
@@ -394,19 +388,14 @@ export const Gridview = (props: IDataSource) => {
         }
       });
 
-      console.log('======= la fecha de este host es =======');
-      console.log(new Date());
-      console.log('============= form data ===========');
-      console.log(formData.values());
-      console.log('=========== suppor document ======0');
-      console.log(supportDocumentsEdit);
       /** Verifica que hay archivos ha subir  y a su vez sirve para validar que se agregue la meta data a cada
        *  uno de los archivos y se mandan a base de datos
        * */
       if (supportDocumentsEdit.length) {
-        console.log('se mando a servidor');
         await api.uploadFiles(formData);
         await api.UpdateSupportDocuments(supportDocumentsEdit);
+        await api.updateStateRequest(listDocument[0].idSolicitud, 'FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+        window.location.reload();
       }
     }
   };
