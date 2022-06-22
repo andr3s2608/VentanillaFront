@@ -4,6 +4,9 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+
 export const RenovarP = () => {
   const history = useHistory();
   return (
@@ -88,18 +91,20 @@ export const RenovarP = () => {
               <div className='panel-search'>
                 <p>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -107,18 +112,20 @@ export const RenovarP = () => {
               <div className='panel-search'>
                 <p>Tipo trámite</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -152,18 +159,20 @@ export const RenovarP = () => {
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Número de expediente de resolución*</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12'>
@@ -183,9 +192,9 @@ export const RenovarP = () => {
 
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Subterránea</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Subterránea --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -194,6 +203,9 @@ export const RenovarP = () => {
 
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Manantial --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option>Manantial</option>
                   </select>
@@ -205,35 +217,39 @@ export const RenovarP = () => {
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Descripción de otra fuente</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Nombre de la fuente*</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -242,41 +258,28 @@ export const RenovarP = () => {
             <div className='col-lg-3 col-md-3 col-sm-12'>
               <p>Localización de la bocatoma*</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-3 col-md-3 col-sm-12'>
               <br />
-              <input
-                type='text'
-                className='form-control mt-3'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </div>
-            <div className='col-lg-2 col-md-2 col-sm-12'>
-              <br />
-              <div className='form-group gov-co-form-group'>
+              <Form.Item>
                 <input
                   type='text'
-                  className='form-control gov-co-form-control'
+                  className='form-control mt-3'
                   onKeyPress={(event) => {
                     if (!/[a-zA-Z]/.test(event.key)) {
                       event.preventDefault();
@@ -286,21 +289,40 @@ export const RenovarP = () => {
                     event.preventDefault();
                   }}
                 />
+              </Form.Item>
+            </div>
+            <div className='col-lg-2 col-md-2 col-sm-12'>
+              <br />
+              <div className='form-group gov-co-form-group'>
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
               <p>Descripción de la fuente*</p>
               <div className='form-group gov-co-form-group'>
-                <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
+                <Input.TextArea defaultValue='default' rows={5} />
               </div>
             </div>
             <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
               <p>Autoridad ambiental que otorga la concesión</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>CAR- Corporación Autónoma Regional</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='--CAR- Corporación Autónoma Regional--' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -322,17 +344,17 @@ export const RenovarP = () => {
               <p>Departamento*</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Bogotá</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Bogotá --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
               <p className='mt-3'>Localidad o vereda*</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Seleccione</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -340,17 +362,17 @@ export const RenovarP = () => {
               <p>Municipio*</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Bogotá</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Bogotá --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
               <p className='mt-3'>Sector*</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Seleccione</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -358,81 +380,86 @@ export const RenovarP = () => {
 
           <div className='row'>
             <div className='col-lg-4 col-md-4 col-sm-12'>
-              {' '}
               <br />
               <p>Coordenadas de capacitación</p>
-              <input
-                type='text'
-                className='form-control mt-3'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+              <Form.Item>
+                <input
+                  type='text'
+                  className='form-control mt-3'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
+                  }}
+                />
+              </Form.Item>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12 mt-4'>
-              {' '}
               <br />
-              <input
-                type='text'
-                className='form-control mt-3'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+              <Form.Item>
+                <input
+                  type='text'
+                  className='form-control mt-3'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
+                  }}
+                />
+              </Form.Item>
             </div>
           </div>
           <div className='row mt-2'>
             <div className='col-lg-4 col-md-4 col-sm-12'>
-              {' '}
               <br />
               <p>Uso de la fuente</p>
-              <select name='' id='' className='form-control'>
-                <option value=''>Seleccione</option>
-              </select>
+              <Form.Item>
+                <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+              </Form.Item>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12'>
               {' '}
               <br />
               <p>Descripción de otro uso</p>
-              <input
-                type='text'
-                className='form-control mt-3'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z]/.test(event.key)) {
+              <Form.Item>
+                <input
+                  type='text'
+                  className='form-control mt-3'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
+                  }}
+                />
+              </Form.Item>
             </div>
           </div>
           <div className='row mt-3'>
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Caudal total</p>
-              <input
-                type='text'
-                className='form-control mt-3'
-                onKeyPress={(event) => {
-                  if (!/[0-9]/.test(event.key)) {
+              <Form.Item>
+                <input
+                  type='text'
+                  className='form-control mt-3'
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
+                  }}
+                />
+              </Form.Item>
             </div>
           </div>
           <div className='row mt-4'>

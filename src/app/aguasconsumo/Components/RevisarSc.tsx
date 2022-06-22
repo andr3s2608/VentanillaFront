@@ -4,6 +4,8 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const RevisarSc = () => {
   const history = useHistory();
@@ -90,18 +92,20 @@ export const RevisarSc = () => {
                 <p>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
                   <div className='form-group gov-co-form-group'>
-                    <input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
+                    <Form.Item>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
                           event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
+                        }}
+                      />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -111,18 +115,20 @@ export const RevisarSc = () => {
                 <p>Tipo de tramite</p>
                 <div className='form-group gov-co-form-group'>
                   <div className='form-group gov-co-form-group'>
-                    <input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
+                    <Form.Item>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
                           event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
+                        }}
+                      />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -136,9 +142,9 @@ export const RevisarSc = () => {
                   <div className='gov-co-dropdown'>
                     <div className='form-group gov-co-form-group '>
                       <div className='gov-co-dropdown'>
-                        <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                          <option>En radicación</option>
-                        </select>
+                        <Form.Item>
+                          <SelectComponent placeholder='-- En radicación --' options={[]} optionPropkey={''} />
+                        </Form.Item>
                       </div>
                     </div>
                   </div>
@@ -151,9 +157,9 @@ export const RevisarSc = () => {
 
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Solicitud de revisión en campo</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- Solicitud de revisión en campo --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -162,18 +168,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Actividad siguiente </p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -182,9 +190,9 @@ export const RevisarSc = () => {
                 <p>Usuario asignado</p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>CGONZALEZL</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- CGONZALEZL --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -194,9 +202,9 @@ export const RevisarSc = () => {
                 <p>Subred de jurisdicción </p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Seleccione</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- Selecccione --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -217,9 +225,9 @@ export const RevisarSc = () => {
                   <p>Tipo de solicitante*</p>
                   <div className='form-group gov-co-form-group ml-2'>
                     <div className='gov-co-dropdown'>
-                      <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                        <option>Persona Natural</option>
-                      </select>
+                      <Form.Item>
+                        <SelectComponent placeholder='--Persona Natural --' options={[]} optionPropkey={''} />
+                      </Form.Item>
                     </div>
                   </div>
                 </div>
@@ -231,9 +239,9 @@ export const RevisarSc = () => {
                 <p>Tipo de documento</p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Item</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='-- Item --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -242,18 +250,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Número de documento</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -262,18 +272,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Primer nombre</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -281,18 +293,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Segundo nombre</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -300,18 +314,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Primer apellido </p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -319,18 +335,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Segundo apellido</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -338,18 +356,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Teléfono de contacto 1 </p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -357,18 +377,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Teléfono de contacto 2</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -376,18 +398,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Correo electrónico </p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -403,18 +427,20 @@ export const RevisarSc = () => {
                 <div className='col-lg-6 col-sm-12 col-md-6' style={{ marginLeft: '5px' }}>
                   <p>Dirección de domicilio</p>
                   <div className='form-group gov-co-form-group'>
-                    <input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
+                    <Form.Item>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
                           event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
+                        }}
+                      />
+                    </Form.Item>
                   </div>
                 </div>
                 <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '12px' }}>
@@ -429,18 +455,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Departamento</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -448,18 +476,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Municipio</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -467,18 +497,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Vereda </p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -486,18 +518,20 @@ export const RevisarSc = () => {
               <div className='panel-search'>
                 <p>Sector</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -506,7 +540,7 @@ export const RevisarSc = () => {
             <div className='col-lg-8 col-sm-12 col-md-8'>
               <p className='ml-2'>Observaciones adicionales</p>
               <div className='form-group gov-co-form-group'>
-                <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
+                <Input.TextArea defaultValue='default' rows={5} />
               </div>
             </div>
 
