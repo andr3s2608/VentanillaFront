@@ -9,6 +9,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const SegundaU = () => {
   const history = useHistory();
+
   return (
     <div>
       <section className='info-panel'>

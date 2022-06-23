@@ -6,6 +6,7 @@ import { ApiService } from 'app/services/Apis.service';
 import Tabs from 'antd/es/tabs';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import React, { useCallback, useEffect, useState } from 'react';
+import { setgid } from 'process';
 
 // Otros componentes
 
@@ -15,6 +16,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const [bandeja, setBandeja] = useState<boolean>(false);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [grid, setGrid] = useState<any[]>([]);
 
   const getListas = useCallback(
     async () => {
@@ -37,10 +39,12 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
     if (permiso?.rol === 'Ciudadano') {
       const resp = await api.GetEstadoSolicitudNuevo();
+      setGrid(resp);
       setBandeja(false);
     } else {
       let arraydatos = [];
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      setGrid(resp);
       setBandeja(true);
     }
   };
@@ -48,7 +52,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      <Tabs>{bandeja ? <Bandeja /> : <BandejaU />}</Tabs>
+      <Tabs>{bandeja ? <Bandeja data={grid} /> : <BandejaU />}</Tabs>
     </div>
   );
 };
