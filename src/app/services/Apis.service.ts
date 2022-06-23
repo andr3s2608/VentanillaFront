@@ -291,7 +291,7 @@ export class ApiService {
 
   sendEmailAttachment = (payload: any) => {
     return post<any>({
-      endpoint: 'https://localhost:5002/api/v1/' as string,
+      endpoint: REACT_APP_NOTIFICACION as string,
       url: 'Email/SendMailWithAttachment',
       payload,
       id: '1'
@@ -300,7 +300,7 @@ export class ApiService {
 
   getLicenciaBase64 = (idTramite: string) => {
     return get<any>({
-      endpoint: 'https://localhost:5001/api/' as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Seguimiento/GetLicencia/${idTramite}`,
       id: '0'
     });
@@ -342,7 +342,7 @@ export class ApiService {
 
   generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): any => {
     return get<any>({
-      endpoint: 'https://localhost:5001/api/' as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}`,
       id: '0'
     });
