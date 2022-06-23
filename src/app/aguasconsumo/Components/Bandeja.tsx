@@ -2,8 +2,45 @@ import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
+import { Form, Input } from 'antd';
+import Table from 'antd/es/table';
+import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+import { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import { useHistory } from 'react-router';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+export const Bandeja = (props: IDataSource) => {
+  const history = useHistory();
+  const { data } = props;
+  const Paginas: number = 5;
+  const structureColumns = [
+    {
+      title: 'No. de Radicado',
+      dataIndex: 'NumeroRadicado',
+      key: 'nroradicado'
+    },
+    {
+      title: 'Tipo de trámite',
+      dataIndex: 'tipotramite',
+      key: 'idTramite'
+    },
+    {
+      title: 'Fecha de Registro',
+      dataIndex: 'fechaSolicitud',
+      key: 'fechaSolicitud'
+    },
+    {
+      title: 'Estado ',
+      dataIndex: 'estado',
+      key: 'estado'
+    },
+    {
+      title: 'Actividad en curso',
+      dataIndex: 'actividadActualSolicitud',
+      key: 'actividad'
+    }
+  ];
 
-export const Bandeja = () => {
   return (
     <section className='info-panel'>
       <div className='container'>
@@ -123,26 +160,28 @@ export const Bandeja = () => {
                       <div className='col-lg-6 col-md-6 col-sm-12'>
                         <div className='form-group gov-co-form-group ml-2'>
                           <div className='gov-co-dropdown'>
-                            <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                              <option>Seleccione</option>
-                            </select>
+                            <Form.Item>
+                              <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                            </Form.Item>
                           </div>
                         </div>
                       </div>
                       <div className='col-md-6 col-lg-6 col-sm-12'>
                         <div className='form-group gov-co-form-group'>
-                          <input
-                            type='text'
-                            className='form-control gov-co-form-control'
-                            onKeyPress={(event) => {
-                              if (!/[a-zA-Z]/.test(event.key)) {
+                          <Form.Item>
+                            <input
+                              type='text'
+                              className='form-control gov-co-form-control'
+                              onKeyPress={(event) => {
+                                if (!/[a-zA-Z]/.test(event.key)) {
+                                  event.preventDefault();
+                                }
+                              }}
+                              onPaste={(event) => {
                                 event.preventDefault();
-                              }
-                            }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
-                          />
+                              }}
+                            />
+                          </Form.Item>
                         </div>
                       </div>
                     </div>
@@ -150,37 +189,7 @@ export const Bandeja = () => {
                 </div>
                 <div className='row'>
                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                    <table
-                      className='table table-bordered text-center mt-4'
-                      style={{
-                        border: '2px solid  #000',
-                        backgroundColor: '#ede9e3'
-                      }}
-                    >
-                      <thead>
-                        <tr
-                          style={{
-                            border: '2px solid  #000',
-                            backgroundColor: '#fff'
-                          }}
-                        >
-                          <th style={{ border: '2px solid  #000' }}>No. de radicado</th>
-                          <th style={{ border: '2px solid  #000' }}>Tipo de trámite</th>
-                          <th style={{ border: '2px solid  #000' }}>Fecha</th>
-                          <th style={{ border: '2px solid  #000' }}>Estado</th>
-                          <th style={{ border: '2px solid  #000' }}>Actividad en curso</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr style={{ border: '2px solid  #000' }}>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
                   </div>
                 </div>
               </div>
@@ -190,60 +199,32 @@ export const Bandeja = () => {
                     <p className='mt-4'>Filtrar por:</p>
                     <div className='row'>
                       <div className='col-lg-6 col-md-6 col-sm-12'>
-                        <select name='' id='' className='form-control'>
-                          <option value=''>Escoger</option>
-                        </select>
+                        <Form.Item>
+                          <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                        </Form.Item>
                       </div>
                       <div className='col-md-6 col-lg-6 col-sm-12'>
-                        <input
-                          type='text'
-                          className='form-control'
-                          onKeyPress={(event) => {
-                            if (!/[a-zA-Z]/.test(event.key)) {
+                        <Form.Item>
+                          <input
+                            type='text'
+                            className='form-control'
+                            onKeyPress={(event) => {
+                              if (!/[a-zA-Z]/.test(event.key)) {
+                                event.preventDefault();
+                              }
+                            }}
+                            onPaste={(event) => {
                               event.preventDefault();
-                            }
-                          }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
-                        />
+                            }}
+                          />
+                        </Form.Item>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className='row'>
                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                    <table
-                      className='table table-bordered text-center mt-4'
-                      style={{
-                        border: '2px solid  #000',
-                        backgroundColor: '#ede9e3'
-                      }}
-                    >
-                      <thead>
-                        <tr
-                          style={{
-                            border: '2px solid  #000',
-                            backgroundColor: '#fff'
-                          }}
-                        >
-                          <th style={{ border: '2px solid  #000' }}>No. de radicado</th>
-                          <th style={{ border: '2px solid  #000' }}>Tipo de trámite</th>
-                          <th style={{ border: '2px solid  #000' }}>Fecha</th>
-                          <th style={{ border: '2px solid  #000' }}>Estado</th>
-                          <th style={{ border: '2px solid  #000' }}>Actividad en curso</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr style={{ border: '2px solid  #000' }}>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                          <td style={{ border: '2px solid  #000' }}></td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
                   </div>
                 </div>
               </div>
@@ -254,3 +235,7 @@ export const Bandeja = () => {
     </section>
   );
 };
+
+interface IDataSource {
+  data: Array<any>;
+}

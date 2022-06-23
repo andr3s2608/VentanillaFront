@@ -4,6 +4,8 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const RenovarS = () => {
   const history = useHistory();
@@ -89,7 +91,8 @@ export const RenovarS = () => {
               <div className='panel-search'>
                 <p>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
+                <Form.Item>
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -101,6 +104,7 @@ export const RenovarS = () => {
                       event.preventDefault();
                     }}
                   />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -108,7 +112,8 @@ export const RenovarS = () => {
               <div className='panel-search'>
                 <p>Tipo trámite</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
+                <Form.Item>
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -120,6 +125,7 @@ export const RenovarS = () => {
                       event.preventDefault();
                     }}
                   />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -173,7 +179,8 @@ export const RenovarS = () => {
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Caudal de diseño (L/s)</p>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -185,12 +192,14 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Caudal de tratado (L/s)</p>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -202,6 +211,7 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -309,7 +319,8 @@ export const RenovarS = () => {
             <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
               <p>Descripción de otro componente del sistema de tratamiento</p>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -321,6 +332,7 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -330,7 +342,8 @@ export const RenovarS = () => {
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -342,11 +355,13 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -358,6 +373,7 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -367,7 +383,8 @@ export const RenovarS = () => {
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -379,11 +396,13 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12'>
               <div className='form-group gov-co-form-group'>
-                <input
+              <Form.Item>
+                <Input
                   type='text'
                   className='form-control gov-co-form-control'
                   onKeyPress={(event) => {
@@ -395,6 +414,7 @@ export const RenovarS = () => {
                     event.preventDefault();
                   }}
                 />
+                </Form.Item>
               </div>
             </div>
           </div>

@@ -4,6 +4,8 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { Form, Input } from 'antd';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const PrimeraU = () => {
   const history = useHistory();
@@ -89,18 +91,20 @@ export const PrimeraU = () => {
               <div className='panel-search'>
                 <p>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -108,18 +112,20 @@ export const PrimeraU = () => {
               <div className='panel-search'>
                 <p>Tipo trámite</p>
                 <div className='form-group gov-co-form-group'>
-                  <input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                  <Form.Item>
+                    <input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
                         event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -136,9 +142,9 @@ export const PrimeraU = () => {
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>Primera vez</option>
-                    </select>
+                    <Form.Item>
+                      <SelectComponent placeholder='--Primera Vez --' options={[]} optionPropkey={''} />
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -149,9 +155,9 @@ export const PrimeraU = () => {
               <p>Tipo de fuente*</p>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Superficial</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Superficial --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -159,9 +165,9 @@ export const PrimeraU = () => {
               <p>Subcategoria de fuente*</p>
               <div className='form-group gov-co-form-group ml-2'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Caño</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Caño --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -170,35 +176,39 @@ export const PrimeraU = () => {
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Descripción de otra fuente</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-sm-12 col-md-4'>
               <p>Nombre de la fuente*</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -206,67 +216,73 @@ export const PrimeraU = () => {
             <div className='col-lg-3 col-md-3 col-sm-12'>
               <p>Localización de la bocatoma*</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-3 col-md-3 col-sm-12 mt-3'>
               <br />
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-2 col-md-2 col-sm-12 mt-3'>
               <br />
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
               <p>Descripción de la fuente*</p>
               <div className='form-group gov-co-form-group'>
-                <textarea className='form-control' id='exampleFormControlTextarea1' rows={5}></textarea>
+                <Input.TextArea defaultValue='default' rows={5} />
               </div>
             </div>
             <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
               <p>Autoridad ambiental que otorga la concesión</p>
               <div className='form-group gov-co-form-group '>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>SDA- Secretaría distrital de ambiente</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- SDA- Secretaría distrital de ambiente --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -286,17 +302,17 @@ export const PrimeraU = () => {
               <p>Departamento*</p>
               <div className='form-group gov-co-form-group '>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Bogotá</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Bogotá--' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
               <p className='mt-3'>Localidad o vereda*</p>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Seleccione</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -304,6 +320,9 @@ export const PrimeraU = () => {
               <p>Municipio*</p>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Bogotá --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                   <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
                     <option> Bogotá</option>
                   </select>
@@ -312,9 +331,9 @@ export const PrimeraU = () => {
               <p className='mt-3'>Sector*</p>
               <div className='form-group gov-co-form-group '>
                 <div className='gov-co-dropdown'>
-                  <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                    <option>Seleccione</option>
-                  </select>
+                  <Form.Item>
+                    <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                  </Form.Item>
                 </div>
               </div>
             </div>
@@ -324,35 +343,39 @@ export const PrimeraU = () => {
               <br />
               <p>Coordenadas de capacitación</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12' style={{ marginTop: '33px' }}>
               <br />
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -361,36 +384,40 @@ export const PrimeraU = () => {
               <br />
               <p>Usuo de la fuente</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[0-9]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <br />
               <p>Descripción de otro uso</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
@@ -398,18 +425,20 @@ export const PrimeraU = () => {
             <div className='col-lg-4 col-md-4 col-sm-12'>
               <p>Caudal total</p>
               <div className='form-group gov-co-form-group'>
-                <input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z]/.test(event.key)) {
+                <Form.Item>
+                  <input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
                       event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
           </div>
