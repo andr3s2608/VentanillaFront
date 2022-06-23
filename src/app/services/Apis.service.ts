@@ -289,6 +289,23 @@ export class ApiService {
     });
   };
 
+  sendEmailAttachment = (payload: any) => {
+    return post<any>({
+      endpoint: 'https://localhost:5002/api/v1/' as string,
+      url: 'Email/SendMailWithAttachment',
+      payload,
+      id: '1'
+    });
+  };
+
+  getLicenciaBase64 = (idTramite: string) => {
+    return get<any>({
+      endpoint: 'https://localhost:5001/api/' as string,
+      url: `Seguimiento/GetLicencia/${idTramite}`,
+      id: '0'
+    });
+  };
+
   actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
     return put<any>({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -313,7 +330,7 @@ export class ApiService {
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
-      (REACT_APP_INHCREMACION as string) +
+      ('https://localhost:5001/api/' as string) +
       'GeneratePDF/GeneratePDFPrev/' +
       idTramite +
       '/' +
@@ -323,18 +340,12 @@ export class ApiService {
     );
   };
 
-  getLinkPDFNotificacion = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): string => {
-    return (
-      (REACT_APP_INHCREMACION as string) +
-      'GeneratePDF/GeneratePDF/' +
-      idTramite +
-      '/' +
-      tramitador +
-      '/' +
-      nombreTramitador +
-      '/' +
-      codigo
-    );
+  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): any => {
+    return get<any>({
+      endpoint: 'https://localhost:5001/api/' as string,
+      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}`,
+      id: '0'
+    });
   };
   validarFirmaFuncionario = (idTramitador: string) =>
     get<any>({

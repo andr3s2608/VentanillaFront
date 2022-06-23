@@ -472,18 +472,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           let codeUser = await api.getCodeUser();
           let nameUser = await api.GetInformationUser(codeUser);
 
-          let codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
-          let linkPDF = api.getLinkPDFNotificacion(objJosn?.idSolicitud, idUsuario, nameUser.fullName, codigo);
+          const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-          //window.open(linkPDF, 'hola mundo');
+          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, nameUser.fullName, codigo);
 
           let datosDinamicosAprobacion = [
             solicitud[0]['razonSocialSolicitante'],
             getDescripcionTramite(idTramite.toLocaleUpperCase()),
             objJosn.idControlTramite,
             fechaSolicitud.substring(0, 10),
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            linkPDF
+            getDescripcionTramite(idTramite.toLocaleUpperCase())
           ];
 
           let emailCementerio = resumenSolicitud[0]['correoCementerio'];
@@ -492,8 +490,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             resumenSolicitud[0]['numeroLicencia'],
             date.toLocaleDateString(),
             getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            linkPDF
+            getDescripcionTramite(idTramite.toLocaleUpperCase())
           ];
 
           let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
@@ -502,22 +499,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             resumenSolicitud[0]['numeroLicencia'],
             date.toLocaleDateString(),
             getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            linkPDF
+            getDescripcionTramite(idTramite.toLocaleUpperCase())
           ];
 
-          notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante);
-          notificarCementerio(datosDinamicosCementerio, emailCementerio);
-          notificarFuneraria(datosDinamicosFuneraria, emailFuneraria);
-          //notificarCementerioYFuneraria(datosDinamicosCementerio, datosDinamicosFuneraria, emailCementerio, emailFuneraria);
+          notificar(values.validFunctionaltype, datosDinamicosAprobacion, emailSolicitante, licencia);
+          notificarCementerio(datosDinamicosCementerio, emailCementerio, licencia);
+          notificarFuneraria(datosDinamicosFuneraria, emailFuneraria, licencia);
         } else {
-          /*let datosDinamicos = {
-        ciudadano: objJosn?.name + ' ' + objJosn?.secondName + ' ' + objJosn?.surname + ' ' + objJosn.secondSurname,
-        tipo_de_solicitud: getDescripcionTramite(idTramite.toLocaleUpperCase()),
-        numero_de_solicitud: objJosn?.idSolicitud,
-        fecha_de_solicitud: fechaSolicitud.substring(0, 10),
-        observacion: values.Observations
-      };*/
           let datosDinamicosGenericos = [
             solicitud[0]['razonSocialSolicitante'],
             getDescripcionTramite(idTramite.toLocaleUpperCase()),
@@ -526,7 +514,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             values.observations
           ];
 
-          notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante);
+          //notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante, null);
         }
         history.push('/tramites-servicios');
         store.dispatch(SetResetViewLicence());
@@ -984,7 +972,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     return nuevoHTML;
   }
 
-  async function notificarCementerio(datosDinamicosCementerio: any, emailCementerio: string) {
+  async function notificarCementerio(datosDinamicosCementerio: any, emailCementerio: string, licencia: any) {
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
 
@@ -993,8 +981,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       '~:~número_de_licencia~:~',
       '~:~fecha_de_expedición~:~',
       '~:~tipo_de_trámite~:~',
-      '~:~tipo_de_licencia~:~',
-      '~:~link_pdf~:~'
+      '~:~tipo_de_licencia~:~'
     ];
 
     const idPlantillaCementerio = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
@@ -1006,14 +993,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       datosDinamicosCementerio
     );
 
-    api.sendEmail({
+    api.sendEmailAttachment({
       to: emailCementerio,
       subject: 'Notificación cementerio',
-      body: bodyCementerio
+      body: bodyCementerio,
+      attachment: licencia
     });
   }
 
-  async function notificarFuneraria(datosDinamicosFuneraria: any, emailFuneraria: string) {
+  async function notificarFuneraria(datosDinamicosFuneraria: any, emailFuneraria: string, licencia: any) {
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
 
@@ -1022,8 +1010,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       '~:~número_de_licencia~:~',
       '~:~fecha_de_expedición~:~',
       '~:~tipo_de_trámite~:~',
-      '~:~tipo_de_licencia~:~',
-      '~:~link_pdf~:~'
+      '~:~tipo_de_licencia~:~'
     ];
 
     const idPlantillaFuneraria = '7ECC05F8-E5C0-4F8D-997B-2AE5A7E0059C';
@@ -1031,10 +1018,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let plantillaFuneraria = await api.getFormato(idPlantillaFuneraria);
     let bodyFuneraria = agregarValoresDinamicos(plantillaFuneraria.valor, llavesAReemplazarFuneraria, datosDinamicosFuneraria);
 
-    api.sendEmail({
+    api.sendEmailAttachment({
       to: emailFuneraria,
       subject: 'Notificación funeraria',
-      body: bodyFuneraria
+      body: bodyFuneraria,
+      attachment: licencia
     });
   }
 
@@ -1079,7 +1067,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     });
   }*/
 
-  async function notificar(tipoSeguimiento: string, datosDinamicos: any, emailSolicitante: string) {
+  async function notificar(tipoSeguimiento: string, datosDinamicos: any, emailSolicitante: string, licencia: any) {
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
 
@@ -1096,8 +1084,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       '~:~tipo_de_solicitud~:~',
       '~:~numero_de_tramite~:~',
       '~:~fecha_de_solicitud~:~',
-      '~:~tipo_de_licencia~:~',
-      '~:~link_pdf~:~'
+      '~:~tipo_de_licencia~:~'
     ];
 
     const idPlantillaAnulacion = '903C641E-C65B-494B-AF79-B091C55217FC';
@@ -1144,10 +1131,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         let plantillaAprobacion = await api.getFormato(idPlantillaAprobacion);
         let bodyAprobacion = agregarValoresDinamicos(plantillaAprobacion.valor, llavesAReemplazarAprobacion, datosDinamicos);
 
-        api.sendEmail({
+        api.sendEmailAttachment({
           to: emailSolicitante,
           subject: plantillaAprobacion.asuntoNotificacion,
-          body: bodyAprobacion
+          body: bodyAprobacion,
+          attachment: licencia
         });
         break;
       default:
