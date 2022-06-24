@@ -31,6 +31,7 @@ export const Servicios = () => {
   const [form] = Form.useForm<any>();
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
+  const [l_tramites, setLtramites] = useState<any[]>([]);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
@@ -52,10 +53,12 @@ export const Servicios = () => {
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const departamentos = await dominioService.get_departamentos_colombia();
       const localidades = await dominioService.get_localidades_bogota();
+      const tramites = await api.getTipoTramites();
 
       setLDepartamentos(departamentos);
       setListaTipoDocumento(tipoDocumento);
       setLLocalidades(localidades);
+      setLtramites(tramites);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -222,8 +225,13 @@ export const Servicios = () => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group ml-2'>
-                  <Form.Item label='Tipo de Tramite' name='tipotramite' required={true}>
-                    <SelectComponent options={[]} optionPropkey='' />
+                  <Form.Item
+                    label='Tipo de Tramite'
+                    name='tipotramite'
+                    initialValue={'AUTORIZACIÓN SANITARIA PARA CONSESIÓN DE AGUAS'}
+                    required={true}
+                  >
+                    <SelectComponent options={l_tramites} optionPropkey='idTipoTramite' optionPropLabel='descripcion' />
                   </Form.Item>
                 </div>
               </div>
