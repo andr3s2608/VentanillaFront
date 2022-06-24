@@ -43,7 +43,7 @@ const NotificacionUsuario = lazy(() => import('../../../aguasconsumo/pages/Notif
 const NotificacionBandeja = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionBandeja.page'));
 //Solicitudes
 const SolicitarRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/solicitarRevision.page'));
-const VistaRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/vistaRevision.page'));
+const VisitaRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/visitaRevision.page'));
 const PrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/primeraVez.page'));
 const SegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/segundaVez.page'));
 const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionPrimera.page'));
@@ -140,8 +140,8 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: SolicitarRevision
   },
   {
-    path: `${RevisionPath}/vista-revision`,
-    component: VistaRevision
+    path: `${RevisionPath}/visita-revision`,
+    component: VisitaRevision
   },
   {
     path: `${RevisionPath}/primera-vez`,
