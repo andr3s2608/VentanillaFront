@@ -31,6 +31,7 @@ export const Servicios = () => {
   const [form] = Form.useForm<any>();
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
+  const [l_tramites, setLtramites] = useState<any[]>([]);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
@@ -52,10 +53,12 @@ export const Servicios = () => {
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const departamentos = await dominioService.get_departamentos_colombia();
       const localidades = await dominioService.get_localidades_bogota();
+      const tramites = await api.getTipoTramites();
 
       setLDepartamentos(departamentos);
       setListaTipoDocumento(tipoDocumento);
       setLLocalidades(localidades);
+      setLtramites(tramites);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -142,15 +145,7 @@ export const Servicios = () => {
   const onSubmitFailed = () => setStatus('error');
 
   return (
-    <Form
-      form={form}
-      className='mb-4 w-100'
-      {...layoutItems}
-      style={{ maxWidth: 800 }}
-      layout='horizontal'
-      onFinish={onSubmit}
-      onFinishFailed={onSubmitFailed}
-    >
+    <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
       <section className='info-panel'>
         <div className='container'>
           <div className='row mt-5'>
@@ -229,21 +224,14 @@ export const Servicios = () => {
             </div>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
-                <p className='ml-2'>Tipo de trámite</p>
                 <div className='form-group gov-co-form-group ml-2'>
-                  <Form.Item name='tipoTramite'>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
+                  <Form.Item
+                    label='Tipo de Tramite'
+                    name='tipotramite'
+                    initialValue={'AUTORIZACIÓN SANITARIA PARA CONSESIÓN DE AGUAS'}
+                    required={true}
+                  >
+                    <SelectComponent options={l_tramites} optionPropkey='idTipoTramite' optionPropLabel='descripcion' />
                   </Form.Item>
                 </div>
               </div>
@@ -377,7 +365,6 @@ export const Servicios = () => {
             </div>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
-                <p>Primer apellido </p>
                 <div className='form-group gov-co-form-group'>
                   <Form.Item label='Primer Apellido' name='surname' required={true}>
                     <Input
@@ -486,7 +473,6 @@ export const Servicios = () => {
               </div>
               <div className='row'>
                 <div className='col-lg-6 col-sm-12 col-md-6' style={{ marginLeft: '5px' }}>
-                  <p>Dirección de domicilio</p>
                   <div className='form-group gov-co-form-group'>
                     <Form.Item label='Dirección de Domicilio' name='direccion' required={true}>
                       <Input
@@ -514,7 +500,6 @@ export const Servicios = () => {
 
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
-                <p>Departamento</p>
                 <div className='form-group gov-co-form-group'>
                   <Form.Item label='Departamento' name='departamento' initialValue={idDepartamentoBogota} required={true}>
                     <SelectComponent options={l_departamentos} optionPropkey='idDepartamento' optionPropLabel='descripcion' />
