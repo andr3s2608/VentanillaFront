@@ -231,7 +231,7 @@ export const Servicios = () => {
               <div className='panel-search'>
                 <p className='ml-2'>Tipo de trámite</p>
                 <div className='form-group gov-co-form-group ml-2'>
-                  <Form.Item>
+                  <Form.Item name='tipoTramite'>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
