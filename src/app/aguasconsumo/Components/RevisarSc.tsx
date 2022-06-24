@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
+import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,
@@ -33,10 +34,6 @@ export const RevisarSc = () => {
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
 
-  const [[l_tramites, l_estados, l_actividades, l_usuarios, l_subredes], setListas] = useState<
-    [any[], any[], any[], any[], any[]]
-  >([[], [], [], [], []]);
-
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
   //validacion campos
@@ -54,13 +51,6 @@ export const RevisarSc = () => {
     async () => {
       //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-
-      const resp = await Promise.all([
-        api.getTipoTramites(),
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_type(ETipoDominio['Tipo Documento'])
-      ]);
 
       setListaTipoDocumento(tipoDocumento);
     },
@@ -219,115 +209,8 @@ export const RevisarSc = () => {
                 </div>
               </div>
             </div>
-            <div className='row'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
-                <div className='info-tramite mt-2'>
-                  <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                    Datos de la solicitud. <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
-                  </p>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item
-                        label='Número de radicado'
-                        initialValue={objJson.numeroradicado}
-                        name='numeroradicado'
-                        required={false}
-                      >
-                        <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <p>Tipo de tramite</p>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item label='Tipo de Tramite' name='tipotramite' required={true}>
-                        <SelectComponent options={[]} optionPropkey='' />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='gov-co-dropdown'>
-                      <div className='form-group gov-co-form-group '>
-                        <div className='gov-co-dropdown'>
-                          <Form.Item label='Estado' name='estado' required={true}>
-                            <SelectComponent options={[]} optionPropkey={''} />
-                          </Form.Item>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <p>Actividad actual</p>
-
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Actividad Actual' name='actactual' required={true}>
-                        <SelectComponent options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Actividad Siguiente' name='actsiguiente' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <p>Usuario asignado</p>
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Usuario Asignado' name='usuarioasignado' required={true}>
-                        <SelectComponent options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Subred de Jurisdicción' name='subred' required={true}>
-                        <SelectComponent options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <DatosSolicitud form={form} obj={objJson} />
 
             <div className='row mt-5'>
               <div className='col-lg-12 col-sm-12 col-md-12'>
