@@ -2,7 +2,8 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { Form, Input } from 'antd';
 
 export const DatosSolicitante = () => {
-  let tipoSolicitante = false;
+  /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
+  let tipoSolicitante = true;
   return (
     <>
       <div className='col-lg-12 col-sm-12 col-md-12'>

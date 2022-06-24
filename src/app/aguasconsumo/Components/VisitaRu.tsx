@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import profile from '../../../../src/assets/images/aguas/profile.png';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
-import profile from '../../../../src/assets/images/aguas/profile.png';
-import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import React, { Fragment } from 'react';
+import Button from 'antd/es/button';
 import { Form, Input } from 'antd';
-import { DatosSolicitante } from './Sections/DatosSolicitante';
 
 export const VisitaRu = () => {
   const history = useHistory();
