@@ -7,9 +7,13 @@ import { useHistory } from 'react-router';
 import React, { Fragment } from 'react';
 import Button from 'antd/es/button';
 import { Form, Input } from 'antd';
+import { EditAguas } from './edit/Aguas';
 
 export const VisitaRu = () => {
   const history = useHistory();
+  const objJson: any = EditAguas();
+  const [form] = Form.useForm<any>();
+
   return (
     <div>
       <section className='info-panel'>
@@ -147,9 +151,9 @@ export const VisitaRu = () => {
             </div>
           </div>
 
-          {/** Componente que muestre los datos del solicitante */}
+          {/** Componente que muestra los datos del solicitante */}
           <div className='row mt-5'>
-            <DatosSolicitante></DatosSolicitante>
+            <DatosSolicitante obj={objJson} form={form}></DatosSolicitante>
           </div>
 
           <div className='row mt-5'>

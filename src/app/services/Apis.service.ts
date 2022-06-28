@@ -416,6 +416,9 @@ export class ApiService {
   //Apis Aguas
   /////////////////////////
 
+  AddSolicitudCitacion = (payload: any) =>
+    post({ endpoint: 'https://localhost:5001/api/', url: 'Request/AddSolicitudCitacion', payload, id: '0' });
+
   getSolicitudesUsuario = () =>
     get<any>({
       endpoint: 'https://localhost:5001/api/',
