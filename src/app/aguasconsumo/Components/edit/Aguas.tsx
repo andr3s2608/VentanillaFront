@@ -19,11 +19,10 @@ const formatObjJson = (obj: any) => {
   const { citacion_Revision, persona, ubicacion, fuenteAbastecimiento, subredes } = obj;
 
   let jsonDt;
-  ///metodo que se habia hecho por inconsistencias en la bd(no existia medico ligado a cada solicitud)
+
   let fuenteabastecimientojson: any[] = [];
   if (fuenteAbastecimiento != null) {
     fuenteabastecimientojson = [
-      //madre
       {
         idfuenteAbastecimiento: fuenteAbastecimiento.idFuente,
         idAutoridadAmbiental: fuenteAbastecimiento.idAutoridadAmbiental,
@@ -35,6 +34,27 @@ const formatObjJson = (obj: any) => {
         descripcionFuenteAbastecimiento: fuenteAbastecimiento.DescripcionFuente,
         descripcionOtraFuente: fuenteAbastecimiento.DescripcionOtraFuente,
         tienePlanta: fuenteAbastecimiento.TienePlanta
+      }
+    ];
+  }
+
+  let citacion: any[] = [];
+  if (citacion_Revision != null) {
+    citacion = [
+      {
+        fechaCitacion: citacion_Revision.fechaCitacion,
+        fechaRegistro: citacion_Revision.fechaRegistro,
+        observacionCitacion: citacion_Revision.observacion
+      }
+    ];
+  }
+
+  let subred: any[] = [];
+  if (subredes != null) {
+    subred = [
+      {
+        idUsuarioSubred: subredes.idUsuario,
+        zonaSubred: subredes.zona
       }
     ];
   }
@@ -53,9 +73,7 @@ const formatObjJson = (obj: any) => {
     actividadActualSolicitud: obj.actividadActualSolicitud,
     actividadSiguienteSolicitud: obj.actividadSiguienteSolicitud,
 
-    fechaCitacion: citacion_Revision.fechaCitacion,
-    fechaRegistro: citacion_Revision.fechaRegistro,
-    observacionCitacion: citacion_Revision.observacion,
+    citacion,
 
     idPersona: persona.idPersona,
     tipoIdentificacion: persona.tipoIdentificacion,
@@ -74,8 +92,7 @@ const formatObjJson = (obj: any) => {
 
     fuenteabastecimientojson,
 
-    idUsuarioSubred: subredes.idUsuario,
-    zonaSubred: subredes.zona,
+    subred,
 
     barrio: ubicacion.barrio,
     departamento: ubicacion.departamento,
