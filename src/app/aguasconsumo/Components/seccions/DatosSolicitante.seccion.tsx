@@ -1,9 +1,11 @@
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { Form, Input } from 'antd';
 
-export const DatosSolicitante = () => {
+export const DatosSolicitante = (props: any) => {
+  const { obj } = props;
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
   let tipoSolicitante = true;
+  console.log(obj);
   return (
     <>
       <div className='col-lg-12 col-sm-12 col-md-12'>
@@ -39,10 +41,9 @@ export const DatosSolicitante = () => {
         <>
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
-              <p>Tipo de documento</p>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <Form.Item>
+                  <Form.Item label='Tipo de documento:' name='tipoDocumento'>
                     <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} disabled />
                   </Form.Item>
                 </div>
@@ -52,9 +53,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
-              <p>Número de documento</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Número de documento' name='numeroDocumento'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -75,9 +75,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Primer nombre</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Primer Nombre:' name='primerNombre'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -98,9 +97,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Segundo nombre</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Segundo nombre:' name='segundoNombre'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -121,9 +119,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Primer apellido </p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Primer apellido' name='primerApellido'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -144,9 +141,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Segundo apellido</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Segundo Apellido' name='segundoApellido'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -167,9 +163,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Teléfono de contacto 1 </p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Teléfono de contacto 1' name='telCont1'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -190,9 +185,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Teléfono de contacto 2</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Teléfono de contacto 2' name='telCont2'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -213,9 +207,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <p>Correo electrónico </p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Correo electrónico' name='email'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -238,10 +231,9 @@ export const DatosSolicitante = () => {
         <>
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
-              <p>Tipo de documento</p>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <Form.Item>
+                  <Form.Item label='Tipo de documento:' name='tipoDocumento'>
                     <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} disabled />
                   </Form.Item>
                 </div>
@@ -251,9 +243,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
-              <p>Número de documento</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Número de documento' name='numeroDocumento'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
@@ -274,9 +265,8 @@ export const DatosSolicitante = () => {
 
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
-              <p>Nombre entidad:</p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item>
+                <Form.Item label='Nombre de la entidad' name='nombreEntidad'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
