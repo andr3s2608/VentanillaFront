@@ -408,6 +408,9 @@ export class ApiService {
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: 'https://localhost:5001/api/', url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
+  AddSolicitudPrimera = (payload: any) =>
+    post({ endpoint: 'https://localhost:5001/api/', url: 'Request/EnviarSolicitud', payload, id: '0' });
+
   getSolicitudesUsuario = () =>
     get<any>({
       endpoint: 'https://localhost:5001/api/',
