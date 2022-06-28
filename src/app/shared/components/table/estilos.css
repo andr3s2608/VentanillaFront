@@ -12,7 +12,7 @@
   border: none !important;
 }
 
-.ant-table-thead > tr > th {
+.ant-table-thead>tr>th {
   color: #000;
   border-bottom: 1px solid #979797 !important;
   white-space: nowrap !important;

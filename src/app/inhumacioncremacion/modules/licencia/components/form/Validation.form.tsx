@@ -34,7 +34,7 @@ import { GestionTramite } from './seccions/gestion-tramite.seccion';
 // Servicios
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
-
+import '../../../../../../css/estilos.css';
 //redux
 import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
@@ -50,7 +50,7 @@ import { ValidationFuntional } from './seccions/validationfuntional';
 import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
 import '../../../../../.././scss/antd/index.css';
-
+import '../../../../../../css/estilos.css';
 export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
@@ -854,14 +854,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        <div className='card-body'>
+        <div className='card-body puente'>
           <div className='row'>
             <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
               <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
-                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
+                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                   ID TRAMITE:{idcontrol}
                 </Divider>
-                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed>
+                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                   TIPO DE SOLICITUD:{valor}
                 </Divider>
               </div>
@@ -880,6 +880,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                     <div className='col-lg-12'>
                       <Form.Item>
                         <Button
+                          className='button_seguimiento'
                           style={{ width: '50%' }}
                           type='primary'
                           onClick={() => onClickView(objJosn?.idSolicitud)}
@@ -891,6 +892,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                       </Form.Item>
                       <Form.Item>
                         <Button
+                          className='button_previa'
                           style={{ width: '50%', float: 'right', marginTop: '-63px', marginRight: '-100px' }}
                           type='primary'
                           onClick={() => onPrevPDF()}

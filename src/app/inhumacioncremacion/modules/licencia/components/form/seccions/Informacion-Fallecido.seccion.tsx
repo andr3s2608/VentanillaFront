@@ -14,6 +14,8 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { classNames } from '@react-pdf-viewer/core';
 import '../../../../../../../scss/antd/index.css';
+import '../../../../../../../css/estilos.css';
+
 export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [[tipo_identificacion, edad, fechaNacimiento, horaFallecido, genero], setFallecido] = useState<
     [string, string, string, string, string]
