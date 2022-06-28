@@ -4,7 +4,7 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
-import { Form, Input } from 'antd';
+import { Form, Input, Upload } from 'antd';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { dominioService, ETipoDominio, IDepartamento, IDominio, IMunicipio } from 'app/services/dominio.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
@@ -12,6 +12,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import Swal from 'sweetalert2';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
+import { UploadOutlined } from '@ant-design/icons';
 
 export const RevisarSv = () => {
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
@@ -675,7 +676,6 @@ export const RevisarSv = () => {
                 </Form.Item>
               </div>
             </div>
-
             <div className='col-lg-12 col-sm-12 col-md-12 mt-4'>
               <div className='info-tramite mt-2'>
                 <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
@@ -683,7 +683,6 @@ export const RevisarSv = () => {
                 </p>
               </div>
             </div>
-
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Fecha de citación</p>
@@ -713,6 +712,12 @@ export const RevisarSv = () => {
                 </Form.Item>
               </div>
             </div>
+            <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
+              <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+                <Button icon={<UploadOutlined />}>Cargar archivo</Button>
+              </Upload>
+            </Form.Item>
+
             <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
               <Button
                 className='ml-3 float-right button btn btn-default'
