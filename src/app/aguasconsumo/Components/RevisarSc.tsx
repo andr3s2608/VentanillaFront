@@ -137,7 +137,6 @@ export const RevisarSc = () => {
   };
 
   const onSubmit = async (values: any) => {
-    console.log('paso ?');
     setStatus(undefined);
 
     const dep = values.departamento;
@@ -175,19 +174,19 @@ export const RevisarSc = () => {
 
         persona: {
           idPersona: objJson.idPersona,
-          tipoIdentificacion: objJson.tipoIdentificacion,
-          numeroIdentificacion: objJson.numeroIdentificacion,
-          primerNombre: objJson.primerNombre,
-          segundoNombre: objJson.segundoNombre,
-          primerApellido: objJson.primerApellido,
-          segundoApellido: objJson.segundoApellido,
-          telefonoContacto: objJson.telefonoContacto,
-          celularContacto: objJson.celularContacto,
-          correoElectronico: objJson.correoElectronico,
-          idTipoPersona: objJson.idTipoPersona,
-          tipoDocumentoRazon: objJson.tipoDocumentoRazon,
-          nit: objJson.nit,
-          razonSocial: objJson.razonSocial
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: values.IDNumber,
+          primerNombre: values.name,
+          segundoNombre: values.secondname,
+          primerApellido: values.surname,
+          segundoApellido: values.secondsurname,
+          telefonoContacto: values.telefono,
+          celularContacto: values.telefono2,
+          correoElectronico: values.email,
+          idTipoPersona: values.persona,
+          tipoDocumentoRazon: values?.IDTypeRazon ?? '',
+          nit: values?.IDNumberRazon ?? '',
+          razonSocial: values?.nombreEntidad ?? ''
         },
 
         ubicacion: {
@@ -292,6 +291,8 @@ export const RevisarSc = () => {
             </div>
 
             <DatosSolicitud form={form} obj={objJson} />
+
+            <DatosSolicitante form={form} obj={objJson} />
 
             <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
 

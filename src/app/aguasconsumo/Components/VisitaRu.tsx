@@ -12,6 +12,7 @@ import { EditAguas } from './edit/Aguas';
 export const VisitaRu = () => {
   const history = useHistory();
   const objJson: any = EditAguas();
+  const [form] = Form.useForm<any>();
 
   return (
     <div>
@@ -152,7 +153,7 @@ export const VisitaRu = () => {
 
           {/** Componente que muestra los datos del solicitante */}
           <div className='row mt-5'>
-            <DatosSolicitante obj={objJson}></DatosSolicitante>
+            <DatosSolicitante obj={objJson} form={form}></DatosSolicitante>
           </div>
 
           <div className='row mt-5'>
