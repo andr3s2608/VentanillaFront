@@ -435,4 +435,25 @@ export class ApiService {
       url: `Request/GetTramites`,
       id: '0'
     });
+
+  getEstadosSolicitudAguas = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetEstadosSolicitud`,
+      id: '0'
+    });
+
+  getActividades = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetActividades`,
+      id: '0'
+    });
+
+  getSubredes = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetSubredes`,
+      id: '0'
+    });
 }

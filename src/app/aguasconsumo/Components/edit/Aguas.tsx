@@ -42,9 +42,14 @@ const formatObjJson = (obj: any) => {
   jsonDt = {
     numeroradicado: obj.numeroRadicado,
     fechaSolicitud: obj.fechaSolicitud,
+    idtipodeSolicitud: obj.idTipodeSolicitud,
     tipodeSolicitud: obj.tipodeSolicitud,
+    idtipodeTramite: obj.idTipodeTramite,
     tipodeTramite: obj.tipodeTramite,
+    idSubred: obj.idSubred,
+    idestado: obj.idEstado,
     estado: obj.estado,
+    idactividadActualSolicitud: obj.idActividadActualSolicitud,
     actividadActualSolicitud: obj.actividadActualSolicitud,
     actividadSiguienteSolicitud: obj.actividadSiguienteSolicitud,
 
@@ -59,7 +64,7 @@ const formatObjJson = (obj: any) => {
     segundoNombre: persona.segundoNombre,
     primerApellido: persona.primerApellido,
     segundoApellido: persona.segundoApellido,
-    idTipoPersona: persona.segundoApellido,
+    idTipoPersona: persona.idTipoPersona,
     nit: persona.nit,
     tipoDocumentoRazon: persona.tipoDocumentoRazon,
     celularContacto: persona.celularContacto,
@@ -74,6 +79,7 @@ const formatObjJson = (obj: any) => {
 
     barrio: ubicacion.barrio,
     departamento: ubicacion.departamento,
+    municipio: ubicacion.municipio,
     direccion: ubicacion.direccion,
     localidad: ubicacion.localidad,
     observacionUbicacion: ubicacion.observacion,

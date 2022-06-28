@@ -23,7 +23,8 @@ import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 
 export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
-  const { tipo } = props;
+  const { tipo, obj } = props;
+
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
@@ -80,7 +81,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='row'>
               <div className='col-lg-6 col-sm-12 col-md-6' style={{ marginLeft: '5px' }}>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Dirección de Domicilio' name='direccion' required={true}>
+                  <Form.Item label='Dirección de Domicilio' initialValue={obj?.direccion} name='direccion' required={true}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -106,7 +107,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Departamento' name='departamento' initialValue={idDepartamentoBogota} required={true}>
+                  <Form.Item
+                    label='Departamento'
+                    name='departamento'
+                    initialValue={obj?.departamento ? obj?.departamento : idDepartamentoBogota}
+                    required={true}
+                  >
                     <SelectComponent
                       options={l_departamentos}
                       optionPropkey='idDepartamento'
@@ -123,7 +129,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group'>
-                      <Form.Item label='Municipio' name='municipio' initialValue={idBogotac} rules={[{ required: true }]}>
+                      <Form.Item
+                        label='Municipio'
+                        name='municipio'
+                        initialValue={obj?.municipio ? obj?.municipio : idBogotac}
+                        rules={[{ required: true }]}
+                      >
                         <SelectComponent
                           options={l_municipios}
                           optionPropkey='idMunicipio'
@@ -142,7 +153,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group '>
-                      <Form.Item label='Localidad' initialValue={idlocalidad} name='localidad' rules={[{ required: true }]}>
+                      <Form.Item
+                        label='Localidad'
+                        initialValue={obj?.localidad ? obj?.localidad : idlocalidad}
+                        name='localidad'
+                        rules={[{ required: true }]}
+                      >
                         <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
                       </Form.Item>
                     </div>
@@ -154,7 +170,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Vereda' name='vereda' required={true}>
+                  <Form.Item label='Vereda' initialValue={obj?.vereda} name='vereda' required={true}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -175,7 +191,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Sector' name='sector' required={true}>
+                  <Form.Item label='Sector' initialValue={obj?.vereda} name='sector' required={true}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -195,8 +211,13 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </div>
           <div className='col-lg-8 col-sm-12 col-md-8'>
             <div className='form-group gov-co-form-group'>
-              <Form.Item label='Observaciones Adicionales' name='observations' rules={[{ required: false }]}>
-                <Input.TextArea rows={5} maxLength={230} value={'Hola'} style={{ width: '360px' }} />
+              <Form.Item
+                label='Observaciones Adicionales'
+                initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : 'hola'}
+                name='observations'
+                rules={[{ required: false }]}
+              >
+                <Input.TextArea rows={5} maxLength={230} style={{ width: '360px' }} />
               </Form.Item>
             </div>
           </div>
