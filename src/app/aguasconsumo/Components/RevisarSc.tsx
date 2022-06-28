@@ -5,7 +5,10 @@ import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
+import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,
@@ -33,10 +36,6 @@ export const RevisarSc = () => {
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
 
-  const [[l_tramites, l_estados, l_actividades, l_usuarios, l_subredes], setListas] = useState<
-    [any[], any[], any[], any[], any[]]
-  >([[], [], [], [], []]);
-
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
   //validacion campos
@@ -54,13 +53,6 @@ export const RevisarSc = () => {
     async () => {
       //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-
-      const resp = await Promise.all([
-        api.getTipoTramites(),
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_type(ETipoDominio['Tipo Documento'])
-      ]);
 
       setListaTipoDocumento(tipoDocumento);
     },
@@ -144,7 +136,85 @@ export const RevisarSc = () => {
     }
   };
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: any) => {
+    setStatus(undefined);
+
+    const dep = values.departamento;
+    var mun = values.municipio;
+    switch (dep) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        mun = '31211657-3386-420a-8620-f9C07a8ca491';
+        break;
+    }
+
+    const json: IRegistroSolicitudCitacion<any> = {
+      solicitud: {
+        idSolicitud: objJson.idsolicitud + '',
+        idPersona: objJson.idPersona + '',
+        idTipodeSolicitud: objJson.idtipodeSolicitud,
+        tipodeSolicitud: objJson.tipodeSolicitud,
+        numeroRadicado: objJson.numeroradicado,
+        fechaSolicitud: objJson.fechaSolicitud,
+        idEstado: values.estado,
+        estado: '',
+        idFuente: '00000000-0000-0000-0000-000000000000',
+        idUbicacion: objJson.idUbicacion,
+        idSubred: values.subred,
+        idActividadActualSolicitud: values.actactual,
+        actividadActualSolicitud: '',
+        actividadSiguienteSolicitud: values.actsiguiente,
+
+        idTipodeTramite: values.tipotramite,
+        tipodeTramite: '',
+        idUsuario: objJson.idusuario,
+        idCitacionRevision: '00000000-0000-0000-0000-000000000000',
+
+        idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
+        temporal: false,
+
+        persona: {
+          idPersona: objJson.idPersona,
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: values.IDNumber,
+          primerNombre: values.name,
+          segundoNombre: values.secondname,
+          primerApellido: values.surname,
+          segundoApellido: values.secondsurname,
+          telefonoContacto: values.telefono,
+          celularContacto: values.telefono2,
+          correoElectronico: values.email,
+          idTipoPersona: values.persona,
+          tipoDocumentoRazon: values?.IDTypeRazon ?? '',
+          nit: values?.IDNumberRazon ?? '',
+          razonSocial: values?.nombreEntidad ?? ''
+        },
+
+        ubicacion: {
+          idUbicacion: objJson.idUbicacion,
+          direccion: values.direccion,
+          departamento: values.departamento,
+          municipio: mun,
+          localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
+          vereda: values.vereda,
+          sector: values.sector,
+          upz: objJson.upz,
+          barrio: objJson.barrio,
+          observacion: values.observations
+        },
+
+        citacion_Revision: {
+          idCitacion: '00000000-0000-0000-0000-000000000000',
+          fechaCitacion: '',
+          observacion: 'No_aplica',
+          fechaRegistro: '',
+          idSolicitud: '00000000-0000-0000-0000-000000000000'
+        }
+      }
+    };
+    console.log(json);
+    await api.AddSolicitudCitacion(json);
+    console.log('termino');
+  };
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -219,348 +289,10 @@ export const RevisarSc = () => {
                 </div>
               </div>
             </div>
-            <div className='row'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
-                <div className='info-tramite mt-2'>
-                  <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                    Datos de la solicitud. <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
-                  </p>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item
-                        label='Número de radicado'
-                        initialValue={objJson.numeroradicado}
-                        name='numeroradicado'
-                        required={false}
-                      >
-                        <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <p>Tipo de tramite</p>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item label='Tipo de Tramite' name='tipotramite' required={true}>
-                        <SelectComponent options={[]} optionPropkey='' />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='gov-co-dropdown'>
-                      <div className='form-group gov-co-form-group '>
-                        <div className='gov-co-dropdown'>
-                          <Form.Item label='Estado' name='estado' required={true}>
-                            <SelectComponent options={[]} optionPropkey={''} />
-                          </Form.Item>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <p>Actividad actual</p>
+            <DatosSolicitud form={form} obj={objJson} />
 
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Actividad Actual' name='actactual' required={true}>
-                        <SelectComponent options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Actividad Siguiente' name='actsiguiente' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <p>Usuario asignado</p>
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Usuario Asignado' name='usuarioasignado' required={true}>
-                        <SelectComponent options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Subred de Jurisdicción' name='subred' required={true}>
-                        <SelectComponent options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className='row mt-5'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
-                <div className='info-tramite mt-2'>
-                  <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                    Datos del solicitante. <br />
-                    <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
-                  </p>
-                </div>
-
-                <div className='col-lg-6col-sm-4 col-md-6 mt-2 mr-5' style={{ marginLeft: '-10px' }}>
-                  <div className='panel-search'>
-                    <div className='form-group gov-co-form-group ml-2'>
-                      <div className='gov-co-dropdown'>
-                        <Form.Item label='Tipo de Solicitante' name='persona' rules={[{ required: true }]}>
-                          <SelectComponent
-                            options={[
-                              { key: 'natural', value: 'Persona Natural' },
-                              { key: 'juridica', value: 'Persona Jurídica' }
-                            ]}
-                            defaultValue={'PERSONA NATURAL'}
-                            optionPropkey='key'
-                            optionPropLabel='value'
-                          />
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item
-                        label='Tipo de Identificación'
-                        name='IDType'
-                        initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                        rules={[{ required: true }]}
-                      >
-                        <SelectComponent
-                          options={l_tipos_documento}
-                          onChange={cambiodocumento}
-                          optionPropkey='id'
-                          optionPropLabel='descripcion'
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Número de Identificación' name='IDNumber' rules={[{ required: !sininformacion }]}>
-                      <Input
-                        allowClear
-                        type='text'
-                        placeholder='Número Identificación'
-                        autoComplete='off'
-                        pattern={tipocampo}
-                        maxLength={longitudmaxima}
-                        onKeyPress={(event) => {
-                          if (!tipocampovalidacion.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                        onInvalid={() => {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Datos inválidos',
-                            text:
-                              'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
-                              tipodocumento +
-                              ' solo se admiten valores ' +
-                              campo +
-                              ' de longitud entre ' +
-                              longitudminima +
-                              ' y ' +
-                              longitudmaxima
-                          });
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Primer Nombre' name='name' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Segundo Nombre' name='secondname' required={false}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Primer Apellido' name='surname' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Segundo Apellido' name='secondsurname' required={false}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Teléfono de Contacto' name='telefono' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[0-9]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Teléfono de Contacto 2' name='telefono2' required={false}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[0-9]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Correo Electrónico' name='email' required={false}>
-                      <input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <DatosSolicitante form={form} obj={objJson} />
 
             <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
 
@@ -570,10 +302,7 @@ export const RevisarSc = () => {
                   className='ml-3 float-right button btn btn-default'
                   style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   type='primary'
-                  htmlType='button'
-                  onClick={() => {
-                    history.push('/tramites-servicios/Revision/revisar-solicitud');
-                  }}
+                  htmlType='submit'
                 >
                   Enviar
                 </Button>

@@ -19,11 +19,10 @@ const formatObjJson = (obj: any) => {
   const { citacion_Revision, persona, ubicacion, fuenteAbastecimiento, subredes } = obj;
 
   let jsonDt;
-  ///metodo que se habia hecho por inconsistencias en la bd(no existia medico ligado a cada solicitud)
+
   let fuenteabastecimientojson: any[] = [];
   if (fuenteAbastecimiento != null) {
     fuenteabastecimientojson = [
-      //madre
       {
         idfuenteAbastecimiento: fuenteAbastecimiento.idFuente,
         idAutoridadAmbiental: fuenteAbastecimiento.idAutoridadAmbiental,
@@ -39,18 +38,45 @@ const formatObjJson = (obj: any) => {
     ];
   }
 
+  let citacion: any[] = [];
+  if (citacion_Revision != null) {
+    citacion = [
+      {
+        fechaCitacion: citacion_Revision.fechaCitacion,
+        fechaRegistro: citacion_Revision.fechaRegistro,
+        observacionCitacion: citacion_Revision.observacion
+      }
+    ];
+  }
+
+  let subred: any[] = [];
+  if (subredes != null) {
+    subred = [
+      {
+        idUsuarioSubred: subredes.idUsuario,
+        zonaSubred: subredes.zona
+      }
+    ];
+  }
+
   jsonDt = {
+    idsolicitud: obj.idSolicitud,
     numeroradicado: obj.numeroRadicado,
     fechaSolicitud: obj.fechaSolicitud,
+    idtipodeSolicitud: obj.idTipodeSolicitud,
     tipodeSolicitud: obj.tipodeSolicitud,
+    idtipodeTramite: obj.idTipodeTramite,
     tipodeTramite: obj.tipodeTramite,
+    idSubred: obj.idSubred,
+    idestado: obj.idEstado,
+    idusuario: obj.idUsuario,
+    idUbicacion: obj.idUbicacion,
     estado: obj.estado,
+    idactividadActualSolicitud: obj.idActividadActualSolicitud,
     actividadActualSolicitud: obj.actividadActualSolicitud,
     actividadSiguienteSolicitud: obj.actividadSiguienteSolicitud,
 
-    fechaCitacion: citacion_Revision.fechaCitacion,
-    fechaRegistro: citacion_Revision.fechaRegistro,
-    observacionCitacion: citacion_Revision.observacion,
+    citacion,
 
     idPersona: persona.idPersona,
     tipoIdentificacion: persona.tipoIdentificacion,
@@ -59,7 +85,7 @@ const formatObjJson = (obj: any) => {
     segundoNombre: persona.segundoNombre,
     primerApellido: persona.primerApellido,
     segundoApellido: persona.segundoApellido,
-    idTipoPersona: persona.segundoApellido,
+    idTipoPersona: persona.idTipoPersona,
     nit: persona.nit,
     tipoDocumentoRazon: persona.tipoDocumentoRazon,
     celularContacto: persona.celularContacto,
@@ -69,11 +95,11 @@ const formatObjJson = (obj: any) => {
 
     fuenteabastecimientojson,
 
-    idUsuarioSubred: subredes.idUsuario,
-    zonaSubred: subredes.zona,
+    subred,
 
     barrio: ubicacion.barrio,
     departamento: ubicacion.departamento,
+    municipio: ubicacion.municipio,
     direccion: ubicacion.direccion,
     localidad: ubicacion.localidad,
     observacionUbicacion: ubicacion.observacion,
