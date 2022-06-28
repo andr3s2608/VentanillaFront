@@ -4,24 +4,57 @@ import '../../../../src/scss/antd/App.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import { Form, Input } from 'antd';
 import Table from 'antd/es/table';
+import { Alert, Button, Modal, Upload } from 'antd';
+import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { useHistory } from 'react-router';
+import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { CheckOutlined } from '@ant-design/icons';
+import { AnyIfEmpty } from 'react-redux';
 export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
+  const [roles, setroles] = useState<IRoles[]>([]);
   const Paginas: number = 5;
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
+  const getListas = useCallback(
+    async () => {
+      const mysRoles = await api.GetRoles();
+
+      setroles(mysRoles);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+  }, []);
+
+  const onClickValidarInformacion = async (datos: any) => {
+    const data = datos;
+    //console.log(datos, 'datos ');
+
+    localStorage.setItem('register', JSON.stringify(data));
+    store.dispatch(SetResetViewLicence());
+    history.push('/tramites-servicios/Revision/revisar-solicitud');
+  };
+
   const structureColumns = [
     {
       title: 'No. de Radicado',
-      dataIndex: 'NumeroRadicado',
+      dataIndex: 'numeroRadicado',
       key: 'nroradicado'
     },
     {
       title: 'Tipo de trámite',
-      dataIndex: 'tipotramite',
+      dataIndex: 'tipodeTramite',
       key: 'idTramite'
     },
     {
@@ -38,6 +71,26 @@ export const Bandeja = (props: IDataSource) => {
       title: 'Actividad en curso',
       dataIndex: 'actividadActualSolicitud',
       key: 'actividad'
+    },
+    {
+      title: 'Validar Tramite',
+      key: 'Acciones',
+
+      render: (_: any, row: any, index: any) => {
+        return true ? (
+          <>
+            <Button
+              type='primary'
+              key={`vali-${index}`}
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ marginLeft: '5px' }}
+              icon={<CheckOutlined />}
+            >
+              Validar Información
+            </Button>
+          </>
+        ) : null;
+      }
     }
   ];
 

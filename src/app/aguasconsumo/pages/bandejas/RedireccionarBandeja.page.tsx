@@ -38,12 +38,12 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
     if (permiso?.rol === 'Ciudadano') {
-      const resp = await api.GetEstadoSolicitudNuevo();
+      const resp = await api.getSolicitudesUsuario();
       setGrid(resp);
       setBandeja(false);
     } else {
       let arraydatos = [];
-      const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      const resp = await api.getSolicitudesByTipoSolicitud('8F5B3DA8-1CD1-4E6C-874C-501245AE9279');
       setGrid(resp);
       setBandeja(true);
     }

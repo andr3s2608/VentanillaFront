@@ -1,13 +1,14 @@
-import React from 'react';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import profile from '../../../../src/assets/images/aguas/profile.png';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../../src/scss/antd/App.css';
-import profile from '../../../../src/assets/images/aguas/profile.png';
-import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import React, { Fragment } from 'react';
+import Button from 'antd/es/button';
 import { Form, Input } from 'antd';
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
-export const VistaRu = () => {
+export const VisitaRu = () => {
   const history = useHistory();
   return (
     <div>
@@ -91,7 +92,7 @@ export const VistaRu = () => {
               <div className='panel-search'>
                 <p>Número de radicado</p>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item>
+                  <Form.Item name='numeroRadicado'>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -103,6 +104,7 @@ export const VistaRu = () => {
                       onPaste={(event) => {
                         event.preventDefault();
                       }}
+                      disabled
                     />
                   </Form.Item>
                 </div>
@@ -112,7 +114,7 @@ export const VistaRu = () => {
               <div className='panel-search'>
                 <p>Tipo de tramite</p>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item>
+                  <Form.Item name='tipoTramite'>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -124,76 +126,20 @@ export const VistaRu = () => {
                       onPaste={(event) => {
                         event.preventDefault();
                       }}
+                      disabled
                     />
                   </Form.Item>
                 </div>
               </div>
             </div>
 
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Estado</p>
-                <div className='form-group gov-co-form-group'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item>
-                      <SelectComponent placeholder='-- En radicación --' options={[]} optionPropkey={''} />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Actividad actual</p>
-                <div className='form-group gov-co-form-group'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item>
-                      <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Actividad siguiente </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Usuario asignado</p>
-                <div className='form-group gov-co-form-group'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item>
-                      <SelectComponent placeholder='-- CGONZALEZL --' options={[]} optionPropkey={''} />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p>Subred de jurisdicción </p>
                 <div className='form-group gov-co-form-group '>
                   <div className='gov-co-dropdown'>
                     <Form.Item>
-                      <SelectComponent placeholder='-- Seleccione--' options={[]} optionPropkey={''} />
+                      <SelectComponent placeholder='-- Seleccione--' options={[]} optionPropkey={''} disabled />
                     </Form.Item>
                   </div>
                 </div>
@@ -201,210 +147,11 @@ export const VistaRu = () => {
             </div>
           </div>
 
+          {/** Componente que muestre los datos del solicitante */}
           <div className='row mt-5'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div className='info-tramite mt-2'>
-                <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                  Datos del solicitante. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                </p>
-              </div>
-
-              <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
-                <div className='panel-search'>
-                  <p className='mt-5 ml-1'>Tipo de solicitante*</p>
-                  <div className='form-group gov-co-form-group'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item>
-                        <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-              <div className='panel-search'>
-                <p>Tipo de documento</p>
-                <div className='form-group gov-co-form-group'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item>
-                      <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-              <div className='panel-search'>
-                <p>Número de documento</p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Primer nombre</p>
-                <div className='form-group gov-co-form-group'>
-                <Form.Item>
-                  <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Segundo nombre</p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Primer apellido </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Segundo apellido</p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Teléfono de contacto 1 </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Teléfono de contacto 2</p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[0-9]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Correo electrónico </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
+            <DatosSolicitante></DatosSolicitante>
           </div>
+
           <div className='row mt-5'>
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div className='info-tramite mt-2'>
@@ -543,29 +290,33 @@ export const VistaRu = () => {
 
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
-                <p>fecha de citación</p>
-                <input type='date' className='form-control' />
+                <p>Fecha de citación</p>
+                <Form.Item>
+                  <Input type='date' className='form-control' disabled></Input>
+                </Form.Item>
               </div>
             </div>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
               <div className='panel-search'>
-                <p>Formulario</p>
+                <p>Funcionario</p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
                     <Form.Item>
-                      <SelectComponent placeholder='-- CGONZALEZL --' options={[]} optionPropkey={''}/>
+                      <SelectComponent
+                        className='selectpicker form-control'
+                        placeholder='-- CGONZALEZL --'
+                        options={[]}
+                        optionPropkey={''}
+                        disabled
+                      />
                     </Form.Item>
-
-                    <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                      <option>CGONZALEZL</option>
-                    </select>
                   </div>
                 </div>
               </div>
             </div>
             <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
               <p className='ml-2'>Observaciones adicionales</p>
-              <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
+              <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5} disabled></textarea>
             </div>
             <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
               <Button
@@ -582,9 +333,16 @@ export const VistaRu = () => {
               <button className='float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
                 Guardar
               </button>
-              <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+              <Button
+                className='mr-3 float-right button btn btn-default'
+                style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                type='primary'
+                onClick={() => {
+                  history.push('/tramites-servicios/Revision/revisar-solicitud');
+                }}
+              >
                 Cancelar
-              </button>
+              </Button>
             </div>
           </div>
         </div>

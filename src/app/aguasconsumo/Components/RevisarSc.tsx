@@ -5,6 +5,7 @@ import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,
@@ -21,19 +22,22 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import Swal from 'sweetalert2';
+import { EditAguas } from './edit/Aguas';
 
 export const RevisarSc = () => {
+  const objJson: any = EditAguas();
+
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
   const history = useHistory();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
-  const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
-  const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+  const [[l_tramites, l_estados, l_actividades, l_usuarios, l_subredes], setListas] = useState<
+    [any[], any[], any[], any[], any[]]
+  >([[], [], [], [], []]);
+
+  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
   //validacion campos
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
@@ -42,7 +46,7 @@ export const RevisarSc = () => {
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
-  const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
+
   const [sininformacion, setsininformacion] = useState<boolean>(false);
   //
 
@@ -50,12 +54,15 @@ export const RevisarSc = () => {
     async () => {
       //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
 
-      setLDepartamentos(departamentos);
+      const resp = await Promise.all([
+        api.getTipoTramites(),
+        dominioService.get_type(ETipoDominio.Pais),
+        dominioService.get_departamentos_colombia(),
+        dominioService.get_type(ETipoDominio['Tipo Documento'])
+      ]);
+
       setListaTipoDocumento(tipoDocumento);
-      setLMunicipios(municipios);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -65,21 +72,6 @@ export const RevisarSc = () => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const onChangeDepartamento = async (value: string) => {
-    form.setFieldsValue({ municipio: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
-    const { idDepartamento } = departamento[0];
-
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIdBogota('Bogotá D.C.');
-    } else {
-      setIdBogota('');
-    }
-    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
-    setLMunicipios(resp);
-  };
 
   const cambiodocumento = (value: any) => {
     const valor: string = value;
@@ -239,7 +231,12 @@ export const RevisarSc = () => {
                 <div className='panel-search'>
                   <div className='form-group gov-co-form-group'>
                     <div className='form-group gov-co-form-group'>
-                      <Form.Item label='Número de radicado' name='numeroradicado' required={false}>
+                      <Form.Item
+                        label='Número de radicado'
+                        initialValue={objJson.numeroradicado}
+                        name='numeroradicado'
+                        required={false}
+                      >
                         <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
                       </Form.Item>
                     </div>
@@ -564,119 +561,10 @@ export const RevisarSc = () => {
                 </div>
               </div>
             </div>
-            <div className='row mt-5'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
-                <div className='info-tramite mt-2'>
-                  <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                    Información del lugar de revisión . <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
-                  </p>
-                </div>
-                <div className='row'>
-                  <div className='col-lg-6 col-sm-12 col-md-6' style={{ marginLeft: '5px' }}>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item label='Dirección de Domicilio' name='direccion' required={true}>
-                        <Input
-                          type='text'
-                          className='form-control gov-co-form-control'
-                          onKeyPress={(event) => {
-                            if (!/[a-zA-Z0-9-#]/.test(event.key)) {
-                              event.preventDefault();
-                            }
-                          }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                  <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '12px' }}>
-                    <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
-                      Buscar
-                    </button>
-                  </div>
-                </div>
-              </div>
 
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Departamento' name='departamento' initialValue={idDepartamentoBogota} required={true}>
-                      <SelectComponent
-                        options={l_departamentos}
-                        optionPropkey='idDepartamento'
-                        optionPropLabel='descripcion'
-                        onChange={onChangeDepartamento}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Municipio' name='municipio' initialValue={idBogotac} rules={[{ required: true }]}>
-                      <SelectComponent
-                        options={l_municipios}
-                        optionPropkey='idMunicipio'
-                        optionPropLabel='descripcion'
-                        value={idBogotac}
-                        searchValue={idBogotac}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Vereda' name='vereda' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group'>
-                    <Form.Item label='Sector' name='sector' required={true}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
+
             <div className='row mt-3 '>
-              <div className='col-lg-8 col-sm-12 col-md-8'>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Observaciones Adicionales' name='observations' rules={[{ required: false }]}>
-                    <Input.TextArea rows={5} maxLength={230} value={'Hola'} style={{ width: '360px' }} />
-                  </Form.Item>
-                </div>
-              </div>
-
               <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
                 <Button
                   className='ml-3 float-right button btn btn-default'

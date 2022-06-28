@@ -411,4 +411,28 @@ export class ApiService {
       url: `Barrio/GetBarrios`,
       id: '0'
     });
+
+  //////////////////////////
+  //Apis Aguas
+  /////////////////////////
+
+  getSolicitudesUsuario = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetSolicitudesbyUser/${this.oid}`,
+      id: '0'
+    });
+  getSolicitudesByTipoSolicitud = (idestado: string) =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetSolicitudesbyidTipo/${idestado}`,
+      id: '0'
+    });
+
+  getTipoTramites = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetTramites`,
+      id: '0'
+    });
 }

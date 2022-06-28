@@ -1,4 +1,4 @@
-import { VistaRu } from 'app/aguasconsumo/Components/VistaRu';
+import { VisitaRu } from 'app/aguasconsumo/Components/VisitaRu';
 
 import Tabs from 'antd/es/tabs';
 
@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 const VistaRevision: React.FC<any> = (props: any) => {
   const { TabPane } = Tabs;
 
-  return <VistaRu />;
+  return <VisitaRu />;
 };
 
 export default VistaRevision;
