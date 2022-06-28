@@ -64,7 +64,7 @@ const formatObjJson = (obj: any) => {
     segundoNombre: persona.segundoNombre,
     primerApellido: persona.primerApellido,
     segundoApellido: persona.segundoApellido,
-    idTipoPersona: persona.segundoApellido,
+    idTipoPersona: persona.idTipoPersona,
     nit: persona.nit,
     tipoDocumentoRazon: persona.tipoDocumentoRazon,
     celularContacto: persona.celularContacto,
