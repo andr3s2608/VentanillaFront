@@ -86,7 +86,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                       type='text'
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9-#]/.test(event.key)) {
+                        if (!/[a-zA-Z0-9-# ]/.test(event.key)) {
                           event.preventDefault();
                         }
                       }}
