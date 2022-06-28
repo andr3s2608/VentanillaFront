@@ -1,4 +1,4 @@
-export interface IRegistroSolicitud<T> {
+export interface IRegistroSolicitudCitacion<T> {
   solicitud: Solicitud<T>;
 }
 
@@ -49,15 +49,16 @@ export interface Persona {
 }
 
 export interface UbicacionPersona {
+  idUbicacion?: string;
   direccion: string;
   departamento?: string;
   municipio?: string;
   localidad?: string;
-  vereda?: string;
-  sector?: string;
+  vereda: string;
+  sector: string;
   upz?: string;
   barrio?: string;
-  observacion?: string;
+  observacion: string;
 }
 
 export interface Citacion_Revision {

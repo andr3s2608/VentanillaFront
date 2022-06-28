@@ -60,6 +60,7 @@ const formatObjJson = (obj: any) => {
   }
 
   jsonDt = {
+    idsolicitud: obj.idSolicitud,
     numeroradicado: obj.numeroRadicado,
     fechaSolicitud: obj.fechaSolicitud,
     idtipodeSolicitud: obj.idTipodeSolicitud,
@@ -68,6 +69,8 @@ const formatObjJson = (obj: any) => {
     tipodeTramite: obj.tipodeTramite,
     idSubred: obj.idSubred,
     idestado: obj.idEstado,
+    idusuario: obj.idUsuario,
+    idUbicacion: obj.idUbicacion,
     estado: obj.estado,
     idactividadActualSolicitud: obj.idActividadActualSolicitud,
     actividadActualSolicitud: obj.actividadActualSolicitud,

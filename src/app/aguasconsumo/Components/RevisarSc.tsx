@@ -8,6 +8,7 @@ import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,
@@ -135,7 +136,86 @@ export const RevisarSc = () => {
     }
   };
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: any) => {
+    console.log('paso ?');
+    setStatus(undefined);
+
+    const dep = values.departamento;
+    var mun = values.municipio;
+    switch (dep) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        mun = '31211657-3386-420a-8620-f9C07a8ca491';
+        break;
+    }
+
+    const json: IRegistroSolicitudCitacion<any> = {
+      solicitud: {
+        idSolicitud: objJson.idsolicitud + '',
+        idPersona: objJson.idPersona + '',
+        idTipodeSolicitud: objJson.idtipodeSolicitud,
+        tipodeSolicitud: objJson.tipodeSolicitud,
+        numeroRadicado: objJson.numeroradicado,
+        fechaSolicitud: objJson.fechaSolicitud,
+        idEstado: values.estado,
+        estado: '',
+        idFuente: '00000000-0000-0000-0000-000000000000',
+        idUbicacion: objJson.idUbicacion,
+        idSubred: values.subred,
+        idActividadActualSolicitud: values.actactual,
+        actividadActualSolicitud: '',
+        actividadSiguienteSolicitud: values.actsiguiente,
+
+        idTipodeTramite: values.tipotramite,
+        tipodeTramite: '',
+        idUsuario: objJson.idusuario,
+        idCitacionRevision: '00000000-0000-0000-0000-000000000000',
+
+        idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
+        temporal: false,
+
+        persona: {
+          idPersona: objJson.idPersona,
+          tipoIdentificacion: objJson.tipoIdentificacion,
+          numeroIdentificacion: objJson.numeroIdentificacion,
+          primerNombre: objJson.primerNombre,
+          segundoNombre: objJson.segundoNombre,
+          primerApellido: objJson.primerApellido,
+          segundoApellido: objJson.segundoApellido,
+          telefonoContacto: objJson.telefonoContacto,
+          celularContacto: objJson.celularContacto,
+          correoElectronico: objJson.correoElectronico,
+          idTipoPersona: objJson.idTipoPersona,
+          tipoDocumentoRazon: objJson.tipoDocumentoRazon,
+          nit: objJson.nit,
+          razonSocial: objJson.razonSocial
+        },
+
+        ubicacion: {
+          idUbicacion: objJson.idUbicacion,
+          direccion: values.direccion,
+          departamento: values.departamento,
+          municipio: mun,
+          localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
+          vereda: values.vereda,
+          sector: values.sector,
+          upz: objJson.upz,
+          barrio: objJson.barrio,
+          observacion: values.observations
+        },
+
+        citacion_Revision: {
+          idCitacion: '00000000-0000-0000-0000-000000000000',
+          fechaCitacion: '',
+          observacion: 'No_aplica',
+          fechaRegistro: '',
+          idSolicitud: '00000000-0000-0000-0000-000000000000'
+        }
+      }
+    };
+    console.log(json);
+    await api.AddSolicitudCitacion(json);
+    console.log('termino');
+  };
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -213,10 +293,6 @@ export const RevisarSc = () => {
 
             <DatosSolicitud form={form} obj={objJson} />
 
-            <div className='row mt-5'>
-              <DatosSolicitante></DatosSolicitante>
-            </div>
-
             <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
 
             <div className='row mt-3 '>
@@ -225,10 +301,7 @@ export const RevisarSc = () => {
                   className='ml-3 float-right button btn btn-default'
                   style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   type='primary'
-                  htmlType='button'
-                  onClick={() => {
-                    history.push('/tramites-servicios/Revision/revisar-solicitud');
-                  }}
+                  htmlType='submit'
                 >
                   Enviar
                 </Button>

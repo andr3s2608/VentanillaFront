@@ -37,7 +37,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
-  console.log(obj);
+
   const getListas = useCallback(
     async () => {
       //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
