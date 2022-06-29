@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
 * {
   text-decoration: none !important;
 }
@@ -35,7 +37,7 @@
 }
 
 .breadcrumb {
-  background-color: rgb(255, 255, 255);
+  background-color: #fff !important;
 }
 
 .breadcrumb .breadcrumb-item+.breadcrumb-item::before {
@@ -43,19 +45,23 @@
   font-weight: bold;
   content: "\f105";
   color: #000;
+  font-size: 17px;
 }
 
 .breadcrumb .breadcrumb-item a {
-  color: #0055FF;
-  font-size: 18px;
-  font-weight: 600;
+  color: #3366cc;
+  font-size: 17px !important;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif !important;
+  text-decoration: none;
 }
 
 .breadcrumb>.active {
-  color: #000;
-  font-size: 18px;
-  font-weight: 600;
+  color: #000 !important;
+  font-size: 17px !important;
+  font-weight: 500;
   text-decoration: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .ubi-menu .panel a {
@@ -69,7 +75,7 @@
 
 .panel>.active {
   color: #0055FF;
-  font-size: 18px;
+  font-size: 17px !;
   font-weight: 600;
   text-decoration: none;
 }
@@ -77,9 +83,11 @@
 
 .info-tramite p {
   color: #4111A8;
-  font-size: 20px;
+  font-size: 17px !important;
   font-weight: 600;
   text-decoration: none;
+  font-family: 'Roboto', sans-serif !important;
+  margin-top: -25px !important;
 }
 
 .mb-0>a {
@@ -115,4 +123,100 @@
 #accordion .button {
   width: 40%;
   margin-right: 210px !important;
+}
+
+.dm {
+  cursor: none;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 500;
+  font-size: 17px !important;
+}
+
+a.collapsed.dm::after {
+  content: "\f054";
+  color: #000;
+  font-weight: bold !important;
+  /* fa-chevron-up */
+  cursor: pointer;
+}
+
+.card-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 0px;
+}
+
+a.nav-link.hero_b {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 17px !important;
+  padding: 7px 10px;
+  margin-right: 10px;
+  font-weight: 500 !important;
+}
+
+.info {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 17px !important;
+  padding: 7px 10px;
+  margin-right: 10px;
+}
+
+.ant-table-thead {
+  font-family: 'Roboto', sans-serif !important;
+  white-space: nowrap;
+}
+
+.ant-table-tbody>tr>td {
+  font-family: 'Roboto', sans-serif !important;
+  text-align: left !important;
+}
+
+.bandeja_panel {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.nav-link {
+  border-top: 2px solid #FF7F26 !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  margin-right: 14px;
+}
+
+.nav-link .active {
+  background-color: red;
+}
+
+.filtro {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 16px !important;
+}
+
+.nav-link {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 16px !important;
+  color: #000 !important;
+}
+
+.ant-pagination, .ant-table {
+  width: 95% !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .contenedor {
+    display: block;
+  }
+
+  .tipo {
+    font-size: 11px !important;
+  }
+
+  .tipo_s {
+    width: 210px !important;
+  }
+
+  .textarea {
+    width: 320px !important;
+  }
+
+
 }

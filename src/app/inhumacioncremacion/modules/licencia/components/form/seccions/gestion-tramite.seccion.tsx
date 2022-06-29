@@ -4,7 +4,7 @@ import React from 'react';
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
-
+import '../../../../../../../css/estilos.css';
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
@@ -34,7 +34,7 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
           </div>
         </div>
         <div className='row'>
-          <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>
+          <div className='col-lg-12 col-sm-12 col-md-12 ' style={{ marginLeft: '-10px' }}>
             <label htmlFor=''>Tipo Seguimiento</label>
             <Form.Item label='' name='validFunctionaltype' rules={[{ required: true }]}>
               <SelectComponent
@@ -43,6 +43,7 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
                 optionPropkey='id'
                 optionPropLabel='descripcion'
                 style={{ width: '360px' }}
+                className='tipo_s'
               />
             </Form.Item>
           </div>
@@ -51,7 +52,7 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
           <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>
             <label htmlFor=''>Observaciones</label>
             <Form.Item label='' name='observations' rules={[{ required: true }]}>
-              <Input.TextArea rows={5} maxLength={250} style={{ width: '360px' }} />
+              <Input.TextArea rows={5} maxLength={250} style={{ width: '360px' }} className='textarea' />
             </Form.Item>
           </div>
         </div>
