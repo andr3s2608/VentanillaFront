@@ -83,6 +83,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 <label className='text ml-2'>Dirección de Domicilio</label>
                 <Form.Item initialValue={obj?.direccion} name='direccion' required={true}>
                   <Input
+                    maxLength={100}
                     type='text'
                     className='form-control gov-co-form-control ml-2'
                     onKeyPress={(event) => {
@@ -173,6 +174,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                   <label className='text'>Vereda*</label>
                   <Form.Item initialValue={obj?.vereda} name='vereda' required={true}>
                     <Input
+                      maxLength={50}
                       type='text'
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {
@@ -189,12 +191,13 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </div>
             </div>
 
-            <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+            <div className='col-lg-5 col-sm-4 col-md-5 mt-2 '>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
                   <label className='text'>Sector*</label>
                   <Form.Item initialValue={obj?.vereda} name='sector' required={true}>
                     <Input
+                      maxLength={50}
                       type='text'
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {

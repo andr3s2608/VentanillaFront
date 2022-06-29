@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../../src/scss/antd/App.css';
+import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';

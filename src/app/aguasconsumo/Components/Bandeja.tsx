@@ -149,7 +149,7 @@ export const Bandeja = (props: IDataSource) => {
                 </div>
               </div>
             </div>
-            <div className='container'>
+            <div className='container '>
               <div className='row' style={{ marginLeft: '18px' }}>
                 <div className='col-md-3 col-sm-12 col-lg-3'>
                   <div id='accordion' className='mt-3'>
@@ -201,11 +201,6 @@ export const Bandeja = (props: IDataSource) => {
                         Solucionados
                       </a>
                     </li>
-                    <li className='nav-item'>
-                      <a className='nav-link' data-toggle='tab' href='#prueba' role='tab'>
-                        Prueba
-                      </a>
-                    </li>
                   </ul>
                   <div className='tab-content'>
                     <div className='tab-pane active' id='recientes' role='tabpanel'>
@@ -251,7 +246,8 @@ export const Bandeja = (props: IDataSource) => {
                             columns={structureColumns}
                             pagination={{ pageSize: Paginas }}
                             className='table_info'
-                          />
+                          />{' '}
+                          <br />
                         </div>
                       </div>
                     </div>
@@ -298,48 +294,8 @@ export const Bandeja = (props: IDataSource) => {
                             columns={structureColumns}
                             pagination={{ pageSize: Paginas }}
                             className='table_info'
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className='tab-pane' id='prueba' role='tabpanel'>
-                      <div className='row'>
-                        <div className='col-lg-12 col-sm-12 col-md-12 '>
-                          <p className='mt-4 ml-3 filtro'>Filtrar por:</p>
-                          <div className='row'>
-                            <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
-                              <div className='form-group gov-co-form-group'>
-                                <div className='gov-co-dropdown'>
-                                  <Form.Item>
-                                    <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
-                                  </Form.Item>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='col-md-5 col-lg-5 col-sm-12'>
-                              <div className='form-group gov-co-form-group'>
-                                <Form.Item>
-                                  <input
-                                    type='text'
-                                    className='form-control gov-co-form-control'
-                                    onKeyPress={(event) => {
-                                      if (!/[a-zA-Z]/.test(event.key)) {
-                                        event.preventDefault();
-                                      }
-                                    }}
-                                    onPaste={(event) => {
-                                      event.preventDefault();
-                                    }}
-                                  />
-                                </Form.Item>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className='row'>
-                        <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                          <h1>prueba</h1>
+                          />{' '}
+                          <br />
                         </div>
                       </div>
                     </div>

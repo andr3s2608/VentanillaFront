@@ -274,11 +274,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
-                <Form.Item label='Nombre de la entidad' initialValue={obj?.razonSocial} required={true} name='nombreEntidad'>
+                <p className='text'>Nombre de la entidad</p>
+                <Form.Item initialValue={obj?.razonSocial} required={true} name='nombreEntidad'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
-                    maxLength={100}
+                    maxLength={50}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-0- ]/.test(event.key)) {
                         event.preventDefault();
@@ -365,6 +366,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Primer Nombre*</p>
             <Form.Item initialValue={obj?.primerNombre} name='name' required={true}>
               <Input
+                maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -387,6 +389,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Segundo Nombre*</p>
             <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
               <Input
+                maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -409,6 +412,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Primer Apellido*</p>
             <Form.Item initialValue={obj?.primerApellido} name='surname' required={true}>
               <Input
+                maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -431,6 +435,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Segundo Apellido*</p>
             <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
               <Input
+                maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -453,6 +458,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Teléfono de Contacto*</p>
             <Form.Item initialValue={obj?.telefono} name='telefono' required={true}>
               <Input
+                maxLength={7}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -475,6 +481,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Teléfono de Contacto 2*</p>
             <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
               <Input
+                maxLength={10}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -496,7 +503,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='form-group gov-co-form-group'>
             <p className='text'>Correo Electrónico*</p>
             <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
-              <input
+              <Input
+                maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {

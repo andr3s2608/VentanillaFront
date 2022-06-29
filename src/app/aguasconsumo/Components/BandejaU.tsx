@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../../src/scss/antd/App.css';
+import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import { Form, Input } from 'antd';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
