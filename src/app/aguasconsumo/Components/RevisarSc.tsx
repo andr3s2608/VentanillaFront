@@ -65,74 +65,15 @@ export const RevisarSc = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cambiodocumento = (value: any) => {
-    const valor: string = value;
-    const valorupper = valor.toUpperCase();
-    setsininformacion(false);
-
-    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
-      setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{5,15}');
-      setTipocampovalidacion(/[a-zA-Z0-9]/);
-      setTipodocumento('Sin Información');
-      setCampo('AlfaNuméricos(Numéros y letras)');
-      setsininformacion(true);
+  const Asignar = async () => {
+    const usuario = form.getFieldValue('usuarioasignado');
+    if (usuario == 'vacio') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Usuario No Asignado',
+        text: 'Debe ingresar el usuario al cual se va a asignar la solicitud'
+      });
     } else {
-      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
-        setLongitudminima(2);
-        setLongitudmaxima(10);
-        setTipocampo('[0-9]{2,10}');
-        setTipocampovalidacion(/[0-9]/);
-        setCampo('Numéricos');
-        setTipodocumento('Tipo de Protocolo');
-        form.setFieldsValue({ IDNumber: '8001508610' });
-      } else {
-        form.setFieldsValue({ IDNumber: undefined });
-        if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-          setLongitudminima(5);
-          setLongitudmaxima(10);
-          setTipocampo('[0-9]{5,10}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Cédula de Ciudadanía');
-        } else {
-          if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
-            setLongitudminima(10);
-            setLongitudmaxima(11);
-            setTipocampo('[0-9]{10,11}');
-            setTipocampovalidacion(/[0-9]/);
-            setCampo('Numéricos');
-            setTipodocumento('Tarjeta de Identidad ');
-          } else {
-            if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminima(15);
-              setLongitudmaxima(15);
-              setTipocampo('[0-9]{15,15}');
-              setTipocampovalidacion(/[0-9]/);
-              setCampo('Numéricos');
-              setTipodocumento('Permiso Especial de Permanencia');
-            } else {
-              if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-                setLongitudminima(10);
-                setLongitudmaxima(11);
-                setTipocampo('[a-zA-Z0-9]{10,11}');
-                setTipocampovalidacion(/[a-zA-Z0-9]/);
-                setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
-              } else {
-                setLongitudminima(6);
-                setLongitudmaxima(10);
-                setTipocampo('[a-zA-Z0-9]{6,10}');
-                setTipocampovalidacion(/[a-zA-Z0-9]/);
-                setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-              }
-            }
-          }
-        }
-      }
     }
   };
 
@@ -146,6 +87,7 @@ export const RevisarSc = () => {
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
         break;
     }
+    const coordinador = values.idusuario;
 
     const json: IRegistroSolicitudCitacion<any> = {
       solicitud: {
@@ -167,6 +109,7 @@ export const RevisarSc = () => {
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',
         idUsuario: objJson.idusuario,
+        idUsuarioAsignado: values.usuarioasignado,
         idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
@@ -207,13 +150,14 @@ export const RevisarSc = () => {
           fechaCitacion: '',
           observacion: 'No_aplica',
           fechaRegistro: '',
-          idSolicitud: '00000000-0000-0000-0000-000000000000'
+          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idUsuario: '00000000-0000-0000-0000-000000000000'
         }
       }
     };
-    console.log(json);
+
     await api.AddSolicitudCitacion(json);
-    console.log('termino');
+    history.push('/tramites-servicios-aguas');
   };
 
   const onSubmitFailed = () => setStatus('error');

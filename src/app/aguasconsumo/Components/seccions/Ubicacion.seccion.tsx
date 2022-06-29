@@ -81,7 +81,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-9 col-sm-12 col-md-9' style={{ marginLeft: '5px' }}>
               <div className='form-group gov-co-form-group'>
                 <label className='text ml-2'>Dirección de Domicilio</label>
-                <Form.Item initialValue={obj?.direccion} name='direccion' required={true}>
+                <Form.Item initialValue={obj?.direccion} name='direccion' rules={[{ required: true }]}>
                   <Input
                     maxLength={100}
                     type='text'
@@ -112,7 +112,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                   <Form.Item
                     name='departamento'
                     initialValue={obj?.departamento ? obj?.departamento : idDepartamentoBogota}
-                    required={true}
+                    rules={[{ required: true }]}
                   >
                     <SelectComponent
                       options={l_departamentos}
@@ -172,7 +172,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
                   <label className='text'>Vereda*</label>
-                  <Form.Item initialValue={obj?.vereda} name='vereda' required={true}>
+                  <Form.Item initialValue={obj?.vereda} name='vereda' rules={[{ required: true }]}>
                     <Input
                       maxLength={50}
                       type='text'
@@ -195,7 +195,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
                   <label className='text'>Sector*</label>
-                  <Form.Item initialValue={obj?.vereda} name='sector' required={true}>
+                  <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
                     <Input
                       maxLength={50}
                       type='text'

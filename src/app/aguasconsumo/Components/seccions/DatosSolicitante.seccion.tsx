@@ -47,14 +47,6 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
 
   const [sininformacionRazon, setsininformacionRazon] = useState<boolean>(false);
 
-  if (obj != null) {
-    if (obj.idTipoPersona == 'Persona Natural') {
-      settipoSolicitante(true);
-    } else {
-      settipoSolicitante(false);
-    }
-  }
-
   //
 
   const getListas = useCallback(
@@ -65,6 +57,13 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       const listDocument = tipoDocumentorazon.map((res: any) => {
         return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
       });
+      if (obj != null) {
+        if (obj.idTipoPersona == 'Persona Natural') {
+          settipoSolicitante(true);
+        } else {
+          settipoSolicitante(false);
+        }
+      }
       setListaTipoDocumentoRazon(listDocument);
 
       setListaTipoDocumento(tipoDocumento);
@@ -79,7 +78,6 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   }, []);
 
   const Onchangetipo = (value: any) => {
-    console.log('entro ', value);
     if (value == 'juridica') {
       settipoSolicitante(false);
     } else {
@@ -199,7 +197,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                       { key: 'juridica', value: 'Persona Jurídica' }
                     ]}
                     onChange={Onchangetipo}
-                    defaultValue={'PERSONA NATURAL'}
+                    defaultValue={'natural'}
                     optionPropkey='key'
                     optionPropLabel='value'
                   />
@@ -216,8 +214,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <p className='text'>Tipo de documento*:</p>
-                  <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} required={true} name='IDTypeRazon'>
+                  <Form.Item
+                    label='Tipo de documento:'
+                    initialValue={obj?.tipoDocumentoRazon ?? 5}
+                    rules={[{ required: true }]}
+                    name='IDTypeRazon'
+                  >
                     <SelectComponent
                       className='text'
                       options={l_tipos_documentoRazon}
@@ -234,7 +236,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
-                <Form.Item initialValue={obj?.nit} required={true} name='IDNumberRazon'>
+                <Form.Item label='Número de documento' initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
                   <Input
                     allowClear
                     type='text'
@@ -255,7 +257,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         icon: 'error',
                         title: 'Datos inválidos',
                         text:
-                          'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
+                          'recuerde que para el tipo de documento: ' +
                           tipodocumento +
                           ' solo se admiten valores ' +
                           campo +
@@ -274,11 +276,16 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
-                <p className='text'>Nombre de la entidad</p>
-                <Form.Item initialValue={obj?.razonSocial} required={true} name='nombreEntidad'>
+                <Form.Item
+                  label='Nombre de la entidad'
+                  initialValue={obj?.razonSocial}
+                  rules={[{ required: true }]}
+                  name='nombreEntidad'
+                >
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
+                    maxLength={100}
                     maxLength={50}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-0- ]/.test(event.key)) {
@@ -302,7 +309,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <div className='gov-co-dropdown'>
               <p className='text'>Tipo de documento*:</p>
               <Form.Item
-                required={true}
+                rules={[{ required: true }]}
                 initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                 name='IDType'
               >
@@ -321,8 +328,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <div className='col-lg-5 col-sm-4 col-md-5 mt-4'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <p className='text'>Número de documento*</p>
-            <Form.Item initialValue={obj?.numeroIdentificacion} required={true} name='IDNumber'>
+            <Form.Item
+              label='Número de documento'
+              initialValue={obj?.numeroIdentificacion}
+              rules={[{ required: true }]}
+              name='IDNumber'
+            >
               <Input
                 className='form-control'
                 allowClear
@@ -363,8 +374,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <p className='text'>Primer Nombre*</p>
-            <Form.Item initialValue={obj?.primerNombre} name='name' required={true}>
+            <Form.Item label='Primer Nombre' initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
               <Input
                 maxLength={50}
                 type='text'
@@ -389,7 +399,6 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Segundo Nombre*</p>
             <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
               <Input
-                maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -409,8 +418,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <p className='text'>Primer Apellido*</p>
-            <Form.Item initialValue={obj?.primerApellido} name='surname' required={true}>
+            <Form.Item label='Primer Apellido' initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
               <Input
                 maxLength={50}
                 type='text'
@@ -455,8 +463,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <div className='col-lg-5 col-sm-4 col-md-4 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <p className='text'>Teléfono de Contacto*</p>
-            <Form.Item initialValue={obj?.telefono} name='telefono' required={true}>
+            <Form.Item label='Teléfono de Contacto' initialValue={obj?.telefono} name='telefono' rules={[{ required: true }]}>
               <Input
                 maxLength={7}
                 type='text'
@@ -503,7 +510,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='form-group gov-co-form-group'>
             <p className='text'>Correo Electrónico*</p>
             <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
-              <Input
+              <input
                 maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'

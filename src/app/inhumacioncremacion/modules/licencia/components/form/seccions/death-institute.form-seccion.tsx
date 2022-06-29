@@ -323,7 +323,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               <>
                 <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
 
-                <Form.Item label='Nombre' required={true} name='fiscalianombreDC'>
+                <Form.Item label='Nombre' rules={[{ required: true }]} name='fiscalianombreDC'>
                   <Input
                     allowClear
                     placeholder='Nombre'
@@ -339,7 +339,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Apellido' required={true} name='fiscaliaapellidoDC'>
+                <Form.Item label='Apellido' rules={[{ required: true }]} name='fiscaliaapellidoDC'>
                   <Input
                     allowClear
                     placeholder='Apellido'
@@ -355,7 +355,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Número de oficio de medicina legal' required={true} name='fiscalianumeroDC'>
+                <Form.Item label='Número de oficio de medicina legal' rules={[{ required: true }]} name='fiscalianumeroDC'>
                   <Input
                     allowClear
                     placeholder='Número de oficio de medicina legal'
@@ -372,11 +372,11 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Fecha del Oficio' required={true} name='fiscaliafechaDC'>
+                <Form.Item label='Fecha del Oficio' rules={[{ required: true }]} name='fiscaliafechaDC'>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                 </Form.Item>
 
-                <Form.Item label='No. Fiscal' required={true} name='NoFiscalDC'>
+                <Form.Item label='No. Fiscal' rules={[{ required: true }]} name='NoFiscalDC'>
                   <Input
                     allowClear
                     placeholder='numberFiscal'

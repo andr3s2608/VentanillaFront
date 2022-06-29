@@ -3,8 +3,97 @@ import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import { Form, Input } from 'antd';
+import Table from 'antd/es/table';
+import { Alert, Button, Modal, Upload } from 'antd';
+import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+import { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import { useHistory } from 'react-router';
+import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-export const BandejaU = () => {
+import { CheckOutlined } from '@ant-design/icons';
+import { AnyIfEmpty } from 'react-redux';
+export const BandejaU = (props: IDataSource) => {
+  const history = useHistory();
+  const { data, datossolucionados } = props;
+  const [roles, setroles] = useState<IRoles[]>([]);
+  const Paginas: number = 5;
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
+  const getListas = useCallback(
+    async () => {
+      const mysRoles = await api.GetRoles();
+
+      setroles(mysRoles);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+  }, []);
+
+  const onClickValidarInformacion = async (datos: any) => {
+    const data = datos;
+    //console.log(datos, 'datos ');
+
+    localStorage.setItem('register', JSON.stringify(data));
+    store.dispatch(SetResetViewLicence());
+    history.push('/tramites-servicios/Revision/revisar-solicitud');
+  };
+
+  const structureColumns = [
+    {
+      title: 'No. de Radicado',
+      dataIndex: 'numeroRadicado',
+      key: 'nroradicado'
+    },
+    {
+      title: 'Tipo de trámite',
+      dataIndex: 'tipodeTramite',
+      key: 'idTramite'
+    },
+    {
+      title: 'Fecha de Registro',
+      dataIndex: 'fechaSolicitud',
+      key: 'fechaSolicitud'
+    },
+    {
+      title: 'Estado ',
+      dataIndex: 'estado',
+      key: 'estado'
+    },
+    {
+      title: 'Actividad en curso',
+      dataIndex: 'actividadActualSolicitud',
+      key: 'actividad'
+    },
+    {
+      title: 'Validar Tramite',
+      key: 'Acciones',
+
+      render: (_: any, row: any, index: any) => {
+        return true ? (
+          <>
+            <Button
+              type='primary'
+              key={`vali-${index}`}
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ marginLeft: '5px' }}
+              icon={<CheckOutlined />}
+            >
+              Validar Información
+            </Button>
+          </>
+        ) : null;
+      }
+    }
+  ];
+
   return (
     <div>
       <section className='info-panel'>
@@ -157,31 +246,7 @@ export const BandejaU = () => {
                   </div>
                   <div className='row'>
                     <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                      <table className='table table-bordered text-center mt-4' style={{ backgroundColor: '#ede9e3' }}>
-                        <thead>
-                          <tr
-                            style={{
-                              border: '2px solid #000',
-                              backgroundColor: '#fff'
-                            }}
-                          >
-                            <th style={{ border: '2px solid #000' }}>No. de radicado</th>
-                            <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
-                            <th style={{ border: '2px solid #000' }}>Fecha</th>
-                            <th style={{ border: '2px solid #000' }}>Estado</th>
-                            <th style={{ border: '2px solid #000' }}>Actividad en curso</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr style={{ border: '2px solid #000' }}>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
                     </div>
                   </div>
                 </div>
@@ -222,31 +287,12 @@ export const BandejaU = () => {
                   </div>
                   <div className='row'>
                     <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                      <table className='table table-bordered text-center mt-4' style={{ backgroundColor: '#ede9e3' }}>
-                        <thead>
-                          <tr
-                            style={{
-                              border: '2px solid #000',
-                              backgroundColor: '#fff'
-                            }}
-                          >
-                            <th style={{ border: '2px solid #000' }}>No. de radicado</th>
-                            <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
-                            <th style={{ border: '2px solid #000' }}>Fecha</th>
-                            <th style={{ border: '2px solid #000' }}>Estado</th>
-                            <th style={{ border: '2px solid #000' }}>Actividad en curso</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr style={{ border: '2px solid #000' }}>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                            <td style={{ border: '2px solid #000' }}></td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <Table
+                        id='tableGen'
+                        dataSource={datossolucionados}
+                        columns={structureColumns}
+                        pagination={{ pageSize: Paginas }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -258,3 +304,8 @@ export const BandejaU = () => {
     </div>
   );
 };
+
+interface IDataSource {
+  data: Array<any>;
+  datossolucionados: Array<any>;
+}

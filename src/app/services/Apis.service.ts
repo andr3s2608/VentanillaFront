@@ -428,6 +428,14 @@ export class ApiService {
       url: `Request/GetSolicitudesbyUser/${this.oid}`,
       id: '0'
     });
+
+  getSolicitudesUsuarioAsignado = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/GetSolicitudesbyUsuarioAsignado/${this.oid}`,
+      id: '0'
+    });
+
   getSolicitudesByTipoSolicitud = (idestado: string) =>
     get<any>({
       endpoint: 'https://localhost:5001/api/',
