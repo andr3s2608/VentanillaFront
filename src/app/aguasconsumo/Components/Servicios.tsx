@@ -33,6 +33,7 @@ export const Servicios = () => {
   const [temporalvalor, settemporal] = useState<boolean>(false);
   const [l_tramites, setLtramites] = useState<any[]>([]);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const history = useHistory();
 
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
@@ -188,9 +189,9 @@ export const Servicios = () => {
         }
       }
     };
-    console.log(json);
+
     await api.AddSolicitudPrimera(json);
-    console.log('termino');
+    history.push('/tramites-servicios-aguas');
   };
 
   const onSubmitFailed = () => setStatus('error');
@@ -280,7 +281,7 @@ export const Servicios = () => {
                     label='Tipo de Tramite'
                     name='tipotramite'
                     initialValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
-                    required={true}
+                    rules={[{ required: true }]}
                   >
                     <SelectComponent
                       options={l_tramites}

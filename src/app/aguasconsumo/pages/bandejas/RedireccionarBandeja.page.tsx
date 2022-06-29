@@ -52,7 +52,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      <Tabs>{bandeja ? <Bandeja data={grid} /> : <BandejaU />}</Tabs>
+      <Tabs>{bandeja ? <Bandeja data={grid} /> : <BandejaU data={grid} />}</Tabs>
     </div>
   );
 };

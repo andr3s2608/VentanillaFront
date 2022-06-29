@@ -207,7 +207,12 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   return (
     <>
-      <Form.Item label='Tipo documento' initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'} required={true} name='fiscalia'>
+      <Form.Item
+        label='Tipo documento'
+        initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+        rules={[{ required: true }]}
+        name='fiscalia'
+      >
         <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
 

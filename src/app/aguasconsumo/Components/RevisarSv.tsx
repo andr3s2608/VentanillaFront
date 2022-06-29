@@ -10,11 +10,13 @@ import { dominioService, ETipoDominio, IDepartamento, IDominio, IMunicipio } fro
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import Swal from 'sweetalert2';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { UploadOutlined } from '@ant-design/icons';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
 
@@ -135,6 +137,88 @@ export const RevisarSv = () => {
     }
   };
 
+  const onSubmit = async (values: any) => {
+    setStatus(undefined);
+
+    const dep = values.departamento;
+    var mun = values.municipio;
+    switch (dep) {
+      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+        mun = '31211657-3386-420a-8620-f9C07a8ca491';
+        break;
+    }
+
+    const json: IRegistroSolicitudCitacion<any> = {
+      solicitud: {
+        idSolicitud: objJson.idsolicitud + '',
+        idPersona: objJson.idPersona + '',
+        idTipodeSolicitud: objJson.idtipodeSolicitud,
+        tipodeSolicitud: objJson.tipodeSolicitud,
+        numeroRadicado: objJson.numeroradicado,
+        fechaSolicitud: objJson.fechaSolicitud,
+        idEstado: values.estado,
+        estado: '',
+        idFuente: '00000000-0000-0000-0000-000000000000',
+        idUbicacion: objJson.idUbicacion,
+        idSubred: values.subred,
+        idActividadActualSolicitud: values.actactual,
+        actividadActualSolicitud: '',
+        actividadSiguienteSolicitud: values.actsiguiente,
+
+        idTipodeTramite: values.tipotramite,
+        tipodeTramite: '',
+        idUsuario: objJson.idusuario,
+        idCitacionRevision: '00000000-0000-0000-0000-000000000000',
+
+        idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
+        temporal: false,
+
+        persona: {
+          idPersona: objJson.idPersona,
+          tipoIdentificacion: values.IDType,
+          numeroIdentificacion: values.IDNumber,
+          primerNombre: values.name,
+          segundoNombre: values.secondname,
+          primerApellido: values.surname,
+          segundoApellido: values.secondsurname,
+          telefonoContacto: values.telefono,
+          celularContacto: values.telefono2,
+          correoElectronico: values.email,
+          idTipoPersona: values.persona,
+          tipoDocumentoRazon: values?.IDTypeRazon ?? '',
+          nit: values?.IDNumberRazon ?? '',
+          razonSocial: values?.nombreEntidad ?? ''
+        },
+
+        ubicacion: {
+          idUbicacion: objJson.idUbicacion,
+          direccion: values.direccion,
+          departamento: values.departamento,
+          municipio: mun,
+          localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
+          vereda: values.vereda,
+          sector: values.sector,
+          upz: objJson.upz,
+          barrio: objJson.barrio,
+          observacion: values.observations
+        },
+
+        citacion_Revision: {
+          idCitacion: '00000000-0000-0000-0000-000000000000',
+          fechaCitacion: '',
+          observacion: values.observations,
+          fechaRegistro: '',
+          idSolicitud: '00000000-0000-0000-0000-000000000000'
+        }
+      }
+    };
+
+    await api.AddSolicitudCitacion(json);
+    history.push('/tramites-servicios-aguas');
+  };
+
+  const onSubmitFailed = () => setStatus('error');
+
   const onChangeDepartamento = async (value: string) => {
     form.setFieldsValue({ municipio: undefined });
     const depart = await dominioService.get_departamentos_colombia();
@@ -151,153 +235,155 @@ export const RevisarSv = () => {
   };
 
   return (
-    <div>
-      <section className='info-panel'>
-        <div className='container'>
-          <div className='row mt-5'>
-            <div className='col-lg-6 col-md-6 col-sm-6'>
-              <div className='img-bogota'>
-                <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-              </div>
-            </div>
-            <div className='col-lg-6 col-md-6 col-sm-6'>
-              <div className='img-profile'>
-                <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                <div className='info-usuario'>
-                  <p>Validador</p>
+    <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+      <div>
+        <section className='info-panel'>
+          <div className='container'>
+            <div className='row mt-5'>
+              <div className='col-lg-6 col-md-6 col-sm-6'>
+                <div className='img-bogota'>
+                  <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
                 </div>
               </div>
-            </div>
-          </div>
-          <div className='row mt-2'>
-            <div className='col-lg-6 col-sm-12 col-md-6'>
-              <div className='info-secion'>
-                <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
-                  <ol className='breadcrumb'>
-                    <li className='breadcrumb-item'>
-                      <a href='#'>Inicio</a>
-                    </li>
-                    <li className='breadcrumb-item'>
-                      <a href='#'>Bandeja de entrada</a>
-                    </li>
-                    <li className='breadcrumb-item active' aria-current='page'>
-                      Revisar solicitud
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className='panel-menu'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-              <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                <nav className='nav panel'>
-                  <a className='nav-link active' href='#'>
-                    1. Solicitar revisión
-                  </a>
-                  <a className='nav-link' href='#'>
-                    2. Crear Solicitud
-                  </a>
-                  <a className='nav-link' href='#'>
-                    3. En gestión
-                  </a>
-                  <a className='nav-link disabled' href='#'>
-                    4. Respuesta
-                  </a>
-                </nav>
-              </div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-lg-12 col-md-12'>
-              <div className='info-tramite mt-3 ml-2'>
-                <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
-              </div>
-            </div>
-          </div>
-
-          <DatosSolicitud form={form} obj={objJson} />
-
-          <DatosSolicitante form={form} obj={objJson} />
-
-          <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
-
-          <div className='row mt-3 '>
-            <div className='col-lg-12 col-sm-12 col-md-12 mt-4'>
-              <div className='info-tramite mt-2'>
-                <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                  Citación de revisión . <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                </p>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p>Fecha de citación</p>
-                <Form.Item label='fecha de citación' name='date' rules={[{ required: true }]}>
-                  <DatepickerComponent picker='date' dateDisabledType='default' dateFormatType='default' />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-              <div className='panel-search'>
-                <p>Funcionario</p>
-                <div className='form-group gov-co-form-group ml-2'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item>
-                      <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
-                    </Form.Item>
+              <div className='col-lg-6 col-md-6 col-sm-6'>
+                <div className='img-profile'>
+                  <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
+                  <div className='info-usuario'>
+                    <p>Validador</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
-              <p className='ml-2'>Observaciones adicionales</p>
-
-              <div className='form-group gov-co-form-group'>
-                <Form.Item label='Observaciones Adicionales Citacion' name='observationsCitacion' rules={[{ required: false }]}>
-                  <Input.TextArea rows={5} maxLength={230} value={'Hola'} style={{ width: '360px' }} />
-                </Form.Item>
+            <div className='row mt-2'>
+              <div className='col-lg-6 col-sm-12 col-md-6'>
+                <div className='info-secion'>
+                  <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
+                    <ol className='breadcrumb'>
+                      <li className='breadcrumb-item'>
+                        <a href='#'>Inicio</a>
+                      </li>
+                      <li className='breadcrumb-item'>
+                        <a href='#'>Bandeja de entrada</a>
+                      </li>
+                      <li className='breadcrumb-item active' aria-current='page'>
+                        Revisar solicitud
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
               </div>
             </div>
-            <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
-              <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-                <Button icon={<UploadOutlined />}>Cargar archivo</Button>
-              </Upload>
-            </Form.Item>
+          </div>
+        </section>
 
-            <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-              <Button
-                className='ml-3 float-right button btn btn-default'
-                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                type='primary'
-                htmlType='button'
-                onClick={() => {
-                  history.push('/tramites-servicios/Revision/vista-revision');
-                }}
-              >
-                Enviar
-              </Button>
-              <button className='float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
-                Guardar
-              </button>
-              <button
-                className='mr-3 float-right button btn btn-default'
-                style={{ backgroundColor: '#CBCBCB' }}
-                onClick={() => {
-                  history.push('/tramites-servicios-aguas');
-                }}
-              >
-                Cancelar
-              </button>
+        <section className='panel-menu'>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
+                  <nav className='nav panel'>
+                    <a className='nav-link active' href='#'>
+                      1. Solicitar revisión
+                    </a>
+                    <a className='nav-link' href='#'>
+                      2. Crear Solicitud
+                    </a>
+                    <a className='nav-link' href='#'>
+                      3. En gestión
+                    </a>
+                    <a className='nav-link disabled' href='#'>
+                      4. Respuesta
+                    </a>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-lg-12 col-md-12'>
+                <div className='info-tramite mt-3 ml-2'>
+                  <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
+                </div>
+              </div>
+            </div>
+
+            <DatosSolicitud form={form} obj={objJson} />
+
+            <DatosSolicitante form={form} obj={objJson} />
+
+            <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
+
+            <div className='row mt-3 '>
+              <div className='col-lg-12 col-sm-12 col-md-12 mt-4'>
+                <div className='info-tramite mt-2'>
+                  <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                    Citación de revisión . <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                  </p>
+                </div>
+              </div>
+              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+                <div className='panel-search'>
+                  <p>Fecha de citación</p>
+                  <Form.Item label='fecha de citación' name='date' rules={[{ required: true }]}>
+                    <DatepickerComponent picker='date' dateDisabledType='default' dateFormatType='default' />
+                  </Form.Item>
+                </div>
+              </div>
+              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+                <div className='panel-search'>
+                  <p>Funcionario</p>
+                  <div className='form-group gov-co-form-group ml-2'>
+                    <div className='gov-co-dropdown'>
+                      <Form.Item>
+                        <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
+                <p className='ml-2'>Observaciones adicionales</p>
+
+                <div className='form-group gov-co-form-group'>
+                  <Form.Item label='Observaciones Adicionales Citacion' name='observationsCitacion' rules={[{ required: false }]}>
+                    <Input.TextArea rows={5} maxLength={230} value={'Hola'} style={{ width: '360px' }} />
+                  </Form.Item>
+                </div>
+              </div>
+              <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
+                <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+                  <Button icon={<UploadOutlined />}>Cargar archivo</Button>
+                </Upload>
+              </Form.Item>
+
+              <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
+                <Button
+                  className='ml-3 float-right button btn btn-default'
+                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  type='primary'
+                  htmlType='button'
+                  onClick={() => {
+                    history.push('/tramites-servicios/Revision/vista-revision');
+                  }}
+                >
+                  Enviar
+                </Button>
+                <button className='float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
+                  Guardar
+                </button>
+                <button
+                  className='mr-3 float-right button btn btn-default'
+                  style={{ backgroundColor: '#CBCBCB' }}
+                  onClick={() => {
+                    history.push('/tramites-servicios-aguas');
+                  }}
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </Form>
   );
 };

@@ -81,7 +81,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='row'>
               <div className='col-lg-6 col-sm-12 col-md-6' style={{ marginLeft: '5px' }}>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Dirección de Domicilio' initialValue={obj?.direccion} name='direccion' required={true}>
+                  <Form.Item
+                    label='Dirección de Domicilio'
+                    initialValue={obj?.direccion}
+                    name='direccion'
+                    rules={[{ required: true }]}
+                  >
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -111,7 +116,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                     label='Departamento'
                     name='departamento'
                     initialValue={obj?.departamento ? obj?.departamento : idDepartamentoBogota}
-                    required={true}
+                    rules={[{ required: true }]}
                   >
                     <SelectComponent
                       options={l_departamentos}
@@ -170,7 +175,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Vereda' initialValue={obj?.vereda} name='vereda' required={true}>
+                  <Form.Item label='Vereda' initialValue={obj?.vereda} name='vereda' rules={[{ required: true }]}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -191,7 +196,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Sector' initialValue={obj?.vereda} name='sector' required={true}>
+                  <Form.Item label='Sector' initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
