@@ -3,10 +3,53 @@
 Repositorio del proyecto (FrontEnd) para la implementación del proyecto de Aguas consumo Humano de la Secretaría Distrital de Salud.
 
 ## Getting started
+## Parametros de Producción:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+NODE_ENV = production
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+# Proyect Config
+GENERATE_SOURCEMAP = false
+
+# Azure Auth Config
+REACT_APP_CLIENT_ID = f3e58d64-a12a-4db0-b982-b837f4c8325d
+REACT_APP_AUTHORITY = https://saludcapitalb2c.b2clogin.com/saludcapitalb2c.onmicrosoft.com/B2C_1_InicioSesionConRegistro
+REACT_APP_REDIRECT_TO = https://tramitesenlineab.saludcapital.gov.co/
+
+# Config Apis
+REACT_APP_SECURITY=https://apm-aeu-sds-prd-shared.azure-api.net/security/api/v2/
+REACT_APP_SHARED=https://apm-aeu-sds-prd-shared.azure-api.net/shared/api/
+REACT_APP_INHCREMACION=https://apm-aeu-sds-prd-shared.azure-api.net/inhumacioncremacion/api/
+REACT_APP_ENDPOINTV1=https://apm-aeu-sds-prd-shared.azure-api.net/shared/api/v1/
+REACT_APP_NOTIFICACION=https://apm-aeu-sds-prd-shared.azure-api.net/notifications/api/v1/
+REACT_APP_BLOB=https://apm-aeu-sds-prd-shared.azure-api.net/filemanager/api/v1/
+REACT_APP_FORMATOS=https://apm-aeu-sds-prd-shared.azure-api.net/inhumacioncremacion/api/Formato/
+REACT_APP_LOCAL=https://localhost:5001/api/
+
+
+
+## Parametros de Desarrollo:
+# Node
+NODE_ENV = production
+
+# Proyect Config
+GENERATE_SOURCEMAP = false
+
+# Azure Auth Config
+REACT_APP_CLIENT_ID = f3e58d64-a12a-4db0-b982-b837f4c8325d
+REACT_APP_AUTHORITY = https://saludcapitalb2c.b2clogin.com/saludcapitalb2c.onmicrosoft.com/B2C_1_InicioSesionConRegistro
+REACT_APP_REDIRECT_TO = https://ambitious-sand-025fb710f.azurestaticapps.net/
+
+# Config Apis
+REACT_APP_SECURITY=https://apm-aeu-sds-dev-shared.azure-api.net/security/api/v2/
+REACT_APP_SHARED=https://apm-aeu-sds-dev-shared.azure-api.net/shared/api/
+REACT_APP_INHCREMACION=https://apm-aeu-sds-dev-shared.azure-api.net/inhumacioncremacion/api/
+REACT_APP_ENDPOINTV1=https://apm-aeu-sds-dev-shared.azure-api.net/shared/api/v1/
+REACT_APP_NOTIFICACION=https://apm-aeu-sds-dev-shared.azure-api.net/notifications/api/v1/
+REACT_APP_BLOB=https://apm-aeu-sds-dev-shared.azure-api.net/filemanager/api/v1/
+REACT_APP_FORMATOS=https://apm-aeu-sds-dev-shared.azure-api.net/inhumacioncremacion/api/Formato/
+REACT_APP_LOCAL=https://localhost:5001/api/
+
+
 
 ## Add your files
 
