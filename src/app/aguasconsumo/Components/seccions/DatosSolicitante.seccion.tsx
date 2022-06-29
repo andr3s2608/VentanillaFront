@@ -285,7 +285,6 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
-                    maxLength={100}
                     maxLength={50}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-0- ]/.test(event.key)) {
