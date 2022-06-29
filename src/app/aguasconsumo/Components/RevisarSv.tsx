@@ -19,6 +19,7 @@ import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
+import moment from 'moment';
 
 export const RevisarSv = () => {
   const objJson: any = EditAguas();
@@ -139,7 +140,7 @@ export const RevisarSv = () => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
-
+    const formatDate = 'MM-DD-YYYY';
     const dep = values.departamento;
     var mun = values.municipio;
     switch (dep) {
@@ -168,6 +169,7 @@ export const RevisarSv = () => {
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',
         idUsuario: objJson.idusuario,
+        idUsuarioAsignado: values.usuarioasignado,
         idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
@@ -205,10 +207,11 @@ export const RevisarSv = () => {
 
         citacion_Revision: {
           idCitacion: '00000000-0000-0000-0000-000000000000',
-          fechaCitacion: '',
-          observacion: values.observations,
+          fechaCitacion: moment(values.date).format(formatDate),
+          observacion: values.observationsCitacion,
           fechaRegistro: '',
-          idSolicitud: '00000000-0000-0000-0000-000000000000'
+          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idUsuario: values.funcionario
         }
       }
     };
@@ -322,7 +325,6 @@ export const RevisarSv = () => {
               </div>
               <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
                 <div className='panel-search'>
-                  <p>Fecha de citación</p>
                   <Form.Item label='fecha de citación' name='date' rules={[{ required: true }]}>
                     <DatepickerComponent picker='date' dateDisabledType='default' dateFormatType='default' />
                   </Form.Item>
@@ -330,10 +332,9 @@ export const RevisarSv = () => {
               </div>
               <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
                 <div className='panel-search'>
-                  <p>Funcionario</p>
                   <div className='form-group gov-co-form-group ml-2'>
                     <div className='gov-co-dropdown'>
-                      <Form.Item>
+                      <Form.Item label='Funcionario' name='funcionario' rules={[{ required: true }]}>
                         <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
                       </Form.Item>
                     </div>

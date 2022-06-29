@@ -13,6 +13,7 @@ export interface Solicitud<T> {
   estado: string;
   idFuente?: string;
   idUbicacion?: string;
+
   idSubred: string;
   idActividadActualSolicitud?: string;
   actividadActualSolicitud: string;
@@ -21,6 +22,8 @@ export interface Solicitud<T> {
   idTipodeTramite?: string;
   tipodeTramite: string;
   idUsuario?: string;
+  idUsuarioAsignado?: string;
+
   idCitacionRevision?: string;
 
   idFuenteAbastecimiento?: string;
@@ -67,4 +70,5 @@ export interface Citacion_Revision {
   observacion: string;
   fechaRegistro: string;
   idSolicitud: string;
+  idUsuario: string;
 }

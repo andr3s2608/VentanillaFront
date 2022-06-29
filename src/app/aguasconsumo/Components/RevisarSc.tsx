@@ -65,6 +65,18 @@ export const RevisarSc = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const Asignar = async () => {
+    const usuario = form.getFieldValue('usuarioasignado');
+    if (usuario == 'vacio') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Usuario No Asignado',
+        text: 'Debe ingresar el usuario al cual se va a asignar la solicitud'
+      });
+    } else {
+    }
+  };
+
   const onSubmit = async (values: any) => {
     setStatus(undefined);
 
@@ -75,6 +87,7 @@ export const RevisarSc = () => {
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
         break;
     }
+    const coordinador = values.idusuario;
 
     const json: IRegistroSolicitudCitacion<any> = {
       solicitud: {
@@ -96,6 +109,7 @@ export const RevisarSc = () => {
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',
         idUsuario: objJson.idusuario,
+        idUsuarioAsignado: values.usuarioasignado,
         idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
@@ -136,7 +150,8 @@ export const RevisarSc = () => {
           fechaCitacion: '',
           observacion: 'No_aplica',
           fechaRegistro: '',
-          idSolicitud: '00000000-0000-0000-0000-000000000000'
+          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idUsuario: '00000000-0000-0000-0000-000000000000'
         }
       }
     };

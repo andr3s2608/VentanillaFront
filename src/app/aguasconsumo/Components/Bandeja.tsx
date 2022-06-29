@@ -17,8 +17,12 @@ import { CheckOutlined } from '@ant-design/icons';
 import { AnyIfEmpty } from 'react-redux';
 export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
-  const { data } = props;
+  const { data, datosusuario, datossolucionados } = props;
   const [roles, setroles] = useState<IRoles[]>([]);
+  const [coordinador, setcoordinador] = useState<boolean>(false);
+  const valor = [];
+  console.log(data);
+
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -26,6 +30,13 @@ export const Bandeja = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
+      const [permiso] = mysRoles;
+      console.log(mysRoles);
+      if (permiso?.rol === 'Coordinador' || permiso?.rol === 'Subdirector') {
+        setcoordinador(true);
+      } else {
+        setcoordinador(false);
+      }
 
       setroles(mysRoles);
     },
@@ -78,8 +89,9 @@ export const Bandeja = (props: IDataSource) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        return true ? (
-          <>
+        if (row.estado != 'Aprobada' && row.estado != 'Cerrada' && row.estado != 'Anulada') {
+          console.log(row.estado, 'ESTDO');
+          return (
             <Button
               type='primary'
               key={`vali-${index}`}
@@ -89,8 +101,10 @@ export const Bandeja = (props: IDataSource) => {
             >
               Validar Información
             </Button>
-          </>
-        ) : null;
+          );
+        } else {
+          return null;
+        }
       }
     }
   ];
@@ -201,6 +215,15 @@ export const Bandeja = (props: IDataSource) => {
                         Solucionados
                       </a>
                     </li>
+                    {coordinador && (
+                      <>
+                        <li className='nav-item'>
+                          <a className='nav-link' data-toggle='tab' href='#prueba' role='tab'>
+                            Prueba
+                          </a>
+                        </li>
+                      </>
+                    )}
                   </ul>
                   <div className='tab-content'>
                     <div className='tab-pane active' id='recientes' role='tabpanel'>
@@ -240,13 +263,28 @@ export const Bandeja = (props: IDataSource) => {
                       </div>
                       <div className='row'>
                         <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                          <Table
-                            id='tableGen'
-                            dataSource={data}
-                            columns={structureColumns}
-                            pagination={{ pageSize: Paginas }}
-                            className='table_info'
-                          />
+                          {!coordinador && (
+                            <>
+                              <Table
+                                id='tableGen'
+                                dataSource={datosusuario}
+                                columns={structureColumns}
+                                pagination={{ pageSize: Paginas }}
+                                className='table_info'
+                              />
+                            </>
+                          )}
+                          {coordinador && (
+                            <>
+                              <Table
+                                id='tableGen'
+                                dataSource={data}
+                                columns={structureColumns}
+                                pagination={{ pageSize: Paginas }}
+                                className='table_info'
+                              />
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -288,8 +326,8 @@ export const Bandeja = (props: IDataSource) => {
                       <div className='row'>
                         <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                           <Table
-                            id='tableGen'
-                            dataSource={data}
+                            id='tableGen2'
+                            dataSource={datossolucionados}
                             columns={structureColumns}
                             pagination={{ pageSize: Paginas }}
                             className='table_info'
@@ -297,6 +335,57 @@ export const Bandeja = (props: IDataSource) => {
                         </div>
                       </div>
                     </div>
+                    {coordinador && (
+                      <>
+                        <div className='tab-pane ' id='prueba' role='tabpanel'>
+                          <div className='row'>
+                            <div className='col-lg-12 col-sm-12 col-md-12 '>
+                              <p className='mt-4 ml-3 filtro'>Filtrar por:</p>
+                              <div className='row'>
+                                <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
+                                  <div className='form-group gov-co-form-group'>
+                                    <div className='gov-co-dropdown'>
+                                      <Form.Item>
+                                        <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='col-md-5 col-lg-5 col-sm-12'>
+                                  <div className='form-group gov-co-form-group'>
+                                    <Form.Item>
+                                      <input
+                                        type='text'
+                                        className='form-control gov-co-form-control'
+                                        onKeyPress={(event) => {
+                                          if (!/[a-zA-Z]/.test(event.key)) {
+                                            event.preventDefault();
+                                          }
+                                        }}
+                                        onPaste={(event) => {
+                                          event.preventDefault();
+                                        }}
+                                      />
+                                    </Form.Item>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className='row'>
+                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                              <Table
+                                id='tableGen3'
+                                dataSource={datosusuario}
+                                columns={structureColumns}
+                                pagination={{ pageSize: Paginas }}
+                                className='table_info'
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -310,4 +399,6 @@ export const Bandeja = (props: IDataSource) => {
 
 interface IDataSource {
   data: Array<any>;
+  datosusuario: Array<any>;
+  datossolucionados: Array<any>;
 }

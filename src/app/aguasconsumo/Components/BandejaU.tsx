@@ -17,7 +17,7 @@ import { CheckOutlined } from '@ant-design/icons';
 import { AnyIfEmpty } from 'react-redux';
 export const BandejaU = (props: IDataSource) => {
   const history = useHistory();
-  const { data } = props;
+  const { data, datossolucionados } = props;
   const [roles, setroles] = useState<IRoles[]>([]);
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
@@ -287,7 +287,12 @@ export const BandejaU = (props: IDataSource) => {
                   </div>
                   <div className='row'>
                     <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                      <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
+                      <Table
+                        id='tableGen'
+                        dataSource={datossolucionados}
+                        columns={structureColumns}
+                        pagination={{ pageSize: Paginas }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -302,4 +307,5 @@ export const BandejaU = (props: IDataSource) => {
 
 interface IDataSource {
   data: Array<any>;
+  datossolucionados: Array<any>;
 }

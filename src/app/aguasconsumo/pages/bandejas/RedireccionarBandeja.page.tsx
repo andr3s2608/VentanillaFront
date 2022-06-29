@@ -17,6 +17,8 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [grid, setGrid] = useState<any[]>([]);
+  const [datosusuario, setdatosusuario] = useState<any[]>([]);
+  const [datossolucionadosusuario, setdatossolucionadosusuario] = useState<any[]>([]);
 
   const getListas = useCallback(
     async () => {
@@ -39,12 +41,36 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
     if (permiso?.rol === 'Ciudadano') {
       const resp = await api.getSolicitudesUsuario();
+
+      const datossolucionados: any = await api.getSolicitudesUsuario();
+
+      const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
+        return (
+          f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
+          f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
+          f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
+        );
+      });
+
+      setdatossolucionadosusuario(filtrado);
       setGrid(resp);
       setBandeja(false);
     } else {
-      let arraydatos = [];
-      const resp = await api.getSolicitudesByTipoSolicitud('8F5B3DA8-1CD1-4E6C-874C-501245AE9279');
+      const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');
+      const datos = await api.getSolicitudesUsuarioAsignado();
+      const datossolucionados: any = await api.getSolicitudesUsuarioAsignado();
+
+      const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
+        return (
+          f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
+          f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
+          f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
+        );
+      });
+
+      setdatossolucionadosusuario(filtrado);
       setGrid(resp);
+      setdatosusuario(datos);
       setBandeja(true);
     }
   };
@@ -52,7 +78,13 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      <Tabs>{bandeja ? <Bandeja data={grid} /> : <BandejaU data={grid} />}</Tabs>
+      <Tabs>
+        {bandeja ? (
+          <Bandeja data={grid} datosusuario={datosusuario} datossolucionados={datossolucionadosusuario} />
+        ) : (
+          <BandejaU data={grid} datossolucionados={datossolucionadosusuario} />
+        )}
+      </Tabs>
     </div>
   );
 };
