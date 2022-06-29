@@ -1,5 +1,5 @@
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../../src/scss/antd/App.css';
+import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
@@ -189,143 +189,152 @@ export const Servicios = () => {
         }
       }
     };
-
+    console.log(json);
     await api.AddSolicitudPrimera(json);
+    console.log('termino');
     history.push('/tramites-servicios-aguas');
   };
 
   const onSubmitFailed = () => setStatus('error');
 
   return (
-    <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
-      <section className='info-panel'>
-        <div className='container'>
-          <div className='row mt-5'>
-            <div className='col-lg-6 col-md-6 col-sm-6'>
-              <div className='img-bogota'>
-                <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-              </div>
-            </div>
-            <div className='col-lg-6 col-md-6 col-sm-6'>
-              <div className='img-profile'>
-                <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                <div className='info-usuario'>
-                  <p>Ciudadano</p>
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <section className='info-panel'>
+              <div className='container'>
+                <div className='row mt-5'>
+                  <div className='col-lg-6 col-md-6 col-sm-6'>
+                    <div className='img-bogota '>
+                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
+                    </div>
+                  </div>
+                  <div className='col-lg-6 col-md-6 col-sm-6'>
+                    <div className='img-profile'>
+                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
+                      <div className='info-usuario'>
+                        <p>Ciudadano</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div className='row mt-2'>
-            <div className='col-lg-6 col-sm-12 col-md-6'>
-              <div className='info-secion'>
-                <nav aria-label='breadcrumb'>
-                  <ol className='breadcrumb'>
-                    <li className='breadcrumb-item'>
-                      <a href='#'>Inicio</a>
-                    </li>
-                    <li className='breadcrumb-item'>
-                      <a href='#'>Bandeja de entrada</a>
-                    </li>
-                    <li className='breadcrumb-item active' aria-current='page'>
-                      Revisar solicitud
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-          </div>
-          <section className='panel-menu'>
-            <div className='container'>
-              <div className='row'>
-                <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-                  <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                    <nav className='nav panel'>
-                      <a className='nav-link active' href='#'>
-                        1. Solicitar revisión{' '}
-                      </a>
-                      <a className='nav-link' href='#'>
-                        2. Crear Solicitud
-                      </a>
-                      <a className='nav-link' href='#'>
-                        3. En gestión
-                      </a>
-                      <a className='nav-link disabled' href='#'>
-                        4. Respuesta
-                      </a>
-                    </nav>
+                <div className='row mt-2'>
+                  <div className='col-lg-6 col-sm-12 col-md-6'>
+                    <div className='info-secion'>
+                      <nav aria-label='breadcrumb'>
+                        <ol className='breadcrumb'>
+                          <li className='breadcrumb-item'>
+                            <a href='#'>Inicio</a>
+                          </li>
+                          <li className='breadcrumb-item'>
+                            <a href='#'>Bandeja de entrada</a>
+                          </li>
+                          <li className='breadcrumb-item active' aria-current='page'>
+                            Revisar solicitud
+                          </li>
+                        </ol>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+                <section className='panel-menu'>
+                  <div className='container'>
+                    <div className='row'>
+                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                        <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
+                          <nav className='nav panel'>
+                            <a className='nav-link active' href='#'>
+                              1. Solicitar revisión
+                            </a>
+                            <a className='nav-link' href='#'>
+                              2. Crear Solicitud
+                            </a>
+                            <a className='nav-link' href='#'>
+                              3. En gestión
+                            </a>
+                            <a className='nav-link disabled' href='#'>
+                              4. Respuesta
+                            </a>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <div className='row mt-5'>
+                  <div className='col-lg-12 col-md-12'>
+                    <div className='info-tramite mt-3 ml-3'>
+                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-lg-12 col-sm-12 col-md-12'>
+                    <div className='info-tramite mt-2'>
+                      <p className='ml-3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        Datos de la solicitud. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                      </p>
+                    </div>
+                  </div>
+                  <div className='col-lg-6 col-sm-6 col-md-6 mt-2 ml-2'>
+                    <div className='panel-search'>
+                      <div className='form-group gov-co-form-group ml-2'>
+                        <p className='text'>Tipo de tramite *</p>
+                        <Form.Item
+                          name='tipotramite'
+                          initialValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
+                          rules={[{ required: true }]}
+                        >
+                          <SelectComponent
+                            options={l_tramites}
+                            defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
+                            optionPropkey='idTipoTramite'
+                            optionPropLabel='descripcion'
+                          />
+                        </Form.Item>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <DatosSolicitante form={form} obj={null} />
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <UbicacionPersona form={form} obj={null} tipo={null} />
+                </div>
+                <div className='row mt-3 '>
+                  <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
+                    <Button
+                      className='ml-4 float-right button btn btn-default'
+                      style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                      type='primary'
+                      htmlType='submit'
+                    >
+                      Enviar
+                    </Button>
+                    <Button
+                      className='float-right button btn btn-default'
+                      style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                      type='primary'
+                      htmlType='submit'
+                      onClick={() => {
+                        settemporal(true);
+                      }}
+                    >
+                      Guardar
+                    </Button>
+                    <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-          <div className='row'>
-            <div className='col-lg-12 col-md-12'>
-              <div className='info-tramite mt-3 ml-2'>
-                <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
-              </div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div className='info-tramite mt-2'>
-                <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                  Datos de la solicitud. <br /> <small className='color: #000;'>* Campos Obligatorios</small>
-                </p>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <div className='form-group gov-co-form-group ml-2'>
-                  <Form.Item
-                    label='Tipo de Tramite'
-                    name='tipotramite'
-                    initialValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
-                    rules={[{ required: true }]}
-                  >
-                    <SelectComponent
-                      options={l_tramites}
-                      defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
-                      optionPropkey='idTipoTramite'
-                      optionPropLabel='descripcion'
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='row mt-5'>
-            <DatosSolicitante form={form} obj={null} />
-          </div>
-          <UbicacionPersona form={form} obj={null} tipo={null} />
-          <div className='row mt-3 '>
-            <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-              <Button
-                className='ml-4 float-right button btn btn-default'
-                style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                type='primary'
-                htmlType='submit'
-              >
-                Enviar
-              </Button>
-              <Button
-                className='float-right button btn btn-default'
-                style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                type='primary'
-                htmlType='submit'
-                onClick={() => {
-                  settemporal(true);
-                }}
-              >
-                Guardar
-              </Button>
-              <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
-                Cancelar
-              </button>
-            </div>
-          </div>
+            </section>
+          </Form>
         </div>
-      </section>
-    </Form>
+      </div>
+    </div>
   );
 };

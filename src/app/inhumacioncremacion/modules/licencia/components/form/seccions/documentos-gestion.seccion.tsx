@@ -25,7 +25,7 @@ import { FilePdfOutlined } from '@ant-design/icons';
 
 //import PDFReader from './PDFReader';
 //import BasicDocument from './BasicDocument';
-
+import '../../../../../../../css/estilos.css';
 // Services
 export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
   const { prop, obj, id } = props;
@@ -289,10 +289,10 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
         </div>
       </div>
       <div className='row'>
-        <div className='col-lg-6 col-sm-12 col-md-6'>
+        <div className='col-lg-6 col-sm-6 col-md-6 documents'>
           <Table dataSource={grid} columns={structureColumns} pagination={{ pageSize: 50 }} />
         </div>
-        <div className='col-lg-6 col-sm-12 col-md-6'>
+        <div className='col-lg-6 col-sm-6 col-md-6 pdf'>
           <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='500px' width='100%'></iframe>
         </div>
       </div>

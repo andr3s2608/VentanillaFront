@@ -21,7 +21,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 //Redux
 import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
-
+import '../../../../css/estilos.css';
 export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const { tipo, obj } = props;
 
@@ -72,48 +72,43 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   return (
     <>
-      <div className='row mt-5'>
-        <div className='col-lg-12 col-sm-12 col-md-12'>
-          <div className='info-tramite mt-2'>
-            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Información del lugar de revisión . <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
-            </p>
-            <div className='row'>
-              <div className='col-lg-6 col-sm-12 col-md-6' style={{ marginLeft: '5px' }}>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item
-                    label='Dirección de Domicilio'
-                    initialValue={obj?.direccion}
-                    name='direccion'
-                    rules={[{ required: true }]}
-                  >
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9-# ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
+      <div className='col-lg-12 col-sm-12 col-md-12 '>
+        <div className='info-tramite mt-2'>
+          <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+            Información del lugar de revisión . <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
+          </p>
+          <div className='row'>
+            <div className='col-lg-9 col-sm-12 col-md-9' style={{ marginLeft: '5px' }}>
+              <div className='form-group gov-co-form-group'>
+                <label className='text ml-2'>Dirección de Domicilio</label>
+                <Form.Item initialValue={obj?.direccion} name='direccion' rules={[{ required: true }]}>
+                  <Input
+                    type='text'
+                    className='form-control gov-co-form-control ml-2'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9-# ]/.test(event.key)) {
                         event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-              <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '12px' }}>
-                <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
-                  Buscar
-                </button>
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
               </div>
             </div>
-
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '-230px' }}>
+              <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
+                Buscar
+              </button>
+            </div>
+          </div>
+          <div className='row ml-2'>
+            <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
+                  <label className='text'>Departamento*</label>
                   <Form.Item
-                    label='Departamento'
                     name='departamento'
                     initialValue={obj?.departamento ? obj?.departamento : idDepartamentoBogota}
                     rules={[{ required: true }]}
@@ -131,11 +126,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
             {tipo != null && (
               <>
-                <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+                <div className='col-lg-6 col-sm-6 col-md-4 mt-2'>
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group'>
+                      <label className='text'>Municipio*</label>
                       <Form.Item
-                        label='Municipio'
                         name='municipio'
                         initialValue={obj?.municipio ? obj?.municipio : idBogotac}
                         rules={[{ required: true }]}
@@ -155,11 +150,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             )}
             {tipo == null && (
               <>
-                <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+                <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group '>
+                      <label className='text'>Localidad*</label>
                       <Form.Item
-                        label='Localidad'
                         initialValue={obj?.localidad ? obj?.localidad : idlocalidad}
                         name='localidad'
                         rules={[{ required: true }]}
@@ -172,10 +167,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </>
             )}
 
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Vereda' initialValue={obj?.vereda} name='vereda' rules={[{ required: true }]}>
+                  <label className='text'>Vereda*</label>
+                  <Form.Item initialValue={obj?.vereda} name='vereda' rules={[{ required: true }]}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -193,10 +189,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </div>
             </div>
 
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Sector' initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
+                  <label className='text'>Sector*</label>
+                  <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
                     <Input
                       type='text'
                       className='form-control gov-co-form-control'
@@ -214,10 +211,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </div>
             </div>
           </div>
+        </div>
+        <div className='row ml-2'>
           <div className='col-lg-8 col-sm-12 col-md-8'>
             <div className='form-group gov-co-form-group'>
+              <label className='text'>Observaciones Adicionales</label>
               <Form.Item
-                label='Observaciones Adicionales'
                 initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : 'hola'}
                 name='observations'
                 rules={[{ required: false }]}
