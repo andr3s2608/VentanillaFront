@@ -14,7 +14,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
-
+import '../../../../css/estilos.css';
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const { obj, form } = props;
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
@@ -191,7 +191,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='panel-search'>
             <div className='form-group gov-co-form-group'>
               <div className='gov-co-dropdown'>
-                <Form.Item label='Tipo de Solicitante' name='persona' rules={[{ required: true }]}>
+                <p className='text'>Tipo de Solicitante*</p>
+                <Form.Item name='persona' rules={[{ required: true }]}>
                   <SelectComponent
                     options={[
                       { key: 'natural', value: 'Persona Natural' },
@@ -215,13 +216,10 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <Form.Item
-                    label='Tipo de documento:'
-                    initialValue={obj?.tipoDocumentoRazon ?? 5}
-                    required={true}
-                    name='IDTypeRazon'
-                  >
+                  <p className='text'>Tipo de documento*:</p>
+                  <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} required={true} name='IDTypeRazon'>
                     <SelectComponent
+                      className='text'
                       options={l_tipos_documentoRazon}
                       onChange={cambiodocumentoRazon}
                       optionPropkey='id'
@@ -236,7 +234,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
-                <Form.Item label='Número de documento' initialValue={obj?.nit} required={true} name='IDNumberRazon'>
+                <Form.Item initialValue={obj?.nit} required={true} name='IDNumberRazon'>
                   <Input
                     allowClear
                     type='text'
@@ -297,12 +295,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </>
       ) : null}
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+      <div className='col-lg-5 col-sm-6 col-md-5 mt-4 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
             <div className='gov-co-dropdown'>
+              <p className='text'>Tipo de documento*:</p>
               <Form.Item
-                label='Tipo de documento:'
                 required={true}
                 initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                 name='IDType'
@@ -319,11 +317,13 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+      <div className='col-lg-5 col-sm-4 col-md-5 mt-4'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Número de documento' initialValue={obj?.numeroIdentificacion} required={true} name='IDNumber'>
+            <p className='text'>Número de documento*</p>
+            <Form.Item initialValue={obj?.numeroIdentificacion} required={true} name='IDNumber'>
               <Input
+                className='form-control'
                 allowClear
                 type='text'
                 placeholder='Número Identificación'
@@ -359,10 +359,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Primer Nombre' initialValue={obj?.primerNombre} name='name' required={true}>
+            <p className='text'>Primer Nombre*</p>
+            <Form.Item initialValue={obj?.primerNombre} name='name' required={true}>
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -380,10 +381,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Segundo Nombre' initialValue={obj?.segundoNombre} name='secondname' required={false}>
+            <p className='text'>Segundo Nombre*</p>
+            <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -401,10 +403,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Primer Apellido' initialValue={obj?.primerApellido} name='surname' required={true}>
+            <p className='text'>Primer Apellido*</p>
+            <Form.Item initialValue={obj?.primerApellido} name='surname' required={true}>
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -422,10 +425,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Segundo Apellido' initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
+            <p className='text'>Segundo Apellido*</p>
+            <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -443,10 +447,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-4 col-md-4 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Teléfono de Contacto' initialValue={obj?.telefono} name='telefono' required={true}>
+            <p className='text'>Teléfono de Contacto*</p>
+            <Form.Item initialValue={obj?.telefono} name='telefono' required={true}>
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -464,10 +469,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-5 col-md-4 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Teléfono de Contacto 2' initialValue={obj?.celularContacto} name='telefono2' required={false}>
+            <p className='text'>Teléfono de Contacto 2*</p>
+            <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -485,10 +491,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         </div>
       </div>
 
-      <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Correo Electrónico' initialValue={obj?.correoElectronico} name='email' required={false}>
+            <p className='text'>Correo Electrónico*</p>
+            <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
               <input
                 type='text'
                 className='form-control gov-co-form-control'

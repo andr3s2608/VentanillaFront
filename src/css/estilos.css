@@ -174,7 +174,7 @@ a.nav-link.hero_b {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
-.nav-link {
+.bandeja_panel a.nav-link {
   border-top: 2px solid #FF7F26 !important;
   font-family: 'Roboto', sans-serif !important;
   font-size: 16px !important;
@@ -201,6 +201,11 @@ a.nav-link.hero_b {
   width: 95% !important;
 }
 
+.text {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 16px !important;
+}
+
 @media only screen and (max-width: 600px) {
   .contenedor {
     display: block;
@@ -218,5 +223,15 @@ a.nav-link.hero_b {
     width: 320px !important;
   }
 
+  .documents {
+    width: 30% !important;
+    display: inline-block !important;
+  }
 
+  .pdf {
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 50% !important;
+    display: inline-block !important;
+  }
 }
