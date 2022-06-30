@@ -44,7 +44,8 @@ const formatObjJson = (obj: any) => {
       {
         fechaCitacion: citacion_Revision.fechaCitacion,
         fechaRegistro: citacion_Revision.fechaRegistro,
-        observacionCitacion: citacion_Revision.observacion
+        observacionCitacion: citacion_Revision.observacion,
+        idUsuarioCitacion: citacion_Revision.idUsuario
       }
     ];
   }

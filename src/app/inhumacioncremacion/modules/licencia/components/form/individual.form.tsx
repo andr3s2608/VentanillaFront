@@ -794,7 +794,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       Swal.fire({
         icon: 'error',
         title: 'Datos inválidos',
-        text: `La fecha de nacimiento debe ser mayor a: ${fechadef.calendar()}`
+        text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
       });
       setdatecorrect(false);
     } else {
