@@ -39,7 +39,10 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const GetValidateRol = async (toRoles: IRoles[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
-    if (permiso?.rol === 'Ciudadano' || permiso?.rol === 'AdminTI') {
+    if (
+      permiso?.rol === 'Ciudadano'
+      //|| permiso?.rol === 'AdminTI'
+    ) {
       const resp = await api.getSolicitudesUsuario();
 
       const datossolucionados: any = await api.getSolicitudesUsuario();
@@ -56,21 +59,40 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
       setGrid(resp);
       setBandeja(false);
     } else {
+      if (permiso?.rol === 'AdminTI' || permiso?.rol === 'Funcionario') {
+        const datos = await api.GetSolicitudesUsuarioSubred();
+        const datossolucionados: any = await api.GetSolicitudesUsuarioSubred();
+
+        const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
+          return (
+            f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
+            f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
+            f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
+          );
+        });
+
+        setdatossolucionadosusuario(filtrado);
+        setdatosusuario(datos);
+      } else {
+        const datos = await api.getSolicitudesUsuarioAsignado();
+        const datossolucionados: any = await api.getSolicitudesUsuarioAsignado();
+
+        const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
+          return (
+            f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
+            f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
+            f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
+          );
+        });
+
+        setdatossolucionadosusuario(filtrado);
+        setdatosusuario(datos);
+      }
+
       const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');
-      const datos = await api.getSolicitudesUsuarioAsignado();
-      const datossolucionados: any = await api.getSolicitudesUsuarioAsignado();
 
-      const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
-        return (
-          f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
-          f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
-          f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
-        );
-      });
-
-      setdatossolucionadosusuario(filtrado);
       setGrid(resp);
-      setdatosusuario(datos);
+
       setBandeja(true);
     }
   };

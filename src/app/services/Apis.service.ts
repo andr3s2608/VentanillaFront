@@ -432,6 +432,13 @@ export class ApiService {
   AsignarUsuario = (idusuario: string, idsolicitud: string) =>
     post({ endpoint: 'https://localhost:5001/api/', url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
 
+  GetSolicitudesUsuarioSubred = () =>
+    get<any>({
+      endpoint: 'https://localhost:5001/api/',
+      url: `Request/getSolicitudbyIdUserSubRed/${this.oid}`,
+      id: '0'
+    });
+
   getSolicitudesUsuarioAsignado = () =>
     get<any>({
       endpoint: 'https://localhost:5001/api/',
