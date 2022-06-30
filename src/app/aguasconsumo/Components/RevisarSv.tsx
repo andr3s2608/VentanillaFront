@@ -46,10 +46,16 @@ export const RevisarSv = () => {
   const [sininformacion, setsininformacion] = useState<boolean>(false);
 
   //
+  const [rol, setrol] = useState<any>();
 
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const mysRoles = await api.GetRoles();
+
+      const [permiso] = mysRoles;
+
+      setrol(permiso.rol);
+
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const departamentos = await dominioService.get_departamentos_colombia();
       const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
@@ -153,7 +159,7 @@ export const RevisarSv = () => {
       solicitud: {
         idSolicitud: objJson.idsolicitud + '',
         idPersona: objJson.idPersona + '',
-        idTipodeSolicitud: objJson.idtipodeSolicitud,
+        idTipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6',
         tipodeSolicitud: objJson.tipodeSolicitud,
         numeroRadicado: objJson.numeroradicado,
         fechaSolicitud: objJson.fechaSolicitud,
@@ -252,7 +258,9 @@ export const RevisarSv = () => {
                 <div className='img-profile'>
                   <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                   <div className='info-usuario'>
-                    <p>Validador</p>
+                    <Form.Item>
+                      <span className='ant-form-text'>{rol}</span>
+                    </Form.Item>
                   </div>
                 </div>
               </div>
@@ -309,7 +317,7 @@ export const RevisarSv = () => {
               </div>
             </div>
 
-            <DatosSolicitud form={form} obj={objJson} />
+            <DatosSolicitud form={form} obj={objJson} tipo={'validador'} />
 
             <DatosSolicitante form={form} obj={objJson} />
 
@@ -368,18 +376,22 @@ export const RevisarSv = () => {
                 >
                   Enviar
                 </Button>
-                <button className='float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
+                <Button
+                  className='float-right button btn btn-default'
+                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  disabled
+                >
                   Guardar
-                </button>
-                <button
+                </Button>
+                <Button
                   className='mr-3 float-right button btn btn-default'
-                  style={{ backgroundColor: '#CBCBCB' }}
+                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   onClick={() => {
                     history.push('/tramites-servicios-aguas');
                   }}
                 >
                   Cancelar
-                </button>
+                </Button>
               </div>
             </div>
           </div>

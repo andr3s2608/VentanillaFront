@@ -47,11 +47,16 @@ export const Servicios = () => {
   const [campo, setCampo] = useState<string>('Numéricos');
   const [sininformacion, setsininformacion] = useState<boolean>(false);
   //
+  const [rol, setrol] = useState<any>();
 
   const getListas = useCallback(
     async () => {
       const tramites = await api.getTipoTramites();
-      console.log(tramites);
+
+      const mysRoles = await api.GetRoles();
+      const [permiso] = mysRoles;
+
+      setrol(permiso.rol);
 
       setLtramites(tramites);
     },
@@ -189,9 +194,9 @@ export const Servicios = () => {
         }
       }
     };
-    console.log(json);
+
     await api.AddSolicitudPrimera(json);
-    console.log('termino');
+
     history.push('/tramites-servicios-aguas');
   };
 
@@ -214,7 +219,9 @@ export const Servicios = () => {
                     <div className='img-profile'>
                       <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                       <div className='info-usuario'>
-                        <p>Ciudadano</p>
+                        <Form.Item>
+                          <span className='ant-form-text'>{rol}</span>
+                        </Form.Item>
                       </div>
                     </div>
                   </div>

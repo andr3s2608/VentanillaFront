@@ -4,15 +4,38 @@ import profile from '../../../../src/assets/images/aguas/profile.png';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import { useHistory } from 'react-router';
-import React, { Fragment } from 'react';
 import Button from 'antd/es/button';
 import { Form, Input } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 import { EditAguas } from './edit/Aguas';
 
 export const VisitaRu = () => {
   const history = useHistory();
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
   const objJson: any = EditAguas();
   const [form] = Form.useForm<any>();
+  const [rol, setrol] = useState<any>();
+
+  const getListas = useCallback(
+    async () => {
+      const tramites = await api.getTipoTramites();
+
+      const mysRoles = await api.GetRoles();
+      const [permiso] = mysRoles;
+
+      setrol(permiso.rol);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='container-fluid'>
@@ -30,7 +53,9 @@ export const VisitaRu = () => {
                   <div className='img-profile'>
                     <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                     <div className='info-usuario'>
-                      <p>Subdirector</p>
+                      <Form.Item>
+                        <span className='ant-form-text'>{rol}</span>
+                      </Form.Item>
                     </div>
                   </div>
                 </div>
@@ -333,21 +358,27 @@ export const VisitaRu = () => {
                     style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                     type='primary'
                     htmlType='button'
+                    disabled
                     onClick={() => {
                       history.push('/tramites-servicios/Revision/primera-vez');
                     }}
                   >
                     Enviar
                   </Button>
-                  <button className='float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+                  <Button
+                    className='float-right button btn btn-default'
+                    style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                    disabled
+                  >
                     Guardar
-                  </button>
+                  </Button>
                   <Button
                     className='mr-3 float-right button btn btn-default'
                     style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
                     type='primary'
+                    disabled
                     onClick={() => {
-                      history.push('/tramites-servicios/Revision/revisar-solicitud');
+                      history.push('/tramites-servicios-aguas');
                     }}
                   >
                     Cancelar

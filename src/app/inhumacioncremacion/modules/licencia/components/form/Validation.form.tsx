@@ -366,9 +366,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           break;
       }
 
-      console.log(DatosDocumento);
-      console.log(documentos);
-
       // let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
 
       var iddocumento: string = documentos.reduce((result: any, item: any) => {

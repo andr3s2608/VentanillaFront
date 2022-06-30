@@ -37,13 +37,17 @@ export const BandejaU = (props: IDataSource) => {
     getListas();
   }, []);
 
-  const onClickValidarInformacion = async (datos: any) => {
+  const onClickValidarInformacion = async (datos: any, tipo: any) => {
     const data = datos;
-    //console.log(datos, 'datos ');
 
+    localStorage.removeItem('register');
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    history.push('/tramites-servicios/Revision/revisar-solicitud');
+    if (tipo == 'tramite') {
+      history.push('/tramites-servicios/Revision/primera-vez');
+    } else {
+      history.push('/tramites-servicios/Revision/visita-revision');
+    }
   };
 
   const structureColumns = [
@@ -77,19 +81,37 @@ export const BandejaU = (props: IDataSource) => {
       key: 'Acciones',
 
       render: (_: any, row: any, index: any) => {
-        return true ? (
-          <>
-            <Button
-              type='primary'
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ marginLeft: '5px' }}
-              icon={<CheckOutlined />}
-            >
-              Validar Información
-            </Button>
-          </>
-        ) : null;
+        if (row.estado != 'Aprobada' && row.estado != 'Cerrada' && row.estado != 'Anulada' && row.estado != 'Primer Registro') {
+          if (row.estado == 'Visita de Revision') {
+          }
+
+          return (
+            <>
+              <Button
+                type='primary'
+                key={`vali-${index}`}
+                onClick={() => onClickValidarInformacion(row, 'tramite')}
+                style={{ marginRight: '8px' }}
+                icon={<CheckOutlined />}
+              >
+                Validar Información
+              </Button>
+              {row.estado == 'Visita de Revision' && (
+                <Button
+                  type='primary'
+                  key={`vali-${index}`}
+                  onClick={() => onClickValidarInformacion(row, 'visita')}
+                  style={{ marginRight: '8px' }}
+                  icon={<CheckOutlined />}
+                >
+                  VisualizarRevision
+                </Button>
+              )}
+            </>
+          );
+        } else {
+          return null;
+        }
       }
     }
   ];

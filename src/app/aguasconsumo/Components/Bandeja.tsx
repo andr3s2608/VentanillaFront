@@ -21,7 +21,6 @@ export const Bandeja = (props: IDataSource) => {
   const [roles, setroles] = useState<IRoles[]>([]);
   const [coordinador, setcoordinador] = useState<boolean>(false);
   const valor = [];
-  console.log(data);
 
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
@@ -31,8 +30,8 @@ export const Bandeja = (props: IDataSource) => {
     async () => {
       const mysRoles = await api.GetRoles();
       const [permiso] = mysRoles;
-      console.log(mysRoles);
-      if (permiso?.rol === 'Coordinador' || permiso?.rol === 'Subdirector') {
+
+      if (permiso?.rol === 'Coordinador' || permiso?.rol === 'AdminTI') {
         setcoordinador(true);
       } else {
         setcoordinador(false);
@@ -50,7 +49,6 @@ export const Bandeja = (props: IDataSource) => {
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
-    //console.log(datos, 'datos ');
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
@@ -90,7 +88,6 @@ export const Bandeja = (props: IDataSource) => {
 
       render: (_: any, row: any, index: any) => {
         if (row.estado != 'Aprobada' && row.estado != 'Cerrada' && row.estado != 'Anulada') {
-          console.log(row.estado, 'ESTDO');
           return (
             <Button
               type='primary'
@@ -219,7 +216,7 @@ export const Bandeja = (props: IDataSource) => {
                       <>
                         <li className='nav-item'>
                           <a className='nav-link' data-toggle='tab' href='#prueba' role='tab'>
-                            Prueba
+                            Usuario
                           </a>
                         </li>
                       </>
@@ -283,7 +280,7 @@ export const Bandeja = (props: IDataSource) => {
                                 pagination={{ pageSize: Paginas }}
                                 className='table_info'
                               />
- <br />
+                              <br />
                             </>
                           )}
                         </div>
@@ -332,7 +329,8 @@ export const Bandeja = (props: IDataSource) => {
                             columns={structureColumns}
                             pagination={{ pageSize: Paginas }}
                             className='table_info'
-                          /> <br />
+                          />{' '}
+                          <br />
                         </div>
                       </div>
                     </div>

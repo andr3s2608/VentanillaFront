@@ -48,10 +48,15 @@ export const RevisarSc = () => {
 
   const [sininformacion, setsininformacion] = useState<boolean>(false);
   //
+  const [rol, setrol] = useState<any>();
 
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const mysRoles = await api.GetRoles();
+
+      const [permiso] = mysRoles;
+
+      setrol(permiso.rol);
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
 
       setListaTipoDocumento(tipoDocumento);
@@ -74,6 +79,8 @@ export const RevisarSc = () => {
         text: 'Debe ingresar el usuario al cual se va a asignar la solicitud'
       });
     } else {
+      api.AsignarUsuario(usuario, objJson.idsolicitud);
+      history.push('/tramites-servicios-aguas');
     }
   };
 
@@ -87,7 +94,11 @@ export const RevisarSc = () => {
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
         break;
     }
-    const coordinador = values.idusuario;
+    var usuario = values.usuarioasignado;
+    if (usuario == 'vacio' || usuario == undefined) {
+      const us = api.getIdUsuario();
+      usuario = us + '';
+    }
 
     const json: IRegistroSolicitudCitacion<any> = {
       solicitud: {
@@ -109,7 +120,7 @@ export const RevisarSc = () => {
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',
         idUsuario: objJson.idusuario,
-        idUsuarioAsignado: values.usuarioasignado,
+        idUsuarioAsignado: usuario,
         idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
@@ -179,7 +190,9 @@ export const RevisarSc = () => {
                     <div className='img-profile'>
                       <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                       <div className='info-usuario'>
-                        <p>Subdirector</p>
+                        <Form.Item>
+                          <span className='ant-form-text'>{rol}</span>
+                        </Form.Item>
                       </div>
                     </div>
                   </div>
@@ -236,7 +249,7 @@ export const RevisarSc = () => {
                   </div>
                 </div>
 
-                <DatosSolicitud form={form} obj={objJson} />
+                <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} />
 
                 <DatosSolicitante form={form} obj={objJson} />
 
@@ -252,12 +265,23 @@ export const RevisarSc = () => {
                     >
                       Enviar
                     </Button>
-                    <button className='float-right button btn btn-default' style={{ backgroundColor: ' #CBCBCB' }}>
+                    <Button
+                      className='float-right button btn btn-default'
+                      type='primary'
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      onClick={Asignar}
+                    >
                       Guardar
-                    </button>
-                    <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: ' #CBCBCB' }}>
+                    </Button>
+                    <Button
+                      className='mr-3 float-right button btn btn-default'
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      onClick={() => {
+                        history.push('/tramites-servicios-aguas');
+                      }}
+                    >
                       Cancelar
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

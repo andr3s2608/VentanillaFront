@@ -35,10 +35,9 @@ const RevisarSolicitudCoordinador: React.FC<any> = (props: any) => {
   const GetValidateRol = async (toRoles: IRoles[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
-    if (permiso?.rol === 'Coordinador' /*|| permiso?.rol === 'AdminTI'*/) {
+    if (permiso?.rol === 'Coordinador' || permiso?.rol === 'AdminTI') {
       setBandeja(false);
     } else {
-      //console.log('entro');
       setBandeja(true);
     }
   };

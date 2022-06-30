@@ -220,7 +220,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='form-group gov-co-form-group'>
               <label className='text'>Observaciones Adicionales</label>
               <Form.Item
-                initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : 'hola'}
+                initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
                 name='observations'
                 rules={[{ required: false }]}
               >

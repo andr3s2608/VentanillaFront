@@ -25,14 +25,19 @@ import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 
 export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
-  const { obj } = props;
-  const [[l_tramites, l_estados, l_actividades, l_usuarios, l_subredes], setListas] = useState<
-    [any[], any[], any[], any[], any[]]
-  >([[], [], [], [], []]);
+  const { obj, tipo } = props;
+  const [[l_tramites, l_estados, l_actividades, l_subredes], setListas] = useState<[any[], any[], any[], any[]]>([
+    [],
+    [],
+    [],
+    []
+  ]);
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
-  const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
+  const [l_usuarios, setLl_usuarios] = useState<any[]>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [seleccionar, setseleccionar] = useState<boolean>(true);
+  const [tipousuario, settipousuario] = useState<boolean>(true);
 
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
@@ -49,14 +54,28 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
         api.getTipoTramites(),
         api.getEstadosSolicitudAguas(),
         api.getActividades(),
-        api.getFuncionarios(),
         api.getSubredes()
       ]);
+
+      const lusuarios = await api.getFuncionarios();
+      const usuarios: any[] = [];
+      usuarios.push({ idPersona: 'vacio', fullName: 'No Asignar', oid: 'vacio' });
+
+      for (let index = 0; index < lusuarios.length; index++) {
+        usuarios.push(lusuarios.at(index));
+      }
+
+      setLl_usuarios(usuarios);
+
       setListas(resp);
 
       setLDepartamentos(departamentos);
 
-      setLMunicipios(municipios);
+      if (tipo == 'coordinador') {
+        settipousuario(true);
+      } else {
+        settipousuario(false);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -66,6 +85,14 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const Onchangecoordinador = (value: any) => {
+    if (value == 'vacio') {
+      setseleccionar(false);
+    } else {
+      setseleccionar(true);
+    }
+  };
 
   return (
     <>
@@ -176,33 +203,44 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             </div>
           </div>
         </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-          <div className='panel-search'>
-            <div className='form-group gov-co-form-group ml-2'>
-              <div className='gov-co-dropdown'>
-                <Form.Item label='Usuario Asignado' initialValue={''} name='usuarioasignado' rules={[{ required: true }]}>
-                  <SelectComponent options={l_usuarios} defaultValue={''} optionPropkey='idPersona' optionPropLabel='fullName' />
-                </Form.Item>
+        {tipousuario && (
+          <>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group ml-2'>
+                  <div className='gov-co-dropdown'>
+                    <Form.Item label='Usuario Asignado' initialValue={''} name='usuarioasignado' rules={[{ required: false }]}>
+                      <SelectComponent
+                        options={l_usuarios}
+                        onChange={Onchangecoordinador}
+                        defaultValue={'vacio'}
+                        optionPropkey='oid'
+                        optionPropLabel='fullName'
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-          <div className='panel-search'>
-            <div className='form-group gov-co-form-group ml-2'>
-              <div className='gov-co-dropdown'>
-                <Form.Item label='Subred de Jurisdicción' name='subred' rules={[{ required: true }]}>
-                  <SelectComponent
-                    options={l_subredes}
-                    defaultValue={obj?.idSubred}
-                    optionPropkey='idSubRed'
-                    optionPropLabel='zona'
-                  />
-                </Form.Item>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group ml-2'>
+                  <div className='gov-co-dropdown'>
+                    <Form.Item label='Subred de Jurisdicción' name='subred' rules={[{ required: seleccionar }]}>
+                      <SelectComponent
+                        options={l_subredes}
+                        defaultValue={obj?.idSubred}
+                        optionPropkey='idSubRed'
+                        optionPropLabel='zona'
+                        disabled={!seleccionar}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </>
   );
@@ -210,5 +248,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
 interface DatosSolicitud<T> {
   form: FormInstance<T>;
   obj: any;
+  tipo: string;
 }
 export const KeysForm = ['statustramite', 'observations'];

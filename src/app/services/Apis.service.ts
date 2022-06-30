@@ -13,6 +13,7 @@ const {
   REACT_APP_NOTIFICACION,
   REACT_APP_BLOB,
   REACT_APP_FORMATOS,
+  REACT_APP_AGUAS,
   REACT_APP_LOCAL
 } = process.env;
 
@@ -417,17 +418,20 @@ export class ApiService {
   /////////////////////////
 
   AddSolicitudCitacion = (payload: any) =>
-    post({ endpoint: 'https://localhost:5001/api/', url: 'Request/AddSolicitudCitacion', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
   AddSolicitudPrimera = (payload: any) =>
-    post({ endpoint: 'https://localhost:5001/api/', url: 'Request/EnviarSolicitud', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
 
   getSolicitudesUsuario = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyUser/${this.oid}`,
       id: '0'
     });
+
+  AsignarUsuario = (idusuario: string, idsolicitud: string) =>
+    post({ endpoint: 'https://localhost:5001/api/', url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
 
   getSolicitudesUsuarioAsignado = () =>
     get<any>({
@@ -438,35 +442,35 @@ export class ApiService {
 
   getSolicitudesByTipoSolicitud = (idestado: string) =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyidTipo/${idestado}`,
       id: '0'
     });
 
   getTipoTramites = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetTramites`,
       id: '0'
     });
 
   getEstadosSolicitudAguas = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetEstadosSolicitud`,
       id: '0'
     });
 
   getActividades = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetActividades`,
       id: '0'
     });
 
   getSubredes = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSubredes`,
       id: '0'
     });

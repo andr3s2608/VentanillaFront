@@ -58,7 +58,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
       });
       if (obj != null) {
-        if (obj.idTipoPersona == 'Persona Natural') {
+        if (obj.idTipoPersona == 'natural') {
           settipoSolicitante(true);
         } else {
           settipoSolicitante(false);
@@ -197,7 +197,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                       { key: 'juridica', value: 'Persona Jurídica' }
                     ]}
                     onChange={Onchangetipo}
-                    defaultValue={'natural'}
+                    defaultValue={obj?.idPersona ?? 'natural'}
                     optionPropkey='key'
                     optionPropLabel='value'
                   />
