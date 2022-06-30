@@ -46,6 +46,8 @@ export const RevisarSv = () => {
   const [sininformacion, setsininformacion] = useState<boolean>(false);
 
   //
+
+  const [l_usuarios, setLl_usuarios] = useState<any[]>([]);
   const [rol, setrol] = useState<any>();
 
   const getListas = useCallback(
@@ -59,6 +61,16 @@ export const RevisarSv = () => {
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const departamentos = await dominioService.get_departamentos_colombia();
       const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
+
+      const lusuarios = await api.getFuncionarios();
+      const usuarios: any[] = [];
+      usuarios.push({ idPersona: 'vacio', fullName: 'No Asignar', oid: 'vacio' });
+
+      for (let index = 0; index < lusuarios.length; index++) {
+        usuarios.push(lusuarios.at(index));
+      }
+
+      setLl_usuarios(usuarios);
 
       setLDepartamentos(departamentos);
       setListaTipoDocumento(tipoDocumento);
@@ -223,6 +235,28 @@ export const RevisarSv = () => {
     };
 
     await api.AddSolicitudCitacion(json);
+
+    const supportDocumentsEdit: any[] = [];
+    const formData = new FormData();
+
+    const archivo = values.cargarArchivo.file;
+
+    formData.append('file', archivo);
+    formData.append('nameFile', 'Ubicacion' + '_' + objJson.idsolicitud);
+
+    supportDocumentsEdit.push({
+      idSolicitud: objJson.idsolicitud,
+      idTipoDocumentoAdjunto: '3c9cf345-e37d-4ab0-baca-c803dbb8850b',
+      path: `${objJson.idusuario}/Ubicacion_${objJson.idsolicitud}`,
+      idUsuario: objJson.idusuario
+    });
+
+    formData.append('containerName', 'aguahumanos');
+    formData.append('oid', objJson.idusuario);
+
+    await api.uploadFiles(formData);
+    await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+
     history.push('/tramites-servicios-aguas');
   };
 
@@ -342,8 +376,13 @@ export const RevisarSv = () => {
                 <div className='panel-search'>
                   <div className='form-group gov-co-form-group ml-2'>
                     <div className='gov-co-dropdown'>
-                      <Form.Item label='Funcionario' name='funcionario' rules={[{ required: true }]}>
-                        <SelectComponent placeholder='-- Persona Natural --' options={[]} optionPropkey={''} />
+                      <Form.Item label='Funcionario' initialValue={''} name='funcionario' rules={[{ required: true }]}>
+                        <SelectComponent
+                          options={l_usuarios}
+                          defaultValue={'vacio'}
+                          optionPropkey='oid'
+                          optionPropLabel='fullName'
+                        />
                       </Form.Item>
                     </div>
                   </div>
@@ -369,14 +408,12 @@ export const RevisarSv = () => {
                   className='ml-3 float-right button btn btn-default'
                   style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   type='primary'
-                  htmlType='button'
-                  onClick={() => {
-                    history.push('/tramites-servicios/Revision/vista-revision');
-                  }}
+                  htmlType='submit'
                 >
                   Enviar
                 </Button>
                 <Button
+                  type='primary'
                   className='float-right button btn btn-default'
                   style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   disabled
@@ -385,6 +422,7 @@ export const RevisarSv = () => {
                 </Button>
                 <Button
                   className='mr-3 float-right button btn btn-default'
+                  type='primary'
                   style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   onClick={() => {
                     history.push('/tramites-servicios-aguas');

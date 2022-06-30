@@ -235,10 +235,14 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             </div>
           </div>
 
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+          <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
-                <Form.Item label='Número de documento' initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                <p className='text'>
+                  {' '}
+                  <span className='required'>*</span> Número de documento
+                </p>
+                <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
                   <Input
                     allowClear
                     type='text'
@@ -278,12 +282,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
-                <Form.Item
-                  label='Nombre de la entidad'
-                  initialValue={obj?.razonSocial}
-                  rules={[{ required: true }]}
-                  name='nombreEntidad'
-                >
+                <p className='text'>
+                  {' '}
+                  <span className='required'>*</span> Nombre de la entidad
+                </p>
+                <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'

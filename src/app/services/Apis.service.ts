@@ -211,14 +211,13 @@ export class ApiService {
 
   getDocumentosRechazados = (idSolicitud: string) =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/GetDocumentosRechazados/${idSolicitud}`,
       id: '0'
     });
 
   updateStateRequest = (idSolicitud: string, idEstado: string) =>
     put<any>({
-      //endpoint: 'https://localhost:5001/api/',
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/UpdateStateRequest/${idSolicitud}/${idEstado}`,
       id: '1'
@@ -440,6 +439,14 @@ export class ApiService {
       id: '0'
     });
 
+  AddSupportDocumentsAguas = (payload: any[]) =>
+    post({
+      endpoint: 'https://localhost:5001/api/',
+      url: 'SupportDocuments/AddSupportDocuments',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
   getSolicitudesByTipoSolicitud = (idestado: string) =>
     get<any>({
       endpoint: REACT_APP_AGUAS as string,

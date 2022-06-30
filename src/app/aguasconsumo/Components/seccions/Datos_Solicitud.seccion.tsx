@@ -185,7 +185,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 label='Actividad Siguiente'
                 initialValue={obj?.actividadSiguienteSolicitud}
                 name='actsiguiente'
-                rules={[{ required: true }]}
+                rules={[{ required: false }]}
               >
                 <Input
                   type='text'
