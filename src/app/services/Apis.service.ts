@@ -339,7 +339,7 @@ export class ApiService {
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
-      ('https://localhost:5001/api/' as string) +
+      (REACT_APP_INHCREMACION as string) +
       'GeneratePDF/GeneratePDFPrev/' +
       idTramite +
       '/' +
