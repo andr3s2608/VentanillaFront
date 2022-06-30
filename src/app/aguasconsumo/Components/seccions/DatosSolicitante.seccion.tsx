@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 import '../../../../css/estilos.css';
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const { obj, form } = props;
+
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
 
   const { accountIdentifier } = authProvider.getAccount();

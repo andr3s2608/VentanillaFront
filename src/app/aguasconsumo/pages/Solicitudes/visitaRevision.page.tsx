@@ -9,7 +9,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 const VistaRevision: React.FC<any> = (props: any) => {
   const { TabPane } = Tabs;
 
-  return <VisitaRu />;
+  return (
+    <div className='fadeInTop container-fluid'>
+      <Tabs>
+        <VisitaRu />
+      </Tabs>
+    </div>
+  );
 };
 
 export default VistaRevision;

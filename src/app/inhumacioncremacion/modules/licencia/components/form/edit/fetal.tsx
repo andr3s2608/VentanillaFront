@@ -111,7 +111,7 @@ const formatObjJson = (obj: any) => {
       return value;
     }
   };
-  console.log(jsonDt);
+
   return jsonDt;
 };
 const esMadre = (personas: any[]) => personas.filter((m) => m.idTipoPersona === '342d934b-c316-46cb-a4f3-3aac5845d246');

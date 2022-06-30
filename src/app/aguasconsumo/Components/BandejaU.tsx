@@ -18,6 +18,7 @@ import { AnyIfEmpty } from 'react-redux';
 export const BandejaU = (props: IDataSource) => {
   const history = useHistory();
   const { data, datossolucionados } = props;
+
   const [roles, setroles] = useState<IRoles[]>([]);
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
@@ -40,7 +41,6 @@ export const BandejaU = (props: IDataSource) => {
   const onClickValidarInformacion = async (datos: any, tipo: any) => {
     const data = datos;
 
-    localStorage.removeItem('register');
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
     if (tipo == 'tramite') {
@@ -82,9 +82,6 @@ export const BandejaU = (props: IDataSource) => {
 
       render: (_: any, row: any, index: any) => {
         if (row.estado != 'Aprobada' && row.estado != 'Cerrada' && row.estado != 'Anulada' && row.estado != 'Primer Registro') {
-          if (row.estado == 'Visita de Revision') {
-          }
-
           return (
             <>
               <Button
@@ -96,7 +93,8 @@ export const BandejaU = (props: IDataSource) => {
               >
                 Validar Información
               </Button>
-              {row.estado == 'Visita de Revision' && (
+              <br></br>
+              {row.actividadActualSolicitud == 'En visita de revisión' && (
                 <Button
                   type='primary'
                   key={`vali-${index}`}
@@ -239,9 +237,6 @@ export const BandejaU = (props: IDataSource) => {
                               <Form.Item>
                                 <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
                               </Form.Item>
-                              <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                <option>Seleccione</option>
-                              </select>
                             </div>
                           </div>
                         </div>

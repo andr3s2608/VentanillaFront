@@ -16,6 +16,7 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import { UploadOutlined } from '@ant-design/icons';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import { CitacionRevision } from './seccions/Citacion_Revision.seccion';
 import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
@@ -358,50 +359,7 @@ export const RevisarSv = () => {
             <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
 
             <div className='row mt-3 '>
-              <div className='col-lg-12 col-sm-12 col-md-12 mt-4'>
-                <div className='info-tramite mt-2'>
-                  <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                    Citación de revisión . <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                  </p>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                <div className='panel-search'>
-                  <Form.Item label='fecha de citación' name='date' rules={[{ required: true }]}>
-                    <DatepickerComponent picker='date' dateDisabledType='default' dateFormatType='default' />
-                  </Form.Item>
-                </div>
-              </div>
-              <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                <div className='panel-search'>
-                  <div className='form-group gov-co-form-group ml-2'>
-                    <div className='gov-co-dropdown'>
-                      <Form.Item label='Funcionario' initialValue={''} name='funcionario' rules={[{ required: true }]}>
-                        <SelectComponent
-                          options={l_usuarios}
-                          defaultValue={'vacio'}
-                          optionPropkey='oid'
-                          optionPropLabel='fullName'
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
-                <p className='ml-2'>Observaciones adicionales</p>
-
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item label='Observaciones Adicionales Citacion' name='observationsCitacion' rules={[{ required: false }]}>
-                    <Input.TextArea rows={5} maxLength={230} value={'Hola'} style={{ width: '360px' }} />
-                  </Form.Item>
-                </div>
-              </div>
-              <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
-                <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-                  <Button icon={<UploadOutlined />}>Cargar archivo</Button>
-                </Upload>
-              </Form.Item>
+              <CitacionRevision form={form} obj={objJson} tipo={'Funcionario'} />
 
               <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
                 <Button

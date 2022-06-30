@@ -67,9 +67,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [[l_tipos_documento, l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<
-    IDominio[][]
-  >([]);
+  const [[l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<IDominio[][]>([]);
 
   const [type, setType] = useState<[]>([]);
   const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
@@ -83,6 +81,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [idupz, setidupz] = useState<string>('d869bc18-4fca-422a-9a09-a88d3911dc8c');
   const [idbarrio, setidbarrio] = useState<string>('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+
+  const [l_tipos_documento, settipos] = useState<any>();
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -99,13 +99,18 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         dominioService.get_localidades_bogota(),
         dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_upz_by_localidad(idlocalidad),
-        dominioService.get_type(ETipoDominio['Tipo Documento']),
         dominioService.get_type(ETipoDominio['Nivel Educativo']),
         dominioService.get_type(ETipoDominio.Pais),
         dominioService.get_type(ETipoDominio['Tipo de Muerte']),
         dominioService.get_type(ETipoDominio['Estado Civil']),
         dominioService.get_type(ETipoDominio.Etnia)
       ]);
+
+      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const nuevalista = nuevodoc.filter((i) => i.id != '71f659be-9d6b-4169-9ee2-e70bf0d65f92');
+
+      settipos(nuevalista);
+
       const mysRoles = await api.GetRoles();
       setroles(mysRoles);
 
