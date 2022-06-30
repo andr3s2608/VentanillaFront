@@ -440,6 +440,14 @@ export class ApiService {
       id: '0'
     });
 
+  AddSupportDocumentsAguas = (payload: any[]) =>
+    post({
+      endpoint: 'https://localhost:5001/api/',
+      url: 'SupportDocuments/AddSupportDocuments',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
   getSolicitudesByTipoSolicitud = (idestado: string) =>
     get<any>({
       endpoint: REACT_APP_AGUAS as string,

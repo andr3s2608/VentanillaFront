@@ -275,6 +275,7 @@ export const RevisarSc = () => {
                     </Button>
                     <Button
                       className='mr-3 float-right button btn btn-default'
+                      type='primary'
                       style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                       onClick={() => {
                         history.push('/tramites-servicios-aguas');

@@ -190,14 +190,14 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <div className='form-group gov-co-form-group'>
               <div className='gov-co-dropdown'>
                 <p className='text'>Tipo de Solicitante*</p>
-                <Form.Item name='persona' rules={[{ required: true }]}>
+                <Form.Item name='persona' initialValue={obj?.idTipoPersona} rules={[{ required: true }]}>
                   <SelectComponent
                     options={[
                       { key: 'natural', value: 'Persona Natural' },
                       { key: 'juridica', value: 'Persona Jurídica' }
                     ]}
                     onChange={Onchangetipo}
-                    defaultValue={obj?.idPersona ?? 'natural'}
+                    defaultValue={obj?.idTipoPersona}
                     optionPropkey='key'
                     optionPropLabel='value'
                   />
@@ -462,7 +462,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <div className='col-lg-5 col-sm-4 col-md-4 mt-2 ml-2'>
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
-            <Form.Item label='Teléfono de Contacto' initialValue={obj?.telefono} name='telefono' rules={[{ required: true }]}>
+            <Form.Item
+              label='Teléfono de Contacto'
+              initialValue={obj?.telefonoContacto}
+              name='telefono'
+              rules={[{ required: true }]}
+            >
               <Input
                 maxLength={7}
                 type='text'
