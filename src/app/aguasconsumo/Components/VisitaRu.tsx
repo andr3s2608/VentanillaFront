@@ -352,37 +352,39 @@ export const VisitaRu = () => {
                   <p className='ml-2'>Observaciones adicionales</p>
                   <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5} disabled></textarea>
                 </div>
-                <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-                  <Button
-                    className='ml-3 float-right button btn btn-default'
-                    style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                    type='primary'
-                    htmlType='button'
-                    disabled
-                    onClick={() => {
-                      history.push('/tramites-servicios/Revision/primera-vez');
-                    }}
-                  >
-                    Enviar
-                  </Button>
-                  <Button
-                    className='float-right button btn btn-default'
-                    style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                    disabled
-                  >
-                    Guardar
-                  </Button>
-                  <Button
-                    className='mr-3 float-right button btn btn-default'
-                    style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                    type='primary'
-                    disabled
-                    onClick={() => {
-                      history.push('/tramites-servicios-aguas');
-                    }}
-                  >
-                    Cancelar
-                  </Button>
+                <div className='col-lg-8 col-md-8 col-sm-12 mt-4 ml-3'>
+                  <div className='accion ml-5'>
+                    <Button
+                      className='ml-3 float-right button btn btn-default'
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      type='primary'
+                      htmlType='button'
+                      disabled
+                      onClick={() => {
+                        history.push('/tramites-servicios/Revision/primera-vez');
+                      }}
+                    >
+                      Enviar
+                    </Button>
+                    <Button
+                      className='float-right button btn btn-default'
+                      style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                      disabled
+                    >
+                      Guardar
+                    </Button>
+                    <Button
+                      className='mr-3 float-right button btn btn-default'
+                      style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                      type='primary'
+                      disabled
+                      onClick={() => {
+                        history.push('/tramites-servicios-aguas');
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
