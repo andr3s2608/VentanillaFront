@@ -211,14 +211,13 @@ export class ApiService {
 
   getDocumentosRechazados = (idSolicitud: string) =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/GetDocumentosRechazados/${idSolicitud}`,
       id: '0'
     });
 
   updateStateRequest = (idSolicitud: string, idEstado: string) =>
     put<any>({
-      //endpoint: 'https://localhost:5001/api/',
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/UpdateStateRequest/${idSolicitud}/${idEstado}`,
       id: '1'
