@@ -49,10 +49,19 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const [sininformacionRazon, setsininformacionRazon] = useState<boolean>(false);
 
   //
+  const [modificar, setmodificar] = useState<boolean>();
 
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const mysRoles = await api.GetRoles();
+
+      const [permiso] = mysRoles;
+      if (permiso.rol == 'Ciudadano') {
+        setmodificar(true);
+      } else {
+        setmodificar(false);
+      }
+
       const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const tipoDocumentorazon = await api.getTipoDocumeto();
       const listDocument = tipoDocumentorazon.map((res: any) => {
@@ -201,6 +210,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     defaultValue={obj?.idTipoPersona}
                     optionPropkey='key'
                     optionPropLabel='value'
+                    disabled={modificar}
                   />
                 </Form.Item>
               </div>
@@ -227,6 +237,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                       onChange={cambiodocumentoRazon}
                       optionPropkey='id'
                       optionPropLabel='descripcion'
+                      disabled={modificar}
                     />
                   </Form.Item>
                 </div>
@@ -245,6 +256,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     autoComplete='off'
                     pattern={tipocampo}
                     maxLength={longitudmaxima}
+                    disabled={modificar}
                     onKeyPress={(event) => {
                       if (!tipocampovalidacion.test(event.key)) {
                         event.preventDefault();
@@ -287,6 +299,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     maxLength={50}
+                    disabled={modificar}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-0- ]/.test(event.key)) {
                         event.preventDefault();
@@ -318,6 +331,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   onChange={cambiodocumento}
                   optionPropkey='id'
                   optionPropLabel='descripcion'
+                  disabled={modificar}
                 />
               </Form.Item>
             </div>
@@ -342,6 +356,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 autoComplete='off'
                 pattern={tipocampo}
                 maxLength={longitudmaxima}
+                disabled={modificar}
                 onKeyPress={(event) => {
                   if (!tipocampovalidacion.test(event.key)) {
                     event.preventDefault();
@@ -379,6 +394,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 maxLength={50}
                 type='text'
                 className='form-control gov-co-form-control'
+                disabled={modificar}
                 onKeyPress={(event) => {
                   if (!/[a-zA-Z ]/.test(event.key)) {
                     event.preventDefault();
@@ -400,6 +416,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
               <Input
                 type='text'
+                disabled={modificar}
+                maxLength={50}
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
                   if (!/[a-zA-Z ]/.test(event.key)) {
@@ -421,6 +439,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <Form.Item label='Primer Apellido' initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
               <Input
                 maxLength={50}
+                disabled={modificar}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -444,6 +463,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
               <Input
                 maxLength={50}
+                disabled={modificar}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -470,7 +490,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               rules={[{ required: true }]}
             >
               <Input
-                maxLength={7}
+                disabled={modificar}
+                maxLength={12}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -493,7 +514,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <p className='text'>Teléfono de Contacto 2*</p>
             <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
               <Input
-                maxLength={10}
+                maxLength={12}
+                disabled={modificar}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {
@@ -517,6 +539,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
               <input
                 maxLength={50}
+                disabled={modificar}
                 type='text'
                 className='form-control gov-co-form-control'
                 onKeyPress={(event) => {

@@ -22,9 +22,14 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import '../../../../css/estilos.css';
+import { Button } from 'antd';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const { tipo, obj } = props;
 
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
@@ -35,9 +40,18 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
 
+  const [modificar, setmodificar] = useState<boolean>();
+
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const mysRoles = await api.GetRoles();
+
+      const [permiso] = mysRoles;
+      if (permiso.rol == 'Ciudadano') {
+        setmodificar(true);
+      } else {
+        setmodificar(false);
+      }
 
       const departamentos = await dominioService.get_departamentos_colombia();
       const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
@@ -86,6 +100,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                   <Input
                     maxLength={100}
                     type='text'
+                    disabled={modificar}
                     className='form-control gov-co-form-control ml-2'
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9-# ]/.test(event.key)) {
@@ -100,9 +115,13 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </div>
             </div>
             <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '-230px' }}>
-              <button className='ml-4 mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
+              <Button
+                className='ml-4 mr-3 float-right button btn btn-default'
+                type='primary'
+                style={{ backgroundColor: '#CBCBCB' }}
+              >
                 Buscar
-              </button>
+              </Button>
             </div>
           </div>
           <div className='row ml-2'>
@@ -120,6 +139,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                       optionPropkey='idDepartamento'
                       optionPropLabel='descripcion'
                       onChange={onChangeDepartamento}
+                      disabled={modificar}
                     />
                   </Form.Item>
                 </div>
@@ -141,6 +161,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                           options={l_municipios}
                           optionPropkey='idMunicipio'
                           optionPropLabel='descripcion'
+                          disabled={modificar}
                           value={idBogotac}
                           searchValue={idBogotac}
                         />
@@ -161,7 +182,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                         name='localidad'
                         rules={[{ required: true }]}
                       >
-                        <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
+                        <SelectComponent
+                          options={l_localidades}
+                          disabled={modificar}
+                          optionPropkey='idLocalidad'
+                          optionPropLabel='descripcion'
+                        />
                       </Form.Item>
                     </div>
                   </div>
@@ -177,6 +203,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                     <Input
                       maxLength={50}
                       type='text'
+                      disabled={modificar}
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {
                         if (!/[a-zA-Z0-9 ]/.test(event.key)) {
@@ -199,6 +226,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                   <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
                     <Input
                       maxLength={50}
+                      disabled={modificar}
                       type='text'
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {
@@ -225,7 +253,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 name='observations'
                 rules={[{ required: false }]}
               >
-                <Input.TextArea rows={5} maxLength={230} style={{ width: '360px' }} />
+                <Input.TextArea rows={5} maxLength={230} disabled={modificar} style={{ width: '360px' }} />
               </Form.Item>
             </div>
           </div>

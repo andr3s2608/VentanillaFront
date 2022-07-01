@@ -31,7 +31,10 @@ export const Bandeja = (props: IDataSource) => {
       const mysRoles = await api.GetRoles();
       const [permiso] = mysRoles;
 
-      if (permiso?.rol === 'Coordinador' || permiso?.rol === 'AdminTI') {
+      if (
+        permiso?.rol === 'Coordinador'
+        // || permiso?.rol === 'AdminTI'
+      ) {
         setcoordinador(true);
       } else {
         setcoordinador(false);

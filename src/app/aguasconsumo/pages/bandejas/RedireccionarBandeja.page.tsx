@@ -39,10 +39,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const GetValidateRol = async (toRoles: IRoles[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
-    if (
-      permiso?.rol === 'Ciudadano'
-      //|| permiso?.rol === 'AdminTI'
-    ) {
+    if (permiso?.rol === 'Ciudadano' || permiso?.rol === 'AdminTI') {
       const resp = await api.getSolicitudesUsuario();
 
       const datossolucionados: any = await api.getSolicitudesUsuario();
@@ -59,7 +56,10 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
       setGrid(resp);
       setBandeja(false);
     } else {
-      if (permiso?.rol === 'AdminTI' || permiso?.rol === 'Funcionario') {
+      if (
+        // permiso?.rol === 'AdminTI' ||
+        permiso?.rol === 'Funcionario'
+      ) {
         const datos = await api.GetSolicitudesUsuarioSubred();
         const datossolucionados: any = await api.GetSolicitudesUsuarioSubred();
 
