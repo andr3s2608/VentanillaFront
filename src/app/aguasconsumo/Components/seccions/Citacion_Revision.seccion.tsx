@@ -6,7 +6,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
-
+import '../../../../css/estilos.css';
 export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
   const { obj, tipo } = props;
 
@@ -59,7 +59,10 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
       <div className='col-lg-12 col-sm-12 col-md-12 mt-4'>
         <div className='info-tramite mt-2'>
           <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            Citación de revisión . <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+            Citación de revisión . <br />{' '}
+            <small style={{ color: '#000' }}>
+              <span className='required'>*</span> Campos Obligatorios
+            </small>
           </p>
         </div>
       </div>
@@ -67,14 +70,13 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
         <>
           <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
             <div className='panel-search'>
-              <Form.Item label='fecha de citación' name='date' rules={[{ required: !modificar }]}>
+              <Form.Item label='fecha de citación' initialValue={fecha} name='date' rules={[{ required: !modificar }]}>
                 <DatepickerComponent
                   picker='date'
                   dateDisabledType='after'
                   dateFormatType='default'
-                  defaultValue={fecha}
                   value={fecha}
-                  //disabled={modificar}
+                  disabled={modificar}
                 />
               </Form.Item>
             </div>
@@ -96,8 +98,10 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               </div>
             </div>
           </div>
-          <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
-            <p className='ml-2'>Observaciones Adicionales</p>
+          <div className='col-lg-11 col-sm-12 col-md-11 mt-3 ml-1'>
+            <p className='text'>
+              <span className='required'>*</span> Observaciones Adicionales
+            </p>
 
             <div className='form-group gov-co-form-group'>
               <Form.Item initialValue={observacion} name='observationsCitacion' rules={[{ required: false }]}>
@@ -114,13 +118,19 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
           </div>
         </>
       )}
-
       {tipo == 'Funcionario' && (
-        <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
-          <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-            <Button icon={<UploadOutlined />}>Cargar archivo</Button>
-          </Upload>
-        </Form.Item>
+        <>
+          <div className='col-md-6 col-lg-6 col-sm-12 ml-1'>
+            <p className='text'>
+              <span className='required'>*</span>
+            </p>
+            <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
+              <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+                <Button icon={<UploadOutlined />}>Cargar archivo</Button>
+              </Upload>
+            </Form.Item>
+          </div>
+        </>
       )}
     </>
   );

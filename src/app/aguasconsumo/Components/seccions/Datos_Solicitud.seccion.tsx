@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
+import '../../../../css/estilos.css';
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
@@ -100,13 +100,19 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
         <div className='col-lg-12 col-sm-12 col-md-12'>
           <div className='info-tramite mt-2'>
             <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Datos de la solicitud. <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
+              Datos de la solicitud. <br />{' '}
+              <small style={{ color: ' #000' }}>
+                <span className='required'>*</span> Campos Obligatorios
+              </small>
             </p>
           </div>
         </div>
         <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
           <div className='panel-search'>
-            <p>Número de radicado</p>
+            <p className='text'>
+              <span className='required'>*</span>
+              Número de radicado
+            </p>
             <div className='form-group gov-co-form-group'>
               <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
                 <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
@@ -116,7 +122,9 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
         </div>
         <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
           <div className='panel-search'>
-            <p>Tipo de tramite</p>
+            <p className='text'>
+              <span className='required'>*</span> Tipo de tramite
+            </p>
             <div className='form-group gov-co-form-group'>
               <Form.Item initialValue={obj?.idtipodeTramite} name='tipotramite' rules={[{ required: true }]}>
                 <SelectComponent
@@ -132,12 +140,14 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
 
         <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
           <div className='panel-search'>
-            <p>Estado Solicitud</p>
             <div className='form-group gov-co-form-group'>
               <div className='gov-co-dropdown'>
                 <div className='form-group gov-co-form-group '>
                   <div className='gov-co-dropdown'>
-                    <Form.Item label='Estado' initialValue={obj.idestado} name='estado' rules={[{ required: true }]}>
+                    <p className='text'>
+                      <span className='required'>*</span> Estado
+                    </p>
+                    <Form.Item initialValue={obj.idestado} name='estado' rules={[{ required: true }]}>
                       <SelectComponent
                         options={l_estados}
                         defaultValue={obj?.idestado}
@@ -151,9 +161,11 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             </div>
           </div>
         </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
           <div className='panel-search'>
-            <p>Actividad Actual</p>
+            <p className='text'>
+              <span className='required'>*</span> Actividad Actual
+            </p>
             <div className='form-group gov-co-form-group ml-2'>
               <div className='gov-co-dropdown'>
                 <Form.Item initialValue={obj?.idactividadActualSolicitud} name='actactual' rules={[{ required: true }]}>
@@ -170,7 +182,9 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
         </div>
         <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
           <div className='panel-search'>
-            <p>Actividad Siguiente</p>
+            <p className='text'>
+              <span className='required'>*</span> Actividad Siguiente
+            </p>
             <div className='form-group gov-co-form-group'>
               <Form.Item initialValue={obj?.actividadSiguienteSolicitud} name='actsiguiente' rules={[{ required: false }]}>
                 <Input
@@ -193,10 +207,12 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
           <>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
-                <p>Usuario Asignado</p>
+                <p className='text'>
+                  <span className='required'>*</span> Usuario Asignado
+                </p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <Form.Item initialValue={''} name='usuarioasignado' rules={[{ required: false }]}>
+                    <Form.Item initialValue={'vacio'} name='usuarioasignado' rules={[{ required: false }]}>
                       <SelectComponent
                         options={l_usuarios}
                         onChange={Onchangecoordinador}
@@ -211,10 +227,13 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             </div>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
-                <p>Subred de jurisdicción </p>
+                <p className='text'>
+                  <span className='required'>*</span>
+                  Subred de jurisdicción
+                </p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <Form.Item name='subred' rules={[{ required: seleccionar }]}>
+                    <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: seleccionar }]}>
                       <SelectComponent
                         options={l_subredes}
                         defaultValue={obj?.idSubred}

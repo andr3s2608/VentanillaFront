@@ -220,7 +220,7 @@ export const Servicios = () => {
                       <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                       <div className='info-usuario'>
                         <Form.Item>
-                          <span className='ant-form-text'>{rol}</span>
+                          <span className='ant-form-text mr-2 text'>{rol}</span>
                         </Form.Item>
                       </div>
                     </div>
@@ -280,15 +280,20 @@ export const Servicios = () => {
                 <div className='row'>
                   <div className='col-lg-12 col-sm-12 col-md-12'>
                     <div className='info-tramite mt-2'>
-                      <p className='ml-3' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        Datos de la solicitud. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                      <p className='ml-3 mt-5' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        <br /> Datos de la solicitud. <br />
+                        <small style={{ color: '#000' }}>
+                          <span className='required'>*</span> Campos Obligatorios
+                        </small>
                       </p>
                     </div>
                   </div>
                   <div className='col-lg-6 col-sm-6 col-md-6 mt-2 ml-2'>
                     <div className='panel-search'>
                       <div className='form-group gov-co-form-group ml-2'>
-                        <p className='text'>Tipo de tramite *</p>
+                        <p className='text'>
+                          <span className='required'>*</span> Tipo de tramite
+                        </p>
                         <Form.Item
                           name='tipotramite'
                           initialValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
@@ -313,28 +318,30 @@ export const Servicios = () => {
                 </div>
                 <div className='row mt-3 '>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-                    <Button
-                      className='ml-4 float-right button btn btn-default'
-                      style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                      type='primary'
-                      htmlType='submit'
-                    >
-                      Enviar
-                    </Button>
-                    <Button
-                      className='float-right button btn btn-default'
-                      style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                      type='primary'
-                      htmlType='submit'
-                      onClick={() => {
-                        settemporal(true);
-                      }}
-                    >
-                      Guardar
-                    </Button>
-                    <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
-                      Cancelar
-                    </button>
+                    <div className='accion ml-4'>
+                      <Button
+                        className='ml-4 float-right button btn btn-default'
+                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                        type='primary'
+                        htmlType='submit'
+                      >
+                        Enviar
+                      </Button>
+                      <Button
+                        className='float-right button btn btn-default'
+                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                        type='primary'
+                        htmlType='submit'
+                        onClick={() => {
+                          settemporal(true);
+                        }}
+                      >
+                        Guardar
+                      </Button>
+                      <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+                        Cancelar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

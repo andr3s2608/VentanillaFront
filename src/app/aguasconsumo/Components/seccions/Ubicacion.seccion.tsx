@@ -90,7 +90,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       <div className='col-lg-12 col-sm-12 col-md-12 '>
         <div className='info-tramite mt-2'>
           <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            Información del lugar de revisión . <br /> <small style={{ color: ' #000' }}>* Campos Obligatorios</small>
+            Información del lugar de revisión . <br />{' '}
+            <small style={{ color: ' #000' }}>
+              <span className='required'>* </span> Campos Obligatorios
+            </small>
           </p>
           <div className='row'>
             <div className='col-lg-9 col-sm-12 col-md-9' style={{ marginLeft: '5px' }}>
@@ -128,7 +131,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <label className='text'>Departamento*</label>
+                  <label className='text'>
+                    <span className='required'>* </span> Departamento
+                  </label>
                   <Form.Item
                     name='departamento'
                     initialValue={obj?.departamento ? obj?.departamento : idDepartamentoBogota}
@@ -151,7 +156,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 <div className='col-lg-6 col-sm-6 col-md-4 mt-2'>
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group'>
-                      <label className='text'>Municipio*</label>
+                      <label className='text'>
+                        <span className='required'>* </span> Municipio
+                      </label>
                       <Form.Item
                         name='municipio'
                         initialValue={obj?.municipio ? obj?.municipio : idBogotac}
@@ -176,7 +183,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group '>
-                      <label className='text'>Localidad*</label>
+                      <label className='text'>
+                        <span className='required'>* </span> Localidad
+                      </label>
                       <Form.Item
                         initialValue={obj?.localidad ? obj?.localidad : idlocalidad}
                         name='localidad'
@@ -198,7 +207,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <label className='text'>Vereda*</label>
+                  <label className='text'>
+                    <span className='required'>* </span> Vereda
+                  </label>
                   <Form.Item initialValue={obj?.vereda} name='vereda' rules={[{ required: true }]}>
                     <Input
                       maxLength={50}
@@ -222,7 +233,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <div className='col-lg-5 col-sm-4 col-md-5 mt-2 '>
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
-                  <label className='text'>Sector*</label>
+                  <label className='text'>
+                    <span className='required'>* </span> Sector
+                  </label>
                   <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
                     <Input
                       maxLength={50}
@@ -247,7 +260,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         <div className='row ml-2'>
           <div className='col-lg-8 col-sm-12 col-md-8'>
             <div className='form-group gov-co-form-group'>
-              <label className='text'>Observaciones Adicionales</label>
+              <label className='text'>
+                <span className='required'>*</span>Observaciones Adicionales
+              </label>
               <Form.Item
                 initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
                 name='observations'

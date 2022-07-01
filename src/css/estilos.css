@@ -170,10 +170,6 @@ a.nav-link.hero_b {
   text-align: left !important;
 }
 
-.bandeja_panel {
-  background-color: rgba(0, 0, 0, 0.03);
-}
-
 .bandeja_panel a.nav-link {
   border-top: 2px solid #FF7F26 !important;
   font-family: 'Roboto', sans-serif !important;
@@ -204,6 +200,11 @@ a.nav-link.hero_b {
 .text {
   font-family: 'Roboto', sans-serif !important;
   font-size: 16px !important;
+}
+
+.required {
+  color: red;
+  font-size: 20px;
 }
 
 @media only screen and (max-width: 600px) {

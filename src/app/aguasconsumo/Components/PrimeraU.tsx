@@ -91,7 +91,7 @@ export const PrimeraU = () => {
                 </div>
                 <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
                   <div className='panel-search'>
-                    <p>Número de radicado</p>
+                    <p className='text'>Número de radicado</p>
                     <div className='form-group gov-co-form-group'>
                       <Form.Item>
                         <input
