@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../../src/scss/antd/App.css';
+
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
@@ -21,6 +21,7 @@ import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/I
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
 import moment from 'moment';
+import '../../../css/estilos.css';
 
 export const RevisarSv = () => {
   const objJson: any = EditAguas();
@@ -279,120 +280,129 @@ export const RevisarSv = () => {
   };
 
   return (
-    <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
-      <div>
-        <section className='info-panel'>
-          <div className='container'>
-            <div className='row mt-5'>
-              <div className='col-lg-6 col-md-6 col-sm-6'>
-                <div className='img-bogota'>
-                  <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <section className='info-panel'>
+              <div className='container'>
+                <div className='row mt-5'>
+                  <div className='col-lg-6 col-md-6 col-sm-6'>
+                    <div className='img-bogota '>
+                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
+                    </div>
+                  </div>
+                  <div className='col-lg-6 col-md-6 col-sm-6'>
+                    <div className='img-profile'>
+                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
+                      <div className='info-usuario'>
+                        <Form.Item>
+                          <span className='ant-form-text mr-2 text'>{rol}</span>
+                        </Form.Item>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-6'>
-                <div className='img-profile'>
-                  <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                  <div className='info-usuario'>
-                    <Form.Item>
-                      <span className='ant-form-text'>{rol}</span>
-                    </Form.Item>
+
+                <div className='row mt-2'>
+                  <div className='col-lg-6 col-sm-12 col-md-6'>
+                    <div className='info-secion'>
+                      <nav aria-label='breadcrumb'>
+                        <ol className='breadcrumb'>
+                          <li className='breadcrumb-item'>
+                            <a href='#'>Inicio</a>
+                          </li>
+                          <li className='breadcrumb-item'>
+                            <a href='#'>Bandeja de entrada</a>
+                          </li>
+                          <li className='breadcrumb-item active' aria-current='page'>
+                            Revisar solicitud
+                          </li>
+                        </ol>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+                <section className='panel-menu'>
+                  <div className='container'>
+                    <div className='row'>
+                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                        <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
+                          <nav className='nav panel'>
+                            <a className='nav-link active' href='#'>
+                              1. Solicitar revisión
+                            </a>
+                            <a className='nav-link' href='#'>
+                              2. Crear Solicitud
+                            </a>
+                            <a className='nav-link' href='#'>
+                              3. En gestión
+                            </a>
+                            <a className='nav-link disabled' href='#'>
+                              4. Respuesta
+                            </a>
+                          </nav>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <div className='row mt-5'>
+                  <div className='col-lg-12 col-md-12'>
+                    <div className='info-tramite mt-3 ml-3'>
+                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <DatosSolicitud form={form} obj={objJson} tipo={'validador'} />
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <DatosSolicitante form={form} obj={null} />
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <UbicacionPersona form={form} obj={null} tipo={null} />
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <CitacionRevision form={form} obj={objJson} tipo={'Funcionario'} />
+                </div>
+                <div className='row mt-3 '>
+                  <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
+                    <div className='accion ml-4'>
+                      <Button
+                        className='ml-3 float-right button btn btn-default'
+                        style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                        type='primary'
+                        htmlType='submit'
+                      >
+                        Enviar
+                      </Button>
+                      <Button
+                        type='primary'
+                        className='float-right button btn btn-default'
+                        style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                        disabled
+                      >
+                        Guardar
+                      </Button>
+                      <Button
+                        className='mr-3 float-right button btn btn-default'
+                        type='primary'
+                        style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                        onClick={() => {
+                          history.push('/tramites-servicios-aguas');
+                        }}
+                      >
+                        Cancelar
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className='row mt-2'>
-              <div className='col-lg-6 col-sm-12 col-md-6'>
-                <div className='info-secion'>
-                  <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
-                    <ol className='breadcrumb'>
-                      <li className='breadcrumb-item'>
-                        <a href='#'>Inicio</a>
-                      </li>
-                      <li className='breadcrumb-item'>
-                        <a href='#'>Bandeja de entrada</a>
-                      </li>
-                      <li className='breadcrumb-item active' aria-current='page'>
-                        Revisar solicitud
-                      </li>
-                    </ol>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className='panel-menu'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-                <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                  <nav className='nav panel'>
-                    <a className='nav-link active' href='#'>
-                      1. Solicitar revisión
-                    </a>
-                    <a className='nav-link' href='#'>
-                      2. Crear Solicitud
-                    </a>
-                    <a className='nav-link' href='#'>
-                      3. En gestión
-                    </a>
-                    <a className='nav-link disabled' href='#'>
-                      4. Respuesta
-                    </a>
-                  </nav>
-                </div>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col-lg-12 col-md-12'>
-                <div className='info-tramite mt-3 ml-2'>
-                  <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
-                </div>
-              </div>
-            </div>
-
-            <DatosSolicitud form={form} obj={objJson} tipo={'validador'} />
-
-            <DatosSolicitante form={form} obj={objJson} />
-
-            <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
-
-            <div className='row mt-3 '>
-              <CitacionRevision form={form} obj={objJson} tipo={'Funcionario'} />
-
-              <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-                <Button
-                  className='ml-3 float-right button btn btn-default'
-                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                  type='primary'
-                  htmlType='submit'
-                >
-                  Enviar
-                </Button>
-                <Button
-                  type='primary'
-                  className='float-right button btn btn-default'
-                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                  disabled
-                >
-                  Guardar
-                </Button>
-                <Button
-                  className='mr-3 float-right button btn btn-default'
-                  type='primary'
-                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                  onClick={() => {
-                    history.push('/tramites-servicios-aguas');
-                  }}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          </Form>
+        </div>
       </div>
-    </Form>
+    </div>
   );
 };

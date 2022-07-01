@@ -205,7 +205,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                       { key: 'juridica', value: 'Persona Jurídica' }
                     ]}
                     onChange={Onchangetipo}
-                    defaultValue={obj?.idPersona ?? 'natural'}
+                    defaultValue={obj?.idTipoPersona ?? 'natural'}
                     optionPropkey='key'
                     optionPropLabel='value'
                   />

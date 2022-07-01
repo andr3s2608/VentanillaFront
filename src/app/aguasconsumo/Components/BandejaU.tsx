@@ -206,7 +206,7 @@ export const BandejaU = (props: IDataSource) => {
                 </div>
               </div>
             </div>
-            <div className='col-lg-8 col-md-8 col-sm-8 mt-3'>
+            <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
               <ul className='nav nav-tabs' role='tablist'>
                 <li className='nav-item'>
                   <a
@@ -263,7 +263,13 @@ export const BandejaU = (props: IDataSource) => {
                   </div>
                   <div className='row'>
                     <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                      <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
+                      <Table
+                        id='tableGen'
+                        dataSource={data}
+                        columns={structureColumns}
+                        pagination={{ pageSize: Paginas }}
+                        className='tableGen'
+                      />
                     </div>
                   </div>
                 </div>
@@ -309,6 +315,7 @@ export const BandejaU = (props: IDataSource) => {
                         dataSource={datossolucionados}
                         columns={structureColumns}
                         pagination={{ pageSize: Paginas }}
+                        className='tableGen'
                       />
                     </div>
                   </div>
