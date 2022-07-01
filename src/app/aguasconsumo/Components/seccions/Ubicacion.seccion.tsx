@@ -127,7 +127,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <Button
                 className='ml-4 mr-3 float-right button btn btn-default'
                 type='primary'
-                style={{ backgroundColor: '#CBCBCB' }}
+                style={{ backgroundColor: '#CBCBCB', border: '0px' }}
               >
                 Buscar
               </Button>
@@ -161,7 +161,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <>
                 {mostrar && (
                   <>
-                    <div className='col-lg-6 col-sm-6 col-md-4 mt-2'>
+                    <div className='col-lg-5 col-sm-6 col-md-5 mt-2'>
                       <div className='panel-search'>
                         <div className='form-group gov-co-form-group'>
                           <label className='text'>
@@ -271,14 +271,14 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <div className='col-lg-8 col-sm-12 col-md-8'>
             <div className='form-group gov-co-form-group'>
               <label className='text'>
-                <span className='required'>*</span>Observaciones Adicionales
+                <span className='required'>*</span> Observaciones Adicionales
               </label>
               <Form.Item
                 initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
                 name='observations'
                 rules={[{ required: false }]}
               >
-                <Input.TextArea rows={5} maxLength={230} disabled={modificar} style={{ width: '360px' }} />
+                <Input.TextArea rows={5} maxLength={230} disabled={modificar} style={{ width: '300px' }} />
               </Form.Item>
             </div>
           </div>
