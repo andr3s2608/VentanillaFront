@@ -424,7 +424,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
             <p className='text'>
-              <span className='required'>*</span> Segundo Nombre
+              <span className='text'></span> Segundo Nombre
             </p>
             <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
               <Input
@@ -477,7 +477,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           <div className='form-group gov-co-form-group'>
             <p className='text'>
               {' '}
-              <span className='required'>* </span> Segundo Apellido
+              <span className='text'> </span> Segundo Apellido
             </p>
             <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
               <Input
@@ -530,7 +530,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         <div className='panel-search'>
           <div className='form-group gov-co-form-group'>
             <p className='text'>
-              <span className='required'>* </span>
+              <span className='text'> </span>
               Teléfono de Contacto 2
             </p>
             <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
