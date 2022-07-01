@@ -39,8 +39,10 @@ const RevisarSolicitudCoordinador: React.FC<any> = (props: any) => {
       permiso?.rol === 'Coordinador'
       //|| permiso?.rol === 'AdminTI'
     ) {
+      console.log('entro');
       setBandeja(false);
     } else {
+      console.log('hola?');
       setBandeja(true);
     }
   };

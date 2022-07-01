@@ -71,6 +71,7 @@ const formatObjJson = (obj: any) => {
     idSubred: obj.idSubred,
     idestado: obj.idEstado,
     idusuario: obj.idUsuario,
+    idusuarioAsignado: obj.idUsuarioAsignado,
     idUbicacion: obj.idUbicacion,
     estado: obj.estado,
     idactividadActualSolicitud: obj.idActividadActualSolicitud,

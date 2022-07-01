@@ -41,6 +41,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
 
   const [modificar, setmodificar] = useState<boolean>();
+  const [mostrar, setmostrar] = useState<boolean>(false);
 
   const getListas = useCallback(
     async () => {
@@ -54,12 +55,17 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       }
 
       const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
+      const municipios = await dominioService.get_all_municipios_by_departamento(obj?.departamento ?? idDepartamentoBogota);
+      if (obj?.departamento) {
+        setIdBogota('');
+      }
+
       const localidades = await dominioService.get_localidades_bogota();
 
       setLDepartamentos(departamentos);
       setLLocalidades(localidades);
       setLMunicipios(municipios);
+      setmostrar(true);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -153,29 +159,33 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
             {tipo != null && (
               <>
-                <div className='col-lg-6 col-sm-6 col-md-4 mt-2'>
-                  <div className='panel-search'>
-                    <div className='form-group gov-co-form-group'>
-                      <label className='text'>
-                        <span className='required'>* </span> Municipio
-                      </label>
-                      <Form.Item
-                        name='municipio'
-                        initialValue={obj?.municipio ? obj?.municipio : idBogotac}
-                        rules={[{ required: true }]}
-                      >
-                        <SelectComponent
-                          options={l_municipios}
-                          optionPropkey='idMunicipio'
-                          optionPropLabel='descripcion'
-                          disabled={modificar}
-                          value={idBogotac}
-                          searchValue={idBogotac}
-                        />
-                      </Form.Item>
+                {mostrar && (
+                  <>
+                    <div className='col-lg-6 col-sm-6 col-md-4 mt-2'>
+                      <div className='panel-search'>
+                        <div className='form-group gov-co-form-group'>
+                          <label className='text'>
+                            <span className='required'>* </span> Municipio
+                          </label>
+                          <Form.Item
+                            name='municipio'
+                            initialValue={obj?.municipio ? obj?.municipio : idBogotac}
+                            rules={[{ required: true }]}
+                          >
+                            <SelectComponent
+                              options={l_municipios}
+                              optionPropkey='idMunicipio'
+                              optionPropLabel='descripcion'
+                              disabled={modificar}
+                              value={idBogotac}
+                              searchValue={idBogotac}
+                            />
+                          </Form.Item>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </>
             )}
             {tipo == null && (

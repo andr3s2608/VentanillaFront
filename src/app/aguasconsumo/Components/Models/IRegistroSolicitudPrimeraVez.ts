@@ -7,6 +7,7 @@ export interface Solicitud<T> {
   numeroRadicado: number;
   idTipoTramite?: string;
   idPersona?: string;
+  idUsuario?: string;
   idUbicacion?: string;
 
   temporal: boolean;

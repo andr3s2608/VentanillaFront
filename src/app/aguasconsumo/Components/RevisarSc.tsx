@@ -79,7 +79,7 @@ export const RevisarSc = () => {
         text: 'Debe ingresar el usuario al cual se va a asignar la solicitud'
       });
     } else {
-      api.AsignarUsuario(usuario, objJson.idsolicitud);
+      await api.AsignarUsuario(usuario, objJson.idsolicitud);
       history.push('/tramites-servicios-aguas');
     }
   };
@@ -115,7 +115,7 @@ export const RevisarSc = () => {
         idSubred: values.subred,
         idActividadActualSolicitud: values.actactual,
         actividadActualSolicitud: '',
-        actividadSiguienteSolicitud: values.actsiguiente,
+        actividadSiguienteSolicitud: values.actactual,
 
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',

@@ -142,6 +142,7 @@ export const Servicios = () => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
+    const usuario = api.getIdUsuario();
 
     const dep = values.departamento;
     var mun = values.municipio;
@@ -154,8 +155,8 @@ export const Servicios = () => {
     const json: IRegistroSolicitudPrimeraVez<any> = {
       solicitud: {
         idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-
         numeroRadicado: 0,
+        idUsuario: usuario,
         idPersona: '00000000-0000-0000-0000-000000000000',
         idUbicacion: '00000000-0000-0000-0000-000000000000',
 

@@ -212,11 +212,11 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 </p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <Form.Item initialValue={'vacio'} name='usuarioasignado' rules={[{ required: false }]}>
+                    <Form.Item initialValue={obj?.idusuario ?? 'vacio'} name='usuarioasignado' rules={[{ required: false }]}>
                       <SelectComponent
                         options={l_usuarios}
                         onChange={Onchangecoordinador}
-                        defaultValue={'vacio'}
+                        defaultValue={obj?.idusuario ?? 'vacio'}
                         optionPropkey='oid'
                         optionPropLabel='fullName'
                       />

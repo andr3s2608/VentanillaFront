@@ -90,7 +90,12 @@ export const Bandeja = (props: IDataSource) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (row.estado != 'Aprobada' && row.estado != 'Cerrada' && row.estado != 'Anulada') {
+        if (
+          row.estado != 'Aprobada' &&
+          row.estado != 'Cerrada' &&
+          row.estado != 'Anulada' &&
+          row.actividadActualSolicitud != 'En visita de revisión'
+        ) {
           return (
             <Button
               type='primary'
