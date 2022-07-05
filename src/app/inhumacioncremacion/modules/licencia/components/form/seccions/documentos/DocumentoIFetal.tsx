@@ -162,37 +162,42 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
         </Upload>
       </Form.Item>
 
-      {files?.length ? (
-        <Form.Item
-          label='Otros'
-          name='fileOtrosDocumentos'
-          valuePropName='fileList'
-          rules={[{ required: false }]}
-          getValueFromEvent={normFile}
-        >
-          <Button
-            type='default'
-            shape='round'
-            style={{ marginRight: '10px' }}
-            icon={<EyeOutlined />}
-            size='middle'
-            onClick={() => onEventFile('Otros_Documentos')}
-            disabled={isFileViwerDisabled('Otros_Documentos')}
-          >{`${'Otros_Documentos'}.pdf`}</Button>
-        </Form.Item>
-      ) : null}
-
-      <Form.Item
-        label='Otros'
-        name='fileOtrosDocumentos'
-        valuePropName='fileList'
-        rules={[{ required: false }]}
-        getValueFromEvent={normFile}
-      >
-        <Upload name='fileOtrosDocumentos' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-        </Upload>
-      </Form.Item>
+      {isEditOtros() && (
+        <>
+          {files?.length ? (
+            <Form.Item label='Acta Notarial Fiscal' name='fileActaNotarialFiscal' valuePropName='fileList'>
+              <Button
+                type='default'
+                shape='round'
+                style={{ marginRight: '10px' }}
+                icon={<EyeOutlined />}
+                size='middle'
+                onClick={() => onEventFile('Acta_Notarial_Fiscal')}
+                disabled={isFileViwerDisabled('Acta_Notarial_Fiscal')}
+              >
+                Acta_Notarial_del_Fiscal.pdf
+              </Button>
+            </Form.Item>
+          ) : null}
+          <Form.Item
+            label='Acta Notarial Fiscal'
+            name='fileActaNotarialFiscal'
+            valuePropName='fileList'
+            getValueFromEvent={normFile}
+            rules={[{ required: false }]}
+          >
+            <Upload
+              name='fileActaNotarialFiscal'
+              maxCount={1}
+              beforeUpload={() => false}
+              listType='text'
+              accept='application/pdf'
+            >
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+        </>
+      )}
 
       {isCremacion && (
         <>
@@ -345,41 +350,40 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
               </Form.Item>
             </>
           )}
-
-          {files?.length ? (
-            <Form.Item label='Acta Notarial Fiscal' name='fileActaNotarialFiscal' valuePropName='fileList'>
-              <Button
-                type='default'
-                shape='round'
-                style={{ marginRight: '10px' }}
-                icon={<EyeOutlined />}
-                size='middle'
-                onClick={() => onEventFile('Acta_Notarial_Fiscal')}
-                disabled={isFileViwerDisabled('Acta_Notarial_Fiscal')}
-              >
-                Acta_Notarial_del_Fiscal.pdf
-              </Button>
-            </Form.Item>
-          ) : null}
-          <Form.Item
-            label='Acta Notarial Fiscal'
-            name='fileActaNotarialFiscal'
-            valuePropName='fileList'
-            getValueFromEvent={normFile}
-            rules={[{ required: false }]}
-          >
-            <Upload
-              name='fileActaNotarialFiscal'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
         </>
       )}
+
+      {files?.length ? (
+        <Form.Item
+          label='Otros'
+          name='fileOtrosDocumentos'
+          valuePropName='fileList'
+          rules={[{ required: false }]}
+          getValueFromEvent={normFile}
+        >
+          <Button
+            type='default'
+            shape='round'
+            style={{ marginRight: '10px' }}
+            icon={<EyeOutlined />}
+            size='middle'
+            onClick={() => onEventFile('Otros_Documentos')}
+            disabled={isFileViwerDisabled('Otros_Documentos')}
+          >{`${'Otros_Documentos'}.pdf`}</Button>
+        </Form.Item>
+      ) : null}
+
+      <Form.Item
+        label='Otros'
+        name='fileOtrosDocumentos'
+        valuePropName='fileList'
+        rules={[{ required: false }]}
+        getValueFromEvent={normFile}
+      >
+        <Upload name='fileOtrosDocumentos' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+          <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+        </Upload>
+      </Form.Item>
     </>
   );
 };
