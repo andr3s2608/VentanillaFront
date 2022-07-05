@@ -68,9 +68,12 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
       </div>
       {mostrar && (
         <>
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+          <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-3 '>
             <div className='panel-search'>
-              <Form.Item label='fecha de citación' initialValue={fecha} name='date' rules={[{ required: !modificar }]}>
+              <p className='text'>
+                <span className='required'>*</span> Fecha de citación
+              </p>
+              <Form.Item initialValue={fecha} name='date' rules={[{ required: !modificar }]}>
                 <DatepickerComponent
                   picker='date'
                   dateDisabledType='after'
@@ -81,11 +84,14 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               </Form.Item>
             </div>
           </div>
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+          <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
             <div className='panel-search'>
-              <div className='form-group gov-co-form-group ml-2'>
+              <div className='form-group gov-co-form-group mr-4'>
                 <div className='gov-co-dropdown'>
-                  <Form.Item label='Funcionario' initialValue={funcionario} name='funcionario' rules={[{ required: !modificar }]}>
+                  <p className='text'>
+                    <span className='required'>*</span> Funcionario
+                  </p>
+                  <Form.Item initialValue={funcionario} name='funcionario' rules={[{ required: !modificar }]}>
                     <SelectComponent
                       options={l_usuarios}
                       defaultValue={funcionario}
@@ -98,7 +104,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               </div>
             </div>
           </div>
-          <div className='col-lg-11 col-sm-12 col-md-11 mt-3 ml-1'>
+          <div className='col-lg-11 col-sm-12 col-md-11 mt-3 ml-3'>
             <p className='text'>
               <span className='required'>*</span> Observaciones Adicionales
             </p>
@@ -111,7 +117,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
                   rows={5}
                   maxLength={230}
                   value={''}
-                  style={{ width: '360px' }}
+                  style={{ width: '300px' }}
                 />
               </Form.Item>
             </div>
@@ -120,9 +126,9 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
       )}
       {tipo == 'Funcionario' && (
         <>
-          <div className='col-md-6 col-lg-6 col-sm-12 ml-1'>
+          <div className='col-md-6 col-lg-6 col-sm-12 ml-3'>
             <p className='text'>
-              <span className='required'>*</span>
+              <span className='required'>*</span> Cargar archivo
             </p>
             <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
               <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
