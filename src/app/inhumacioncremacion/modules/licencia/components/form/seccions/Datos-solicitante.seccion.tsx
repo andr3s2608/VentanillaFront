@@ -133,7 +133,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.cementerioDepartamento);
 
-    if (iddepart != undefined) {
+    if (obj?.cementerioDepartamento != undefined) {
       const idMun: string = iddepart[0].idDepartamento + '';
       const mun = (await dominioService).get_all_municipios_by_departamento(idMun);
 
@@ -143,7 +143,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       setmunicipioCementerio(idmuni[0].descripcion);
     }
 
-    if (filtropais != undefined) {
+    if (obj?.cementerioPais != undefined) {
       setPaisCementerio(filtropais[0].descripcion);
       setmunicipioCementerio(obj?.cementerioCiudad);
     }

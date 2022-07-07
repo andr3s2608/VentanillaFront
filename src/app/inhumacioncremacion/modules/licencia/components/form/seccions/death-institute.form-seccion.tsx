@@ -311,7 +311,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false, max: 20 }]}>
+            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: true }]}>
               <SelectComponent options={l_seccionales} optionPropkey='CODIGO' optionPropLabel='DESCRIP' />
             </Form.Item>
             <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: false, max: 5 }]}>

@@ -99,7 +99,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const idUsuario = api.getIdUsuario();
 
-  const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
   //#region Listados
 
@@ -128,12 +127,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       setUser(userres);
       setListas(resp);
 
-      if (edit) {
-        const support = await api.getSupportDocuments(objJosn?.idSolicitud);
-        const typeList = await api.GetAllTypeValidation();
-        setSupports(support);
-        setType(typeList);
-      }
+      const support = await api.getSupportDocuments(objJosn?.idSolicitud);
+      const typeList = await api.GetAllTypeValidation();
+      setSupports(support);
+      setType(typeList);
 
       const all = await api.getCertificado(objJosn?.certificado);
 
