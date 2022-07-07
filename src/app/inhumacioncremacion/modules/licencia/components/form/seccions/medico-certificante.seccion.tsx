@@ -21,6 +21,10 @@ export const InformacionMedicoCertificante = (props: any) => {
   const [NROIDENT, setNROIDENT] = useState<string | undefined>();
   const [NOMBRES, setNOMBRES] = useState<string | undefined>();
   const [TIPO_I, setTIPO_I] = useState<string | undefined>();
+  const [FECHA_NACIMIENTO, setFECHA_NACIMIENTO] = useState<string | undefined>();
+  const [NUMERO_RESOLUCION, setNUMERO_RESOLUCION] = useState<string | undefined>();
+  const [FECHA_RESOLUCION, setFECHA_RESOLUCION] = useState<string | undefined>();
+  const [NOMBRE_PROFESION, setNOMBRE_PROFESION] = useState<string | undefined>();
   const [valor, setValor] = useState<string | undefined>();
 
   const [primernombre, setPrimerNombre] = useState<string>(obj?.medicalSignatureName + '');
@@ -182,9 +186,13 @@ export const InformacionMedicoCertificante = (props: any) => {
     const Oracle = await api.getMedico(id);
 
     if (Oracle) {
-      setNOMBRES(Oracle[0].NOMBRES + ' ' + Oracle[0].APELLIDOS);
-      setNROIDENT(Oracle[0].NROIDENT);
-      setTIPO_I(Oracle[0].TIPO_I);
+      setNOMBRES(Oracle['resultado1'][0].NOMBRES + ' ' + Oracle['resultado1'][0].APELLIDOS);
+      setNROIDENT(Oracle['resultado1'][0].NROIDENT);
+      setTIPO_I(Oracle['resultado1'][0].TIPO_I);
+      setFECHA_NACIMIENTO(Oracle['resultado1'][0].FECHA_NACIMIENTO);
+      setNUMERO_RESOLUCION(Oracle['resultado2'][0].NUMERO_RESOLUCION);
+      setFECHA_RESOLUCION(Oracle['resultado2'][0].FECHA_RESOLUCION);
+      setNOMBRE_PROFESION(Oracle['resultado2'][0].NOMBRE_PROFESION);
       setValor('El médico registrado es válido');
     } else {
       setValor('El médico registrado es inválido');
@@ -273,6 +281,10 @@ export const InformacionMedicoCertificante = (props: any) => {
                               <td>{TIPO_I}</td>
                               <td>{NROIDENT}</td>
                               <td>{NOMBRES}</td>
+                              <td>{FECHA_NACIMIENTO}</td>
+                              <td>{NUMERO_RESOLUCION}</td>
+                              <td>{FECHA_RESOLUCION}</td>
+                              <td>{NOMBRE_PROFESION}</td>
                             </tr>
                           </tbody>
                         </table>{' '}
