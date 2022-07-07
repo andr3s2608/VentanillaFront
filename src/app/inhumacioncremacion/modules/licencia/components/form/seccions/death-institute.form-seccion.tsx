@@ -15,12 +15,15 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
   const { obj, tipoLicencia, prop } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
+  const [l_seccionales, setlseccionales] = useState<any[]>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
@@ -30,9 +33,14 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   //#region Listados
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
   const getListas = useCallback(
     async () => {
       const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const sec = await api.GetSeccionales();
+      setlseccionales(sec);
       setListaTipoDocumento(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -304,7 +312,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             </Form.Item>
 
             <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false, max: 20 }]}>
-              <SelectComponent options={[]} optionPropkey='id' optionPropLabel='name' />
+              <SelectComponent options={l_seccionales} optionPropkey='CODIGO' optionPropLabel='DESCRIP' />
             </Form.Item>
             <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
               <Input
