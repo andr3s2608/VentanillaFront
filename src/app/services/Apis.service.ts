@@ -144,6 +144,20 @@ export class ApiService {
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
 
+  UpdateProfesionalesSalud = (payload: any, id: string) =>
+    put({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/ProfesionalesSalud/UpdateProfesionalSalud/${id}`,
+      payload,
+      id: '0'
+    });
+
+  UpdateFunerarias = (payload: any, id: string) =>
+    put({ endpoint: REACT_APP_SHARED as string, url: `v1/Funeraria/UpdateFuneraria/${id}`, payload, id: '0' });
+
+  UpdateCementerios = (payload: any, id: string) =>
+    put({ endpoint: REACT_APP_SHARED as string, url: `v1/Cementerio/UpdateCementerio/${id}`, payload, id: '0' });
+
   putLicencia = (payload: any) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
 
@@ -170,6 +184,9 @@ export class ApiService {
 
   GetEstadoSolicitud = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdUser/${this.oid}`, id: '0' });
+
+  GetSeccionales = () =>
+    get<[]>({ endpoint: REACT_APP_SHARED as string, url: `v1/SeccionalFiscalia/GetSeccionalesFiscalia`, id: '0' });
 
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
@@ -417,7 +434,7 @@ export class ApiService {
   /////////////////////////
 
   AddSolicitudCitacion = (payload: any) =>
-    post({ endpoint: 'https://localhost:5001/api/', url: 'Request/AddSolicitudCitacion', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
   AddSolicitudPrimera = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
@@ -430,25 +447,25 @@ export class ApiService {
     });
 
   AsignarUsuario = (idusuario: string, idsolicitud: string) =>
-    post({ endpoint: 'https://localhost:5001/api/', url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
 
   GetSolicitudesUsuarioSubred = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/getSolicitudbyIdUserSubRed/${this.oid}`,
       id: '0'
     });
 
   getSolicitudesUsuarioAsignado = () =>
     get<any>({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyUsuarioAsignado/${this.oid}`,
       id: '0'
     });
 
   AddSupportDocumentsAguas = (payload: any[]) =>
     post({
-      endpoint: 'https://localhost:5001/api/',
+      endpoint: REACT_APP_AGUAS as string,
       url: 'SupportDocuments/AddSupportDocuments',
       payload,
       confirmModal: false,

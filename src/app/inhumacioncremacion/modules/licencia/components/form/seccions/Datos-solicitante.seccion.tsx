@@ -19,6 +19,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [NROIDENT, setNROIDENT] = useState('');
   const [RAZON_S, setRAZON_S] = useState('');
   const [valor, setValor] = useState<string | undefined>();
+
   const [[RazonC, DireccionC, TelefonoC, NombreRepC, TipoRepC, NroIdenC], setCementerioDatos] = useState<
     [String, string, String, String, String, String]
   >(['', '', '', '', '', '']);
@@ -54,7 +55,11 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
   const [nuevocementerio, setnuevocementerio] = useState<string | undefined>();
   const [nuevafuneraria, setnuevafuneraria] = useState<string | undefined>();
-  const [departamentofuneraria, setdepartamentofuneraria] = useState<string | undefined>();
+
+  const [departamentoCementerio, setdepartamentoCementerio] = useState<string | undefined>();
+  const [municipioCementerio, setmunicipioCementerio] = useState<string | undefined>();
+  const [PaisCementerio, setPaisCementerio] = useState<string | undefined>();
+  const [otroCementerio, setotroCementerio] = useState<string | undefined>();
 
   const [[l_paises, l_departamento, l_tipo_identificacion], setListas] = useState<[IDominio[], IDepartamento[], IDominio[]]>([
     [],
@@ -64,11 +69,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   ]);
 
   const getListas = useCallback(async () => {
-    const dep = dominioService.get_departamentos_colombia();
-    const iddepart = (await dep).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
-
-    const idMunicipio = iddepart[0].idDepPai + '';
-
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Pais),
       dominioService.get_departamentos_colombia(),
@@ -125,6 +125,30 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
     setl_cementerio(cem);
     setl_funeraria(fun);
+
+    const dep = dominioService.get_departamentos_colombia();
+
+    const pais = await dominioService.get_type(ETipoDominio.Pais);
+    const filtropais = pais.filter((i) => i.id == obj?.cementerioPais);
+
+    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.cementerioDepartamento);
+
+    if (obj?.cementerioDepartamento != undefined) {
+      const idMun: string = iddepart[0].idDepartamento + '';
+      const mun = (await dominioService).get_all_municipios_by_departamento(idMun);
+
+      const idmuni = (await mun).filter((i) => i.idMunicipio == obj?.cementerioMunicipio);
+
+      setdepartamentoCementerio(iddepart[0].descripcion);
+      setmunicipioCementerio(idmuni[0].descripcion);
+    }
+
+    if (obj?.cementerioPais != undefined) {
+      setPaisCementerio(filtropais[0].descripcion);
+      setmunicipioCementerio(obj?.cementerioCiudad);
+    }
+
+    setotroCementerio(obj?.otro);
 
     /*
     var lugarfuneraria = Funerarias.reduce((result: any, item: any) => {
@@ -238,37 +262,108 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     },
     {
       title: 'Primer Nombre',
-      describe: nombre
+      describe: nombre?.toLowerCase()
     },
     {
       title: 'Primer Apellido',
-      describe: apellido
+      describe: apellido?.toLowerCase()
     },
     {
       title: 'Correo Familiar Contratante',
-      describe: emailsolicitante
+      describe: emailsolicitante?.toLowerCase()
     }
   ];
 
-  const cementerios = [
-    {
-      title: 'Cementerio',
-      describe: (
-        <SelectComponent
-          options={l_cementerio}
-          optionPropkey='RAZON_S'
-          onChange={Onchangecementerio}
-          optionPropLabel='RAZON_S'
-          disabled={isfuera}
-          defaultValue={cementerio}
-        />
-      )
-    },
-    {
-      title: 'Email Cementerio',
-      describe: emailcementerio
+  var cementerios: any[] | undefined = [];
+  if (PaisCementerio != undefined) {
+    cementerios = [
+      {
+        title: 'Cementerio',
+        describe: (
+          <SelectComponent
+            options={l_cementerio}
+            optionPropkey='RAZON_S'
+            onChange={Onchangecementerio}
+            optionPropLabel='RAZON_S'
+            disabled={isfuera}
+            defaultValue={cementerio}
+          />
+        )
+      },
+      {
+        title: 'Email Cementerio',
+        describe: emailcementerio?.toLowerCase()
+      },
+      {
+        title: 'Pais',
+        describe: PaisCementerio?.toLowerCase()
+      },
+      {
+        title: 'Municipio',
+        describe: municipioCementerio?.toLowerCase()
+      }
+    ];
+  } else {
+    if (departamentoCementerio != undefined) {
+      var otros: any = [];
+      if (otroCementerio != undefined) {
+        otros = [
+          {
+            title: 'Otro Sitio',
+            describe: otroCementerio?.toLowerCase()
+          }
+        ];
+      }
+      cementerios = [
+        {
+          title: 'Cementerio',
+          describe: (
+            <SelectComponent
+              options={l_cementerio}
+              optionPropkey='RAZON_S'
+              onChange={Onchangecementerio}
+              optionPropLabel='RAZON_S'
+              disabled={isfuera}
+              defaultValue={cementerio}
+            />
+          )
+        },
+        {
+          title: 'Email Cementerio',
+          describe: emailcementerio?.toLowerCase()
+        },
+        {
+          title: 'Departamento',
+          describe: departamentoCementerio?.toLowerCase()
+        },
+        {
+          title: 'Municipio',
+          describe: municipioCementerio?.toLowerCase()
+        },
+        otros
+      ];
+    } else {
+      cementerios = [
+        {
+          title: 'Cementerio',
+          describe: (
+            <SelectComponent
+              options={l_cementerio}
+              optionPropkey='RAZON_S'
+              onChange={Onchangecementerio}
+              optionPropLabel='RAZON_S'
+              disabled={isfuera}
+              defaultValue={cementerio}
+            />
+          )
+        },
+        {
+          title: 'Email Cementerio',
+          describe: emailcementerio?.toLowerCase()
+        }
+      ];
     }
-  ];
+  }
 
   const funerarias = [
     {

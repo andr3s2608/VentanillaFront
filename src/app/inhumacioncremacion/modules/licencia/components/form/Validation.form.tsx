@@ -55,6 +55,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const [isModalValidarCertificado, setIsModalValidarCertificado] = useState<boolean>(false);
+  const [isvalidcertificado, setisvalidcertificado] = useState<boolean>(false);
   const [isDisabledElement, setIsDisabledElement] = useState<boolean>(false);
   const [nameUser, setNameUser] = useState<any>('');
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
@@ -98,7 +99,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const idUsuario = api.getIdUsuario();
 
-  const edit = objJosn?.idTramite ? true : false;
   //form.setFieldsValue(objJosn?);
   //#region Listados
 
@@ -127,17 +127,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       setUser(userres);
       setListas(resp);
 
-      if (edit) {
-        const support = await api.getSupportDocuments(objJosn?.idSolicitud);
-        const typeList = await api.GetAllTypeValidation();
-        setSupports(support);
-        setType(typeList);
-      }
+      const support = await api.getSupportDocuments(objJosn?.idSolicitud);
+      const typeList = await api.GetAllTypeValidation();
+      setSupports(support);
+      setType(typeList);
 
       const all = await api.getCertificado(objJosn?.certificado);
 
       if (!all) {
         setIsModalValidarCertificado(true);
+        setisvalidcertificado(true);
         setIsDisabledElement(true);
       }
     },
@@ -156,34 +155,34 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const arrayinhind: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     '9C4E62A4-EE76-4BA1-8DBE-8BE172E23788',
-    'ABE33C1D-9370-4189-9E81-597E5B643481',
-    '79320AF6-943C-43BF-87D1-847B625F6203'
+    '79320AF6-943C-43BF-87D1-847B625F6203',
+    'ABE33C1D-9370-4189-9E81-597E5B643481'
   ];
   const arrayinhfet: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     'D2D3ABA7-3B92-446A-AA8C-80A75DE246A7',
-    'ABE33C1D-9370-4189-9E81-597E5B643481',
-    '79320AF6-943C-43BF-87D1-847B625F6203'
+    '79320AF6-943C-43BF-87D1-847B625F6203',
+    'ABE33C1D-9370-4189-9E81-597E5B643481'
   ];
   const arraycremind: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     '9C4E62A4-EE76-4BA1-8DBE-8BE172E23788',
-    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '79320AF6-943C-43BF-87D1-847B625F6203',
     'F67F1C4E-A6A5-4257-A995-17A926801F7C',
     'D6524742-E32D-4548-AB21-7A9CBB367926',
     'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
     '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
-    '79320AF6-943C-43BF-87D1-847B625F6203'
+    'ABE33C1D-9370-4189-9E81-597E5B643481'
   ];
   const arraycremfet: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     'D2D3ABA7-3B92-446A-AA8C-80A75DE246A7',
-    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '79320AF6-943C-43BF-87D1-847B625F6203',
     'F67F1C4E-A6A5-4257-A995-17A926801F7C',
     'D6524742-E32D-4548-AB21-7A9CBB367926',
     'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
     '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
-    '79320AF6-943C-43BF-87D1-847B625F6203'
+    'ABE33C1D-9370-4189-9E81-597E5B643481'
   ];
 
   const getArray = async (values: any) => {
@@ -812,7 +811,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   };
   const onModalNofificacion = () => {
     setIsModalValidarCertificado(false);
-    history.push('/tramites-servicios');
+    setisvalidcertificado(true);
+    //history.push('/tramites-servicios');
   };
 
   const idcontrol = objJosn.idControlTramite;
@@ -861,7 +861,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                 <hr />
                 <InformacionSolicitanteSeccion obj={objJosn} />
                 <hr />
-                <GestionTramite idSolicitud={objJosn?.idSolicitud} idTramite={objJosn?.idTramite} type={type} />
+                <GestionTramite
+                  idSolicitud={objJosn?.idSolicitud}
+                  idTramite={objJosn?.idTramite}
+                  type={type}
+                  valor={valor}
+                  registrado={isvalidcertificado}
+                />
                 <hr />
                 <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
                 <div className='fadeInLeft'>
@@ -938,7 +944,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                     <div className='conteiner-fluid'>
                       <div className='row'>
                         <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
-                          El Número de certificado registrado NO existe
+                          El Número de certificado registrado no ha sido registrado en salud publica
                         </p>
                       </div>
                       <div className='row justify-content-md-center'>

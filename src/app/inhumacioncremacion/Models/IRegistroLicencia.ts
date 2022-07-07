@@ -86,6 +86,11 @@ export interface InstitucionCertificaFallecimiento {
   seccionalFiscalia: string;
   noFiscal: string;
   idTipoInstitucion: string;
+  NombreFiscal: string;
+  ApellidoFiscal: string;
+  NumeroOficio: string;
+  FechaOficio: string;
+  NoFiscalMedicinaLegal: string;
 }
 
 export interface LugarDefuncion {
