@@ -1005,7 +1005,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       subject: 'Notificación cementerio',
       body: bodyCementerio,
       attachment: licencia,
-      AttachmentTitle: 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + numeroLicencia
+      AttachmentTitle: 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + numeroLicencia + '.pdf'
     });
   }
 
@@ -1031,7 +1031,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       subject: 'Notificación funeraria',
       body: bodyFuneraria,
       attachment: licencia,
-      AttachmentTitle: 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + numeroLicencia
+      AttachmentTitle: 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + numeroLicencia + '.pdf'
     });
   }
 
@@ -1110,7 +1110,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           subject: plantillaAprobacion.asuntoNotificacion,
           body: bodyAprobacion,
           attachment: licencia,
-          AttachmentTitle: 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + numeroLicencia
+          AttachmentTitle: 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + numeroLicencia + '.pdf'
         });
         break;
       default:
