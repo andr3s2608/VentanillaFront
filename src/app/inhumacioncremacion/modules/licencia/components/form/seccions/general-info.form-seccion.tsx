@@ -79,14 +79,13 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
           <label style={{ fontSize: 15, float: 'right', marginRight: 40 }}>Hora Defunción: </label>
         </div>
         <div className='form-group col-md-3 col-lg-4'>
-          <Form.Item label='' name='check'>
-            <label style={{ fontSize: 15, marginRight: 10, marginLeft: 5 }}> Sin establecer </label>
+          <Form.Item label='Sin Establecer' name='check' style={{ width: 500 }}>
             <Switch onChange={onChangeSwitch} defaultChecked={check} />
           </Form.Item>
         </div>
         <div className='form-group col-md-5 col-lg-4'>
           {isHora && (
-            <Form.Item label='Hora' style={{ width: 350 }} name='time' rules={[{ required: isHora }]} initialValue={time}>
+            <Form.Item label='Hora' name='time' style={{ width: 350 }} rules={[{ required: isHora }]} initialValue={time}>
               <DatepickerComponent
                 picker='time'
                 dateDisabledType='default'
