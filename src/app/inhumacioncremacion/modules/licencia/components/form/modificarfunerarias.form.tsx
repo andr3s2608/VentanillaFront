@@ -31,9 +31,24 @@ export const ModificarFuneraria = ({ props }: any) => {
   const [valores, setvalores] = useState<String>('Name');
 
   const [
-    [TipoIdF, DireccionC, TelefonoC, NombreRepC, TipoRepC, NroIdenC, NombrePropC, TipoPropC, NroIdenPropC, NroSalas],
+    [
+      TipoIdF,
+      NroIdenF,
+      DireccionC,
+      TelefonoC,
+      NombreRepC,
+      TipoRepC,
+      NroIdenC,
+      NombrePropC,
+      TipoPropC,
+      NroIdenPropC,
+      NroSalas,
+      Telefono2
+    ],
     setFunerariaDatos
-  ] = useState<[string, string, string, string, string, string, string, string, string, string]>([
+  ] = useState<[string, string, string, string, string, string, string, string, string, string, string, string]>([
+    '',
+    '',
     '',
     '',
     '',
@@ -77,6 +92,7 @@ export const ModificarFuneraria = ({ props }: any) => {
         if (result) {
           setFunerariaDatos([
             result.TIPO_I + '',
+            result.NROIDENT + '',
             result.DIRECCION + '',
             result.TELEFONO_1 + '',
             result.NOMBRE_REP + '',
@@ -85,7 +101,8 @@ export const ModificarFuneraria = ({ props }: any) => {
             result.NOMBRE_PROP + '',
             result.TIPO_I_PROP + '',
             result.NROIDENT_PROP + '',
-            result.NUM_SALAS + ''
+            result.NUM_SALAS + '',
+            result.TELEFONO_2 + ''
           ]);
           setselecciono(true);
           setRazonC(result.RAZON_S + '');
@@ -97,6 +114,7 @@ export const ModificarFuneraria = ({ props }: any) => {
         if (result) {
           setFunerariaDatos([
             result.TIPO_I + '',
+            result.NROIDENT + '',
             result.DIRECCION + '',
             result.TELEFONO_1 + '',
             result.NOMBRE_REP + '',
@@ -105,7 +123,8 @@ export const ModificarFuneraria = ({ props }: any) => {
             result.NOMBRE_PROP + '',
             result.TIPO_I_PROP + '',
             result.NROIDENT_PROP + '',
-            result.NUM_SALAS + ''
+            result.NUM_SALAS + '',
+            result.TELEFONO_2 + ''
           ]);
           setRazonC(result.RAZON_S + '');
           setselecciono(true);
@@ -157,8 +176,47 @@ export const ModificarFuneraria = ({ props }: any) => {
     ]);
   };
 
-  const onSubmit = (values: any) => {
+  const onSubmit = async (values: any) => {
     if (selecciono) {
+      const valores: string[] = [
+        values.tipoidf,
+        NroIdenF,
+        values.razon + '',
+        values.direccion + '',
+        values.telefono + '',
+        values.tipoprop + '',
+        values.nroprop + '',
+        values.nombreprop + '',
+        values.nrosalas + '',
+        values.tiporep + '',
+        values.nrorep + '',
+        values.nombrerep + '',
+        Telefono2
+      ];
+      const json = {
+        tipO_I: valores[0].toUpperCase(),
+        nroident: valores[1],
+        razoN_S: valores[2].toUpperCase(),
+        direccion: valores[3].toUpperCase(),
+        telefonO_1: valores[4].toUpperCase(),
+        tipO_I_PROP: valores[5].toUpperCase(),
+        nroidenT_PROP: valores[6].toUpperCase(),
+        nombrE_PROP: valores[7].toUpperCase(),
+        nuM_SALAS: valores[8].toUpperCase(),
+        tipO_I_REP: valores[9].toUpperCase(),
+        nroidenT_REP: valores[10].toUpperCase(),
+        nombrE_REP: valores[11].toUpperCase(),
+        telefonO_2: valores[12]
+      };
+      console.log(json);
+      await api.UpdateFunerarias(json, NroIdenF);
+      setselecciono(false);
+      Swal.fire({
+        icon: 'success',
+
+        title: 'Funeraria Modificada',
+        text: 'Se ha modificado la Funeraria exitosamente'
+      });
     }
   };
 
@@ -237,12 +295,11 @@ export const ModificarFuneraria = ({ props }: any) => {
 
             {selecciono && (
               <>
-                <Form.Item label='Tipo Id Funeraria' initialValue={TipoIdF} name='tipoidf'>
+                <Form.Item label='Tipo Id Funeraria' initialValue={TipoIdF} rules={[{ required: true }]} name='tipoidf'>
                   <Input
                     allowClear
                     placeholder='Razón Social'
                     autoComplete='off'
-                    value={TipoIdF + ''}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z]/.test(event.key)) {
                         event.preventDefault();
@@ -254,12 +311,11 @@ export const ModificarFuneraria = ({ props }: any) => {
                   />
                 </Form.Item>
 
-                <Form.Item label='Razon S' initialValue={RazonC} name='razon'>
+                <Form.Item label='Razon S' initialValue={RazonC} rules={[{ required: true }]} name='razon'>
                   <Input
                     allowClear
                     placeholder='Razón Social'
                     autoComplete='off'
-                    value={RazonC + ''}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
@@ -270,10 +326,9 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Dirección ' initialValue={DireccionC} name='direccion'>
+                <Form.Item label='Dirección ' initialValue={DireccionC} rules={[{ required: true }]} name='direccion'>
                   <Input
                     allowClear
-                    value={DireccionC}
                     placeholder='Dirección'
                     autoComplete='off'
                     onKeyPress={(event) => {
@@ -286,10 +341,9 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Telefono ' initialValue={TelefonoC} name='telefono'>
+                <Form.Item label='Telefono ' initialValue={TelefonoC} rules={[{ required: true }]} name='telefono'>
                   <Input
                     allowClear
-                    value={TelefonoC}
                     placeholder='Telefono'
                     autoComplete='off'
                     onKeyPress={(event) => {
@@ -302,26 +356,14 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Nombre Propietario ' initialValue={NombrePropC} name='nombreprop'>
+                <Form.Item
+                  label='Tipo Documento Propietario '
+                  initialValue={TipoPropC}
+                  rules={[{ required: true }]}
+                  name='tipoprop'
+                >
                   <Input
                     allowClear
-                    value={NombrePropC}
-                    placeholder='Nombre Propietario'
-                    autoComplete='off'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label='Tipo Documento Propietario ' initialValue={TipoPropC} name='tipoprop'>
-                  <Input
-                    allowClear
-                    value={TipoPropC}
                     placeholder='Tipo Documento Propietario'
                     autoComplete='off'
                     onKeyPress={(event) => {
@@ -334,7 +376,12 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Nro Documento Propietario ' initialValue={NroIdenPropC} name='nroprop'>
+                <Form.Item
+                  label='Nro Documento Propietario '
+                  rules={[{ required: true }]}
+                  initialValue={NroIdenPropC}
+                  name='nroprop'
+                >
                   <Input
                     allowClear
                     placeholder='Nro Documento Propietario'
@@ -349,7 +396,22 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Nro SalasFuneraria ' initialValue={NroSalas} name='nrosalas'>
+                <Form.Item label='Nombre Propietario ' rules={[{ required: true }]} initialValue={NombrePropC} name='nombreprop'>
+                  <Input
+                    allowClear
+                    placeholder='Nombre Propietario'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nro SalasFuneraria ' rules={[{ required: true }]} initialValue={NroSalas} name='nrosalas'>
                   <Input
                     allowClear
                     placeholder='Nro Salas Funeraria'
@@ -364,26 +426,14 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Nombre Representante ' initialValue={NombreRepC} name='nombrerep'>
+                <Form.Item
+                  label='Tipo Documento Representante '
+                  rules={[{ required: true }]}
+                  initialValue={TipoRepC}
+                  name='tiporep'
+                >
                   <Input
                     allowClear
-                    value={NombreRepC}
-                    placeholder='Nombre Representante'
-                    autoComplete='off'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item label='Tipo Documento Representante ' initialValue={TipoRepC} name='tiporep'>
-                  <Input
-                    allowClear
-                    value={TipoRepC}
                     placeholder='Tipo Documento Representante'
                     autoComplete='off'
                     onKeyPress={(event) => {
@@ -396,7 +446,12 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Nro Documento Representante ' initialValue={NroIdenC} name='nrorep'>
+                <Form.Item
+                  label='Nro Documento Representante '
+                  rules={[{ required: true }]}
+                  initialValue={NroIdenC}
+                  name='nrorep'
+                >
                   <Input
                     allowClear
                     placeholder='Nro Documento Representante'
@@ -408,6 +463,18 @@ export const ModificarFuneraria = ({ props }: any) => {
                     }}
                     onPaste={(event) => {
                       event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nombre Representante ' rules={[{ required: true }]} initialValue={NombreRepC} name='nombrerep'>
+                  <Input
+                    allowClear
+                    placeholder='Nombre Representante'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
                     }}
                   />
                 </Form.Item>

@@ -26,13 +26,9 @@ export const ModificarMedico = ({ props }: any) => {
   const [form] = Form.useForm<any>();
   const [encontro, setEncontro] = useState<boolean>(false);
 
-  const [[nombre, tipoid, nroid, fechanac, sitioexp], setmedico] = useState<[string, string, string, any, string]>([
-    '',
-    '',
-    '',
-    ,
-    ''
-  ]);
+  const [[nombre, apellidos, tipoid, nroid, fechanac, sitioexp], setmedico] = useState<
+    [string, string, string, string, any, string]
+  >(['', '', '', '', , '']);
 
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
@@ -46,7 +42,7 @@ export const ModificarMedico = ({ props }: any) => {
     const numero: string = form.getFieldValue('numeroid');
 
     const id = await api.getMedico(numero);
-
+    console.log(id);
     if (id == null) {
       Swal.fire({
         icon: 'error',
@@ -57,11 +53,12 @@ export const ModificarMedico = ({ props }: any) => {
       setEncontro(false);
     } else {
       setmedico([
-        id[0].NOMBRES + '',
-        id[0].TIPO_I + '',
-        id[0].NROIDENT + '',
-        moment(id[0].FECHA_NACIMIENTO),
-        id[0].SITIO_EXP_IDENT + ''
+        id.resultado1[0].NOMBRES + '',
+        id.resultado1[0].APELLIDOS + '',
+        id.resultado1[0].TIPO_I + '',
+        id.resultado1[0].NROIDENT + '',
+        moment(id.resultado1[0].FECHA_NACIMIENTO),
+        id.resultado1[0].SITIO_EXP_IDENT + ''
       ]);
 
       form.resetFields(['name', 'tipoid', 'date', 'sitio', 'numeroidform']);
@@ -70,7 +67,34 @@ export const ModificarMedico = ({ props }: any) => {
     }
   };
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: any) => {
+    const valores: string[] = [
+      values.tipoid + '',
+      values.numeroidform + '',
+      values.name + '',
+      values.surname + '',
+      values.sitio + ''
+    ];
+
+    const formatDate = 'yyyy/MM/DD hh:mm:ss';
+    const json = {
+      tipO_I: valores[0].toUpperCase(),
+      nroident: valores[1],
+      nombres: valores[2].toUpperCase(),
+      apellidos: valores[3].toUpperCase(),
+      sitiO_EXP_IDENT: valores[4].toUpperCase(),
+      fechA_NACIMIENTO: moment(values.date).format(formatDate)
+    };
+    console.log(json);
+    await api.UpdateProfesionalesSalud(json, valores[1]);
+    setEncontro(false);
+    Swal.fire({
+      icon: 'success',
+
+      title: 'Profesional de la salud modificado',
+      text: 'Se ha modificado el profesional de la salud  exitosamente'
+    });
+  };
 
   const onSubmitFailed = () => {
     setStatus('error');
@@ -131,26 +155,10 @@ export const ModificarMedico = ({ props }: any) => {
             </div>
             {encontro && (
               <>
-                <Form.Item label='Número de Identificación' name='numeroidform' initialValue={nroid} rules={[{ required: true }]}>
-                  <Input
-                    allowClear
-                    placeholder='Número de Identificación'
-                    autoComplete='off'
-                    onKeyPress={(event) => {
-                      if (!/[0-9a-zA-Z]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-
                 <Form.Item
                   label='Tipo de Identificación'
                   name='tipoid'
-                  rules={[{ required: false, max: 50 }]}
+                  rules={[{ required: true, max: 50 }]}
                   initialValue={tipoid}
                 >
                   <Input
@@ -159,7 +167,7 @@ export const ModificarMedico = ({ props }: any) => {
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z]/.test(event.key)) {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -168,14 +176,45 @@ export const ModificarMedico = ({ props }: any) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label='Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={nombre}>
+                <Form.Item label='Número de Identificación' name='numeroidform' initialValue={nroid} rules={[{ required: true }]}>
                   <Input
                     allowClear
-                    placeholder='Nombre'
+                    placeholder='Número de Identificación'
+                    autoComplete='off'
+                    onKeyPress={(event) => {
+                      if (!/[0-9a-zA-Z-]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Nombres' name='name' rules={[{ required: true, max: 50 }]} initialValue={nombre}>
+                  <Input
+                    allowClear
+                    placeholder='Nombres'
                     autoComplete='off'
                     type='text'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item label='Apellidos' name='surname' rules={[{ required: true, max: 50 }]} initialValue={apellidos}>
+                  <Input
+                    allowClear
+                    placeholder='Apellidos'
+                    autoComplete='off'
+                    type='text'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

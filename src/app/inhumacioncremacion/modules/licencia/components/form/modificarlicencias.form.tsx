@@ -239,7 +239,7 @@ export const ModificarLicencia = ({ props }: any) => {
         icon: 'success',
 
         title: 'Solicitud Modificada',
-        text: 'Se han modificado la Solicitud exitosamente'
+        text: 'Se ha modificado la Solicitud exitosamente'
       });
     } else {
       Swal.fire({

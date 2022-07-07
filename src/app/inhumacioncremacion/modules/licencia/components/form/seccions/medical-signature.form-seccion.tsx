@@ -18,7 +18,7 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   const { tipoLicencia } = props;
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
@@ -55,9 +55,9 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       setTipodocumento('Pasaporte y Cédula de Extranjería ');
       prop(6, 'medico');
     } else {
-      setLongitudminima(5);
+      setLongitudminima(4);
       setLongitudmaxima(10);
-      setTipocampo('[0-9]{5,10}');
+      setTipocampo('[0-9]{4,10}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');

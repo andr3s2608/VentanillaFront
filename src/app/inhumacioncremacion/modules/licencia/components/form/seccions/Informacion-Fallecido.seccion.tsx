@@ -26,6 +26,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [esmadre, setesmadre] = useState<boolean>(false);
   const [ciudadmadre, setciudadmadre] = useState<string | undefined>();
   const [departamentomadre, setdepartamentomadre] = useState<string | undefined>();
+  const [paismadre, setpaismadre] = useState<string | undefined>();
   const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -39,6 +40,9 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
 
+    const pais = await dominioService.get_type(ETipoDominio.Pais);
+    const filtropais = pais.filter((i) => i.id == obj?.country);
+
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
@@ -47,12 +51,15 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
       const idmuni = (await mun).filter((i) => i.idMunicipio == obj?.city);
 
-      setdefuncion(iddepart[0].descripcion + '/' + idmuni[0].descripcion);
+      setdefuncion(filtropais[0].descripcion + '/' + iddepart[0].descripcion + '/' + idmuni[0].descripcion);
     } else {
-      setdefuncion(iddepart[0].descripcion);
+      setdefuncion(filtropais[0].descripcion + '/' + iddepart[0].descripcion);
     }
 
     if (obj?.idDepartamentoResidencia != undefined) {
+      const paism = await dominioService.get_type(ETipoDominio.Pais);
+      const filtropaismadre = pais.filter((i) => i.id == obj?.residencia);
+
       if (obj.residencia == '1e05f64f-5e41-4252-862c-5505dbc3931c') {
         const iddepartmadre = (await dep).filter((i) => i.idDepartamento == obj?.idDepartamentoResidencia);
         const { idDepartamento } = iddepartmadre[0];
@@ -60,10 +67,12 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
         const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
 
-        setdepartamentomadre(iddepartmadre[0].descripcion);
-        setciudadmadre(idmunimadre[0].descripcion);
+        setpaismadre('Colombia');
+        setdepartamentomadre(iddepartmadre[0].descripcion.toLowerCase());
+        setciudadmadre(idmunimadre[0].descripcion.toLowerCase());
         setesmadre(true);
       } else {
+        setpaismadre(filtropais[0].descripcion.toLowerCase());
         setdepartamentomadre('Fuera del País');
         setciudadmadre('Fuera del País');
         setesmadre(true);
@@ -71,11 +80,11 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     }
 
     const inf_fallecido = await api.GetInformacionFallecido(obj?.idSolicitud);
-
+    const fecharecortada: string = inf_fallecido['fechaNacimiento'];
     setFallecido([
       inf_fallecido['tipoIdentificacion'] + '',
       inf_fallecido['edadFallecido'] + '',
-      inf_fallecido['fechaNacimiento'] + '',
+      fecharecortada.substring(0, 10) + '',
       inf_fallecido['hora'] + '',
       inf_fallecido['idSexo'] + ''
     ]);
@@ -158,12 +167,16 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       describe: tipo_identificacion
     },
     {
+      title: 'Pais de Residencia',
+      describe: paismadre?.toLowerCase()
+    },
+    {
       title: 'Departamento de Residencia',
-      describe: departamentomadre
+      describe: departamentomadre?.toLowerCase()
     },
     {
       title: 'Ciudad de Residencia',
-      describe: ciudadmadre
+      describe: ciudadmadre?.toLowerCase()
     }
   ];
 
@@ -212,8 +225,8 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         describe: <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} disabled />
       },
       {
-        title: 'Departamento/ Municipio Defuncion',
-        describe: defuncion
+        title: 'País/Departamento/ Municipio Defuncion',
+        describe: defuncion?.toLowerCase()
       },
       {
         title: 'Primer Nombre',
@@ -232,12 +245,12 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         describe: segundoapellido
       },
       {
-        title: 'No. Identificacion.',
-        describe: idfallecido
-      },
-      {
         title: 'Tipo de identificación',
         describe: tipo_identificacion
+      },
+      {
+        title: 'No. Identificacion.',
+        describe: idfallecido
       },
       {
         title: 'Edad',

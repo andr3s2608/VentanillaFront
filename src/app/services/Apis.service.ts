@@ -144,6 +144,20 @@ export class ApiService {
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
 
+  UpdateProfesionalesSalud = (payload: any, id: string) =>
+    put({
+      endpoint: 'https://localhost:5001/api/',
+      url: `v1/ProfesionalesSalud/UpdateProfesionalSalud/${id}`,
+      payload,
+      id: '0'
+    });
+
+  UpdateFunerarias = (payload: any, id: string) =>
+    put({ endpoint: 'https://localhost:5001/api/', url: `v1/Funeraria/UpdateFuneraria/${id}`, payload, id: '0' });
+
+  UpdateCementerios = (payload: any, id: string) =>
+    put({ endpoint: 'https://localhost:5001/api/', url: `v1/Cementerio/UpdateCementerio/${id}`, payload, id: '0' });
+
   putLicencia = (payload: any) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
 
@@ -170,6 +184,9 @@ export class ApiService {
 
   GetEstadoSolicitud = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdUser/${this.oid}`, id: '0' });
+
+  GetSeccionales = () =>
+    get<[]>({ endpoint: 'https://localhost:5001/api/', url: `v1/SeccionalFiscalia/GetSeccionalesFiscalia`, id: '0' });
 
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
