@@ -30,7 +30,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   //validacion campos
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
@@ -100,9 +100,9 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
     form.setFieldsValue({ IDNumberRazon: undefined });
     const valor: string = value;
     if (valor == '1') {
-      setLongitudminimaRazon(5);
+      setLongitudminimaRazon(4);
       setLongitudmaximaRazon(10);
-      setTipocampoRazon('[0-9]{5,10}');
+      setTipocampoRazon('[0-9]{4,10}');
       setTipocampovalidacionRazon(/[0-9]/);
       setCampoRazon('Numéricos');
       setTipodocumentoRazon('Cédula de Ciudadanía');
@@ -142,9 +142,9 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       } else {
         form.setFieldsValue({ IDNumber: undefined });
         if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-          setLongitudminima(5);
+          setLongitudminima(4);
           setLongitudmaxima(10);
-          setTipocampo('[0-9]{5,10}');
+          setTipocampo('[0-9]{4,10}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Cédula de Ciudadanía');

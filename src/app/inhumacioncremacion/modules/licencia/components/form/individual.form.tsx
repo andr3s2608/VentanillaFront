@@ -71,14 +71,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
   const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
-  const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{5,10}');
+  const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
   const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
@@ -374,6 +374,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         }
       ];
     }
+    const checkbox = values.check;
+    console.log(checkbox);
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -449,15 +451,21 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           numeroIdentificacion: numeroins,
           razonSocial: razonSocialins,
           numeroProtocolo: numeroProtocoloins,
-          numeroActaLevantamiento: values.instNumActaLevantamiento,
-          fechaActa: moment(values.instFechaActa).format(formatDate),
-          seccionalFiscalia: values.instSeccionalFiscalia,
-          noFiscal: values.instNoFiscal,
-          idTipoInstitucion: values.instType
+          numeroActaLevantamiento: values.numeroActLeva,
+          fechaActa: moment(values?.DateAct).format(formatDate) ?? null,
+          seccionalFiscalia: values.SecFiscalAct,
+          noFiscal: values?.NoFiscAct ?? '',
+          idTipoInstitucion: values?.instType ?? '',
+          NombreFiscal: values?.fiscalianombreDC ?? '',
+          ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
+          NumeroOficio: values?.fiscalianumeroDC ?? '',
+          NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
+          FechaOficio: moment(values?.fiscaliafechaDC).format(formatDate) ?? null
         }
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+    console.log(json);
 
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
@@ -830,9 +838,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       } else {
         form.setFieldsValue({ IDNumber: undefined });
         if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-          setLongitudminima(5);
+          setLongitudminima(4);
           setLongitudmaxima(10);
-          setTipocampo('[0-9]{5,10}');
+          setTipocampo('[0-9]{4,10}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Cédula de Ciudadanía');
@@ -890,9 +898,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       setsininformacionaut(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminimaautoriza(5);
+        setLongitudminimaautoriza(4);
         setLongitudmaximaautoriza(10);
-        setTipocampoautoriza('[0-9]{6,10}');
+        setTipocampoautoriza('[0-9]{4,10}');
         setTipocampovalidacionautoriza(/[0-9]/);
         setCampoautoriza('Numéricos');
         setTipodocumentoautoriza('Cédula de Ciudadanía');

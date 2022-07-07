@@ -56,7 +56,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
@@ -471,11 +471,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           numeroIdentificacion: numeroins,
           razonSocial: razonSocialins ?? '',
           numeroProtocolo: numeroProtocoloins,
-          numeroActaLevantamiento: values.instNumActaLevantamiento,
-          fechaActa: moment(values.instFechaActa).format(formatDate),
-          seccionalFiscalia: values.instSeccionalFiscalia ?? '',
-          noFiscal: values.instNoFiscal,
-          idTipoInstitucion: values.instType
+          numeroActaLevantamiento: values.numeroActLeva,
+          fechaActa: moment(values?.DateAct).format(formatDate) ?? null,
+          seccionalFiscalia: values.SecFiscalAct,
+          noFiscal: values?.NoFiscAct ?? '',
+          idTipoInstitucion: values?.instType ?? '',
+          NombreFiscal: values?.fiscalianombreDC ?? '',
+          ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
+          NumeroOficio: values?.fiscalianumeroDC ?? '',
+          NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
+          FechaOficio: moment(values?.fiscaliafechaDC).format(formatDate) ?? null
         }
       }
     };
@@ -946,9 +951,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       setsininformacion(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminima(5);
+        setLongitudminima(4);
         setLongitudmaxima(10);
-        setTipocampo('[0-9]{5,10}');
+        setTipocampo('[0-9]{4,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Cédula de Ciudadanía');

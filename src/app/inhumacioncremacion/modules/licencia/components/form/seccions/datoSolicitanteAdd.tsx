@@ -20,10 +20,12 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [[l_tipo_profesional], setLTipoDocumento] = useState<IDominio[][]>([[]]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [correosol, setcorreosol] = useState<string>();
   const [correofun, setcorreofun] = useState<string>();
+  const [valorfuneraria, setvalorfuneraria] = useState<string>();
+  const [validacionfuneraria, setvalidacionfuneraria] = useState<boolean>(false);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   const [sininformacion, setsininformacion] = useState<boolean>(false);
@@ -53,13 +55,30 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
         setcorreofun(informationUser.email);
-        //form.resetFields(['emailsolicitudadd']);
+        setvalidacionfuneraria(true);
+
+        const lista = await api.GetFunerarias();
+        const result = lista.find((funeraria: any) =>
+          funeraria.RAZON_S.toUpperCase().includes(informationUser.fullName.trim().toUpperCase())
+        );
+        let array: any[] = [];
+
+        if (!result.isArray) {
+          array.push(result);
+        } else {
+          array = result;
+        }
+        console.log(array);
+        console.log(array[0].RAZON_S);
+
+        setvalorfuneraria(array[0].RAZON_S);
 
         setvalidacion('1');
       } else {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
         setcorreosol(informationUser.email);
+        setvalidacionfuneraria(false);
 
         setvalidacion('1');
       }
@@ -134,9 +153,9 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       setsininformacion(true);
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminima(5);
+        setLongitudminima(4);
         setLongitudmaxima(10);
-        setTipocampo('[0-9]{5,10}');
+        setTipocampo('[0-9]{4,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Cédula de Ciudadanía');
@@ -192,15 +211,24 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const renderFormFuneria = (_lugar: TypeLugarFuneraria) => {
     return (
       <>
-        <Form.Item
-          className='fadeInRight'
-          label='Funeraria de Bogotá D.C. y/o Solicitante'
-          name='funerariaBogota'
-          initialValue={obj?.cementerioBogota ? obj?.cementerioBogota : 'PARTICULAR'}
-          rules={[{ required: true }]}
-        >
-          <SelectComponent options={l_funerarias} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
-        </Form.Item>
+        {setearCampos() && (
+          <>
+            <Form.Item
+              className='fadeInRight'
+              label='Funeraria de Bogotá D.C. y/o Solicitante'
+              name='funerariaBogota'
+              initialValue={validacionfuneraria ? valorfuneraria : 'PARTICULAR'}
+              rules={[{ required: true }]}
+            >
+              <SelectComponent
+                options={l_funerarias}
+                optionPropkey='RAZON_S'
+                disabled={validacionfuneraria}
+                optionPropLabel='RAZON_S'
+              />
+            </Form.Item>
+          </>
+        )}
       </>
     );
   };

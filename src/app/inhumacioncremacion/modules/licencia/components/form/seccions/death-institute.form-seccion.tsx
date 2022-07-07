@@ -15,24 +15,32 @@ import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.ser
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { ApiService } from 'app/services/Apis.service';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
   const { obj, tipoLicencia, prop } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal, required } = props;
+  const [l_seccionales, setlseccionales] = useState<any[]>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{5,10}');
+  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   //#region Listados
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
 
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+
   const getListas = useCallback(
     async () => {
       const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const sec = await api.GetSeccionales();
+      setlseccionales(sec);
       setListaTipoDocumento(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,9 +85,9 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     const valor: string = value;
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-      setLongitudminima(5);
+      setLongitudminima(4);
       setLongitudminima(10);
-      setTipocampo('[0-9]{5,10}');
+      setTipocampo('[0-9]{4,10}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
@@ -304,7 +312,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             </Form.Item>
 
             <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false, max: 20 }]}>
-              <SelectComponent options={[]} optionPropkey='id' optionPropLabel='name' />
+              <SelectComponent options={l_seccionales} optionPropkey='CODIGO' optionPropLabel='DESCRIP' />
             </Form.Item>
             <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
               <Input
@@ -328,6 +336,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     allowClear
                     placeholder='Nombre'
                     autoComplete='off'
+                    maxLength={100}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
@@ -344,6 +353,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     allowClear
                     placeholder='Apellido'
                     autoComplete='off'
+                    maxLength={100}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
