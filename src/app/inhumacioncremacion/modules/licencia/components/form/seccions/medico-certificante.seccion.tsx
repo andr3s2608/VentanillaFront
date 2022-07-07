@@ -117,7 +117,6 @@ export const InformacionMedicoCertificante = (props: any) => {
           className='form-control'
           name='numeroIdentificacion'
           value={numeroIdentificacion}
-          disabled={props.disabledField}
           onChange={(e) => cambioNumeroIdentificacion(e.target.value)}
         />
       )
@@ -130,7 +129,6 @@ export const InformacionMedicoCertificante = (props: any) => {
           className='form-control'
           name='primernombre'
           value={primernombre}
-          disabled={props.disabledField}
           onChange={(e) => cambioPrimerNombre(e.target.value)}
         />
       )
@@ -143,7 +141,6 @@ export const InformacionMedicoCertificante = (props: any) => {
           name='segundonombre'
           className='form-control'
           value={segundonombre}
-          disabled={props.disabledField}
           onChange={(e) => cambioSegundoNombre(e.target.value)}
         />
       )
@@ -156,7 +153,6 @@ export const InformacionMedicoCertificante = (props: any) => {
           name='primerapellido'
           className='form-control'
           value={primerapellido}
-          disabled={props.disabledField}
           onChange={(e) => cambioPrimerApellido(e.target.value)}
         />
       )
@@ -169,7 +165,6 @@ export const InformacionMedicoCertificante = (props: any) => {
           name='segundoapellido'
           className='form-control'
           value={segundoapellido}
-          disabled={props.disabledField}
           onChange={(e) => cambioSegundoApellido(e.target.value)}
         />
       )
@@ -183,7 +178,7 @@ export const InformacionMedicoCertificante = (props: any) => {
   ];
 
   const onClickViewMedico = async () => {
-    const Oracle = await api.getMedico(id);
+    const Oracle = await api.getMedico(numeroIdentificacionAux);
 
     if (Oracle) {
       setNOMBRES(Oracle['resultado1'][0].NOMBRES + ' ' + Oracle['resultado1'][0].APELLIDOS);
@@ -201,12 +196,22 @@ export const InformacionMedicoCertificante = (props: any) => {
   };
 
   const actualizarMedico = async () => {
-    const result1 = await api.actualizarMedico(numeroIdentificacionAux, 'primerNombre', primernombre);
-    const result2 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoNombre', segundonombre);
-    const result3 = await api.actualizarMedico(numeroIdentificacionAux, 'primerApellido', primerapellido);
-    const result4 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoApellido', segundoapellido);
-    const result5 = await api.actualizarMedico(numeroIdentificacionAux, 'numeroIdentificacion', numeroIdentificacion);
-    setMedico(false);
+    if (primernombre != '') {
+      const result1 = await api.actualizarMedico(numeroIdentificacionAux, 'primerNombre', primernombre);
+    }
+    if (segundonombre != '') {
+      const result2 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoNombre', segundonombre);
+    }
+    if (primerapellido != '') {
+      const result3 = await api.actualizarMedico(numeroIdentificacionAux, 'primerApellido', primerapellido);
+    }
+    if (segundoapellido != '') {
+      const result4 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoApellido', segundoapellido);
+    }
+    if (primernombre != '') {
+      const result5 = await api.actualizarMedico(numeroIdentificacionAux, 'numeroIdentificacion', numeroIdentificacion);
+    }
+    setMedico(true);
     setNumeroIdentificacionAux(numeroIdentificacion);
   };
 
@@ -249,7 +254,7 @@ export const InformacionMedicoCertificante = (props: any) => {
                             className='text-center mt-4'
                             style={{ color: '#3567cc', fontSize: 15, textTransform: 'uppercase', margin: 25 }}
                           >
-                            {valor}
+                            {'El (La) ' + NOMBRE_PROFESION + ' se encuentra registrado (a)'}
                           </p>
                         </div>
                       </>
@@ -274,16 +279,20 @@ export const InformacionMedicoCertificante = (props: any) => {
                           <tbody>
                             <tr style={{ textAlign: 'center', color: '#3567cc', margin: 15 }}>
                               <th>TIPO DE IDENTIFICACIÓN</th>
-                              <th>NÚMERO IDENTIFICACIÓN</th>
+                              <th>NÚMERO DE IDENTIFICACIÓN</th>
                               <th>NOMBRE</th>
+                              <th>FECHA DE NACIMIENTO</th>
+                              <th>NUMERO DE RESOLUCION</th>
+                              <th>FECHA DE RESOLUCION</th>
+                              <th>NOMBRE DE PROFESION</th>
                             </tr>
                             <tr style={{ textAlign: 'center', margin: 15, textTransform: 'uppercase' }}>
                               <td>{TIPO_I}</td>
                               <td>{NROIDENT}</td>
                               <td>{NOMBRES}</td>
-                              <td>{FECHA_NACIMIENTO}</td>
+                              <td>{FECHA_NACIMIENTO?.substring(0, 10)}</td>
                               <td>{NUMERO_RESOLUCION}</td>
-                              <td>{FECHA_RESOLUCION}</td>
+                              <td>{FECHA_RESOLUCION?.substring(0, 10)}</td>
                               <td>{NOMBRE_PROFESION}</td>
                             </tr>
                           </tbody>
