@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ToggleSideNav } from 'app/redux/ui/ui.actions';
 import { ResetApplication } from 'app/redux/application/application.actions';
 import { AppState } from 'app/redux/app.reducers';
+import { useCallback, useEffect, useState } from 'react';
 
 // Herramientas
 import { confirmMessage } from 'app/services/settings/message.service';
@@ -19,6 +20,7 @@ import { LogoutOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-desig
 
 // Utilidades
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ApiService } from 'app/services/Apis.service';
 import { projectInfo } from 'app/shared/utils/constants.util';
 
 // Componentes
@@ -27,10 +29,38 @@ const { Header } = Layout;
 export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
   const { logout, ...basicProps } = props;
   const { name, userName } = authProvider.getAccount();
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
+  const [validacioninfo, setvalidacioninfo] = useState<any>(false);
 
   const sidenav = useSelector<AppState, boolean>((state) => state.ui.sidenav);
   const dispatch = useDispatch();
 
+  const getListas = useCallback(
+    async () => {
+      const idUser = await api.getCodeUser();
+      const resp = await api.GetInformationUser(idUser);
+
+      if (resp == undefined) {
+        setvalidacioninfo(name);
+      } else {
+        if (resp.tipoIdentificacion == 5) {
+          setvalidacioninfo(resp.razonSocial);
+        } else {
+          setvalidacioninfo(resp.fullName);
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  //const getMenu = UpdateMenu();
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const toggleSidenav = () => dispatch(ToggleSideNav(!sidenav));
 
   const onLogout = () => {
@@ -74,10 +104,8 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
       <div className='d-flex'>
         <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
-            {name} <b className='text-primary'>{name}</b>
+            <b className='text-primary'>{validacioninfo}</b>
           </span>
-          <br />
-          <span className='text-muted'>{userName}</span>
         </span>
         <Menu className='bg-transparent' theme='dark' mode='horizontal'>
           <Menu.Item className='bg-transparent' key='1' onClick={onLogout} title='Cerrar sesión'>

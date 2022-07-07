@@ -9,11 +9,12 @@ import Spin from 'antd/es/spin';
 import { LoginPage } from 'app/core/pages/login.page';
 
 // Modules
-import { ModuleLayout } from 'app/modules/module.layout';
+import { ModuleLayout } from 'app/inhumacioncremacion/modules/module.layout';
 
 export const useAuthProvider = () => {
   const bodyFunction = (dataFunction: IAzureADFunctionProps) => {
     const { authenticationState, login, logout } = dataFunction;
+
     switch (authenticationState) {
       case AuthenticationState.Authenticated:
         return (

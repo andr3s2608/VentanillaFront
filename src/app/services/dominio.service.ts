@@ -1,8 +1,8 @@
-import { environments } from '../../environments/environments';
 import { get } from './settings/http.service';
 
+const { REACT_APP_ENDPOINTV1 } = process.env;
 class DominioService {
-  private endpoint = environments.endpointV1;
+  private endpoint = REACT_APP_ENDPOINTV1 as string;
 
   get_type = (tipoDominio: ETipoDominio) =>
     get<IDominio[]>({ endpoint: this.endpoint, url: `Dominio/GetAllDominio/${tipoDominio}`, id: '0' });
@@ -10,13 +10,16 @@ class DominioService {
   get_departamentos_colombia = () =>
     get<IDepartamento[]>({ endpoint: this.endpoint, url: `Departamento/GetAllDepartamento`, id: '0' });
 
-  get_municipios_by_departamento = (idDepartamento: string) =>
-    get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetMunicipioByIdDepartamento//${idDepartamento}`, id: '0' });
+  get_all_municipios_by_departamento = (idDepartamento: string) =>
+    get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetAllMunicipioByIdDepartamento/${idDepartamento}`, id: '0' });
 
-  get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidad`, id: '0' });
+  //get_municipios_by_departamento = (idDepartamento: string) =>
+  //get<IMunicipio[]>({ endpoint: this.endpoint, url: `Municipio/GetMunicipioByIdDepartamento/${idDepartamento}`, id: '0' });
+
+  get_localidades_bogota = () => get<ILocalidad[]>({ endpoint: this.endpoint, url: `Localidad/GetAllLocalidadCommons`, id: '0' });
 
   get_upz_by_localidad = (idLocalidad: string) =>
-    get<IUpz[]>({ endpoint: this.endpoint, url: `Upz/GetUpzByIdLocalidad/${idLocalidad}`, id: '0' });
+    get<IUpz[]>({ endpoint: this.endpoint, url: `Upz/GetUpzByLocalidadCommons/${idLocalidad}`, id: '0' });
 
   get_barrio_by_upz = (idUpz: string) =>
     get<IBarrio[]>({ endpoint: this.endpoint, url: `Barrio/GetBarrioByIdUpz/${idUpz}`, id: '0' });

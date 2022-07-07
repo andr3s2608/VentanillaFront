@@ -12,7 +12,7 @@
   border: none !important;
 }
 
-.ant-table-thead > tr > th {
+.ant-table-thead>tr>th {
   color: #000;
   border-bottom: 1px solid #979797 !important;
   white-space: nowrap !important;
@@ -111,4 +111,29 @@ table th {
 
 .buscar {
   margin: 0 auto;
+}
+
+.no_margin_padding {
+  margin: 0px;
+  padding: 0px;
+}
+
+.block {
+  display: block;
+}
+
+.anchoW1 {
+  width: 400px;
+}
+
+.anchoW2 {
+  width: 300px;
+}
+
+.margintop {
+  margin-top: 1vh;
+}
+
+.fullwidth {
+  width: 100%;
 }

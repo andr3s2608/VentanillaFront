@@ -30,7 +30,8 @@ const projectInfo = {
 
 /** Expresiones regulares. */
 const regExp = {
-  email: /^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+  email:
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
   url: /^https?:\/\/[\w]+(\.[\w]+)+[/#?]?.*$/,
   notSpecialCharacters: /^[A-Za-z0-9.,;:-áéíóúÁÉÍÓÚäëïöüÄËÏÖÜñÑ\s]+$/,
   notSpecialCharactersStrict: /^[A-Za-z0-9\s]+$/,
@@ -39,23 +40,23 @@ const regExp = {
 };
 
 export { projectInfo, regExp };
-export const direcionOrienta = [{ key: 'ESTE' }, { key: 'SUR' }];
+export const direcionOrienta = [{ key: ' ' }, { key: 'ESTE' }, { key: 'SUR' }];
 
 export const nomesclatura = [
-  { key: 'AK', value: 'AK - Avenida Carrera' },
-  { key: 'AC', value: 'AC - Avenida Calle' },
-  { key: 'CL', value: 'CL - Calle' },
-  { key: 'DG', value: 'DG - Diagonal' },
-  { key: 'KR', value: 'KR - Carrera' },
-  { key: 'TV', value: 'TV - Transversal' }
+  { key: 'AK- Avenida Carrera', value: 'AK - Avenida Carrera' },
+  { key: 'AC- Avenida Calle', value: 'AC - Avenida Calle' },
+  { key: 'CL- Calle', value: 'CL - Calle' },
+  { key: 'DG- Diagonal', value: 'DG - Diagonal' },
+  { key: 'KR- Carrera', value: 'KR - Carrera' },
+  { key: 'TV- Transversal', value: 'TV - Transversal' }
 ];
 
 export const letras = [
+  { key: ' ' },
   { key: 'A' },
   { key: 'B' },
   { key: 'C' },
   { key: 'D' },
-  { key: 'E' },
   { key: 'F' },
   { key: 'G' },
   { key: 'H' },
@@ -65,11 +66,9 @@ export const letras = [
   { key: 'L' },
   { key: 'M' },
   { key: 'N' },
-  { key: 'O' },
   { key: 'P' },
   { key: 'Q' },
   { key: 'R' },
-  { key: 'S' },
   { key: 'T' },
   { key: 'U' },
   { key: 'V' },

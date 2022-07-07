@@ -1,40 +1,40 @@
-import { Button, Modal } from 'antd';
-import Form, { FormInstance } from 'antd/es/form';
-import Table from 'antd/es/table';
-import { IRoles } from 'app/Models/IRoles';
-import { ApiService } from 'app/services/Apis.service';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import { useCallback, useEffect, useState } from 'react';
-import { columnFake, dataFake } from './model';
-import { CheckOutlined, EyeOutlined, FilePdfOutlined, FileTextOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
-import moment from 'moment';
-
-//redux
-import { store } from 'app/redux/app.reducers';
+import {
+  CheckOutlined,
+  ConsoleSqlOutlined,
+  EyeOutlined,
+  FilePdfOutlined,
+  FileTextOutlined,
+  UploadOutlined
+} from '@ant-design/icons';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
-
-interface IDataSource {
-  data: Array<any>;
-}
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+import { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import Form, { FormInstance } from 'antd/es/form';
+import { store } from 'app/redux/app.reducers';
+import { Alert, Button, Modal, Upload } from 'antd';
+import { useHistory } from 'react-router';
+import Input from 'antd/es/input';
+import Table from 'antd/es/table';
+import moment from 'moment';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [solicitud, setSolicitud] = useState<any[]>([]);
-  const [roles, setroles] = useState<IRoles[]>([]);
-  const [Validacion, setValidacion] = useState<string | undefined>();
-  const Paginas: number = 10;
+  const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
+  const [tipoSolicitud, setTipoSolicitud] = useState<string>('default-tiposolicitud');
+  const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
+  const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
+  const [Validacion, setValidacion] = useState<string>('0');
+  const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
-  const [dataTable, setDataTable] = useState<[]>();
-  const formatDate = 'MM-DD-YYYY';
+  const Paginas: number = 10;
 
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
-
       setroles(mysRoles);
       setValidacion('1');
     },
@@ -42,117 +42,70 @@ export const Gridview = (props: IDataSource) => {
     []
   );
 
-  //const getMenu = UpdateMenu();
-
   useEffect(() => {
     getListas();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [Tipo] = roles;
-  console.log(data, 'data');
 
   var nombre: any;
   var apellido: any;
   var nombres: any;
   var apellidos: any;
-  var identify: any;
+  var identify: string;
   var tipotramite: any;
+  var Filterfuneraria: string;
+  var FilterDoc: string;
+  var FilterId: string;
+  var FilterEstado: string;
+
+  var Filterfuneraria: string;
+  var FilterDoc: string;
+  var FilterId: string;
+  var FilterEstado: string;
+
   const Renovar = (datos: any) => {
-    if (datos == undefined) {
-      datos = data;
-    }
-
-    if (Tipo.rol == 'Ciudadano') {
-      nombre = datos.reduce((result: any, item: { nombre: any }) => {
-        return `${result}${item.nombre}|`;
-      }, '');
-
-      apellido = datos.reduce((result: any, item: { apellido: any }) => {
-        return `${result}${item.apellido}|`;
-      }, '');
-
-      identify = datos.reduce((result: any, item: { nroIdentificacionFallecido: any }) => {
-        return `${result}${item.nroIdentificacionFallecido}|`;
-      }, '');
-      tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
-        return `${result}${item.tramite}|`;
-      }, '');
+    if (data.length == 0) {
     } else {
-      console.log(data);
-      console.log(nombre, 'nombre');
-      nombre = datos.reduce((result: any, item: { persona: { primerNombre: any }[] }) => {
-        return `${result}${item.persona[0].primerNombre}|`;
-      }, '');
-      console.log(nombre, 'nombre');
+      if (datos == undefined) {
+        datos = data;
+      }
 
-      nombres = datos.reduce((result: any, item: { persona: { segundoNombre: any }[] }) => {
-        return `${result}${item.persona[0].segundoNombre}|`;
-      }, '');
-      apellido = datos.reduce((result: any, item: { persona: { primerApellido: any }[] }) => {
-        return `${result}${item.persona[0].primerApellido}|`;
-      }, '');
-      apellidos = datos.reduce((result: any, item: { persona: { segundoApellido: any }[] }) => {
-        return `${result}${item.persona[0].segundoApellido}|`;
-      }, '');
+      if (Tipo.rol == 'Ciudadano') {
+        identify = datos.reduce((result: any, item: { nroIdentificacionFallecido: any }) => {
+          return `${result}${item.nroIdentificacionFallecido}|`;
+        }, '');
+        tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
+          return `${result}${item.tramite}|`;
+        }, '');
+      } else {
+        const { persona } = datos;
 
-      identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
-        return `${result}${item.persona[0].numeroIdentificacion}|`;
-      }, '');
+        identify = '';
 
-      tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
-        return `${result}${item.idTramite}|`;
-      }, '');
+        for (let index = 0; index < datos.length; index++) {
+          identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
+        }
+
+        // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
+        // return `${result}${item['persona']['numeroIdentificacion']}|`;
+        // }, '');
+
+        tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
+          return `${result}${item.idTramite}|`;
+        }, '');
+      }
     }
   };
 
   if (Validacion == '1') {
-    console.log(roles, 'roles');
     Renovar(undefined);
   }
 
-  const nombrecompleto = () => {
-    const posicioninicial = 0;
-
-    if (Tipo.rol == 'Ciudadano') {
-      var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
-      nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
-
-      var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
-      apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
-      var cadena = primernombre + ' ' + primerapellido;
-
-      return cadena;
-    } else {
-      var primernombre = nombre.substring(posicioninicial, nombre.indexOf('|'));
-      nombre = nombre.substring(nombre.indexOf('|') + 1, nombre.length);
-
-      var segundonombre = nombres.substring(posicioninicial, nombres.indexOf('|'));
-      nombres = nombres.substring(nombres.indexOf('|') + 1, nombres.length);
-
-      var primerapellido = apellido.substring(posicioninicial, apellido.indexOf('|'));
-      apellido = apellido.substring(apellido.indexOf('|') + 1, apellido.length);
-
-      var segundoapellido = apellidos.substring(posicioninicial, apellidos.indexOf('|'));
-      apellidos = apellidos.substring(apellidos.indexOf('|') + 1, apellidos.length);
-
-      var cadena = primernombre + ' ' + segundonombre + ' ' + primerapellido + ' ' + segundoapellido;
-
-      return cadena;
-    }
-  };
-
-  const identificacion = () => {
-    const posicioninicial = 0;
-    var nroidentificacion = identify.substring(posicioninicial, identify.indexOf('|'));
-    identify = identify.substring(identify.indexOf('|') + 1, identify.length);
-    return nroidentificacion;
-  };
   var structureColumns;
 
   const tiposolicitud = () => {
-    if (Tipo.rol == 'Funcionario') {
+    if (Tipo.rol !== 'Ciudadano') {
       const posicioninicial = 0;
       var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
       tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
@@ -160,22 +113,22 @@ export const Gridview = (props: IDataSource) => {
 
       switch (idTramite) {
         case 'a289c362-e576-4962-962b-1c208afa0273':
-          valor = 'Inhumacion Indivual';
+          valor = 'Inhumación Indivual';
 
           break;
         case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
           //inhumacion fetal
-          valor = 'Inhumacion Fetal';
+          valor = 'Inhumación Fetal';
 
           break;
         case 'e69bda86-2572-45db-90dc-b40be14fe020':
           //cremacion individual
-          valor = 'Cremacion Individual';
+          valor = 'Cremación Individual';
 
           break;
         case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
           //cremacionfetal
-          valor = 'Cremacion Fetal ';
+          valor = 'Cremación Fetal ';
 
           break;
       }
@@ -187,8 +140,9 @@ export const Gridview = (props: IDataSource) => {
       return idTramite;
     }
   };
-  const boton = () => {
-    if (Tipo.rol == 'Funcionario') {
+
+  if (Validacion == '1') {
+    if (Tipo.rol !== 'Ciudadano') {
       structureColumns = [
         {
           title: 'Id Tramite',
@@ -197,16 +151,11 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Documento del Fallecido',
-          dataIndex: '',
-          key: 'numeroDocumento',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{identificacion()}</text>
-            </Form.Item>
-          )
+          dataIndex: 'noIdentificacionSolicitante',
+          key: 'numeroDocumento'
         },
         {
-          title: 'Nombre Completo',
+          title: 'Funeraria y/o Nombre',
           dataIndex: 'razonSocialSolicitante',
           key: 'nombreCompleto'
         },
@@ -244,7 +193,7 @@ export const Gridview = (props: IDataSource) => {
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
 
-            return permiso.rol === 'Funcionario' ? (
+            return permiso.rol !== 'Ciudadano' ? (
               <>
                 <Button
                   type='primary'
@@ -253,7 +202,7 @@ export const Gridview = (props: IDataSource) => {
                   style={{ marginLeft: '5px' }}
                   icon={<CheckOutlined />}
                 >
-                  Validar Informacion
+                  Validar Información
                 </Button>
               </>
             ) : null;
@@ -269,16 +218,11 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Documento del Fallecido',
-          dataIndex: '',
-          key: 'numeroDocumento',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{identificacion()}</text>
-            </Form.Item>
-          )
+          dataIndex: 'nroIdentificacionFallecido',
+          key: 'numeroDocumento'
         },
         {
-          title: 'Nombre Completo',
+          title: 'Funeraria y/o Nombre',
           dataIndex: 'razonSocialSolicitante',
           key: 'nombreCompleto'
         },
@@ -291,11 +235,17 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tramite}</text>
-            </Form.Item>
-          )
+          render: (row: any) => {
+            return row.solicitud == 'Registro Usuario Externo' ? (
+              <Form.Item label='' name=''>
+                <text>{tramite}</text>
+              </Form.Item>
+            ) : (
+              <Form.Item label='' name=''>
+                <text>{row.solicitud}</text>
+              </Form.Item>
+            );
+          }
         },
         {
           title: 'Tipo Solicitud',
@@ -306,177 +256,295 @@ export const Gridview = (props: IDataSource) => {
               <text>{tiposolicitud()}</text>
             </Form.Item>
           )
+        },
+        {
+          title: 'Gestión',
+          key: 'Acciones',
+          render: (_: any, row: any, index: any) => {
+            if (row.solicitud == 'Documentos Inconsistentes') {
+              return (
+                <Button
+                  type='primary'
+                  style={{ marginLeft: '5px' }}
+                  icon={<CheckOutlined />}
+                  onClick={() => onGestionarDocumento(row)}
+                >
+                  Gestionar
+                </Button>
+              );
+            } else {
+              return null;
+            }
+          }
         }
       ];
     }
-  };
-  if (Validacion == '1') {
-    boton();
   }
 
-  const tramite = 'En tramite';
-  /*
-  render: (Text: string) => (
-    <Form.Item label='' name=''>
-      <text>{identificacion()}</text>
-    </Form.Item>
-  );
-
-  render: (Text: string) => (
-    <Form.Item label='' name=''>
-      <text>{nombrecompleto()}</text>
-    </Form.Item>
-  );
-  */
-
-  const onPrev = ({ idSolicitud, estadoSolicitud }: { [x: string]: string }) => {
-    if (estadoSolicitud === '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
-      api.GeneratePDF(idSolicitud);
-    }
-  };
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const onClickView = async ({ idSolicitud }: { [x: string]: string }) => {
-    const all = await api.getUserTramite(idSolicitud);
-    const alldata = all.map((item: any) => {
-      item.fechaRegistro = moment(item.fechaRegistro).format(formatDate);
-      return item;
-    });
-
-    setDataTable(alldata);
-    showModal();
-  };
+  let tramite = 'En tramite';
 
   const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
-    const { idTramite } = data[0];
 
     localStorage.setItem('register', JSON.stringify(data));
-
     store.dispatch(SetResetViewLicence());
-
-    //history.push('/tramites-servicios/licencia/inhumacion-prueba');
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
-  const onPageChange = (pagination: any) => {
-    //alert(pagination.current);
-    console.log('data', data);
 
-    var valor: any = data.at(0);
-    var array: any[] = [];
-    for (let index = 0; index < data.length; index++) {
-      if (index >= (pagination.current - 1) * 10) {
-        valor = data.at(index);
-        array.push(valor);
-        console.log(array, 'array');
-      }
-    }
+  const getNamesAndBlobForm = (values: any, tipoSolitudIN: string) => {
+    let { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
+    const Objs = [];
 
-    Renovar(array);
+    /*if (tipoSolitudIN == 'Cremacion Fetal' || tipoSolitudIN == 'Inhumacion Fetal') {
+      DFALL = DM;
+    }*/
+
+    Objs.push({ file: CD, name: 'Certificado_Defuncion' });
+    Objs.push({ file: DM, name: 'Documento_de_la_Madre' });
+    Objs.push({ file: OD, name: 'Otros_Documentos' });
+    Objs.push({ file: ANFI, name: 'Acta_Notarial_del_Fiscal' });
+    Objs.push({ file: DFALL, name: 'Documento_del_fallecido' });
+    Objs.push({ file: ACF, name: 'Autorizacion_de_cremacion_del_familiar' });
+    Objs.push({ file: DFAMI, name: 'Documento_del_familiar' });
+    Objs.push({ file: AFC, name: 'Autorizacion_del_fiscal_para_cremar' });
+    Objs.push({ file: OML, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
+
+    const filesLoaded = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
+    const files: Blob[] = filesLoaded.map((item) => {
+      const [file] = item.file;
+      return file.originFileObj;
+    });
+    const names: string[] = filesLoaded.map((item) => item.name);
+
+    return [files, names];
   };
 
-  return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        //
-        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} onChange={onPageChange} />
-      </div>
-    </div>
-  );
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
 
-  /*
+  /** Evento que se ejecuta cuando se da click en el boton de gestionar */
+  const onGestionarDocumento = async (solicitud: Solicitud) => {
+    const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
 
-const structureColumns = [
-    {
-      title: 'Tipo Trámite',
-      dataIndex: 'tramite',
-      key: 'tramite'
-    },
-    {
-      title: 'Fecha Radicación',
-      dataIndex: 'fechaSolicitud',
-      key: 'fechaSolicitud'
-    },
-    {
-      title: 'Código Solicitud',
-      dataIndex: 'idSolicitud',
-      key: 'idSolicitud'
-    },
-    {
-      title: 'Número Certificado Defunción',
-      dataIndex: 'numeroCertificado',
-      key: 'numeroCertificado'
-    },
-    {
-      title: 'Estado',
-      dataIndex: 'solicitud',
-      key: 'solicitud'
-    },
-    {
-      title: 'PDF',
-      dataIndex: 'pdf',
-      key: 'pdf',
-      render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => onPrev(row)} style={{ fontSize: '30px' }} />
-    },
-    {
-      title: 'Acciones',
-      key: 'Acciones',
+    setObservacion(resultResponse[0].observaciones);
+    setTipoSolicitud(solicitud.tramite);
+    setListadoDocumento(resultResponse);
+    setVisibleDocumentoGestion(true);
+  };
 
-      render: (_: any, row: any, index: any) => {
-        const [permiso] = roles;
+  /** Evento que se ejecuta cuando se da click en guardar los cambios */
+  const SubmitDocuments = async (form: any, dataComponentUpdate: DataComponentUpdate) => {
+    const { tipoSolicitud, listDocument } = dataComponentUpdate;
+    const [accountIdentifierSession] = listDocument[0].path.split('/');
+    const formData = new FormData();
+    let container = null;
 
-        return permiso.rol === 'Ciudadano' ? (
-          <>
-            <Button key={index} type='primary' onClick={() => onClickView(row)} icon={<EyeOutlined />}>
-              Ver
-            </Button>
-          </>
-        ) : permiso.rol === 'Funcionario' ? (
-          <>
-            <Button type='primary' key={`ver-${index}`} onClick={() => onClickView(row)} icon={<EyeOutlined />}>
-              Ver
-            </Button>
+    /**De acuerdo al tipo de solicitud se asigna el nombre del contenedor de Azure Storage Blob
+     * al que se debe enviar los archivos
+     */
+    switch (tipoSolicitud) {
+      case 'Inhumacion Individual':
+        container = 'inhumacionindividual';
+        break;
+      case 'Cremacion Individual':
+        container = 'cremacionindividual';
+        break;
+      case 'Cremacion Fetal':
+        container = 'cremacionfetal';
+        break;
+      case 'Inhumacion Fetal':
+        container = 'inhumacionfetal';
+        break;
+    }
 
-            <Button
-              type='primary'
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ marginLeft: '5px' }}
-              icon={<CheckOutlined />}
-            >
-              Validar Informacion
-            </Button>
-          </>
-        ) : null;
+    /** Se verifica que se encontró un contenedor donde almacenar los documentos */
+    if (container) {
+      formData.append('containerName', container);
+      formData.append('oid', accountIdentifierSession);
+
+      const [files, names] = getNamesAndBlobForm(form, tipoSolicitud);
+      const supportDocumentsEdit: any[] = [];
+
+      /** Se itera por cada archivo subido por el cliente y se hace mapeo entre el blob y el nombre
+       *  que debe tener el archivo
+       */
+      files.forEach((item: any, i: number) => {
+        const name: string = names[i] + '';
+        for (let j = 0; j < listDocument.length; j++) {
+          if (listDocument[j].path.includes(name)) {
+            const [, nameFile] = listDocument[j].path.split('/');
+            formData.append('file', item);
+            formData.append('nameFile', nameFile);
+
+            supportDocumentsEdit.push({
+              idDocumentoSoporte: listDocument[j].idDocumentoSoporte,
+              fechaModificacion: new Date()
+            });
+          }
+        }
+      });
+
+      /** Verifica que hay archivos ha subir  y a su vez sirve para validar que se agregue la meta data a cada
+       *  uno de los archivos y se mandan a base de datos
+       * */
+      if (supportDocumentsEdit.length) {
+        await api.uploadFiles(formData);
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
+        await api.updateStateRequest(listDocument[0].idSolicitud, 'FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+        window.location.reload();
       }
     }
-  ];
+  };
 
-//--------------------------------------------
+  /** Componente de función que se usa para la gestionar la actualización de documentos inconsistente*/
+  function ComponentUpdateDocument(props: DataComponentUpdate) {
+    function GUIDtoString(cadena: string) {
+      switch (cadena) {
+        /** GUID que corresponde a Certificado de defunción */
+        case '19a11490-261c-4114-9152-23c2b991cb36':
+          return 'CD';
 
+        /** GUID que corresponde al Documento de la madre */
+        case 'd2d3aba7-3b92-446a-aa8c-80a75de246a7':
+          return 'DM';
+
+        /** GUID que corresponde a Otros Documentos */
+        case 'abe33c1d-9370-4189-9e81-597e5b643481':
+          return 'OD';
+
+        /** GUID que corresponde al Acta Notarial del Fiscal */
+        case '79320af6-943c-43bf-87d1-847b625f6203':
+          return 'ANFI';
+
+        /** GUID que corresponde al Documento del fallecido */
+        case '9c4e62a4-ee76-4ba1-8dbe-8be172e23788':
+          return 'DFALL';
+
+        /** GUID que corresponde a Autorización de Cremación del familiar */
+        case 'f67f1c4e-a6a5-4257-a995-17a926801f7c':
+          return 'ACF';
+
+        /** GUID que corresponde al Documento del familiar */
+        case 'd6524742-e32d-4548-ab21-7a9cbb367926':
+          return 'DFAMI';
+
+        /** GUID que corresponde a Autorización del fiscal para cremar */
+        case 'c659a063-e8a3-4f23-9a61-575afb1e1c2b':
+          return 'AFC';
+
+        /** GUID que corresponde a Oficio de Medicinal Legal al fiscal para cremar */
+        case '1266f06c-0bc1-4cf8-ba51-5e889d5e8178':
+          return 'OML';
+      }
+      return 'default';
+    }
+
+    return (
+      <Form layout='horizontal' onFinish={(form) => SubmitDocuments(form, props)}>
+        {props.listDocument.map((item) => {
+          return (
+            <Form.Item
+              label={item.tipo_documento}
+              name={GUIDtoString(item.idTipoDocumento)}
+              valuePropName='fileList'
+              getValueFromEvent={normFile}
+            >
+              <Upload
+                name={GUIDtoString(item.idTipoDocumento)}
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+                className='float-right'
+              >
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+          );
+        })}
+
+        <Button style={{ margin: 10 }} type='primary' htmlType='submit' onClick={() => setVisibleDocumentoGestion(false)}>
+          Guardar
+        </Button>
+      </Form>
+    );
+  }
 
   return (
-    <div className='card card-body py-5 mb-4 fadeInTop'>
-      <div className='d-lg-flex align-items-start'>
-        <Table dataSource={data} columns={structureColumns} pagination={{ pageSize: 50 }} />
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <div className='row'>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
+            </div>
+          </div>
+          <div className='row'>
+            {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+            <Modal
+              title={<p className='text-center'>Gestión de Documentos</p>}
+              visible={isVisibleDocumentoGestion}
+              width={800}
+              onCancel={() => setVisibleDocumentoGestion(false)}
+              footer={[]}
+            >
+              <div className='row'>
+                <div className='col-gl-12 col-sm-12 col-md-12'>
+                  <label>Observaciones:</label>
+                  <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+                </div>
+              </div>
+              <div className='row  justify-content-md-center'>
+                <label className='mt-3'>Lista de documentos:</label>
+                <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
+                  <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+                </div>
+              </div>
+            </Modal>
+          </div>
+        </div>
       </div>
-      <Modal
-        title={<h3>Tabla de Seguimiento</h3>}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        width={1000}
-        okButtonProps={{ hidden: true }}
-        cancelText='Cerrar'
-      >
-        <Table dataSource={dataTable} columns={columnFake} pagination={{ hideOnSinglePage: true }} />
-      </Modal>
     </div>
   );
-  */
 };
+
+interface Solicitud {
+  estadoSolicitud: string;
+  fechaSolicitud: string;
+  iD_Control_Tramite: string;
+  idSolicitud: string;
+  noIdentificacionSolicitante: string;
+  nroIdentificacionFallecido: string;
+  numeroCertificado: string;
+  razonSocialSolicitante: string;
+  solicitud: string;
+  tramite: string;
+}
+
+interface Document {
+  idTipoDocumento: string;
+  estado_Documento: string;
+  fecha_registro: string;
+  fecha_ultima_modificacion: string;
+  idDocumentoSoporte: string;
+  idEstadoDocumento: string;
+  idSolicitud: string;
+  observaciones: string;
+  path: string;
+  tipoSeguimiento: string;
+  tipoSeguimientoDescripcion: string;
+  tipo_documento: string;
+}
+
+interface DataComponentUpdate {
+  tipoSolicitud: string;
+  listDocument: Array<Document>;
+}
+
+interface IDataSource {
+  data: Array<any>;
+}

@@ -110,6 +110,7 @@ http.interceptors.request.use(
   async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
     const token = await authProvider.getAccessToken();
     const { headers } = config;
+
     headers.Authorization = `Bearer ${token.accessToken}`;
     return config;
   },
@@ -138,9 +139,8 @@ const post = async <T>({
   confirmModal = true
 }: ISettingsService): Promise<T> => {
   var confirm = confirmModal;
-  console.log(id, 'ID');
+
   if (id == '0') {
-    console.log(id, 'Entrooo');
     confirm = confirmModal
       ? await confirmMessage({
           content: '¿Está seguro de guardar la información?',
@@ -184,9 +184,8 @@ const put = async <T>({
   confirmModal = true
 }: ISettingsService): Promise<T> => {
   var confirm = confirmModal;
-  console.log(id, 'ID');
+
   if (id == '0') {
-    console.log(id, 'Entrooo');
     confirm = confirmModal
       ? await confirmMessage({
           content: '¿Está seguro de guardar la información?',

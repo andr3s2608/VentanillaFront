@@ -6,19 +6,22 @@ import { UIReducer, UIState } from './ui/ui.reducer';
 import { ApplicationReducer, ApplicationState } from './application/application.reducer';
 import { GridState, GridReducer } from './Grid/grid.reducer';
 import { ViewLicenceReducer } from './controlViewLicence/controlViewLicence.reducer';
+import { DireccionReducer } from './dirrecion/direccion.reducer';
 
 export interface AppState {
   ui: UIState;
   application: ApplicationState;
   grid: GridState;
   viewLicence: any;
+  direccion: any;
 }
 
 const reducer = combineReducers<AppState>({
   ui: UIReducer,
   application: ApplicationReducer,
   grid: GridReducer,
-  viewLicence: ViewLicenceReducer
+  viewLicence: ViewLicenceReducer,
+  direccion: DireccionReducer
 });
 
 const store: Store<AppState> = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
