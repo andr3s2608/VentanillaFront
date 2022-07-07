@@ -944,7 +944,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                     <div className='conteiner-fluid'>
                       <div className='row'>
                         <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
-                          El Número de certificado registrado no ha sido registrado en salud publica
+                          El Número de certificado no ha sido registrado en salud publica
                         </p>
                       </div>
                       <div className='row justify-content-md-center'>
