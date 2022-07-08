@@ -55,7 +55,7 @@ export const Bandeja = (props: IDataSource) => {
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    history.push('/tramites-servicios/Revision/revisar-solicitud');
+    history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
   const structureColumns = [
