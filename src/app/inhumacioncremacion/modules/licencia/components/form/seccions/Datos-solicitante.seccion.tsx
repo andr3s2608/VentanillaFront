@@ -380,7 +380,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     },
     {
       title: 'Email funeraria',
-      describe: emailfuneraria
+      describe: emailfuneraria?.toLowerCase()
     }
   ];
 

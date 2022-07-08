@@ -472,21 +472,21 @@ export class ApiService {
 
   getAutoridadAmbiental = () =>
     get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `AutoridadAmbiental/GetAll`,
       id: '0'
     });
 
   getUsoFuente = () =>
     get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `UsoFuente/GetAll`,
       id: '0'
     });
 
   getSubcategoriasFuente = (id: string) =>
     get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `TipoFuente/getAllSubCategoria/${id}`,
       id: '0'
     });

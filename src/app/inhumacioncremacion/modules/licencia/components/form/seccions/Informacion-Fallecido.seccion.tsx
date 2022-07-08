@@ -144,19 +144,19 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   var datamadre = [
     {
       title: 'Primer Nombre',
-      describe: primernombre
+      describe: primernombre?.toLowerCase()
     },
     {
       title: 'Segundo Nombre',
-      describe: segundonombre
+      describe: segundonombre?.toLowerCase()
     },
     {
       title: 'Primer Apellido',
-      describe: primerapellido
+      describe: primerapellido?.toLowerCase()
     },
     {
       title: 'Segundo Apellido',
-      describe: segundoapellido
+      describe: segundoapellido?.toLowerCase()
     },
     {
       title: 'No. Identificacion.',
@@ -230,19 +230,19 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       },
       {
         title: 'Primer Nombre',
-        describe: primernombre
+        describe: primernombre?.toLowerCase()
       },
       {
         title: 'Segundo Nombre',
-        describe: segundonombre
+        describe: segundonombre?.toLowerCase()
       },
       {
         title: 'Primer Apellido',
-        describe: primerapellido
+        describe: primerapellido?.toLowerCase()
       },
       {
         title: 'Segundo Apellido',
-        describe: segundoapellido
+        describe: segundoapellido?.toLowerCase()
       },
       {
         title: 'Tipo de identificación',
@@ -266,7 +266,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       },
       {
         title: 'Genero',
-        describe: genero
+        describe: genero?.toLowerCase()
       },
       {
         title: 'Tipo de Muerte',

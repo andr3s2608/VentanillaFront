@@ -86,7 +86,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     '1'
   ]);
   const [supports, setSupports] = useState<any[]>([]);
-  const [type, setType] = useState<[]>([]);
+  const [type, setType] = useState<any[]>([]);
   //create o edit
   const valid: any = EditInhumacion('1');
   var objJosn: any = EditInhumacion('1');
@@ -130,7 +130,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       const support = await api.getSupportDocuments(objJosn?.idSolicitud);
       const typeList = await api.GetAllTypeValidation();
       setSupports(support);
-      setType(typeList);
+      console.log(typeList);
+      if (isvalidcertificado) {
+        const filtrado = type.filter(function (f: { id: string }) {
+          return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';
+        });
+        setType(filtrado);
+      } else {
+        setType(typeList);
+      }
 
       const all = await api.getCertificado(objJosn?.certificado);
 
@@ -809,9 +817,18 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       });
     }
   };
-  const onModalNofificacion = () => {
+  const onModalNofificacion = async () => {
     setIsModalValidarCertificado(false);
     setisvalidcertificado(true);
+    const typeList = await api.GetAllTypeValidation();
+    if (isvalidcertificado) {
+      const filtrado = type.filter(function (f: { id: string }) {
+        return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';
+      });
+      setType(filtrado);
+    } else {
+      setType(typeList);
+    }
     //history.push('/tramites-servicios');
   };
 

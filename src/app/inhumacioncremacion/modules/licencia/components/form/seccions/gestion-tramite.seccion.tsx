@@ -14,23 +14,11 @@ import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.
 
 export const GestionTramite: React.FC<gestiontramite> = (props) => {
   const { type, idSolicitud, idTramite, valor, registrado } = props;
-  const [mostrar, setmostrar] = useState<boolean>();
+  const [mostrar, setmostrar] = useState<boolean>(false);
   const [tipos, settipos] = useState<any[]>([]);
   const [observacion, setobservacion] = useState<boolean>(true);
 
-  const getListas = useCallback(async () => {
-    console.log(registrado);
-    if (registrado) {
-      const filtrado = type.filter(function (f: { id: string }) {
-        return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';
-      });
-      console.log(filtrado);
-      settipos(filtrado);
-    } else {
-      settipos(type);
-    }
-    setmostrar(true);
-  }, []);
+  const getListas = useCallback(async () => {}, []);
 
   const onChange = (value: any) => {
     if (value === '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
@@ -56,25 +44,22 @@ export const GestionTramite: React.FC<gestiontramite> = (props) => {
             </p>
           </div>
         </div>
-        {mostrar && (
-          <>
-            <div className='row'>
-              <div className='col-lg-12 col-sm-12 col-md-12 ' style={{ marginLeft: '-10px' }}>
-                <label htmlFor=''>Tipo Seguimiento</label>
-                <Form.Item label='' name='validFunctionaltype' rules={[{ required: true }]}>
-                  <SelectComponent
-                    onChange={onChange}
-                    options={tipos}
-                    optionPropkey='id'
-                    optionPropLabel='descripcion'
-                    style={{ width: '360px' }}
-                    className='tipo_s'
-                  />
-                </Form.Item>
-              </div>
-            </div>
-          </>
-        )}
+
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 col-md-12 ' style={{ marginLeft: '-10px' }}>
+            <label htmlFor=''>Tipo Seguimiento</label>
+            <Form.Item label='' name='validFunctionaltype' rules={[{ required: true }]}>
+              <SelectComponent
+                onChange={onChange}
+                options={type}
+                optionPropkey='id'
+                optionPropLabel='descripcion'
+                style={{ width: '360px' }}
+                className='tipo_s'
+              />
+            </Form.Item>
+          </div>
+        </div>
 
         <div className='row mt-2 prueba'>
           <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>

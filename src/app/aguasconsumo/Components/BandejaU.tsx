@@ -44,9 +44,9 @@ export const BandejaU = (props: IDataSource) => {
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
     if (tipo == 'tramite') {
-      history.push('/tramites-servicios/Revision/primera-vez');
+      history.push('/tramites-servicios-aguas/Revision/primera-vez');
     } else {
-      history.push('/tramites-servicios/Revision/visita-revision');
+      history.push('/tramites-servicios-aguas/Revision/visita-revision');
     }
   };
 

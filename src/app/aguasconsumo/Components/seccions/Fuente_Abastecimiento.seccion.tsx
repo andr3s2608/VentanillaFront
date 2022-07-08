@@ -39,16 +39,13 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const resp = await Promise.all([
-        api.getTipoFuente(), //api.getAutoridadAmbiental(),
-        api.getSubredes(),
-        api.getSubredes()
-      ]);
+      const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental(), api.getSubredes()]);
       setListas(resp);
 
       console.log(resp, 'resps');
-      //const sub = await api.getSubcategoriasFuente('E32229FB-21D6-46CC-9280-CD6C8E7F7AD0');
-      //setl_subcategorias(sub);
+      const sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
+      console.log(sub);
+      setl_subcategorias(sub);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -102,7 +99,12 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           <div className='form-group gov-co-form-group'>
             <div className='gov-co-dropdown'>
               <Form.Item name='tipofuente' initialValue={''} rules={[{ required: true }]}>
-                <SelectComponent options={l_fuentes} optionPropkey='idTipoFuente' optionPropLabel='nombre' />
+                <SelectComponent
+                  options={l_fuentes}
+                  onChange={Onchangetipo}
+                  optionPropkey='idTipoFuente'
+                  optionPropLabel='nombre'
+                />
               </Form.Item>
             </div>
           </div>
@@ -111,8 +113,12 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           <span className='required'>*</span>Subcategoria de fuente*
           <div className='form-group gov-co-form-group ml-2'>
             <div className='gov-co-dropdown'>
-              <Form.Item name='subcategoria' initialValue={''} rules={[{ required: true }]}>
-                <SelectComponent options={l_fuentes} optionPropkey='idSubCategoriaFuente' optionPropLabel='nombreSubCategoria' />
+              <Form.Item name='subcategoria' rules={[{ required: true }]}>
+                <SelectComponent
+                  options={l_subcategorias}
+                  optionPropkey='idSubCategoriaFuente'
+                  optionPropLabel='nombreSubCategoria'
+                />
               </Form.Item>
             </div>
           </div>
