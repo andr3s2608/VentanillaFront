@@ -5,7 +5,7 @@ import { IRouteProps } from 'app/shared/components/router/access.route';
 
 /** Path principal del modulo. */
 export const licenciaPath = '/tramites-servicios/licencia';
-export const RevisionPath = '/tramites-servicios/Revision';
+export const RevisionPath = '/tramites-servicios-aguas/Revision';
 export const tramiteServicePath = '/tramites-servicios';
 export const tramiteServiceAguasPath = '/tramites-servicios-aguas';
 export const tramiteAdmin = '/tramites-administrador';

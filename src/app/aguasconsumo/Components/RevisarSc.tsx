@@ -174,10 +174,10 @@ export const RevisarSc = () => {
   const onSubmitFailed = () => setStatus('error');
 
   return (
-    <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
-      <div className='container-fluid'>
-        <div className='card'>
-          <div className='card-body'>
+    <div className='container-fluid'>
+      <div className='card'>
+        <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
                 <div className='row mt-5'>
@@ -287,9 +287,9 @@ export const RevisarSc = () => {
                 </div>
               </div>
             </section>
-          </div>
+          </Form>
         </div>
       </div>
-    </Form>
+    </div>
   );
 };

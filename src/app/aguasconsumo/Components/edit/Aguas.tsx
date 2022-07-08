@@ -1,6 +1,6 @@
 export const EditAguas = () => {
   const data = localStorage.getItem('register');
-
+  console.log(data, ' Dataaaa');
   if (data) {
     const json = JSON.parse(data);
     const obj = json;

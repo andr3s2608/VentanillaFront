@@ -463,6 +463,34 @@ export class ApiService {
       id: '0'
     });
 
+  getTipoFuente = () =>
+    get<any>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `TipoFuente/getAllTipoFuente`,
+      id: '0'
+    });
+
+  getAutoridadAmbiental = () =>
+    get<any>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `AutoridadAmbiental/GetAll`,
+      id: '0'
+    });
+
+  getUsoFuente = () =>
+    get<any>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `UsoFuente/GetAll`,
+      id: '0'
+    });
+
+  getSubcategoriasFuente = (id: string) =>
+    get<any>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `TipoFuente/getAllSubCategoria/${id}`,
+      id: '0'
+    });
+
   AddSupportDocumentsAguas = (payload: any[]) =>
     post({
       endpoint: REACT_APP_AGUAS as string,
