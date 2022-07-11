@@ -236,4 +236,14 @@ interface DatosFuente<T> {
   obj: any;
   tipo: string;
 }
-export const KeysForm = ['statustramite', 'observations'];
+export const KeysForm = [
+  'tipo',
+  'tipofuente',
+  'subcategoria',
+  'descripcionotra',
+  'nombrefuente',
+  'latitud',
+  'longitud',
+  'descripcionfuente',
+  'autoridad'
+];

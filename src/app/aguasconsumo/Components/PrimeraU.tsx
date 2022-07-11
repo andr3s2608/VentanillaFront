@@ -3,7 +3,8 @@ import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
-import { DatosFuente } from './seccions/Fuente_Abastecimiento.seccion';
+import { DatosFuente, KeysForm as KeyFormFuenteAbastecimiento } from './seccions/Fuente_Abastecimiento.seccion';
+
 import { DatosAcueducto } from './seccions/Acueductos.seccion';
 import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
@@ -11,12 +12,14 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import form from 'antd/es/form';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
 import { EditAguas } from './edit/Aguas';
+import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 
 export const PrimeraU = () => {
   const history = useHistory();
   const [form] = Form.useForm<any>();
   //const objJson: any = EditAguas();
   const objJson: any = undefined;
+  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
   const onSubmit = async (values: any) => {};
   const onSubmitFailed = () => setStatus('error');
@@ -65,7 +68,7 @@ export const PrimeraU = () => {
             </section>
 
             <section className='panel-menu'>
-              <div className='container'>
+              <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
                 <div className='row'>
                   <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
                     <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
@@ -159,18 +162,19 @@ export const PrimeraU = () => {
                       style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                       type='primary'
                       htmlType='button'
-                      onClick={() => {
-                        history.push('/tramites-servicios/Revision/segunda-vez');
-                      }}
+                      onClick={() => onNextStep([...KeyFormFuenteAbastecimiento])}
                     >
-                      Enviar
+                      Siguiente
                     </Button>
-                    <button className='float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
-                      Guardar
-                    </button>
-                    <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
+
+                    <Button
+                      className='mr-3 float-right button btn btn-default'
+                      type='dashed'
+                      onClick={onPrevStep}
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                    >
                       Cancelar
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -181,6 +185,3 @@ export const PrimeraU = () => {
     </div>
   );
 };
-function setStatus(arg0: string) {
-  throw new Error('Function not implemented.');
-}

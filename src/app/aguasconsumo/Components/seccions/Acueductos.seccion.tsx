@@ -31,12 +31,15 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const [seleccionar, setseleccionar] = useState<boolean>(true);
+
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
+
+  const [acueducto, setacueductos] = useState<any[]>([]);
+  const [acueductotabla, setacueductostabla] = useState<any[]>([]);
 
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
@@ -85,28 +88,101 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     setLMunicipios(resp);
   };
 
+  const insertarAcueducto = async () => {
+    const dep = props.form.getFieldValue('departamento');
+    const loc = props.form.getFieldValue('localidad');
+    var mun = props.form.getFieldValue('municipio');
+    const sec = props.form.getFieldValue('sector');
+    const lat = props.form.getFieldValue('latituduso');
+    const long = props.form.getFieldValue('longituduso');
+    const uso = props.form.getFieldValue('usofuente');
+    const desc = props.form.getFieldValue('descripcionotrouso');
+    const caudal = props.form.getFieldValue('caudal');
+    if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
+      mun = '31211657-3386-420a-8620-f9c07a8ca491';
+    }
+
+    const array: any[] = [];
+    const arraytabla: any[] = [];
+    var posicion: number = 0;
+    for (let index = 0; index < acueducto.length; index++) {
+      array.push(acueducto[index]);
+      arraytabla.push(acueductotabla[index]);
+      posicion++;
+    }
+
+    //push al array que se guardara en la bd
+    array.push({
+      posicion: posicion,
+      departamento: dep,
+      munver: mun + ' / ' + loc,
+      localidad: loc,
+      municipio: mun,
+      sector: sec,
+      latitud: lat,
+      longitud: long,
+      usofuente: uso,
+      descripcion: desc,
+      caudal: caudal
+    });
+    //push al array que se mostrara en la tabla
+    //municipio
+
+    const municipios = (await l_municipios).filter((i) => i.idMunicipio == mun);
+
+    const { descripcion } = municipios[0];
+    //localidad
+    const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
+    const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
+
+    arraytabla.push({
+      posicion: posicion,
+      munver: descripcion + ' / ' + localidad[0].descripcion,
+      usofuente: usofuente[0].nombre
+    });
+
+    ////
+
+    setacueductos(array);
+    setacueductostabla(arraytabla);
+  };
+
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
+    const array: any[] = [];
+    const arraytabla: any[] = [];
+    var pos: number = 0;
+    for (let index = 0; index < acueducto.length; index++) {
+      if (index != data.posicion) {
+        const aux = acueducto[index];
+        const auxtabla = acueductotabla[index];
+        aux.posicion = pos;
+        auxtabla.posicion = pos;
+        pos++;
+        arraytabla.push(auxtabla);
+        array.push(aux);
+      }
+    }
+    setacueductos(array);
+    setacueductostabla(arraytabla);
 
-    localStorage.setItem('register', JSON.stringify(data));
-    store.dispatch(SetResetViewLicence());
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
   const structureColumns = [
     {
       title: 'No. de Expediente',
-      dataIndex: 'numeroRadicado',
-      key: 'nroradicado'
+      dataIndex: 'posicion',
+      key: 'posicion'
     },
     {
       title: 'Municipio/Vereda',
-      dataIndex: 'tipodeTramite',
-      key: 'idTramite'
+      dataIndex: 'munver',
+      key: 'munver'
     },
     {
       title: 'Uso de la Fuente',
-      dataIndex: 'fechaSolicitud',
-      key: 'fechaSolicitud'
+      dataIndex: 'usofuente',
+      key: 'usofuente'
     },
     {
       title: 'Acciones',
@@ -309,15 +385,29 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <a href='' style={{ textDecoration: 'none' }}>
             <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
           </a>
+          <Button
+            className='fa-solid fa-circle-plus'
+            style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+            type='primary'
+            htmlType='button'
+            onClick={() => {
+              insertarAcueducto();
+            }}
+          >
+            Enviar
+          </Button>
         </div>
-        <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-          <Table
-            id='tableGen'
-            dataSource={[]}
-            columns={structureColumns}
-            pagination={{ pageSize: Paginas }}
-            className='table_info'
-          />
+        <div className='row'>
+          <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+            <Table
+              id='tableGen'
+              dataSource={acueductotabla}
+              columns={structureColumns}
+              pagination={{ pageSize: Paginas }}
+              className='table_info'
+            />{' '}
+            <br />
+          </div>
         </div>
       </div>
     </>
