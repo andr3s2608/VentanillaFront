@@ -180,6 +180,8 @@ const App = () => {
   };
 
   return (
+    <></>
+    /*
     <Modal
       title='VALIDACIÓN DE SOLICITUD'
       visible={visible}
@@ -192,6 +194,7 @@ const App = () => {
     >
       <p>{'¿La solicitud que va a realizar esta relacionada con un caso COVID - 19?'}</p>
     </Modal>
+    */
   );
 };
 

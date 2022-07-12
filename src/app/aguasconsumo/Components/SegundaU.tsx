@@ -465,7 +465,7 @@ export const SegundaU = () => {
           <div className='row'>
             <div className='col-lg-12 col-md-12 col-sm-12'>
               <div className='info-tramite mt-3'>
-                <p>Adicionar documentación requesito.</p>
+                <p>Adicionar documentación requisito.</p>
               </div>
             </div>
           </div>

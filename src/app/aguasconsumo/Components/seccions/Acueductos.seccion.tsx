@@ -27,7 +27,7 @@ import { Button, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
-  const { obj } = props;
+  const { obj, prop } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -144,6 +144,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     ////
 
     setacueductos(array);
+    prop(array);
     setacueductostabla(arraytabla);
   };
 
@@ -164,6 +165,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       }
     }
     setacueductos(array);
+    prop(array);
     setacueductostabla(arraytabla);
 
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
@@ -416,5 +418,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 interface DatosAcueducto<T> {
   form: FormInstance<T>;
   obj: any;
+  prop: any;
 }
 export const KeysForm = ['statustramite', 'observations'];

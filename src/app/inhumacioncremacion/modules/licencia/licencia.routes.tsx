@@ -136,6 +136,10 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: NotificacionUsuario
   },
   {
+    path: `${notificacion}/Bandeja`,
+    component: NotificacionBandeja
+  },
+  {
     path: `${RevisionPath}/solicitar-revision`,
     component: SolicitarRevision
   },

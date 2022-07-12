@@ -284,7 +284,8 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     if (all) {
       setNumeroCertificado(all.numeroCertificado);
       setNOMBRES(all['NOMBRE20']);
-      setFECHA_DEFUNCION(all['FECHA_DEFUNCION7']);
+      const fecha: string = all['FECHA_DEFUNCION7'];
+      setFECHA_DEFUNCION(fecha.substring(0, 10));
       setNROIDENT(all['NROIDENT18']);
 
       setSEXO(all['SEXO3']);

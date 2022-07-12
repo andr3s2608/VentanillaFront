@@ -98,7 +98,11 @@ export const ModuleLayout = (props: { logout: () => void }) => {
             <div className='mt-3 d-flex justify-content-between align-items-center'>
               <ul className='list-unstyled mb-0'>
                 <li>
-                  <a href={assetsDocuments('./Politica_Proteccion_Datos.pdf').default} rel='noreferrer' target='_blank'>
+                  <a
+                    href={'http://www.saludcapital.gov.co/Documents/Politica_Proteccion_Datos_P.pdf'}
+                    rel='noreferrer'
+                    target='_blank'
+                  >
                     Política de Protección de Datos
                   </a>
                 </li>

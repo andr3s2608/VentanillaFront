@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
@@ -6,11 +6,13 @@ import Button from 'antd/es/button';
 import { DatosFuente, KeysForm as KeyFormFuenteAbastecimiento } from './seccions/Fuente_Abastecimiento.seccion';
 
 import { DatosAcueducto } from './seccions/Acueductos.seccion';
+import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
+import { DatosDocumentos } from './seccions/Documentos.seccion';
 import { useHistory } from 'react-router';
-import { Form, Input } from 'antd';
+import { Form, Input, Steps } from 'antd';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import form from 'antd/es/form';
-import { layoutItems } from 'app/shared/utils/form-layout.util';
+import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { EditAguas } from './edit/Aguas';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 
@@ -21,12 +23,43 @@ export const PrimeraU = () => {
   const objJson: any = undefined;
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
+  const [[acueducto, informacion, documento], setListas] = useState<[any[], any[], any[]]>([[], [], []]);
+
   const onSubmit = async (values: any) => {};
   const onSubmitFailed = () => setStatus('error');
+
+  const añadiracueducto = (value: any) => {
+    console.log(value);
+    console.log(informacion);
+    console.log(documento);
+    setListas([value, informacion, documento]);
+  };
+  const añadirinfo = (value: any) => {
+    console.log(acueducto);
+    console.log(value);
+    console.log(documento);
+    setListas([acueducto, value, documento]);
+  };
+  const añadirdocumento = (value: any) => {
+    console.log(acueducto);
+    console.log(informacion);
+    console.log(value);
+    setListas([acueducto, informacion, value]);
+  };
+
   return (
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body'>
+          <Steps
+            className='mb-5 mr-5'
+            current={current}
+            status={status}
+            onChange={setCurrent}
+            direction='vertical'
+            style={{ maxWidth: 350 }}
+          ></Steps>
+
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
@@ -68,7 +101,7 @@ export const PrimeraU = () => {
             </section>
 
             <section className='panel-menu'>
-              <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+              <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
                 <div className='row'>
                   <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
                     <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
@@ -147,36 +180,41 @@ export const PrimeraU = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className='row mt-5 ml-2'>
-                  <DatosFuente form={form} obj={objJson} tipo={'validador'} />
-                </div>
-                <div className='row mt-5 ml-2'>
-                  <DatosAcueducto form={form} obj={objJson} />
-                </div>
-
-                <div className='row mt-4'>
-                  <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-                    <Button
-                      className='ml-3 float-right button btn btn-default'
-                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                      type='primary'
-                      htmlType='button'
-                      onClick={() => onNextStep([...KeyFormFuenteAbastecimiento])}
-                    >
-                      Siguiente
-                    </Button>
-
-                    <Button
-                      className='mr-3 float-right button btn btn-default'
-                      type='dashed'
-                      onClick={onPrevStep}
-                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                    >
-                      Cancelar
-                    </Button>
+                <>
+                  <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+                    <div className='row mt-5 ml-2'>
+                      <DatosFuente form={form} obj={objJson} tipo={'validador'} />
+                    </div>
+                    <div className='row mt-5 ml-2'>
+                      <DatosAcueducto form={form} obj={objJson} prop={añadiracueducto} />
+                    </div>
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                      <div className='row mt-4'>
+                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+                          <Button
+                            className='ml-3 float-right button btn btn-default'
+                            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                            type='primary'
+                            htmlType='button'
+                            onClick={() => onNextStep([...KeyFormFuenteAbastecimiento])}
+                          >
+                            Siguiente
+                          </Button>
+                        </div>
+                      </div>
+                    </Form.Item>
                   </div>
-                </div>
+                </>
+                <>
+                  <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
+                    <div className='row mt-5 ml-2'>
+                      <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={añadirinfo} />
+                    </div>
+                    <div className='row mt-5 ml-2'>
+                      <DatosDocumentos form={form} obj={objJson} prop={añadirdocumento} />
+                    </div>
+                  </div>
+                </>
               </div>
             </section>
           </Form>

@@ -54,6 +54,7 @@ export const Gridview = (props: IDataSource) => {
   var apellidos: any;
   var identify: string;
   var tipotramite: any;
+  var fecha: any;
   var Filterfuneraria: string;
   var FilterDoc: string;
   var FilterId: string;
@@ -78,6 +79,12 @@ export const Gridview = (props: IDataSource) => {
         tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
           return `${result}${item.tramite}|`;
         }, '');
+        fecha = datos.reduce((result: any, item: { tramite: any }) => {
+          return `${result}${item.tramite}|`;
+        }, '');
+        fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
+          return `${result}${item.fechaSolicitud}|`;
+        }, '');
       } else {
         const { persona } = datos;
 
@@ -94,6 +101,10 @@ export const Gridview = (props: IDataSource) => {
         tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
           return `${result}${item.idTramite}|`;
         }, '');
+
+        fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
+          return `${result}${item.fechaSolicitud}|`;
+        }, '');
       }
     }
   };
@@ -103,6 +114,22 @@ export const Gridview = (props: IDataSource) => {
   }
 
   var structureColumns;
+
+  const fecharecortada = () => {
+    if (Tipo.rol !== 'Ciudadano') {
+      const posicioninicial = 0;
+      var fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
+      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
+
+      return fec.substring(0, 10);
+    } else {
+      const posicioninicial = 0;
+      var fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
+      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
+
+      return fec;
+    }
+  };
 
   const tiposolicitud = () => {
     if (Tipo.rol !== 'Ciudadano') {
@@ -162,8 +189,13 @@ export const Gridview = (props: IDataSource) => {
 
         {
           title: 'Fecha de Registro',
-          dataIndex: 'fechaSolicitud',
-          key: 'fechaSolicitud'
+          dataIndex: '',
+          key: 'fechaSolicitud',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{fecharecortada()}</text>
+            </Form.Item>
+          )
         },
         {
           title: 'Estado Tramite',
