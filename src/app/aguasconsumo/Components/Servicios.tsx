@@ -318,7 +318,7 @@ export const Servicios = () => {
                   </div>
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={null} />
+                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={null} tipo={null} />

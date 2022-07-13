@@ -1,7 +1,7 @@
 import { Bandeja } from 'app/aguasconsumo/Components/Bandeja';
 import { BandejaU } from 'app/aguasconsumo/Components/BandejaU';
 //import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+//import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
 import Tabs from 'antd/es/tabs';
 import { authProvider } from 'app/shared/utils/authprovider.util';
@@ -11,7 +11,7 @@ import { setgid } from 'process';
 // Otros componentes
 
 const RedireccionarBandeja: React.FC<any> = (props: any) => {
-  const [roles, setroles] = useState<IRoles[]>([]);
+  const [roles, setroles] = useState<any[]>([]);
 
   const [bandeja, setBandeja] = useState<boolean>(false);
   const { accountIdentifier } = authProvider.getAccount();
@@ -24,6 +24,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     async () => {
       await api.GetRoles().then(async (res) => {
         setroles(res);
+
         await GetValidateRol(res);
       });
     },
@@ -36,7 +37,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const GetValidateRol = async (toRoles: IRoles[]) => {
+  const GetValidateRol = async (toRoles: any[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
     if (
