@@ -130,7 +130,7 @@ export const Bandeja = (props: IDataSource) => {
                   <div className='img-profile'>
                     <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                     <div className='info-usuario'>
-                      <p style={{ fontSize: '18px' }}>Subdirector</p>
+                      <p style={{ fontSize: '18px' }}>{roles}</p>
                     </div>
                   </div>
                 </div>
