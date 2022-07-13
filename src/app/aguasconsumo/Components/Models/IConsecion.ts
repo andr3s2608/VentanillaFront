@@ -91,6 +91,7 @@ export interface SistemaTratamiento {
   torreAireacion: boolean;
   precloracion: boolean;
   desarenador: boolean;
+  otra: boolean;
   descripcionOtro: string;
   numUsuarioUrbanos: string;
   numUsuariosRurales: string;

@@ -89,22 +89,23 @@ export const PrimeraU = () => {
       }
     ];
 
+    console.log(acueducto);
     const ac: any[] = [];
     const sis: any[] = [];
 
     for (let index = 0; index < acueducto.length; index++) {
       ac.push({
         idUsuarioFuente: '00000000-0000-0000-0000-000000000000',
-        idMunicipio: acueducto[index].mun,
-        idVereda: acueducto[index].loc,
-        Coo_long_cx: acueducto[index].long,
-        Coo_lat_cy: acueducto[index].lat,
-        idUsoFuente: acueducto[index].uso,
-        descripcionOtroUso: acueducto[index].desc,
+        idMunicipio: acueducto[index].municipio,
+        idVereda: acueducto[index].localidad,
+        Coo_long_cx: acueducto[index].longitud,
+        Coo_lat_cy: acueducto[index].latitud,
+        idUsoFuente: acueducto[index].usofuente,
+        descripcionOtroUso: acueducto[index].descripcion,
         caudalTotal: acueducto[index].caudal,
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
-        idDepartamento: acueducto[index].dep,
-        idLocalidad: acueducto[index].loc
+        idDepartamento: acueducto[index].departamento,
+        idLocalidad: acueducto[index].localidad
       });
     }
 
@@ -146,6 +147,7 @@ export const PrimeraU = () => {
             torreAireacion: informacion[index].torre,
             precloracion: informacion[index].preclo,
             desarenador: informacion[index].desarenador,
+            otra: informacion[index].otra,
             descripcionOtro: informacion[index].descrip,
             numUsuarioUrbanos: informacion[index].num1,
             numUsuariosRurales: informacion[index].num2,
@@ -215,8 +217,8 @@ export const PrimeraU = () => {
             descripcionOtraFuente: values.descripcionotra,
             tienePlanta: planta,
 
-            acueductosFuente: sistemajson,
-            sistemaTratamiento: acueductojson
+            acueductosFuente: acueductojson,
+            sistemaTratamiento: sistemajson
           }
         };
         console.log(json);

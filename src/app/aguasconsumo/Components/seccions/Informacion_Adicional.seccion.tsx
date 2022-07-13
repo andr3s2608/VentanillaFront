@@ -45,7 +45,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
   const onChange = (value: any) => {
     var nombre: string = value.target.id;
-    console.log(props.form.getFieldValue(nombre));
 
     var posicion: number = parseInt(nombre.substring(8, nombre.length));
 
@@ -61,7 +60,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
         array.push(campos[index]);
       }
     }
-    console.log(array);
+
     setcampos(array);
   };
 
@@ -226,6 +225,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
+                maxLength={100}
                 onKeyPress={(event) => {
                   if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                     event.preventDefault();
@@ -245,6 +245,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               <Input
                 type='text'
                 className='form-control gov-co-form-control'
+                maxLength={100}
                 onKeyPress={(event) => {
                   if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                     event.preventDefault();

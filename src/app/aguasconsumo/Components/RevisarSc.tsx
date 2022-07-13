@@ -104,7 +104,7 @@ export const RevisarSc = () => {
       solicitud: {
         idSolicitud: objJson.idsolicitud + '',
         idPersona: objJson.idPersona + '',
-        idTipodeSolicitud: objJson.idtipodeSolicitud,
+        idTipodeSolicitud: '492E1C24-B2A4-45FD-8845-D9AC1E567443',
         tipodeSolicitud: objJson.tipodeSolicitud,
         numeroRadicado: objJson.numeroradicado,
         fechaSolicitud: objJson.fechaSolicitud,
@@ -249,12 +249,15 @@ export const RevisarSc = () => {
                   </div>
                 </div>
 
-                <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} />
-
-                <DatosSolicitante form={form} obj={objJson} />
-
-                <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
-
+                <div className='row mt-5 ml-2'>
+                  <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} />
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <DatosSolicitante form={form} obj={objJson} />
+                </div>
+                <div className='row mt-5 ml-2'>
+                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
+                </div>
                 <div className='row mt-3 '>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
                     <Button

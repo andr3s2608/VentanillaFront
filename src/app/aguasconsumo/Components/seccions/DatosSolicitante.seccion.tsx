@@ -56,7 +56,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       const mysRoles = await api.GetRoles();
 
       const [permiso] = mysRoles;
-      console.log(permiso);
+
       if (permiso.rol == 'Ciudadano') {
         setmodificar(true);
       } else {
@@ -506,7 +506,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               {' '}
               <span className='required'>* </span> Teléfono de Contacto
             </p>
-            <Form.Item initialValue={obj?.telefono} name='telefono' rules={[{ required: true }]}>
+            <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
               <Input
                 disabled={modificar}
                 maxLength={12}

@@ -83,14 +83,11 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   }, []);
 
   const subia = (value: any) => {
-    console.log(value);
     setarchivocargado(value);
   };
   const onChange = (value: any) => {
-    console.log(value.target.id);
-
     var nombre: string = value.target.id;
-    console.log(props.form.getFieldValue(nombre));
+
     var posicion: number = parseInt(nombre.substring(8, 9));
 
     const array: any[] = [];
@@ -105,7 +102,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         array.push(archivos[index]);
       }
     }
-    console.log(array);
+
     setarchivos(array);
   };
 
@@ -114,7 +111,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     const array: any[] = [];
 
-    console.log(guardararchivos);
     var posicion: number = 0;
     for (let index = 0; index < archivos.length; index++) {
       if (archivos[index] == '1') {
@@ -131,7 +127,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       posicion++;
     }
-    console.log(array);
+
     setguardararchivos(array);
     prop(array);
   };

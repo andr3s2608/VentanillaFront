@@ -24,7 +24,6 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
     const usuarios: any[] = [];
     usuarios.push({ idPersona: 'vacio', fullName: 'No Asignar', oid: 'vacio' });
 
-    console.log(obj);
     for (let index = 0; index < lusuarios.length; index++) {
       usuarios.push(lusuarios.at(index));
     }
@@ -35,9 +34,6 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
       setfecha(moment(date));
       setfuncionario(obj?.citacion[0].idUsuarioCitacion);
       setobservacion(obj?.citacion[0].observacionCitacion);
-      console.log(date + ' fechaaa');
-      console.log(obj?.citacion[0].idUsuarioCitacion);
-      console.log(obj?.citacion[0].observacionCitacion);
     } else {
       setfuncionario('vacio');
     }

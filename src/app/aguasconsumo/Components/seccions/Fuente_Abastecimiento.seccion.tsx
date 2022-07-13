@@ -42,9 +42,8 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
       const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental(), api.getSubredes()]);
       setListas(resp);
 
-      console.log(resp, 'resps');
       const sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
-      console.log(sub);
+
       setl_subcategorias(sub);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

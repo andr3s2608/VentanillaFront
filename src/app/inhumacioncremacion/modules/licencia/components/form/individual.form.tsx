@@ -375,7 +375,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       ];
     }
     const checkbox = values.check;
-    console.log(checkbox);
+
 
     const json: IRegistroLicencia<any> = {
       solicitud: {

@@ -57,8 +57,8 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
       setBandeja(false);
     } else {
       if (
-        //permiso?.rol === 'AdminTI' ||
-        permiso?.rol === 'Funcionario'
+        permiso?.rol === 'AdminTI'
+        //|| permiso?.rol === 'Funcionario'
       ) {
         const datos = await api.GetSolicitudesUsuarioSubred();
         const datossolucionados: any = await api.GetSolicitudesUsuarioSubred();
@@ -74,7 +74,6 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
         setdatossolucionadosusuario(filtrado);
         setdatosusuario(datos);
       } else {
-        console.log('entro');
         const datos = await api.getSolicitudesUsuarioAsignado();
         const datossolucionados: any = await api.getSolicitudesUsuarioAsignado();
 

@@ -120,7 +120,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     array.push({
       posicion: posicion,
       departamento: dep,
-      mun: mun,
       localidad: loc,
       municipio: mun,
       sector: sec,
