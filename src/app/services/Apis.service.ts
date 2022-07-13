@@ -433,11 +433,14 @@ export class ApiService {
   //Apis Aguas
   /////////////////////////
 
+  AddSolicitudPrimera = (payload: any) =>
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
+
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
-  AddSolicitudPrimera = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
+  AddSolicitudConsecion = (payload: any) =>
+    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/RenovarSolicitud', payload, id: '0' });
 
   getSolicitudesUsuario = () =>
     get<any>({

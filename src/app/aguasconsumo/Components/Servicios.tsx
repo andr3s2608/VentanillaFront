@@ -339,9 +339,15 @@ export const Servicios = () => {
                       >
                         Guardar
                       </Button>
-                      <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+                      <Button
+                        className='mr-3 float-right button btn btn-default'
+                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                        onClick={() => {
+                          history.push('/tramites-servicios-aguas');
+                        }}
+                      >
                         Cancelar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>

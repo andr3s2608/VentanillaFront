@@ -25,6 +25,7 @@ import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { Button, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { obj, prop } = props;
@@ -32,6 +33,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(props.form);
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
@@ -50,11 +52,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const getListas = useCallback(
     async () => {
       const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(obj?.departamento ?? idDepartamentoBogota);
+      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
+      /*
       if (obj?.departamento) {
         setIdBogota('');
       }
-
+      */
       const localidades = await dominioService.get_localidades_bogota();
 
       const uso = await api.getUsoFuente();
@@ -89,6 +92,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   };
 
   const insertarAcueducto = async () => {
+    const validar = props.form.validateFields(KeysForm);
+    console.log(validar);
     const dep = props.form.getFieldValue('departamento');
     const loc = props.form.getFieldValue('localidad');
     var mun = props.form.getFieldValue('municipio');
@@ -115,7 +120,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     array.push({
       posicion: posicion,
       departamento: dep,
-      munver: mun + ' / ' + loc,
+      mun: mun,
       localidad: loc,
       municipio: mun,
       sector: sec,
@@ -420,4 +425,4 @@ interface DatosAcueducto<T> {
   obj: any;
   prop: any;
 }
-export const KeysForm = ['statustramite', 'observations'];
+export const KeysForm = ['localidad', 'sector', 'caudal', 'descripcionotrouso', 'usofuente', 'longituduso', 'latituduso'];
