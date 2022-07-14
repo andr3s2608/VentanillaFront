@@ -34,6 +34,8 @@ export interface IConsesion<T> {
 export interface Persona {
   idPersona?: string;
   tipoIdentificacion: string;
+  numeroResolucion: string;
+  fechaResolucion: string;
   numeroIdentificacion: string;
   primerNombre: string;
   segundoNombre: string;

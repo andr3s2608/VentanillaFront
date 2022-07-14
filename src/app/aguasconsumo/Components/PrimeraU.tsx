@@ -19,6 +19,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import { IConsesion } from './Models/IConsecion';
+import moment from 'moment';
 
 export const PrimeraU = () => {
   const history = useHistory();
@@ -159,6 +160,7 @@ export const PrimeraU = () => {
         }
         sistemajson = sis;
         acueductojson = ac;
+        const formatDate = 'MM-DD-YYYY';
 
         const json: IConsesion<any> = {
           idSolicitud: objJson.idsolicitud,
@@ -191,6 +193,8 @@ export const PrimeraU = () => {
 
           persona: {
             idPersona: objJson.idPersona,
+            numeroResolucion: values.nroresolucion,
+            fechaResolucion: moment(values.dateresolucion).format(formatDate),
             tipoIdentificacion: objJson.tipoIdentificacion,
             numeroIdentificacion: objJson.numeroIdentificacion,
             primerNombre: objJson.primerNombre,
@@ -223,6 +227,33 @@ export const PrimeraU = () => {
         };
         console.log(json);
         await api.AddSolicitudConsecion(json);
+
+        localStorage.removeItem('register');
+
+        const supportDocumentsEdit: any[] = [];
+        const formData = new FormData();
+
+        documento.forEach((item: any, i: number) => {
+          const archivo = documento[i];
+
+          formData.append('file', archivo.archivo);
+          formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
+
+          supportDocumentsEdit.push({
+            idSolicitud: objJson.idsolicitud,
+            idTipoDocumentoAdjunto: archivo.id,
+            path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
+            idUsuario: objJson.idusuario
+          });
+        });
+
+        formData.append('containerName', 'aguahumanos');
+        formData.append('oid', objJson.idusuario);
+
+        await api.uploadFiles(formData);
+        await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+
+        history.push('/tramites-servicios-aguas');
       }
     }
   };

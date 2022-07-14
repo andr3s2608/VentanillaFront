@@ -62,17 +62,20 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       prueba.push({
         check: false,
         nombre: 'Fotocopia documento de identificación PN',
-        valor: 'Fotocopia_documento_de_identificación_PN'
+        valor: 'Fotocopia_documento_de_identificación_PN',
+        id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
       });
       prueba.push({
         check: true,
-        nombre: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
-        valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo'
+        nombre: 'Plano de localización de la fuente hídrica y de uso del suelo',
+        valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
+        id: '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0'
       });
       prueba.push({
         check: false,
         nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)',
-        valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto'
+        valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto',
+        id: '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0'
       });
 
       setacueductos(prueba);
