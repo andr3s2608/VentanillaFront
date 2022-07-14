@@ -59,9 +59,21 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         setIdBogota('');
       }
       const prueba: any = [];
-      prueba.push({ check: false, nombre: 'Fotocopia documento de identificación PN' });
-      prueba.push({ check: true, nombre: 'Plano de localización de la fuente hidrica y de uso del suelo' });
-      prueba.push({ check: false, nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)' });
+      prueba.push({
+        check: false,
+        nombre: 'Fotocopia documento de identificación PN',
+        valor: 'Fotocopia_documento_de_identificación_PN'
+      });
+      prueba.push({
+        check: true,
+        nombre: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
+        valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo'
+      });
+      prueba.push({
+        check: false,
+        nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)',
+        valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto'
+      });
 
       setacueductos(prueba);
       const localidades = await dominioService.get_localidades_bogota();
@@ -117,6 +129,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         array.push({
           posicion: posicion,
           nombre: acueducto[index].nombre,
+          valor: acueducto[index].valor,
           archivo: archivo
         });
       } else {
