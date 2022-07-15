@@ -64,7 +64,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
-
   const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
   const [longitudmedico, setlongitudmedico] = useState<number>(6);
@@ -165,6 +164,16 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
   };
   const getDataSolicitante = (solicitante: any) => {};
+
+  function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
+    let nuevoHTML = HTML;
+
+    for (let index = 0; index < llavesAReemplazar.length; index++) {
+      nuevoHTML = nuevoHTML.replace(llavesAReemplazar[index], valoresDinamicos[index]);
+    }
+
+    return nuevoHTML;
+  }
 
   function getDescripcionTramite(idTramite: string | undefined): string {
     let comparar = '';
@@ -576,19 +585,20 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           title: 'Solicitud Creada',
           text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
         });
+
+        let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), nrorad];
+        let plantillaRadicado = await api.getFormato('903C641E-C65B-494B-AA79-B091C55287FC');
+        let bodyRadicado = agregarValoresDinamicos(plantillaRadicado.valor, llavesAReemplazarRadicado, datosDinamicosAprobacion);
+
+        await api.sendEmail({
+          to: values.emailsolicitudadd,
+          subject: plantillaRadicado.asuntoNotificacion,
+          body: bodyRadicado
+        });
         form.resetFields();
       }
     }
 
-    let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), objJosn.idControlTramite];
-    let plantillaRadicado = await api.getFormato('903C641E-C65B-494B-AA79-B091C55287FC');
-    let bodyRadicado = agregarValoresDinamicos(plantillaRadicado.valor, llavesAReemplazarRadicado, datosDinamicos);
-
-    await api.sendEmail({
-      to: values.emailsolicitudadd,
-      subject: plantillaRadicado.asuntoNotificacion,
-      body: bodyRadicado
-    });
     history.push('/tramites-servicios');
   };
   const generateListFiles = (values: any) => {
