@@ -33,7 +33,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const [seleccionar, setseleccionar] = useState<boolean>(true);
+  const [seleccionar, setseleccionar] = useState<boolean>(false);
   const [l_subcategorias, setl_subcategorias] = useState<any[]>([]);
 
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
@@ -94,6 +94,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                       { key: 'primera', value: 'Primera Vez' },
                       { key: 'renovacion', value: 'Renovacion' }
                     ]}
+                    onChange={Onchangesolicitud}
                     optionPropkey='key'
                     optionPropLabel='value'
                   />
