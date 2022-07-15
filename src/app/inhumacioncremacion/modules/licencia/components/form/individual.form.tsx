@@ -543,15 +543,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         formData.append('oid', accountIdentifier);
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
+        Swal.fire({
+          icon: 'success',
 
+          title: 'Solicitud Creada',
+          text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
+        });
         form.resetFields();
       }
-      Swal.fire({
-        icon: 'success',
-
-        title: 'Solicitud Creada',
-        text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
-      });
     }
     history.push('/tramites-servicios');
   };
