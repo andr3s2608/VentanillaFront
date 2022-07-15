@@ -129,12 +129,16 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     var posicion: number = 0;
     for (let index = 0; index < archivos.length; index++) {
       if (archivos[index] == '1') {
-        array.push({
-          posicion: posicion,
-          nombre: acueducto[index].nombre,
-          valor: acueducto[index].valor,
-          archivo: archivo
-        });
+        if (guardararchivos[index] != undefined) {
+          array.push(guardararchivos[index]);
+        } else {
+          array.push({
+            posicion: posicion,
+            nombre: acueducto[index].nombre,
+            valor: acueducto[index].valor,
+            archivo: archivo
+          });
+        }
       } else {
         if (guardararchivos[index] != undefined) {
           array.push(guardararchivos[index]);

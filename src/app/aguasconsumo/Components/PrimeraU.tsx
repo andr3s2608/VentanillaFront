@@ -236,7 +236,7 @@ export const PrimeraU = () => {
         documento.forEach((item: any, i: number) => {
           const archivo = documento[i];
 
-          formData.append('file', archivo.archivo);
+          formData.append('file', archivo.archivo.file);
           formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
 
           supportDocumentsEdit.push({
@@ -245,6 +245,16 @@ export const PrimeraU = () => {
             path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
             idUsuario: objJson.idusuario
           });
+        });
+
+        formData.append('file', values.cargarresolucion.file);
+        formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
+
+        supportDocumentsEdit.push({
+          idSolicitud: objJson.idsolicitud,
+          idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+          path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
+          idUsuario: objJson.idusuario
         });
 
         formData.append('containerName', 'aguahumanos');
