@@ -18,7 +18,7 @@ import { AnyIfEmpty } from 'react-redux';
 export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
   const { data, datosusuario, datossolucionados } = props;
-  const [roles, setroles] = useState<IRoles[]>([]);
+  const [roles, setroles] = useState<string>('');
   const [coordinador, setcoordinador] = useState<boolean>(false);
   const valor = [];
 
@@ -40,7 +40,9 @@ export const Bandeja = (props: IDataSource) => {
         setcoordinador(false);
       }
 
-      setroles(mysRoles);
+      console.log('paso');
+
+      setroles(permiso.rol);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -130,7 +132,7 @@ export const Bandeja = (props: IDataSource) => {
                   <div className='img-profile'>
                     <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
                     <div className='info-usuario'>
-                      <p style={{ fontSize: '18px' }}>Subdirector</p>
+                      <p style={{ fontSize: '18px' }}>{roles}</p>
                     </div>
                   </div>
                 </div>

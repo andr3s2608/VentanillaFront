@@ -218,9 +218,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
                   <label className='text'>
-                    <span className='required'>* </span> Vereda
+                    <span></span> Vereda
                   </label>
-                  <Form.Item initialValue={obj?.vereda} name='vereda' rules={[{ required: true }]}>
+                  <Form.Item initialValue={obj?.vereda} name='vereda' rules={[{ required: false }]}>
                     <Input
                       maxLength={50}
                       type='text'
@@ -244,9 +244,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <div className='panel-search'>
                 <div className='form-group gov-co-form-group'>
                   <label className='text'>
-                    <span className='required'>* </span> Sector
+                    <span></span> Sector
                   </label>
-                  <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
+                  <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: false }]}>
                     <Input
                       maxLength={50}
                       disabled={modificar}
@@ -271,7 +271,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <div className='col-lg-8 col-sm-12 col-md-8'>
             <div className='form-group gov-co-form-group'>
               <label className='text'>
-                <span className='required'>*</span> Observaciones Adicionales
+                <span></span> Observaciones Adicionales
               </label>
               <Form.Item
                 initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}

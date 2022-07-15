@@ -63,15 +63,19 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         );
         let array: any[] = [];
 
-        if (!result.isArray) {
-          array.push(result);
-        } else {
-          array = result;
-        }
-        console.log(array);
-        console.log(array[0].RAZON_S);
+        if (result) {
+          if (!result.isArray) {
+            array.push(result);
+          } else {
+            array = result;
+          }
+          console.log(array);
+          console.log(array[0].RAZON_S);
 
-        setvalorfuneraria(array[0].RAZON_S);
+          setvalorfuneraria(array[0].RAZON_S);
+        } else {
+          setvalidacionfuneraria(false);
+        }
 
         setvalidacion('1');
       } else {

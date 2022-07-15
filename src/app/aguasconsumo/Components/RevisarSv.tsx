@@ -244,12 +244,12 @@ export const RevisarSv = () => {
     const archivo = values.cargarArchivo.file;
 
     formData.append('file', archivo);
-    formData.append('nameFile', 'Ubicacion' + '_' + objJson.idsolicitud);
+    formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
 
     supportDocumentsEdit.push({
       idSolicitud: objJson.idsolicitud,
-      idTipoDocumentoAdjunto: '3c9cf345-e37d-4ab0-baca-c803dbb8850b',
-      path: `${objJson.idusuario}/Ubicacion_${objJson.idsolicitud}`,
+      idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+      path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
       idUsuario: objJson.idusuario
     });
 
@@ -358,7 +358,7 @@ export const RevisarSv = () => {
                   <DatosSolicitud form={form} obj={objJson} tipo={'validador'} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={objJson} />
+                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />

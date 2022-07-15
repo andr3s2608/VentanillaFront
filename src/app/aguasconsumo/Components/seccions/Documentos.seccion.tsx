@@ -59,9 +59,24 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         setIdBogota('');
       }
       const prueba: any = [];
-      prueba.push({ check: false, nombre: 'Fotocopia documento de identificación PN' });
-      prueba.push({ check: true, nombre: 'Plano de localización de la fuente hidrica y de uso del suelo' });
-      prueba.push({ check: false, nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)' });
+      prueba.push({
+        check: false,
+        nombre: 'Fotocopia documento de identificación PN',
+        valor: 'Fotocopia_documento_de_identificación_PN',
+        id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
+      });
+      prueba.push({
+        check: true,
+        nombre: 'Plano de localización de la fuente hídrica y de uso del suelo',
+        valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
+        id: '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0'
+      });
+      prueba.push({
+        check: false,
+        nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)',
+        valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto',
+        id: '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0'
+      });
 
       setacueductos(prueba);
       const localidades = await dominioService.get_localidades_bogota();
@@ -83,14 +98,11 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   }, []);
 
   const subia = (value: any) => {
-    console.log(value);
     setarchivocargado(value);
   };
   const onChange = (value: any) => {
-    console.log(value.target.id);
-
     var nombre: string = value.target.id;
-    console.log(props.form.getFieldValue(nombre));
+
     var posicion: number = parseInt(nombre.substring(8, 9));
 
     const array: any[] = [];
@@ -105,7 +117,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         array.push(archivos[index]);
       }
     }
-    console.log(array);
+
     setarchivos(array);
   };
 
@@ -114,15 +126,19 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     const array: any[] = [];
 
-    console.log(guardararchivos);
     var posicion: number = 0;
     for (let index = 0; index < archivos.length; index++) {
       if (archivos[index] == '1') {
-        array.push({
-          posicion: posicion,
-          nombre: acueducto[index].nombre,
-          archivo: archivo
-        });
+        if (guardararchivos[index] != undefined) {
+          array.push(guardararchivos[index]);
+        } else {
+          array.push({
+            posicion: posicion,
+            nombre: acueducto[index].nombre,
+            valor: acueducto[index].valor,
+            archivo: archivo
+          });
+        }
       } else {
         if (guardararchivos[index] != undefined) {
           array.push(guardararchivos[index]);
@@ -131,7 +147,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       posicion++;
     }
-    console.log(array);
+
     setguardararchivos(array);
     prop(array);
   };

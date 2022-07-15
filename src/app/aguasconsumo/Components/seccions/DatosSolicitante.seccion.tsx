@@ -16,7 +16,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import '../../../../css/estilos.css';
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
-  const { obj, form } = props;
+  const { obj, form, tipo } = props;
 
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
 
@@ -56,8 +56,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       const mysRoles = await api.GetRoles();
 
       const [permiso] = mysRoles;
-      console.log(permiso);
-      if (permiso.rol == 'Ciudadano') {
+
+      if (tipo == 'revision') {
         setmodificar(true);
       } else {
         setmodificar(false);
@@ -506,7 +506,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               {' '}
               <span className='required'>* </span> Teléfono de Contacto
             </p>
-            <Form.Item initialValue={obj?.telefono} name='telefono' rules={[{ required: true }]}>
+            <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
               <Input
                 disabled={modificar}
                 maxLength={12}
@@ -586,4 +586,5 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
 interface DatosSolicitante<T> {
   form: FormInstance<T>;
   obj: any;
+  tipo: any;
 }

@@ -25,6 +25,8 @@ import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { Button, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+import Swal from 'sweetalert2';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { obj, prop } = props;
@@ -32,6 +34,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(props.form);
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
@@ -50,11 +53,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const getListas = useCallback(
     async () => {
       const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(obj?.departamento ?? idDepartamentoBogota);
+      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
+      /*
       if (obj?.departamento) {
         setIdBogota('');
       }
-
+      */
       const localidades = await dominioService.get_localidades_bogota();
 
       const uso = await api.getUsoFuente();
@@ -89,6 +93,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   };
 
   const insertarAcueducto = async () => {
+    const validar = props.form.validateFields(KeysForm);
+    console.log(validar);
     const dep = props.form.getFieldValue('departamento');
     const loc = props.form.getFieldValue('localidad');
     var mun = props.form.getFieldValue('municipio');
@@ -101,51 +107,73 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
       mun = '31211657-3386-420a-8620-f9c07a8ca491';
     }
+    if (loc == undefined || uso == undefined || sec == undefined || lat == undefined || long == undefined) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos Incompletos',
+        text: 'Debe llenar todos los campos obligatorios'
+      });
+    } else {
+      const array: any[] = [];
+      const arraytabla: any[] = [];
+      var posicion: number = 0;
+      for (let index = 0; index < acueducto.length; index++) {
+        array.push(acueducto[index]);
+        arraytabla.push(acueductotabla[index]);
+        posicion++;
+      }
 
-    const array: any[] = [];
-    const arraytabla: any[] = [];
-    var posicion: number = 0;
-    for (let index = 0; index < acueducto.length; index++) {
-      array.push(acueducto[index]);
-      arraytabla.push(acueductotabla[index]);
-      posicion++;
+      //push al array que se guardara en la bd
+      array.push({
+        posicion: posicion,
+        departamento: dep,
+        localidad: loc,
+        municipio: mun,
+        sector: sec,
+        latitud: lat,
+        longitud: long,
+        usofuente: uso,
+        descripcion: desc,
+        caudal: caudal
+      });
+      //push al array que se mostrara en la tabla
+      //municipio
+
+      const municipios = (await l_municipios).filter((i) => i.idMunicipio == mun);
+
+      const { descripcion } = municipios[0];
+      //localidad
+      const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
+      const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
+
+      arraytabla.push({
+        posicion: posicion,
+        munver: descripcion + ' / ' + localidad[0].descripcion,
+        usofuente: usofuente[0].nombre
+      });
+
+      ////
+
+      setacueductos(array);
+      prop(array);
+      setacueductostabla(arraytabla);
+
+      props.form.resetFields([
+        'localidad',
+        'sector',
+        'latituduso',
+        'longituduso',
+        'descripcionotrouso',
+        'caudal',
+        'usofuente',
+        'departamento'
+      ]);
+      props.form.setFieldsValue({ municipio: undefined });
+
+      setIdBogota('Bogotá D.C.');
+      const muni = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
+      setLMunicipios(municipios);
     }
-
-    //push al array que se guardara en la bd
-    array.push({
-      posicion: posicion,
-      departamento: dep,
-      munver: mun + ' / ' + loc,
-      localidad: loc,
-      municipio: mun,
-      sector: sec,
-      latitud: lat,
-      longitud: long,
-      usofuente: uso,
-      descripcion: desc,
-      caudal: caudal
-    });
-    //push al array que se mostrara en la tabla
-    //municipio
-
-    const municipios = (await l_municipios).filter((i) => i.idMunicipio == mun);
-
-    const { descripcion } = municipios[0];
-    //localidad
-    const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
-    const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
-
-    arraytabla.push({
-      posicion: posicion,
-      munver: descripcion + ' / ' + localidad[0].descripcion,
-      usofuente: usofuente[0].nombre
-    });
-
-    ////
-
-    setacueductos(array);
-    prop(array);
-    setacueductostabla(arraytabla);
   };
 
   const onClickValidarInformacion = async (datos: any) => {
@@ -241,7 +269,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <span className='required'>* </span> Localidad o vereda
           </label>
           <div className='gov-co-dropdown'>
-            <Form.Item initialValue={''} name='localidad' rules={[{ required: true }]}>
+            <Form.Item name='localidad' rules={[{ required: true }]}>
               <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
             </Form.Item>
           </div>
@@ -269,7 +297,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <span className='required'>* </span> Sector
           </label>
           <div className='gov-co-dropdown'>
-            <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: true }]}>
+            <Form.Item name='sector' rules={[{ required: true }]}>
               <Input
                 maxLength={50}
                 type='text'
@@ -293,7 +321,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         <p>Coordenadas de capacitación</p>
         <div className='form-group gov-co-form-group'>
           <span className='required'>*</span>Latitud
-          <Form.Item name='latituduso' initialValue={''} rules={[{ required: true }]}>
+          <Form.Item name='latituduso' rules={[{ required: true }]}>
             <input
               type='text'
               className='form-control gov-co-form-control'
@@ -313,7 +341,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         <br />
         <span className='required'>*</span>Longitud
         <div className='form-group gov-co-form-group'>
-          <Form.Item name='longituduso' initialValue={''} rules={[{ required: true }]}>
+          <Form.Item name='longituduso' rules={[{ required: true }]}>
             <input
               type='text'
               className='form-control gov-co-form-control'
@@ -335,7 +363,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <br />
           <span className='required'>*</span>Uso de la fuente
           <div className='form-group gov-co-form-group'>
-            <Form.Item name='usofuente' initialValue={''} rules={[{ required: true }]}>
+            <Form.Item name='usofuente' rules={[{ required: true }]}>
               <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
             </Form.Item>
           </div>
@@ -344,7 +372,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <br />
           <div className='form-group gov-co-form-group'>
             <span></span>Descripción de otro uso
-            <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: true }]}>
+            <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
               <input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -365,7 +393,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         <div className='col-lg-4 col-md-4 col-sm-12'>
           <div className='form-group gov-co-form-group'>
             <span></span>Caudal total
-            <Form.Item name='caudal' initialValue={''} rules={[{ required: true }]}>
+            <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
               <input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -420,4 +448,4 @@ interface DatosAcueducto<T> {
   obj: any;
   prop: any;
 }
-export const KeysForm = ['statustramite', 'observations'];
+export const KeysForm = ['localidad', 'sector', 'caudal', 'descripcionotrouso', 'usofuente', 'longituduso', 'latituduso'];

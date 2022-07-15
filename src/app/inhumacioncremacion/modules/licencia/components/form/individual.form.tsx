@@ -402,7 +402,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       ];
     }
     const checkbox = values.check;
-    console.log(checkbox);
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
@@ -492,7 +491,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-    console.log(json);
 
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
@@ -542,23 +540,26 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     if (!edit) {
-      const resp = await api.postprueba(json);
+      const resp: any = await api.postprueba(json);
 
-      if (resp) {
+      const idsol: any = resp.substring(16, 52);
+      const nrorad: any = resp.substring(66, resp.length - 2);
+
+      if (idsol) {
         const [files, names] = generateListFiles(values);
 
         files.forEach((file: any, i: number) => {
           const name = names[i];
 
           formData.append('file', file);
-          formData.append('nameFile', name + '_' + resp);
+          formData.append('nameFile', name + '_' + idsol);
 
           TypeDocument.forEach((item: any) => {
             if (item.key === name.toString()) {
               supportDocuments.push({
-                idSolicitud: resp,
+                idSolicitud: idsol,
                 idTipoDocumentoSoporte: item.value,
-                path: `${accountIdentifier}/${name}_${resp}`,
+                path: `${accountIdentifier}/${name}_${idsol}`,
                 idUsuario: accountIdentifier
               });
             }
@@ -569,7 +570,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         formData.append('oid', accountIdentifier);
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
+        Swal.fire({
+          icon: 'success',
 
+          title: 'Solicitud Creada',
+          text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
+        });
         form.resetFields();
       }
     }

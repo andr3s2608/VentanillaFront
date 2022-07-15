@@ -23,6 +23,9 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 //Redux
 import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
+import { Button, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const { obj, tipo } = props;
@@ -42,9 +45,8 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
       const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental(), api.getSubredes()]);
       setListas(resp);
 
-      console.log(resp, 'resps');
       const sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
-      console.log(sub);
+
       setl_subcategorias(sub);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,6 +57,14 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const Onchangesolicitud = async (value: any) => {
+    if (value == 'renovacion') {
+      setseleccionar(true);
+    } else {
+      setseleccionar(false);
+    }
+  };
 
   const Onchangetipo = async (value: any) => {
     props.form.setFieldsValue({ subcategoria: undefined });
@@ -93,6 +103,53 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           </div>
         </div>
         <br></br>
+
+        {seleccionar && (
+          <>
+            <div className='row mt-3'>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <span className='required'>*</span>Número de expediente de resolución
+                <div className='form-group gov-co-form-group'>
+                  <Form.Item name='nroresolucion' rules={[{ required: true }]}>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      maxLength={15}
+                      onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <span className='required'>*</span>Fecha de resolución
+                <Form.Item name='dateresolucion' rules={[{ required: true }]}>
+                  <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
+                </Form.Item>
+                <input type='date' className='form-control' />
+              </div>
+              <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
+                <Form.Item label='' name='cargarresolucion' rules={[{ required: true }]}>
+                  <Upload
+                    name='cargarresolucion'
+                    maxCount={1}
+                    beforeUpload={() => false}
+                    listType='text'
+                    accept='application/pdf'
+                  >
+                    <Button icon={<UploadOutlined />}>Adjuntar archivo</Button>
+                  </Upload>
+                </Form.Item>
+              </div>
+            </div>
+          </>
+        )}
 
         <div className='col-lg-4 col-sm-12 col-md-4'>
           <span className='required'>*</span>Tipo de fuente*

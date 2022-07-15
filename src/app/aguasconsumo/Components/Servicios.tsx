@@ -151,10 +151,16 @@ export const Servicios = () => {
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
         break;
     }
+    let tipo = '';
+    if (temporalvalor) {
+      tipo = 'A4530F22-1038-48CC-9F57-938392DACCB8';
+    } else {
+      tipo = 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9';
+    }
 
     const json: IRegistroSolicitudPrimeraVez<any> = {
       solicitud: {
-        idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+        idTipoSolicitud: tipo,
         numeroRadicado: 0,
         idUsuario: usuario,
         idPersona: '00000000-0000-0000-0000-000000000000',
@@ -312,7 +318,7 @@ export const Servicios = () => {
                   </div>
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={null} />
+                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={null} tipo={null} />
@@ -339,9 +345,15 @@ export const Servicios = () => {
                       >
                         Guardar
                       </Button>
-                      <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: '#BABABA' }}>
+                      <Button
+                        className='mr-3 float-right button btn btn-default'
+                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                        onClick={() => {
+                          history.push('/tramites-servicios-aguas');
+                        }}
+                      >
                         Cancelar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
