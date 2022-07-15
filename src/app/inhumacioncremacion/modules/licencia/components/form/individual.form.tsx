@@ -63,12 +63,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
-  const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
   const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
   const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
+
+  const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
@@ -152,19 +153,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  const getData = (longitud: number, procedencia: any) => {
-    if (procedencia === 'solicitante') {
-      setlongitudsolicitante(longitud);
-    }
-    if (procedencia === 'deathinst') {
-      setlongituddeathinst(longitud);
-    }
-    if (procedencia === 'medico') {
-      setlongitudmedico(longitud);
-    }
-  };
-  const getDataSolicitante = (solicitante: any) => {};
-
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
     let nuevoHTML = HTML;
 
@@ -199,6 +187,18 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
   }
 
+  const getData = (longitud: number, procedencia: any) => {
+    if (procedencia === 'solicitante') {
+      setlongitudsolicitante(longitud);
+    }
+    if (procedencia === 'deathinst') {
+      setlongituddeathinst(longitud);
+    }
+    if (procedencia === 'medico') {
+      setlongitudmedico(longitud);
+    }
+  };
+  const getDataSolicitante = (solicitante: any) => {};
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     let causa = values.causaMuerte;
@@ -553,6 +553,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
+      console.log(idsol);
 
       if (idsol) {
         const [files, names] = generateListFiles(values);
@@ -579,11 +580,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         formData.append('oid', accountIdentifier);
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
+
         Swal.fire({
           icon: 'success',
 
           title: 'Solicitud Creada',
-          text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
+          text: `Se ha creado la Solicitud exitosamente con número de tramite ${nrorad}`
         });
 
         let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), nrorad];
@@ -595,10 +597,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           subject: plantillaRadicado.asuntoNotificacion,
           body: bodyRadicado
         });
+
         form.resetFields();
       }
     }
-
     history.push('/tramites-servicios');
   };
   const generateListFiles = (values: any) => {
