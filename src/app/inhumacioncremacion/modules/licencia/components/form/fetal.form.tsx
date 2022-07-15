@@ -555,7 +555,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       const resp: any = await api.postprueba(json);
 
       const idsol: any = resp.substring(16, 52);
-      //const nrorad: any = resp.substring(66, resp.length - 2);
+      const nrorad: any = resp.substring(66, resp.length - 2);
 
       if (idsol) {
         const [files, names] = generateListFiles(values, container);
@@ -583,14 +583,14 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
-        /*
+
         Swal.fire({
           icon: 'success',
 
           title: 'Solicitud Creada',
           text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
         });
-        */
+
         form.resetFields();
       }
     }
