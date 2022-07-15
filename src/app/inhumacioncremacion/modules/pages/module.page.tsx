@@ -21,7 +21,7 @@ const ModulePage = () => {
   const { name, userName } = authProvider.getAccount();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(true);
+  const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(false);
 
   const onPersonNatural = () => history.push('/registro/Natural');
   const onPersonJuridica = () => history.push('/registro/Juridico');
