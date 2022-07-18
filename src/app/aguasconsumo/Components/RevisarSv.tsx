@@ -259,6 +259,14 @@ export const RevisarSv = () => {
     await api.uploadFiles(formData);
     await api.AddSupportDocumentsAguas(supportDocumentsEdit);
 
+    Swal.fire({
+      icon: 'success',
+
+      title: 'Citación Agendada',
+      text: `Se ha agendado la citación para el solicitud con número de radicado:${objJson.numeroRadicado}
+       para el dia ${moment(values.date).format(formatDate)}`
+    });
+
     history.push('/tramites-servicios-aguas');
   };
 

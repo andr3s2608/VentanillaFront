@@ -202,7 +202,14 @@ export const Servicios = () => {
       }
     };
 
-    await api.AddSolicitudPrimera(json);
+    const nrorad = await api.AddSolicitudPrimera(json);
+
+    Swal.fire({
+      icon: 'success',
+
+      title: 'Solicitud Creada',
+      text: `Se ha creado la Solicitud exitosamente con número de raadicado ${nrorad}`
+    });
 
     history.push('/tramites-servicios-aguas');
   };
