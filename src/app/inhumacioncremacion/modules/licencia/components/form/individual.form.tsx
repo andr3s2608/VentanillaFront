@@ -69,6 +69,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<[]>([]);
 
+  const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
+
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
@@ -150,6 +152,40 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   }, []);
 
   //#endregion
+
+  function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
+    let nuevoHTML = HTML;
+
+    for (let index = 0; index < llavesAReemplazar.length; index++) {
+      nuevoHTML = nuevoHTML.replace(llavesAReemplazar[index], valoresDinamicos[index]);
+    }
+
+    return nuevoHTML;
+  }
+
+  function getDescripcionTramite(idTramite: string | undefined): string {
+    let comparar = '';
+    if (idTramite != undefined) {
+      comparar = idTramite.toLocaleUpperCase();
+    }
+
+    let idInhumacionIndividual = 'A289C362-E576-4962-962B-1C208AFA0273';
+    let idInhumacionFetal = 'AD5EA0CB-1FA2-4933-A175-E93F2F8C0060';
+    let idCremacionIndividual = 'E69BDA86-2572-45DB-90DC-B40BE14FE020';
+    let idCremacionFetal = 'F4C4F874-1322-48EC-B8A8-3B0CAC6FCA8E';
+    switch (comparar) {
+      case idInhumacionIndividual:
+        return 'Inhumación Individual';
+      case idInhumacionFetal:
+        return 'Inhumación fetal';
+      case idCremacionIndividual:
+        return 'Cremación Individual';
+      case idCremacionFetal:
+        return 'Cremación fetal';
+      default:
+        return '';
+    }
+  }
 
   const getData = (longitud: number, procedencia: any) => {
     if (procedencia === 'solicitante') {
@@ -550,6 +586,16 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
           title: 'Solicitud Creada',
           text: `Se ha creado la Solicitud exitosamente con número de tramite ${nrorad}`
+        });
+
+        let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), nrorad];
+        let plantillaRadicado = await api.getFormato('903C641E-C65B-494B-AA79-B091C55287FC');
+        let bodyRadicado = agregarValoresDinamicos(plantillaRadicado.valor, llavesAReemplazarRadicado, datosDinamicosAprobacion);
+
+        await api.sendEmail({
+          to: values.emailsolicitudadd,
+          subject: plantillaRadicado.asuntoNotificacion,
+          body: bodyRadicado
         });
 
         form.resetFields();
