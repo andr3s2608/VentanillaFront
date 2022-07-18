@@ -6,12 +6,25 @@ import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { DatosFuente } from './seccions/Fuente_Abastecimiento.seccion';
+import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import {layoutItems} from "../../shared/utils/form-layout.util";
+import {useStepperForm} from "../../shared/hooks/stepper.hook";
+import {DatosAcueducto} from "./seccions/Acueductos.seccion";
+import {DatosAdicionales} from "./seccions/Informacion_Adicional.seccion";
+import {DatosDocumentos} from "./seccions/Documentos.seccion";
+
 export const RevisarSg = () => {
+  const [form] = Form.useForm<any>();
+  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const history = useHistory();
+  const onSubmit = async (values: any) => {}
+  const onSubmitFailed = () => setStatus('error');
   return (
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body'>
+          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
           <section className='info-panel'>
             <div className='container'>
               <div className='row mt-5'>
@@ -186,6 +199,7 @@ export const RevisarSg = () => {
               <div className='row'>
                 <div className='col-lg-10 col-sm-12 col-md-10'>
                   <div className='collapse-info'>
+
                     <div id='accordion'>
                       <div className='card'>
                         <div className='card-header' id='heading-2'>
@@ -203,7 +217,9 @@ export const RevisarSg = () => {
                           </h5>
                         </div>
                         <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                          <div className='card-body'>Text 2</div>
+                          <div className='row mt-5 ml-2'>
+                            <DatosSolicitante form={form} obj={null} tipo={''}/>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -224,154 +240,13 @@ export const RevisarSg = () => {
                             </a>
                           </h5>
                         </div>
-                        <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                          <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-                            <div className='row'>
-                              <div className='col-lg-6 col-sm-12 col-md-6'>
-                                <p className='mt-3'>Tipo de solicitud de concesión*</p>
-                                <div className='form-group gov-co-form-group ml-2'>
-                                  <div className='gov-co-dropdown'>
-                                    <Form.Item>
-                                      <SelectComponent placeholder='-- Tipo de fuente --' options={[]} optionPropkey={''} />
-                                    </Form.Item>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='row'>
-                              <div className='col-md-6 col-lg-6 col-sm-12'>
-                                <p className='mt-3'>Tipo de fuente*</p>
-                                <Form.Item>
-                                  <SelectComponent placeholder='-- Superficial --' options={[]} optionPropkey={''} />
-                                </Form.Item>
-                                <p className='mt-2'>Descripción de otra fuente</p>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <Input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
-                              <div className='col-md-6 col-lg-6 col-sm-12'>
-                                <p className='mt-3'>Subcategoria de fuente*</p>
 
-                                <div className='form-group gov-co-form-group ml-2'>
-                                  <div className='gov-co-dropdown'>
-                                    <Form.Item>
-                                      <SelectComponent placeholder='-- Caño --' options={[]} optionPropkey={''} />
-                                    </Form.Item>
-                                  </div>
-                                </div>
-                                <p className='mt-2'>Nombre de la fuente</p>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <Input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='row'>
-                              <div className='col-lg-12 col-sm-12 col-md-12'>
-                                <p className='mt-3'>localización</p>
-                              </div>
-                              <div className='col-md-4 col-lg-4 col-sm-12'>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <Input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
-                              <div className='col-md-4 col-lg-4 col-sm-12'>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <Input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
-                              <div className='col-md-4 col-lg-4 col-sm-12'>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <Input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='row'>
-                              <div className='col-lg-12 col-sm-12 col-md-12'>
-                                <p>Descripción de la fuente</p>
-                                <div className='form-group gov-co-form-group'>
-                                  <Input.TextArea defaultValue='default' rows={5} />
-                                </div>
-                                <p className='mt-3'>Autoridad ambiental que otorga la concesión</p>
-                                <div className='form-group gov-co-form-group ml-2'>
-                                  <div className='gov-co-dropdown'>
-                                    <Form.Item>
-                                      <SelectComponent
-                                        placeholder='-- SDA - Distrital de Ambiente --'
-                                        options={[]}
-                                        optionPropkey={''}
-                                      />
-                                    </Form.Item>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                        <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                          <div className='row mt-5 ml-2'>
+                            <DatosFuente form={form} obj={null} tipo={''}/>
                           </div>
                         </div>
+
                       </div>
                     </div>
 
@@ -392,7 +267,9 @@ export const RevisarSg = () => {
                           </h5>
                         </div>
                         <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                          <div className='card-body'>Text 2</div>
+                          <div className='card-body'>
+                            <DatosAcueducto form={form} obj={null} prop={null}/>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -414,7 +291,9 @@ export const RevisarSg = () => {
                           </h5>
                         </div>
                         <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                          <div className='card-body'>Text 2</div>
+                          <div className='card-body'>
+                            <DatosAdicionales form={form} obj={null} tipo={''} prop={null}/>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -436,94 +315,8 @@ export const RevisarSg = () => {
                           </h5>
                         </div>
                         <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                          <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-                            <div className='row'>
-                              <div className='col-lg-6 col-md-6 col-sm-12'>
-                                <div className='check_d'>
-                                  <table className='table table-bordered text-center tablesr'>
-                                    <thead>
-                                      <tr
-                                        style={{
-                                          border: '2px solid  #000',
-                                          backgroundColor: '#fff'
-                                        }}
-                                      >
-                                        <th style={{ border: '2px solid  #000' }}>
-                                          <input type='checkbox' />
-                                        </th>
-                                        <th style={{ border: '2px solid  #000' }}>Nombre de archivo</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr style={{ border: '2px solid  #000' }}>
-                                        <td style={{ border: '2px solid  #000' }}>
-                                          <input type='checkbox' />
-                                        </td>
-                                        <td style={{ border: '2px solid  #000' }}>Documento.pdf</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                              <div className='col-lg-6 col-md-6 col-sm-12 text-center mt-4'>
-                                <button className='btn btn-default' style={{ backgroundColor: '#CBCBCB' }}>
-                                  ver archivo
-                                </button>
-                              </div>
-                            </div>
-                            <div className='row mt-2'>
-                              <div className='col-lg-12 col-md-12 col-sm-12'>
-                                <table className='table table-bordered text-center'>
-                                  <thead>
-                                    <tr
-                                      style={{
-                                        border: '2px solid  #000',
-                                        backgroundColor: '#fff'
-                                      }}
-                                    >
-                                      <th style={{ border: '2px solid  #000' }}>No.</th>
-                                      <th style={{ border: '2px solid  #000' }}>Nombre de archivo</th>
-                                      <th style={{ border: '2px solid  #000' }}>Acciones</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr style={{ border: '2px solid  #000' }}>
-                                      <td style={{ border: '2px solid  #000' }}>1</td>
-                                      <td style={{ border: '2px solid  #000' }}>Documento.pdf</td>
-                                      <td style={{ border: '2px solid  #000' }}>Documento.pdf</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                            <div className='row mt-2'>
-                              <div className='col-lg-12 col-md-12 col-sm-12'>
-                                <div className='apro'>
-                                  <p>¿Aprobado?</p>
-                                  <div className=' custom-control custom-radio custom-control-inline'>
-                                    <input
-                                      type='radio'
-                                      id='customRadioInline1'
-                                      name='customRadioInline1'
-                                      className='custom-control-input'
-                                    />
-                                    <label className='custom-control-label'>Si</label>
-                                  </div>
-                                  <div className='custom-control custom-radio custom-control-inline'>
-                                    <input
-                                      type='radio'
-                                      id='customRadioInline2'
-                                      name='customRadioInline1'
-                                      className='custom-control-input'
-                                    />
-                                    <label className='custom-control-label'>No</label>
-                                  </div>
-                                  <div className='form-group gov-co-form-group'>
-                                    <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                          <div className='card-body' >
+                            <DatosDocumentos form={form} obj={null} prop={null}/>
                           </div>
                         </div>
                       </div>
@@ -714,23 +507,26 @@ export const RevisarSg = () => {
                     className='ml-3 float-right button btn btn-default'
                     style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                     type='primary'
-                    htmlType='button'
-                    onClick={() => {
-                      history.push('/tramites-servicios/Revision/aprobar-tramite');
-                    }}
+                    htmlType='submit'
+
                   >
                     Enviar
                   </Button>
-                  <button className='float-right button btn btn-default' style={{ backgroundColor: ' #CBCBCB' }}>
-                    Guardar
-                  </button>
-                  <button className='mr-3 float-right button btn btn-default' style={{ backgroundColor: ' #CBCBCB' }}>
+                  <Button className='mr-3 float-right button btn btn-default'
+                          type='primary'
+                          htmlType='button'
+                          style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                          onClick={() => {
+                            history.push('/tramites-servicios/Revision/aprobar-tramite');
+                          }}
+                  >
                     Cancelar
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
           </section>
+          </Form>
         </div>
       </div>
     </div>
