@@ -192,7 +192,7 @@ export const VisitaRu = () => {
                   <DatosSolicitante obj={objJson} form={form} tipo={'revision'} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
+                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <CitacionRevision form={form} obj={objJson} tipo={'Usuario'} />

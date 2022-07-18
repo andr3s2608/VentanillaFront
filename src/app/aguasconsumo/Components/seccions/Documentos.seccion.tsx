@@ -129,7 +129,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const insertarArchivo = async () => {
     const archivo = archivocargado;
-    console.log(guardararchivos, ' Archivos Guardados');
+
     const array: any[] = [];
     const arraytabla: any[] = [];
 
@@ -138,11 +138,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       props.form.resetFields([`checkbox${index}`]);
       if (archivos[index] == '1') {
         if (guardararchivos[index] != undefined) {
-          console.log('entro validacion habia archivo ', index);
           array.push(guardararchivos[index]);
           arraytabla.push(guardararchivos[index]);
         } else {
-          console.log('entro validacion solo selecciono ', index);
           array.push({
             posicion: posicion,
             nombre: acueducto[index].nombre,
@@ -159,7 +157,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           });
         }
       } else {
-        console.log('entro valdiacion no selecciono ', index);
         if (guardararchivos[index] != undefined) {
           array.push(guardararchivos[index]);
           arraytabla.push(guardararchivos[index]);
@@ -171,9 +168,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       posicion++;
     }
 
-    console.log('.--------');
-    console.log(array);
-    console.log(arraytabla);
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);
     prop(array);
@@ -190,15 +184,13 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
-    console.log(guardararchivostabla);
-    console.log(data);
+
     const array: any[] = [];
     const arraytabla: any[] = [];
 
     for (let index = 0; index < guardararchivos.length; index++) {
       if (guardararchivos[index] != undefined) {
         if (guardararchivos[index].posicion != data.posicion) {
-          console.log('index :' + index);
           const aux = guardararchivos[index];
 
           array.push(aux);
@@ -211,14 +203,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     }
     for (let index = 0; index < guardararchivostabla.length; index++) {
       if (guardararchivostabla[index].posicion != data.posicion) {
-        console.log('index :' + index);
         const aux = guardararchivostabla[index];
 
         arraytabla.push(aux);
       }
     }
 
-    console.log(array);
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);
     prop(array);

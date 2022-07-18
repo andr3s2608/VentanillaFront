@@ -42,7 +42,7 @@ export const ModificarMedico = ({ props }: any) => {
     const numero: string = form.getFieldValue('numeroid');
 
     const id = await api.getMedico(numero);
-    console.log(id);
+
     if (id == null) {
       Swal.fire({
         icon: 'error',
@@ -85,7 +85,7 @@ export const ModificarMedico = ({ props }: any) => {
       sitiO_EXP_IDENT: valores[4].toUpperCase(),
       fechA_NACIMIENTO: moment(values.date).format(formatDate)
     };
-    console.log(json);
+
     await api.UpdateProfesionalesSalud(json, valores[1]);
     setEncontro(false);
     Swal.fire({

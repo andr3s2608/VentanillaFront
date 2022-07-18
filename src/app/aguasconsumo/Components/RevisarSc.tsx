@@ -264,7 +264,7 @@ export const RevisarSc = () => {
                   <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} />
+                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={''} />
                 </div>
                 <div className='row mt-3 '>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>

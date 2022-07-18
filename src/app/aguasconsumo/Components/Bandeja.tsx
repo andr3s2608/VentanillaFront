@@ -40,8 +40,6 @@ export const Bandeja = (props: IDataSource) => {
         setcoordinador(false);
       }
 
-      console.log('paso');
-
       setroles(permiso.rol);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,11 +50,6 @@ export const Bandeja = (props: IDataSource) => {
     getListas();
   }, []);
 
-  const abrir = () => {
-    var acc = document.getElementsByClassName('accordion');
-    console.log(acc);
-  };
-  abrir();
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
 
@@ -121,9 +114,7 @@ export const Bandeja = (props: IDataSource) => {
     }
   ];
 
-  const añadirinfo = (value: any) => {
-    console.log(value);
-  };
+  const añadirinfo = (value: any) => {};
 
   return (
     <div className='container-fluid'>

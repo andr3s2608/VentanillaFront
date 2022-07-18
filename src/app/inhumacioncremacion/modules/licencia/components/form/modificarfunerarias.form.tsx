@@ -208,7 +208,7 @@ export const ModificarFuneraria = ({ props }: any) => {
         nombrE_REP: valores[11].toUpperCase(),
         telefonO_2: valores[12]
       };
-      console.log(json);
+
       await api.UpdateFunerarias(json, NroIdenF);
       setselecciono(false);
       Swal.fire({

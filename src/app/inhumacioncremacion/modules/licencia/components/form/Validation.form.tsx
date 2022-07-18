@@ -130,7 +130,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       const support = await api.getSupportDocuments(objJosn?.idSolicitud);
       const typeList = await api.GetAllTypeValidation();
       setSupports(support);
-      console.log(typeList);
+
       if (isvalidcertificado) {
         const filtrado = type.filter(function (f: { id: string }) {
           return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';

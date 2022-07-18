@@ -208,7 +208,7 @@ export const Servicios = () => {
       icon: 'success',
 
       title: 'Solicitud Creada',
-      text: `Se ha creado la Solicitud exitosamente con número de raadicado ${nrorad}`
+      text: `Se ha creado la Solicitud exitosamente con número de radicado ${nrorad}`
     });
 
     history.push('/tramites-servicios-aguas');
@@ -328,7 +328,7 @@ export const Servicios = () => {
                   <DatosSolicitante form={form} obj={null} tipo={'coordinador'} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <UbicacionPersona form={form} obj={null} tipo={null} />
+                  <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
                 </div>
                 <div className='row mt-3 '>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>

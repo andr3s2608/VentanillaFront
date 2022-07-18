@@ -62,7 +62,6 @@ export const ModificarCementerio = ({ props }: any) => {
 
         const result = all.find((cementerio: any) => cementerio.RAZON_S == valor);
         if (result) {
-          console.log(result);
           setCementerioDatos([
             result.DIRECCION + '',
             result.TIPO_I + '',
@@ -146,7 +145,7 @@ export const ModificarCementerio = ({ props }: any) => {
         telefonO_2: valores[8],
         cremacion: valores[9]
       };
-      console.log(json);
+
       await api.UpdateCementerios(json, NroIdenCE);
       setselecciono(false);
       Swal.fire({

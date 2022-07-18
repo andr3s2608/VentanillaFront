@@ -592,7 +592,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
-      console.log(idsol);
+
       if (idsol) {
         const [files, names] = generateListFiles(values, container);
 

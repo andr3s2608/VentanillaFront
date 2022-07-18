@@ -25,7 +25,6 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   const api = new ApiService(accountIdentifier);
 
   const onChangeSwitch = (check: any) => {
-    console.log(check);
     setIsHora(!check);
   };
 

@@ -226,7 +226,7 @@ export const PrimeraU = () => {
             sistemaTratamiento: sistemajson
           }
         };
-        console.log(json);
+
         await api.AddSolicitudConsecion(json);
 
         localStorage.removeItem('register');
@@ -249,16 +249,17 @@ export const PrimeraU = () => {
             });
           }
         });
+        if (values?.cargarresolucion.file) {
+          formData.append('file', values.cargarresolucion.file);
+          formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
 
-        formData.append('file', values.cargarresolucion.file);
-        formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
-
-        supportDocumentsEdit.push({
-          idSolicitud: objJson.idsolicitud,
-          idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
-          path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
-          idUsuario: objJson.idusuario
-        });
+          supportDocumentsEdit.push({
+            idSolicitud: objJson.idsolicitud,
+            idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+            path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
+            idUsuario: objJson.idusuario
+          });
+        }
 
         formData.append('containerName', 'aguahumanos');
         formData.append('oid', objJson.idusuario);

@@ -69,8 +69,6 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           } else {
             array = result;
           }
-          console.log(array);
-          console.log(array[0].RAZON_S);
 
           setvalorfuneraria(array[0].RAZON_S);
         } else {

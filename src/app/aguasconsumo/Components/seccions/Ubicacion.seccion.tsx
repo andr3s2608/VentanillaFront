@@ -26,7 +26,7 @@ import { Button } from 'antd';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
-  const { tipo, obj } = props;
+  const { tipo, obj, vista } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -45,10 +45,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-
-      const [permiso] = mysRoles;
-      if (permiso.rol == 'Ciudadano') {
+      if (vista == 'revision') {
         setmodificar(true);
       } else {
         setmodificar(false);
@@ -291,5 +288,6 @@ interface ubicacion<T> {
   form: FormInstance<T>;
   obj: any;
   tipo: any;
+  vista: any;
 }
 export const KeysForm = ['departamento', 'municipio', 'sector', 'vereda', 'localidad', 'direccion', 'observations'];
