@@ -30,6 +30,7 @@ export const PrimeraU = () => {
   const api = new ApiService(accountIdentifier);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [l_tramites, setl_tramites] = useState<any[]>([]);
+  const [validaciondocumento, setvalidacion] = useState<boolean>(false);
   const [[acueducto, informacion, documento], setListas] = useState<[any[], any[], any[]]>([[], [], []]);
 
   const getListas = useCallback(
@@ -47,6 +48,7 @@ export const PrimeraU = () => {
   }, []);
 
   const onSubmit = async (values: any) => {
+    const archivo = values.cargarresolucion;
     let validacion = false;
     let planta = false;
     let acueductojson: any[] = [];
@@ -90,7 +92,6 @@ export const PrimeraU = () => {
       }
     ];
 
-    console.log(acueducto);
     const ac: any[] = [];
     const sis: any[] = [];
 
@@ -126,7 +127,7 @@ export const PrimeraU = () => {
       validacion = true;
     }
     if (validacion) {
-      if (documento.length < 1) {
+      if (!validaciondocumento) {
         Swal.fire({
           icon: 'error',
           title: 'Datos Incompletos',
@@ -234,17 +235,19 @@ export const PrimeraU = () => {
         const formData = new FormData();
 
         documento.forEach((item: any, i: number) => {
-          const archivo = documento[i];
+          if (documento[i] != undefined) {
+            const archivo = documento[i];
 
-          formData.append('file', archivo.archivo.file);
-          formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
+            formData.append('file', archivo.archivo.file);
+            formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
 
-          supportDocumentsEdit.push({
-            idSolicitud: objJson.idsolicitud,
-            idTipoDocumentoAdjunto: archivo.id,
-            path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
-            idUsuario: objJson.idusuario
-          });
+            supportDocumentsEdit.push({
+              idSolicitud: objJson.idsolicitud,
+              idTipoDocumentoAdjunto: archivo.id,
+              path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
+              idUsuario: objJson.idusuario
+            });
+          }
         });
 
         formData.append('file', values.cargarresolucion.file);
@@ -263,6 +266,12 @@ export const PrimeraU = () => {
         await api.uploadFiles(formData);
         await api.AddSupportDocumentsAguas(supportDocumentsEdit);
 
+        Swal.fire({
+          icon: 'success',
+
+          title: 'Solicitud Actualizada',
+          text: `Se ha actualizado la Solicitud exitosamente `
+        });
         history.push('/tramites-servicios-aguas');
       }
     }
@@ -276,7 +285,16 @@ export const PrimeraU = () => {
     setListas([acueducto, value, documento]);
   };
   const añadirdocumento = (value: any) => {
+    let va = 0;
     setListas([acueducto, informacion, value]);
+    for (let index = 0; index < value.length; index++) {
+      if (value[index] != undefined) {
+        setvalidacion(true);
+        break;
+      } else {
+        setvalidacion(false);
+      }
+    }
   };
 
   const validacionacueducto = () => {

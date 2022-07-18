@@ -133,7 +133,6 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                 <Form.Item name='dateresolucion' rules={[{ required: true }]}>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                 </Form.Item>
-                <input type='date' className='form-control' />
               </div>
               <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
                 <Form.Item label='' name='cargarresolucion' rules={[{ required: true }]}>

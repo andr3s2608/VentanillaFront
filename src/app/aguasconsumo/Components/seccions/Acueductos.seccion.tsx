@@ -93,8 +93,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   };
 
   const insertarAcueducto = async () => {
-    const validar = props.form.validateFields(KeysForm);
-    console.log(validar);
     const dep = props.form.getFieldValue('departamento');
     const loc = props.form.getFieldValue('localidad');
     var mun = props.form.getFieldValue('municipio');
@@ -254,7 +252,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <span className='required'>* </span> Departamento
           </label>
           <div className='gov-co-dropdown'>
-            <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: true }]}>
+            <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
               <SelectComponent
                 options={l_departamentos}
                 optionPropkey='idDepartamento'
@@ -269,7 +267,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <span className='required'>* </span> Localidad o vereda
           </label>
           <div className='gov-co-dropdown'>
-            <Form.Item name='localidad' rules={[{ required: true }]}>
+            <Form.Item name='localidad' rules={[{ required: false }]}>
               <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
             </Form.Item>
           </div>
@@ -281,7 +279,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <span className='required'>* </span> Municipio
           </label>
           <div className='gov-co-dropdown'>
-            <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: true }]}>
+            <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
               <SelectComponent
                 options={l_municipios}
                 optionPropkey='idMunicipio'
@@ -297,7 +295,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <span className='required'>* </span> Sector
           </label>
           <div className='gov-co-dropdown'>
-            <Form.Item name='sector' rules={[{ required: true }]}>
+            <Form.Item name='sector' rules={[{ required: false }]}>
               <Input
                 maxLength={50}
                 type='text'
@@ -321,8 +319,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         <p>Coordenadas de capacitación</p>
         <div className='form-group gov-co-form-group'>
           <span className='required'>*</span>Latitud
-          <Form.Item name='latituduso' rules={[{ required: true }]}>
-            <input
+          <Form.Item name='latituduso' rules={[{ required: false }]}>
+            <Input
               type='text'
               className='form-control gov-co-form-control'
               onKeyPress={(event) => {
@@ -341,8 +339,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         <br />
         <span className='required'>*</span>Longitud
         <div className='form-group gov-co-form-group'>
-          <Form.Item name='longituduso' rules={[{ required: true }]}>
-            <input
+          <Form.Item name='longituduso' rules={[{ required: false }]}>
+            <Input
               type='text'
               className='form-control gov-co-form-control'
               onKeyPress={(event) => {
@@ -363,7 +361,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <br />
           <span className='required'>*</span>Uso de la fuente
           <div className='form-group gov-co-form-group'>
-            <Form.Item name='usofuente' rules={[{ required: true }]}>
+            <Form.Item name='usofuente' rules={[{ required: false }]}>
               <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
             </Form.Item>
           </div>

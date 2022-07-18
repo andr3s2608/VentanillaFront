@@ -168,6 +168,14 @@ export const RevisarSc = () => {
     };
 
     await api.AddSolicitudCitacion(json);
+
+    Swal.fire({
+      icon: 'success',
+
+      title: 'Solicitud validada',
+      text: `Se ha validado la Solicitud exitosamente`
+    });
+
     history.push('/tramites-servicios-aguas');
   };
 

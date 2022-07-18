@@ -592,7 +592,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
-
+      console.log(idsol);
       if (idsol) {
         const [files, names] = generateListFiles(values, container);
 
@@ -624,7 +624,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           icon: 'success',
 
           title: 'Solicitud Creada',
-          text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
+          text: `Se ha creado la Solicitud exitosamente con número de tramite ${nrorad}`
         });
 
         let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), nrorad];
