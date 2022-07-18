@@ -412,7 +412,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           enBogota: values.cementerioLugar === 'Dentro de Bogotá',
           fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
           fueraPais: values.cementerioLugar === 'Fuera del País',
-          cementerio: values.cementerioBogota ?? 'Sin Información',
+          cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
           otroSitio: values.otro,
           ciudad: values.cementerioCiudad,
           idPais: values.cementerioPais,
@@ -517,6 +517,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
+      console.log(idsol);
 
       if (idsol) {
         const [files, names] = generateListFiles(values);
@@ -548,7 +549,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           icon: 'success',
 
           title: 'Solicitud Creada',
-          text: `Se ha creado la Solicitud exitosamente con numero de tramite ${nrorad}`
+          text: `Se ha creado la Solicitud exitosamente con número de tramite ${nrorad}`
         });
 
         form.resetFields();

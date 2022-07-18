@@ -172,7 +172,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     setdepartamentofuneraria(departamentofuneraria);
 */
 
-    if (cementerio == 'Sin Información') {
+    if (cementerio == 'Fuera de Bogotá') {
       setisfuera(true);
     }
     setfuneraria(funeraria);

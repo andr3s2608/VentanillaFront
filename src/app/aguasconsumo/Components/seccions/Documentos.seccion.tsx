@@ -44,6 +44,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const [archivos, setarchivos] = useState<any[]>(['0', '0', '0']);
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
+  const [guardararchivostabla, setguardararchivostabla] = useState<any[]>([]);
 
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
@@ -58,27 +59,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       if (obj?.departamento) {
         setIdBogota('');
       }
-      const prueba: any = [];
-      prueba.push({
-        check: false,
-        nombre: 'Fotocopia documento de identificación PN',
-        valor: 'Fotocopia_documento_de_identificación_PN',
-        id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
-      });
-      prueba.push({
-        check: true,
-        nombre: 'Plano de localización de la fuente hídrica y de uso del suelo',
-        valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
-        id: '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0'
-      });
-      prueba.push({
-        check: false,
-        nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)',
-        valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto',
-        id: '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0'
-      });
 
-      setacueductos(prueba);
+      cargardatos();
       const localidades = await dominioService.get_localidades_bogota();
 
       const uso = await api.getUsoFuente();
@@ -96,6 +78,30 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const cargardatos = () => {
+    const prueba: any = [];
+    prueba.push({
+      check: false,
+      nombre: 'Fotocopia documento de identificación PN',
+      valor: 'Fotocopia_documento_de_identificación_PN',
+      id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
+    });
+    prueba.push({
+      check: true,
+      nombre: 'Plano de localización de la fuente hídrica y de uso del suelo',
+      valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
+      id: '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0'
+    });
+    prueba.push({
+      check: false,
+      nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)',
+      valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto',
+      id: '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0'
+    });
+
+    setacueductos(prueba);
+  };
 
   const subia = (value: any) => {
     setarchivocargado(value);
@@ -123,24 +129,41 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const insertarArchivo = async () => {
     const archivo = archivocargado;
-
+    console.log(guardararchivos, ' Archivos Guardados');
     const array: any[] = [];
+    const arraytabla: any[] = [];
 
-    var posicion: number = 0;
+    var posicion: number = 1;
     for (let index = 0; index < archivos.length; index++) {
+      props.form.resetFields([`checkbox${index}`]);
       if (archivos[index] == '1') {
         if (guardararchivos[index] != undefined) {
+          console.log('entro validacion habia archivo ', index);
           array.push(guardararchivos[index]);
+          arraytabla.push(guardararchivos[index]);
         } else {
+          console.log('entro validacion solo selecciono ', index);
           array.push({
             posicion: posicion,
             nombre: acueducto[index].nombre,
             valor: acueducto[index].valor,
+            id: acueducto[index].id,
+            archivo: archivo
+          });
+          arraytabla.push({
+            posicion: posicion,
+            nombre: acueducto[index].nombre,
+            valor: acueducto[index].valor,
+            id: acueducto[index].id,
             archivo: archivo
           });
         }
       } else {
+        console.log('entro valdiacion no selecciono ', index);
         if (guardararchivos[index] != undefined) {
+          array.push(guardararchivos[index]);
+          arraytabla.push(guardararchivos[index]);
+        } else {
           array.push(guardararchivos[index]);
         }
       }
@@ -148,8 +171,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       posicion++;
     }
 
+    console.log('.--------');
+    console.log(array);
+    console.log(arraytabla);
     setguardararchivos(array);
+    setguardararchivostabla(arraytabla);
     prop(array);
+    setacueductos([]);
+    setarchivos(['0', '0', '0']);
+    cargardatos();
   };
 
   var posicionform = -1;
@@ -160,20 +190,37 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
+    console.log(guardararchivostabla);
+    console.log(data);
     const array: any[] = [];
     const arraytabla: any[] = [];
-    var pos: number = 0;
+
     for (let index = 0; index < guardararchivos.length; index++) {
-      if (index != data.posicion) {
-        const aux = guardararchivos[index];
+      if (guardararchivos[index] != undefined) {
+        if (guardararchivos[index].posicion != data.posicion) {
+          console.log('index :' + index);
+          const aux = guardararchivos[index];
 
-        aux.posicion = pos;
-        pos++;
-
-        array.push(aux);
+          array.push(aux);
+        } else {
+          array.push(undefined);
+        }
+      } else {
+        array.push(guardararchivos[index]);
       }
     }
+    for (let index = 0; index < guardararchivostabla.length; index++) {
+      if (guardararchivostabla[index].posicion != data.posicion) {
+        console.log('index :' + index);
+        const aux = guardararchivostabla[index];
+
+        arraytabla.push(aux);
+      }
+    }
+
+    console.log(array);
     setguardararchivos(array);
+    setguardararchivostabla(arraytabla);
     prop(array);
 
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
@@ -306,7 +353,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
           <Table
             id='tableGen2'
-            dataSource={guardararchivos}
+            dataSource={guardararchivostabla}
             columns={tabla2}
             pagination={{ pageSize: Paginas }}
             className='table_info'
