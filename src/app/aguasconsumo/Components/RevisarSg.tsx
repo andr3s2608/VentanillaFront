@@ -342,7 +342,9 @@ export const RevisarSg = () => {
                         <div id='collapse-8' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                           <div className='card-body'>
                             <div className='card-body' >
+                              <div className='row mt-5 ml-2'>
                               <TipoNotificacion form={form} obj={null} prop={null}/>
+                              </div>
                             </div>
                           </div>
                         </div>

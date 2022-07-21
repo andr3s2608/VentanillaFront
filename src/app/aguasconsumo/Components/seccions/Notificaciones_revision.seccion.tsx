@@ -4,6 +4,7 @@ import {authProvider} from "../../../shared/utils/authprovider.util";
 import {ApiService} from "../../../services/Apis.service";
 import {SelectComponent} from "../../../shared/components/inputs/select.component";
 import Button from "antd/es/button";
+import { Input } from "antd";
 
 
 export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
@@ -73,18 +74,10 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
         <div className='form-group gov-co-form-group'>
           <p>Descripción de la notificacion</p>
           <Form.Item name='descripcionNotificacion' initialValue={''}>
-            <input
-              type='text'
+            <Input.TextArea
               maxLength={300}
               className='form-control gov-co-form-control'
-              onKeyPress={(event) => {
-                if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
+              style={{ width: '300px' }}
             />
           </Form.Item>
         </div>
