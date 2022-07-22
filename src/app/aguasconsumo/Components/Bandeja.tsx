@@ -19,7 +19,7 @@ export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
   const { data, datosusuario, datossolucionados } = props;
   const [roles, setroles] = useState<string>('');
-  const [coordinador, setcoordinador] = useState<boolean>(false);
+  const [coordinador, setcoordinador] = useState<string>('');
   const valor = [];
 
   const Paginas: number = 5;
@@ -33,11 +33,15 @@ export const Bandeja = (props: IDataSource) => {
 
       if (
         permiso?.rol === 'Coordinador'
-        // || permiso?.rol === 'AdminTI'
+        //|| permiso?.rol === 'AdminTI'
       ) {
-        setcoordinador(true);
+        setcoordinador('Coordinador');
       } else {
-        setcoordinador(false);
+        if (permiso?.rol === 'Funcionario' || permiso?.rol === 'AdminTI') {
+          setcoordinador('Funcionario');
+        } else {
+          setcoordinador('Subdirector');
+        }
       }
 
       setroles(permiso.rol);
@@ -55,7 +59,16 @@ export const Bandeja = (props: IDataSource) => {
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
+    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Proceso de Citacion') {
+      history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
+    }
+    if (
+      data.tipodeSolicitud == 'Gestion Validador' ||
+      data.tipodeSolicitud == 'Gestion Coordinador' ||
+      data.tipodeSolicitud == 'Gestion Subdirector'
+    ) {
+      history.push('/tramites-servicios-aguas/Revision/gestionar-solicitud');
+    }
   };
 
   const structureColumns = [
@@ -238,12 +251,17 @@ export const Bandeja = (props: IDataSource) => {
                           Recientes
                         </a>
                       </li>
-                      <li className='nav-item'>
-                        <a className='nav-link' data-toggle='tab' href='#solucionados' role='tab'>
-                          Solucionados
-                        </a>
-                      </li>
-                      {coordinador && (
+                      {coordinador != 'Subdirector' && (
+                        <>
+                          <li className='nav-item'>
+                            <a className='nav-link' data-toggle='tab' href='#solucionados' role='tab'>
+                              Solucionados
+                            </a>
+                          </li>
+                        </>
+                      )}
+
+                      {coordinador == 'Coordinador' && (
                         <>
                           <li className='nav-item'>
                             <a className='nav-link' data-toggle='tab' href='#prueba' role='tab'>
@@ -291,7 +309,7 @@ export const Bandeja = (props: IDataSource) => {
                         </div>
                         <div className='row'>
                           <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                            {!coordinador && (
+                            {coordinador == 'Funcionario' && (
                               <>
                                 <Table
                                   id='tableGen'
@@ -302,7 +320,7 @@ export const Bandeja = (props: IDataSource) => {
                                 />
                               </>
                             )}
-                            {coordinador && (
+                            {coordinador != 'Funcionario' && (
                               <>
                                 <Table
                                   id='tableGen'
@@ -365,7 +383,7 @@ export const Bandeja = (props: IDataSource) => {
                           </div>
                         </div>
                       </div>
-                      {coordinador && (
+                      {coordinador == 'Coordinador' && (
                         <>
                           <div className='tab-pane ' id='prueba' role='tabpanel'>
                             <div className='row'>

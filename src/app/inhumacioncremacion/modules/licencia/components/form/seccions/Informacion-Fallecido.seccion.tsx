@@ -213,13 +213,12 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       {
         title: 'Genero',
         describe: genero
-      }
-      /*
+      },
+
       {
         title: 'Nacionalidad',
         describe: nacionalidad?.toLowerCase()
-      },
-      */
+      }
     ];
     data = datanueva;
   } else {
@@ -276,12 +275,12 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         title: 'Genero',
         describe: genero?.toLowerCase()
       },
-      /*
+
       {
         title: 'Nacionalidad',
         describe: nacionalidad?.toLowerCase()
       },
-      */
+
       {
         title: 'Tipo de Muerte',
         describe: (

@@ -45,7 +45,9 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
       const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental(), api.getSubredes()]);
       setListas(resp);
 
-      const sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
+      const sub = await api.getSubcategoriasFuente(
+        obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
+      );
 
       setl_subcategorias(sub);
     },
@@ -155,7 +157,11 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           <span className='required'>*</span>Tipo de fuente*
           <div className='form-group gov-co-form-group'>
             <div className='gov-co-dropdown'>
-              <Form.Item name='tipofuente' initialValue={''} rules={[{ required: true }]}>
+              <Form.Item
+                name='tipofuente'
+                initialValue={obj?.fuenteabastecimientojson[0].idtipofuente}
+                rules={[{ required: true }]}
+              >
                 <SelectComponent
                   options={l_fuentes}
                   onChange={Onchangetipo}
@@ -170,7 +176,11 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           <span className='required'>*</span>Subcategoria de fuente*
           <div className='form-group gov-co-form-group ml-2'>
             <div className='gov-co-dropdown'>
-              <Form.Item name='subcategoria' rules={[{ required: true }]}>
+              <Form.Item
+                name='subcategoria'
+                initialValue={obj?.fuenteabastecimientojson[0].idSubCategoriaFuente}
+                rules={[{ required: true }]}
+              >
                 <SelectComponent
                   options={l_subcategorias}
                   optionPropkey='idSubCategoriaFuente'
@@ -184,7 +194,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
         <div className='col-lg-3 col-md-3 col-sm-12'>
           <div className='form-group gov-co-form-group'>
             <p>Descripción de otra fuente</p>
-            <Form.Item name='descripcionotra' initialValue={''}>
+            <Form.Item name='descripcionotra' initialValue={obj?.fuenteabastecimientojson[0].descripcionOtraFuente}>
               <input
                 type='text'
                 maxLength={500}
@@ -206,7 +216,11 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
           <div className='form-group gov-co-form-group'>
             <span className='required'>*</span>Nombre de la fuente*
-            <Form.Item name='nombrefuente' initialValue={''} rules={[{ required: true }]}>
+            <Form.Item
+              name='nombrefuente'
+              initialValue={obj?.fuenteabastecimientojson[0].nombrefuenteabastecimiento}
+              rules={[{ required: true }]}
+            >
               <input
                 type='text'
                 className='form-control gov-co-form-control'
@@ -228,7 +242,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             <p>Localización de la bocatoma*</p>
             <div className='form-group gov-co-form-group'>
               <span className='required'>*</span>Latitud
-              <Form.Item name='latitud' initialValue={''} rules={[{ required: true }]}>
+              <Form.Item name='latitud' initialValue={obj?.fuenteabastecimientojson[0].bocatoma_lat} rules={[{ required: true }]}>
                 <input
                   type='text'
                   className='form-control gov-co-form-control'
@@ -248,7 +262,11 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             <br />
             <span className='required'>*</span>Longitud
             <div className='form-group gov-co-form-group'>
-              <Form.Item name='longitud' initialValue={''} rules={[{ required: true }]}>
+              <Form.Item
+                name='longitud'
+                initialValue={obj?.fuenteabastecimientojson[0].bocatoma_long}
+                rules={[{ required: true }]}
+              >
                 <input
                   type='text'
                   className='form-control gov-co-form-control'
@@ -268,7 +286,11 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
             <span className='required'>*</span>Descripción de la fuente*
             <div className='form-group gov-co-form-group'>
-              <Form.Item name='descripcionfuente' initialValue={''} rules={[{ required: true }]}>
+              <Form.Item
+                name='descripcionfuente'
+                initialValue={obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento}
+                rules={[{ required: true }]}
+              >
                 <Input.TextArea rows={5} maxLength={500} style={{ width: '300px' }} />
               </Form.Item>
             </div>
@@ -277,7 +299,11 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             <span className='required'>*</span>Autoridad ambiental que otorga la concesión *
             <div className='form-group gov-co-form-group '>
               <div className='gov-co-dropdown'>
-                <Form.Item name='autoridad' initialValue={''} rules={[{ required: true }]}>
+                <Form.Item
+                  name='autoridad'
+                  initialValue={obj?.fuenteabastecimientojson[0].idAutoridadAmbiental}
+                  rules={[{ required: true }]}
+                >
                   <SelectComponent options={l_autoridad} optionPropkey='idAutoridadAmbiental' optionPropLabel='nombre' />
                 </Form.Item>
               </div>
