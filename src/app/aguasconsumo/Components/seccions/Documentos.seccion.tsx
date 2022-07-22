@@ -220,8 +220,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
-  const onClickViewFile = () => {
-    setUrlPdfDocumento('https://tramitesenlinea.saludcapital.gov.co/assets/docs/manual_vuts.pdf');
+  const onClickViewFile = async () => {
+    let path = '2022/laura.pdf';
+    const pdfBlob = await api.GetBlobAzure(path);
+    const pdfUrl = URL.createObjectURL(pdfBlob as Blob);
+
+    setUrlPdfDocumento(pdfUrl);
     setEnableModalViewDocument(true);
   };
 

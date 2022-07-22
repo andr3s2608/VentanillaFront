@@ -11,6 +11,7 @@ import { clearStorage } from 'app/shared/tools/storage.tool';
 // Redux
 import { store } from 'app/redux/app.reducers';
 import { Loading } from 'app/redux/ui/ui.actions';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 // Cancelar request
 const cancelRequest = axios.CancelToken.source();
@@ -39,9 +40,11 @@ const isRegister = (url: string) => {
 };
 
 const extract_data = <T>(response: AxiosResponse): T => {
+  console.log('mando a imprimier el resultado del la respuesta get');
+  console.log(response);
   const {
     data: _response,
-    config: { method, url }
+    config: { method, url, responseType }
   } = response;
 
   if (!!_response.message && method !== 'get') {
@@ -58,6 +61,11 @@ const extract_data = <T>(response: AxiosResponse): T => {
     });
 
     return true as any;
+  }
+
+  if (responseType === 'blob' || !_response) {
+    showLoading(false);
+    return _response;
   }
 
   showLoading(false);
