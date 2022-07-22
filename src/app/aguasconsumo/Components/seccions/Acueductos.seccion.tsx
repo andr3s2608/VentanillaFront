@@ -59,6 +59,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         setIdBogota('');
       }
       */
+
       const localidades = await dominioService.get_localidades_bogota();
 
       const uso = await api.getUsoFuente();

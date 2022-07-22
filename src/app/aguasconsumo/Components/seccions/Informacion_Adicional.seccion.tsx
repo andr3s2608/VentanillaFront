@@ -33,10 +33,52 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const api = new ApiService(accountIdentifier);
 
   const [campos, setcampos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']);
+  const [lista, setlista] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ]);
   const [sistema, setsistema] = useState<any[]>([]);
 
   const Paginas: number = 5;
-  const getListas = useCallback(async () => {}, []);
+  const getListas = useCallback(async () => {
+    const array: any[] = [];
+    for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
+      array.push({
+        posicion: index + 1,
+        caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
+        caudaltratado: obj.sistematratamientojson[index].caudalTratado,
+        sed: obj.sistematratamientojson[index].sedimentador,
+        mezr: obj.sistematratamientojson[index].mezclaRapido,
+        alma: obj.sistematratamientojson[index].almacenamiento,
+        torre: obj.sistematratamientojson[index].torreAireacion,
+        desin: obj.sistematratamientojson[index].desinfeccion,
+        preclo: obj.sistematratamientojson[index].precloracion,
+        filt: obj.sistematratamientojson[index].filtracion,
+        mezl: obj.sistematratamientojson[index].mezclaLento,
+        oxi: obj.sistematratamientojson[index].oxidacion,
+        flocula: obj.sistematratamientojson[index].floculador,
+        desarenador: obj.sistematratamientojson[index].desarenador,
+        otra: obj.sistematratamientojson[index].otra,
+        descrip: obj.sistematratamientojson[index].descripcionOtro,
+        num1: obj.sistematratamientojson[index].numUsuarioUrbanos,
+        num2: obj.sistematratamientojson[index].numUsuariosRurales,
+        pob1: obj.sistematratamientojson[index].poblacionUrbanos,
+        pob2: obj.sistematratamientojson[index].poblacionRurales
+      });
+    }
+    setsistema(array);
+    console.log('paso acueductos', obj.sistematratamientojson);
+  }, []);
 
   useEffect(() => {
     getListas();
@@ -44,23 +86,29 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   }, []);
 
   const onChange = (value: any) => {
+    console.log('entro check');
     var nombre: string = value.target.id;
 
     var posicion: number = parseInt(nombre.substring(8, nombre.length));
 
     const array: any[] = [];
+    const arraylista: any[] = [];
     for (let index = 0; index < campos.length; index++) {
       if (index == posicion) {
         if (campos[index] == '0') {
           array.push('1');
+          arraylista.push(true);
         } else {
           array.push('0');
+          arraylista.push(false);
         }
       } else {
         array.push(campos[index]);
+        arraylista.push(lista[index]);
       }
     }
 
+    setlista(arraylista);
     setcampos(array);
   };
 
@@ -107,6 +155,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     });
 
     setcampos(['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']);
+    setlista([false, false, false, false, false, false, false, false, false, false, false, false]);
     props.form.resetFields([
       'checkbox0',
       'checkbox1',
@@ -131,6 +180,53 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
     setsistema(array);
     prop(array);
+  };
+
+  const onClickLlenarInformacion = async (datos: any) => {
+    props.form.setFieldsValue({
+      caudaldesign: sistema[datos.posicion - 1].caudaldesign + '',
+      caudaltratado: sistema[datos.posicion - 1].caudaltratado + '',
+      descripcion: sistema[datos.posicion - 1].descrip + '',
+      numero1: sistema[datos.posicion - 1].num1 + '',
+      numero2: sistema[datos.posicion - 1].num2 + '',
+      poblacion1: sistema[datos.posicion - 1].pob1 + '',
+      poblacion2: sistema[datos.posicion - 1].pob2 + ''
+    });
+
+    setcampos([
+      sistema[datos.posicion - 1].sed == true ? '1' : '0',
+      sistema[datos.posicion - 1].mezr == true ? '1' : '0',
+      sistema[datos.posicion - 1].mezl == true ? '1' : '0',
+      sistema[datos.posicion - 1].oxi == true ? '1' : '0',
+      sistema[datos.posicion - 1].flocula == true ? '1' : '0',
+      sistema[datos.posicion - 1].filt == true ? '1' : '0',
+      sistema[datos.posicion - 1].desin == true ? '1' : '0',
+      sistema[datos.posicion - 1].alma == true ? '1' : '0',
+      sistema[datos.posicion - 1].torre == true ? '1' : '0',
+      sistema[datos.posicion - 1].preclo == true ? '1' : '0',
+      sistema[datos.posicion - 1].desarenador == true ? '1' : '0',
+      sistema[datos.posicion - 1].otra == true ? '1' : '0'
+    ]);
+    setlista([
+      sistema[datos.posicion - 1].sed,
+      sistema[datos.posicion - 1].mezr,
+      sistema[datos.posicion - 1].mezl,
+      sistema[datos.posicion - 1].oxi,
+      sistema[datos.posicion - 1].flocula,
+      sistema[datos.posicion - 1].filt,
+      sistema[datos.posicion - 1].desin,
+      sistema[datos.posicion - 1].alma,
+      sistema[datos.posicion - 1].torre,
+      sistema[datos.posicion - 1].preclo,
+      sistema[datos.posicion - 1].desarenador,
+      sistema[datos.posicion - 1].otra
+    ]);
+
+    props.form.getFieldValue('descripcion');
+    props.form.getFieldValue('numero1');
+    props.form.getFieldValue('numero2');
+    props.form.getFieldValue('poblacion1');
+    props.form.getFieldValue('poblacion2');
   };
 
   const onClickValidarInformacion = async (datos: any) => {
@@ -174,18 +270,33 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        return (
-          <Button
-            type='primary'
-            className='fa-solid fa-circle-xmark'
-            key={`vali-${index}`}
-            onClick={() => onClickValidarInformacion(row)}
-            style={{ fontSize: '30xp', color: 'red' }}
-            icon={<CheckOutlined />}
-          >
-            Validar Información
-          </Button>
-        );
+        if (obj?.sistematratamientojson.length > 0) {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`vali-${index}`}
+              onClick={() => onClickLlenarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+            >
+              mirar
+            </Button>
+          );
+        } else {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`vali-${index}`}
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+            >
+              Validar Información
+            </Button>
+          );
+        }
       }
     }
   ];
@@ -266,17 +377,22 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
             <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
           </a>
         </div>
-        <Button
-          className='fa-solid fa-circle-plus'
-          style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
-          type='primary'
-          htmlType='button'
-          onClick={() => {
-            insertarsistema();
-          }}
-        >
-          Enviar
-        </Button>
+        {obj?.sistematratamientojson.length < 1 && (
+          <>
+            <Button
+              className='fa-solid fa-circle-plus'
+              style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+              type='primary'
+              htmlType='button'
+              onClick={() => {
+                insertarsistema();
+              }}
+            >
+              Enviar
+            </Button>
+          </>
+        )}
+
         <div className='col-lg-8 col-sm-12 col-md-8'>
           <Table
             id='tableGen'
@@ -299,37 +415,37 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
         <div className='col-md-3 col-lg-3 col-sm-12'>
           <div className='form-check'>
             <Form.Item name='checkbox0' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} />
             </Form.Item>
             <span></span>Sedimentador
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox1' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[1]} />
             </Form.Item>
             <span></span>Mezcla Rapida
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox2' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[2]} />
             </Form.Item>
             <span></span>Almacenamiento
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox3' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[3]} />
             </Form.Item>
             <span></span>Torre de aireación
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox4' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[4]} />
             </Form.Item>
             <span></span>Desinfección
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox5' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[5]} />
             </Form.Item>
             <span></span>Precloración
           </div>
@@ -337,37 +453,37 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
         <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
           <div className='form-check'>
             <Form.Item name='checkbox6' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} />
             </Form.Item>
             <span></span>Filtración
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox7' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[7]} />
             </Form.Item>
             <span></span>Mezcla lenta
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox8' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[8]} />
             </Form.Item>
             <span></span>Oxidación
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox9' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[9]} />
             </Form.Item>
             <span></span>Floculador
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox10' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[10]} />
             </Form.Item>
             <span></span>Desarenador
           </div>
           <div className='form-check'>
             <Form.Item name='checkbox11' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' />
+              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[11]} />
             </Form.Item>
             <span></span>Otra
           </div>

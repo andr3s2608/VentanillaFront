@@ -71,28 +71,49 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
             f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
           );
         });
-
-        setdatossolucionadosusuario(filtrado);
-        setdatosusuario(datos);
-      } else {
-        const datos = await api.getSolicitudesUsuarioAsignado();
-        const datossolucionados: any = await api.getSolicitudesUsuarioAsignado();
-
-        const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
+        console.log(datos);
+        const filtradodatos = datos.filter(function (f: { idTipodeSolicitud: string }) {
           return (
-            f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
-            f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
-            f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
+            f.idTipodeSolicitud == '492e1c24-b2a4-45fd-8845-d9ac1e569928' || //Citacion
+            f.idTipodeSolicitud == 'd33fbb9c-9f47-4015-bbe6-96ff43f0dde4' //Gestion Validador
           );
         });
-
+        console.log(filtradodatos);
         setdatossolucionadosusuario(filtrado);
-        setdatosusuario(datos);
+        setdatosusuario(filtradodatos);
+      } else {
+        if (
+          //permiso?.rol === 'AdminTI' ||
+          permiso?.rol === 'Coordinador'
+        ) {
+          const datos = await api.getSolicitudesUsuarioAsignado();
+          const datossolucionados: any = await api.getSolicitudesUsuarioAsignado();
+
+          const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
+            return (
+              f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
+              f.idEstado == '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' || //cerrado
+              f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
+            );
+          });
+          console.log(datos);
+          const filtradodatos = datos.filter(function (f: { idTipodeSolicitud: string }) {
+            return (
+              f.idTipodeSolicitud == '8ca363c0-66aa-4273-8e63-ce3eac234857' //Gestion Coordinador
+            );
+          });
+          console.log(filtradodatos);
+          setdatossolucionadosusuario(filtrado);
+          setdatosusuario(filtradodatos);
+          const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');
+
+          setGrid(resp);
+        } else {
+          const resp = await api.getSolicitudesByTipoSolicitud('5290025A-0967-417A-9737-FA5EAE85D97B');
+
+          setGrid(resp);
+        }
       }
-
-      const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');
-
-      setGrid(resp);
 
       setBandeja(true);
     }

@@ -52,45 +52,8 @@ export const PrimeraU = () => {
     let validacion = false;
     let planta = false;
     let acueductojson: any[] = [];
-    acueductojson = [
-      {
-        idUsuarioFuente: '00000000-0000-0000-0000-000000000000',
-        idMunicipio: acueducto[0].mun,
-        idVereda: acueducto[0].loc,
-        Coo_long_cx: acueducto[0].long,
-        Coo_lat_cy: acueducto[0].lat,
-        idUsoFuente: acueducto[0].uso,
-        descripcionOtroUso: acueducto[0].desc,
-        caudalTotal: acueducto[0].caudal,
-        idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
-        idDepartamento: acueducto[0].dep,
-        idLocalidad: acueducto[0].loc
-      }
-    ];
-    let sistemajson: any[] = [
-      {
-        idSistemaTratamiento: '00000000-0000-0000-0000-000000000000',
-        idFuente: '00000000-0000-0000-0000-000000000000',
-        sedimentador: '00000000-0000-0000-0000-000000000000',
-        mezclaRapido: '00000000-0000-0000-0000-000000000000',
-        mezclaLento: '00000000-0000-0000-0000-000000000000',
-        oxidacion: '00000000-0000-0000-0000-000000000000',
-        floculador: '00000000-0000-0000-0000-000000000000',
-        filtracion: '00000000-0000-0000-0000-000000000000',
-        desinfeccion: '00000000-0000-0000-0000-000000000000',
-        almacenamiento: '00000000-0000-0000-0000-000000000000',
-        torreAireacion: '00000000-0000-0000-0000-000000000000',
-        precloracion: '00000000-0000-0000-0000-000000000000',
-        desarenador: '00000000-0000-0000-0000-000000000000',
-        descripcionOtro: '00000000-0000-0000-0000-000000000000',
-        numUsuarioUrbanos: '00000000-0000-0000-0000-000000000000',
-        numUsuariosRurales: '00000000-0000-0000-0000-000000000000',
-        poblacionUrbanos: '00000000-0000-0000-0000-000000000000',
-        poblacionRurales: '00000000-0000-0000-0000-000000000000',
-        caudalDiseño: '00000000-0000-0000-0000-000000000000',
-        caudalTratado: '00000000-0000-0000-0000-000000000000'
-      }
-    ];
+
+    let sistemajson: any[] = [];
 
     const ac: any[] = [];
     const sis: any[] = [];
@@ -249,7 +212,7 @@ export const PrimeraU = () => {
             });
           }
         });
-        if (values?.cargarresolucion.file) {
+        if (values?.cargarresolucion) {
           formData.append('file', values.cargarresolucion.file);
           formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
 
@@ -279,13 +242,13 @@ export const PrimeraU = () => {
   };
   const onSubmitFailed = () => setStatus('error');
 
-  const añadiracueducto = (value: any) => {
+  const addacueducto = (value: any) => {
     setListas([value, informacion, documento]);
   };
-  const añadirinfo = (value: any) => {
+  const addinfo = (value: any) => {
     setListas([acueducto, value, documento]);
   };
-  const añadirdocumento = (value: any) => {
+  const adddocumento = (value: any) => {
     let va = 0;
     setListas([acueducto, informacion, value]);
     for (let index = 0; index < value.length; index++) {
@@ -436,7 +399,7 @@ export const PrimeraU = () => {
                       <DatosFuente form={form} obj={objJson} tipo={'validador'} />
                     </div>
                     <div className='row mt-5 ml-2'>
-                      <DatosAcueducto form={form} obj={objJson} prop={añadiracueducto} />
+                      <DatosAcueducto form={form} obj={objJson} prop={addacueducto} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>
@@ -467,10 +430,10 @@ export const PrimeraU = () => {
                 <>
                   <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
-                      <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={añadirinfo} />
+                      <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} />
                     </div>
                     <div className='row mt-5 ml-2'>
-                      <DatosDocumentos form={form} obj={objJson} prop={añadirdocumento} />
+                      <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={null} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>

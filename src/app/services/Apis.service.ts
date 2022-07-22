@@ -444,7 +444,7 @@ export class ApiService {
 
   getSolicitudesUsuario = () =>
     get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `Request/GetSolicitudesbyUser/${this.oid}`,
       id: '0'
     });
@@ -454,15 +454,22 @@ export class ApiService {
 
   GetSolicitudesUsuarioSubred = () =>
     get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `Request/getSolicitudbyIdUserSubRed/${this.oid}`,
       id: '0'
     });
 
   getSolicitudesUsuarioAsignado = () =>
     get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `Request/GetSolicitudesbyUsuarioAsignado/${this.oid}`,
+      id: '0'
+    });
+
+  getSolicitudesByTipoSolicitud = (idestado: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/GetSolicitudesbyidTipo/${idestado}`,
       id: '0'
     });
 
@@ -502,10 +509,11 @@ export class ApiService {
       confirmModal: false,
       id: '0'
     });
-  getSolicitudesByTipoSolicitud = (idestado: string) =>
+
+  getSupportDocumentsAguas = (solicitud: string) =>
     get<any>({
       endpoint: REACT_APP_AGUAS as string,
-      url: `Request/GetSolicitudesbyidTipo/${idestado}`,
+      url: `SupportDocuments/GetAllSuportByRequestId/${solicitud}`,
       id: '0'
     });
 

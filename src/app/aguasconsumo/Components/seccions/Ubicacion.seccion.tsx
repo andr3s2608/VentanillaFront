@@ -147,7 +147,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                       optionPropkey='idDepartamento'
                       optionPropLabel='descripcion'
                       onChange={onChangeDepartamento}
-                      disabled={modificar}
+                      disabled={true}
                     />
                   </Form.Item>
                 </div>
@@ -275,7 +275,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 name='observations'
                 rules={[{ required: false }]}
               >
-                <Input.TextArea rows={5} maxLength={230} disabled={modificar} style={{ width: '300px' }} />
+                <Input.TextArea rows={5} maxLength={300} disabled={modificar} style={{ width: '300px' }} />
               </Form.Item>
             </div>
           </div>
