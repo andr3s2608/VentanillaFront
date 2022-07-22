@@ -48,11 +48,44 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const getListas = useCallback(
     async () => {
       if (tipo == 'gestion') {
+        console.log('entro');
         const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
-        const filter = documentos.filter(
-          (i: { idTipoDocumentoAdjunto: string }) => i.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b'
-        );
+
+        const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
+          return (
+            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
+            f.idTipoDocumentoAdjunto != '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0' &&
+            f.idTipoDocumentoAdjunto != '96D00032-4B60-4027-AFEA-0CC7115220B4'
+          );
+        });
         setconsultararchivos(filter);
+
+        const array: any[] = [];
+        for (let index = 0; index < filter.length; index++) {
+          let posicion_ = 0;
+          console.log(filter[index]);
+          const posicioninicial = filter[index].path.indexOf('/');
+          const path = filter[index].path;
+          const idtipo = filter[index].idTipoDocumentoAdjunto;
+
+          for (let index2 = 0; index2 < path.length; index2++) {
+            if (stringData.substring(index2, index2 + 1) == '_') {
+              posicion_ = index2;
+            }
+          }
+
+          var cadena = stringData.substring(posicioninicial + 1, posicion_);
+
+          array.push({
+            posicion: index + 1,
+            nombre: cadena,
+            valor: cadena,
+            id: idtipo
+          });
+        }
+        console.log(array);
+        setguardararchivos(array);
+        setguardararchivostabla(array);
       }
 
       cargardatos();

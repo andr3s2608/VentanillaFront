@@ -63,11 +63,12 @@ export const PrimeraU = () => {
         idUsuarioFuente: '00000000-0000-0000-0000-000000000000',
         idMunicipio: acueducto[index].municipio,
         idVereda: acueducto[index].localidad,
-        Coo_long_cx: acueducto[index].longitud,
-        Coo_lat_cy: acueducto[index].latitud,
+        Coo_long_cx: acueducto[index].longitud ?? '',
+        Coo_lat_cy: acueducto[index].latitud ?? '',
         idUsoFuente: acueducto[index].usofuente,
-        descripcionOtroUso: acueducto[index].descripcion,
-        caudalTotal: acueducto[index].caudal,
+        sector: acueducto[index].sector ?? '',
+        descripcionOtroUso: acueducto[index].descripcion ?? '',
+        caudalTotal: acueducto[index].caudal ?? '',
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
         idDepartamento: acueducto[index].departamento,
         idLocalidad: acueducto[index].localidad
@@ -113,13 +114,13 @@ export const PrimeraU = () => {
             precloracion: informacion[index].preclo,
             desarenador: informacion[index].desarenador,
             otra: informacion[index].otra,
-            descripcionOtro: informacion[index].descrip,
-            numUsuarioUrbanos: informacion[index].num1,
-            numUsuariosRurales: informacion[index].num2,
-            poblacionUrbanos: informacion[index].pob1,
-            poblacionRurales: informacion[index].pob2,
-            caudalDiseño: informacion[index].caudaldesign,
-            caudalTratado: informacion[index].caudaltratado
+            descripcionOtro: informacion[index].descrip ?? '',
+            numUsuarioUrbanos: informacion[index].num1 ?? '',
+            numUsuariosRurales: informacion[index].num2 ?? '',
+            poblacionUrbanos: informacion[index].pob1 ?? '',
+            poblacionRurales: informacion[index].pob2 ?? '',
+            caudalDiseño: informacion[index].caudaldesign ?? '',
+            caudalTratado: informacion[index].caudaltratado ?? ''
           });
         }
         sistemajson = sis;

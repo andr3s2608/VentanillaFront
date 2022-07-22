@@ -452,6 +452,13 @@ export class ApiService {
   AsignarUsuario = (idusuario: string, idsolicitud: string) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
 
+  CambiarEstadoSolicitudAguas = (idsolicitud: string, idestado: string, idtipo: string) =>
+    put({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/CambiarEstadoSolicitud/${idsolicitud}/${idestado}/${idtipo}`,
+      id: '0'
+    });
+
   GetSolicitudesUsuarioSubred = () =>
     get<any>({
       endpoint: REACT_APP_LOCAL as string,

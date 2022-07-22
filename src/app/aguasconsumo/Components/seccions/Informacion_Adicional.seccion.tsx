@@ -52,6 +52,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const Paginas: number = 5;
   const getListas = useCallback(async () => {
     const array: any[] = [];
+    console.log(obj);
     for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
       array.push({
         posicion: index + 1,
@@ -372,13 +373,14 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       </div>
 
       <div className='row mt-4'>
-        <div className='col-lg-8 col-md-8 col-sm-12'>
-          <a href='' style={{ textDecoration: 'none' }}>
-            <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-          </a>
-        </div>
         {obj?.sistematratamientojson.length < 1 && (
           <>
+            <div className='col-lg-8 col-md-8 col-sm-12'>
+              <a href='' style={{ textDecoration: 'none' }}>
+                <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+              </a>
+            </div>
+
             <Button
               className='fa-solid fa-circle-plus'
               style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}

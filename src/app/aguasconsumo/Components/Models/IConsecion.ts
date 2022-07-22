@@ -73,6 +73,7 @@ export interface AcueductosFuente {
   Coo_lat_cy: string;
   idUsoFuente: string;
   descripcionOtroUso: string;
+  sector: string;
   caudalTotal: string;
   idFuenteAbastecimiento?: string;
   idDepartamento?: string;
