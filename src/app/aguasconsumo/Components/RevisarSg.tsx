@@ -15,6 +15,7 @@ import { DocumentacionAsociada } from './seccions/Documentacion_Asociada';
 import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
 import { DatosDocumentos } from './seccions/Documentos.seccion';
 import { EditAguas } from './edit/Aguas';
+import { TipoNotificacion } from './seccions/Notificaciones_revision.seccion';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
@@ -346,46 +347,10 @@ export const RevisarSg = () => {
                             </h5>
                           </div>
                           <div id='collapse-8' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-                              <div className='row'>
-                                <div className='col-lg-12 col-sm-12 col-md-12'>
-                                  <p>Tipo de Notificación*</p>
-                                  <div className='form-group gov-co-form-group ml-2'>
-                                    <div className='gov-co-dropdown'>
-                                      <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                        <option>Subsanación/Anulación/Desistimiento/Observación interna</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className='row mt-3'>
-                                <div className='col-md-12 col-lg-12 col-sm-12'>
-                                  <div className='form-group gov-co-form-group'>
-                                    <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className='row mt-4'>
-                                <div className='col-lg-12 col-md-12 col-sm-1'>
-                                  <button
-                                    className='btn btn-default'
-                                    style={{
-                                      backgroundColor: '#CBCBCB',
-                                      float: 'right'
-                                    }}
-                                  >
-                                    Ver vista previa
-                                  </button>
-                                  <button
-                                    className='mr-3 btn btn-default'
-                                    style={{
-                                      backgroundColor: '#CBCBCB',
-                                      float: 'right'
-                                    }}
-                                  >
-                                    Notificar
-                                  </button>
+                            <div className='card-body'>
+                              <div className='card-body'>
+                                <div className='row mt-5 ml-2'>
+                                  <TipoNotificacion form={form} obj={null} prop={null} />
                                 </div>
                               </div>
                             </div>

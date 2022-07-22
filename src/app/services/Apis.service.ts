@@ -544,4 +544,11 @@ export class ApiService {
       url: `Request/GetSubredes`,
       id: '0'
     });
+
+  getTipoNotificaciones = () =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `TipoNotificaciones/getAll`,
+      id: '0'
+    });
 }
