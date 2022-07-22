@@ -249,7 +249,7 @@ export const PrimeraU = () => {
             });
           }
         });
-        if (values?.cargarresolucion.file) {
+        if (values?.cargarresolucion) {
           formData.append('file', values.cargarresolucion.file);
           formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
 
