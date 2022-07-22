@@ -501,12 +501,13 @@ export class ApiService {
       id: '0'
     });
 
-  getFormatoAguas = (idFormato: string) =>
-    get<any>({
+  getFormatoAguas = (idFormato: string) => {
+    return get<any>({
       endpoint: REACT_APP_LOCAL as string,
       url: `Formatos/getByIdPlantilla/${idFormato}`,
       id: '0'
     });
+  };
 
   AddSupportDocumentsAguas = (payload: any[]) =>
     post({
