@@ -47,21 +47,42 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
 
   const Paginas: number = 5;
   const getListas = useCallback(
     async () => {
       const departamentos = await dominioService.get_departamentos_colombia();
       const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
-      /*
-      if (obj?.departamento) {
-        setIdBogota('');
-      }
-      */
       const localidades = await dominioService.get_localidades_bogota();
-
       const uso = await api.getUsoFuente();
+
+      const array: any[] = [];
+      const arraytabla: any[] = [];
+      for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
+        array.push({
+          posicion: index + 1,
+          departamento: obj.acueductosfuentejson[index].idDepartamento,
+          localidad: obj.acueductosfuentejson[index].idLocalidad,
+          municipio: obj.acueductosfuentejson[index].idMunicipio,
+          sector: obj.acueductosfuentejson[index].sector,
+          latitud: obj.acueductosfuentejson[index].coo_lat_cy,
+          longitud: obj.acueductosfuentejson[index].coo_long_cx,
+          usofuente: obj.acueductosfuentejson[index].idUsoFuente,
+          descripcion: obj.acueductosfuentejson[index].descripcionOtroUso,
+          caudal: obj.acueductosfuentejson[index].caudalTotal
+        });
+
+        const localidad = localidades.filter((i) => i.idLocalidad == obj.acueductosfuentejson[index].idLocalidad);
+        const usofuente = uso.filter((i: { idUsoFuente: any }) => i.idUsoFuente == obj.acueductosfuentejson[index].idUsoFuente);
+        arraytabla.push({
+          posicion: index + 1,
+          munver: 'Bogotá D.C. / ' + localidad[0].descripcion,
+          usofuente: usofuente[0].nombre
+        });
+      }
+      setacueductos(array);
+      setacueductostabla(arraytabla);
+
       setlusofuente(uso);
 
       setLDepartamentos(departamentos);
@@ -109,7 +130,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       Swal.fire({
         icon: 'error',
         title: 'Datos Incompletos',
-        text: 'Debe llenar todos los campos obligatorios'
+        text: 'Debe llenar todos los campos obligatorios de la seccion:  Información de acueductos que captan la misma fuente '
       });
     } else {
       const array: any[] = [];
@@ -156,22 +177,24 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       prop(array);
       setacueductostabla(arraytabla);
 
-      props.form.resetFields([
-        'localidad',
-        'sector',
-        'latituduso',
-        'longituduso',
-        'descripcionotrouso',
-        'caudal',
-        'usofuente',
-        'departamento'
-      ]);
-      props.form.setFieldsValue({ municipio: undefined });
-
-      setIdBogota('Bogotá D.C.');
-      const muni = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
-      setLMunicipios(municipios);
+      props.form.resetFields(['localidad', 'sector', 'latituduso', 'longituduso', 'descripcionotrouso', 'caudal', 'usofuente']);
     }
+  };
+  const onClickLlenarInformacion = async (datos: any) => {
+    console.log(acueducto);
+    console.log(datos.posicion);
+    console.log(acueducto[datos.posicion - 1]);
+    props.form.setFieldsValue({
+      localidad: acueducto[datos.posicion - 1].localidad,
+      sector: acueducto[datos.posicion - 1].sector + '',
+      latituduso: acueducto[datos.posicion - 1].latitud + '',
+      longituduso: acueducto[datos.posicion - 1].longitud + '',
+      descripcionotrouso: acueducto[datos.posicion - 1].descripcion + '',
+      caudal: acueducto[datos.posicion - 1].caudal + '',
+      usofuente: acueducto[datos.posicion - 1].usofuente
+    });
+
+    //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
   const onClickValidarInformacion = async (datos: any) => {
@@ -218,18 +241,33 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        return (
-          <Button
-            type='primary'
-            className='fa-solid fa-circle-xmark'
-            key={`vali-${index}`}
-            onClick={() => onClickValidarInformacion(row)}
-            style={{ fontSize: '30xp', color: 'red' }}
-            icon={<CheckOutlined />}
-          >
-            Validar Información
-          </Button>
-        );
+        if (obj?.acueductosfuentejson.length > 0) {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`validar`}
+              onClick={() => onClickLlenarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+            >
+              Rellenar
+            </Button>
+          );
+        } else {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`vali-${index}`}
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+            >
+              Validar Información
+            </Button>
+          );
+        }
       }
     }
   ];
@@ -257,6 +295,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 options={l_departamentos}
                 optionPropkey='idDepartamento'
                 optionPropLabel='descripcion'
+                disabled
                 onChange={onChangeDepartamento}
               />
             </Form.Item>
@@ -285,6 +324,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 optionPropkey='idMunicipio'
                 optionPropLabel='descripcion'
                 value={idBogotac}
+                disabled
                 searchValue={idBogotac}
               />
             </Form.Item>
@@ -409,22 +449,27 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         </div>
       </div>
       <div className='row '>
-        <div className='col-lg-8 col-md-8 col-sm-12'>
-          <a href='' style={{ textDecoration: 'none' }}>
-            <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-          </a>
-          <Button
-            className='fa-solid fa-circle-plus'
-            style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
-            type='primary'
-            htmlType='button'
-            onClick={() => {
-              insertarAcueducto();
-            }}
-          >
-            Enviar
-          </Button>
-        </div>
+        {obj?.acueductosfuentejson.length < 1 && (
+          <>
+            <div className='col-lg-8 col-md-8 col-sm-12'>
+              <a href='' style={{ textDecoration: 'none' }}>
+                <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+              </a>
+              <Button
+                className='fa-solid fa-circle-plus'
+                style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                type='primary'
+                htmlType='button'
+                onClick={() => {
+                  insertarAcueducto();
+                }}
+              >
+                Enviar
+              </Button>
+            </div>
+          </>
+        )}
+
         <div className='row'>
           <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
             <Table

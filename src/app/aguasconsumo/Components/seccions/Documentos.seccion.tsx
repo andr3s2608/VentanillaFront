@@ -24,12 +24,12 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 //Redux
 import { store } from 'app/redux/app.reducers';
 import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
-import { Button, Table, Upload } from 'antd';
-import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
+import { Button, Radio, Table, Upload } from 'antd';
+import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { arch } from 'os';
 
 export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
-  const { obj, prop } = props;
+  const { obj, prop, tipo } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -48,31 +48,57 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const [archivos, setarchivos] = useState<any[]>(['0', '0', '0']);
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
+  const [consultararchivos, setconsultararchivos] = useState<any[]>([]);
   const [guardararchivostabla, setguardararchivostabla] = useState<any[]>([]);
 
-  const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
-  const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+  const [urlPdf, setUrlPdf] = useState<any>('');
+  const [heightIframe, setHeightIframe] = useState<string>('');
 
   const Paginas: number = 5;
   const getListas = useCallback(
     async () => {
-      const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(obj?.departamento ?? idDepartamentoBogota);
-      if (obj?.departamento) {
-        setIdBogota('');
+      if (tipo == 'gestion') {
+        console.log('entro');
+        const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+
+        const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
+          return (
+            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
+            f.idTipoDocumentoAdjunto != '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0' &&
+            f.idTipoDocumentoAdjunto != '96D00032-4B60-4027-AFEA-0CC7115220B4'
+          );
+        });
+        setconsultararchivos(filter);
+
+        const array: any[] = [];
+        for (let index = 0; index < filter.length; index++) {
+          let posicion_ = 0;
+          console.log(filter[index]);
+          const posicioninicial = filter[index].path.indexOf('/');
+          const path = filter[index].path;
+          const idtipo = filter[index].idTipoDocumentoAdjunto;
+
+          for (let index2 = 0; index2 < path.length; index2++) {
+            if (stringData.substring(index2, index2 + 1) == '_') {
+              posicion_ = index2;
+            }
+          }
+
+          var cadena = stringData.substring(posicioninicial + 1, posicion_);
+
+          array.push({
+            posicion: index + 1,
+            nombre: cadena,
+            valor: cadena,
+            id: idtipo
+          });
+        }
+        console.log(array);
+        setguardararchivos(array);
+        setguardararchivostabla(array);
       }
 
       cargardatos();
-      const localidades = await dominioService.get_localidades_bogota();
-
-      const uso = await api.getUsoFuente();
-      setlusofuente(uso);
-
-      setLDepartamentos(departamentos);
-      setLLocalidades(localidades);
-      setLMunicipios(municipios);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -186,7 +212,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     return posicionform;
   };
 
-  const onClickValidarInformacion = async (datos: any) => {
+  const onClickValidarInformacion = (datos: any) => {
     const data = datos;
 
     const array: any[] = [];
@@ -220,9 +246,44 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
-  const onClickViewFile = () => {
-    setUrlPdfDocumento('https://tramitesenlinea.saludcapital.gov.co/assets/docs/manual_vuts.pdf');
-    setEnableModalViewDocument(true);
+  const viewPDF = async (DocumentsSupport: any) => {
+    /** Se consume end-point para obtener la solicitud a la que pertenece
+     *  el documento, y saber el tipo de tramite de la solicitud
+     * */
+    const typeContainer = `aguahumanos/`;
+
+    /** Se asigna el tipo de contendor donde buscar el pdf que depende del tipo
+     *  de tramite de la solicitud
+     **/
+
+    let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
+
+    setUrlPdf(api.GetUrlPdf(pathFull));
+    setHeightIframe('1000vh');
+  };
+
+  let posicion = 0;
+
+  const calcularposicion = () => {
+    posicion++;
+    return posicion;
+  };
+  var stringData = consultararchivos.reduce((result, item) => {
+    return `${result}${item.path}|`;
+  }, '');
+  const validar = () => {
+    const posicioninicial = stringData.indexOf('/');
+    var posicion_ = 0;
+    for (let index = 0; index < stringData.indexOf('|'); index++) {
+      if (stringData.substring(index, index + 1) == '_') {
+        posicion_ = index;
+      }
+    }
+    var cadena = stringData.substring(posicioninicial + 1, posicion_);
+    const posicionfinal = stringData.indexOf('|');
+    stringData = stringData.substring(posicionfinal + 1, stringData.length);
+
+    return cadena;
   };
 
   const tabla1 = [
@@ -240,38 +301,72 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       key: 'nombre'
     }
   ];
-  const tabla2 = [
-    {
-      title: 'No. ',
-      dataIndex: 'posicion',
-      key: 'posicion'
-    },
-    {
-      title: 'Nombre del Archivo',
-      dataIndex: 'nombre',
-      key: 'nombre'
-    },
-    {
-      title: 'Acciones',
-      key: 'Acciones',
-      align: 'center' as 'center',
+  var tabla2: any[] = [];
 
-      render: (_: any, row: any, index: any) => {
-        return (
-          <Button
-            type='primary'
-            className='fa-solid fa-circle-xmark'
-            key={`vali-${index}`}
-            onClick={() => onClickValidarInformacion(row)}
-            style={{ fontSize: '30xp', color: 'red' }}
-            icon={<CheckOutlined />}
-          >
-            Validar Información
-          </Button>
-        );
+  if (consultararchivos.length > 0) {
+    tabla2 = [
+      {
+        title: 'No. ',
+        dataIndex: 'posicion',
+        key: 'posicion',
+        render: (Text: string) => (
+          <Form.Item label='' name=''>
+            <text>{calcularposicion()}</text>
+          </Form.Item>
+        )
+      },
+      {
+        title: 'Nombre del Archivo',
+        dataIndex: 'nombre',
+        key: 'nombre',
+        render: (Text: string) => (
+          <Form.Item label='' name=''>
+            <text>{validar()}</text>
+          </Form.Item>
+        )
+      },
+      {
+        title: 'Acciones',
+        key: 'Acciones',
+        align: 'center' as 'center',
+
+        render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
       }
-    }
-  ];
+    ];
+  } else {
+    tabla2 = [
+      {
+        title: 'No. ',
+        dataIndex: 'posicion',
+        key: 'posicion'
+      },
+      {
+        title: 'Nombre del Archivo',
+        dataIndex: 'nombre',
+        key: 'nombre'
+      },
+      {
+        title: 'Acciones',
+        key: 'Acciones',
+        align: 'center' as 'center',
+
+        render: (_: any, row: any, index: any) => {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`vali-${index}`}
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+            >
+              Validar Información
+            </Button>
+          );
+        }
+      }
+    ];
+  }
   return (
     <>
       <div className='row'>
@@ -296,19 +391,24 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           </div>
         </div>
         <div className='col-md-4 col-sm-12 col-lg-4 ml-5  justify-content-center text-center'>
-          <div id='accordion' className='mt-3'>
-            <Button
-              className=' button btn btn-default'
-              type='primary'
-              htmlType='button'
-              style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-              onClick={() => {
-                insertarArchivo();
-              }}
-            >
-              Adicionar
-            </Button>
-          </div>
+          {tipo != 'gestion' && (
+            <>
+              <div id='accordion' className='mt-3'>
+                <Button
+                  className=' button btn btn-default'
+                  type='primary'
+                  htmlType='button'
+                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  onClick={() => {
+                    insertarArchivo();
+                  }}
+                >
+                  Adicionar
+                </Button>
+              </div>
+            </>
+          )}
+
           <div id='accordion' className='mt-3'>
             <Button
               className=' button btn btn-default'
@@ -320,37 +420,32 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               ver archivo
             </Button>
           </div>
-          <div id='accordion' className='mt-3'>
-            <Button
-              className=' button btn btn-default'
-              type='primary'
-              htmlType='button'
-              style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            >
-              Borrar
-            </Button>
-          </div>
         </div>
       </div>
       <div className='row mt-3'>
-        <div className='col-lg-8 col-sm-12 col-md-8'>
-          <Upload
-            name='cargarArchivo'
-            onChange={subia}
-            maxCount={1}
-            beforeUpload={() => false}
-            listType='text'
-            accept='application/pdf'
-          >
-            <Button
-              className='float-right button btn btn-default'
-              icon={<UploadOutlined />}
-              style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            >
-              Cargar archivo
-            </Button>
-          </Upload>
-        </div>
+        {tipo != 'gestion' && (
+          <>
+            <div className='col-lg-8 col-sm-12 col-md-8'>
+              <Upload
+                name='cargarArchivo'
+                onChange={subia}
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+              >
+                <Button
+                  className='float-right button btn btn-default'
+                  icon={<UploadOutlined />}
+                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                >
+                  Cargar archivo
+                </Button>
+              </Upload>
+            </div>
+          </>
+        )}
+
         <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
           <Table
             id='tableGen2'
@@ -362,6 +457,28 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           <br />
           <small className='mt-1'>* Espacio del ciudadano para incluir documentación adicionar de ser requerido</small>
         </div>
+        {tipo == 'gestion' && (
+          <>
+            <div className='col-lg-12 col-md-12 col-sm-12'>
+              <div className='apro'>
+                <span></span>¿Aprobado?
+                <Form.Item label='' name={'radioaprobacion'}>
+                  <Radio.Group name={'radiobut'} defaultValue={1}>
+                    <Radio value={1}>Si</Radio>
+                    <Radio value={2}>No</Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item
+                  initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
+                  name='observations'
+                  rules={[{ required: false }]}
+                >
+                  <Input.TextArea rows={5} maxLength={300} style={{ width: '300px' }} />
+                </Form.Item>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <Modal
@@ -381,5 +498,6 @@ interface DatosDocumentos<T> {
   form: FormInstance<T>;
   obj: any;
   prop: any;
+  tipo: any;
 }
 export const KeysForm = ['statustramite', 'observations'];

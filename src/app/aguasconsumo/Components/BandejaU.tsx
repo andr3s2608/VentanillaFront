@@ -81,7 +81,16 @@ export const BandejaU = (props: IDataSource) => {
       key: 'Acciones',
 
       render: (_: any, row: any, index: any) => {
-        if (row.estado != 'Aprobada' && row.estado != 'Cerrada' && row.estado != 'Anulada' && row.estado != 'Primer Registro') {
+        if (
+          row.estado != 'Aprobada' &&
+          row.estado != 'Cerrada' &&
+          row.estado != 'Anulada' &&
+          row.tipodeSolicitud != 'Primer Registro' &&
+          row.tipodeSolicitud != 'Proceso de Citacion' &&
+          row.tipodeSolicitud != 'Gestion Validador' &&
+          row.tipodeSolicitud != 'Gestion Coordinador' &&
+          row.tipodeSolicitud != 'Gestion Subdirector'
+        ) {
           return (
             <>
               <Button
@@ -102,7 +111,7 @@ export const BandejaU = (props: IDataSource) => {
                   style={{ marginRight: '8px' }}
                   icon={<CheckOutlined />}
                 >
-                  VisualizarRevision
+                  Visualizar Revision
                 </Button>
               )}
             </>

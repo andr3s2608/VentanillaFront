@@ -104,7 +104,7 @@ export const RevisarSc = () => {
       solicitud: {
         idSolicitud: objJson.idsolicitud + '',
         idPersona: objJson.idPersona + '',
-        idTipodeSolicitud: '492E1C24-B2A4-45FD-8845-D9AC1E567443',
+        idTipodeSolicitud: '492E1C24-B2A4-45FD-8845-D9AC1E569928',
         tipodeSolicitud: objJson.tipodeSolicitud,
         numeroRadicado: objJson.numeroradicado,
         fechaSolicitud: objJson.fechaSolicitud,
