@@ -173,8 +173,8 @@ export const RevisarSv = () => {
       solicitud: {
         idSolicitud: objJson.idsolicitud + '',
         idPersona: objJson.idPersona + '',
-        idTipodeSolicitud: '492E1C24-B2A4-45FD-8845-D9AC1E569928',
-        tipodeSolicitud: '492E1C24-B2A4-45FD-8845-D9AC1E569928',
+        idTipodeSolicitud: '8F5B3DA8-1CD1-4E6C-874C-501245AE9279',
+        tipodeSolicitud: '8F5B3DA8-1CD1-4E6C-874C-501245AE9279',
         numeroRadicado: objJson.numeroradicado,
         fechaSolicitud: objJson.fechaSolicitud,
         idEstado: values.estado,
