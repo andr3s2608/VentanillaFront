@@ -3,6 +3,7 @@ import '../../../../css/estilos.css';
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
+import { Modal } from 'antd';
 import Divider from 'antd/es/divider';
 import {
   dominioService,
@@ -32,6 +33,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+
+  const [urlPdfDocumento, setUrlPdfDocumento] = useState<string>('default');
+  const [enableModalViewDocument, setEnableModalViewDocument] = useState<boolean>(false);
 
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
 
@@ -215,6 +219,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
+
+  const onClickViewFile = () => {
+    setUrlPdfDocumento('https://tramitesenlinea.saludcapital.gov.co/assets/docs/manual_vuts.pdf');
+    setEnableModalViewDocument(true);
+  };
+
   const tabla1 = [
     {
       dataIndex: 'check',
@@ -305,6 +315,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               type='primary'
               htmlType='button'
               style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+              onClick={onClickViewFile}
             >
               ver archivo
             </Button>
@@ -352,6 +363,17 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           <small className='mt-1'>* Espacio del ciudadano para incluir documentación adicionar de ser requerido</small>
         </div>
       </div>
+
+      <Modal
+        title={<p className='text-center'> Visualización de Documento </p>}
+        visible={enableModalViewDocument}
+        width={1000}
+        okButtonProps={{ hidden: true }}
+        onCancel={() => setEnableModalViewDocument(false)}
+        cancelText='Cerrar'
+      >
+        <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+      </Modal>
     </>
   );
 };
