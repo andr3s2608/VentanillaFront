@@ -4,6 +4,7 @@ import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { Menu } from 'app/inhumacioncremacion/Models/IMenu';
 import { IinformatioUser } from 'app/inhumacioncremacion/Models/IInformatioUser';
 import { Iformato } from 'app/inhumacioncremacion/Models/IFormato';
+import { pathToFileURL } from 'url';
 
 const {
   REACT_APP_SECURITY,
@@ -351,6 +352,16 @@ export class ApiService {
    * */
   GetUrlPdf = (pathfull: string) => (REACT_APP_BLOB as string) + `Storage/GetBlob/${pathfull}`;
 
+  GetBlobAzure = (path: string) =>
+    get({
+      endpoint: REACT_APP_BLOB as string,
+      url: `Storage/GetBlob/aguahumanos/${path}`,
+      id: '0',
+      options: {
+        responseType: 'blob'
+      }
+    });
+
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
@@ -451,6 +462,13 @@ export class ApiService {
 
   AsignarUsuario = (idusuario: string, idsolicitud: string) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
+
+  CambiarEstadoSolicitudAguas = (idsolicitud: string, idestado: string, idtipo: string) =>
+    put({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/CambiarEstadoSolicitud/${idsolicitud}/${idestado}/${idtipo}`,
+      id: '0'
+    });
 
   GetSolicitudesUsuarioSubred = () =>
     get<any>({

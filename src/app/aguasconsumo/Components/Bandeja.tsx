@@ -7,20 +7,18 @@ import Table from 'antd/es/table';
 import { Alert, Button, Modal, Upload } from 'antd';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { useHistory } from 'react-router';
 import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { CheckOutlined } from '@ant-design/icons';
-import { AnyIfEmpty } from 'react-redux';
+
 export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
   const { data, datosusuario, datossolucionados } = props;
   const [roles, setroles] = useState<string>('');
   const [coordinador, setcoordinador] = useState<string>('');
-  const valor = [];
 
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();

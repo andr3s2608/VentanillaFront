@@ -37,7 +37,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [seleccionar, setseleccionar] = useState<boolean>(true);
-  const [tipousuario, settipousuario] = useState<boolean>(true);
+  const [tipousuario, settipousuario] = useState<string>('');
 
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
@@ -71,11 +71,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
 
       setLDepartamentos(departamentos);
 
-      if (tipo == 'coordinador') {
-        settipousuario(true);
-      } else {
-        settipousuario(false);
-      }
+      settipousuario(tipo);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -126,7 +122,11 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
               <span className='required'>*</span> Tipo de tramite
             </p>
             <div className='form-group gov-co-form-group'>
-              <Form.Item initialValue={obj?.idtipodeTramite} name='tipotramite' rules={[{ required: true }]}>
+              <Form.Item
+                initialValue={obj?.idtipodeTramite}
+                name='tipotramite'
+                rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+              >
                 <SelectComponent
                   options={l_tramites}
                   defaultValue={obj?.idtipodeTramite}
@@ -147,7 +147,11 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                     <p className='text'>
                       <span className='required'>*</span> Estado
                     </p>
-                    <Form.Item initialValue={obj.idestado} name='estado' rules={[{ required: true }]}>
+                    <Form.Item
+                      initialValue={obj.idestado}
+                      name='estado'
+                      rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                    >
                       <SelectComponent
                         options={l_estados}
                         defaultValue={obj?.idestado}
@@ -168,7 +172,11 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             </p>
             <div className='form-group gov-co-form-group ml-2'>
               <div className='gov-co-dropdown'>
-                <Form.Item initialValue={obj?.idactividadActualSolicitud} name='actactual' rules={[{ required: true }]}>
+                <Form.Item
+                  initialValue={obj?.idactividadActualSolicitud}
+                  name='actactual'
+                  rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                >
                   <SelectComponent
                     options={l_actividades}
                     defaultValue={obj?.idactividadActualSolicitud}
@@ -180,30 +188,35 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             </div>
           </div>
         </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-          <div className='panel-search'>
-            <p className='text'>
-              <span className='required'>*</span> Actividad Siguiente
-            </p>
-            <div className='form-group gov-co-form-group'>
-              <Form.Item initialValue={obj?.actividadSiguienteSolicitud} name='actsiguiente' rules={[{ required: false }]}>
-                <Input
-                  type='text'
-                  className='form-control gov-co-form-control'
-                  onKeyPress={(event) => {
-                    if (!/[a-zA-Z ]/.test(event.key)) {
-                      event.preventDefault();
-                    }
-                  }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
-                />
-              </Form.Item>
+        {tipousuario != 'validacion' && (
+          <>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+              <div className='panel-search'>
+                <p className='text'>
+                  <span className='required'>*</span> Actividad Siguiente
+                </p>
+                <div className='form-group gov-co-form-group'>
+                  <Form.Item initialValue={obj?.actividadSiguienteSolicitud} name='actsiguiente' rules={[{ required: false }]}>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z ]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        {tipousuario && (
+          </>
+        )}
+
+        {tipousuario == 'coordinador' && (
           <>
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>

@@ -61,28 +61,32 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   }, []);
 
   const subida = (value: any) => {
-    let posicion = 0;
+    let posicion = 1;
     console.log(value);
+    const array: any[] = [];
     if (archivocargado.length > 0) {
-      const array: any[] = [];
       for (let index = 0; index < archivocargado.length; index++) {
         array.push(archivocargado[index]);
         posicion++;
       }
-      array.push({ posicion: posicion, nombre: value, archivo: value });
+      array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
       setarchivocargado(array);
+      prop(array);
     } else {
-      setarchivocargado({ posicion: posicion, nombre: value, archivo: value });
+      array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
+      setarchivocargado(array);
+      prop(array);
     }
+    console.log(array);
   };
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
     const array: any[] = [];
 
-    var pos: number = 0;
+    var pos: number = 1;
     for (let index = 0; index < archivocargado.length; index++) {
-      if (index != data.posicion) {
+      if (index != data.posicion - 1) {
         const aux = archivocargado[index];
         aux.posicion = pos;
         pos++;

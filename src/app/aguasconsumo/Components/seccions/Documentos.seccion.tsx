@@ -3,6 +3,7 @@ import '../../../../css/estilos.css';
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
+import { Modal } from 'antd';
 import Divider from 'antd/es/divider';
 import {
   dominioService,
@@ -33,6 +34,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+  const [urlPdfDocumento, setUrlPdfDocumento] = useState<string>('default');
+  const [enableModalViewDocument, setEnableModalViewDocument] = useState<boolean>(false);
+
+  const [l_usofuente, setlusofuente] = useState<any[]>([]);
+
+  const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
+  const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
+  const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
+
   const [acueducto, setacueductos] = useState<any[]>([]);
 
   const [archivos, setarchivos] = useState<any[]>(['0', '0', '0']);
@@ -48,11 +58,44 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const getListas = useCallback(
     async () => {
       if (tipo == 'gestion') {
+        console.log('entro');
         const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
-        const filter = documentos.filter(
-          (i: { idTipoDocumentoAdjunto: string }) => i.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b'
-        );
+
+        const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
+          return (
+            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
+            f.idTipoDocumentoAdjunto != '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0' &&
+            f.idTipoDocumentoAdjunto != '96D00032-4B60-4027-AFEA-0CC7115220B4'
+          );
+        });
         setconsultararchivos(filter);
+
+        const array: any[] = [];
+        for (let index = 0; index < filter.length; index++) {
+          let posicion_ = 0;
+          console.log(filter[index]);
+          const posicioninicial = filter[index].path.indexOf('/');
+          const path = filter[index].path;
+          const idtipo = filter[index].idTipoDocumentoAdjunto;
+
+          for (let index2 = 0; index2 < path.length; index2++) {
+            if (stringData.substring(index2, index2 + 1) == '_') {
+              posicion_ = index2;
+            }
+          }
+
+          var cadena = stringData.substring(posicioninicial + 1, posicion_);
+
+          array.push({
+            posicion: index + 1,
+            nombre: cadena,
+            valor: cadena,
+            id: idtipo
+          });
+        }
+        console.log(array);
+        setguardararchivos(array);
+        setguardararchivostabla(array);
       }
 
       cargardatos();
@@ -201,6 +244,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     prop(array);
 
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
+  };
+
+  const onClickViewFile = async () => {
+    let path = '2022/laura.pdf';
+    const pdfBlob = await api.GetBlobAzure(path);
+    const pdfUrl = URL.createObjectURL(pdfBlob as Blob);
+
+    setUrlPdfDocumento(pdfUrl);
+    setEnableModalViewDocument(true);
   };
 
   const viewPDF = async (DocumentsSupport: any) => {
@@ -372,6 +424,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               type='primary'
               htmlType='button'
               style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+              onClick={onClickViewFile}
             >
               ver archivo
             </Button>
@@ -436,6 +489,17 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           </>
         )}
       </div>
+
+      <Modal
+        title={<p className='text-center'> Visualización de Documento </p>}
+        visible={enableModalViewDocument}
+        width={1000}
+        okButtonProps={{ hidden: true }}
+        onCancel={() => setEnableModalViewDocument(false)}
+        cancelText='Cerrar'
+      >
+        <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+      </Modal>
     </>
   );
 };

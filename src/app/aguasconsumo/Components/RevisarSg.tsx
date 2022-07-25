@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { DatosFuente } from './seccions/Fuente_Abastecimiento.seccion';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { layoutItems } from '../../shared/utils/form-layout.util';
@@ -14,18 +13,95 @@ import { DatosAcueducto } from './seccions/Acueductos.seccion';
 import { DocumentacionAsociada } from './seccions/Documentacion_Asociada';
 import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
 import { DatosDocumentos } from './seccions/Documentos.seccion';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ApiService } from 'app/services/Apis.service';
 import { EditAguas } from './edit/Aguas';
 import { TipoNotificacion } from './seccions/Notificaciones_revision.seccion';
+import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const history = useHistory();
   const [documentos, setdocumentos] = useState<any[]>([]);
-  const onSubmit = async (values: any) => {};
-  const onSubmitFailed = () => setStatus('error');
+  const [rol, setrol] = useState<any>();
+  const [estados, setl_estados] = useState<any[]>([]);
+  const { accountIdentifier } = authProvider.getAccount();
+  const api = new ApiService(accountIdentifier);
   const objJson: any = EditAguas();
-  console.log(objJson);
+
+  const getListas = useCallback(
+    async () => {
+      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const mysRoles = await api.GetRoles();
+      const [permiso] = mysRoles;
+      setrol(permiso?.rol);
+      const estado = await api.getEstadosSolicitudAguas();
+      const filtradodatos = estado.filter(function (f: { nombre: string }) {
+        return f.nombre != 'En gestión' && f.nombre != 'Abierta';
+      });
+
+      setl_estados(filtradodatos);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  useEffect(() => {
+    getListas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSubmit = async (values: any) => {
+    console.log('entro');
+    if (rol === 'Coordinador') {
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '5290025A-0967-417A-9737-FA5EAE85D97B');
+    }
+    if (rol === 'Funcionario' || rol === 'AdminTI') {
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '8CA363C0-66AA-4273-8E63-CE3EAC234857');
+    }
+    if (rol === 'Subdirector') {
+      const estado = values.seguimiento;
+      if (estado == '2e8808af-a294-4cde-8e9c-9a78b5172119') {
+        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
+      } else {
+        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '65A9BC67-04FC-47E5-B26C-E1A5555524CF');
+      }
+    }
+
+    const supportDocumentsEdit: any[] = [];
+    const formData = new FormData();
+
+    if (documentos.length > 0) {
+      documentos.forEach((item: any, i: number) => {
+        if (documentos[i] != undefined) {
+          const archivo = documentos[i];
+
+          formData.append('file', archivo.archivo.file);
+          formData.append('nameFile', 'Documentos_Asociados' + '_' + objJson.idsolicitud);
+
+          supportDocumentsEdit.push({
+            idSolicitud: objJson.idsolicitud,
+            idTipoDocumentoAdjunto: '96D00032-4B60-4027-AFEA-0CC7115220B4',
+            path: `${objJson.idusuario}/Documentos_Asociados_${objJson.idsolicitud}`,
+            idUsuario: objJson.idusuario
+          });
+        }
+      });
+
+      formData.append('containerName', 'aguahumanos');
+      formData.append('oid', objJson.idusuario);
+
+      await api.uploadFiles(formData);
+      await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+    }
+    history.push('/tramites-servicios-aguas');
+    localStorage.removeItem('register');
+    console.log('paso');
+  };
+
+  const onSubmitFailed = () => setStatus('error');
 
   const adddocumentos = (value: any) => {
     setdocumentos(value);
@@ -103,104 +179,9 @@ export const RevisarSg = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row'>
-                  <div className='col-lg-12 col-sm-12 col-md-12'>
-                    <div className='info-tramite mt-2'>
-                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        Datos de la solicitud. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                      </p>
-                    </div>
-                  </div>
-                  <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                    <div className='panel-search'>
-                      <p>Número de radicado</p>
-                      <div className='form-group gov-co-form-group'>
-                        <Form.Item>
-                          <Input
-                            type='text'
-                            className='form-control gov-co-form-control'
-                            onKeyPress={(event) => {
-                              if (!/[0-9]/.test(event.key)) {
-                                event.preventDefault();
-                              }
-                            }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
-                          />
-                        </Form.Item>
-                      </div>
 
-                      <p className='mt-3'>Estado</p>
-
-                      <div className='form-group gov-co-form-group '>
-                        <div className='gov-co-dropdown'>
-                          <Form.Item>
-                            <SelectComponent placeholder='-- En revisión --' options={[]} optionPropkey={''} />
-                          </Form.Item>
-                        </div>
-                      </div>
-                      <p className='mt-3'>Actividad siguiente</p>
-                      <div className='form-group gov-co-form-group'>
-                        <Form.Item>
-                          <Input
-                            type='text'
-                            className='form-control gov-co-form-control'
-                            onKeyPress={(event) => {
-                              if (!/[a-zA-Z]/.test(event.key)) {
-                                event.preventDefault();
-                              }
-                            }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
-                          />
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                    <div className='panel-search'>
-                      <p>Tipo trámite</p>
-                      <div className='form-group gov-co-form-group'>
-                        <Form.Item>
-                          <Input
-                            type='text'
-                            className='form-control gov-co-form-control'
-                            onKeyPress={(event) => {
-                              if (!/[a-zA-Z]/.test(event.key)) {
-                                event.preventDefault();
-                              }
-                            }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
-                          />
-                        </Form.Item>
-                      </div>
-
-                      <p className='mt-3'>Actividad actual</p>
-                      <div className='form-group gov-co-form-group ml-2'>
-                        <div className='gov-co-dropdown'>
-                          <Form.Item>
-                            <SelectComponent
-                              placeholder='--Validación de requisitos - Revisor --'
-                              options={[]}
-                              optionPropkey={''}
-                            />
-                          </Form.Item>
-                        </div>
-                      </div>
-                      <p className='mt-3'>Usuario Asignado</p>
-                      <div className='form-group gov-co-form-group ml-2'>
-                        <div className='gov-co-dropdown'>
-                          <Form.Item>
-                            <SelectComponent placeholder='-- CGONZALEZL --' options={[]} optionPropkey={''} />
-                          </Form.Item>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className='row mt-5 ml-2'>
+                  <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} />
                 </div>
               </div>
             </section>
@@ -324,7 +305,7 @@ export const RevisarSg = () => {
                           </div>
                           <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                             <div className='card-body'>
-                              <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'validacion'} />
+                              <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'gestion'} />
                             </div>
                           </div>
                         </div>
@@ -382,57 +363,75 @@ export const RevisarSg = () => {
                         </div>
                       </div>
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
-                              <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-11'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
-                              >
-                                Generar acto administrativo de aprobación
-                              </a>
-                            </h5>
-                          </div>
-                          <div id='collapse-11' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-                              <div className='row mt-3'>
-                                <div className='col-md-12 col-lg-12 col-sm-12'>
-                                  <div className='form-group gov-co-form-group'>
-                                    <textarea className='form-control ml-2' id='exampleFormControlTextarea1' rows={5}></textarea>
-                                  </div>
-                                </div>
+                      {rol == 'Subdirector' && (
+                        <>
+                          <div id='accordion' className='mt-3'>
+                            <div className='card'>
+                              <div className='card-header' id='heading-2'>
+                                <h5 className='mb-0'>
+                                  <a
+                                    className='collapsed'
+                                    role='button'
+                                    data-toggle='collapse'
+                                    href='#collapse-11'
+                                    aria-expanded='false'
+                                    aria-controls='collapse-2'
+                                  >
+                                    Generar acto administrativo de aprobación
+                                  </a>
+                                </h5>
                               </div>
-                              <div className='row mt-4'>
-                                <div className='col-lg-12 col-md-12 col-sm-1'>
-                                  <button
-                                    className='btn btn-default'
-                                    style={{
-                                      backgroundColor: '#CBCBCB',
-                                      float: 'right'
-                                    }}
-                                  >
-                                    Ver vista previa
-                                  </button>
-                                  <button
-                                    className='mr-3 btn btn-default'
-                                    style={{
-                                      backgroundColor: '#CBCBCB',
-                                      float: 'right'
-                                    }}
-                                  >
-                                    Notificar
-                                  </button>
+                              <div id='collapse-11' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
+                                  <div className='row mt-3'>
+                                    <div className='col-md-12 col-lg-12 col-sm-12'>
+                                      <div className='form-group gov-co-form-group'>
+                                        <textarea
+                                          className='form-control ml-2'
+                                          id='exampleFormControlTextarea1'
+                                          rows={5}
+                                        ></textarea>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className='row mt-4'>
+                                    <div className='col-lg-12 col-md-12 col-sm-1'>
+                                      <Button
+                                        className='btn btn-default'
+                                        style={{
+                                          backgroundColor: '#CBCBCB',
+                                          float: 'right'
+                                        }}
+                                      >
+                                        Ver vista previa
+                                      </Button>
+                                      <Button
+                                        className='mr-3 btn btn-default'
+                                        style={{
+                                          backgroundColor: '#CBCBCB',
+                                          float: 'right'
+                                        }}
+                                      >
+                                        Notificar
+                                      </Button>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                          <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+                            <div className='panel-search'>
+                              <p>Seguimiento</p>
+                              <div className='form-group gov-co-form-group'>
+                                <Form.Item name='seguimiento' rules={[{ required: true }]}>
+                                  <SelectComponent options={estados} optionPropkey='idEstadoSolicitud' optionPropLabel='nombre' />
+                                </Form.Item>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
