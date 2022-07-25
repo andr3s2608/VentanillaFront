@@ -63,9 +63,16 @@ const extract_data = <T>(response: AxiosResponse): T => {
     return true as any;
   }
 
-  if (responseType === 'blob' || !_response) {
-    showLoading(false);
-    return _response;
+  if (response) {
+    if (responseType === 'blob') {
+      showLoading(false);
+      return _response;
+    }
+
+    if (!response.data) {
+      showLoading(false);
+      return _response;
+    }
   }
 
   showLoading(false);
