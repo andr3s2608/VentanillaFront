@@ -16,13 +16,15 @@ export const EditAguas = () => {
 };
 
 const formatObjJson = (obj: any) => {
-  const { citacion_Revision, persona, ubicacion, fuenteAbastecimiento, subredes, sistemaTratamiento } = obj;
+  const { citacion_Revision, persona, ubicacion, fuenteAbastecimiento, subredes } = obj;
 
   let jsonDt;
 
   let fuenteabastecimientojson: any[] = [];
   let sistematratamientojson: any[] = [];
+  let renovafuentejson: any[] = [];
   let acueductosfuentejson: any[] = [];
+
   if (fuenteAbastecimiento != null) {
     fuenteabastecimientojson = [
       {
@@ -80,6 +82,17 @@ const formatObjJson = (obj: any) => {
         idDepartamento: fuenteAbastecimiento.acueductosFuente[index].idDepartamento,
         idLocalidad: fuenteAbastecimiento.acueductosFuente[index].idLocalidad
       });
+    }
+
+    if (fuenteAbastecimiento.renovaFuenteAbastecimientos[0] != null) {
+      renovafuentejson = [
+        {
+          idRenovacion: fuenteAbastecimiento.renovaFuenteAbastecimientos[0].idRenovacion,
+          numeroResolucion: fuenteAbastecimiento.renovaFuenteAbastecimientos[0].numeroResolucion,
+          fechaResolucion: fuenteAbastecimiento.renovaFuenteAbastecimientos[0].fechaResolucion,
+          idFuente: fuenteAbastecimiento.renovaFuenteAbastecimientos[0].idFuente
+        }
+      ];
     }
   }
 
@@ -144,6 +157,7 @@ const formatObjJson = (obj: any) => {
     fuenteabastecimientojson,
     acueductosfuentejson,
     sistematratamientojson,
+    renovafuentejson,
 
     subred,
 

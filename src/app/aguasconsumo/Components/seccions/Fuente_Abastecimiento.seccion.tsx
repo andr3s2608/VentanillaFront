@@ -26,6 +26,7 @@ import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { Button, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const { obj, tipo } = props;
@@ -50,20 +51,39 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
       const sub = await api.getSubcategoriasFuente(
         obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
       );
+      console.log(obj);
       if (obj?.fuenteabastecimientojson) {
-        setdatos([
-          obj.fuenteabastecimientojson[0].idtipofuente,
-          obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
-          obj.fuenteabastecimientojson[0].descripcionOtraFuente,
-          obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-          obj?.fuenteabastecimientojson[0].bocatoma_lat,
-          obj?.fuenteabastecimientojson[0].bocatoma_long,
-          obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
-          obj?.fuenteabastecimientojson[0].idAutoridadAmbiental,
-          '',
-          '',
-          'primera'
-        ]);
+        if (obj?.renovafuentejson[0]) {
+          const date = obj.renovafuentejson[0].fechaResolucion;
+          setdatos([
+            obj.fuenteabastecimientojson[0].idtipofuente,
+            obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
+            obj.fuenteabastecimientojson[0].descripcionOtraFuente,
+            obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+            obj.fuenteabastecimientojson[0].bocatoma_lat,
+            obj.fuenteabastecimientojson[0].bocatoma_long,
+            obj.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
+            obj.fuenteabastecimientojson[0].idAutoridadAmbiental,
+            obj.renovafuentejson[0].numeroResolucion,
+            moment(date),
+            'renovacion'
+          ]);
+          setseleccionar(true);
+        } else {
+          setdatos([
+            obj.fuenteabastecimientojson[0].idtipofuente,
+            obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
+            obj.fuenteabastecimientojson[0].descripcionOtraFuente,
+            obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+            obj?.fuenteabastecimientojson[0].bocatoma_lat,
+            obj?.fuenteabastecimientojson[0].bocatoma_long,
+            obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
+            obj?.fuenteabastecimientojson[0].idAutoridadAmbiental,
+            '',
+            '',
+            'primera'
+          ]);
+        }
       }
       setmostrar(true);
       setl_subcategorias(sub);
@@ -109,7 +129,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                 <span className='required'>*</span>Tipo de solicitud de consecion*
                 <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
-                    <Form.Item name='tipo' initialValue={'primera'} rules={[{ required: true }]}>
+                    <Form.Item name='tipo' initialValue={tiposol ?? 'primera'} rules={[{ required: true }]}>
                       <SelectComponent
                         options={[
                           { key: 'primera', value: 'Primera Vez' },
@@ -132,7 +152,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-lg-4 col-md-4 col-sm-12'>
                     <span className='required'>*</span>Número de expediente de resolución
                     <div className='form-group gov-co-form-group'>
-                      <Form.Item name='nroresolucion' rules={[{ required: true }]}>
+                      <Form.Item name='nroresolucion' initialValue={nroresolu} rules={[{ required: true }]}>
                         <Input
                           type='text'
                           className='form-control gov-co-form-control'
@@ -151,7 +171,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   </div>
                   <div className='col-lg-4 col-md-4 col-sm-12'>
                     <span className='required'>*</span>Fecha de resolución
-                    <Form.Item name='dateresolucion' rules={[{ required: true }]}>
+                    <Form.Item name='dateresolucion' initialValue={fecha} rules={[{ required: true }]}>
                       <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                     </Form.Item>
                   </div>
