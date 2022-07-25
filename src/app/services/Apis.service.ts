@@ -451,11 +451,11 @@ export class ApiService {
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
   AddSolicitudConsecion = (payload: any) =>
-    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/RenovarSolicitud', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/RenovarSolicitud', payload, id: '0' });
 
   getSolicitudesUsuario = () =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyUser/${this.oid}`,
       id: '0'
     });
@@ -465,28 +465,28 @@ export class ApiService {
 
   CambiarEstadoSolicitudAguas = (idsolicitud: string, idestado: string, idtipo: string) =>
     put({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/CambiarEstadoSolicitud/${idsolicitud}/${idestado}/${idtipo}`,
       id: '0'
     });
 
   GetSolicitudesUsuarioSubred = () =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/getSolicitudbyIdUserSubRed/${this.oid}`,
       id: '0'
     });
 
   getSolicitudesUsuarioAsignado = () =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyUsuarioAsignado/${this.oid}`,
       id: '0'
     });
 
   getSolicitudesByTipoSolicitud = (idestado: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyidTipo/${idestado}`,
       id: '0'
     });
@@ -500,21 +500,21 @@ export class ApiService {
 
   getAutoridadAmbiental = () =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `AutoridadAmbiental/GetAll`,
       id: '0'
     });
 
   getUsoFuente = () =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `UsoFuente/GetAll`,
       id: '0'
     });
 
   getSubcategoriasFuente = (id: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `TipoFuente/getAllSubCategoria/${id}`,
       id: '0'
     });
@@ -523,7 +523,7 @@ export class ApiService {
     return get<any>({
       endpoint: REACT_APP_LOCAL as string,
       url: `Formatos/getByIdPlantilla/${idFormato}`,
-      id: '0'
+      id: '1'
     });
   };
 
@@ -573,7 +573,7 @@ export class ApiService {
 
   getTipoNotificaciones = () =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `TipoNotificaciones/getAll`,
       id: '0'
     });

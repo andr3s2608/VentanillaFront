@@ -6,6 +6,7 @@ import { SelectComponent } from '../../../shared/components/inputs/select.compon
 import Button from 'antd/es/button';
 import { Input, Modal } from 'antd';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const { obj, prop } = props;
@@ -15,7 +16,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const api = new ApiService(accountIdentifier);
 
   const [l_tipoNotificacion, setlTipoModificacion] = useState<any[]>([]);
-  //const [l_tipoNotificacionSeleccion, setlTipoModificacionSeleccion] = useState<any>([]);
+  const [idPlantilla, setIdPlantilla] = useState<string>('');
+  const [isvistaPrevia, setIsVistaPrevia] = useState<boolean>(false);
 
   const [body, setlBody] = useState<string>('');
   const [title, setlTitle] = useState<string>('');
@@ -33,32 +35,34 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   }, []);
 
   const onChangeNotificacion = async (value: any) => {
+    var x = l_tipoNotificacion.find((t) => t.idTipoNotificacion == value);
+    setIdPlantilla(x['idPlantilla']);
     props.form.setFieldsValue({ notificacion: undefined });
     const notificacion = await api.getTipoNotificaciones();
-
+    setIsVistaPrevia(true);
     setlTipoModificacion(notificacion);
   };
 
   const vistaPrevia = async () => {
-    // const formato = await api.getFormatoAguas('655456F2-1B4D-4027-BE41-F9CE786B5380');
-    const path = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
-    const formato = await axios.get(`https://localhost:5001/api/Formatos/getByIdPlantilla/${path}`, {
-      responseType: 'json'
-    });
-    //console.log(formato.data['cuerpo']);
-    let body0: string = formato.data['cuerpo'];
-    let indice1 = body0.indexOf('Tahoma,sans-serif;color:#666;font-size:18px; text-align: justify;">');
+    if (idPlantilla == '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos inválidos',
+        text: `Debe seleccionar un tipo de notificación`
+      });
+    } else {
+      const formato = await api.getFormatoAguas(idPlantilla);
 
-    let indice2 = body0.indexOf('</p>');
+      let body0: string = formato['cuerpo'];
+      let indice1 = body0.indexOf('Tahoma,sans-serif;color:#666;font-size:18px; text-align: justify;">');
 
-    setlBody(body0.substring(indice1 + 67, indice2));
-    setlTitle(formato.data['asuntoNotificacion']);
+      let indice2 = body0.indexOf('</p>');
 
-    //console.log(indice1 + 67);
-    //console.log(indice2);
-    //console.log(body);
+      setlBody(body0.substring(indice1 + 67, indice2));
+      setlTitle(formato['asuntoNotificacion']);
 
-    setIsModalVisible(true);
+      setIsModalVisible(true);
+    }
   };
 
   const handleCancel = () => {
