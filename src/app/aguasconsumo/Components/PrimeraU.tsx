@@ -31,7 +31,9 @@ export const PrimeraU = () => {
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [l_tramites, setl_tramites] = useState<any[]>([]);
   const [validaciondocumento, setvalidacion] = useState<boolean>(false);
-  const [[acueducto, informacion, documento], setListas] = useState<[any[], any[], any[]]>([[], [], []]);
+  const [acueducto, setacueducto] = useState<any[]>([]);
+  const [informacion, setinformacion] = useState<any[]>([]);
+  const [documento, setdocumento] = useState<any[]>([]);
 
   const getListas = useCallback(
     async () => {
@@ -74,7 +76,6 @@ export const PrimeraU = () => {
         idLocalidad: acueducto[index].localidad
       });
     }
-
     if (values.formradio == '1' || values.formradio == undefined) {
       if (informacion.length < 1) {
         Swal.fire({
@@ -153,7 +154,7 @@ export const PrimeraU = () => {
 
           idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
-          idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
+          idFuenteAbastecimiento: objJson?.idFuente ?? '00000000-0000-0000-0000-000000000000',
           temporal: true,
 
           persona: {
@@ -191,9 +192,7 @@ export const PrimeraU = () => {
           }
         };
 
-        await api.AddSolicitudConsecion(json);
-
-        localStorage.removeItem('register');
+        const valor = await api.AddSolicitudConsecion(json);
 
         const supportDocumentsEdit: any[] = [];
         const formData = new FormData();
@@ -228,8 +227,8 @@ export const PrimeraU = () => {
         formData.append('containerName', 'aguahumanos');
         formData.append('oid', objJson.idusuario);
 
-        await api.uploadFiles(formData);
-        await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+        const nube = await api.uploadFiles(formData);
+        const bd = await api.AddSupportDocumentsAguas(supportDocumentsEdit);
 
         Swal.fire({
           icon: 'success',
@@ -238,20 +237,22 @@ export const PrimeraU = () => {
           text: `Se ha actualizado la Solicitud exitosamente `
         });
         history.push('/tramites-servicios-aguas');
+
+        localStorage.removeItem('register');
       }
     }
   };
   const onSubmitFailed = () => setStatus('error');
 
   const addacueducto = (value: any) => {
-    setListas([value, informacion, documento]);
+    setacueducto(value);
   };
   const addinfo = (value: any) => {
-    setListas([acueducto, value, documento]);
+    setinformacion(value);
   };
   const adddocumento = (value: any) => {
     let va = 0;
-    setListas([acueducto, informacion, value]);
+    setdocumento(value);
     for (let index = 0; index < value.length; index++) {
       if (value[index] != undefined) {
         setvalidacion(true);

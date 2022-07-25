@@ -40,10 +40,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const GetValidateRol = async (toRoles: any[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
-    if (
-      permiso?.rol === 'Ciudadano'
-      //|| permiso?.rol === 'AdminTI'
-    ) {
+    if (permiso?.rol === 'Ciudadano' || permiso?.rol === 'AdminTI') {
       const resp = await api.getSolicitudesUsuario();
 
       const datossolucionados: any = await api.getSolicitudesUsuario();
@@ -60,7 +57,10 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
       setGrid(resp);
       setBandeja(false);
     } else {
-      if (permiso?.rol === 'AdminTI' || permiso?.rol === 'Funcionario') {
+      if (
+        permiso?.rol === 'AdminTI'
+        //|| permiso?.rol === 'Funcionario'
+      ) {
         const datos = await api.GetSolicitudesUsuarioSubred();
         const datossolucionados: any = await api.GetSolicitudesUsuarioSubred();
 
@@ -71,14 +71,14 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
             f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
           );
         });
-        console.log(datos);
+
         const filtradodatos = datos.filter(function (f: { idTipodeSolicitud: string }) {
           return (
             f.idTipodeSolicitud == '492e1c24-b2a4-45fd-8845-d9ac1e569928' || //Citacion
             f.idTipodeSolicitud == 'd33fbb9c-9f47-4015-bbe6-96ff43f0dde4' //Gestion Validador
           );
         });
-        console.log(filtradodatos);
+
         setdatossolucionadosusuario(filtrado);
         setdatosusuario(filtradodatos);
       } else {
@@ -96,13 +96,13 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
               f.idEstado == '7e2eaa50-f22f-4798-840d-5b98048d38a9' //anulado
             );
           });
-          console.log(datos);
+
           const filtradodatos = datos.filter(function (f: { idTipodeSolicitud: string }) {
             return (
               f.idTipodeSolicitud == '8ca363c0-66aa-4273-8e63-ce3eac234857' //Gestion Coordinador
             );
           });
-          console.log(filtradodatos);
+
           setdatossolucionadosusuario(filtrado);
           setdatosusuario(filtradodatos);
           const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');

@@ -127,6 +127,7 @@ const formatObjJson = (obj: any) => {
     tipodeSolicitud: obj.tipodeSolicitud,
     idtipodeTramite: obj.idTipodeTramite,
     tipodeTramite: obj.tipodeTramite,
+    idFuente: obj.idFuenteAbastecimiento,
     idSubred: obj.idSubred,
     idestado: obj.idEstado,
     idusuario: obj.idUsuario,

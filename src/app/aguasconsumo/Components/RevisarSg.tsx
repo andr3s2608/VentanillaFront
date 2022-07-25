@@ -54,7 +54,6 @@ export const RevisarSg = () => {
   }, []);
 
   const onSubmit = async (values: any) => {
-    console.log('entro');
     if (rol === 'Coordinador') {
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '5290025A-0967-417A-9737-FA5EAE85D97B');
     }
@@ -98,7 +97,6 @@ export const RevisarSg = () => {
     }
     history.push('/tramites-servicios-aguas');
     localStorage.removeItem('register');
-    console.log('paso');
   };
 
   const onSubmitFailed = () => setStatus('error');

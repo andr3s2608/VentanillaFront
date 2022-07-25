@@ -37,10 +37,6 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      console.log('entro1');
-      console.log(obj.idsolicitud);
-
-      console.log('entro2');
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
       const filter = documentos.filter(
         (i: { idTipoDocumentoAdjunto: string }) => i.idTipoDocumentoAdjunto == '81c98a3c-730c-457a-bba1-877b737a9847'
@@ -62,7 +58,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
 
   const subida = (value: any) => {
     let posicion = 1;
-    console.log(value);
+
     const array: any[] = [];
     if (archivocargado.length > 0) {
       for (let index = 0; index < archivocargado.length; index++) {
@@ -77,7 +73,6 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
       setarchivocargado(array);
       prop(array);
     }
-    console.log(array);
   };
 
   const onClickValidarInformacion = async (datos: any) => {

@@ -48,11 +48,12 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
       const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental(), api.getSubredes()]);
       setListas(resp);
 
-      const sub = await api.getSubcategoriasFuente(
-        obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
-      );
-      console.log(obj);
-      if (obj?.fuenteabastecimientojson) {
+      let sub;
+
+      if (obj?.fuenteabastecimientojson[0]) {
+        sub = await api.getSubcategoriasFuente(
+          obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
+        );
         if (obj?.renovafuentejson[0]) {
           const date = obj.renovafuentejson[0].fechaResolucion;
           setdatos([
@@ -84,6 +85,8 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             'primera'
           ]);
         }
+      } else {
+        sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
       }
       setmostrar(true);
       setl_subcategorias(sub);
