@@ -27,6 +27,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [ciudadmadre, setciudadmadre] = useState<string | undefined>();
   const [departamentomadre, setdepartamentomadre] = useState<string | undefined>();
   const [paismadre, setpaismadre] = useState<string | undefined>();
+  const [nacionalidad, setnacionalidad] = useState<string | undefined>();
   const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -56,6 +57,11 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       setdefuncion(filtropais[0].descripcion + '/' + iddepart[0].descripcion);
     }
 
+    if (obj?.idDepartamentoResidencia == undefined) {
+      const filtronacionalidad = pais.filter((i) => i.id == obj?.nationalidad);
+
+      setnacionalidad(filtronacionalidad[0].descripcion);
+    }
     if (obj?.idDepartamentoResidencia != undefined) {
       const paism = await dominioService.get_type(ETipoDominio.Pais);
       const filtropaismadre = pais.filter((i) => i.id == obj?.residencia);
@@ -68,11 +74,13 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
 
         setpaismadre('Colombia');
+        setnacionalidad('Colombia');
         setdepartamentomadre(iddepartmadre[0].descripcion.toLowerCase());
         setciudadmadre(idmunimadre[0].descripcion.toLowerCase());
         setesmadre(true);
       } else {
         setpaismadre(filtropais[0].descripcion.toLowerCase());
+        setnacionalidad(filtropais[0].descripcion.toLowerCase());
         setdepartamentomadre('Fuera del País');
         setciudadmadre('Fuera del País');
         setesmadre(true);
@@ -110,8 +118,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
-
-  const nacionalidad = obj?.nationalidad;
 
   const tipo = obj?.deathType;
 

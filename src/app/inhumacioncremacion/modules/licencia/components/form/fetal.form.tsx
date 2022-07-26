@@ -1248,7 +1248,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             <Form.Item
               label='Nacionalidad de la Madre'
               name='nationalidadmother'
-              initialValue={obj?.nationalidadmother ?? [idColombia]}
+              initialValue={obj?.nationalidadmother ?? idColombia}
               rules={[{ required: true }]}
             >
               <SelectComponent

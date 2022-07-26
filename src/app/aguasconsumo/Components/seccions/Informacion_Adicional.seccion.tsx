@@ -52,7 +52,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const Paginas: number = 5;
   const getListas = useCallback(async () => {
     const array: any[] = [];
-    console.log(obj);
+
     for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
       array.push({
         posicion: index + 1,
@@ -78,7 +78,9 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       });
     }
     setsistema(array);
-    console.log('paso acueductos', obj.sistematratamientojson);
+    if (prop != null) {
+      prop(array);
+    }
   }, []);
 
   useEffect(() => {
@@ -87,7 +89,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   }, []);
 
   const onChange = (value: any) => {
-    console.log('entro check');
     var nombre: string = value.target.id;
 
     var posicion: number = parseInt(nombre.substring(8, nombre.length));
@@ -271,7 +272,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (obj?.sistematratamientojson.length > 0) {
+        if (obj?.tipodeSolicitud != 'Primera vez') {
           return (
             <Button
               type='primary'
@@ -373,7 +374,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       </div>
 
       <div className='row mt-4'>
-        {obj?.sistematratamientojson.length < 1 && (
+        {obj?.tipodeSolicitud == 'Primera vez' && (
           <>
             <div className='col-lg-8 col-md-8 col-sm-12'>
               <a href='' style={{ textDecoration: 'none' }}>

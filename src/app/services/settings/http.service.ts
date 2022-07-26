@@ -35,13 +35,10 @@ const showLoading = (status: boolean) => store.dispatch(Loading(status));
 //#region Funciones de validaciones
 
 const isRegister = (url: string) => {
-  console.log(url);
   return url.indexOf('AddRquest') && url.indexOf('AddFile');
 };
 
 const extract_data = <T>(response: AxiosResponse): T => {
-  console.log('mando a imprimier el resultado del la respuesta get');
-  console.log(response);
   const {
     data: _response,
     config: { method, url, responseType }

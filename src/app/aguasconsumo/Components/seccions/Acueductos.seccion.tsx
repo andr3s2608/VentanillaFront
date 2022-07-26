@@ -81,6 +81,9 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         });
       }
       setacueductos(array);
+      if (prop != null) {
+        prop(array);
+      }
       setacueductostabla(arraytabla);
 
       setlusofuente(uso);
@@ -181,9 +184,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   };
   const onClickLlenarInformacion = async (datos: any) => {
-    console.log(acueducto);
-    console.log(datos.posicion);
-    console.log(acueducto[datos.posicion - 1]);
     props.form.setFieldsValue({
       localidad: acueducto[datos.posicion - 1].localidad,
       sector: acueducto[datos.posicion - 1].sector + '',
@@ -241,7 +241,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (obj?.acueductosfuentejson.length > 0) {
+        if (obj?.tipodeSolicitud != 'Primera vez') {
           return (
             <Button
               type='primary'
@@ -449,7 +449,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         </div>
       </div>
       <div className='row '>
-        {obj?.acueductosfuentejson.length < 1 && (
+        {obj?.tipodeSolicitud == 'Primera vez' && (
           <>
             <div className='col-lg-8 col-md-8 col-sm-12'>
               <a href='' style={{ textDecoration: 'none' }}>

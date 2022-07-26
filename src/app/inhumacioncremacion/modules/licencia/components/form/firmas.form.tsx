@@ -67,9 +67,7 @@ export const GestionFirma = ({ props }: any) => {
         text: 'Se han modificado la firma exitosamente'
       });
     };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+    reader.onerror = function (error) {};
   };
   const onSubmitFailed = () => {
     setStatus('error');

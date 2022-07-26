@@ -37,12 +37,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const [urlPdfDocumento, setUrlPdfDocumento] = useState<string>('default');
   const [enableModalViewDocument, setEnableModalViewDocument] = useState<boolean>(false);
 
-  const [l_usofuente, setlusofuente] = useState<any[]>([]);
-
-  const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
-  const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
-
   const [acueducto, setacueductos] = useState<any[]>([]);
 
   const [archivos, setarchivos] = useState<any[]>(['0', '0', '0']);
@@ -57,46 +51,46 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const Paginas: number = 5;
   const getListas = useCallback(
     async () => {
-      if (tipo == 'gestion') {
-        console.log('entro');
-        const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+      const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
-        const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
-          return (
-            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
-            f.idTipoDocumentoAdjunto != '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0' &&
-            f.idTipoDocumentoAdjunto != '96D00032-4B60-4027-AFEA-0CC7115220B4'
-          );
-        });
-        setconsultararchivos(filter);
+      const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
+        return (
+          f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
+          f.idTipoDocumentoAdjunto != '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' &&
+          f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4'
+        );
+      });
+      setconsultararchivos(filter);
 
-        const array: any[] = [];
-        for (let index = 0; index < filter.length; index++) {
-          let posicion_ = 0;
-          console.log(filter[index]);
-          const posicioninicial = filter[index].path.indexOf('/');
-          const path = filter[index].path;
-          const idtipo = filter[index].idTipoDocumentoAdjunto;
+      const array: any[] = [];
 
-          for (let index2 = 0; index2 < path.length; index2++) {
-            if (stringData.substring(index2, index2 + 1) == '_') {
-              posicion_ = index2;
-            }
+      for (let index = 0; index < filter.length; index++) {
+        let posicion_ = 0;
+
+        const posicioninicial = filter[index].path.indexOf('/');
+        const path = filter[index].path;
+        const idtipo = filter[index].idTipoDocumentoAdjunto;
+
+        for (let index2 = 0; index2 < path.length; index2++) {
+          if (path.substring(index2, index2 + 1) == '_') {
+            posicion_ = index2;
           }
-
-          var cadena = stringData.substring(posicioninicial + 1, posicion_);
-
-          array.push({
-            posicion: index + 1,
-            nombre: cadena,
-            valor: cadena,
-            id: idtipo
-          });
         }
-        console.log(array);
-        setguardararchivos(array);
-        setguardararchivostabla(array);
+
+        var cadena = path.substring(posicioninicial + 1, posicion_);
+
+        array.push({
+          posicion: index + 1,
+          nombre: cadena,
+          valor: cadena,
+          id: idtipo
+        });
       }
+      setguardararchivos(array);
+      if (prop != null) {
+        prop(array);
+      }
+      setguardararchivostabla(array);
 
       cargardatos();
     },
@@ -200,7 +194,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);
-    prop(array);
+    if (prop != null) {
+      prop(array);
+    }
     setacueductos([]);
     setarchivos(['0', '0', '0']);
     cargardatos();
@@ -231,6 +227,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         array.push(guardararchivos[index]);
       }
     }
+
     for (let index = 0; index < guardararchivostabla.length; index++) {
       if (guardararchivostabla[index].posicion != data.posicion) {
         const aux = guardararchivostabla[index];
@@ -312,7 +309,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   ];
   var tabla2: any[] = [];
 
-  if (consultararchivos.length > 0) {
+  if (obj?.tipodeSolicitud != 'Primera vez') {
     tabla2 = [
       {
         title: 'No. ',
