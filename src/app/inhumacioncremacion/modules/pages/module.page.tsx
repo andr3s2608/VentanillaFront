@@ -17,7 +17,7 @@ const ModulePage = () => {
   const history = useHistory();
   const [roles, setroles] = useState<IRoles[]>();
   const [info, setinfo] = useState<any>();
-  const [validacioninfo, setvalidacioninfo] = useState<any>(false);
+  const [validacioninfo, setvalidacioninfo] = useState<any>('');
   const { name, userName } = authProvider.getAccount();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);

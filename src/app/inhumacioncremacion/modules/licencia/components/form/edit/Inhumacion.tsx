@@ -7,11 +7,7 @@ export const EditInhumacion = (id: String) => {
 
     return formatObjJson(obj, id);
   } else {
-    return {
-      isLugar: () => {
-        return 'Dentro de Bogotá';
-      }
-    };
+    return undefined;
   }
 };
 
