@@ -44,9 +44,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     const pais = await dominioService.get_type(ETipoDominio.Pais);
     const filtropais = pais.filter((i) => i.id == obj?.country);
 
-    const filtronacionalidad = pais.filter((i) => i.id == obj?.nationalidad);
-    setnacionalidad(filtronacionalidad[0].descripcion);
-
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
@@ -60,6 +57,11 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       setdefuncion(filtropais[0].descripcion + '/' + iddepart[0].descripcion);
     }
 
+    if (obj?.idDepartamentoResidencia == undefined) {
+      const filtronacionalidad = pais.filter((i) => i.id == obj?.nationalidad);
+
+      setnacionalidad(filtronacionalidad[0].descripcion);
+    }
     if (obj?.idDepartamentoResidencia != undefined) {
       const paism = await dominioService.get_type(ETipoDominio.Pais);
       const filtropaismadre = pais.filter((i) => i.id == obj?.residencia);
@@ -72,11 +74,13 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
         const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
 
         setpaismadre('Colombia');
+        setnacionalidad('Colombia');
         setdepartamentomadre(iddepartmadre[0].descripcion.toLowerCase());
         setciudadmadre(idmunimadre[0].descripcion.toLowerCase());
         setesmadre(true);
       } else {
         setpaismadre(filtropais[0].descripcion.toLowerCase());
+        setnacionalidad(filtropais[0].descripcion.toLowerCase());
         setdepartamentomadre('Fuera del País');
         setciudadmadre('Fuera del País');
         setesmadre(true);

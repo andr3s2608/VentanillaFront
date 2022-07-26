@@ -185,9 +185,21 @@ export const InformacionMedicoCertificante = (props: any) => {
       setNROIDENT(Oracle['resultado1'][0].NROIDENT);
       setTIPO_I(Oracle['resultado1'][0].TIPO_I);
       setFECHA_NACIMIENTO(Oracle['resultado1'][0].FECHA_NACIMIENTO);
-      setNUMERO_RESOLUCION(Oracle['resultado2'][0].NUMERO_RESOLUCION);
-      setFECHA_RESOLUCION(Oracle['resultado2'][0].FECHA_RESOLUCION);
-      setNOMBRE_PROFESION(Oracle['resultado2'][0].NOMBRE_PROFESION);
+
+      if (Oracle['resultado2'].length > 0) {
+        setNUMERO_RESOLUCION(Oracle['resultado2'][0].NUMERO_RESOLUCION);
+        setFECHA_RESOLUCION(Oracle['resultado2'][0].FECHA_RESOLUCION);
+        setNOMBRE_PROFESION(Oracle['resultado2'][0].NOMBRE_PROFESION);
+      } else {
+        setNUMERO_RESOLUCION(Oracle['resultado2'].NUMERO_RESOLUCION);
+        setFECHA_RESOLUCION(Oracle['resultado2'].FECHA_RESOLUCION);
+        if (Oracle['resultado2'].NOMBRE_PROFESION == undefined) {
+          setNOMBRE_PROFESION('Medico(a)');
+        } else {
+          setNOMBRE_PROFESION(Oracle['resultado2'].NOMBRE_PROFESION);
+        }
+      }
+
       setValor('El médico registrado es válido');
     } else {
       setValor('El médico registrado es inválido');

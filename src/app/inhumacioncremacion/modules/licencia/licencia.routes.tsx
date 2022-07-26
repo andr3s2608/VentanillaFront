@@ -37,7 +37,7 @@ const BandejaAguas = lazy(() => import('../../../aguasconsumo/pages/bandejas/Red
 //-gestion
 const RevisarCoordinador = lazy(() => import('../../../aguasconsumo/pages/gestion/revisionSolicitudCoordinador.page'));
 const RevisarGestion = lazy(() => import('../../../aguasconsumo/pages/gestion/revisarSolicitudGestion.page'));
-const AprobarTramite = lazy(() => import('../../../aguasconsumo/pages/gestion/aprobarTramite.page'));
+
 ///notificaciones
 const NotificacionUsuario = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionUsuario.page'));
 const NotificacionBandeja = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionBandeja.page'));
@@ -127,10 +127,7 @@ export const LicenciaRoutes: IRouteProps[] = [
     path: `${RevisionPath}/gestionar-solicitud`,
     component: RevisarGestion
   },
-  {
-    path: `${RevisionPath}/aprobar-tramite`,
-    component: AprobarTramite
-  },
+
   {
     path: `${notificacion}`,
     component: NotificacionUsuario
