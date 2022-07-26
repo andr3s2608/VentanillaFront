@@ -27,6 +27,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [ciudadmadre, setciudadmadre] = useState<string | undefined>();
   const [departamentomadre, setdepartamentomadre] = useState<string | undefined>();
   const [paismadre, setpaismadre] = useState<string | undefined>();
+  const [nacionalidad, setnacionalidad] = useState<string | undefined>();
   const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -42,6 +43,9 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
     const pais = await dominioService.get_type(ETipoDominio.Pais);
     const filtropais = pais.filter((i) => i.id == obj?.country);
+
+    const filtronacionalidad = pais.filter((i) => i.id == obj?.nationalidad);
+    setnacionalidad(filtronacionalidad[0].descripcion);
 
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
@@ -110,8 +114,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
-
-  const nacionalidad = obj?.nationalidad;
 
   const tipo = obj?.deathType;
 
