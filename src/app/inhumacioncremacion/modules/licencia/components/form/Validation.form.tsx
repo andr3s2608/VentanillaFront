@@ -121,12 +121,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           objJosn = EditInhumacion('1');
         }
       } else {
-        console.log('paso3');
         setisnull(true);
       }
       if (objJosn != undefined) {
-        console.log(objJosn);
-        console.log('paso');
         const resp = await Promise.all([
           dominioService.get_type(ETipoDominio.Pais),
           dominioService.get_type(ETipoDominio['Tipo Documento']),
@@ -163,14 +160,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
 
         const data = await api.getLicencia(objJosn?.idSolicitud);
-        console.log('paso1');
-        console.log(data);
+
         if (data[0].estadoSolicitud != 'fdcea488-2ea7-4485-b706-a2b96a86ffdf') {
-          console.log('entro');
           setgestionada(true);
         } else {
-          console.log('entro2');
-
           setgestionada2(true);
         }
 
@@ -890,7 +883,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const separacion = '                      ';
 
   const onnull = () => {
-    console.log('entro');
     Swal.fire({
       icon: 'error',
       title: 'Esta intentando ingresar de una manera no valida',
@@ -919,7 +911,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
             {gestionada2 && (
               <>
-                {console.log('paso validacion')}
                 <div className='card'>
                   <div className='card-body puente'>
                     <div className='row'>
