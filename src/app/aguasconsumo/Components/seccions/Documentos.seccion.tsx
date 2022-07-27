@@ -252,7 +252,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     setEnableModalViewDocument(true);
   };
 
-  const viewPDF = async (DocumentsSupport: any) => {
+  const viewPDF = async (DocumentsSupport: any, tipoarchivo: string) => {
     /** Se consume end-point para obtener la solicitud a la que pertenece
      *  el documento, y saber el tipo de tramite de la solicitud
      * */
@@ -336,7 +336,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         key: 'Acciones',
         align: 'center' as 'center',
 
-        render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
+        render: (_: any, row: any, index: any) => (
+          <FilePdfOutlined onClick={() => viewPDF(row, 'nube')} style={{ fontSize: '30px' }} />
+        )
       }
     ];
   } else {
@@ -358,16 +360,19 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
         render: (_: any, row: any, index: any) => {
           return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-            >
-              Validar Información
-            </Button>
+            <>
+              <FilePdfOutlined onClick={() => viewPDF(row, 'local')} style={{ fontSize: '30px' }} />
+              <Button
+                type='primary'
+                className='fa-solid fa-circle-xmark'
+                key={`vali-${index}`}
+                onClick={() => onClickValidarInformacion(row)}
+                style={{ fontSize: '30xp', color: 'red' }}
+                icon={<CheckOutlined />}
+              >
+                Validar Información
+              </Button>
+            </>
           );
         }
       }
