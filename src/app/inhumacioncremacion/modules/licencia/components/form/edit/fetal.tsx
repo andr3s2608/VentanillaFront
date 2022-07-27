@@ -9,11 +9,7 @@ export const EditFetal = (): any => {
 
     return formatObjJson(obj);
   } else {
-    return {
-      isLugar: () => {
-        return 'Dentro de Bogotá';
-      }
-    };
+    return undefined;
   }
 };
 

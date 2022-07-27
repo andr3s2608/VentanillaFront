@@ -65,7 +65,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [datos, setdatos] = useState<[]>();
   const [solicitante, setsolicitante] = useState<[]>();
   const history = useHistory();
-  const [nombre, setnombre] = useState<string | undefined>();
+  const [valor, setvalor] = useState<string>('');
+  const [idcontrol, setidcontrol] = useState<string>('');
+  const [isnull, setisnull] = useState<boolean>(false);
+  const [gestionada, setgestionada] = useState<boolean>(false);
+  const [gestionada2, setgestionada2] = useState<boolean>(false);
   const [apellido, setapellido] = useState<string | undefined>();
   const [fecha, setfecha] = useState<string | undefined>();
   const [estado, setestado] = useState<string>('');
@@ -91,12 +95,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const valid: any = EditInhumacion('1');
   var objJosn: any = EditInhumacion('1');
 
-  if (valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' || valid.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e') {
-    objJosn = EditFetal();
-  } else {
-    objJosn = EditInhumacion('1');
-  }
-
   const idUsuario = api.getIdUsuario();
 
   //form.setFieldsValue(objJosn?);
@@ -113,39 +111,89 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const resp = await Promise.all([
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_type(ETipoDominio['Tipo Documento']),
-        dominioService.get_type(ETipoDominio['Estado Civil']),
-        dominioService.get_type(ETipoDominio['Nivel Educativo']),
-        dominioService.get_type(ETipoDominio.Etnia),
-        dominioService.get_type(ETipoDominio.Regimen),
-        dominioService.get_type(ETipoDominio['Tipo de Muerte'])
-      ]);
-
-      const userres = await api.getCodeUser();
-      setUser(userres);
-      setListas(resp);
-
-      const support = await api.getSupportDocuments(objJosn?.idSolicitud);
-      const typeList = await api.GetAllTypeValidation();
-      setSupports(support);
-
-      if (isvalidcertificado) {
-        const filtrado = type.filter(function (f: { id: string }) {
-          return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';
-        });
-        setType(filtrado);
+      if (valid != undefined) {
+        if (
+          valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ||
+          valid.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e'
+        ) {
+          objJosn = EditFetal();
+        } else {
+          objJosn = EditInhumacion('1');
+        }
       } else {
-        setType(typeList);
+        setisnull(true);
       }
+      if (objJosn != undefined) {
+        const resp = await Promise.all([
+          dominioService.get_type(ETipoDominio.Pais),
+          dominioService.get_type(ETipoDominio['Tipo Documento']),
+          dominioService.get_type(ETipoDominio['Estado Civil']),
+          dominioService.get_type(ETipoDominio['Nivel Educativo']),
+          dominioService.get_type(ETipoDominio.Etnia),
+          dominioService.get_type(ETipoDominio.Regimen),
+          dominioService.get_type(ETipoDominio['Tipo de Muerte'])
+        ]);
 
-      const all = await api.getCertificado(objJosn?.certificado);
+        const userres = await api.getCodeUser();
+        setUser(userres);
+        setListas(resp);
 
-      if (!all) {
-        setIsModalValidarCertificado(true);
-        setisvalidcertificado(true);
-        setIsDisabledElement(true);
+        const support = await api.getSupportDocuments(objJosn?.idSolicitud);
+        const typeList = await api.GetAllTypeValidation();
+        setSupports(support);
+
+        if (isvalidcertificado) {
+          const filtrado = type.filter(function (f: { id: string }) {
+            return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';
+          });
+          setType(filtrado);
+        } else {
+          setType(typeList);
+        }
+
+        const all = await api.getCertificado(objJosn?.certificado);
+
+        if (!all) {
+          setIsModalValidarCertificado(true);
+          setisvalidcertificado(true);
+          setIsDisabledElement(true);
+        }
+
+        const data = await api.getLicencia(objJosn?.idSolicitud);
+
+        if (data[0].estadoSolicitud != 'fdcea488-2ea7-4485-b706-a2b96a86ffdf') {
+          setgestionada(true);
+        } else {
+          setgestionada2(true);
+        }
+
+        var idcontrolinterno = '';
+        var valorinterno = '';
+        idcontrolinterno = objJosn.idControlTramite;
+        const tipotramite: string = objJosn.idTramite;
+        switch (tipotramite) {
+          case 'a289c362-e576-4962-962b-1c208afa0273':
+            valorinterno = 'Inhumacion Individual';
+
+            break;
+          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+            //inhumacion fetal
+            valorinterno = 'Inhumacion Fetal';
+
+            break;
+          case 'e69bda86-2572-45db-90dc-b40be14fe020':
+            //cremacion individual
+            valorinterno = 'Cremacion Individual';
+
+            break;
+          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+            //cremacionfetal
+            valorinterno = 'Cremacion Fetal ';
+
+            break;
+        }
+        setvalor(valorinterno);
+        setidcontrol(idcontrolinterno);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -832,155 +880,168 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     //history.push('/tramites-servicios');
   };
 
-  const idcontrol = objJosn.idControlTramite;
-  const tipotramite: string = objJosn.idTramite;
-  var valor = '';
-  switch (tipotramite) {
-    case 'a289c362-e576-4962-962b-1c208afa0273':
-      valor = 'Inhumacion Individual';
-
-      break;
-    case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-      //inhumacion fetal
-      valor = 'Inhumacion Fetal';
-
-      break;
-    case 'e69bda86-2572-45db-90dc-b40be14fe020':
-      //cremacion individual
-      valor = 'Cremacion Individual';
-
-      break;
-    case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-      //cremacionfetal
-      valor = 'Cremacion Fetal ';
-
-      break;
-  }
   const separacion = '                      ';
+
+  const onnull = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Esta intentando ingresar de una manera no valida',
+      text: 'Esta intentando acceder a la pagina de una manera que no es permitida,porfavor intentelo correctamente'
+    }).then((value) => {
+      history.push('/tramites-servicios');
+    });
+  };
+  const onvalidacion = () => {
+    Swal.fire({
+      icon: 'info',
+      title: 'Esta intentando ingresar de una manera no valida',
+      text: 'la solicitud a la cual desea acceder ya ha sido gestionada, por favor selecccione una nueva de la bandeja'
+    }).then((value) => {
+      history.push('/tramites-servicios');
+    });
+  };
+
   return (
-    <div className='container-fluid'>
-      <div className='card'>
-        <div className='card-body puente'>
-          <div className='row'>
-            <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
-              <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
-                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
-                  ID TRAMITE:{idcontrol}
-                </Divider>
-                <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
-                  TIPO DE SOLICITUD:{valor}
-                </Divider>
-              </div>
-              <div className='fadeInLeft'>
-                <InformacionFallecidoSeccion obj={objJosn} />
-                <hr />
-                <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
-                <hr />
-                <InformacionSolicitanteSeccion obj={objJosn} />
-                <hr />
-                <GestionTramite
-                  idSolicitud={objJosn?.idSolicitud}
-                  idTramite={objJosn?.idTramite}
-                  type={type}
-                  valor={valor}
-                  registrado={isvalidcertificado}
-                />
-                <hr />
-                <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
-                <div className='fadeInLeft'>
-                  <div className='container-fluid'>
-                    <div className='col-lg-12'>
-                      <Form.Item>
-                        <Button
-                          className='button_seguimiento'
-                          style={{ width: '50%' }}
-                          type='primary'
-                          onClick={() => onClickView(objJosn?.idSolicitud)}
-                          icon={<EyeOutlined width={100} />}
-                          size={'large'}
-                        >
-                          Seguimiento
-                        </Button>
-                      </Form.Item>
-                      <Form.Item>
-                        <Button
-                          className='button_previa'
-                          style={{ width: '50%', float: 'right', marginTop: '-63px', marginRight: '-100px' }}
-                          type='primary'
-                          onClick={() => onPrevPDF()}
-                          icon={<EyeOutlined width={100} />}
-                          size={'large'}
-                          disabled={viewLicenceState}
-                        >
-                          Vista previa licencia
-                        </Button>
-                      </Form.Item>
+    <>
+      {isnull && onnull()}
+      {!isnull && (
+        <>
+          <div className='container-fluid'>
+            {gestionada == true && onvalidacion()}
+
+            {gestionada2 && (
+              <>
+                <div className='card'>
+                  <div className='card-body puente'>
+                    <div className='row'>
+                      <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+                        <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+                          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
+                            ID TRAMITE:{idcontrol}
+                          </Divider>
+                          <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
+                            TIPO DE SOLICITUD:{valor}
+                          </Divider>
+                        </div>
+                        <div className='fadeInLeft'>
+                          <InformacionFallecidoSeccion obj={objJosn} />
+                          <hr />
+                          <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
+                          <hr />
+                          <InformacionSolicitanteSeccion obj={objJosn} />
+                          <hr />
+                          <GestionTramite
+                            idSolicitud={objJosn?.idSolicitud}
+                            idTramite={objJosn?.idTramite}
+                            type={type}
+                            valor={valor}
+                            registrado={isvalidcertificado}
+                          />
+                          <hr />
+                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
+                          <div className='fadeInLeft'>
+                            <div className='container-fluid'>
+                              <div className='col-lg-12'>
+                                <Form.Item>
+                                  <Button
+                                    className='button_seguimiento'
+                                    style={{ width: '50%' }}
+                                    type='primary'
+                                    onClick={() => onClickView(objJosn?.idSolicitud)}
+                                    icon={<EyeOutlined width={100} />}
+                                    size={'large'}
+                                  >
+                                    Seguimiento
+                                  </Button>
+                                </Form.Item>
+                                <Form.Item>
+                                  <Button
+                                    className='button_previa'
+                                    style={{ width: '50%', float: 'right', marginTop: '-63px', marginRight: '-100px' }}
+                                    type='primary'
+                                    onClick={() => onPrevPDF()}
+                                    icon={<EyeOutlined width={100} />}
+                                    size={'large'}
+                                    disabled={viewLicenceState}
+                                  >
+                                    Vista previa licencia
+                                  </Button>
+                                </Form.Item>
+                              </div>
+                            </div>
+
+                            <Modal
+                              title={
+                                <p className='text-center text-dark text-uppercase mb-0 titulo'>
+                                  Ventana de seguimiento y auditoria
+                                </p>
+                              }
+                              visible={isModalVisible}
+                              onCancel={handleCancel}
+                              width={1000}
+                              okButtonProps={{ hidden: true }}
+                              cancelText='Cerrar'
+                            >
+                              <Table
+                                className='text-center table'
+                                dataSource={dataTable}
+                                columns={columnFake}
+                                pagination={{ hideOnSinglePage: true }}
+                              />
+                            </Modal>
+
+                            <Modal
+                              title={
+                                <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                                  Visualización de la licencia
+                                </p>
+                              }
+                              visible={isModalVisiblePdf}
+                              onCancel={() => setIsModalVisiblePdf(false)}
+                              width={1000}
+                              okButtonProps={{ hidden: true }}
+                              cancelText='Cerrar'
+                            >
+                              <div className='col-lg-12 text-center'>
+                                <p>Nombre del Solicitante : {solicitante} </p>
+                              </div>
+                              <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                            </Modal>
+
+                            <Modal
+                              title={<p className='text-center'>Notificación</p>}
+                              visible={isModalValidarCertificado}
+                              width={500}
+                              onOk={onModalNofificacion}
+                            >
+                              <div className='conteiner-fluid'>
+                                <div className='row'>
+                                  <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
+                                    El Número de certificado no ha sido registrado en salud publica
+                                  </p>
+                                </div>
+                                <div className='row justify-content-md-center'>
+                                  <Button type='primary' style={{ width: 60 }} onClick={onModalNofificacion}>
+                                    OK
+                                  </Button>
+                                </div>
+                              </div>
+                            </Modal>
+                          </div>
+                          <div>
+                            <Actions />
+                          </div>
+                        </div>
+                      </Form>
                     </div>
                   </div>
-
-                  <Modal
-                    title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Ventana de seguimiento y auditoria</p>}
-                    visible={isModalVisible}
-                    onCancel={handleCancel}
-                    width={1000}
-                    okButtonProps={{ hidden: true }}
-                    cancelText='Cerrar'
-                  >
-                    <Table
-                      className='text-center table'
-                      dataSource={dataTable}
-                      columns={columnFake}
-                      pagination={{ hideOnSinglePage: true }}
-                    />
-                  </Modal>
-
-                  <Modal
-                    title={
-                      <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
-                        Visualización de la licencia
-                      </p>
-                    }
-                    visible={isModalVisiblePdf}
-                    onCancel={() => setIsModalVisiblePdf(false)}
-                    width={1000}
-                    okButtonProps={{ hidden: true }}
-                    cancelText='Cerrar'
-                  >
-                    <div className='col-lg-12 text-center'>
-                      <p>Nombre del Solicitante : {solicitante} </p>
-                    </div>
-                    <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-                  </Modal>
-
-                  <Modal
-                    title={<p className='text-center'>Notificación</p>}
-                    visible={isModalValidarCertificado}
-                    width={500}
-                    onOk={onModalNofificacion}
-                  >
-                    <div className='conteiner-fluid'>
-                      <div className='row'>
-                        <p className='text-center mt-4' style={{ color: 'red', fontSize: 15, margin: 25 }}>
-                          El Número de certificado no ha sido registrado en salud publica
-                        </p>
-                      </div>
-                      <div className='row justify-content-md-center'>
-                        <Button type='primary' style={{ width: 60 }} onClick={onModalNofificacion}>
-                          OK
-                        </Button>
-                      </div>
-                    </div>
-                  </Modal>
                 </div>
-                <div>
-                  <Actions />
-                </div>
-              </div>
-            </Form>
+              </>
+            )}
           </div>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {

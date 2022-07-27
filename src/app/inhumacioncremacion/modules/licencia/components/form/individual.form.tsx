@@ -414,6 +414,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     const json: IRegistroLicencia<any> = {
       solicitud: {
+        idSolicitud: objJosn?.idSolicitud,
         numeroCertificado: values.certificado,
         fechaDefuncion: moment(values.date).format(formatDate),
         sinEstablecer: values.check,

@@ -292,7 +292,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother ?? '',
           fechaNacimiento: moment(values.date).format(formatDate),
-          nacionalidad: values.nationalidadmother[0],
+          nacionalidad: values.nationalidadmother,
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
           idEstadoCivil: values.civilStatusmother,
@@ -340,7 +340,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother ?? '',
           fechaNacimiento: moment(values.date).format(formatDate),
-          nacionalidad: values.nationalidadmother[0],
+          nacionalidad: values.nationalidadmother,
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
           idEstadoCivil: values.civilStatusmother,
@@ -520,6 +520,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         }
       }
     };
+
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
     const formData = new FormData();
