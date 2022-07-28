@@ -200,16 +200,17 @@ export const PrimeraU = () => {
         documento.forEach((item: any, i: number) => {
           if (documento[i] != undefined) {
             const archivo = documento[i];
+            if (archivo.subida == 'local') {
+              formData.append('file', archivo.archivo.file);
+              formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
 
-            formData.append('file', archivo.archivo.file);
-            formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: objJson.idsolicitud,
-              idTipoDocumentoAdjunto: archivo.id,
-              path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
-              idUsuario: objJson.idusuario
-            });
+              supportDocumentsEdit.push({
+                idSolicitud: objJson.idsolicitud,
+                idTipoDocumentoAdjunto: archivo.id,
+                path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
+                idUsuario: objJson.idusuario
+              });
+            }
           }
         });
         if (values?.cargarresolucion) {

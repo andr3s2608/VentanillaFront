@@ -83,7 +83,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           posicion: index + 1,
           nombre: cadena,
           valor: cadena,
-          id: idtipo
+          id: idtipo,
+          subida: 'nube'
         });
       }
       setguardararchivos(array);
@@ -170,14 +171,16 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             nombre: acueducto[index].nombre,
             valor: acueducto[index].valor,
             id: acueducto[index].id,
-            archivo: archivo
+            archivo: archivo,
+            subida: 'local'
           });
           arraytabla.push({
             posicion: posicion,
             nombre: acueducto[index].nombre,
             valor: acueducto[index].valor,
             id: acueducto[index].id,
-            archivo: archivo
+            archivo: archivo,
+            subida: 'local'
           });
         }
       } else {
