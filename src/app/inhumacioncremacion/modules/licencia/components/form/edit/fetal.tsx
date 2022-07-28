@@ -17,6 +17,22 @@ const formatObjJson = (obj: any) => {
   const { institucionCertificaFallecimiento, lugarDefuncion, persona, ubicacionPersona, datosCementerio, datosFuneraria } = obj;
   const [madre] = esMadre(persona);
   const [certicador] = esMedico(persona);
+  const [cremador] = esAutorizador(persona);
+
+  const autorizadorcremacion: any = [];
+  if (cremador != undefined) {
+    autorizadorcremacion.push({
+      name: cremador.primerNombre,
+      secondName: cremador.segundoNombre,
+      surname: cremador.primerApellido,
+      secondSurname: cremador.segundoApellido,
+      tipoid: cremador.tipoIdentificacion,
+      numeroid: cremador.numeroIdentificacion,
+      tipopersona: cremador.idTipoPersona,
+      parentesco: cremador.otroParentesco
+    });
+  }
+
   const jsonDt = {
     idTramite: obj.idTramite,
     idControlTramite: obj.iD_Control_Tramite,
@@ -51,6 +67,7 @@ const formatObjJson = (obj: any) => {
     idUbicacionPersona: ubicacionPersona.idUbicacionPersona,
     idDatosCementerio: datosCementerio.idDatosCementerio,
     idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
+    autorizadorcremacion,
 
     //instNoFiscal:institucionCertificaFallecimiento.
     idMadre: madre.idPersona,
@@ -67,6 +84,7 @@ const formatObjJson = (obj: any) => {
     etnia: madre.idEtnia,
     regime: madre.idRegimen, //falta
     deathType: obj.idTipoMuerte,
+    tipopersona: madre.idTipoPersona,
 
     residencia: ubicacionPersona.idPaisResidencia,
     idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,
@@ -112,3 +130,4 @@ const formatObjJson = (obj: any) => {
 };
 const esMadre = (personas: any[]) => personas.filter((m) => m.idTipoPersona === '342d934b-c316-46cb-a4f3-3aac5845d246');
 const esMedico = (personas: any[]) => personas.filter((m) => m.idTipoPersona === 'd8b0250b-2991-42a0-a672-8e3e45985500');
+const esAutorizador = (personas: any[]) => personas.filter((m) => m.idTipoPersona === 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');

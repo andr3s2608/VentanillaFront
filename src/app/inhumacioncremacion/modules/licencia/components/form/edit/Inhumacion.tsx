@@ -5,13 +5,13 @@ export const EditInhumacion = (id: String) => {
     const json = JSON.parse(data);
     const [obj] = json;
 
-    return formatObjJson(obj, id);
+    return formatObjJson(obj);
   } else {
     return undefined;
   }
 };
 
-const formatObjJson = (obj: any, id: String) => {
+const formatObjJson = (obj: any) => {
   const {
     institucionCertificaFallecimiento,
     lugarDefuncion,
@@ -23,12 +23,10 @@ const formatObjJson = (obj: any, id: String) => {
   } = obj;
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
+
+  const [cremador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
+
   //en caso de que no exista un fallecido, se tomara el de la madre
-  if (id == '1') {
-    if (fallecido == undefined) {
-      fallecido = isPerson(persona, '342d934b-c316-46cb-a4f3-3aac5845d246');
-    }
-  }
 
   let jsonDt;
   ///metodo que se habia hecho por inconsistencias en la bd(no existia medico ligado a cada solicitud)
@@ -79,6 +77,7 @@ const formatObjJson = (obj: any, id: String) => {
       etnia: fallecido.idEtnia,
       regime: fallecido.idRegimen, //falta
       deathType: obj.idTipoMuerte,
+      tipopersona: fallecido.idTipoPersona,
 
       residencia: ubicacionPersona.idPaisResidencia,
       idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,
@@ -111,6 +110,21 @@ const formatObjJson = (obj: any, id: String) => {
       }
     };
   } else {
+    const autorizadorcremacion: any = [];
+
+    if (cremador != undefined) {
+      autorizadorcremacion.push({
+        name: cremador.primerNombre,
+        secondName: cremador.segundoNombre,
+        surname: cremador.primerApellido,
+        secondSurname: cremador.segundoApellido,
+        tipoid: cremador.tipoIdentificacion,
+        numeroid: cremador.numeroIdentificacion,
+        tipopersona: cremador.idTipoPersona,
+        parentesco: cremador.otroParentesco
+      });
+    }
+
     jsonDt = {
       idTramite: obj.idTramite,
       idControlTramite: obj.iD_Control_Tramite,
@@ -145,6 +159,7 @@ const formatObjJson = (obj: any, id: String) => {
       idDatosCementerio: datosCementerio.idDatosCementerio,
       idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
 
+      autorizadorcremacion,
       name: fallecido.primerNombre,
       secondName: fallecido.segundoNombre,
       surname: fallecido.primerApellido,
@@ -158,6 +173,7 @@ const formatObjJson = (obj: any, id: String) => {
       etnia: fallecido.idEtnia,
       regime: fallecido.idRegimen, //falta
       deathType: obj.idTipoMuerte,
+      tipopersona: fallecido.idTipoPersona,
 
       residencia: ubicacionPersona.idPaisResidencia,
       idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,

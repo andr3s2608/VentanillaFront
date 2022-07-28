@@ -299,6 +299,14 @@ export class ApiService {
   GetInformacionFallecido = (solicitud: string) =>
     get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 
+  //consulta fallecidos con nro de id duplicados
+  GetDuplicadosFallecido = (nrotramite: string, id: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/ConsultarFallecidoGestion/${nrotramite}/${id}`,
+      id: '0'
+    });
+
   GetSolicitud = (solicitud: string) =>
     get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
