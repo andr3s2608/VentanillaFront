@@ -869,14 +869,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     setIsModalValidarCertificado(false);
     setisvalidcertificado(true);
     const typeList = await api.GetAllTypeValidation();
-    if (isvalidcertificado) {
-      const filtrado = type.filter(function (f: { id: string }) {
-        return f.id != '3cd0ed61-f26b-4cc0-9015-5b497673d275';
-      });
-      setType(filtrado);
-    } else {
-      setType(typeList);
-    }
+
+    setType(typeList);
+
     //history.push('/tramites-servicios');
   };
 

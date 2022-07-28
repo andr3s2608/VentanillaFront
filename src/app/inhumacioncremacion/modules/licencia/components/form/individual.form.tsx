@@ -45,7 +45,7 @@ import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { ValidationFuntional } from './seccions/validationfuntional';
-import { time } from 'console';
+import { parse } from 'path';
 
 const { Step } = Steps;
 
@@ -76,6 +76,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7C96A4D3-A0CB-484E-A01B-93BC39C2552E');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
@@ -309,6 +310,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surname,
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
+          hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
           nacionalidad: values.nationalidad[0],
           segundanacionalidad: segunda,
           otroParentesco: null,
@@ -330,6 +332,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.medicalSignatureSurname,
           segundoApellido: values.medicalSignatureSecondSurname ?? '',
           fechaNacimiento: null,
+          hora: '',
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: null,
@@ -355,6 +358,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.surname,
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
+          hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
           nacionalidad: values.nationalidad[0],
           segundanacionalidad: segunda,
           otroParentesco: null,
@@ -376,6 +380,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.authSurname,
           segundoApellido: values.authSecondSurname ?? '',
           fechaNacimiento: null,
+          hora: '',
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: parentesco, //lista parentesco
@@ -396,6 +401,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.medicalSignatureSurname,
           segundoApellido: values.medicalSignatureSecondSurname ?? '',
           fechaNacimiento: null,
+          hora: '',
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: null,
@@ -501,6 +507,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+
 
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
@@ -646,25 +653,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     if (numerodeath == undefined) {
       numerodeath = '00000000000000000';
     }
-    if (busquedacertificado == null) {
-      if (numero.length >= 6) {
-        if (numerodeath.length >= longituddeathinst) {
-          onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
-          });
-        }
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Datos inválidos',
-          text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
-        });
-      }
-    } else {
+    if (busquedacertificado != null) {
       Swal.fire({
         title: 'Usuario Registrado',
         text: 'El Número de Certificado ya se Encuentra Registrado',
@@ -675,6 +664,24 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           popup: 'animate__animated animate__fadeOutUp'
         },
         icon: 'info'
+      });
+    }
+
+    if (numero.length >= 6) {
+      if (numerodeath.length >= longituddeathinst) {
+        onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos inválidos',
+          text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos inválidos',
+        text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
       });
     }
   };
@@ -753,36 +760,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         busqueda = await api.GetDocumentoFallecido(numero, '01F64F02-373B-49D4-8CB1-CB677F74292C');
       }
 
-      if (busqueda == null) {
-        if (numero.length >= longitudminima) {
-          onNextStep([
-            'name',
-            'secondName',
-            'surname',
-            'secondSurname',
-            'nationalidad',
-            'dateOfBirth',
-            'IDType',
-            'IDNumber',
-            'civilStatus',
-            'educationLevel',
-            'etnia',
-            'age',
-            'unitAge',
-            'regime',
-            'knownIDType',
-            'knownIDNumber',
-            'knownName',
-            'deathType'
-          ]);
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
-          });
-        }
-      } else {
+      if (busqueda != null) {
         Swal.fire({
           title: 'Usuario Registrado',
           text: 'El Número de Identificación del Fallecido ya se Encuentra Registrado',
@@ -793,6 +771,34 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        });
+      }
+      if (numero.length >= longitudminima) {
+        onNextStep([
+          'name',
+          'secondName',
+          'surname',
+          'secondSurname',
+          'nationalidad',
+          'dateOfBirth',
+          'IDType',
+          'IDNumber',
+          'civilStatus',
+          'educationLevel',
+          'etnia',
+          'age',
+          'unitAge',
+          'regime',
+          'knownIDType',
+          'knownIDNumber',
+          'knownName',
+          'deathType'
+        ]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos inválidos',
+          text: `El Número de Identificación debe tener mínimo ${longitudminima} Dígitos o Caracteres`
         });
       }
     } else {
@@ -850,15 +856,74 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const FechaNacimiento = (value: any) => {
     const fecha = moment(value);
+    const documento = form.getFieldValue('IDNumber');
+    const time = form.getFieldValue('timenac');
+    let time2 = undefined;
+    if (time != undefined) {
+      time2 = moment(time).format('LT');
+    }
+
+    const timedef = form.getFieldValue('time');
+    let timedef2 = undefined;
+    if (timedef != undefined) {
+      timedef2 = moment(timedef).format('LT');
+    }
+
+    let tiempo = '';
+    if (timedef2 != undefined) {
+      if (documento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
+        if (time2 != undefined) {
+          const posicion1 = time2.indexOf(':');
+          const posicion2 = timedef2.indexOf(':');
+
+          const horanac1 = time2.substring(0, posicion1);
+          const horanac2 = time2.substring(posicion1 + 1, time2.length);
+
+          const horadef1 = timedef2.substring(0, posicion2);
+          const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+          if (parseInt(horanac1) < parseInt(horadef1)) {
+
+            tiempo = 'es valida';
+          } else {
+            if (parseInt(horanac1) == parseInt(horadef1)) {
+
+
+              if (parseInt(horanac2) <= parseInt(horadef2)) {
+
+                tiempo = 'es valida';
+              } else {
+                tiempo = 'es invalida';
+              }
+            } else {
+              tiempo = 'es invalida';
+            }
+          }
+        }
+      }
+    }
+
     let valor = form.getFieldValue('date');
     let fechadef = moment(valor);
 
     if (!fecha.isBefore(fechadef)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Datos inválidos',
-        text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
-      });
+      if (tiempo == 'es valida') {
+        setdatecorrect(true);
+      } else {
+        if (tiempo == 'es invalida') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: `La Hora de nacimiento  debe ser menor a: ${timedef2}`
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
+          });
+        }
+      }
+
       setdatecorrect(false);
     } else {
       setdatecorrect(true);
@@ -869,6 +934,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //validacion Tipo de documento//
   const cambiodocumento = (value: any) => {
     const valor: string = value;
+    settipodocumentohoranacimiento(valor);
+
     const valorupper = valor.toUpperCase();
     setsininformacion(false);
 
@@ -1148,15 +1215,38 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
-              <Form.Item label='Fecha de Nacimiento' name='dateOfBirth' rules={[{ required: true }]} initialValue={date}>
-                <DatepickerComponent
-                  picker='date'
-                  onChange={FechaNacimiento}
-                  dateDisabledType='before'
-                  dateFormatType='default'
-                  value={date}
-                />
-              </Form.Item>
+              <div className='form-row'>
+                <Form.Item
+                  label='Fecha de Nacimiento'
+                  style={{ width: 400 }}
+                  name='dateOfBirth'
+                  rules={[{ required: true }]}
+                  initialValue={date}
+                >
+                  <DatepickerComponent
+                    picker='date'
+                    onChange={FechaNacimiento}
+                    dateDisabledType='before'
+                    dateFormatType='default'
+                    value={date}
+                  />
+                </Form.Item>
+                {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
+                  <>
+                    <div className='form-group col-md-5 col-lg-4'>
+                      <Form.Item label='Hora' name='timenac' style={{ width: 350 }}>
+                        <DatepickerComponent
+                          picker='time'
+                          dateDisabledType='default'
+                          dateFormatType='time'
+                          placeholder='-- Elija una hora --'
+                          style={{ width: 100 }}
+                        />
+                      </Form.Item>
+                    </div>
+                  </>
+                )}
+              </div>
               <Form.Item
                 label='Tipo Identificación'
                 name='IDType'

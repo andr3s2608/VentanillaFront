@@ -67,6 +67,7 @@ const formatObjJson = (obj: any) => {
     etnia: madre.idEtnia,
     regime: madre.idRegimen, //falta
     deathType: obj.idTipoMuerte,
+    tipopersona: madre.idTipoPersona,
 
     residencia: ubicacionPersona.idPaisResidencia,
     idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,

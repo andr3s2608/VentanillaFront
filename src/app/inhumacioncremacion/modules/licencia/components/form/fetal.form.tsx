@@ -291,7 +291,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoNombre: values.secondNamemother ?? '',
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother ?? '',
-          fechaNacimiento: moment(values.date).format(formatDate),
+          fechaNacimiento: values.date,
+          hora: '',
           nacionalidad: values.nationalidadmother,
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
@@ -314,6 +315,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.medicalSignatureSurname,
           segundoApellido: values.medicalSignatureSecondSurname ?? '',
           fechaNacimiento: null,
+          hora: '',
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: null,
@@ -339,7 +341,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoNombre: values.secondNamemother ?? '',
           primerApellido: values.surnamemother,
           segundoApellido: values.secondSurnamemother ?? '',
-          fechaNacimiento: moment(values.date).format(formatDate),
+          fechaNacimiento: values.date,
+          hora: '',
           nacionalidad: values.nationalidadmother,
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
@@ -361,6 +364,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.authSurname,
           segundoApellido: values.authSecondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
+          hora: '',
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: parentesco, //lista parentesco
@@ -382,6 +386,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           primerApellido: values.medicalSignatureSurname,
           segundoApellido: values.medicalSignatureSecondSurname ?? '',
           fechaNacimiento: null,
+          hora: '',
           nacionalidad: '00000000-0000-0000-0000-000000000000',
           segundanacionalidad: '00000000-0000-0000-0000-000000000000',
           otroParentesco: null,
@@ -656,24 +661,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     if (busquedacertificado == null) {
-      if (numero.length >= 6) {
-        if (numerodeath.length >= longituddeathinst) {
-          onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
-          });
-        }
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Datos inválidos',
-          text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
-        });
-      }
-    } else {
       Swal.fire({
         title: 'Usuario Registrado',
         text: 'El Número de Certificado ya se Encuentra Registrado',
@@ -684,6 +671,23 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           popup: 'animate__animated animate__fadeOutUp'
         },
         icon: 'info'
+      });
+    }
+    if (numero.length >= 6) {
+      if (numerodeath.length >= longituddeathinst) {
+        onNextStep([...KeyFormGeneralInfo, ...KeyFormDeathInstitute, ...KeyFormLugarDefuncion]);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos inválidos',
+          text: `El Número de Documento de Institución que Certifica el Fallecimiento debe tener mínimo ${longituddeathinst} Dígitos`
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos inválidos',
+        text: 'El Número de Certificado debe tener mínimo 6 Dígitos'
       });
     }
   };
