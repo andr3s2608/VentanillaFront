@@ -84,7 +84,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           nombre: cadena,
           valor: cadena,
           id: idtipo,
-          subida: 'nube'
+          subida: 'nube',
+          path: path
         });
       }
       setguardararchivos(array);
@@ -246,29 +247,19 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
-  const onClickViewFile = async () => {
-    let path = '2022/laura.pdf';
-    const pdfBlob = await api.GetBlobAzure(path);
-    const pdfUrl = URL.createObjectURL(pdfBlob as Blob);
+  const viewPDF = async (DocumentsSupport: any) => {
+    let pdfUrl: string = '';
+
+    if (DocumentsSupport.subida === 'nube') {
+      const pdfBlob = await api.GetBlobAzure(DocumentsSupport.path + '.pdf');
+      pdfUrl = URL.createObjectURL(pdfBlob as Blob);
+    } else if (DocumentsSupport.subida === 'local') {
+      const pdfFile = DocumentsSupport.archivo.file;
+      pdfUrl = URL.createObjectURL(pdfFile as File);
+    }
 
     setUrlPdfDocumento(pdfUrl);
     setEnableModalViewDocument(true);
-  };
-
-  const viewPDF = async (DocumentsSupport: any, tipoarchivo: string) => {
-    /** Se consume end-point para obtener la solicitud a la que pertenece
-     *  el documento, y saber el tipo de tramite de la solicitud
-     * */
-    const typeContainer = `aguahumanos/`;
-
-    /** Se asigna el tipo de contendor donde buscar el pdf que depende del tipo
-     *  de tramite de la solicitud
-     **/
-
-    let pathFull = typeContainer + DocumentsSupport.path + `.pdf`;
-
-    setUrlPdf(api.GetUrlPdf(pathFull));
-    setHeightIframe('1000vh');
   };
 
   let posicion = 0;
@@ -339,9 +330,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         key: 'Acciones',
         align: 'center' as 'center',
 
-        render: (_: any, row: any, index: any) => (
-          <FilePdfOutlined onClick={() => viewPDF(row, 'nube')} style={{ fontSize: '30px' }} />
-        )
+        render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
       }
     ];
   } else {
@@ -364,7 +353,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         render: (_: any, row: any, index: any) => {
           return (
             <>
-              <FilePdfOutlined onClick={() => viewPDF(row, 'local')} style={{ fontSize: '30px' }} />
+              <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
               <Button
                 type='primary'
                 className='fa-solid fa-circle-xmark'
@@ -429,7 +418,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               type='primary'
               htmlType='button'
               style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-              onClick={onClickViewFile}
             >
               ver archivo
             </Button>
