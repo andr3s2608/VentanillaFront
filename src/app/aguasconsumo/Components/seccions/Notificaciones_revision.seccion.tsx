@@ -43,6 +43,125 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
     setlTipoModificacion(notificacion);
   };
 
+  function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
+    let nuevoHTML = HTML;
+
+    for (let index = 0; index < llavesAReemplazar.length; index++) {
+      nuevoHTML = nuevoHTML.replace(llavesAReemplazar[index], valoresDinamicos[index]);
+    }
+
+    return nuevoHTML;
+  }
+
+  const notificar = async () => {
+    if (idPlantilla == '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos inválidos',
+        text: `Debe seleccionar un tipo de notificación`
+      });
+    } else {
+      const formato = await api.getFormatoAguas(idPlantilla);
+      const control: string = formato['asuntoNotificacion'];
+      switch (control) {
+        case 'Notificación de Desistimiento':
+          await api.sendEmail({
+            to: obj.correoElectronico,
+            subject: 'Notificación de Desistimiento',
+            body: formato['cuerpo']
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación de subsanación`
+          });
+          break;
+        case 'Notificación de subsanación':
+          await api.sendEmail({
+            to: obj.correoElectronico,
+            subject: 'Notificación de subsanación',
+            body: formato['cuerpo']
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación de subsanación`
+          });
+          break;
+        case 'Notificación de visita en campo':
+          await api.sendEmail({
+            to: obj.correoElectronico,
+            subject: 'Notificación de visita en campo',
+            body: formato['cuerpo']
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación de visita en campo`
+          });
+          break;
+
+        case 'Notificación Aprobación Autoridad Ambiental':
+          await api.sendEmail({
+            to: obj.correoElectronico,
+            subject: 'Notificación Aprobación Autoridad Ambiental',
+            body: agregarValoresDinamicos(
+              formato['cuerpo'],
+              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+              [
+                obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                obj.renovafuentejson[0].numeroResolucion,
+                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+              ]
+            )
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
+          });
+          break;
+
+        case 'Notificación Aprobación al Ciudadano':
+          await api.sendEmail({
+            to: obj.correoElectronico,
+            subject: 'Notificación Aprobación al Ciudadano',
+            body: agregarValoresDinamicos(
+              formato['cuerpo'],
+              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+              [
+                obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                obj.renovafuentejson[0].numeroResolucion,
+                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+              ]
+            )
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación Aprobación al Ciudadano`
+          });
+          break;
+
+        case 'Notificación Recordatorio de Subsanación':
+          await api.sendEmail({
+            to: obj.correoElectronico,
+            subject: 'Notificación Recordatorio de Subsanación',
+            body: formato['cuerpo']
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación Recordatorio de Subsanación`
+          });
+          break;
+
+        default:
+          break;
+      }
+    }
+  };
+
   const vistaPrevia = async () => {
     if (idPlantilla == '') {
       Swal.fire({
@@ -59,6 +178,40 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
       let indice2 = body0.indexOf('</p>');
 
       setlBody(body0.substring(indice1 + 67, indice2));
+
+      const control: string = formato['asuntoNotificacion'];
+      switch (control) {
+        case 'Notificación Aprobación Autoridad Ambiental':
+          setlBody(
+            agregarValoresDinamicos(
+              body0.substring(indice1 + 67, indice2),
+              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+              [
+                obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                obj.renovafuentejson[0].numeroResolucion,
+                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+              ]
+            )
+          );
+          break;
+
+        case 'Notificación Aprobación al Ciudadano':
+          setlBody(
+            agregarValoresDinamicos(
+              body0.substring(indice1 + 67, indice2),
+              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+              [
+                obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                obj.renovafuentejson[0].numeroResolucion,
+                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+              ]
+            )
+          );
+          break;
+
+        default:
+          break;
+      }
       setlTitle(formato['asuntoNotificacion']);
 
       setIsModalVisible(true);
@@ -190,6 +343,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
             type='primary'
             htmlType='button'
             style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+            onClick={notificar}
           >
             Notificar
           </Button>

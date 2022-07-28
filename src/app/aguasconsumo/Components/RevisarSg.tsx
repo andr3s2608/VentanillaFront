@@ -329,7 +329,7 @@ export const RevisarSg = () => {
                             <div className='card-body'>
                               <div className='card-body'>
                                 <div className='row mt-5 ml-2'>
-                                  <TipoNotificacion form={form} obj={null} prop={null} />
+                                  <TipoNotificacion form={form} obj={objJson} prop={null} />
                                 </div>
                               </div>
                             </div>
