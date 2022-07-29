@@ -241,9 +241,10 @@ export const RevisarSv = () => {
     const supportDocumentsEdit: any[] = [];
     const formData = new FormData();
 
-    const archivo = values.cargarArchivo.file;
+    const archivovacio = values.cargarArchivo;
 
-    if (archivo != undefined) {
+    if (archivovacio != undefined) {
+      const archivo = archivovacio.file;
       formData.append('file', archivo);
       formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
 
