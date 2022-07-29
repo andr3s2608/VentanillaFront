@@ -189,7 +189,7 @@ export const RevisarSv = () => {
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',
         idUsuario: objJson.idusuario,
-        idUsuarioAsignado: values.usuarioasignado,
+        idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
         idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
@@ -218,11 +218,11 @@ export const RevisarSv = () => {
           departamento: values.departamento,
           municipio: mun,
           localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
-          vereda: values.vereda,
-          sector: values.sector,
+          vereda: '',
+          sector: '',
           upz: objJson.upz,
           barrio: objJson.barrio,
-          observacion: values.observations
+          observacion: ''
         },
 
         citacion_Revision: {
@@ -243,27 +243,29 @@ export const RevisarSv = () => {
 
     const archivo = values.cargarArchivo.file;
 
-    formData.append('file', archivo);
-    formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
+    if (archivo != undefined) {
+      formData.append('file', archivo);
+      formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
 
-    supportDocumentsEdit.push({
-      idSolicitud: objJson.idsolicitud,
-      idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
-      path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
-      idUsuario: objJson.idusuario
-    });
+      supportDocumentsEdit.push({
+        idSolicitud: objJson.idsolicitud,
+        idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+        path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
+        idUsuario: objJson.idusuario
+      });
 
-    formData.append('containerName', 'aguahumanos');
-    formData.append('oid', objJson.idusuario);
+      formData.append('containerName', 'aguahumanos');
+      formData.append('oid', objJson.idusuario);
 
-    await api.uploadFiles(formData);
-    await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+      await api.uploadFiles(formData);
+      await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+    }
 
     Swal.fire({
       icon: 'success',
 
       title: 'Citación Agendada',
-      text: `Se ha agendado la citación para el solicitud con número de radicado:${objJson.numeroRadicado}
+      text: `Se ha agendado la citación para el solicitud con número de radicado:${objJson.numeroradicado}
        para el dia ${moment(values.date).format(formatDate)}`
     });
 
@@ -385,14 +387,7 @@ export const RevisarSv = () => {
                       >
                         Enviar
                       </Button>
-                      <Button
-                        type='primary'
-                        className='float-right button btn btn-default'
-                        style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                        disabled
-                      >
-                        Guardar
-                      </Button>
+
                       <Button
                         className='mr-3 float-right button btn btn-default'
                         type='primary'

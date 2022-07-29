@@ -68,7 +68,7 @@ export const PrimeraU = () => {
         Coo_long_cx: acueducto[index].longitud ?? '',
         Coo_lat_cy: acueducto[index].latitud ?? '',
         idUsoFuente: acueducto[index].usofuente,
-        sector: acueducto[index].sector ?? '',
+        sector: '',
         descripcionOtroUso: acueducto[index].descripcion ?? '',
         caudalTotal: acueducto[index].caudal ?? '',
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',

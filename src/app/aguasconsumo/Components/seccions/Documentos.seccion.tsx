@@ -362,7 +362,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 style={{ fontSize: '30xp', color: 'red' }}
                 icon={<CheckOutlined />}
               >
-                Validar Información
+                Eliminar
               </Button>
             </>
           );

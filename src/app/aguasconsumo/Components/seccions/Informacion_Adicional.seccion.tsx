@@ -282,7 +282,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               style={{ fontSize: '30xp', color: 'red' }}
               icon={<CheckOutlined />}
             >
-              mirar
+              Rellenar
             </Button>
           );
         } else {
@@ -295,7 +295,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               style={{ fontSize: '30xp', color: 'red' }}
               icon={<CheckOutlined />}
             >
-              Validar Información
+              Eliminar
             </Button>
           );
         }

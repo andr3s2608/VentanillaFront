@@ -193,14 +193,15 @@ export const Servicios = () => {
           departamento: values.departamento,
           municipio: mun,
           localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
-          vereda: values.vereda,
-          sector: values.sector,
+          vereda: '',
+          sector: '',
           upz: '00000000-0000-0000-0000-000000000000',
           barrio: '00000000-0000-0000-0000-000000000000',
-          observacion: values.observations
+          observacion: ''
         }
       }
     };
+    console.log(json);
 
     const nrorad = await api.AddSolicitudPrimera(json);
 
@@ -341,17 +342,7 @@ export const Servicios = () => {
                       >
                         Enviar
                       </Button>
-                      <Button
-                        className='float-right button btn btn-default'
-                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                        type='primary'
-                        htmlType='submit'
-                        onClick={() => {
-                          settemporal(true);
-                        }}
-                      >
-                        Guardar
-                      </Button>
+
                       <Button
                         className='mr-3 float-right button btn btn-default'
                         style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
