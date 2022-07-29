@@ -21,8 +21,11 @@ const formatObjJson = (obj: any, id: String) => {
     resumenSolicitud,
     datosFuneraria
   } = obj;
+
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
+  const [autorizadorCremacion] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
+
   //en caso de que no exista un fallecido, se tomara el de la madre
   if (id == '1') {
     if (fallecido == undefined) {
@@ -199,7 +202,8 @@ const formatObjJson = (obj: any, id: String) => {
           value = 'Fuera del País';
         }
         return value;
-      }
+      },
+      autorizadorCremacion
     };
   }
 

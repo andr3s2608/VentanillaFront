@@ -51,6 +51,7 @@ import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
 import '../../../../../.././scss/antd/index.css';
 import '../../../../../../css/estilos.css';
+import { AutorizadorCremacion } from './seccions/AutorizadorCremacion';
 export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
@@ -896,6 +897,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     });
   };
 
+  console.log('**************************************');
+  console.log(objJosn.autorizadorCremacion);
+  console.log('**************************************');
+
   return (
     <>
       {isnull && onnull()}
@@ -920,6 +925,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                         </div>
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} />
+                          {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
+                            <AutorizadorCremacion obj={objJosn.autorizadorCremacion} />
+                          ) : null}
                           <hr />
                           <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
                           <hr />
@@ -934,6 +942,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                           />
                           <hr />
                           <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
+
                           <div className='fadeInLeft'>
                             <div className='container-fluid'>
                               <div className='col-lg-12'>
