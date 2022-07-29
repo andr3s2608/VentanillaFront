@@ -35,7 +35,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
 
   const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
-  const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+  //const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+  const idlocalidad = 'd5aa4e2b-f148-41ef-a848-aa36f117cbd4';
+
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
 
   const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
@@ -59,8 +61,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
       const localidades = await dominioService.get_localidades_bogota();
 
+      const filter = localidades.filter(function (f: { idLocalidad: string }) {
+        return f.idLocalidad != '0e2105fb-08f8-4faf-9a79-de5effa8d198' && f.idLocalidad != 'd9fc2416-c730-4eb0-984c-6c780f2a7321';
+      });
+
       setLDepartamentos(departamentos);
-      setLLocalidades(localidades);
+      setLLocalidades(filter);
       setLMunicipios(municipios);
       setmostrar(true);
     },
@@ -93,7 +99,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       <div className='col-lg-12 col-sm-12 col-md-12 '>
         <div className='info-tramite mt-2'>
           <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            Información del lugar de revisión . <br />{' '}
+            Información del lugar de la localización del sistema de abastecimiento . <br />{' '}
             <small style={{ color: ' #000' }}>
               <span className='required'>* </span> Campos Obligatorios
             </small>
@@ -210,74 +216,6 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 </div>
               </>
             )}
-
-            <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
-              <div className='panel-search'>
-                <div className='form-group gov-co-form-group'>
-                  <label className='text'>
-                    <span></span> Vereda
-                  </label>
-                  <Form.Item initialValue={obj?.vereda} name='vereda' rules={[{ required: false }]}>
-                    <Input
-                      maxLength={50}
-                      type='text'
-                      disabled={modificar}
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-
-            <div className='col-lg-5 col-sm-4 col-md-5 mt-2 '>
-              <div className='panel-search'>
-                <div className='form-group gov-co-form-group'>
-                  <label className='text'>
-                    <span></span> Sector
-                  </label>
-                  <Form.Item initialValue={obj?.vereda} name='sector' rules={[{ required: false }]}>
-                    <Input
-                      maxLength={50}
-                      disabled={modificar}
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='row ml-2'>
-          <div className='col-lg-8 col-sm-12 col-md-8'>
-            <div className='form-group gov-co-form-group'>
-              <label className='text'>
-                <span></span> Observaciones Adicionales
-              </label>
-              <Form.Item
-                initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
-                name='observations'
-                rules={[{ required: false }]}
-              >
-                <Input.TextArea rows={5} maxLength={300} disabled={modificar} style={{ width: '300px' }} />
-              </Form.Item>
-            </div>
           </div>
         </div>
       </div>
@@ -290,4 +228,4 @@ interface ubicacion<T> {
   tipo: any;
   vista: any;
 }
-export const KeysForm = ['departamento', 'municipio', 'sector', 'vereda', 'localidad', 'direccion', 'observations'];
+export const KeysForm = ['departamento', 'municipio', 'localidad', 'direccion'];

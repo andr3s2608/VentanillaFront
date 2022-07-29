@@ -94,11 +94,9 @@ export const RevisarSc = () => {
         mun = '31211657-3386-420a-8620-f9C07a8ca491';
         break;
     }
-    var usuario = values.usuarioasignado;
-    if (usuario == 'vacio' || usuario == undefined) {
-      const us = api.getIdUsuario();
-      usuario = us + '';
-    }
+
+    const us = api.getIdUsuario();
+    const usuario = us + '';
 
     const json: IRegistroSolicitudCitacion<any> = {
       solicitud: {
@@ -149,11 +147,11 @@ export const RevisarSc = () => {
           departamento: values.departamento,
           municipio: mun,
           localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
-          vereda: values.vereda,
-          sector: values.sector,
+          vereda: '',
+          sector: '',
           upz: objJson.upz,
           barrio: objJson.barrio,
-          observacion: values.observations
+          observacion: ''
         },
 
         citacion_Revision: {
@@ -276,14 +274,7 @@ export const RevisarSc = () => {
                     >
                       Enviar
                     </Button>
-                    <Button
-                      className='float-right button btn btn-default'
-                      type='primary'
-                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                      onClick={Asignar}
-                    >
-                      Guardar
-                    </Button>
+
                     <Button
                       className='mr-3 float-right button btn btn-default'
                       type='primary'
