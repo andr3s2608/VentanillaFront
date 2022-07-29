@@ -201,7 +201,6 @@ export const Servicios = () => {
         }
       }
     };
-    console.log(json);
 
     const nrorad = await api.AddSolicitudPrimera(json);
 

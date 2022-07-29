@@ -15,11 +15,16 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { classNames } from '@react-pdf-viewer/core';
 import '../../../../../../../scss/antd/index.css';
 import '../../../../../../../css/estilos.css';
+import Swal from 'sweetalert2';
 
 export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [[tipo_identificacion, edad, fechaNacimiento, horaFallecido, genero], setFallecido] = useState<
     [string, string, string, string, string]
   >(['', '', '', '', '']);
+
+  const [[primernombre, segundonombre, primerapellido, segundoapellido], setNombres] = useState<[string, string, string, string]>(
+    ['', '', '', '']
+  );
   const [numeroCertificado, setNumeroCertificado] = useState();
 
   const [defuncion, setdefuncion] = useState<string | undefined>();
@@ -32,12 +37,17 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalfallecidoVisible, setisModalfallecidoVisible] = useState(false);
   const [valorR, setValorR] = useState<string | undefined>();
   const [NOMBRES, setNOMBRES] = useState<string | undefined>();
   const [NROIDENT, setNROIDENT] = useState<string | undefined>();
 
   const [SEXO, setSEXO] = useState<string | undefined>();
   const [FECHA_DEFUNCION, setFECHA_DEFUNCION] = useState<string | undefined>();
+
+  //// numero de id duplicados
+  const [l_fallecidos, setl_fallecidos] = useState<any>([]);
+
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
 
@@ -62,6 +72,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
       setnacionalidad(filtronacionalidad[0].descripcion);
     }
+    setNombres([obj.name, obj.secondName, obj.surname, obj.secondSurname]);
     if (obj?.idDepartamentoResidencia != undefined) {
       const paism = await dominioService.get_type(ETipoDominio.Pais);
       const filtropaismadre = pais.filter((i) => i.id == obj?.residencia);
@@ -73,6 +84,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
         const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
 
+        setNombres([obj.namemother, obj.secondNamemother, obj.surnamemother, obj.secondSurnamemother]);
         setpaismadre('Colombia');
         setnacionalidad('Colombia');
         setdepartamentomadre(iddepartmadre[0].descripcion.toLowerCase());
@@ -97,6 +109,23 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       inf_fallecido['idSexo'] + ''
     ]);
 
+    /*
+    if (obj.tipopersona == '01f64f02-373b-49d4-8cb1-cb677f74292c') {
+      const fallecidosduplicados = await api.GetDuplicadosFallecido(obj.idControlTramite, obj.IDNumber);
+
+      if (fallecidosduplicados.length > 0) {
+        Swal.fire({
+          icon: 'info',
+
+          title: 'Número de identificación Repetido',
+          text: `El número de identificación se encuentra registrado también en otras solicitudes,para mas
+           información presione el botón "  Validar No. Identificación"`
+        });
+      }
+      setl_fallecidos(fallecidosduplicados);
+    }
+    */
+
     const resp = await Promise.all([
       dominioService.get_type(ETipoDominio.Regimen),
       dominioService.get_type(ETipoDominio['Tipo de Muerte'])
@@ -111,10 +140,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
 
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
   const numero = obj?.certificado;
-  const primernombre = obj?.name ?? obj.namemother;
-  const segundonombre = obj?.secondName ?? obj.secondNamemother;
-  const primerapellido = obj?.surname ?? obj.surnamemother;
-  const segundoapellido = obj?.secondSurname ?? obj.secondSurnamemother;
 
   //const regimen = obj?.regime;
   const idfallecido = obj?.IDNumber;
@@ -297,6 +322,39 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     data = datanueva;
   }
 
+  const tabla2 = [
+    {
+      title: 'Nro tramite. ',
+      dataIndex: 'iD_Control_Tramite',
+      key: 'tramite'
+    },
+    {
+      title: 'Fecha Solicitud. ',
+      dataIndex: 'fechaSolicitud',
+      key: 'fechaSolicitud'
+    },
+    {
+      title: 'Primer Nombre',
+      dataIndex: 'primerNombre',
+      key: 'primerNombre'
+    },
+    {
+      title: 'Segundo Nombre',
+      dataIndex: 'segundoNombre',
+      key: 'segundoNombre'
+    },
+    {
+      title: 'Primer Apellido',
+      dataIndex: 'primerApellido',
+      key: 'primerApellido'
+    },
+    {
+      title: 'Segundo Apellido',
+      dataIndex: 'segundoApellido',
+      key: 'primerNombre'
+    }
+  ];
+
   const onClickViewFallecido = async (idSolicitud: string) => {
     const all = await api.getCertificado(idSolicitud);
 
@@ -316,12 +374,17 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     showModal();
   };
 
+  const onClickViewFallecidoDuplicado = async () => {
+    setisModalfallecidoVisible(true);
+  };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setisModalfallecidoVisible(false);
   };
   return (
     <>
@@ -336,6 +399,15 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
                     Validar No. Certificado
                   </Button>
                 </Form.Item>
+                {l_fallecidos.length > 0 && (
+                  <>
+                    <Form.Item>
+                      <Button type='primary' className='ml-3 mt-1' onClick={() => onClickViewFallecidoDuplicado()}>
+                        Validar No. Identificación
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
               </div>
 
               <Modal
@@ -401,6 +473,23 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
                     )}
                   </>
                 )}
+              </Modal>
+
+              <Modal
+                title={<p className='text-center text-dark text-uppercase mb-0 titulo'> validación número de identificación</p>}
+                visible={isModalfallecidoVisible}
+                onCancel={handleCancel}
+                width={1000}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                <Table
+                  id='tableGen2'
+                  dataSource={l_fallecidos}
+                  columns={tabla2}
+                  pagination={{ pageSize: 10 }}
+                  className='table_info'
+                />
               </Modal>
             </Divider>
           </div>

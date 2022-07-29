@@ -118,10 +118,11 @@ export const Gridview = (props: IDataSource) => {
   const fecharecortada = () => {
     if (Tipo.rol !== 'Ciudadano') {
       const posicioninicial = 0;
-      var fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
+      const fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
+      const fechamodificada = fec.substring(posicioninicial, fecha.indexOf('T'));
       fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
 
-      return fec.substring(0, 10);
+      return fechamodificada;
     } else {
       const posicioninicial = 0;
       var fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
@@ -506,13 +507,32 @@ export const Gridview = (props: IDataSource) => {
     );
   }
 
+  const onPageChange = (pagination: any, filters: any) => {
+    var valor: any = data.at(0);
+    var array: any[] = [];
+    for (let index = 0; index < data.length; index++) {
+      if (index >= (pagination.current - 1) * 10) {
+        valor = data.at(index);
+        array.push(valor);
+      }
+    }
+
+    Renovar(array);
+  };
+
   return (
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body'>
           <div className='row'>
             <div className='col-lg-12 col-sm-12 col-md-12'>
-              <Table id='tableGen' dataSource={data} columns={structureColumns} pagination={{ pageSize: Paginas }} />
+              <Table
+                id='tableGen'
+                dataSource={data}
+                columns={structureColumns}
+                onChange={onPageChange}
+                pagination={{ pageSize: Paginas }}
+              />
             </div>
           </div>
           <div className='row'>

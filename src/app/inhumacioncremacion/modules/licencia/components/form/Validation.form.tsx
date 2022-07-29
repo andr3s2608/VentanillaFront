@@ -78,7 +78,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const [user, setUser] = useState<any>();
+  const [objJosn, setobjJosn] = useState<any>(EditInhumacion('1'));
   const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String, String, String, String]>([
     '1',
     '1',
@@ -93,7 +93,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [type, setType] = useState<any[]>([]);
   //create o edit
   const valid: any = EditInhumacion('1');
-  var objJosn: any = EditInhumacion('1');
 
   const idUsuario = api.getIdUsuario();
 
@@ -116,9 +115,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ||
           valid.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e'
         ) {
-          objJosn = EditFetal();
-        } else {
-          objJosn = EditInhumacion('1');
+          setobjJosn(EditFetal());
         }
       } else {
         setisnull(true);
@@ -134,8 +131,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           dominioService.get_type(ETipoDominio['Tipo de Muerte'])
         ]);
 
-        const userres = await api.getCodeUser();
-        setUser(userres);
         setListas(resp);
 
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
