@@ -26,6 +26,7 @@ import { ITipoLicencia } from 'app/shared/utils/types.util';
 
 // Secciones del formulario
 import { InformacionFallecidoSeccion, KeysForm as KeyFormInformacionDefuncion } from './seccions/Informacion-Fallecido.seccion';
+import { InformacionInstitucionCertificaFallecimientoseccion } from './seccions/Informacion-InstitucionCertificaFallecimiento.seccion';
 import { InformacionSolicitanteSeccion } from './seccions/Datos-solicitante.seccion';
 import { InformacionMedicoCertificante } from './seccions/medico-certificante.seccion';
 import { InformacionDocumentosGestion } from './seccions/documentos-gestion.seccion';
@@ -51,6 +52,7 @@ import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
 import '../../../../../.././scss/antd/index.css';
 import '../../../../../../css/estilos.css';
+import { AutorizadorCremacion } from './seccions/AutorizadorCremacion';
 export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
@@ -891,6 +893,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     });
   };
 
+  console.log('**************************************');
+  console.log(objJosn.autorizadorCremacion);
+  console.log('**************************************');
+
   return (
     <>
       {isnull && onnull()}
@@ -915,7 +921,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                         </div>
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} />
+                          {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
+                            <AutorizadorCremacion obj={objJosn.autorizadorCremacion} />
+                          ) : null}
                           <hr />
+                          {objJosn.instRazonSocial != 'Otros' ? (
+                            <>
+                              <InformacionInstitucionCertificaFallecimientoseccion obj={objJosn} />
+                              <hr />
+                            </>
+                          ) : null}
                           <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
                           <hr />
                           <InformacionSolicitanteSeccion obj={objJosn} />
@@ -929,6 +944,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                           />
                           <hr />
                           <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
+
                           <div className='fadeInLeft'>
                             <div className='container-fluid'>
                               <div className='col-lg-12'>
