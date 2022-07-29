@@ -35,7 +35,7 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
 
   //Institución que certifica el fallecimiento
 
-  var data = [
+  var dataCompleta = [
     {
       title: 'Numero de identificación',
       describe: instNumIdent?.toLowerCase()
@@ -90,6 +90,39 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
     }
   ];
 
+  var dataParcial = [
+    {
+      title: 'Numero de identificación',
+      describe: instNumIdent?.toLowerCase()
+    },
+    {
+      title: 'Razon social',
+      describe: instRazonSocial?.toLowerCase()
+    },
+    {
+      title: 'Numero de protocolo',
+      describe: instNumProtocolo?.toLowerCase()
+    },
+    {
+      title: 'Numero de acta de levantamiento',
+      describe: instNumActaLevantamiento?.toLowerCase()
+    },
+    {
+      title: 'Fecha de acta',
+      describe: (
+        <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={instFechaActa} disabled />
+      )
+    },
+    {
+      title: 'Seccional fiscalia',
+      describe: instSeccionalFiscalia?.toLowerCase()
+    },
+    {
+      title: 'Número de fiscalia',
+      describe: instNoFiscal?.toLowerCase()
+    }
+  ];
+
   return (
     <>
       <div className='ant-container d-flex justify-content-center w-100'>
@@ -111,7 +144,11 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
           xl: 3,
           xxl: 3
         }}
-        dataSource={data}
+        dataSource={
+          obj.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e' || obj.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020'
+            ? dataCompleta
+            : dataParcial
+        }
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta title={item.title} description={item.describe} />
