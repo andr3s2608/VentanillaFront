@@ -26,6 +26,7 @@ import { ITipoLicencia } from 'app/shared/utils/types.util';
 
 // Secciones del formulario
 import { InformacionFallecidoSeccion, KeysForm as KeyFormInformacionDefuncion } from './seccions/Informacion-Fallecido.seccion';
+import { InformacionInstitucionCertificaFallecimientoseccion } from './seccions/Informacion-InstitucionCertificaFallecimiento.seccion';
 import { InformacionSolicitanteSeccion } from './seccions/Datos-solicitante.seccion';
 import { InformacionMedicoCertificante } from './seccions/medico-certificante.seccion';
 import { InformacionDocumentosGestion } from './seccions/documentos-gestion.seccion';
@@ -929,6 +930,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                             <AutorizadorCremacion obj={objJosn.autorizadorCremacion} />
                           ) : null}
                           <hr />
+                          {objJosn.instRazonSocial != 'Otros' ? (
+                            <>
+                              <InformacionInstitucionCertificaFallecimientoseccion obj={objJosn} />
+                              <hr />
+                            </>
+                          ) : null}
                           <InformacionMedicoCertificante obj={objJosn} disabledField={isDisabledElement} />
                           <hr />
                           <InformacionSolicitanteSeccion obj={objJosn} />

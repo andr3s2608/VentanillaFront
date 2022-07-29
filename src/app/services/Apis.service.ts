@@ -577,4 +577,20 @@ export class ApiService {
       url: `TipoNotificaciones/getAll`,
       id: '0'
     });
+
+  getCertificadoAguas = (idSolicitud: string) => {
+    return get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `GeneratePDF/GenerateCertificadoPDF/${idSolicitud}`,
+      id: '0'
+    });
+  };
+
+  getConstantesAguas = (idConstante: string) => {
+    return get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Constantes/getByIdConstante/${idConstante}`,
+      id: '0'
+    });
+  };
 }

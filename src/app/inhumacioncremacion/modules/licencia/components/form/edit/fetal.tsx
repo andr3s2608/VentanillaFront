@@ -62,6 +62,12 @@ const formatObjJson = (obj: any) => {
     instFechaActa: institucionCertificaFallecimiento.fechaActa,
     instSeccionalFiscalia: institucionCertificaFallecimiento.seccionalFiscalia,
     instNoFiscal: institucionCertificaFallecimiento.noFiscal,
+    //Prueba
+    instNombreFiscal: institucionCertificaFallecimiento.nombreFiscal,
+    instApellidoFiscal: institucionCertificaFallecimiento.apellidoFiscal,
+    instNumeroOficio: institucionCertificaFallecimiento.numeroOficio,
+    instFechaOficio: institucionCertificaFallecimiento.fechaOficio,
+    instNoFiscalMedicinaLegal: institucionCertificaFallecimiento.noFiscalMedicinaLegal,
 
     idLugarDefuncion: lugarDefuncion.idLugarDefuncion,
     idUbicacionPersona: ubicacionPersona.idUbicacionPersona,

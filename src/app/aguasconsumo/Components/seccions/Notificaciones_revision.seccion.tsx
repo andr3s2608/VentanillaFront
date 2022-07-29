@@ -102,7 +102,9 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Aprobación Autoridad Ambiental':
-          await api.sendEmail({
+          const certificadoAutoridad = await api.getCertificadoAguas('2');
+
+          await api.sendEmailAttachment({
             to: obj.correoElectronico,
             subject: 'Notificación Aprobación Autoridad Ambiental',
             body: agregarValoresDinamicos(
@@ -113,7 +115,9 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
                 obj.renovafuentejson[0].numeroResolucion,
                 obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
               ]
-            )
+            ),
+            attachment: certificadoAutoridad,
+            AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
           });
           Swal.fire({
             icon: 'success',
@@ -123,7 +127,9 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Aprobación al Ciudadano':
-          await api.sendEmail({
+          const certificadoCiudadano = await api.getCertificadoAguas('4');
+
+          await api.sendEmailAttachment({
             to: obj.correoElectronico,
             subject: 'Notificación Aprobación al Ciudadano',
             body: agregarValoresDinamicos(
@@ -134,7 +140,9 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
                 obj.renovafuentejson[0].numeroResolucion,
                 obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
               ]
-            )
+            ),
+            attachment: certificadoCiudadano,
+            AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
           });
           Swal.fire({
             icon: 'success',
@@ -144,10 +152,12 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Recordatorio de Subsanación':
+          const dias = await api.getConstantesAguas('9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
+
           await api.sendEmail({
             to: obj.correoElectronico,
             subject: 'Notificación Recordatorio de Subsanación',
-            body: formato['cuerpo']
+            body: agregarValoresDinamicos(formato['cuerpo'], ['~:~dias~:~'], [dias['valorConstante']])
           });
           Swal.fire({
             icon: 'success',
@@ -207,6 +217,12 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ]
             )
           );
+          break;
+
+        case 'Notificación Recordatorio de Subsanación':
+          const dias = await api.getConstantesAguas('9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
+          setlBody(agregarValoresDinamicos(body0.substring(indice1 + 67, indice2), ['~:~dias~:~'], [dias['valorConstante']]));
+
           break;
 
         default:
