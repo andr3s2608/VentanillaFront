@@ -58,6 +58,12 @@ const formatObjJson = (obj: any) => {
       instFechaActa: institucionCertificaFallecimiento.fechaActa,
       instSeccionalFiscalia: institucionCertificaFallecimiento.seccionalFiscalia,
       instNoFiscal: institucionCertificaFallecimiento.noFiscal,
+      //Prueba
+      instNombreFiscal: institucionCertificaFallecimiento.nombreFiscal,
+      instApellidoFiscal: institucionCertificaFallecimiento.apellidoFiscal,
+      instNumeroOficio: institucionCertificaFallecimiento.numeroOficio,
+      instFechaOficio: institucionCertificaFallecimiento.fechaOficio,
+      instNoFiscalMedicinaLegal: institucionCertificaFallecimiento.noFiscalMedicinaLegal,
 
       idLugarDefuncion: lugarDefuncion.idLugarDefuncion,
       idUbicacionPersona: ubicacionPersona.idUbicacionPersona,
@@ -153,6 +159,12 @@ const formatObjJson = (obj: any) => {
       instFechaActa: institucionCertificaFallecimiento.fechaActa,
       instSeccionalFiscalia: institucionCertificaFallecimiento.seccionalFiscalia,
       instNoFiscal: institucionCertificaFallecimiento.noFiscal,
+      //Prueba
+      instNombreFiscal: institucionCertificaFallecimiento.nombreFiscal,
+      instApellidoFiscal: institucionCertificaFallecimiento.apellidoFiscal,
+      instNumeroOficio: institucionCertificaFallecimiento.numeroOficio,
+      instFechaOficio: institucionCertificaFallecimiento.fechaOficio,
+      instNoFiscalMedicinaLegal: institucionCertificaFallecimiento.noFiscalMedicinaLegal,
 
       idLugarDefuncion: lugarDefuncion.idLugarDefuncion,
       idUbicacionPersona: ubicacionPersona.idUbicacionPersona,
@@ -160,10 +172,10 @@ const formatObjJson = (obj: any) => {
       idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
 
       autorizadorcremacion,
-      name: fallecido.primerNombre,
-      secondName: fallecido.segundoNombre,
-      surname: fallecido.primerApellido,
-      secondSurname: fallecido.segundoApellido,
+      name: 'Camilo', // fallecido.primerNombre,
+      secondName: 'Camilo', //  fallecido.segundoNombre,
+      surname: 'Camilo', // fallecido.primerApellido,
+      secondSurname: 'Camilo', // fallecido.segundoApellido,
       nationalidad: [fallecido.nacionalidad],
       dateOfBirth: fallecido.fechaNacimiento,
       IDType: fallecido.tipoIdentificacion,
