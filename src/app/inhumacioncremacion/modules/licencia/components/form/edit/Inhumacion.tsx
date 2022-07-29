@@ -5,13 +5,13 @@ export const EditInhumacion = (id: String) => {
     const json = JSON.parse(data);
     const [obj] = json;
 
-    return formatObjJson(obj);
+    return formatObjJson(obj, id);
   } else {
     return undefined;
   }
 };
 
-const formatObjJson = (obj: any) => {
+const formatObjJson = (obj: any, id: String) => {
   const {
     institucionCertificaFallecimiento,
     lugarDefuncion,
@@ -27,6 +27,11 @@ const formatObjJson = (obj: any) => {
   const [cremador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
 
   //en caso de que no exista un fallecido, se tomara el de la madre
+  if (id == '1') {
+    if (fallecido == undefined) {
+      fallecido = isPerson(persona, '342d934b-c316-46cb-a4f3-3aac5845d246');
+    }
+  }
 
   let jsonDt;
   ///metodo que se habia hecho por inconsistencias en la bd(no existia medico ligado a cada solicitud)

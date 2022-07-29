@@ -205,6 +205,9 @@ export const VisitaRu = () => {
                         style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                         type='primary'
                         htmlType='submit'
+                        onClick={() => {
+                          history.push('/tramites-servicios-aguas');
+                        }}
                       >
                         Enviar
                       </Button>

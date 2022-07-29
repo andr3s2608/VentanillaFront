@@ -64,7 +64,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           departamento: obj.acueductosfuentejson[index].idDepartamento,
           localidad: obj.acueductosfuentejson[index].idLocalidad,
           municipio: obj.acueductosfuentejson[index].idMunicipio,
-          sector: obj.acueductosfuentejson[index].sector,
           latitud: obj.acueductosfuentejson[index].coo_lat_cy,
           longitud: obj.acueductosfuentejson[index].coo_long_cx,
           usofuente: obj.acueductosfuentejson[index].idUsoFuente,
@@ -120,7 +119,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     const dep = props.form.getFieldValue('departamento');
     const loc = props.form.getFieldValue('localidad');
     var mun = props.form.getFieldValue('municipio');
-    const sec = props.form.getFieldValue('sector');
+
     const lat = props.form.getFieldValue('latituduso');
     const long = props.form.getFieldValue('longituduso');
     const uso = props.form.getFieldValue('usofuente');
@@ -129,7 +128,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
       mun = '31211657-3386-420a-8620-f9c07a8ca491';
     }
-    if (loc == undefined || uso == undefined || sec == undefined || lat == undefined || long == undefined) {
+    if (loc == undefined || uso == undefined || lat == undefined || long == undefined) {
       Swal.fire({
         icon: 'error',
         title: 'Datos Incompletos',
@@ -151,7 +150,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         departamento: dep,
         localidad: loc,
         municipio: mun,
-        sector: sec,
         latitud: lat,
         longitud: long,
         usofuente: uso,
@@ -180,13 +178,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       prop(array);
       setacueductostabla(arraytabla);
 
-      props.form.resetFields(['localidad', 'sector', 'latituduso', 'longituduso', 'descripcionotrouso', 'caudal', 'usofuente']);
+      props.form.resetFields(['localidad', 'latituduso', 'longituduso', 'descripcionotrouso', 'caudal', 'usofuente']);
     }
   };
   const onClickLlenarInformacion = async (datos: any) => {
     props.form.setFieldsValue({
       localidad: acueducto[datos.posicion - 1].localidad,
-      sector: acueducto[datos.posicion - 1].sector + '',
       latituduso: acueducto[datos.posicion - 1].latitud + '',
       longituduso: acueducto[datos.posicion - 1].longitud + '',
       descripcionotrouso: acueducto[datos.posicion - 1].descripcion + '',
@@ -264,7 +261,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               style={{ fontSize: '30xp', color: 'red' }}
               icon={<CheckOutlined />}
             >
-              Validar Información
+              Eliminar
             </Button>
           );
         }
@@ -326,28 +323,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 value={idBogotac}
                 disabled
                 searchValue={idBogotac}
-              />
-            </Form.Item>
-          </div>
-        </div>
-        <div className='form-group gov-co-form-group '>
-          <label className='text'>
-            <span className='required'>* </span> Sector
-          </label>
-          <div className='gov-co-dropdown'>
-            <Form.Item name='sector' rules={[{ required: false }]}>
-              <Input
-                maxLength={50}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
               />
             </Form.Item>
           </div>
@@ -491,4 +466,4 @@ interface DatosAcueducto<T> {
   obj: any;
   prop: any;
 }
-export const KeysForm = ['localidad', 'sector', 'caudal', 'descripcionotrouso', 'usofuente', 'longituduso', 'latituduso'];
+export const KeysForm = ['localidad', 'caudal', 'descripcionotrouso', 'usofuente', 'longituduso', 'latituduso'];

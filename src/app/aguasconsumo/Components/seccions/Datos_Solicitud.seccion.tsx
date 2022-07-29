@@ -221,26 +221,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
               <div className='panel-search'>
                 <p className='text'>
-                  <span className='required'>*</span> Usuario Asignado
-                </p>
-                <div className='form-group gov-co-form-group ml-2'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item initialValue={obj?.idusuario ?? 'vacio'} name='usuarioasignado' rules={[{ required: false }]}>
-                      <SelectComponent
-                        options={l_usuarios}
-                        onChange={Onchangecoordinador}
-                        defaultValue={obj?.idusuario ?? 'vacio'}
-                        optionPropkey='oid'
-                        optionPropLabel='fullName'
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p className='text'>
                   <span className='required'>*</span>
                   Subred de jurisdicción
                 </p>

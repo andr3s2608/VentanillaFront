@@ -124,9 +124,9 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
         <>
           <div className='col-md-6 col-lg-6 col-sm-12 ml-3'>
             <p className='text'>
-              <span className='required'>*</span> Cargar archivo
+              <span></span> Cargar archivo
             </p>
-            <Form.Item label='' name='cargarArchivo' rules={[{ required: true }]}>
+            <Form.Item label='' name='cargarArchivo' rules={[{ required: false }]}>
               <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
                 <Button icon={<UploadOutlined />}>Cargar archivo</Button>
               </Upload>
