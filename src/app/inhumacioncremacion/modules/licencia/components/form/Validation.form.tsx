@@ -154,7 +154,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         if (!all) {
           setIsModalValidarCertificado(true);
           setisvalidcertificado(true);
-          setIsDisabledElement(true);
         }
 
         const data = await api.getLicencia(objJosn?.idSolicitud);
