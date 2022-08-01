@@ -525,7 +525,7 @@ export class ApiService {
     return get<any>({
       endpoint: REACT_APP_LOCAL as string,
       url: `Formatos/getByIdPlantilla/${idFormato}`,
-      id: '1'
+      id: '0'
     });
   };
 

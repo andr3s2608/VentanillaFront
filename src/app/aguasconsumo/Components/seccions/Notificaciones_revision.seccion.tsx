@@ -349,7 +349,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
             className='ml-3 float-right button btn btn-default'
             style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
             type='primary'
-            htmlType='submit'
+            htmlType='button'
             onClick={vistaPrevia}
           >
             Ver vista previa

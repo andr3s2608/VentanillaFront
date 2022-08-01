@@ -68,6 +68,7 @@ export const Bandeja = (props: IDataSource) => {
       history.push('/tramites-servicios-aguas/Revision/gestionar-solicitud');
     }
   };
+  const valor: number = 1;
 
   const structureColumns = [
     {

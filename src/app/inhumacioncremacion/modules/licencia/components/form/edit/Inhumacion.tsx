@@ -24,13 +24,26 @@ const formatObjJson = (obj: any, id: String) => {
 
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
-  const [autorizadorCremacion] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
+  const [cremador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
 
   //en caso de que no exista un fallecido, se tomara el de la madre
   if (id == '1') {
     if (fallecido == undefined) {
       fallecido = isPerson(persona, '342d934b-c316-46cb-a4f3-3aac5845d246');
     }
+  }
+  const autorizadorcremacion: any = [];
+  if (cremador != undefined) {
+    autorizadorcremacion.push({
+      name: cremador.primerNombre,
+      secondName: cremador.segundoNombre,
+      surname: cremador.primerApellido,
+      secondSurname: cremador.segundoApellido,
+      tipoid: cremador.tipoIdentificacion,
+      numeroid: cremador.numeroIdentificacion,
+      tipopersona: cremador.idTipoPersona,
+      parentesco: cremador.otroParentesco
+    });
   }
 
   let jsonDt;
@@ -138,6 +151,8 @@ const formatObjJson = (obj: any, id: String) => {
       areaDef: lugarDefuncion.idAreaDefuncion,
       sitDef: lugarDefuncion.idSitioDefuncion,
 
+      autorizadorcremacion,
+
       idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
       instType: institucionCertificaFallecimiento.idTipoInstitucion,
@@ -214,8 +229,7 @@ const formatObjJson = (obj: any, id: String) => {
           value = 'Fuera del País';
         }
         return value;
-      },
-      autorizadorCremacion
+      }
     };
   }
 

@@ -123,6 +123,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setisnull(true);
       }
       if (objJosn != undefined) {
+        console.log(objJosn);
         const resp = await Promise.all([
           dominioService.get_type(ETipoDominio.Pais),
           dominioService.get_type(ETipoDominio['Tipo Documento']),
@@ -893,10 +894,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     });
   };
 
-  console.log('**************************************');
-  console.log(objJosn.autorizadorCremacion);
-  console.log('**************************************');
-
   return (
     <>
       {isnull && onnull()}
@@ -922,7 +919,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} />
                           {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
-                            <AutorizadorCremacion obj={objJosn.autorizadorCremacion} />
+                            <AutorizadorCremacion obj={objJosn} />
                           ) : null}
                           <hr />
                           {objJosn.instRazonSocial != 'Otros' ? (
