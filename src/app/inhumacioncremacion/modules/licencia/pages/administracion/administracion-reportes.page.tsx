@@ -15,6 +15,7 @@ import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import Input from 'antd/es/input/Input';
 import Button from 'antd/es/button/button';
+import Swal from 'sweetalert2';
 
 const { TabPane } = Tabs;
 const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
@@ -90,6 +91,12 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
+      Swal.fire({
+        title: 'Fecha invalida',
+        text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione una',
+
+        icon: 'error'
+      });
       setVisibleAlert(true);
     }
     if (input == true) {
