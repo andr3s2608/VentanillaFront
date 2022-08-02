@@ -128,10 +128,10 @@ export const ModificarMedico = ({ props }: any) => {
             </div>
             <div className='row mt-3 justify-content-center text-center'>
               <div className='col-lg-6 col-sm-12 col-md-6'>
-                <Form.Item label='Número' name='numeroid'>
+                <Form.Item label='Número de Identificación' name='numeroid'>
                   <Input
                     allowClear
-                    placeholder='Número'
+                    placeholder='Número de Identificación'
                     autoComplete='off'
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
