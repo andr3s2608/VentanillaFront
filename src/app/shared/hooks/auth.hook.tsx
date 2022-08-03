@@ -13,10 +13,11 @@ import { ModuleLayout } from 'app/inhumacioncremacion/modules/module.layout';
 
 export const useAuthProvider = () => {
   const bodyFunction = (dataFunction: IAzureADFunctionProps) => {
-    const { authenticationState, login, logout } = dataFunction;
+    const { login, logout, authenticationState, error, accountInfo } = dataFunction;
 
     switch (authenticationState) {
       case AuthenticationState.Authenticated:
+        localStorage.setItem('accountInfoStorage', JSON.stringify(accountInfo));
         return (
           <BrowserRouter>
             <Route path='/'>
