@@ -107,7 +107,6 @@ export const Bandeja = (props: IDataSource) => {
               if (arrayusuario[index].tipodeSolicitud == 'Gestion Subdirector') {
                 diasproceso = dias[2].valorConstante;
               } else {
-                console.log('entro');
                 color = 'white';
                 return 'white';
                 break;
@@ -151,7 +150,6 @@ export const Bandeja = (props: IDataSource) => {
             if (array[index].tipodeSolicitud == 'Gestion Subdirector') {
               diasproceso = dias[2].valorConstante;
             } else {
-              console.log(array[index].tipodeSolicitud + ' / ' + datos);
               color = 'white';
               return 'white';
               break;

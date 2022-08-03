@@ -76,7 +76,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
-  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7C96A4D3-A0CB-484E-A01B-93BC39C2552E');
+  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7c96a4d3-a0cb-484e-a01b-93bc39c2552e');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
@@ -804,7 +804,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       Swal.fire({
         icon: 'error',
         title: 'Datos inválidos',
-        text: `Debe ingresar una fecha de nacimiento valida`
+        text: `Debe ingresar una fecha y hora de nacimiento valida`
       });
     }
   };
@@ -854,74 +854,78 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
 
   const FechaNacimiento = (value: any) => {
-    const fecha = moment(value);
-    const time = form.getFieldValue('timenac');
-    let time2 = undefined;
-    if (time != undefined) {
-      time2 = moment(time).format('LT');
-    }
+    const valorfecha = form.getFieldValue('dateOfBirth');
 
-    const timedef = form.getFieldValue('time');
-    let timedef2 = undefined;
-    if (timedef != undefined) {
-      timedef2 = moment(timedef).format('LT');
-    }
+    if (valorfecha != undefined) {
+      const fecha = moment(valorfecha);
+      const time = form.getFieldValue('timenac');
+      let time2 = undefined;
+      if (time != undefined) {
+        time2 = moment(time).format('LT');
+      }
 
-    let tiempo = '';
-    if (timedef2 != undefined) {
-      if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
-        if (time2 != undefined) {
-          const posicion1 = time2.indexOf(':');
-          const posicion2 = timedef2.indexOf(':');
+      const timedef = form.getFieldValue('time');
+      let timedef2 = undefined;
+      if (timedef != undefined) {
+        timedef2 = moment(timedef).format('LT');
+      }
 
-          const horanac1 = time2.substring(0, posicion1);
-          const horanac2 = time2.substring(posicion1 + 1, time2.length);
+      let tiempo = '';
+      if (timedef2 != undefined) {
+        if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
+          if (time2 != undefined) {
+            const posicion1 = time2.indexOf(':');
+            const posicion2 = timedef2.indexOf(':');
 
-          const horadef1 = timedef2.substring(0, posicion2);
-          const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+            const horanac1 = time2.substring(0, posicion1);
+            const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-          if (parseInt(horanac1) < parseInt(horadef1)) {
-            tiempo = 'es valida';
-          } else {
-            if (parseInt(horanac1) == parseInt(horadef1)) {
-              if (parseInt(horanac2) <= parseInt(horadef2)) {
-                tiempo = 'es valida';
+            const horadef1 = timedef2.substring(0, posicion2);
+            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+
+            if (parseInt(horanac1) < parseInt(horadef1)) {
+              tiempo = 'es valida';
+            } else {
+              if (parseInt(horanac1) == parseInt(horadef1)) {
+                if (parseInt(horanac2) <= parseInt(horadef2)) {
+                  tiempo = 'es valida';
+                } else {
+                  tiempo = 'es invalida';
+                }
               } else {
                 tiempo = 'es invalida';
               }
-            } else {
-              tiempo = 'es invalida';
             }
           }
         }
       }
-    }
 
-    let valor = form.getFieldValue('date');
-    let fechadef = moment(valor);
+      let valor = form.getFieldValue('date');
+      let fechadef = moment(valor);
 
-    if (!fecha.isBefore(fechadef)) {
-      if (tiempo == 'es valida') {
-        setdatecorrect(true);
-      } else {
-        if (tiempo == 'es invalida') {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `La Hora de nacimiento  debe ser menor a: ${timedef2}`
-          });
+      if (!fecha.isBefore(fechadef)) {
+        if (tiempo == 'es valida') {
+          setdatecorrect(true);
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
-          });
+          if (tiempo == 'es invalida') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: `La Hora de nacimiento  debe ser menor a: ${timedef2}`
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
+            });
+          }
         }
-      }
 
-      setdatecorrect(false);
-    } else {
-      setdatecorrect(true);
+        setdatecorrect(false);
+      } else {
+        setdatecorrect(true);
+      }
     }
   };
 
@@ -1210,10 +1214,25 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
-              <div className='form-row'>
+              <div className='form-row ml-4'>
+                {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
+                  <>
+                    <Form.Item label='Hora' name='timenac' style={{ width: 400 }}>
+                      <DatepickerComponent
+                        picker='time'
+                        dateDisabledType='default'
+                        onChange={FechaNacimiento}
+                        dateFormatType='time'
+                        placeholder='-- Elija una hora --'
+                        style={{ width: 100 }}
+                      />
+                    </Form.Item>
+                  </>
+                )}
+
                 <Form.Item
                   label='Fecha de Nacimiento'
-                  style={{ width: 400 }}
+                  style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 400 : 750 }}
                   name='dateOfBirth'
                   rules={[{ required: true }]}
                   initialValue={date}
@@ -1223,24 +1242,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     onChange={FechaNacimiento}
                     dateDisabledType='before'
                     dateFormatType='default'
+                    style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 200 : 530 }}
                     value={date}
                   />
                 </Form.Item>
-                {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
-                  <>
-                    <div className='form-group col-md-5 col-lg-4'>
-                      <Form.Item label='Hora' name='timenac' style={{ width: 350 }}>
-                        <DatepickerComponent
-                          picker='time'
-                          dateDisabledType='default'
-                          dateFormatType='time'
-                          placeholder='-- Elija una hora --'
-                          style={{ width: 100 }}
-                        />
-                      </Form.Item>
-                    </div>
-                  </>
-                )}
               </div>
               <Form.Item
                 label='Tipo Identificación'

@@ -15,10 +15,7 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      console.log('entro', obj);
-
       if (obj != undefined) {
-        console.log(obj.autorizadorcremacion);
         setobj(obj.autorizadorcremacion[0]);
         setNombres([
           obj.autorizadorcremacion[0].name,
