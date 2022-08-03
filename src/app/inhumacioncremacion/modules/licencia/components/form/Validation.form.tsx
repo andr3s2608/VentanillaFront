@@ -154,7 +154,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         if (!all) {
           setIsModalValidarCertificado(true);
           setisvalidcertificado(true);
-          setIsDisabledElement(true);
         }
 
         const data = await api.getLicencia(objJosn?.idSolicitud);
@@ -734,7 +733,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       <div className='row'>
         <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
           <div className='col-lg-12 col-sm-12 col-md-12 '>
-            <Button type='dashed' htmlType='button' onClick={onPrevStep} className='align-self-end'>
+            <Button
+              type='dashed'
+              htmlType='button'
+              onClick={() => {
+                history.push('/tramites-servicios');
+              }}
+              className='align-self-end'
+            >
               Volver atrás
             </Button>
             <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>

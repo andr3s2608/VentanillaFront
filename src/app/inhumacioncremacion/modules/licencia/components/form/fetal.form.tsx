@@ -660,7 +660,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       numerodeath = '00000000000000000';
     }
 
-    if (busquedacertificado == null) {
+    if (busquedacertificado != null) {
       Swal.fire({
         title: 'Usuario Registrado',
         text: 'El Número de Certificado ya se Encuentra Registrado',

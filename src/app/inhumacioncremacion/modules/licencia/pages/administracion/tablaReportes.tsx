@@ -156,13 +156,8 @@ export const TablaReportes = (props: IDataSource) => {
       },
       {
         title: 'Estado Tramite',
-        dataIndex: '',
-        key: 'estado',
-        render: (Text: string) => (
-          <Form.Item label='' name=''>
-            <text>{tramite}</text>
-          </Form.Item>
-        )
+        dataIndex: 'estadoString',
+        key: 'estado'
       },
       {
         title: 'Tipo Solicitud',
@@ -176,8 +171,6 @@ export const TablaReportes = (props: IDataSource) => {
       }
     ];
   }
-
-  let tramite = 'En tramite';
 
   const onPageChange = (pagination: any, filters: any) => {
     alert(pagination.current);

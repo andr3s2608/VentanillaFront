@@ -508,7 +508,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       }
     };
 
-
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
     const formData = new FormData();
@@ -856,7 +855,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const FechaNacimiento = (value: any) => {
     const fecha = moment(value);
-    const documento = form.getFieldValue('IDNumber');
     const time = form.getFieldValue('timenac');
     let time2 = undefined;
     if (time != undefined) {
@@ -871,7 +869,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     let tiempo = '';
     if (timedef2 != undefined) {
-      if (documento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
+      if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
         if (time2 != undefined) {
           const posicion1 = time2.indexOf(':');
           const posicion2 = timedef2.indexOf(':');
@@ -881,15 +879,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
           const horadef1 = timedef2.substring(0, posicion2);
           const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
-          if (parseInt(horanac1) < parseInt(horadef1)) {
 
+          if (parseInt(horanac1) < parseInt(horadef1)) {
             tiempo = 'es valida';
           } else {
             if (parseInt(horanac1) == parseInt(horadef1)) {
-
-
               if (parseInt(horanac2) <= parseInt(horadef2)) {
-
                 tiempo = 'es valida';
               } else {
                 tiempo = 'es invalida';
