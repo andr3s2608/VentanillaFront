@@ -113,10 +113,17 @@ const handle_error = (reject: any): Promise<Error> => {
 
 http.interceptors.request.use(
   async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-    const token = await authProvider.getAccessToken();
     const { headers } = config;
+    const AccountInfoStorage = JSON.parse(localStorage.getItem('accountInfoStorage') as string);
+    const TokenInLocalStorage = JSON.parse(
+      localStorage.getItem(
+        '{"authority":"https://saludcapitalb2c.b2clogin.com/saludcapitalb2c.onmicrosoft.com/b2c_1_iniciosesionconregistro/","clientId":"f3e58d64-a12a-4db0-b982-b837f4c8325d","homeAccountIdentifier":"' +
+          AccountInfoStorage.account.homeAccountIdentifier +
+          '"}'
+      ) as string
+    );
 
-    headers.Authorization = `Bearer ${token.accessToken}`;
+    headers.Authorization = 'Bearer ' + TokenInLocalStorage.accessToken;
     return config;
   },
   (error: Error): Promise<Error> => Promise.reject(error)
