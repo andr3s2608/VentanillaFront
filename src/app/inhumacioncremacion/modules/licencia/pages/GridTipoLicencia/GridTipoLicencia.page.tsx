@@ -56,6 +56,8 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     if (permiso?.rol === 'Ciudadano') {
       const resp = await api.GetEstadoSolicitudNuevo();
       setGrid(resp);
+      setAllData(resp);
+      setVisibleGrid('contents');
     } else {
       let arraydatos = [];
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
