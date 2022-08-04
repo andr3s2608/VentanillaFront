@@ -1,19 +1,10 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
-import { ModalFuncProps } from 'antd/es/modal';
-
-// Servicios
-import { authProvider } from 'app/shared/utils/authprovider.util';
 import { confirmMessage, errorMessage, warningMessage, successMessage } from './message.service';
-
-// Herramientas
+import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
 import { clearStorage } from 'app/shared/tools/storage.tool';
-
-// Redux
-import { store } from 'app/redux/app.reducers';
 import { Loading } from 'app/redux/ui/ui.actions';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
+import { ModalFuncProps } from 'antd/es/modal';
+import { store } from 'app/redux/app.reducers';
 
-// Cancelar request
 const cancelRequest = axios.CancelToken.source();
 let source: any;
 
@@ -108,11 +99,8 @@ const handle_error = (reject: any): Promise<Error> => {
   return Promise.reject(reject);
 };
 
-//#endregion
-//#region Interceptores de peticiones http
-
 http.interceptors.request.use(
-  async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+  (config: AxiosRequestConfig): AxiosRequestConfig => {
     const { headers } = config;
     const AccountInfoStorage = JSON.parse(localStorage.getItem('accountInfoStorage') as string);
     const TokenInLocalStorage = JSON.parse(
@@ -123,7 +111,11 @@ http.interceptors.request.use(
       ) as string
     );
 
-    headers.Authorization = 'Bearer ' + TokenInLocalStorage.accessToken;
+    if (TokenInLocalStorage.accessToken) {
+      headers.Authorization = 'Bearer ' + TokenInLocalStorage.accessToken;
+    } else {
+      headers.Authorization = '';
+    }
     return config;
   },
   (error: Error): Promise<Error> => Promise.reject(error)
@@ -131,7 +123,6 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(extract_data, handle_error);
 
-//#endregion
 //#region Metodos CRUD
 
 /**
