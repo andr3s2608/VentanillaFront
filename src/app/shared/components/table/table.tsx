@@ -73,8 +73,8 @@ export const Gridview = (props: IDataSource) => {
       }
 
       if (Tipo.rol == 'Ciudadano') {
-        identify = datos.reduce((result: any, item: { nroIdentificacionFallecido: any }) => {
-          return `${result}${item.nroIdentificacionFallecido}|`;
+        identify = datos.reduce((result: any, item: { noIdentificacionSolicitante: any }) => {
+          return `${result}${item.noIdentificacionSolicitante}|`;
         }, '');
         tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
           return `${result}${item.tramite}|`;
@@ -251,7 +251,7 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Documento del Fallecido',
-          dataIndex: 'nroIdentificacionFallecido',
+          dataIndex: 'noIdentificacionSolicitante',
           key: 'numeroDocumento'
         },
         {
@@ -570,7 +570,7 @@ interface Solicitud {
   iD_Control_Tramite: string;
   idSolicitud: string;
   noIdentificacionSolicitante: string;
-  nroIdentificacionFallecido: string;
+  NroIdquienhizolasolicitud: string;
   numeroCertificado: string;
   razonSocialSolicitante: string;
   solicitud: string;

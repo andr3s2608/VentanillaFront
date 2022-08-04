@@ -126,24 +126,23 @@ export const ModificarMedico = ({ props }: any) => {
                 </p>
               </div>
             </div>
-            <div className='row mt-3 justify-content-center text-center'>
-              <div className='col-lg-6 col-sm-12 col-md-6'>
-                <Form.Item label='Número de Identificación' name='numeroid'>
-                  <Input
-                    allowClear
-                    placeholder='Número de Identificación'
-                    autoComplete='off'
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
+            <div className='justify-content-center text-center'>
+              <Form.Item label='Número de Identificación' name='numeroid'>
+                <Input
+                  allowClear
+                  placeholder='Número de Identificación'
+                  autoComplete='off'
+                  style={{ width: '360px' }}
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-              </div>
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
             </div>
 
             <div className='row ml-5'>

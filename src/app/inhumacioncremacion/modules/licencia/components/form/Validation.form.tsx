@@ -123,7 +123,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setisnull(true);
       }
       if (objJosn != undefined) {
-        console.log(objJosn);
+
         const resp = await Promise.all([
           dominioService.get_type(ETipoDominio.Pais),
           dominioService.get_type(ETipoDominio['Tipo Documento']),
@@ -1021,6 +1021,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                               title={<p className='text-center'>Notificación</p>}
                               visible={isModalValidarCertificado}
                               width={500}
+                              onCancel={onModalNofificacion}
                               onOk={onModalNofificacion}
                             >
                               <div className='conteiner-fluid'>
