@@ -84,7 +84,7 @@ export const ModificarLicencia = ({ props }: any) => {
       setDate(moment(fecha));
       setcheck(solicitud[0].sinEstablecer);
       if (solicitud[0].hora == 'Sin información') {
-        setTime(moment(null));
+        setTime(null);
       } else {
         setTime(ObtenerHora(solicitud[0].hora + ''));
       }

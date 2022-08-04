@@ -56,6 +56,8 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     if (permiso?.rol === 'Ciudadano') {
       const resp = await api.GetEstadoSolicitudNuevo();
       setGrid(resp);
+      setAllData(resp);
+      setVisibleGrid('contents');
     } else {
       let arraydatos = [];
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
@@ -208,7 +210,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
                       { key: 'docFallec', value: 'Documento del fallecido' },
                       { key: 'funOnombre', value: 'Funeraria o Nombre' },
                       { key: 'fechaReg', value: 'Fecha de registro' },
-                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                      { key: 'inhuIndi', value: 'Inhumación Individual' },
                       { key: 'inhuFetal', value: 'Inhumación Fetal' },
                       { key: 'cremInd', value: 'Cremación Individual' },
                       { key: 'cremFetal', value: 'Cremación Fetal' },

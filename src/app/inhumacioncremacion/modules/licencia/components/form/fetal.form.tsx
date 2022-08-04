@@ -512,16 +512,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           numeroIdentificacion: numeroins,
           razonSocial: razonSocialins ?? '',
           numeroProtocolo: numeroProtocoloins,
-          numeroActaLevantamiento: values.numeroActLeva,
-          fechaActa: moment(values?.DateAct).format(formatDate) ?? null,
-          seccionalFiscalia: values.SecFiscalAct,
+          numeroActaLevantamiento: values?.numeroActLeva ?? '',
+          fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
+          seccionalFiscalia: values?.SecFiscalAct ?? '',
           noFiscal: values?.NoFiscAct ?? '',
           idTipoInstitucion: values?.instType ?? '',
           NombreFiscal: values?.fiscalianombreDC ?? '',
           ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
           NumeroOficio: values?.fiscalianumeroDC ?? '',
           NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
-          FechaOficio: moment(values?.fiscaliafechaDC).format(formatDate) ?? null
+          FechaOficio: values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null
         }
       }
     };
