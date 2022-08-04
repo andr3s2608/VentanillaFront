@@ -210,7 +210,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
                       { key: 'docFallec', value: 'Documento del fallecido' },
                       { key: 'funOnombre', value: 'Funeraria o Nombre' },
                       { key: 'fechaReg', value: 'Fecha de registro' },
-                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                      { key: 'inhuIndi', value: 'Inhumación Individual' },
                       { key: 'inhuFetal', value: 'Inhumación Fetal' },
                       { key: 'cremInd', value: 'Cremación Individual' },
                       { key: 'cremFetal', value: 'Cremación Fetal' },

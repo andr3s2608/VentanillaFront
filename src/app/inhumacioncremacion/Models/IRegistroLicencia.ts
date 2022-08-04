@@ -82,14 +82,14 @@ export interface InstitucionCertificaFallecimiento {
   razonSocial: string;
   numeroProtocolo: string;
   numeroActaLevantamiento: string;
-  fechaActa: string;
+  fechaActa: string | null;
   seccionalFiscalia: string;
   noFiscal: string;
   idTipoInstitucion: string;
   NombreFiscal: string;
   ApellidoFiscal: string;
   NumeroOficio: string;
-  FechaOficio: string;
+  FechaOficio: string | null;
   NoFiscalMedicinaLegal: string;
 }
 
