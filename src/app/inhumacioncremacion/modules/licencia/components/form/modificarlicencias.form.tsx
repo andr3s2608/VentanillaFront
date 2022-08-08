@@ -2,12 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
-import Divider from 'antd/es/divider';
 
 // Componentes
 
 import { ApiService } from 'app/services/Apis.service';
-import { TypeDocument } from './seccions/TypeDocument';
+
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
@@ -44,7 +43,7 @@ export const ModificarLicencia = ({ props }: any) => {
   const [isHora, setIsHora] = useState<boolean>(true);
   const [check, setcheck] = useState<boolean>(true);
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
 
   const getListas = useCallback(async () => {}, []);
 

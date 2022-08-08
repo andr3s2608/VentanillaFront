@@ -23,7 +23,6 @@ import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
 
 import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
-import { ConsoleSqlOutlined, ContactsOutlined } from '@ant-design/icons';
 
 const RegistroPage: React.FC<any> = (props) => {
   const [direccionCompleta, setDireccionCompleta] = useState<string>('');

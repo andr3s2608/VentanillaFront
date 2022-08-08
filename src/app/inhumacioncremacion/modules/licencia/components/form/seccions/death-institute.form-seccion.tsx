@@ -11,7 +11,7 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import { IDominio } from 'app/services/dominio.service';
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 import Swal from 'sweetalert2';
@@ -22,7 +22,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   const { obj, tipoLicencia, prop } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
-  const { datofiscal, required } = props;
+  const { datofiscal } = props;
   const [l_seccionales, setlseccionales] = useState<any[]>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
@@ -38,10 +38,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   const getListas = useCallback(
     async () => {
-      const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+
       const sec = await api.GetSeccionales();
       setlseccionales(sec);
-      setListaTipoDocumento(resp);
+      setListaTipoDocumento(tiposjson);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

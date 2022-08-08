@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 // Antd
 import Divider from 'antd/es/divider';
 import moment from 'moment';
-import { List, Card, Layout, Button, Form, Modal, Table } from 'antd';
+import { List, Button, Form, Modal, Table } from 'antd';
 import 'app/shared/components/table/estilos.css';
 // Componentes
 
@@ -12,7 +12,7 @@ import { dominioService, ETipoDominio, IDominio, IMunicipio, IDepartamento } fro
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { classNames } from '@react-pdf-viewer/core';
+
 import '../../../../../../../scss/antd/index.css';
 import '../../../../../../../css/estilos.css';
 import Swal from 'sweetalert2';
@@ -33,7 +33,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [departamentomadre, setdepartamentomadre] = useState<string | undefined>();
   const [paismadre, setpaismadre] = useState<string | undefined>();
   const [nacionalidad, setnacionalidad] = useState<string | undefined>();
-  const [[l_regimen, l_tipo_muerte], setListas] = useState<[IDominio[], IDominio[]]>([[], []]);
+  const [l_tipo_muerte, setListas] = useState<IDominio[]>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -51,8 +51,10 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const getListas = useCallback(async () => {
     const dep = dominioService.get_departamentos_colombia();
 
-    const pais = await dominioService.get_type(ETipoDominio.Pais);
-    const filtropais = pais.filter((i) => i.id == obj?.country);
+    const paises: any = localStorage.getItem('paises');
+    const paisesjson: any = JSON.parse(paises);
+
+    const filtropais = paisesjson.filter((i: { id: any }) => i.id == obj?.country);
 
     const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
 
@@ -68,14 +70,13 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     }
 
     if (obj?.idDepartamentoResidencia == undefined) {
-      const filtronacionalidad = pais.filter((i) => i.id == obj?.nationalidad);
+      const filtronacionalidad = paisesjson.filter((i: { id: any }) => i.id == obj?.nationalidad);
 
       setnacionalidad(filtronacionalidad[0].descripcion);
     }
     setNombres([obj.name, obj.secondName, obj.surname, obj.secondSurname]);
     if (obj?.idDepartamentoResidencia != undefined) {
-      const paism = await dominioService.get_type(ETipoDominio.Pais);
-      const filtropaismadre = pais.filter((i) => i.id == obj?.residencia);
+      const filtropaismadre = paisesjson.filter((i: { id: any }) => i.id == obj?.residencia);
 
       if (obj.residencia == '1e05f64f-5e41-4252-862c-5505dbc3931c') {
         const iddepartmadre = (await dep).filter((i) => i.idDepartamento == obj?.idDepartamentoResidencia);
@@ -126,11 +127,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     }
     */
 
-    const resp = await Promise.all([
-      dominioService.get_type(ETipoDominio.Regimen),
-      dominioService.get_type(ETipoDominio['Tipo de Muerte'])
-    ]);
-
+    const resp = await dominioService.get_type(ETipoDominio['Tipo de Muerte']);
     setListas(resp);
   }, []);
 

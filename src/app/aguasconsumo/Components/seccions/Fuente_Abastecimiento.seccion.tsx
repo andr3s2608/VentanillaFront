@@ -277,7 +277,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                       type='text'
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {
-                        if (!/[0-9'"° ]/.test(event.key)) {
+                        if (!/[0-9'"° -]/.test(event.key)) {
                           event.preventDefault();
                         }
                       }}
@@ -297,7 +297,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                       type='text'
                       className='form-control gov-co-form-control'
                       onKeyPress={(event) => {
-                        if (!/[0-9'"° ]/.test(event.key)) {
+                        if (!/[0-9'"° -]/.test(event.key)) {
                           event.preventDefault();
                         }
                       }}

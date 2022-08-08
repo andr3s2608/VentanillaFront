@@ -1,11 +1,4 @@
-import {
-  CheckOutlined,
-  ConsoleSqlOutlined,
-  EyeOutlined,
-  FilePdfOutlined,
-  FileTextOutlined,
-  UploadOutlined
-} from '@ant-design/icons';
+import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -13,11 +6,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import Form, { FormInstance } from 'antd/es/form';
 import { store } from 'app/redux/app.reducers';
-import { Alert, Button, Modal, Upload } from 'antd';
+import { Button, Modal, Upload } from 'antd';
 import { useHistory } from 'react-router';
 import Input from 'antd/es/input';
 import Table from 'antd/es/table';
-import moment from 'moment';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
@@ -48,22 +40,9 @@ export const Gridview = (props: IDataSource) => {
 
   const [Tipo] = roles;
 
-  var nombre: any;
-  var apellido: any;
-  var nombres: any;
-  var apellidos: any;
   var identify: string;
   var tipotramite: any;
   var fecha: any;
-  var Filterfuneraria: string;
-  var FilterDoc: string;
-  var FilterId: string;
-  var FilterEstado: string;
-
-  var Filterfuneraria: string;
-  var FilterDoc: string;
-  var FilterId: string;
-  var FilterEstado: string;
 
   const Renovar = (datos: any) => {
     if (data.length == 0) {

@@ -3,26 +3,11 @@ import '../../../../css/estilos.css';
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
-import Divider from 'antd/es/divider';
-import {
-  dominioService,
-  ETipoDominio,
-  IBarrio,
-  IDepartamento,
-  IDominio,
-  ILocalidad,
-  IMunicipio,
-  IUpz
-} from 'app/services/dominio.service';
 
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-
-//Redux
-import { store } from 'app/redux/app.reducers';
-import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 
 export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
   const { obj, tipo } = props;
@@ -32,24 +17,14 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
     [],
     []
   ]);
-  const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
-  const [l_usuarios, setLl_usuarios] = useState<any[]>([]);
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const [seleccionar, setseleccionar] = useState<boolean>(true);
-  const [tipousuario, settipousuario] = useState<string>('');
 
-  const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const idmunicipio = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
+  const [tipousuario, settipousuario] = useState<string>('');
 
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-
-      const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
-
       const resp = await Promise.all([
         api.getTipoTramites(),
         api.getEstadosSolicitudAguas(),
@@ -65,11 +40,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
         usuarios.push(lusuarios.at(index));
       }
 
-      setLl_usuarios(usuarios);
-
       setListas(resp);
-
-      setLDepartamentos(departamentos);
 
       settipousuario(tipo);
     },
@@ -81,14 +52,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const Onchangecoordinador = (value: any) => {
-    if (value == 'vacio') {
-      setseleccionar(false);
-    } else {
-      setseleccionar(true);
-    }
-  };
 
   return (
     <>
@@ -226,13 +189,12 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 </p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: seleccionar }]}>
+                    <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: true }]}>
                       <SelectComponent
                         options={l_subredes}
                         defaultValue={obj?.idSubred}
                         optionPropkey='idSubRed'
                         optionPropLabel='zona'
-                        disabled={!seleccionar}
                       />
                     </Form.Item>
                   </div>

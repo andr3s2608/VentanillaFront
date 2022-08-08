@@ -101,8 +101,6 @@ export class ApiService {
 
   getPaises = () => get<[]>({ endpoint: this.endpoint, url: 'v1/Pais/GetPais', id: '0' });
 
-  getDepartament = () => get<[]>({ endpoint: this.endpoint, url: 'v1/Departamento/GetDepartamento', id: '0' });
-
   getMunicipio = (id: string) =>
     get<[]>({ endpoint: this.endpoint, url: `v1/Municipio/GetMunicipioByIdDepartamento/${id}`, id: '0' });
 

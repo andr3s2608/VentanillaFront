@@ -41,8 +41,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
-import { EditFetal } from './edit/fetal';
-import { ValidationFuntional } from './seccions/validationfuntional';
+
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import Swal from 'sweetalert2';
 
@@ -71,7 +70,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
-  const [type, setType] = useState<[]>([]);
   const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
   const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
@@ -95,21 +93,32 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
+      const paises: any = localStorage.getItem('paises');
+      const paisesjson: any = JSON.parse(paises);
+
+      const estadocivil: any = localStorage.getItem('estadocivil');
+
+      const nivel: any = localStorage.getItem('estadocivil');
+
+      const etnia: any = localStorage.getItem('etnia');
+      const tipomuerte: any = localStorage.getItem('tipomuerte');
+
       const [userRes, departamentos, localidades, listMunicipio, upzLocalidad, ...resp] = await Promise.all([
         api.getCodeUser(),
         dominioService.get_departamentos_colombia(),
         dominioService.get_localidades_bogota(),
         dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_upz_by_localidad(idlocalidad),
-        dominioService.get_type(ETipoDominio['Nivel Educativo']),
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_type(ETipoDominio['Tipo de Muerte']),
-        dominioService.get_type(ETipoDominio['Estado Civil']),
-        dominioService.get_type(ETipoDominio.Etnia)
+        JSON.parse(nivel),
+        paisesjson,
+        JSON.parse(tipomuerte),
+        JSON.parse(estadocivil),
+        JSON.parse(etnia)
       ]);
 
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const nuevalista = nuevodoc.filter((i) => i.id != '71f659be-9d6b-4169-9ee2-e70bf0d65f92');
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+      const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '71f659be-9d6b-4169-9ee2-e70bf0d65f92');
 
       settipos(nuevalista);
 
@@ -131,7 +140,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         const support = await api.getSupportDocuments(obj?.idSolicitud);
         const typeList = await api.GetAllTypeValidation();
         setSupports(support);
-        setType(typeList);
       }
       //setEstado(reqEstado[0]);
     },

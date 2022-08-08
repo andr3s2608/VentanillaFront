@@ -3,57 +3,29 @@ import React, { useCallback, useEffect, useState } from 'react';
 // Antd
 import Form from 'antd/es/form';
 import Input from 'antd/es/input';
-import Steps from 'antd/es/steps';
-import Button from 'antd/es/button';
 
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
-// Hooks
-import { useStepperForm } from 'app/shared/hooks/stepper.hook';
-
 // Utilidades
-import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
-import { ITipoLicencia } from 'app/shared/utils/types.util';
+import { layoutWrapper } from 'app/shared/utils/form-layout.util';
 
 // Secciones del formulario
-import { GeneralInfoFormSeccion, KeysForm as KeyFormGeneralInfo } from './seccions/general-info.form-seccion';
-import { LugarDefuncionFormSeccion, KeysForm as KeyFormLugarDefuncion } from './seccions/lugar-defuncion.form-seccion';
-import { DeathInstituteFormSeccion, KeysForm as KeyFormDeathInstitute } from './seccions/death-institute.form-seccion';
-import { MedicalSignatureFormSeccion, KeysForm as KeyFormMedicalSignature } from './seccions/medical-signature.form-seccion';
-import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
-import { SolicitudInfoFormSeccion, KeysForm as KeyFormSolicitudInfo } from './seccions/solicitud-info.form-seccion';
-import { DocumentosFormSeccion } from './seccions/documentos.form-seccion';
+
 import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
 
 // Servicios
-import {
-  dominioService,
-  ETipoDominio,
-  IBarrio,
-  IDepartamento,
-  IDominio,
-  ILocalidad,
-  IMunicipio,
-  IUpz
-} from 'app/services/dominio.service';
+
 import Divider from 'antd/es/divider';
 import Alert from 'antd/es/alert';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
-import { ApiService } from 'app/services/Apis.service';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import Swal from 'sweetalert2';
 
-const { Step } = Steps;
+import Swal from 'sweetalert2';
 
 export const FamilarFetalCremacion: React.FC<any> = (props) => {
   const { tipoLicencia, objJosn, prop } = props;
   const [form] = Form.useForm<any>();
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
 
-  const { accountIdentifier } = authProvider.getAccount();
-  const api = new ApiService(accountIdentifier);
-  const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
   const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
@@ -64,39 +36,13 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
   const [campo, setCampo] = useState<string>('Numéricos');
   //#region Listados
 
-  const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
-  const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
-  const [user, setUser] = useState<any>();
-  const [[l_nivel_educativo, l_paises, l_tipo_muerte, l_estado_civil, l_etnia], setListas] = useState<IDominio[][]>([]);
-
   const getListas = useCallback(
     async () => {
-      const [userres, departamentos, localidades, ...resp] = await Promise.all([
-        api.getCodeUser(),
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_localidades_bogota(),
-        dominioService.get_type(ETipoDominio['Nivel Educativo']),
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_type(ETipoDominio['Tipo de Muerte']),
-        dominioService.get_type(ETipoDominio['Estado Civil']),
-        dominioService.get_type(ETipoDominio.Etnia)
-      ]);
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+      const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settipos(nuevalista);
-      const informationUser = await api.GetInformationUser(userres);
-
-      setUser(userres);
-      setLDepartamentos(departamentos);
-      setLLocalidades(localidades);
-      setListas(resp);
-
-      if (informationUser.tipoIdentificacion == 5) {
-        setIsPersonNatural(false);
-      } else {
-        setIsPersonNatural(true);
-      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -109,51 +55,8 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
 
   //#endregion
 
-  const onSubmit = async (values: any) => {
-    setStatus(undefined);
-  };
-
-  const onSubmitFailed = () => setStatus('error');
-
   //#region Eventos formulario
 
-  const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [l_areas, setLAreas] = useState<IUpz[]>([]);
-  const [l_barrios, setLBarrios] = useState<IBarrio[]>([]);
-
-  const [isColombia, setIsColombia] = useState(false);
-  const [isBogota, setIsBogota] = useState(false);
-
-  const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
-  const onChangePais = (value: string) => {
-    form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
-    setIsColombia(value === idColombia);
-    setLMunicipios([]);
-    setIsBogota(false);
-    setLAreas([]);
-    setLBarrios([]);
-  };
-
-  const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
-  const onChangeMunicipio = (value: string) => {
-    form.resetFields(['localidad', 'area', 'barrio']);
-    setIsBogota(value === idBogota);
-    setLAreas([]);
-    setLBarrios([]);
-  };
-
-  const onChangeLocalidad = async (value: string) => {
-    form.resetFields(['area', 'barrio']);
-    const resp = await dominioService.get_upz_by_localidad(value);
-    setLAreas(resp);
-    setLBarrios([]);
-  };
-
-  const onChangeArea = async (value: string) => {
-    form.resetFields(['barrio']);
-    const resp = await dominioService.get_barrio_by_upz(value);
-    setLBarrios(resp);
-  };
   const [isOtherParentesco, setIsOtherParentesco] = useState(false);
   const onChangeParentesco = (e: RadioChangeEvent) => {
     form.resetFields(['authOtherParentesco']);
@@ -257,7 +160,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           pattern={tipocampo}
           maxLength={longitudmaxima}
           onKeyPress={(event) => {
-            if (!/[a-zA-Z0-9]/.test(event.key)) {
+            if (!tipocampovalidacion.test(event.key)) {
               event.preventDefault();
             }
           }}

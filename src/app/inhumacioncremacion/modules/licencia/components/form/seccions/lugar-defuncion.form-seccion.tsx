@@ -25,9 +25,11 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
 
   const getListas = useCallback(
     async () => {
+      const paises: any = localStorage.getItem('paises');
+      const paisesjson: any = JSON.parse(paises);
       const resp = await Promise.all([
         dominioService.get_departamentos_colombia(),
-        dominioService.get_type(ETipoDominio.Pais),
+        paisesjson,
         dominioService.get_type(ETipoDominio['Sitio de Defuncion']),
         dominioService.get_type(ETipoDominio['Area de Defuncion'])
       ]);
