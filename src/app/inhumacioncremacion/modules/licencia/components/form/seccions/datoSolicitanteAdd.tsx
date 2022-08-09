@@ -48,7 +48,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
       const informationUser = await api.GetInformationUser(userres);
 
-      if (informationUser.tipoIdentificacion == 5) {
+      if (informationUser.razonSocial != null) {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
         setcorreofun(informationUser.email);

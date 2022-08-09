@@ -55,7 +55,7 @@ const ModulePage = () => {
       if (resp == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.tipoIdentificacion == 5) {
+        if (resp.razonSocial != null) {
           setvalidacioninfo(resp.razonSocial);
         } else {
           setvalidacioninfo(resp.fullName);

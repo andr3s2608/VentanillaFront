@@ -302,7 +302,7 @@ export class ApiService {
   //consulta fallecidos con nro de id duplicados
   GetDuplicadosFallecido = (nrotramite: string, id: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/ConsultarFallecidoGestion/${nrotramite}/${id}`,
       id: '0'
     });
@@ -529,7 +529,7 @@ export class ApiService {
 
   getFormatoAguas = (idFormato: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Formatos/getByIdPlantilla/${idFormato}`,
       id: '0'
     });
@@ -588,7 +588,7 @@ export class ApiService {
 
   getCertificadoAguas = (idSolicitud: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `GeneratePDF/GenerateCertificadoPDF/${idSolicitud}`,
       id: '0'
     });
@@ -596,7 +596,7 @@ export class ApiService {
 
   getConstantesAguas = (idConstante: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Constantes/getByIdConstante/${idConstante}`,
       id: '0'
     });

@@ -273,7 +273,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var razon = '';
     var tipoid = resp.tipoIdentificacion + '';
     var nroid = resp.numeroIdentificacion + '';
-    if (resp.tipoIdentificacion == 5) {
+    if (resp.razonSocial != null) {
       tipo = 'Juridica';
       razon = resp.razonSocial;
     } else {
