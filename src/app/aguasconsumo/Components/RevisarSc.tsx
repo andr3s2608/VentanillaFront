@@ -30,23 +30,15 @@ import { EditAguas } from './edit/Aguas';
 export const RevisarSc = () => {
   const objJson: any = EditAguas();
 
-  const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
   const history = useHistory();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
 
   //validacion campos
-  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
-  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
-  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
-  const [campo, setCampo] = useState<string>('Numéricos');
 
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
   //
   const [rol, setrol] = useState<any>();
 
@@ -57,9 +49,6 @@ export const RevisarSc = () => {
       const [permiso] = mysRoles;
 
       setrol(permiso.rol);
-      const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-
-      setListaTipoDocumento(tipoDocumento);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

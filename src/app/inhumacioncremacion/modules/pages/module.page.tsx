@@ -10,15 +10,15 @@ import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
 import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
-import { store } from 'app/redux/app.reducers';
-import { ResetGrid } from 'app/redux/Grid/grid.actions';
+
+import { dominioService, ETipoDominio } from 'app/services/dominio.service';
 
 const ModulePage = () => {
   const history = useHistory();
   const [roles, setroles] = useState<IRoles[]>();
-  const [info, setinfo] = useState<any>();
+
   const [validacioninfo, setvalidacioninfo] = useState<any>('');
-  const { name, userName } = authProvider.getAccount();
+  const { name } = authProvider.getAccount();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(false);
@@ -33,18 +33,20 @@ const ModulePage = () => {
   const getListas = useCallback(
     async () => {
       const mysRoles = await api.GetRoles();
-      //solo era para permitir volver a registrar sin necesidad de crear otro correo(prueba)
-      /*
-      const validar: string = mysRoles[0].codigoUsuario;
-      console.log('validar ' + validar);
-      if (validar == 'e2d9efd7-de49-46e3-9782-36e2aee6270f') {
-        console.log('entro');
-        setroles([]);
-      } else {
-        console.log('entro2');
-        setroles(mysRoles);
-      }
-      */
+
+      const paises = await dominioService.get_type(ETipoDominio.Pais);
+      const tiposdocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const estadocivil = await dominioService.get_type(ETipoDominio['Estado Civil']);
+      const nivel = await dominioService.get_type(ETipoDominio['Nivel Educativo']);
+      const etnia = await dominioService.get_type(ETipoDominio.Etnia);
+      const tipomuerte = await dominioService.get_type(ETipoDominio['Tipo de Muerte']);
+
+      localStorage.setItem('paises', JSON.stringify(paises));
+      localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
+      localStorage.setItem('estadocivil', JSON.stringify(estadocivil));
+      localStorage.setItem('nivel', JSON.stringify(nivel));
+      localStorage.setItem('etnia', JSON.stringify(etnia));
+      localStorage.setItem('tipomuerte', JSON.stringify(tipomuerte));
 
       setroles(mysRoles);
       const idUser = await api.getCodeUser();
@@ -53,14 +55,12 @@ const ModulePage = () => {
       if (resp == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.tipoIdentificacion == 5) {
+        if (resp.razonSocial != null) {
           setvalidacioninfo(resp.razonSocial);
         } else {
           setvalidacioninfo(resp.fullName);
         }
       }
-
-      setinfo(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

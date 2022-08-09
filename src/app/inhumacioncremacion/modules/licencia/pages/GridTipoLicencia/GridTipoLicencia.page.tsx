@@ -1,4 +1,4 @@
-import { Form, Grid } from 'antd';
+import { Form } from 'antd';
 import Tabs from 'antd/es/tabs';
 
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -8,7 +8,7 @@ import { Gridview } from 'app/shared/components/table';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import React, { useCallback, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
+
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -21,7 +21,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [allData, setAllData] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [search, setSearch] = React.useState('');
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [selectedOption, setSelectedOption] = useState<String>();

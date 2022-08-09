@@ -22,7 +22,7 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
   const history = useHistory();
   const [documentos, setdocumentos] = useState<any[]>([]);
   const [rol, setrol] = useState<any>();
@@ -33,7 +33,6 @@ export const RevisarSg = () => {
 
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const mysRoles = await api.GetRoles();
       const [permiso] = mysRoles;
       setrol(permiso?.rol);

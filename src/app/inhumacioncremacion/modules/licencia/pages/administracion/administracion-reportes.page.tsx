@@ -86,15 +86,12 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   function busquedaFun() {
     var input = false;
     var filtroFecha = null;
-    console.log('inicial ' + dateSelectedInicial?.toDateString() + ' final ' + dateSelectedFinal?.toDateString());
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined) {
-      console.log('ENTRO FILTRO FECHA');
       filtroFecha = allData.filter(function (f) {
         // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
 
         return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
       });
-      console.log('---REALIZO FILTRO FECHA');
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
@@ -107,33 +104,26 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       setVisibleAlert(true);
     }
     if (input == true && FilterTextID != undefined && FilterTextID != '') {
-      console.log('ENTRO FILTRO ID');
       filtroFecha = filtroFecha?.filter(function (f) {
         return f.iD_Control_Tramite == FilterTextID;
       });
-      console.log('REALIZO FILTRO ID');
     }
 
     if (input == true && FilterTextDoc != undefined && FilterTextDoc != '') {
-      console.log('Entro FILTRO DOC');
       filtroFecha = filtroFecha?.filter(function (f) {
         var filtro = FilterTextDoc != undefined ? FilterTextDoc : '';
         var solicitud = f.noIdentificacionSolicitante != undefined ? f.noIdentificacionSolicitante : '';
         return solicitud.toUpperCase().trim().includes(filtro.toUpperCase().trim());
       });
-      console.log('REALIZO FILTRO DOC');
     }
     if (input == true && FilterTextFun != undefined && FilterTextFun != '') {
-      console.log('Entro FILTRO FUNERARIA');
       filtroFecha = filtroFecha?.filter(function (f) {
         var filtro = FilterTextFun != undefined ? FilterTextFun : '';
         var solicitud = f.razonSocialSolicitante != undefined ? f.razonSocialSolicitante : '';
         return solicitud.toUpperCase().trim().includes(filtro.toUpperCase().trim());
       });
-      console.log('REALIZO FILTRO FUNERARIA');
     }
     if (selectedOption && input) {
-      console.log('ENTRO FILTRO TIPO SOLICITUD');
       switch (selectedOption) {
         case 'inhuIndi':
           filtroFecha = filtroFecha?.filter(function (f) {
@@ -162,11 +152,9 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           setVisibleGrid('none');
           break;
       }
-      console.log('REALIZO FILTRO TIPO SOLICITUD');
     }
 
     if (selectedOptionEstado && input) {
-      console.log('ENTRO FILTRO ESTADO');
       switch (selectedOptionEstado) {
         case 'registroExt':
           filtroFecha = filtroFecha?.filter(function (f) {
@@ -183,20 +171,16 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           setVisibleGrid('none');
           break;
       }
-      console.log('REALIZO FILTRO ESTADO');
     }
     if (filtroFecha != null) {
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
-        console.log(JSON.stringify(dataFIN));
         setGrid(dataFIN);
         setVisibleGrid('contents');
       } else {
-        console.log('NO DATOS 1');
         setVisibleGrid('none');
       }
     } else {
-      console.log('NO DATOS 2');
       setVisibleGrid('none');
     }
   }

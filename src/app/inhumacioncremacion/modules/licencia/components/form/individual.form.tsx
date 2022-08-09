@@ -43,9 +43,6 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
-import { EditInhumacion } from './edit/Inhumacion';
-import { ValidationFuntional } from './seccions/validationfuntional';
-import { parse } from 'path';
 
 const { Step } = Steps;
 
@@ -53,21 +50,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [inputVal, setInputVal] = useState('');
-  const pruebatipo = /[0-9]/;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
-  const [sex, setSex] = useState<[]>([]);
+
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
-  const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
+
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
   const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
   const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
-  const [type, setType] = useState<[]>([]);
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
@@ -92,7 +87,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
-  const edit = objJosn?.idTramite ? true : false;
+  const edit = false;
+
   //form.setFieldsValue(objJosn?);
   //#region Listados
 
@@ -101,43 +97,45 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
+      const paises: any = localStorage.getItem('paises');
+      const paisesjson: any = JSON.parse(paises);
+
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+
+      const estadocivil: any = localStorage.getItem('estadocivil');
+
+      const nivel: any = localStorage.getItem('nivel');
+
+      const etnia: any = localStorage.getItem('etnia');
+
+      const tipomuerte: any = localStorage.getItem('tipomuerte');
+
       const resp = await Promise.all([
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_type(ETipoDominio['Tipo Documento']),
-        dominioService.get_type(ETipoDominio['Estado Civil']),
-        dominioService.get_type(ETipoDominio['Nivel Educativo']),
-        dominioService.get_type(ETipoDominio.Etnia),
+        paisesjson,
+        tiposjson,
+        JSON.parse(estadocivil),
+        JSON.parse(nivel),
+        JSON.parse(etnia),
         dominioService.get_type(ETipoDominio.Regimen),
-        dominioService.get_type(ETipoDominio['Tipo de Muerte'])
+        JSON.parse(tipomuerte)
       ]);
 
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+      const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settiposautoriza(nuevalista);
 
       const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       setCausaMuerte(causa['valor']);
 
-      const sexo = await api.GetSexo();
       const userres = await api.getCodeUser();
-      const informationUser = await api.GetInformationUser(userres);
 
-      setSex(sexo);
       setUser(userres);
       setListas(resp);
 
       if (edit) {
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
-        const typeList = await api.GetAllTypeValidation();
         setSupports(support);
-        setType(typeList);
-      }
-
-      if (informationUser.tipoIdentificacion == 5) {
-        setIsPersonNatural(false);
-      } else {
-        setIsPersonNatural(true);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -275,7 +273,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var razon = '';
     var tipoid = resp.tipoIdentificacion + '';
     var nroid = resp.numeroIdentificacion + '';
-    if (resp.tipoIdentificacion == 5) {
+    if (resp.razonSocial != null) {
       tipo = 'Juridica';
       razon = resp.razonSocial;
     } else {
@@ -311,7 +309,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-          nacionalidad: values.nationalidad[0],
+          nacionalidad: values.nationalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -359,7 +357,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-          nacionalidad: values.nationalidad[0],
+          nacionalidad: values.nationalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -561,6 +559,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
 
+      console.log(idsol);
       if (idsol) {
         const [files, names] = generateListFiles(values);
 
@@ -1196,7 +1195,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               <Form.Item
                 label='Nacionalidad'
                 name='nationalidad'
-                initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
+                initialValue={objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c'}
                 rules={[{ required: true }]}
               >
                 <SelectComponent

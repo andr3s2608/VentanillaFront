@@ -16,7 +16,7 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 
 //Redux
 import { store } from 'app/redux/app.reducers';
-import { UploadOutlined } from '@ant-design/icons';
+
 import { Input } from 'antd';
 import moment from 'moment';
 
@@ -30,7 +30,7 @@ export const ModificarMedico = ({ props }: any) => {
     [string, string, string, string, any, string]
   >(['', '', '', '', , '']);
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
 
   const getListas = useCallback(async () => {}, []);
 

@@ -339,7 +339,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               type='text'
               className='form-control gov-co-form-control'
               onKeyPress={(event) => {
-                if (!/[0-9'"° ]/.test(event.key)) {
+                if (!/[0-9'"° -]/.test(event.key)) {
                   event.preventDefault();
                 }
               }}
@@ -359,7 +359,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               type='text'
               className='form-control gov-co-form-control'
               onKeyPress={(event) => {
-                if (!/[0-9'"° ]/.test(event.key)) {
+                if (!/[0-9'"° -]/.test(event.key)) {
                   event.preventDefault();
                 }
               }}
@@ -405,7 +405,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       <div className='row mt-3'>
         <div className='col-lg-4 col-md-4 col-sm-12'>
           <div className='form-group gov-co-form-group'>
-            <span></span>Caudal total
+            <span></span>Caudal total(L/S)
             <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
               <input
                 type='text'

@@ -5,7 +5,6 @@ import Form, { FormInstance } from 'antd/es/form';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
-import { Row, Col } from 'antd';
 
 // Utilidades
 import { ITipoLicencia } from 'app/shared/utils/types.util';
@@ -14,7 +13,6 @@ import { ITipoLicencia } from 'app/shared/utils/types.util';
 import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { validateClaimsRequest } from 'msal/lib-commonjs/AuthenticationParameters';
 
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -44,10 +42,12 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   const getListas = useCallback(
     async () => {
+      const paises: any = localStorage.getItem('paises');
+      const paisesjson: any = JSON.parse(paises);
       const resp = await Promise.all([
         dominioService.get_departamentos_colombia(),
         dominioService.get_cementerios_bogota(),
-        dominioService.get_type(ETipoDominio.Pais)
+        paisesjson
       ]);
 
       setListas(resp);

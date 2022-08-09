@@ -61,8 +61,8 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const validPerson = (): boolean => {
-    const { tipoIdentificacion } = user;
-    if (tipoIdentificacion === 5) {
+    const { razonSocial } = user;
+    if (razonSocial != null) {
       return true;
     }
     return false;

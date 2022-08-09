@@ -3,19 +3,17 @@ import { useCallback, useEffect, useState } from 'react';
 // Antd
 
 import Form from 'antd/es/form';
-import Input from 'antd/es/input';
-import Alert from 'antd/es/alert';
+
 import Swal from 'sweetalert2';
 import Steps from 'antd/es/steps';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 
-import { Button, List, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import Table from 'antd/es/table';
 import Divider from 'antd/es/divider';
 import moment from 'moment';
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 
 // Hooks
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
@@ -33,8 +31,7 @@ import { InformacionDocumentosGestion } from './seccions/documentos-gestion.secc
 import { GestionTramite } from './seccions/gestion-tramite.seccion';
 
 // Servicios
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
-import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
+
 import '../../../../../../css/estilos.css';
 //redux
 import { store } from 'app/redux/app.reducers';
@@ -43,11 +40,11 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 import { IGestionTramite } from 'app/inhumacioncremacion/Models/IGestion';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
-import { TypeDocument } from './seccions/TypeDocument';
+
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { EditFetal } from './edit/fetal';
-import { ValidationFuntional } from './seccions/validationfuntional';
+
 import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
 import '../../../../../.././scss/antd/index.css';
@@ -64,7 +61,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [viewLicenceState, setViewLicenceState] = useState<any>();
   const { Step } = Steps;
   const [dataTable, setDataTable] = useState<[]>();
-  const [datos, setdatos] = useState<[]>();
   const [solicitante, setsolicitante] = useState<[]>();
   const history = useHistory();
   const [valor, setvalor] = useState<string>('');
@@ -77,7 +73,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [estado, setestado] = useState<string>('');
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [objJosn, setobjJosn] = useState<any>(EditInhumacion('1'));
@@ -102,8 +98,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   //#region Listados
 
   const formatDate = 'MM-DD-YYYY';
-  const [[l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte], setListas] =
-    useState<IDominio[][]>([]);
 
   store.subscribe(() => {
     const { viewLicence } = store.getState();
@@ -123,19 +117,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setisnull(true);
       }
       if (objJosn != undefined) {
-
-        const resp = await Promise.all([
-          dominioService.get_type(ETipoDominio.Pais),
-          dominioService.get_type(ETipoDominio['Tipo Documento']),
-          dominioService.get_type(ETipoDominio['Estado Civil']),
-          dominioService.get_type(ETipoDominio['Nivel Educativo']),
-          dominioService.get_type(ETipoDominio.Etnia),
-          dominioService.get_type(ETipoDominio.Regimen),
-          dominioService.get_type(ETipoDominio['Tipo de Muerte'])
-        ]);
-
-        setListas(resp);
-
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
         const typeList = await api.GetAllTypeValidation();
         setSupports(support);

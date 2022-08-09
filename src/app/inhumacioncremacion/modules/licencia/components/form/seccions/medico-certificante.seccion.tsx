@@ -38,10 +38,9 @@ export const InformacionMedicoCertificante = (props: any) => {
   const api = new ApiService(accountIdentifier);
   const [[l_tipo_identificacion, l_profesion], setListas] = useState<IDominio[][]>([]);
   const getListas = useCallback(async () => {
-    const resp = await Promise.all([
-      dominioService.get_type(ETipoDominio['Tipo Documento']),
-      dominioService.get_type(ETipoDominio['Tipo de Profesional'])
-    ]);
+    const tipos: any = localStorage.getItem('tipoid');
+    const tiposjson: any = JSON.parse(tipos);
+    const resp = await Promise.all([tiposjson, dominioService.get_type(ETipoDominio['Tipo de Profesional'])]);
     setListas(resp);
   }, []);
 

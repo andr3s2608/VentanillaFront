@@ -1,15 +1,6 @@
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { Form, FormInstance, Input } from 'antd';
-import {
-  dominioService,
-  ETipoDominio,
-  IBarrio,
-  IDepartamento,
-  IDominio,
-  ILocalidad,
-  IMunicipio,
-  IUpz
-} from 'app/services/dominio.service';
+import { IDominio } from 'app/services/dominio.service';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
@@ -53,17 +44,14 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-
-      const [permiso] = mysRoles;
-
       if (tipo == 'revision') {
         setmodificar(true);
       } else {
         setmodificar(false);
       }
 
-      const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
       const tipoDocumentorazon = await api.getTipoDocumeto();
       const listDocument = tipoDocumentorazon.map((res: any) => {
         return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
@@ -77,7 +65,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       }
       setListaTipoDocumentoRazon(listDocument);
 
-      setListaTipoDocumento(tipoDocumento);
+      setListaTipoDocumento(tiposjson);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -261,11 +249,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     type='text'
                     placeholder='Número Identificación'
                     autoComplete='off'
-                    pattern={tipocampo}
-                    maxLength={longitudmaxima}
+                    pattern={tipocampoRazon}
+                    maxLength={longitudmaximaRazon}
                     disabled={modificar}
                     onKeyPress={(event) => {
-                      if (!tipocampovalidacion.test(event.key)) {
+                      if (!tipocampovalidacionRazon.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -278,13 +266,13 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         title: 'Datos inválidos',
                         text:
                           'recuerde que para el tipo de documento: ' +
-                          tipodocumento +
+                          tipodocumentoRazon +
                           ' solo se admiten valores ' +
-                          campo +
+                          campoRazon +
                           ' de longitud entre ' +
-                          longitudminima +
+                          longitudminimaRazon +
                           ' y ' +
-                          longitudmaxima
+                          longitudmaximaRazon
                       });
                     }}
                   />
@@ -378,7 +366,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     icon: 'error',
                     title: 'Datos inválidos',
                     text:
-                      'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
+                      'Recuerde que para el tipo de documento: ' +
                       tipodocumento +
                       ' solo se admiten valores ' +
                       campo +

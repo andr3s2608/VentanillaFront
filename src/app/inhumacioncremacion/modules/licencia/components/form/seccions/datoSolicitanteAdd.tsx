@@ -1,15 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 // Antd
-import Form, { FormInstance } from 'antd/es/form';
+import Form from 'antd/es/form';
 import Input from 'antd/es/input';
 
 // Servicios
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
-import { TypeLicencia } from 'app/shared/utils/types.util';
+
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
-import moment from 'moment';
 
 import { ICementerio } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -17,7 +15,6 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import Swal from 'sweetalert2';
 
 export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
-  const [[l_tipo_profesional], setLTipoDocumento] = useState<IDominio[][]>([[]]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
@@ -42,16 +39,16 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   const getLista = useCallback(
     async () => {
-      const resp = await Promise.all([dominioService.get_type(ETipoDominio['Tipo de Profesional'])]);
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
 
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+      const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
       settipos(nuevalista);
       const userres = await api.getCodeUser();
 
       const informationUser = await api.GetInformationUser(userres);
 
-      if (informationUser.tipoIdentificacion == 5) {
+      if (informationUser.razonSocial != null) {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
         setcorreofun(informationUser.email);
@@ -88,8 +85,6 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       const funeraria = await api.GetFunerarias();
 
       setLfunerarias(funeraria);
-
-      setLTipoDocumento(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
