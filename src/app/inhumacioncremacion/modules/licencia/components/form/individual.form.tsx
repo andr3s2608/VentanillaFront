@@ -87,7 +87,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
-  const edit = objJosn?.idTramite ? true : false;
+  const edit = false;
 
   //form.setFieldsValue(objJosn?);
   //#region Listados
@@ -559,6 +559,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
 
+      console.log(idsol);
       if (idsol) {
         const [files, names] = generateListFiles(values);
 
