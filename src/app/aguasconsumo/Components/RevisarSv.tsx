@@ -6,7 +6,6 @@ import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { Form, Input, Upload } from 'antd';
 
-import { dominioService, ETipoDominio, IDepartamento, IDominio, IMunicipio } from 'app/services/dominio.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
@@ -32,8 +31,6 @@ export const RevisarSv = () => {
 
   const { setStatus } = useStepperForm<any>(form);
 
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-
   //validacion campos
 
   const [rol, setrol] = useState<any>();
@@ -45,11 +42,6 @@ export const RevisarSv = () => {
       const [permiso] = mysRoles;
 
       setrol(permiso.rol);
-
-      const tipos: any = localStorage.getItem('tipoid');
-      const tiposjson: any = JSON.parse(tipos);
-      const departamentos = await dominioService.get_departamentos_colombia();
-      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
 
       const lusuarios = await api.getFuncionarios();
       const usuarios: any[] = [];

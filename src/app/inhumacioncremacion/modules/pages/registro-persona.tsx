@@ -54,9 +54,10 @@ const RegistroPage: React.FC<any> = (props) => {
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const getListas = useCallback(
     async () => {
+      const departamento: any = localStorage.getItem('departamentos');
       const [municipios, ...resp] = await Promise.all([
         dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
-        dominioService.get_departamentos_colombia(),
+        JSON.parse(departamento),
         api.getPaises()
       ]);
 
@@ -103,8 +104,8 @@ const RegistroPage: React.FC<any> = (props) => {
   };
   const onChangeDepartamento = async (value: string) => {
     form.setFieldsValue({ cityLive: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepPai == parseInt(value));
+
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
 
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
@@ -119,8 +120,8 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const onChangeDepartamentor = async (value: string) => {
     form.setFieldsValue({ city: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepPai == parseInt(value));
+
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
 
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
@@ -154,9 +155,7 @@ const RegistroPage: React.FC<any> = (props) => {
     if (emailmayus == emailconfmayus) {
       const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
       var numero1: number;
-      const numero2: number = Num2;
 
-      const telcel: number = value.phonecell;
       const fecha: String = value.date;
 
       var fechaformato: string = fecha.toString();

@@ -40,6 +40,8 @@ const ModulePage = () => {
       const nivel = await dominioService.get_type(ETipoDominio['Nivel Educativo']);
       const etnia = await dominioService.get_type(ETipoDominio.Etnia);
       const tipomuerte = await dominioService.get_type(ETipoDominio['Tipo de Muerte']);
+      const departamentos = await dominioService.get_departamentos_colombia();
+      const localidades = await dominioService.get_localidades_bogota();
 
       localStorage.setItem('paises', JSON.stringify(paises));
       localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
@@ -47,7 +49,8 @@ const ModulePage = () => {
       localStorage.setItem('nivel', JSON.stringify(nivel));
       localStorage.setItem('etnia', JSON.stringify(etnia));
       localStorage.setItem('tipomuerte', JSON.stringify(tipomuerte));
-
+      localStorage.setItem('departamentos', JSON.stringify(departamentos));
+      localStorage.setItem('localidades', JSON.stringify(localidades));
       setroles(mysRoles);
       const idUser = await api.getCodeUser();
       const resp = await api.GetInformationUser(idUser);

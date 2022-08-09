@@ -98,15 +98,17 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const estadocivil: any = localStorage.getItem('estadocivil');
 
-      const nivel: any = localStorage.getItem('estadocivil');
+      const nivel: any = localStorage.getItem('nivel');
 
       const etnia: any = localStorage.getItem('etnia');
       const tipomuerte: any = localStorage.getItem('tipomuerte');
 
+      const departamento: any = localStorage.getItem('departamentos');
+      const localidad: any = localStorage.getItem('localidades');
       const [userRes, departamentos, localidades, listMunicipio, upzLocalidad, ...resp] = await Promise.all([
         api.getCodeUser(),
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_localidades_bogota(),
+        JSON.parse(departamento),
+        JSON.parse(localidad),
         dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
         dominioService.get_upz_by_localidad(idlocalidad),
         JSON.parse(nivel),
@@ -931,8 +933,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const onChangeDepartamento = async (value: string) => {
     form.setFieldsValue({ ciudad: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+
+    let departamento = l_departamentos.filter((i) => i.idDepartamento == value);
     const { idDepartamento } = departamento[0];
 
     if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {

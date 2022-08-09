@@ -49,14 +49,15 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
   const [l_fallecidos, setl_fallecidos] = useState<any>([]);
 
   const getListas = useCallback(async () => {
-    const dep = dominioService.get_departamentos_colombia();
+    const dep: any = localStorage.getItem('departamentos');
+    const departamentos: any = JSON.parse(dep);
 
     const paises: any = localStorage.getItem('paises');
     const paisesjson: any = JSON.parse(paises);
 
     const filtropais = paisesjson.filter((i: { id: any }) => i.id == obj?.country);
 
-    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.state);
+    const iddepart = departamentos.filter((i: { idDepartamento: any }) => i.idDepartamento == obj?.state);
 
     if (iddepart[0].descripcion !== 'BOGOTÁ D.C.') {
       const idMun: string = iddepart[0].idDepartamento + '';
@@ -79,21 +80,23 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       const filtropaismadre = paisesjson.filter((i: { id: any }) => i.id == obj?.residencia);
 
       if (obj.residencia == '1e05f64f-5e41-4252-862c-5505dbc3931c') {
-        const iddepartmadre = (await dep).filter((i) => i.idDepartamento == obj?.idDepartamentoResidencia);
+        const iddepartmadre = departamentos.filter(
+          (i: { idDepartamento: any }) => i.idDepartamento == obj?.idDepartamentoResidencia
+        );
         const { idDepartamento } = iddepartmadre[0];
         const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
 
         const idmunimadre = (await resp).filter((i) => i.idMunicipio == obj?.idCiudadResidencia);
 
         setNombres([obj.namemother, obj.secondNamemother, obj.surnamemother, obj.secondSurnamemother]);
-        setpaismadre('Colombia');
-        setnacionalidad('Colombia');
+        setpaismadre('colombia');
+        setnacionalidad('colombiana');
         setdepartamentomadre(iddepartmadre[0].descripcion.toLowerCase());
         setciudadmadre(idmunimadre[0].descripcion.toLowerCase());
         setesmadre(true);
       } else {
-        setpaismadre(filtropais[0].descripcion.toLowerCase());
-        setnacionalidad(filtropais[0].descripcion.toLowerCase());
+        setpaismadre(filtropaismadre[0].descripcion.toLowerCase());
+        setnacionalidad(filtropaismadre[0].descripcion.toLowerCase());
         setdepartamentomadre('Fuera del País');
         setciudadmadre('Fuera del País');
         setesmadre(true);
@@ -110,7 +113,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       inf_fallecido['idSexo'] + ''
     ]);
 
-    /*
     if (obj.tipopersona == '01f64f02-373b-49d4-8cb1-cb677f74292c') {
       const fallecidosduplicados = await api.GetDuplicadosFallecido(obj.idControlTramite, obj.IDNumber);
 
@@ -125,7 +127,6 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
       }
       setl_fallecidos(fallecidosduplicados);
     }
-    */
 
     const resp = await dominioService.get_type(ETipoDominio['Tipo de Muerte']);
     setListas(resp);

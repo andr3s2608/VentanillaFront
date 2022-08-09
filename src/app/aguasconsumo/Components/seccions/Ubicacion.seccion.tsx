@@ -19,17 +19,13 @@ import {
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 //Redux
-import { store } from 'app/redux/app.reducers';
-import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+
 import '../../../../css/estilos.css';
 import { Button } from 'antd';
-import { ApiService } from 'app/services/Apis.service';
-import { authProvider } from 'app/shared/utils/authprovider.util';
+
 export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const { tipo, obj, vista } = props;
 
-  const { accountIdentifier } = authProvider.getAccount();
-  const api = new ApiService(accountIdentifier);
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
@@ -53,19 +49,21 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         setmodificar(false);
       }
 
-      const departamentos = await dominioService.get_departamentos_colombia();
+      const departamentos: any = localStorage.getItem('departamentos');
+
       const municipios = await dominioService.get_all_municipios_by_departamento(obj?.departamento ?? idDepartamentoBogota);
       if (obj?.departamento) {
         setIdBogota('');
       }
 
-      const localidades = await dominioService.get_localidades_bogota();
+      const localidad: any = localStorage.getItem('localidades');
+      const localidades = JSON.parse(localidad);
 
       const filter = localidades.filter(function (f: { idLocalidad: string }) {
         return f.idLocalidad != '0e2105fb-08f8-4faf-9a79-de5effa8d198' && f.idLocalidad != 'd9fc2416-c730-4eb0-984c-6c780f2a7321';
       });
 
-      setLDepartamentos(departamentos);
+      setLDepartamentos(JSON.parse(departamentos));
       setLLocalidades(filter);
       setLMunicipios(municipios);
       setmostrar(true);
@@ -78,21 +76,6 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const onChangeDepartamento = async (value: string) => {
-    props.form.setFieldsValue({ municipio: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
-    const { idDepartamento } = departamento[0];
-
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIdBogota('Bogotá D.C.');
-    } else {
-      setIdBogota('');
-    }
-    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
-    setLMunicipios(resp);
-  };
 
   return (
     <>
@@ -152,7 +135,6 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                       options={l_departamentos}
                       optionPropkey='idDepartamento'
                       optionPropLabel='descripcion'
-                      onChange={onChangeDepartamento}
                       disabled={true}
                     />
                   </Form.Item>
