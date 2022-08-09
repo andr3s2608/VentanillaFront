@@ -277,7 +277,7 @@ export const BandejaU = (props: IDataSource) => {
                         dataSource={data}
                         columns={structureColumns}
                         pagination={{ pageSize: Paginas }}
-                        className='tableGen'
+                        className='tableGen ant-table table'
                       />
                     </div>
                   </div>
@@ -324,7 +324,7 @@ export const BandejaU = (props: IDataSource) => {
                         dataSource={datossolucionados}
                         columns={structureColumns}
                         pagination={{ pageSize: Paginas }}
-                        className='tableGen'
+                        className='tableGen ant-table table'
                       />
                     </div>
                   </div>

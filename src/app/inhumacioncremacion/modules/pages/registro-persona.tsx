@@ -1,29 +1,25 @@
-// Componentes
-import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-
-// Utilidades
 import { EstadoCivil, direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import Form from 'antd/es/form';
-import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
-import { BasicaInformacion } from './components/form/BasicaInformacion';
+import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
+import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import React, { useCallback, useEffect, useState, useReducer } from 'react';
 import { IDepartamento, IMunicipio } from 'app/services/dominio.service';
+import { BasicaInformacion } from './components/form/BasicaInformacion';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import Form from 'antd/es/form';
 import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { errorMessage } from 'app/services/settings/message.service';
+import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 import { dominioService } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
-import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
-
-import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
-import { ConsoleSqlOutlined, ContactsOutlined } from '@ant-design/icons';
 
 const RegistroPage: React.FC<any> = (props) => {
   const [direccionCompleta, setDireccionCompleta] = useState<string>('');
@@ -331,21 +327,27 @@ const RegistroPage: React.FC<any> = (props) => {
       let idUPZ = 74;
       let idBarrio = '10119BD';
 
-      const list_zona: Array<any> = await api.getListSubRedes();
+      let list_zona: Array<any> = await api.getListSubRedes();
       const list_barrios: Array<any> = await api.getListBarrios();
       const list_upz: Array<any> = await api.getListUPZ();
       const list_localidades: Array<any> = await api.getListLocalidades();
 
-      setListOfZona(list_zona);
-      setListOfLocalidad(list_localidades);
-      setListOfUPZ(list_upz);
-      setListOfBarrio(list_barrios);
-      setStateDisplayBox('block');
+      list_zona = [];
 
-      setInitialValueZona(idZona);
-      setInitialValueLocalidad(idLocalidad);
-      setInitialValueUPZ(idUPZ);
-      setInitialValueBarrio(idBarrio);
+      if (list_zona !== [] && listOfBarrio !== [] && list_upz !== [] && list_localidades !== []) {
+        setListOfZona(list_zona);
+        setListOfLocalidad(list_localidades);
+        setListOfUPZ(list_upz);
+        setListOfBarrio(list_barrios);
+        setStateDisplayBox('block');
+
+        setInitialValueZona(idZona);
+        setInitialValueLocalidad(idLocalidad);
+        setInitialValueUPZ(idUPZ);
+        setInitialValueBarrio(idBarrio);
+      } else {
+        errorMessage({ content: 'No se pudo obtener la lista de zona, localidades, barrios ni Upz' });
+      }
     }
   };
 
@@ -449,7 +451,7 @@ const RegistroPage: React.FC<any> = (props) => {
           <Alert
             message='Información!'
             description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
-                                en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón verde Confirmar Dirección.
+                                en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón azul Confirmar Dirección.
                                 Esta funcionalidad permitirá autocompletar datos de UPZ, Localidad y Barrio para las direcciones de Bogotá D.C. y
                                 estandarizar la dirección para el resto de ciudades.'
             type='info'
@@ -668,8 +670,8 @@ const RegistroPage: React.FC<any> = (props) => {
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
-                    optionPropkey='locId'
-                    optionPropLabel='descripcion'
+                    optionPropkey='idLocalidad'
+                    optionPropLabel='nombre'
                   />
                 </Form.Item>
               </div>
@@ -682,8 +684,8 @@ const RegistroPage: React.FC<any> = (props) => {
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
-                    optionPropkey='descripcion'
-                    optionPropLabel='descripcion'
+                    optionPropkey='id_upz'
+                    optionPropLabel='nom_upz'
                   />
                 </Form.Item>
               </div>

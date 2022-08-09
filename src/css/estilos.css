@@ -4,9 +4,12 @@
   text-decoration: none !important;
 }
 
+.ant-table table {
+  font-size: 14px !important;
+}
 .navbar {
   border-bottom: 3px solid rgb(4, 195, 209);
-  background-color: #CBCBCB !important;
+  background-color: #cbcbcb !important;
   color: #000;
   font-weight: 500;
 }
@@ -40,10 +43,10 @@
   background-color: #fff !important;
 }
 
-.breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
   font-family: 'fontAwesome';
   font-weight: bold;
-  content: "\f105";
+  content: '\f105';
   color: #000;
   font-size: 17px;
 }
@@ -56,7 +59,7 @@
   text-decoration: none;
 }
 
-.breadcrumb>.active {
+.breadcrumb > .active {
   color: #000 !important;
   font-size: 17px !important;
   font-weight: 500;
@@ -65,7 +68,7 @@
 }
 
 .ubi-menu .panel a {
-  background-color: #CBCBCB !important;
+  background-color: #cbcbcb !important;
 }
 
 .ubi-menu .panel a {
@@ -73,16 +76,15 @@
   border-bottom: 3px solid rgb(4, 195, 209);
 }
 
-.panel>.active {
-  color: #0055FF;
+.panel > .active {
+  color: #0055ff;
   font-size: 17px !;
   font-weight: 600;
   text-decoration: none;
 }
 
-
 .info-tramite p {
-  color: #4111A8;
+  color: #4111a8;
   font-size: 17px !important;
   font-weight: 600;
   text-decoration: none;
@@ -90,7 +92,7 @@
   margin-top: -25px !important;
 }
 
-.mb-0>a {
+.mb-0 > a {
   display: block;
   position: relative;
   color: #000;
@@ -99,8 +101,8 @@
   text-decoration: none;
 }
 
-.mb-0>a:after {
-  content: "\f078";
+.mb-0 > a:after {
+  content: '\f078';
   /* fa-chevron-down */
   font-family: 'FontAwesome';
   position: absolute;
@@ -108,14 +110,14 @@
   color: #000;
 }
 
-.mb-0>a[aria-expanded="true"]:after {
-  content: "\f077";
+.mb-0 > a[aria-expanded='true']:after {
+  content: '\f077';
   color: #000;
   /* fa-chevron-up */
 }
 
-.mb-0>a[aria-expanded="true"]:after {
-  content: "\f077";
+.mb-0 > a[aria-expanded='true']:after {
+  content: '\f077';
   color: #000;
   /* fa-chevron-up */
 }
@@ -133,7 +135,7 @@
 }
 
 a.collapsed.dm::after {
-  content: "\f054";
+  content: '\f054';
   color: #000;
   font-weight: bold !important;
   /* fa-chevron-up */
@@ -165,17 +167,21 @@ a.nav-link.hero_b {
   white-space: nowrap;
 }
 
-.ant-table-tbody>tr>td {
+.ant-table-tbody > tr > td {
   font-family: 'Roboto', sans-serif !important;
   text-align: left !important;
 }
 
 .bandeja_panel a.nav-link {
-  border-top: 2px solid #FF7F26 !important;
+  border-top: 2px solid #ff7f26 !important;
   font-family: 'Roboto', sans-serif !important;
   font-size: 16px !important;
   font-weight: bold !important;
   margin-right: 14px;
+}
+
+.ant-table table {
+  font-size: 10px;
 }
 
 .nav-link .active {
@@ -193,7 +199,8 @@ a.nav-link.hero_b {
   color: #000 !important;
 }
 
-.ant-pagination, .ant-table {
+.ant-pagination,
+.ant-table {
   width: 95% !important;
 }
 

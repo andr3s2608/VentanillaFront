@@ -107,7 +107,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <div className='row'>
             <div className='col-lg-9 col-sm-12 col-md-9' style={{ marginLeft: '5px' }}>
               <div className='form-group gov-co-form-group'>
-                <label className='text ml-2'>Dirección de Domicilio</label>
+                <label className='text ml-2'>Dirección</label>
                 <Form.Item initialValue={obj?.direccion} name='direccion' rules={[{ required: true }]}>
                   <Input
                     maxLength={100}
