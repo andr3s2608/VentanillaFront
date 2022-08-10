@@ -21,11 +21,10 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 //Redux
-import { store } from 'app/redux/app.reducers';
-import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+
 import { Button, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
-import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+
 import Swal from 'sweetalert2';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
@@ -34,7 +33,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(props.form);
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
@@ -51,9 +49,10 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const Paginas: number = 5;
   const getListas = useCallback(
     async () => {
-      const departamentos = await dominioService.get_departamentos_colombia();
+      const departamento: any = localStorage.getItem('departamentos');
       const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
-      const localidades = await dominioService.get_localidades_bogota();
+      const localidadstorage: any = localStorage.getItem('localidades');
+      const localidades = JSON.parse(localidadstorage);
       const uso = await api.getUsoFuente();
 
       const array: any[] = [];
@@ -71,7 +70,9 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           caudal: obj.acueductosfuentejson[index].caudalTotal
         });
 
-        const localidad = localidades.filter((i) => i.idLocalidad == obj.acueductosfuentejson[index].idLocalidad);
+        const localidad = localidades.filter(
+          (i: { idLocalidad: any }) => i.idLocalidad == obj.acueductosfuentejson[index].idLocalidad
+        );
         const usofuente = uso.filter((i: { idUsoFuente: any }) => i.idUsoFuente == obj.acueductosfuentejson[index].idUsoFuente);
         arraytabla.push({
           posicion: index + 1,
@@ -87,7 +88,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
       setlusofuente(uso);
 
-      setLDepartamentos(departamentos);
+      setLDepartamentos(JSON.parse(departamento));
       setLLocalidades(localidades);
       setLMunicipios(municipios);
     },
@@ -99,21 +100,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const onChangeDepartamento = async (value: string) => {
-    props.form.setFieldsValue({ municipio: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
-    const { idDepartamento } = departamento[0];
-
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIdBogota('Bogotá D.C.');
-    } else {
-      setIdBogota('');
-    }
-    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
-    setLMunicipios(resp);
-  };
 
   const insertarAcueducto = async () => {
     const dep = props.form.getFieldValue('departamento');
@@ -288,13 +274,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           </label>
           <div className='gov-co-dropdown'>
             <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
-              <SelectComponent
-                options={l_departamentos}
-                optionPropkey='idDepartamento'
-                optionPropLabel='descripcion'
-                disabled
-                onChange={onChangeDepartamento}
-              />
+              <SelectComponent options={l_departamentos} optionPropkey='idDepartamento' optionPropLabel='descripcion' disabled />
             </Form.Item>
           </div>
         </div>

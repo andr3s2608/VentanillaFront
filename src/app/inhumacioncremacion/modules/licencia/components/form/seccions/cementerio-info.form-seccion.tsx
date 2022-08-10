@@ -43,12 +43,8 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   const getListas = useCallback(
     async () => {
       const paises: any = localStorage.getItem('paises');
-      const paisesjson: any = JSON.parse(paises);
-      const resp = await Promise.all([
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_cementerios_bogota(),
-        paisesjson
-      ]);
+      const departamento: any = localStorage.getItem('departamentos');
+      const resp = await Promise.all([JSON.parse(departamento), dominioService.get_cementerios_bogota(), JSON.parse(paises)]);
 
       setListas(resp);
     },
@@ -87,8 +83,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   };
 
   const onChangeDepartamento = async (value: string) => {
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepartamento == value);
 
     const { idDepartamento } = departamento[0];
 

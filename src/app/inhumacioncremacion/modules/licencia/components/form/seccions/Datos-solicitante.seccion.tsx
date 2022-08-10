@@ -118,11 +118,12 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     setl_cementerio(cem);
     setl_funeraria(fun);
 
-    const dep = dominioService.get_departamentos_colombia();
+    const dep: any = localStorage.getItem('departamentos');
+    const departamentos = JSON.parse(dep);
 
     const filtropais = paisesjson.filter((i: { id: any }) => i.id == obj?.cementerioPais);
 
-    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.cementerioDepartamento);
+    const iddepart = departamentos.filter((i: { idDepartamento: any }) => i.idDepartamento == obj?.cementerioDepartamento);
 
     if (obj?.cementerioDepartamento != undefined) {
       const idMun: string = iddepart[0].idDepartamento + '';

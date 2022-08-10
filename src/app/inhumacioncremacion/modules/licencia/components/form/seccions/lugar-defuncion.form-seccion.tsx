@@ -26,15 +26,17 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
   const getListas = useCallback(
     async () => {
       const paises: any = localStorage.getItem('paises');
-      const paisesjson: any = JSON.parse(paises);
+      const departamentos: any = localStorage.getItem('departamentos');
       const resp = await Promise.all([
-        dominioService.get_departamentos_colombia(),
-        paisesjson,
+        JSON.parse(departamentos),
+        JSON.parse(paises),
         dominioService.get_type(ETipoDominio['Sitio de Defuncion']),
         dominioService.get_type(ETipoDominio['Area de Defuncion'])
       ]);
-      const depart = await dominioService.get_departamentos_colombia();
-      let departamento = (await depart).filter((i) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd');
+      const depart = JSON.parse(departamentos);
+      let departamento = depart.filter(
+        (i: { idDepartamento: string }) => i.idDepartamento == '31b870aa-6cd0-4128-96db-1f08afad7cdd'
+      );
 
       const { idDepartamento } = departamento[0];
       const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamento);
@@ -62,8 +64,8 @@ export const LugarDefuncionFormSeccion: React.FC<ILugarDefuncionProps<any>> = (p
   };
   const onChangeDepartamento = async (value: string) => {
     props.form.setFieldsValue({ city: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepartamento == value);
 
     const { idDepartamento } = departamento[0];
 
