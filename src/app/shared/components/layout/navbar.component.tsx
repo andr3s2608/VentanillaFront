@@ -38,16 +38,16 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
 
-      if (resp == undefined) {
+      if (info == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.razonSocial != null) {
-          setvalidacioninfo(resp.razonSocial);
+        if (info.razonSocial != null) {
+          setvalidacioninfo(info.razonSocial);
         } else {
-          setvalidacioninfo(resp.fullName);
+          setvalidacioninfo(info.fullName);
         }
       }
     },

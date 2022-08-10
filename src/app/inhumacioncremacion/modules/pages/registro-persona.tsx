@@ -55,11 +55,8 @@ const RegistroPage: React.FC<any> = (props) => {
   const getListas = useCallback(
     async () => {
       const departamento: any = localStorage.getItem('departamentos');
-      const [municipios, ...resp] = await Promise.all([
-        dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
-        JSON.parse(departamento),
-        api.getPaises()
-      ]);
+      const municipiosbogota: any = localStorage.getItem('municipiosbogota');
+      const [municipios, ...resp] = await Promise.all([JSON.parse(municipiosbogota), JSON.parse(departamento), api.getPaises()]);
 
       setLMunicipios(municipios);
       setLMunicipiosres(municipios);

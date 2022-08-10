@@ -128,9 +128,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       setCausaMuerte(causa['valor']);
 
-      const userres = await api.getCodeUser();
+      const iduser: any = localStorage.getItem('idUser');
 
-      setUser(userres);
+      setUser(JSON.parse(iduser));
       setListas(resp);
 
       if (edit) {
@@ -212,8 +212,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-    const idUser = await api.getCodeUser();
-    const resp = await api.GetInformationUser(idUser);
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
     let idnum = values.IDNumber;
     let idnumaut = values.mauthIDNumber;
 
@@ -271,11 +271,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     var tipo = '';
     var razon = '';
-    var tipoid = resp.tipoIdentificacion + '';
-    var nroid = resp.numeroIdentificacion + '';
-    if (resp.razonSocial != null) {
+    var tipoid = info.tipoIdentificacion + '';
+    var nroid = info.numeroIdentificacion + '';
+    if (info.razonSocial != null) {
       tipo = 'Juridica';
-      razon = resp.razonSocial;
+      razon = info.razonSocial;
     } else {
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
@@ -559,7 +559,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
 
-      console.log(idsol);
+
       if (idsol) {
         const [files, names] = generateListFiles(values);
 

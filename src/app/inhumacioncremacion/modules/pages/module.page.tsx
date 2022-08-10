@@ -32,8 +32,6 @@ const ModulePage = () => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-
       const paises = await dominioService.get_type(ETipoDominio.Pais);
       const tiposdocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const estadocivil = await dominioService.get_type(ETipoDominio['Estado Civil']);
@@ -42,6 +40,11 @@ const ModulePage = () => {
       const tipomuerte = await dominioService.get_type(ETipoDominio['Tipo de Muerte']);
       const departamentos = await dominioService.get_departamentos_colombia();
       const localidades = await dominioService.get_localidades_bogota();
+      const municipiosbogota = await dominioService.get_all_municipios_by_departamento('31b870aa-6cd0-4128-96db-1f08afad7cdd');
+      const roles = await api.GetRoles();
+      const idUser = await api.getCodeUser();
+      const infouser = await api.GetInformationUser(idUser);
+      const subredes = await api.getSubredes();
 
       localStorage.setItem('paises', JSON.stringify(paises));
       localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
@@ -51,17 +54,20 @@ const ModulePage = () => {
       localStorage.setItem('tipomuerte', JSON.stringify(tipomuerte));
       localStorage.setItem('departamentos', JSON.stringify(departamentos));
       localStorage.setItem('localidades', JSON.stringify(localidades));
-      setroles(mysRoles);
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
+      localStorage.setItem('municipiosbogota', JSON.stringify(municipiosbogota));
+      localStorage.setItem('roles', JSON.stringify(roles));
+      localStorage.setItem('idUser', JSON.stringify(idUser));
+      localStorage.setItem('infouser', JSON.stringify(infouser));
+      localStorage.setItem('subredes', JSON.stringify(subredes));
+      setroles(roles);
 
-      if (resp == undefined) {
+      if (infouser == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.razonSocial != null) {
-          setvalidacioninfo(resp.razonSocial);
+        if (infouser.razonSocial != null) {
+          setvalidacioninfo(infouser.razonSocial);
         } else {
-          setvalidacioninfo(resp.fullName);
+          setvalidacioninfo(infouser.fullName);
         }
       }
     },

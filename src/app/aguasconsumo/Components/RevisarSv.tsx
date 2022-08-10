@@ -37,9 +37,9 @@ export const RevisarSv = () => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
+      const rolesstorage: any = localStorage.getItem('roles');
 
-      const [permiso] = mysRoles;
+      const [permiso] = JSON.parse(rolesstorage);
 
       setrol(permiso.rol);
 

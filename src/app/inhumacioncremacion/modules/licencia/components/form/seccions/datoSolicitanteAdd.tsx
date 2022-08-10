@@ -44,19 +44,17 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
       const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
       settipos(nuevalista);
-      const userres = await api.getCodeUser();
-
-      const informationUser = await api.GetInformationUser(userres);
-
-      if (informationUser.razonSocial != null) {
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
+      if (info.razonSocial != null) {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
-        setcorreofun(informationUser.email);
+        setcorreofun(info.email);
         setvalidacionfuneraria(true);
 
         const lista = await api.GetFunerarias();
         const result = lista.find((funeraria: any) =>
-          funeraria.RAZON_S.toUpperCase().includes(informationUser.fullName.trim().toUpperCase())
+          funeraria.RAZON_S.toUpperCase().includes(info.fullName.trim().toUpperCase())
         );
         let array: any[] = [];
 
@@ -76,7 +74,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       } else {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
-        setcorreosol(informationUser.email);
+        setcorreosol(info.email);
         setvalidacionfuneraria(false);
 
         setvalidacion('1');

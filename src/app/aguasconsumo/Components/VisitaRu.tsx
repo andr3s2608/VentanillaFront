@@ -24,16 +24,17 @@ export const VisitaRu = () => {
   const [form] = Form.useForm<any>();
   const [rol, setrol] = useState<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
-  const [[l_tramites, l_estados, l_subredes], setListas] = useState<[any[], any[], any[]]>([[], [], []]);
+  const [[l_tramites, l_subredes], setListas] = useState<[any[], any[]]>([[], []]);
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      const [permiso] = mysRoles;
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      const [permiso] = JSON.parse(rolesstorage);
 
       setrol(permiso.rol);
-
-      const resp = await Promise.all([api.getTipoTramites(), api.getEstadosSolicitudAguas(), api.getSubredes()]);
+      const subredes: any = localStorage.getItem('subredes');
+      const resp = await Promise.all([api.getTipoTramites(), JSON.parse(subredes)]);
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

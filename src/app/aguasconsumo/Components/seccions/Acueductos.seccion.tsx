@@ -50,7 +50,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const getListas = useCallback(
     async () => {
       const departamento: any = localStorage.getItem('departamentos');
-      const municipios = await dominioService.get_all_municipios_by_departamento(idDepartamentoBogota);
+      const municipiosbogota: any = localStorage.getItem('municipiosbogota');
       const localidadstorage: any = localStorage.getItem('localidades');
       const localidades = JSON.parse(localidadstorage);
       const uso = await api.getUsoFuente();
@@ -90,7 +90,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
       setLDepartamentos(JSON.parse(departamento));
       setLLocalidades(localidades);
-      setLMunicipios(municipios);
+      setLMunicipios(JSON.parse(municipiosbogota));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

@@ -39,7 +39,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const [acueducto, setacueductos] = useState<any[]>([]);
 
-  const [archivos, setarchivos] = useState<any[]>(['0', '0', '0']);
+  const [archivos, setarchivos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0']);
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
   const [consultararchivos, setconsultararchivos] = useState<any[]>([]);
@@ -48,7 +48,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const [urlPdf, setUrlPdf] = useState<any>('');
   const [heightIframe, setHeightIframe] = useState<string>('');
 
-  const Paginas: number = 5;
+  const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
@@ -57,7 +57,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         return (
           f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
           f.idTipoDocumentoAdjunto != '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' &&
-          f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4'
+          f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4' &&
+          f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'
         );
       });
       setconsultararchivos(filter);
@@ -107,25 +108,56 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const cargardatos = () => {
     const prueba: any = [];
+    //////1.	Agua cruda///////
+
     prueba.push({
-      check: false,
-      nombre: 'Fotocopia documento de identificación PN',
-      valor: 'Fotocopia_documento_de_identificación_PN',
-      id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
+      check: true,
+      nombre: 'La caracterización del agua cruda',
+      valor: 'La_caracterización_del_agua_cruda',
+      id: '79572C8A-FFFE-440B-BE57-049B42B655A1'
     });
     prueba.push({
       check: true,
-      nombre: 'Plano de localización de la fuente hídrica y de uso del suelo',
-      valor: 'Plano_de_localización_de_la_fuente_hídrica_y_de_uso_del_suelo',
+      nombre: 'Resultados previos de agua cruda (no mayor a 12 meses)',
+      valor: 'Resultados_previos_de_agua_cruda_(no mayor a 12 meses)',
+      id: 'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346'
+    });
+
+    /////////2.	Descripción del sistema de tratamiento////
+    prueba.push({
+      check: true,
+      nombre: 'Planos, memorias y cálculo de diseño de la planta de tratamiento de agua para consumo humano',
+      valor: 'Planos,memorias_y_cálculo_de_diseño_de_la_planta_de_tratamiento_de_agua_para_consumo_humano',
       id: '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0'
     });
+
     prueba.push({
       check: false,
-      nombre: 'Plan del sistema de abastecimiento o acueducto(red de distribución)',
-      valor: 'Plan_del_sistema_de_abastecimiento_o_acueducto',
+      nombre: 'Plan de cumplimiento o el plan de acción',
+      valor: 'Plan_de_cumplimiento_o_el_plan_de_acción',
       id: '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0'
     });
 
+    prueba.push({
+      check: false,
+      nombre: 'Manual de operación y mantenimiento',
+      valor: 'Manual_de_operación_y_mantenimiento',
+      id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
+    });
+
+    /////////3.	Análisis de riesgos
+    prueba.push({
+      check: false,
+      nombre: 'Plan de contingencia de los sistemas de suministro',
+      valor: 'Plan_de_contingencia_de_los_sistemas_de_suministro',
+      id: 'B54F609C-02A3-42A0-B43C-02E055447EF7'
+    });
+    prueba.push({
+      check: false,
+      nombre: 'Documento de la identificación del riesgos',
+      valor: 'Documento_de_la_identificación_del_riesgos',
+      id: 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
+    });
     setacueductos(prueba);
   };
 
@@ -202,7 +234,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       prop(array);
     }
     setacueductos([]);
-    setarchivos(['0', '0', '0']);
+    setarchivos(['0', '0', '0', '0', '0', '0', '0']);
     cargardatos();
   };
 

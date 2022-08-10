@@ -105,11 +105,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const departamento: any = localStorage.getItem('departamentos');
       const localidad: any = localStorage.getItem('localidades');
+      const iduser: any = localStorage.getItem('idUser');
+      const municipiosbogota: any = localStorage.getItem('municipiosbogota');
       const [userRes, departamentos, localidades, listMunicipio, upzLocalidad, ...resp] = await Promise.all([
-        api.getCodeUser(),
+        JSON.parse(iduser),
         JSON.parse(departamento),
         JSON.parse(localidad),
-        dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
+        JSON.parse(municipiosbogota),
         dominioService.get_upz_by_localidad(idlocalidad),
         JSON.parse(nivel),
         paisesjson,
@@ -123,9 +125,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '71f659be-9d6b-4169-9ee2-e70bf0d65f92');
 
       settipos(nuevalista);
+      const rolesstorage: any = localStorage.getItem('roles');
 
-      const mysRoles = await api.GetRoles();
-      setroles(mysRoles);
+      setroles(JSON.parse(rolesstorage));
 
       const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       setCausaMuerte(causa['valor']);
@@ -140,7 +142,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       onChangeArea(idupz);
       if (isEdit) {
         const support = await api.getSupportDocuments(obj?.idSolicitud);
-        const typeList = await api.GetAllTypeValidation();
         setSupports(support);
       }
       //setEstado(reqEstado[0]);
@@ -412,15 +413,15 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       ];
     }
     //captura usuario logeado
-    const idUser = await api.getCodeUser();
-    const resp = await api.GetInformationUser(idUser);
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
     var tipo = '';
     var razon = '';
-    var tipoid = resp.tipoIdentificacion + '';
-    var nroid = resp.numeroIdentificacion + '';
-    if (resp.razonSocial != null) {
+    var tipoid = info.tipoIdentificacion + '';
+    var nroid = info.numeroIdentificacion + '';
+    if (info.razonSocial != null) {
       tipo = 'Juridica';
-      razon = resp.razonSocial;
+      razon = info.razonSocial;
     } else {
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
@@ -608,7 +609,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
-      console.log(idsol);
+
       if (idsol) {
         const [files, names] = generateListFiles(values, container);
 

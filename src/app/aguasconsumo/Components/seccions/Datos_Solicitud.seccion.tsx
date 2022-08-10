@@ -25,11 +25,12 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
+      const subredes: any = localStorage.getItem('subredes');
       const resp = await Promise.all([
         api.getTipoTramites(),
         api.getEstadosSolicitudAguas(),
         api.getActividades(),
-        api.getSubredes()
+        JSON.parse(subredes)
       ]);
 
       const lusuarios = await api.getFuncionarios();

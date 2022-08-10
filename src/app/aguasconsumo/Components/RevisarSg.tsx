@@ -33,8 +33,9 @@ export const RevisarSg = () => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      const [permiso] = mysRoles;
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      const [permiso] = JSON.parse(rolesstorage);
       setrol(permiso?.rol);
       const estado = await api.getEstadosSolicitudAguas();
       const filtradodatos = estado.filter(function (f: { nombre: string }) {

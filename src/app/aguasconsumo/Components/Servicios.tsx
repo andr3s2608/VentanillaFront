@@ -52,9 +52,9 @@ export const Servicios = () => {
   const getListas = useCallback(
     async () => {
       const tramites = await api.getTipoTramites();
+    const rolesstorage: any = localStorage.getItem('roles');
 
-      const mysRoles = await api.GetRoles();
-      const [permiso] = mysRoles;
+      const [permiso] = JSON.parse(rolesstorage);
 
       setrol(permiso.rol);
 

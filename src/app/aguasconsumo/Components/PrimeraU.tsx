@@ -9,7 +9,7 @@ import { DatosAcueducto } from './seccions/Acueductos.seccion';
 import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
 import { DatosDocumentos } from './seccions/Documentos.seccion';
 import { useHistory } from 'react-router';
-import { Form, Input, Steps } from 'antd';
+import { Alert, Form, Input, Steps } from 'antd';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
@@ -99,147 +99,181 @@ export const PrimeraU = () => {
           text: 'Debe registrar almenos 1 documento'
         });
       } else {
-        for (let index = 0; index < informacion.length; index++) {
-          sis.push({
-            idSistemaTratamiento: '00000000-0000-0000-0000-000000000000',
-            idFuente: '00000000-0000-0000-0000-000000000000',
-            sedimentador: informacion[index].sed,
-            mezclaRapido: informacion[index].mezr,
-            mezclaLento: informacion[index].mezl,
-            oxidacion: informacion[index].oxi,
-            floculador: informacion[index].flocula,
-            filtracion: informacion[index].filt,
-            desinfeccion: informacion[index].desin,
-            almacenamiento: informacion[index].alma,
-            torreAireacion: informacion[index].torre,
-            precloracion: informacion[index].preclo,
-            desarenador: informacion[index].desarenador,
-            otra: informacion[index].otra,
-            descripcionOtro: informacion[index].descrip ?? '',
-            numUsuarioUrbanos: informacion[index].num1 ?? '',
-            numUsuariosRurales: informacion[index].num2 ?? '',
-            poblacionUrbanos: informacion[index].pob1 ?? '',
-            poblacionRurales: informacion[index].pob2 ?? '',
-            caudalDiseño: informacion[index].caudaldesign ?? '',
-            caudalTratado: informacion[index].caudaltratado ?? ''
-          });
-        }
-        sistemajson = sis;
-        acueductojson = ac;
-        const formatDate = 'MM-DD-YYYY';
-
-        const json: IConsesion<any> = {
-          idSolicitud: objJson.idsolicitud,
-          idPersona: objJson.idPersona,
-          idTipodeSolicitud: objJson.idtipodeSolicitud,
-          tipodeSolicitud: objJson.tipodeSolicitud,
-          numeroRadicado: objJson.numeroradicado,
-          fechaSolicitud: objJson.fechaSolicitud,
-          idEstado: objJson.idestado,
-          estado: objJson.estado,
-          idFuente: '00000000-0000-0000-0000-000000000000',
-          idUbicacion: '00000000-0000-0000-0000-000000000000',
-          idSubred: '00000000-0000-0000-0000-000000000000',
-
-          idActividadActualSolicitud: objJson.idactividadActualSolicitud,
-          actividadActualSolicitud: objJson.actividadActualSolicitud,
-
-          actividadSiguienteSolicitud: objJson.actividadSiguienteSolicitud,
-
-          idTipodeTramite: '00000000-0000-0000-0000-000000000000',
-          tipodeTramite: objJson.tipodeTramite,
-
-          idUsuario: '00000000-0000-0000-0000-000000000000',
-          idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
-
-          idCitacionRevision: '00000000-0000-0000-0000-000000000000',
-
-          idFuenteAbastecimiento: objJson?.idFuente ?? '00000000-0000-0000-0000-000000000000',
-          temporal: true,
-
-          persona: {
-            idPersona: objJson.idPersona,
-            numeroResolucion: values.nroresolucion,
-            fechaResolucion: moment(values.dateresolucion).format(formatDate),
-            tipoIdentificacion: objJson.tipoIdentificacion,
-            numeroIdentificacion: objJson.numeroIdentificacion,
-            primerNombre: objJson.primerNombre,
-            segundoNombre: objJson.segundoNombre,
-            primerApellido: objJson.primerApellido,
-            segundoApellido: objJson.segundoApellido,
-            telefonoContacto: objJson.telefonoContacto,
-            celularContacto: objJson.celularContacto,
-            correoElectronico: objJson.correoElectronico,
-            idTipoPersona: objJson.idTipoPersona,
-            tipoDocumentoRazon: objJson.tipoDocumentoRazon,
-            nit: objJson.nit,
-            razonSocial: objJson.razonSocial
-          },
-          FuenteAbastecimiento: {
-            idFuente: '00000000-0000-0000-0000-000000000000',
-            idTipoFuente: values.tipofuente,
-            idSubCategoriaFuente: values.subcategoria,
-            idAutoridadAmbiental: values.autoridad,
-            bocatoma_long_cx: values.longitud,
-            bocatoma_lat_cy: values.latitud,
-            nombre: values.nombrefuente,
-            descripcionFuente: values.descripcionfuente,
-            descripcionOtraFuente: values.descripcionotra,
-            tienePlanta: planta,
-
-            acueductosFuente: acueductojson,
-            sistemaTratamiento: sistemajson
-          }
-        };
-
-        const valor = await api.AddSolicitudConsecion(json);
-
-        const supportDocumentsEdit: any[] = [];
-        const formData = new FormData();
-
-        documento.forEach((item: any, i: number) => {
-          if (documento[i] != undefined) {
-            const archivo = documento[i];
-            if (archivo.subida == 'local') {
-              formData.append('file', archivo.archivo.file);
-              formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
-
-              supportDocumentsEdit.push({
-                idSolicitud: objJson.idsolicitud,
-                idTipoDocumentoAdjunto: archivo.id,
-                path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
-                idUsuario: objJson.idusuario
-              });
+        let aguacruda = 0;
+        let descripcionsistema = 0;
+        let analisisriesgo = 0;
+        for (let index = 0; index < documento.length; index++) {
+          if (documento[index] != undefined) {
+            if (
+              documento[index].id === '79572C8A-FFFE-440B-BE57-049B42B655A1' ||
+              documento[index].id === 'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346'
+            ) {
+              aguacruda++;
+            }
+            if (
+              documento[index].id === '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0' ||
+              documento[index].id === '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0' ||
+              documento[index].id === '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
+            ) {
+              descripcionsistema++;
+            }
+            if (
+              documento[index].id === 'B54F609C-02A3-42A0-B43C-02E055447EF7' ||
+              documento[index].id === 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
+            ) {
+              analisisriesgo++;
             }
           }
-        });
-        if (values?.cargarresolucion) {
-          formData.append('file', values.cargarresolucion.file);
-          formData.append('nameFile', 'Documento_revision' + '_' + objJson.idsolicitud);
+        }
+        if (aguacruda > 0 && descripcionsistema > 0 && analisisriesgo > 0) {
+          for (let index = 0; index < informacion.length; index++) {
+            sis.push({
+              idSistemaTratamiento: '00000000-0000-0000-0000-000000000000',
+              idFuente: '00000000-0000-0000-0000-000000000000',
+              sedimentador: informacion[index].sed,
+              mezclaRapido: informacion[index].mezr,
+              mezclaLento: informacion[index].mezl,
+              oxidacion: informacion[index].oxi,
+              floculador: informacion[index].flocula,
+              filtracion: informacion[index].filt,
+              desinfeccion: informacion[index].desin,
+              almacenamiento: informacion[index].alma,
+              torreAireacion: informacion[index].torre,
+              precloracion: informacion[index].preclo,
+              desarenador: informacion[index].desarenador,
+              otra: informacion[index].otra,
+              descripcionOtro: informacion[index].descrip ?? '',
+              numUsuarioUrbanos: informacion[index].num1 ?? '',
+              numUsuariosRurales: informacion[index].num2 ?? '',
+              poblacionUrbanos: informacion[index].pob1 ?? '',
+              poblacionRurales: informacion[index].pob2 ?? '',
+              caudalDiseño: informacion[index].caudaldesign ?? '',
+              caudalTratado: informacion[index].caudaltratado ?? ''
+            });
+          }
+          sistemajson = sis;
+          acueductojson = ac;
+          const formatDate = 'MM-DD-YYYY';
 
-          supportDocumentsEdit.push({
+          const json: IConsesion<any> = {
             idSolicitud: objJson.idsolicitud,
-            idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
-            path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
-            idUsuario: objJson.idusuario
+            idPersona: objJson.idPersona,
+            idTipodeSolicitud: objJson.idtipodeSolicitud,
+            tipodeSolicitud: objJson.tipodeSolicitud,
+            numeroRadicado: objJson.numeroradicado,
+            fechaSolicitud: objJson.fechaSolicitud,
+            idEstado: objJson.idestado,
+            estado: objJson.estado,
+            idFuente: '00000000-0000-0000-0000-000000000000',
+            idUbicacion: '00000000-0000-0000-0000-000000000000',
+            idSubred: '00000000-0000-0000-0000-000000000000',
+
+            idActividadActualSolicitud: objJson.idactividadActualSolicitud,
+            actividadActualSolicitud: objJson.actividadActualSolicitud,
+
+            actividadSiguienteSolicitud: objJson.actividadSiguienteSolicitud,
+
+            idTipodeTramite: '00000000-0000-0000-0000-000000000000',
+            tipodeTramite: objJson.tipodeTramite,
+
+            idUsuario: '00000000-0000-0000-0000-000000000000',
+            idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
+
+            idCitacionRevision: '00000000-0000-0000-0000-000000000000',
+
+            idFuenteAbastecimiento: objJson?.idFuente ?? '00000000-0000-0000-0000-000000000000',
+            temporal: true,
+
+            persona: {
+              idPersona: objJson.idPersona,
+              numeroResolucion: values.nroresolucion,
+              fechaResolucion: moment(values.dateresolucion).format(formatDate),
+              tipoIdentificacion: objJson.tipoIdentificacion,
+              numeroIdentificacion: objJson.numeroIdentificacion,
+              primerNombre: objJson.primerNombre,
+              segundoNombre: objJson.segundoNombre,
+              primerApellido: objJson.primerApellido,
+              segundoApellido: objJson.segundoApellido,
+              telefonoContacto: objJson.telefonoContacto,
+              celularContacto: objJson.celularContacto,
+              correoElectronico: objJson.correoElectronico,
+              idTipoPersona: objJson.idTipoPersona,
+              tipoDocumentoRazon: objJson.tipoDocumentoRazon,
+              nit: objJson.nit,
+              razonSocial: objJson.razonSocial
+            },
+            FuenteAbastecimiento: {
+              idFuente: '00000000-0000-0000-0000-000000000000',
+              idTipoFuente: values.tipofuente,
+              idSubCategoriaFuente: values.subcategoria,
+              idAutoridadAmbiental: values.autoridad,
+              bocatoma_long_cx: values.longitud,
+              bocatoma_lat_cy: values.latitud,
+              nombre: values.nombrefuente,
+              descripcionFuente: values.descripcionfuente,
+              descripcionOtraFuente: values.descripcionotra,
+              tienePlanta: planta,
+
+              acueductosFuente: acueductojson,
+              sistemaTratamiento: sistemajson
+            }
+          };
+
+          const valor = await api.AddSolicitudConsecion(json);
+
+          const supportDocumentsEdit: any[] = [];
+          const formData = new FormData();
+
+          documento.forEach((item: any, i: number) => {
+            if (documento[i] != undefined) {
+              const archivo = documento[i];
+              if (archivo.subida == 'local') {
+                formData.append('file', archivo.archivo.file);
+                formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
+
+                supportDocumentsEdit.push({
+                  idSolicitud: objJson.idsolicitud,
+                  idTipoDocumentoAdjunto: archivo.id,
+                  path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
+                  idUsuario: objJson.idusuario
+                });
+              }
+            }
+          });
+          if (values?.cargarresolucion) {
+            formData.append('file', values.cargarresolucion.file);
+            formData.append('nameFile', 'Resolucion_renovacion' + '_' + objJson.idsolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: objJson.idsolicitud,
+              idTipoDocumentoAdjunto: '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0',
+              path: `${objJson.idusuario}/Resolucion_renovacion_${objJson.idsolicitud}`,
+              idUsuario: objJson.idusuario
+            });
+          }
+
+          formData.append('containerName', 'aguahumanos');
+          formData.append('oid', objJson.idusuario);
+
+          const nube = await api.uploadFiles(formData);
+          const bd = await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+
+          Swal.fire({
+            icon: 'success',
+
+            title: 'Solicitud Actualizada',
+            text: `Se ha actualizado la Solicitud exitosamente `
+          });
+          history.push('/tramites-servicios-aguas');
+
+          localStorage.removeItem('register');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos Incompletos',
+            text: 'Debe registrar almenos 1 documento para "Agua Cruda","Descripción del sistema de tratamiento" y "Análisis de riesgos"'
           });
         }
-
-        formData.append('containerName', 'aguahumanos');
-        formData.append('oid', objJson.idusuario);
-
-        const nube = await api.uploadFiles(formData);
-        const bd = await api.AddSupportDocumentsAguas(supportDocumentsEdit);
-
-        Swal.fire({
-          icon: 'success',
-
-          title: 'Solicitud Actualizada',
-          text: `Se ha actualizado la Solicitud exitosamente `
-        });
-        history.push('/tramites-servicios-aguas');
-
-        localStorage.removeItem('register');
       }
     }
   };
@@ -435,6 +469,17 @@ export const PrimeraU = () => {
                     <div className='row mt-5 ml-2'>
                       <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} />
                     </div>
+
+                    <Alert
+                      message='Información!'
+                      description='Por favor registre los documentos pertienentes a la fuente de abastecimientos,entre ellos los relacionados
+                      a: 1.Agua Cruda(La caracterización del agua cruda,Resultados previos de agua cruda (no mayor a 12 meses)) ,
+                      2.Descripción del sistema de tratamiento(Planos, memorias y cálculo de diseño de la planta de tratamiento de agua para consumo humano,
+                        Manual de operación y mantenimiento,Plan de de cumplimiento o el plan de acción) y 3.Análisis de riesgos
+                        (Plan de contingencia de los sistemas de suministro,Documento de la identificación del riesgos).
+                      '
+                      type='info'
+                    />
                     <div className='row mt-5 ml-2'>
                       <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={null} />
                     </div>

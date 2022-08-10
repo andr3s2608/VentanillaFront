@@ -30,7 +30,9 @@ export const Bandeja = (props: IDataSource) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
 
       if (

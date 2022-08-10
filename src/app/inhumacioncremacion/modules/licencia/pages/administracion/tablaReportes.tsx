@@ -34,8 +34,9 @@ export const TablaReportes = (props: IDataSource) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      setroles(mysRoles);
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      setroles(JSON.parse(rolesstorage));
       setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

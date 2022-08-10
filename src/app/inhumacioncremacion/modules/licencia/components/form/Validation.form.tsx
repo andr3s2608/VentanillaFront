@@ -56,7 +56,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalValidarCertificado, setIsModalValidarCertificado] = useState<boolean>(false);
   const [isvalidcertificado, setisvalidcertificado] = useState<boolean>(false);
   const [isDisabledElement, setIsDisabledElement] = useState<boolean>(false);
-  const [nameUser, setNameUser] = useState<any>('');
+
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
   const [viewLicenceState, setViewLicenceState] = useState<any>();
   const { Step } = Steps;
@@ -502,12 +502,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
           //alert('aprobacion');
 
-          let codeUser = await api.getCodeUser();
-          let nameUser = await api.GetInformationUser(codeUser);
+          const infouser: any = localStorage.getItem('infouser');
+          const info: any = JSON.parse(infouser);
 
           const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, nameUser.fullName, codigo);
+          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo);
 
           let datosDinamicosAprobacion = [
             solicitud[0]['razonSocialSolicitante'],
@@ -829,16 +829,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let bandera = await api.validarFirmaFuncionario(idUsuario);
 
     if (bandera) {
-      const codeUser = await api.getCodeUser();
-
-      const nameUser = await api.GetInformationUser(codeUser);
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
       const idSolicitud = objJosn?.idSolicitud;
       const all = await api.GetSolicitud(idSolicitud);
-      let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, nameUser.fullName);
+      let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, info.fullName);
       const solicitante = await api.GetResumenSolicitud(idSolicitud);
       setsolicitante(solicitante[0]['nombreSolicitante']);
       setUrlPdfLicence(linkPdf);
-      setNameUser(nameUser);
+
       setIsModalVisiblePdf(true);
     } else {
       Swal.fire({

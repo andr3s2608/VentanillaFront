@@ -30,7 +30,7 @@ import moment from 'moment';
 
 export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const { obj, tipo } = props;
-  const [[l_fuentes, l_autoridad, l_subredes], setListas] = useState<[any[], any[], any[]]>([[], [], []]);
+  const [[l_fuentes, l_autoridad], setListas] = useState<[any[], any[]]>([[], []]);
 
   const [
     [tipofuente, subca, descripcionotra, nombre, latitud, longitud, descricion, autoridad, nroresolu, fecha, tiposol],
@@ -45,7 +45,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental(), api.getSubredes()]);
+      const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental()]);
       setListas(resp);
 
       let sub;

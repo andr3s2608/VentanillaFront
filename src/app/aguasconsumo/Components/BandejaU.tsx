@@ -26,9 +26,9 @@ export const BandejaU = (props: IDataSource) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
+      const rolesstorage: any = localStorage.getItem('roles');
 
-      setroles(mysRoles);
+      setroles(JSON.parse(rolesstorage));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
