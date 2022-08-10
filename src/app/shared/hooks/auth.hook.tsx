@@ -1,15 +1,8 @@
-import React from 'react';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import { AuthenticationState, IAzureADFunctionProps } from 'react-aad-msal';
-
-// Antd
-import Spin from 'antd/es/spin';
-
-// Pages
-import { LoginPage } from 'app/core/pages/login.page';
-
-// Modules
 import { ModuleLayout } from 'app/inhumacioncremacion/modules/module.layout';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import { LoginPage } from 'app/core/pages/login.page';
+import Spin from 'antd/es/spin';
 
 export const useAuthProvider = () => {
   const bodyFunction = (dataFunction: IAzureADFunctionProps) => {
@@ -17,7 +10,6 @@ export const useAuthProvider = () => {
 
     switch (authenticationState) {
       case AuthenticationState.Authenticated:
-        localStorage.setItem('accountInfoStorage', JSON.stringify(accountInfo));
         return (
           <BrowserRouter>
             <Route path='/'>

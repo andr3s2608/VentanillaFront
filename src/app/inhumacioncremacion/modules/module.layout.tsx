@@ -49,6 +49,12 @@ export const ModuleLayout = (props: { logout: () => void }) => {
 
   const getListas = useCallback(
     async () => {
+      try {
+        const token = await authProvider.getAccessToken();
+      } catch (error) {
+        console.log('Error obteniendo el token de sesión', error);
+      }
+
       const myMenu = await api.GetMenuUser();
       const menu = MapperMenu.mapMenu(myMenu);
 

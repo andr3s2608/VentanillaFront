@@ -193,6 +193,7 @@ export const TablaReportes = (props: IDataSource) => {
       <div className='card'>
         <div className='card-body'>
           <div className='row'>
+            <span> Resultados = {data.length}</span>
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <Table
                 id='tableGen'

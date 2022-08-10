@@ -35,7 +35,6 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [FilterTextID, setFilterTextID] = useState<String>();
   const [FilterTextDoc, setChangeFilterDoc] = useState<String>();
   const [FilterTextFun, setChangeFilterFun] = useState<String>();
-
   const [disableFilter, setDisableFilter] = useState<Boolean>();
   const [textAlerta, setTextAlert] = useState<String>();
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
@@ -176,6 +175,12 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
         setGrid(dataFIN);
+        Swal.fire({
+          title: 'Resultados encontrados',
+          text: 'Señor usuario con los filtros de busqueda se encontraron ' + dataFIN.length + ' resultados.',
+
+          icon: 'info'
+        });
         setVisibleGrid('contents');
       } else {
         setVisibleGrid('none');
