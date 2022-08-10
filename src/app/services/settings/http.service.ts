@@ -4,6 +4,8 @@ import { clearStorage } from 'app/shared/tools/storage.tool';
 import { Loading } from 'app/redux/ui/ui.actions';
 import { ModalFuncProps } from 'antd/es/modal';
 import { store } from 'app/redux/app.reducers';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 const cancelRequest = axios.CancelToken.source();
 let source: any;
@@ -100,24 +102,15 @@ const handle_error = (reject: any): Promise<Error> => {
 };
 
 http.interceptors.request.use(
-  (config: AxiosRequestConfig): AxiosRequestConfig => {
-    const { headers } = config;
-    const AccountInfoStorage = JSON.parse(localStorage.getItem('accountInfoStorage') as string);
-    if (AccountInfoStorage) {
-      const TokenInLocalStorage = JSON.parse(
-        localStorage.getItem(
-          '{"authority":"https://saludcapitalb2c.b2clogin.com/saludcapitalb2c.onmicrosoft.com/b2c_1_iniciosesionconregistro/","clientId":"f3e58d64-a12a-4db0-b982-b837f4c8325d","homeAccountIdentifier":"' +
-            AccountInfoStorage.account.homeAccountIdentifier +
-            '"}'
-        ) as string
-      );
+  async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+    try {
+      const response = await authProvider.acquireTokenSilent({
+        scopes: ['https://saludcapitalb2c.onmicrosoft.com/f3e58d64-a12a-4db0-b982-b837f4c8325d/Ciudadano.Read']
+      });
 
-      if (TokenInLocalStorage.accessToken) {
-        headers.Authorization = 'Bearer ' + TokenInLocalStorage.accessToken;
-      } else {
-        headers.Authorization = '';
-      }
-    }
+      const bearer = `Bearer ${response.accessToken}`;
+      config.headers.Authorization = bearer;
+    } catch (error) {}
 
     return config;
   },
