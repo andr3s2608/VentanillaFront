@@ -199,7 +199,13 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       <div className='card'>
         <div className='card-body'>
           <div className='row h-100'>
-            <div className='col-lg-6 col-md-6 col-sm-12'>
+            <div className='col-md-12 col-lg-12 col-sm-12  mt-3'>
+              <label>
+                <span style={{ color: 'red', fontWeight: 'bold' }}>*</span>Ingrese el rango de fechas que desea consultar
+              </label>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+              <label>Fecha Inicial</label>
               <DatepickerComponent
                 id='datePicker1'
                 picker='date'
@@ -214,7 +220,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 }}
               />
             </div>
-            <div className='col-lg-6 col-md-6 col-sm-12'>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+              <label>Fecha Final</label>
               <DatepickerComponent
                 id='datePicker2'
                 picker='date'
@@ -230,87 +237,121 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
               />
             </div>
           </div>
-          <div className='row h-100 justify-content-center align-items-center'>
-            <div className='col-gl-6 col-md-6 col-sm-12' style={{ margin: '10px', display: 'block' }}>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='ID Tramite' name='' rules={[{ required: false }]}>
-                  <Input
-                    id='tramiteID'
-                    placeholder='ID Tramite'
-                    className='form-control ml-1'
-                    onChange={onChangeFilterID}
-                    style={{ display: 'block' }}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='No. Documento Fallecido' name='' rules={[{ required: false }]}>
-                  <Input
-                    id='docFallecido'
-                    placeholder='No. documento'
-                    className='form-control ml-1'
-                    onChange={onChangeFilterDoc}
-                    style={{ display: 'block' }}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='Funeraria' name='' rules={[{ required: false }]}>
-                  <Input
-                    id='funeraria'
-                    placeholder='Nombre Funeraria'
-                    className='form-control ml-1'
-                    onChange={onChangeFilterFun}
-                    style={{ display: 'block' }}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='Tipo Solicitud' name='' rules={[{ required: false }]}>
-                  <SelectComponent
-                    className='ml-3'
-                    id='filterTipoSol'
-                    onChange={selectChange}
-                    options={[
-                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
-                      { key: 'inhuFetal', value: 'Inhumación Fetal' },
-                      { key: 'cremInd', value: 'Cremación Individual' },
-                      { key: 'cremFetal', value: 'Cremación Fetal' },
-                      { key: 'todos', value: 'Todos' }
-                    ]}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='Estado Tramite' name='' rules={[{ required: false }]}>
-                  <SelectComponent
-                    className='ml-3'
-                    id='filterEstadoTra'
-                    onChange={selectChangeEstado}
-                    options={[
-                      { key: 'registroExt', value: 'Registro Usuario Externo' },
-                      { key: 'aprobado', value: 'Aprobado validador de documentos' },
-                      { key: 'buscar', value: 'por investigar' }
-                    ]}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                  />
-                </Form.Item>
-              </div>
+          <div className='row mt-5' style={{ marginLeft: '2px' }}>
+            <div className='col-md-12 col-lg-12 col-sm-12 mt-3'>
+              <label>Ingrese los valores que desea buscar</label>
+            </div>
 
-              <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 ml-5'>
-                <Button type='primary' htmlType='submit' onClick={busquedaFun}>
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row mt-3'>
+                <label className='col-sm-2 col-form-label'>Id Tramite</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <Input id='tramiteID' placeholder='ID Tramite' className='form-control ml-1' onChange={onChangeFilterID} />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>No. Documento Fallecido</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <Input
+                      id='docFallecido'
+                      placeholder='No. documento'
+                      className='form-control ml-1'
+                      onChange={onChangeFilterDoc}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>Funeraria</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <Input
+                      id='funeraria'
+                      placeholder='Nombre Funeraria'
+                      className='form-control ml-1'
+                      onChange={onChangeFilterFun}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>Tipo Solicitud</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <SelectComponent
+                      style={{ width: '942px', marginLeft: '5px' }}
+                      id='filterTipoSol'
+                      onChange={selectChange}
+                      options={[
+                        { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                        { key: 'inhuFetal', value: 'Inhumación Fetal' },
+                        { key: 'cremInd', value: 'Cremación Individual' },
+                        { key: 'cremFetal', value: 'Cremación Fetal' },
+                        { key: 'todos', value: 'Todos' }
+                      ]}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>Estado Tramite</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <SelectComponent
+                      style={{ width: '942px', marginLeft: '5px' }}
+                      id='filterEstadoTra'
+                      onChange={selectChangeEstado}
+                      options={[
+                        { key: 'registroExt', value: 'Registro Usuario Externo' },
+                        { key: 'aprobado', value: 'Aprobado validador de documentos' },
+                        { key: 'buscar', value: 'por investigar' }
+                      ]}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 mt-5'>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  onClick={busquedaFun}
+                  className='d-flex text-center'
+                  style={{ marginLeft: '0px' }}
+                >
                   Buscar
                 </Button>
               </div>
             </div>
           </div>
-          <div className='row' style={{ marginTop: '-8px' }}>
+
+          <div className='row mt-3'>
             <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
-                <Tabs style={{ border: 'none' }}>
+              <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
+                <div className='col-lg-12 col-sm-12 col-md-12'>
+                  <label>
+                    Número total de resultados encontrados: <span className='ml-3 font-weight-bold'></span>
+                  </label>
+                </div>
+                <Tabs style={{ border: 'none' }} className='mt-3'>
                   <TabPane tab='Resultados' key='1'>
                     <TablaReportes data={grid} />
                   </TabPane>
