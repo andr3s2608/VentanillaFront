@@ -289,7 +289,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 <div className='col-sm-10'>
                   <Form.Item name='' rules={[{ required: false }]}>
                     <SelectComponent
-                      style={{ width: '942px', marginLeft: '5px' }}
+                      style={{ width: '1012px', marginLeft: '5px' }}
                       id='filterTipoSol'
                       onChange={selectChange}
                       options={[
@@ -313,7 +313,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 <div className='col-sm-10'>
                   <Form.Item name='' rules={[{ required: false }]}>
                     <SelectComponent
-                      style={{ width: '942px', marginLeft: '5px' }}
+                      style={{ width: '1012px', marginLeft: '5px' }}
                       id='filterEstadoTra'
                       onChange={selectChangeEstado}
                       options={[
