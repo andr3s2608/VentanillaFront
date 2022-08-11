@@ -46,7 +46,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
 
-  const Paginas: number = 5;
+  const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
       const departamento: any = localStorage.getItem('departamentos');

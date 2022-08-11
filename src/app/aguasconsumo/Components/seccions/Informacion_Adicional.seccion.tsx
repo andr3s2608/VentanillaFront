@@ -49,7 +49,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   ]);
   const [sistema, setsistema] = useState<any[]>([]);
 
-  const Paginas: number = 5;
+  const Paginas: number = 10;
   const getListas = useCallback(async () => {
     const array: any[] = [];
 
