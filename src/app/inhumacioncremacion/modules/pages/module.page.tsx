@@ -44,7 +44,6 @@ const ModulePage = () => {
       const roles = await api.GetRoles();
       const idUser = await api.getCodeUser();
       const infouser = await api.GetInformationUser(idUser);
-      const subredes = await api.getSubredes();
 
       localStorage.setItem('paises', JSON.stringify(paises));
       localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
@@ -58,7 +57,7 @@ const ModulePage = () => {
       localStorage.setItem('roles', JSON.stringify(roles));
       localStorage.setItem('idUser', JSON.stringify(idUser));
       localStorage.setItem('infouser', JSON.stringify(infouser));
-      localStorage.setItem('subredes', JSON.stringify(subredes));
+
       setroles(roles);
 
       if (infouser == undefined) {

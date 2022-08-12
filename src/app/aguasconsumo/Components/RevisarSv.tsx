@@ -164,6 +164,14 @@ export const RevisarSv = () => {
       await api.AddSupportDocumentsAguas(supportDocumentsEdit);
     }
 
+    const formato = await api.getFormatoAguas('3DB34F22-4A32-431D-B136-31A8D60CA604');
+
+    await api.sendEmail({
+      to: objJson.correoElectronico,
+      subject: 'Notificación de visita en campo',
+      body: formato['cuerpo']
+    });
+
     Swal.fire({
       icon: 'success',
 

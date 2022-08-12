@@ -31,7 +31,8 @@ export const Bandeja = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
-
+      const subredes = await api.getSubredes();
+      localStorage.setItem('subredes', JSON.stringify(subredes));
       const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
 
