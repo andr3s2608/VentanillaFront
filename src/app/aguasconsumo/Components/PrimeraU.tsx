@@ -433,10 +433,10 @@ export const PrimeraU = () => {
                 <>
                   <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
-                      <DatosFuente form={form} obj={objJson} tipo={'validador'} />
+                      <DatosFuente form={form} obj={objJson} tipo={'validador'} habilitar={true} />
                     </div>
                     <div className='row mt-5 ml-2'>
-                      <DatosAcueducto form={form} obj={objJson} prop={addacueducto} />
+                      <DatosAcueducto form={form} obj={objJson} prop={addacueducto} habilitar={true} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>
@@ -467,7 +467,7 @@ export const PrimeraU = () => {
                 <>
                   <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
-                      <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} />
+                      <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} habilitar={true} />
                     </div>
 
                     <Alert

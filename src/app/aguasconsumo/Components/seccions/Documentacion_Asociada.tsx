@@ -33,7 +33,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
-  const Paginas: number = 5;
+  const Paginas: number = 10;
 
   const getListas = useCallback(
     async () => {
