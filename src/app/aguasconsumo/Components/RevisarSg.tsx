@@ -179,7 +179,7 @@ export const RevisarSg = () => {
                 </div>
 
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} />
+                  <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} habilitar={false} />
                 </div>
               </div>
             </section>
@@ -206,7 +206,7 @@ export const RevisarSg = () => {
                           </div>
                           <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                             <div className='row mt-5 ml-2'>
-                              <DatosSolicitante form={form} obj={objJson} tipo={''} />
+                              <DatosSolicitante form={form} obj={objJson} tipo={''} habilitar={false} />
                             </div>
                           </div>
                         </div>
@@ -231,7 +231,7 @@ export const RevisarSg = () => {
 
                           <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                             <div className='row mt-5 ml-2'>
-                              <DatosFuente form={form} obj={objJson} tipo={''} />
+                              <DatosFuente form={form} obj={objJson} tipo={''} habilitar={false} />
                             </div>
                           </div>
                         </div>
@@ -255,7 +255,7 @@ export const RevisarSg = () => {
                           </div>
                           <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                             <div className='card-body'>
-                              <DatosAcueducto form={form} obj={objJson} prop={null} />
+                              <DatosAcueducto form={form} obj={objJson} prop={null} habilitar={false} />
                             </div>
                           </div>
                         </div>
@@ -279,7 +279,7 @@ export const RevisarSg = () => {
                           </div>
                           <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                             <div className='card-body'>
-                              <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} />
+                              <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
                             </div>
                           </div>
                         </div>

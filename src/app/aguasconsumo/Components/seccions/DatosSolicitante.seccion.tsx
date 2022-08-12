@@ -7,7 +7,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import '../../../../css/estilos.css';
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
-  const { obj, form, tipo } = props;
+  const { obj, form, tipo, habilitar } = props;
 
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
 
@@ -174,60 +174,38 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       }
     }
   };
-
-  return (
-    <>
-      <div className='col-lg-12 col-sm-12 col-md-12'>
-        <div className='info-tramite mt-2'>
-          <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            Datos del solicitante. <br />{' '}
-            <small style={{ color: '#000' }}>
-              {' '}
-              <span className='required'>*</span> Campos Obligatorios
-            </small>
-          </p>
-        </div>
-
-        <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
-          <div className='panel-search'>
-            <div className='form-group gov-co-form-group'>
-              <div className='gov-co-dropdown'>
-                <p className='text'>
-                  {' '}
-                  <span className='required'>*</span> Tipo de Solicitante
-                </p>
-                <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
-                  <SelectComponent
-                    options={[
-                      { key: 'natural', value: 'Persona Natural' },
-                      { key: 'juridica', value: 'Persona Jurídica' }
-                    ]}
-                    onChange={Onchangetipo}
-                    defaultValue={obj?.idTipoPersona ?? 'natural'}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                    disabled={modificar}
-                  />
-                </Form.Item>
-              </div>
-            </div>
+  if (habilitar) {
+    return (
+      <>
+        <div className='col-lg-12 col-sm-12 col-md-12'>
+          <div className='info-tramite mt-2'>
+            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+              Datos del solicitante. <br />{' '}
+              <small style={{ color: '#000' }}>
+                {' '}
+                <span className='required'>*</span> Campos Obligatorios
+              </small>
+            </p>
           </div>
-        </div>
-      </div>
 
-      {!tipoSolicitante ? (
-        <>
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+          <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
             <div className='panel-search'>
               <div className='form-group gov-co-form-group'>
                 <div className='gov-co-dropdown'>
-                  <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Tipo de Solicitante
+                  </p>
+                  <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                     <SelectComponent
-                      className='text'
-                      options={l_tipos_documentoRazon}
-                      onChange={cambiodocumentoRazon}
-                      optionPropkey='id'
-                      optionPropLabel='descripcion'
+                      options={[
+                        { key: 'natural', value: 'Persona Natural' },
+                        { key: 'juridica', value: 'Persona Jurídica' }
+                      ]}
+                      onChange={Onchangetipo}
+                      defaultValue={obj?.idTipoPersona ?? 'natural'}
+                      optionPropkey='key'
+                      optionPropLabel='value'
                       disabled={modificar}
                     />
                   </Form.Item>
@@ -235,344 +213,763 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
             </div>
           </div>
+        </div>
 
-          <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
-            <div className='panel-search'>
-              <div className='form-group gov-co-form-group'>
+        {!tipoSolicitante ? (
+          <>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group'>
+                  <div className='gov-co-dropdown'>
+                    <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                      <SelectComponent
+                        className='text'
+                        options={l_tipos_documentoRazon}
+                        onChange={cambiodocumentoRazon}
+                        optionPropkey='id'
+                        optionPropLabel='descripcion'
+                        disabled={modificar}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group'>
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Número de documento
+                  </p>
+                  <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                    <Input
+                      allowClear
+                      type='text'
+                      placeholder='Número Identificación'
+                      autoComplete='off'
+                      pattern={tipocampoRazon}
+                      maxLength={longitudmaximaRazon}
+                      disabled={modificar}
+                      onKeyPress={(event) => {
+                        if (!tipocampovalidacionRazon.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                      onInvalid={() => {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Datos inválidos',
+                          text:
+                            'recuerde que para el tipo de documento: ' +
+                            tipodocumentoRazon +
+                            ' solo se admiten valores ' +
+                            campoRazon +
+                            ' de longitud entre ' +
+                            longitudminimaRazon +
+                            ' y ' +
+                            longitudmaximaRazon
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group'>
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Nombre de la entidad
+                  </p>
+                  <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      maxLength={50}
+                      disabled={modificar}
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        <div className='col-lg-5 col-sm-6 col-md-5 mt-4 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <div className='gov-co-dropdown'>
                 <p className='text'>
                   {' '}
-                  <span className='required'>*</span> Número de documento
+                  <span className='required'>*</span> Tipo de documento:
                 </p>
-                <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
-                  <Input
-                    allowClear
-                    type='text'
-                    placeholder='Número Identificación'
-                    autoComplete='off'
-                    pattern={tipocampoRazon}
-                    maxLength={longitudmaximaRazon}
+                <Form.Item
+                  rules={[{ required: true }]}
+                  initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+                  name='IDType'
+                >
+                  <SelectComponent
+                    options={l_tipos_documento}
+                    onChange={cambiodocumento}
+                    optionPropkey='id'
+                    optionPropLabel='descripcion'
                     disabled={modificar}
-                    onKeyPress={(event) => {
-                      if (!tipocampovalidacionRazon.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                    onInvalid={() => {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Datos inválidos',
-                        text:
-                          'recuerde que para el tipo de documento: ' +
-                          tipodocumentoRazon +
-                          ' solo se admiten valores ' +
-                          campoRazon +
-                          ' de longitud entre ' +
-                          longitudminimaRazon +
-                          ' y ' +
-                          longitudmaximaRazon
-                      });
-                    }}
                   />
                 </Form.Item>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-            <div className='panel-search'>
-              <div className='form-group gov-co-form-group'>
-                <p className='text'>
-                  {' '}
-                  <span className='required'>*</span> Nombre de la entidad
-                </p>
-                <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
-                  <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    maxLength={50}
-                    disabled={modificar}
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-0- ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : null}
-
-      <div className='col-lg-5 col-sm-6 col-md-5 mt-4 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <div className='gov-co-dropdown'>
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-4'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
               <p className='text'>
-                {' '}
-                <span className='required'>*</span> Tipo de documento:
+                <span className='required'>*</span> Número de documento
               </p>
-              <Form.Item
-                rules={[{ required: true }]}
-                initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                name='IDType'
-              >
-                <SelectComponent
-                  options={l_tipos_documento}
-                  onChange={cambiodocumento}
-                  optionPropkey='id'
-                  optionPropLabel='descripcion'
+
+              <Form.Item initialValue={obj?.numeroIdentificacion} rules={[{ required: true }]} name='IDNumber'>
+                <Input
+                  className='form-control'
+                  allowClear
+                  type='text'
+                  placeholder='Número Identificación'
+                  autoComplete='off'
+                  pattern={tipocampo}
+                  maxLength={longitudmaxima}
                   disabled={modificar}
+                  onKeyPress={(event) => {
+                    if (!tipocampovalidacion.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                  onInvalid={() => {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Datos inválidos',
+                      text:
+                        'Recuerde que para el tipo de documento: ' +
+                        tipodocumento +
+                        ' solo se admiten valores ' +
+                        campo +
+                        ' de longitud entre ' +
+                        longitudminima +
+                        ' y ' +
+                        longitudmaxima
+                    });
+                  }}
                 />
               </Form.Item>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-4'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>*</span> Número de documento
-            </p>
-
-            <Form.Item initialValue={obj?.numeroIdentificacion} rules={[{ required: true }]} name='IDNumber'>
-              <Input
-                className='form-control'
-                allowClear
-                type='text'
-                placeholder='Número Identificación'
-                autoComplete='off'
-                pattern={tipocampo}
-                maxLength={longitudmaxima}
-                disabled={modificar}
-                onKeyPress={(event) => {
-                  if (!tipocampovalidacion.test(event.key)) {
+        <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>*</span> Primer Nombre
+              </p>
+              <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
+                <Input
+                  maxLength={50}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={modificar}
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos inválidos',
-                    text:
-                      'Recuerde que para el tipo de documento: ' +
-                      tipodocumento +
-                      ' solo se admiten valores ' +
-                      campo +
-                      ' de longitud entre ' +
-                      longitudminima +
-                      ' y ' +
-                      longitudmaxima
-                  });
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>*</span> Primer Nombre
-            </p>
-            <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
-              <Input
-                maxLength={50}
-                type='text'
-                className='form-control gov-co-form-control'
-                disabled={modificar}
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
+        <div className='col-lg-5 col-sm-5 col-md-5 mt-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='text'></span> Segundo Nombre
+              </p>
+              <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
+                <Input
+                  type='text'
+                  disabled={modificar}
+                  maxLength={50}
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-5 col-md-5 mt-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='text'></span> Segundo Nombre
-            </p>
-            <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
-              <Input
-                type='text'
-                disabled={modificar}
-                maxLength={50}
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>* </span> Primer Apellido
+              </p>
+              <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
+                <Input
+                  maxLength={50}
+                  disabled={modificar}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>* </span> Primer Apellido
-            </p>
-            <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
-              <Input
-                maxLength={50}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                {' '}
+                <span className='text'> </span> Segundo Apellido
+              </p>
+              <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
+                <Input
+                  maxLength={50}
+                  disabled={modificar}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              {' '}
-              <span className='text'> </span> Segundo Apellido
-            </p>
-            <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
-              <Input
-                maxLength={50}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                {' '}
+                <span className='required'>* </span> Teléfono de Contacto
+              </p>
+              <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
+                <Input
+                  disabled={modificar}
+                  maxLength={12}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              {' '}
-              <span className='required'>* </span> Teléfono de Contacto
-            </p>
-            <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
-              <Input
-                disabled={modificar}
-                maxLength={12}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[0-9]/.test(event.key)) {
+        <div className='col-lg-5 col-sm-5 col-md-4 mt-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='text'> </span>
+                Teléfono de Contacto 2
+              </p>
+              <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
+                <Input
+                  maxLength={12}
+                  disabled={modificar}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className='col-lg-5 col-sm-5 col-md-4 mt-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='text'> </span>
-              Teléfono de Contacto 2
-            </p>
-            <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
-              <Input
-                maxLength={12}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[0-9]/.test(event.key)) {
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>* </span>
+                Correo Electrónico
+              </p>
+              <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                <input
+                  maxLength={50}
+                  disabled={modificar}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
                     event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+                  }}
+                />
+              </Form.Item>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>* </span>
-              Correo Electrónico
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className='col-lg-12 col-sm-12 col-md-12'>
+          <div className='info-tramite mt-2'>
+            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+              Datos del solicitante. <br />{' '}
+              <small style={{ color: '#000' }}>
+                {' '}
+                <span className='required'>*</span> Campos Obligatorios
+              </small>
             </p>
-            <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
-              <input
-                maxLength={50}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
+          </div>
+
+          <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
+            <div className='panel-search'>
+              <div className='form-group gov-co-form-group'>
+                <div className='gov-co-dropdown'>
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Tipo de Solicitante
+                  </p>
+                  <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
+                    <SelectComponent
+                      options={[
+                        { key: 'natural', value: 'Persona Natural' },
+                        { key: 'juridica', value: 'Persona Jurídica' }
+                      ]}
+                      onChange={Onchangetipo}
+                      defaultValue={obj?.idTipoPersona ?? 'natural'}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                      disabled={true}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+
+        {!tipoSolicitante ? (
+          <>
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group'>
+                  <div className='gov-co-dropdown'>
+                    <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                      <SelectComponent
+                        className='text'
+                        options={l_tipos_documentoRazon}
+                        onChange={cambiodocumentoRazon}
+                        optionPropkey='id'
+                        optionPropLabel='descripcion'
+                        disabled={true}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group'>
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Número de documento
+                  </p>
+                  <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                    <Input
+                      allowClear
+                      type='text'
+                      placeholder='Número Identificación'
+                      autoComplete='off'
+                      pattern={tipocampoRazon}
+                      maxLength={longitudmaximaRazon}
+                      disabled={true}
+                      onKeyPress={(event) => {
+                        if (!tipocampovalidacionRazon.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                      onInvalid={() => {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Datos inválidos',
+                          text:
+                            'recuerde que para el tipo de documento: ' +
+                            tipodocumentoRazon +
+                            ' solo se admiten valores ' +
+                            campoRazon +
+                            ' de longitud entre ' +
+                            longitudminimaRazon +
+                            ' y ' +
+                            longitudmaximaRazon
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+              <div className='panel-search'>
+                <div className='form-group gov-co-form-group'>
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Nombre de la entidad
+                  </p>
+                  <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      maxLength={50}
+                      disabled={true}
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        <div className='col-lg-5 col-sm-6 col-md-5 mt-4 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <div className='gov-co-dropdown'>
+                <p className='text'>
+                  {' '}
+                  <span className='required'>*</span> Tipo de documento:
+                </p>
+                <Form.Item
+                  rules={[{ required: true }]}
+                  initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+                  name='IDType'
+                >
+                  <SelectComponent
+                    options={l_tipos_documento}
+                    onChange={cambiodocumento}
+                    optionPropkey='id'
+                    optionPropLabel='descripcion'
+                    disabled={true}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-4'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>*</span> Número de documento
+              </p>
+
+              <Form.Item initialValue={obj?.numeroIdentificacion} rules={[{ required: true }]} name='IDNumber'>
+                <Input
+                  className='form-control'
+                  allowClear
+                  type='text'
+                  placeholder='Número Identificación'
+                  autoComplete='off'
+                  pattern={tipocampo}
+                  maxLength={longitudmaxima}
+                  disabled={true}
+                  onKeyPress={(event) => {
+                    if (!tipocampovalidacion.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                  onInvalid={() => {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Datos inválidos',
+                      text:
+                        'Recuerde que para el tipo de documento: ' +
+                        tipodocumento +
+                        ' solo se admiten valores ' +
+                        campo +
+                        ' de longitud entre ' +
+                        longitudminima +
+                        ' y ' +
+                        longitudmaxima
+                    });
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>*</span> Primer Nombre
+              </p>
+              <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
+                <Input
+                  maxLength={50}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={true}
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-5 col-md-5 mt-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='text'></span> Segundo Nombre
+              </p>
+              <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
+                <Input
+                  type='text'
+                  disabled={true}
+                  maxLength={50}
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>* </span> Primer Apellido
+              </p>
+              <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
+                <Input
+                  maxLength={50}
+                  disabled={true}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                {' '}
+                <span className='text'> </span> Segundo Apellido
+              </p>
+              <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
+                <Input
+                  maxLength={50}
+                  disabled={true}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                {' '}
+                <span className='required'>* </span> Teléfono de Contacto
+              </p>
+              <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
+                <Input
+                  disabled={true}
+                  maxLength={12}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-5 col-md-4 mt-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='text'> </span>
+                Teléfono de Contacto 2
+              </p>
+              <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
+                <Input
+                  maxLength={12}
+                  disabled={true}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[0-9]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
+          <div className='panel-search'>
+            <div className='form-group gov-co-form-group'>
+              <p className='text'>
+                <span className='required'>* </span>
+                Correo Electrónico
+              </p>
+              <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                <input
+                  maxLength={50}
+                  disabled={true}
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 };
 
 interface DatosSolicitante<T> {
   form: FormInstance<T>;
   obj: any;
   tipo: any;
+  habilitar: boolean;
 }
