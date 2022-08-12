@@ -190,7 +190,7 @@ export const VisitaRu = () => {
                   </div>
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante obj={objJson} form={form} tipo={'revision'} />
+                  <DatosSolicitante obj={objJson} form={form} tipo={'revision'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />

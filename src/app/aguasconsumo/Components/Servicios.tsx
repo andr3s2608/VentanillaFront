@@ -52,7 +52,7 @@ export const Servicios = () => {
   const getListas = useCallback(
     async () => {
       const tramites = await api.getTipoTramites();
-    const rolesstorage: any = localStorage.getItem('roles');
+      const rolesstorage: any = localStorage.getItem('roles');
 
       const [permiso] = JSON.parse(rolesstorage);
 
@@ -325,7 +325,7 @@ export const Servicios = () => {
                   </div>
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} />
+                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />

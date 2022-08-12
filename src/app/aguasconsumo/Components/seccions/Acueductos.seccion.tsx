@@ -28,7 +28,7 @@ import { CheckOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
-  const { obj, prop } = props;
+  const { obj, prop, habilitar } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -254,196 +254,462 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       }
     }
   ];
-  return (
-    <>
-      <div className='row mt-3'>
-        <div className='col-lg-12 col-sm-12 col-md-12'>
-          <div className='info-tramite mt-2'>
-            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Información de acueductos que captan la misma fuente. . <br />{' '}
-              <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-            </p>
-          </div>
-        </div>
-      </div>
 
-      <div className='col-lg-4 col-sm-12 col-md-4'>
-        <div className='form-group gov-co-form-group '>
-          <label className='text'>
-            <span className='required'>* </span> Departamento
-          </label>
-          <div className='gov-co-dropdown'>
-            <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
-              <SelectComponent options={l_departamentos} optionPropkey='idDepartamento' optionPropLabel='descripcion' disabled />
-            </Form.Item>
-          </div>
-        </div>
-        <div className='form-group gov-co-form-group'>
-          <label className='text'>
-            <span className='required'>* </span> Localidad o vereda
-          </label>
-          <div className='gov-co-dropdown'>
-            <Form.Item name='localidad' rules={[{ required: false }]}>
-              <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='col-lg-4 col-sm-12 col-md-4'>
-        <div className='form-group gov-co-form-group'>
-          <label className='text'>
-            <span className='required'>* </span> Municipio
-          </label>
-          <div className='gov-co-dropdown'>
-            <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
-              <SelectComponent
-                options={l_municipios}
-                optionPropkey='idMunicipio'
-                optionPropLabel='descripcion'
-                value={idBogotac}
-                disabled
-                searchValue={idBogotac}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
+  const structureColumns2 = [
+    {
+      title: 'No. de Expediente',
+      dataIndex: 'posicion',
+      key: 'posicion'
+    },
+    {
+      title: 'Municipio/Vereda',
+      dataIndex: 'munver',
+      key: 'munver'
+    },
+    {
+      title: 'Uso de la Fuente',
+      dataIndex: 'usofuente',
+      key: 'usofuente'
+    },
+    {
+      title: 'Acciones',
+      key: 'Acciones',
+      align: 'center' as 'center',
 
-      <div className='col-lg-4 col-md-4 col-sm-12'>
-        <br />
-        <p>Coordenadas de capacitación</p>
-        <div className='form-group gov-co-form-group'>
-          <span className='required'>*</span>Latitud
-          <Form.Item name='latituduso' rules={[{ required: false }]}>
-            <Input
-              type='text'
-              className='form-control gov-co-form-control'
-              onKeyPress={(event) => {
-                if (!/[0-9'"° -]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-            />
-          </Form.Item>
-        </div>
-      </div>
-      <div className='col-lg-4 col-md-4 col-sm-12' style={{ marginTop: '33px' }}>
-        <br />
-        <span className='required'>*</span>Longitud
-        <div className='form-group gov-co-form-group'>
-          <Form.Item name='longituduso' rules={[{ required: false }]}>
-            <Input
-              type='text'
-              className='form-control gov-co-form-control'
-              onKeyPress={(event) => {
-                if (!/[0-9'"° -]/.test(event.key)) {
-                  event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-            />
-          </Form.Item>
-        </div>
-      </div>
+      render: (_: any, row: any, index: any) => {
+        if (obj?.tipodeSolicitud != 'Primera vez') {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`validar`}
+              onClick={() => onClickLlenarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+              disabled={true}
+            >
+              Rellenar
+            </Button>
+          );
+        } else {
+          return (
+            <Button
+              type='primary'
+              className='fa-solid fa-circle-xmark'
+              key={`vali-${index}`}
+              onClick={() => onClickValidarInformacion(row)}
+              style={{ fontSize: '30xp', color: 'red' }}
+              icon={<CheckOutlined />}
+              disabled={true}
+            >
+              Eliminar
+            </Button>
+          );
+        }
+      }
+    }
+  ];
 
-      <div className='row mt-2'>
-        <div className='col-lg-4 col-md-4 col-sm-12'>
-          <br />
-          <span className='required'>*</span>Uso de la fuente
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='usofuente' rules={[{ required: false }]}>
-              <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
-            </Form.Item>
-          </div>
-        </div>
-        <div className='col-lg-4 col-md-4 col-sm-12'>
-          <br />
-          <div className='form-group gov-co-form-group'>
-            <span></span>Descripción de otro uso
-            <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
-              <input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='row mt-3'>
-        <div className='col-lg-4 col-md-4 col-sm-12'>
-          <div className='form-group gov-co-form-group'>
-            <span></span>Caudal total(L/S)
-            <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
-              <input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='row '>
-        {obj?.tipodeSolicitud == 'Primera vez' && (
-          <>
-            <div className='col-lg-8 col-md-8 col-sm-12'>
-              <a href='' style={{ textDecoration: 'none' }}>
-                <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-              </a>
-              <Button
-                className='fa-solid fa-circle-plus'
-                style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
-                type='primary'
-                htmlType='button'
-                onClick={() => {
-                  insertarAcueducto();
-                }}
-              >
-                Enviar
-              </Button>
+  if (habilitar) {
+    return (
+      <>
+        <div className='row mt-3'>
+          <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='info-tramite mt-2'>
+              <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                Información de acueductos que captan la misma fuente. . <br />{' '}
+                <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+              </p>
             </div>
-          </>
-        )}
-
-        <div className='row'>
-          <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-            <Table
-              id='tableGen'
-              dataSource={acueductotabla}
-              columns={structureColumns}
-              pagination={{ pageSize: Paginas }}
-              className='table_info'
-            />{' '}
-            <br />
           </div>
         </div>
-      </div>
-    </>
-  );
+
+        <div className='col-lg-4 col-sm-12 col-md-4'>
+          <div className='form-group gov-co-form-group '>
+            <label className='text'>
+              <span className='required'>* </span> Departamento
+            </label>
+            <div className='gov-co-dropdown'>
+              <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_departamentos}
+                  optionPropkey='idDepartamento'
+                  optionPropLabel='descripcion'
+                  disabled
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='form-group gov-co-form-group'>
+            <label className='text'>
+              <span className='required'>* </span> Localidad o vereda
+            </label>
+            <div className='gov-co-dropdown'>
+              <Form.Item name='localidad' rules={[{ required: false }]}>
+                <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div className='col-lg-4 col-sm-12 col-md-4'>
+          <div className='form-group gov-co-form-group'>
+            <label className='text'>
+              <span className='required'>* </span> Municipio
+            </label>
+            <div className='gov-co-dropdown'>
+              <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  value={idBogotac}
+                  disabled
+                  searchValue={idBogotac}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-4 col-md-4 col-sm-12'>
+          <br />
+          <p>Coordenadas de capacitación</p>
+          <div className='form-group gov-co-form-group'>
+            <span className='required'>*</span>Latitud
+            <Form.Item name='latituduso' rules={[{ required: false }]}>
+              <Input
+                type='text'
+                className='form-control gov-co-form-control'
+                onKeyPress={(event) => {
+                  if (!/[0-9'"° -]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+          </div>
+        </div>
+        <div className='col-lg-4 col-md-4 col-sm-12' style={{ marginTop: '33px' }}>
+          <br />
+          <span className='required'>*</span>Longitud
+          <div className='form-group gov-co-form-group'>
+            <Form.Item name='longituduso' rules={[{ required: false }]}>
+              <Input
+                type='text'
+                className='form-control gov-co-form-control'
+                onKeyPress={(event) => {
+                  if (!/[0-9'"° -]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+          </div>
+        </div>
+
+        <div className='row mt-2'>
+          <div className='col-lg-4 col-md-4 col-sm-12'>
+            <br />
+            <span className='required'>*</span>Uso de la fuente
+            <div className='form-group gov-co-form-group'>
+              <Form.Item name='usofuente' rules={[{ required: false }]}>
+                <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='col-lg-4 col-md-4 col-sm-12'>
+            <br />
+            <div className='form-group gov-co-form-group'>
+              <span></span>Descripción de otro uso
+              <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
+                <input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div className='row mt-3'>
+          <div className='col-lg-4 col-md-4 col-sm-12'>
+            <div className='form-group gov-co-form-group'>
+              <span></span>Caudal total(L/S)
+              <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
+                <input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div className='row '>
+          {obj?.tipodeSolicitud == 'Primera vez' && (
+            <>
+              <div className='col-lg-8 col-md-8 col-sm-12'>
+                <a href='' style={{ textDecoration: 'none' }}>
+                  <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+                </a>
+                <Button
+                  className='fa-solid fa-circle-plus'
+                  style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                  type='primary'
+                  htmlType='button'
+                  onClick={() => {
+                    insertarAcueducto();
+                  }}
+                >
+                  Enviar
+                </Button>
+              </div>
+            </>
+          )}
+
+          <div className='row'>
+            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+              <Table
+                id='tableGen'
+                dataSource={acueductotabla}
+                columns={structureColumns}
+                pagination={{ pageSize: Paginas }}
+                className='table_info'
+              />{' '}
+              <br />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className='row mt-3'>
+          <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='info-tramite mt-2'>
+              <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                Información de acueductos que captan la misma fuente. . <br />{' '}
+                <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-4 col-sm-12 col-md-4'>
+          <div className='form-group gov-co-form-group '>
+            <label className='text'>
+              <span className='required'>* </span> Departamento
+            </label>
+            <div className='gov-co-dropdown'>
+              <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_departamentos}
+                  optionPropkey='idDepartamento'
+                  optionPropLabel='descripcion'
+                  disabled={true}
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='form-group gov-co-form-group'>
+            <label className='text'>
+              <span className='required'>* </span> Localidad o vereda
+            </label>
+            <div className='gov-co-dropdown'>
+              <Form.Item name='localidad' rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_localidades}
+                  optionPropkey='idLocalidad'
+                  optionPropLabel='descripcion'
+                  disabled={true}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div className='col-lg-4 col-sm-12 col-md-4'>
+          <div className='form-group gov-co-form-group'>
+            <label className='text'>
+              <span className='required'>* </span> Municipio
+            </label>
+            <div className='gov-co-dropdown'>
+              <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  value={idBogotac}
+                  disabled={true}
+                  searchValue={idBogotac}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+
+        <div className='col-lg-4 col-md-4 col-sm-12'>
+          <br />
+          <p>Coordenadas de capacitación</p>
+          <div className='form-group gov-co-form-group'>
+            <span className='required'>*</span>Latitud
+            <Form.Item name='latituduso' rules={[{ required: false }]}>
+              <Input
+                type='text'
+                className='form-control gov-co-form-control'
+                disabled={true}
+                onKeyPress={(event) => {
+                  if (!/[0-9'"° -]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+          </div>
+        </div>
+        <div className='col-lg-4 col-md-4 col-sm-12' style={{ marginTop: '33px' }}>
+          <br />
+          <span className='required'>*</span>Longitud
+          <div className='form-group gov-co-form-group'>
+            <Form.Item name='longituduso' rules={[{ required: false }]}>
+              <Input
+                type='text'
+                className='form-control gov-co-form-control'
+                disabled={true}
+                onKeyPress={(event) => {
+                  if (!/[0-9'"° -]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+              />
+            </Form.Item>
+          </div>
+        </div>
+
+        <div className='row mt-2'>
+          <div className='col-lg-4 col-md-4 col-sm-12'>
+            <br />
+            <span className='required'>*</span>Uso de la fuente
+            <div className='form-group gov-co-form-group'>
+              <Form.Item name='usofuente' rules={[{ required: false }]}>
+                <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' disabled={true} />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='col-lg-4 col-md-4 col-sm-12'>
+            <br />
+            <div className='form-group gov-co-form-group'>
+              <span></span>Descripción de otro uso
+              <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
+                <input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={true}
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div className='row mt-3'>
+          <div className='col-lg-4 col-md-4 col-sm-12'>
+            <div className='form-group gov-co-form-group'>
+              <span></span>Caudal total(L/S)
+              <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
+                <input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={true}
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  onPaste={(event) => {
+                    event.preventDefault();
+                  }}
+                />
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div className='row '>
+          {obj?.tipodeSolicitud == 'Primera vez' && (
+            <>
+              <div className='col-lg-8 col-md-8 col-sm-12'>
+                <a href='' style={{ textDecoration: 'none' }}>
+                  <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+                </a>
+                <Button
+                  className='fa-solid fa-circle-plus'
+                  disabled={true}
+                  style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                  type='primary'
+                  htmlType='button'
+                  onClick={() => {
+                    insertarAcueducto();
+                  }}
+                >
+                  Enviar
+                </Button>
+              </div>
+            </>
+          )}
+
+          <div className='row'>
+            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+              <Table
+                id='tableGen'
+                dataSource={acueductotabla}
+                columns={structureColumns2}
+                pagination={{ pageSize: Paginas }}
+                className='table_info'
+              />{' '}
+              <br />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 };
 interface DatosAcueducto<T> {
   form: FormInstance<T>;
   obj: any;
   prop: any;
+  habilitar: boolean;
 }
 export const KeysForm = ['localidad', 'caudal', 'descripcionotrouso', 'usofuente', 'longituduso', 'latituduso'];

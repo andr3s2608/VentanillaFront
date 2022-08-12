@@ -10,7 +10,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
-  const { obj, tipo } = props;
+  const { obj, tipo, habilitar } = props;
   const [[l_tramites, l_estados, l_actividades, l_subredes], setListas] = useState<[any[], any[], any[], any[]]>([
     [],
     [],
@@ -54,163 +54,325 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <>
-      <div className='row'>
-        <div className='col-lg-12 col-sm-12 col-md-12'>
-          <div className='info-tramite mt-2'>
-            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Datos de la solicitud. <br />{' '}
-              <small style={{ color: ' #000' }}>
-                <span className='required'>*</span> Campos Obligatorios
-              </small>
-            </p>
-          </div>
-        </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-          <div className='panel-search'>
-            <p className='text'>
-              <span className='required'>*</span>
-              Número de radicado
-            </p>
-            <div className='form-group gov-co-form-group'>
-              <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
-                <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
-              </Form.Item>
+  if (habilitar) {
+    return (
+      <>
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='info-tramite mt-2'>
+              <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                Datos de la solicitud. <br />{' '}
+                <small style={{ color: ' #000' }}>
+                  <span className='required'>*</span> Campos Obligatorios
+                </small>
+              </p>
             </div>
           </div>
-        </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-          <div className='panel-search'>
-            <p className='text'>
-              <span className='required'>*</span> Tipo de tramite
-            </p>
-            <div className='form-group gov-co-form-group'>
-              <Form.Item
-                initialValue={obj?.idtipodeTramite}
-                name='tipotramite'
-                rules={[{ required: tipousuario == 'validacion' ? false : true }]}
-              >
-                <SelectComponent
-                  options={l_tramites}
-                  defaultValue={obj?.idtipodeTramite}
-                  optionPropkey='idTipoTramite'
-                  optionPropLabel='descripcion'
-                />
-              </Form.Item>
-            </div>
-          </div>
-        </div>
-
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-          <div className='panel-search'>
-            <div className='form-group gov-co-form-group'>
-              <div className='gov-co-dropdown'>
-                <div className='form-group gov-co-form-group '>
-                  <div className='gov-co-dropdown'>
-                    <p className='text'>
-                      <span className='required'>*</span> Estado
-                    </p>
-                    <Form.Item
-                      initialValue={obj.idestado}
-                      name='estado'
-                      rules={[{ required: tipousuario == 'validacion' ? false : true }]}
-                    >
-                      <SelectComponent
-                        options={l_estados}
-                        defaultValue={obj?.idestado}
-                        optionPropkey='idEstadoSolicitud'
-                        optionPropLabel='nombre'
-                      />
-                    </Form.Item>
-                  </div>
-                </div>
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='panel-search'>
+              <p className='text'>
+                <span className='required'>*</span>
+                Número de radicado
+              </p>
+              <div className='form-group gov-co-form-group'>
+                <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
+                  <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
+                </Form.Item>
               </div>
             </div>
           </div>
-        </div>
-        <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-          <div className='panel-search'>
-            <p className='text'>
-              <span className='required'>*</span> Actividad Actual
-            </p>
-            <div className='form-group gov-co-form-group ml-2'>
-              <div className='gov-co-dropdown'>
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='panel-search'>
+              <p className='text'>
+                <span className='required'>*</span> Tipo de tramite
+              </p>
+              <div className='form-group gov-co-form-group'>
                 <Form.Item
-                  initialValue={obj?.idactividadActualSolicitud}
-                  name='actactual'
+                  initialValue={obj?.idtipodeTramite}
+                  name='tipotramite'
                   rules={[{ required: tipousuario == 'validacion' ? false : true }]}
                 >
                   <SelectComponent
-                    options={l_actividades}
-                    defaultValue={obj?.idactividadActualSolicitud}
-                    optionPropkey='idActividad'
+                    options={l_tramites}
+                    defaultValue={obj?.idtipodeTramite}
+                    optionPropkey='idTipoTramite'
                     optionPropLabel='descripcion'
                   />
                 </Form.Item>
               </div>
             </div>
           </div>
-        </div>
-        {tipousuario != 'validacion' && (
-          <>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p className='text'>
-                  <span className='required'>*</span> Actividad Siguiente
-                </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item initialValue={obj?.actividadSiguienteSolicitud} name='actsiguiente' rules={[{ required: false }]}>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
+
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+            <div className='panel-search'>
+              <div className='form-group gov-co-form-group'>
+                <div className='gov-co-dropdown'>
+                  <div className='form-group gov-co-form-group '>
+                    <div className='gov-co-dropdown'>
+                      <p className='text'>
+                        <span className='required'>*</span> Estado
+                      </p>
+                      <Form.Item
+                        initialValue={obj.idestado}
+                        name='estado'
+                        rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                      >
+                        <SelectComponent
+                          options={l_estados}
+                          defaultValue={obj?.idestado}
+                          optionPropkey='idEstadoSolicitud'
+                          optionPropLabel='nombre'
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='panel-search'>
+              <p className='text'>
+                <span className='required'>*</span> Actividad Actual
+              </p>
+              <div className='form-group gov-co-form-group ml-2'>
+                <div className='gov-co-dropdown'>
+                  <Form.Item
+                    initialValue={obj?.idactividadActualSolicitud}
+                    name='actactual'
+                    rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                  >
+                    <SelectComponent
+                      options={l_actividades}
+                      defaultValue={obj?.idactividadActualSolicitud}
+                      optionPropkey='idActividad'
+                      optionPropLabel='descripcion'
                     />
                   </Form.Item>
                 </div>
               </div>
             </div>
-          </>
-        )}
-
-        {tipousuario == 'coordinador' && (
-          <>
-            <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-              <div className='panel-search'>
-                <p className='text'>
-                  <span className='required'>*</span>
-                  Subred de jurisdicción
-                </p>
-                <div className='form-group gov-co-form-group ml-2'>
-                  <div className='gov-co-dropdown'>
-                    <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: true }]}>
-                      <SelectComponent
-                        options={l_subredes}
-                        defaultValue={obj?.idSubred}
-                        optionPropkey='idSubRed'
-                        optionPropLabel='zona'
+          </div>
+          {tipousuario != 'validacion' && (
+            <>
+              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+                <div className='panel-search'>
+                  <p className='text'>
+                    <span className='required'>*</span> Actividad Siguiente
+                  </p>
+                  <div className='form-group gov-co-form-group'>
+                    <Form.Item initialValue={obj?.actividadSiguienteSolicitud} name='actsiguiente' rules={[{ required: false }]}>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
                       />
                     </Form.Item>
                   </div>
                 </div>
               </div>
+            </>
+          )}
+
+          {tipousuario == 'coordinador' && (
+            <>
+              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+                <div className='panel-search'>
+                  <p className='text'>
+                    <span className='required'>*</span>
+                    Subred de jurisdicción
+                  </p>
+                  <div className='form-group gov-co-form-group ml-2'>
+                    <div className='gov-co-dropdown'>
+                      <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: true }]}>
+                        <SelectComponent
+                          options={l_subredes}
+                          defaultValue={obj?.idSubred}
+                          optionPropkey='idSubRed'
+                          optionPropLabel='zona'
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className='row'>
+          <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='info-tramite mt-2'>
+              <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                Datos de la solicitud. <br />{' '}
+                <small style={{ color: ' #000' }}>
+                  <span className='required'>*</span> Campos Obligatorios
+                </small>
+              </p>
             </div>
-          </>
-        )}
-      </div>
-    </>
-  );
+          </div>
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='panel-search'>
+              <p className='text'>
+                <span className='required'>*</span>
+                Número de radicado
+              </p>
+              <div className='form-group gov-co-form-group'>
+                <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
+                  <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='panel-search'>
+              <p className='text'>
+                <span className='required'>*</span> Tipo de tramite
+              </p>
+              <div className='form-group gov-co-form-group'>
+                <Form.Item
+                  initialValue={obj?.idtipodeTramite}
+                  name='tipotramite'
+                  rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                >
+                  <SelectComponent
+                    options={l_tramites}
+                    defaultValue={obj?.idtipodeTramite}
+                    optionPropkey='idTipoTramite'
+                    optionPropLabel='descripcion'
+                    disabled={true}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+            <div className='panel-search'>
+              <div className='form-group gov-co-form-group'>
+                <div className='gov-co-dropdown'>
+                  <div className='form-group gov-co-form-group '>
+                    <div className='gov-co-dropdown'>
+                      <p className='text'>
+                        <span className='required'>*</span> Estado
+                      </p>
+                      <Form.Item
+                        initialValue={obj.idestado}
+                        name='estado'
+                        rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                      >
+                        <SelectComponent
+                          options={l_estados}
+                          defaultValue={obj?.idestado}
+                          optionPropkey='idEstadoSolicitud'
+                          optionPropLabel='nombre'
+                          disabled={true}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+            <div className='panel-search'>
+              <p className='text'>
+                <span className='required'>*</span> Actividad Actual
+              </p>
+              <div className='form-group gov-co-form-group ml-2'>
+                <div className='gov-co-dropdown'>
+                  <Form.Item
+                    initialValue={obj?.idactividadActualSolicitud}
+                    name='actactual'
+                    rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                  >
+                    <SelectComponent
+                      options={l_actividades}
+                      defaultValue={obj?.idactividadActualSolicitud}
+                      optionPropkey='idActividad'
+                      optionPropLabel='descripcion'
+                      disabled={true}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+          </div>
+          {tipousuario != 'validacion' && (
+            <>
+              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+                <div className='panel-search'>
+                  <p className='text'>
+                    <span className='required'>*</span> Actividad Siguiente
+                  </p>
+                  <div className='form-group gov-co-form-group'>
+                    <Form.Item initialValue={obj?.actividadSiguienteSolicitud} name='actsiguiente' rules={[{ required: false }]}>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        disabled={true}
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {tipousuario == 'coordinador' && (
+            <>
+              <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
+                <div className='panel-search'>
+                  <p className='text'>
+                    <span className='required'>*</span>
+                    Subred de jurisdicción
+                  </p>
+                  <div className='form-group gov-co-form-group ml-2'>
+                    <div className='gov-co-dropdown'>
+                      <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: true }]}>
+                        <SelectComponent
+                          options={l_subredes}
+                          defaultValue={obj?.idSubred}
+                          optionPropkey='idSubRed'
+                          optionPropLabel='zona'
+                          disabled={true}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </>
+    );
+  }
 };
 interface DatosSolicitud<T> {
   form: FormInstance<T>;
   obj: any;
   tipo: string;
+  habilitar: boolean;
 }
 export const KeysForm = ['statustramite', 'observations'];

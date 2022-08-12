@@ -261,10 +261,10 @@ export const RevisarSv = () => {
                   </div>
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitud form={form} obj={objJson} tipo={'validador'} />
+                  <DatosSolicitud form={form} obj={objJson} tipo={'validador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} />
+                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={''} />
