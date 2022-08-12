@@ -294,24 +294,9 @@ export const Bandeja = (props: IDataSource) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        <div className='card-body'>
+        <div className='card-body tarjeta h-100'>
           <section className='info-panel'>
-            <div className='container'>
-              <div className='row mt-5'>
-                <div className='col-lg-6 col-md-6 col-sm-6'>
-                  <div className='img-bogota'>
-                    <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-                  </div>
-                </div>
-                <div className='col-lg-6 col-md-6 col-sm-6'>
-                  <div className='img-profile'>
-                    <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                    <div className='info-usuario'>
-                      <p style={{ fontSize: '18px' }}>{roles}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className='container-fluid'>
               <div className='row mt-2 ml-2'>
                 <div className='col-lg-6 col-sm-12 col-md-6'>
                   <div className='info-secion'>
@@ -336,7 +321,7 @@ export const Bandeja = (props: IDataSource) => {
                 </div>
               </div>
             </div>
-            <div className='container'>
+            <div className='container-fluid mt-3'>
               <div className='row'>
                 <div className='col-lg-12 col-md-12 ml-4'>
                   <div className='info-tramite mt-3 ml-1'>
@@ -345,34 +330,15 @@ export const Bandeja = (props: IDataSource) => {
                 </div>
               </div>
             </div>
-            <div className='container'>
+            <div className='container-fluid'>
               <div className='row' style={{ marginLeft: '18px' }}>
-                <div className='col-md-3 col-sm-12 col-lg-3'>
-                  <div id='accordion' className='mt-3'>
+                <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
+                  <div id='accordion ' className='mt-3'>
                     <div className='card'>
                       <div className='card-header' id='heading-2'>
                         <h5 className='mb-0'>
                           <a
-                            className='collapsed-dm'
-                            role='button'
-                            data-toggle='collapse'
-                            href='#collapse'
-                            aria-expanded='false'
-                            aria-controls='collapse-2'
-                          >
-                            Bandeja de entrada
-                          </a>
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div id='accordion' className='mt-3'>
-                    <div className='card'>
-                      <div className='card-header' id='heading-2'>
-                        <h5 className='mb-0'>
-                          <a
-                            className='collapsed '
+                            className='collapsed nuevo'
                             role='button'
                             data-toggle='collapse'
                             href='#collapse-2'
@@ -380,7 +346,7 @@ export const Bandeja = (props: IDataSource) => {
                             aria-controls='collapse-2'
                             onClick={añadirinfo}
                           >
-                            Mensajes
+                            Bandeja de entrada
                           </a>
                         </h5>
                       </div>
@@ -405,414 +371,425 @@ export const Bandeja = (props: IDataSource) => {
                     </div>
                   </div>
                 </div>
-                <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                  {mostrar && (
-                    <>
-                      <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
-                        <ul className='nav nav-tabs mr-4' role='tablist'>
-                          <li className='nav-item'>
-                            <a className='nav-link active' data-toggle='tab' href='#recientes' role='tab'>
-                              Recientes
-                            </a>
-                          </li>
-                          {coordinador != 'Subdirector' && (
-                            <>
-                              <li className='nav-item'>
-                                <a className='nav-link' data-toggle='tab' href='#solucionados' role='tab'>
-                                  Solucionados
-                                </a>
-                              </li>
-                            </>
-                          )}
+                <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
+                  <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                    {mostrar && (
+                      <>
+                        <div className='col-lg-12 col-md-12 col-sm-12 bandeja_panel'>
+                          <ul className='nav nav-tabs  mr-4' role='tablist'>
+                            <li className='nav-item encabezados'>
+                              <a className='nav-link active' data-toggle='tab' href='#recientes' role='tab'>
+                                Recientes
+                              </a>
+                            </li>
+                            {coordinador != 'Subdirector' && (
+                              <>
+                                <li className='nav-item encabezados'>
+                                  <a className='nav-link' data-toggle='tab' href='#solucionados' role='tab'>
+                                    Solucionados
+                                  </a>
+                                </li>
+                              </>
+                            )}
 
-                          {coordinador == 'Coordinador' && (
-                            <>
-                              <li className='nav-item'>
-                                <a className='nav-link' data-toggle='tab' href='#prueba' role='tab'>
-                                  Usuario
-                                </a>
-                              </li>
-                            </>
-                          )}
-                        </ul>
-                        <div className='tab-content'>
-                          <div className='tab-pane active' id='recientes' role='tabpanel'>
-                            <div className='row'>
-                              <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                <p className='mt-4 ml-3 filtro'>Filtrar por:</p>
-                                <div className='row'>
-                                  <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
-                                    <div className='form-group gov-co-form-group'>
-                                      <div className='gov-co-dropdown'>
-                                        <Form.Item>
-                                          <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
-                                        </Form.Item>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className='col-md-5 col-lg-5 col-sm-12'>
-                                    <div className='form-group gov-co-form-group'>
-                                      <Form.Item>
-                                        <input
-                                          type='text'
-                                          className='form-control gov-co-form-control'
-                                          onKeyPress={(event) => {
-                                            if (!/[a-zA-Z]/.test(event.key)) {
-                                              event.preventDefault();
-                                            }
-                                          }}
-                                          onPaste={(event) => {
-                                            event.preventDefault();
-                                          }}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='row'>
-                              <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                {coordinador == 'Funcionario' && (
-                                  <>
-                                    <Table
-                                      id='tableGen'
-                                      dataSource={datosusuario}
-                                      columns={structureColumns}
-                                      pagination={{ pageSize: Paginas }}
-                                      className='table_info'
-                                    />
-                                  </>
-                                )}
-                                {coordinador != 'Funcionario' && (
-                                  <>
-                                    <Table
-                                      id='tableGen'
-                                      dataSource={data}
-                                      columns={structureColumns}
-                                      pagination={{ pageSize: Paginas }}
-                                      className='table_info'
-                                    />
-                                    <br />
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                          <div className='tab-pane' id='solucionados' role='tabpanel'>
-                            <div className='row'>
-                              <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                <p className='mt-4 ml-3 filtro'>Filtrar por:</p>
-                                <div className='row'>
-                                  <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
-                                    <div className='form-group gov-co-form-group'>
-                                      <div className='gov-co-dropdown'>
-                                        <Form.Item>
-                                          <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
-                                        </Form.Item>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className='col-md-5 col-lg-5 col-sm-12'>
-                                    <div className='form-group gov-co-form-group'>
-                                      <Form.Item>
-                                        <input
-                                          type='text'
-                                          className='form-control gov-co-form-control'
-                                          onKeyPress={(event) => {
-                                            if (!/[a-zA-Z]/.test(event.key)) {
-                                              event.preventDefault();
-                                            }
-                                          }}
-                                          onPaste={(event) => {
-                                            event.preventDefault();
-                                          }}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='row'>
-                              <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                <Table
-                                  id='tableGen2'
-                                  dataSource={datossolucionados}
-                                  columns={structureColumns}
-                                  pagination={{ pageSize: Paginas }}
-                                  className='table_info'
-                                />{' '}
-                                <br />
-                              </div>
-                            </div>
-                          </div>
-                          {coordinador == 'Coordinador' && (
-                            <>
-                              <div className='tab-pane ' id='prueba' role='tabpanel'>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                    <p className='mt-4 ml-3 filtro'>Filtrar por:</p>
-                                    <div className='row'>
-                                      <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
-                                        <div className='form-group gov-co-form-group'>
-                                          <div className='gov-co-dropdown'>
-                                            <Form.Item>
-                                              <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
-                                            </Form.Item>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div className='col-md-5 col-lg-5 col-sm-12'>
-                                        <div className='form-group gov-co-form-group'>
+                            {coordinador == 'Coordinador' && (
+                              <>
+                                <li className='nav-item'>
+                                  <a className='nav-link' data-toggle='tab' href='#prueba' role='tab'>
+                                    Usuario
+                                  </a>
+                                </li>
+                              </>
+                            )}
+                          </ul>
+                          <div className='tab-content'>
+                            <div className='tab-pane active' id='recientes' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                  <div className='row'>
+                                    <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
+                                      <div className='form-group gov-co-form-group'>
+                                        <div className='gov-co-dropdown'>
                                           <Form.Item>
-                                            <input
-                                              type='text'
-                                              className='form-control gov-co-form-control'
-                                              onKeyPress={(event) => {
-                                                if (!/[a-zA-Z]/.test(event.key)) {
-                                                  event.preventDefault();
-                                                }
-                                              }}
-                                              onPaste={(event) => {
-                                                event.preventDefault();
-                                              }}
+                                            <SelectComponent
+                                              className='select_d'
+                                              placeholder='-- Seleccione --'
+                                              options={[]}
+                                              optionPropkey={''}
                                             />
                                           </Form.Item>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </div>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                    <Table
-                                      id='tableGen3'
-                                      dataSource={datosusuario}
-                                      columns={structureColumns}
-                                      pagination={{ pageSize: Paginas }}
-                                      className='table_info'
-                                    />
+                                    <div className='col-md-6 col-lg-6 col-sm-12'>
+                                      <div className='form-group gov-co-form-group'>
+                                        <Form.Item>
+                                          <input
+                                            type='text'
+                                            className='form-control gov-co-form-control panel_d'
+                                            onKeyPress={(event) => {
+                                              if (!/[a-zA-Z]/.test(event.key)) {
+                                                event.preventDefault();
+                                              }
+                                            }}
+                                            onPaste={(event) => {
+                                              event.preventDefault();
+                                            }}
+                                          />
+                                        </Form.Item>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </>
-                          )}
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  {coordinador == 'Funcionario' && (
+                                    <>
+                                      <Table
+                                        id='tableGen'
+                                        dataSource={datosusuario}
+                                        columns={structureColumns}
+                                        pagination={{ pageSize: Paginas }}
+                                        className='table_info'
+                                      />
+                                    </>
+                                  )}
+                                  {coordinador != 'Funcionario' && (
+                                    <>
+                                      <Table
+                                        id='tableGen'
+                                        dataSource={data}
+                                        columns={structureColumns}
+                                        pagination={{ pageSize: Paginas }}
+                                        className='table_info'
+                                      />
+                                      <br />
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div className='tab-pane' id='solucionados' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                  <p className='mt-4 ml-2 filtro'>Filtrar por:</p>
+                                  <div className='row'>
+                                    <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
+                                      <div className='form-group gov-co-form-group'>
+                                        <div className='gov-co-dropdown'>
+                                          <Form.Item>
+                                            <SelectComponent
+                                              className='select_d'
+                                              placeholder='-- Seleccione --'
+                                              options={[]}
+                                              optionPropkey={''}
+                                            />
+                                          </Form.Item>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className='col-md-5 col-lg-5 col-sm-12'>
+                                      <div className='form-group gov-co-form-group'>
+                                        <Form.Item>
+                                          <input
+                                            type='text'
+                                            className='form-control gov-co-form-control panel_d'
+                                            onKeyPress={(event) => {
+                                              if (!/[a-zA-Z]/.test(event.key)) {
+                                                event.preventDefault();
+                                              }
+                                            }}
+                                            onPaste={(event) => {
+                                              event.preventDefault();
+                                            }}
+                                          />
+                                        </Form.Item>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <Table
+                                    id='tableGen2'
+                                    dataSource={datossolucionados}
+                                    columns={structureColumns}
+                                    pagination={{ pageSize: Paginas }}
+                                    className='table_info'
+                                  />{' '}
+                                  <br />
+                                </div>
+                              </div>
+                            </div>
+                            {coordinador == 'Coordinador' && (
+                              <>
+                                <div className='tab-pane ' id='prueba' role='tabpanel'>
+                                  <div className='row'>
+                                    <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                      <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
+                                      <div className='row'>
+                                        <div className='col-lg-5 col-md-5 col-sm-12' style={{ marginLeft: '10px' }}>
+                                          <div className='form-group gov-co-form-group'>
+                                            <div className='gov-co-dropdown'>
+                                              <Form.Item>
+                                                <SelectComponent
+                                                  className='select_d'
+                                                  placeholder='-- Seleccione --'
+                                                  options={[]}
+                                                  optionPropkey={''}
+                                                />
+                                              </Form.Item>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className='col-md-5 col-lg-5 col-sm-12'>
+                                          <div className='form-group gov-co-form-group'>
+                                            <Form.Item>
+                                              <input
+                                                type='text'
+                                                className='form-control gov-co-form-control panel_d'
+                                                onKeyPress={(event) => {
+                                                  if (!/[a-zA-Z]/.test(event.key)) {
+                                                    event.preventDefault();
+                                                  }
+                                                }}
+                                                onPaste={(event) => {
+                                                  event.preventDefault();
+                                                }}
+                                              />
+                                            </Form.Item>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className='row'>
+                                    <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                      <Table
+                                        id='tableGen3'
+                                        dataSource={datosusuario}
+                                        columns={structureColumns}
+                                        pagination={{ pageSize: Paginas }}
+                                        className='table_info'
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                  <div className='col-lg-8 col-md-8 col-sm-8 mt-3'>
-                    <ul className='nav nav-tabs' role='tablist'>
-                      <li className='nav-item'>
-                        <a
-                          className='nav-link active'
-                          data-toggle='tab'
-                          href='#tabs-1'
-                          role='tab'
-                          style={{ borderTop: '3px solid orange' }}
-                        >
-                          Notificación de observaciones
-                        </a>
-                      </li>
-                      <li className='nav-item'>
-                        <a
-                          className='nav-link'
-                          data-toggle='tab'
-                          href='#tabs-2'
-                          role='tab'
-                          style={{ borderTop: '3px solid orange' }}
-                        >
-                          Histórico notificaciones
-                        </a>
-                      </li>
-                    </ul>
-                    <div className='tab-content'>
-                      <div className='tab-pane active' id='tabs-1' role='tabpanel'>
-                        <div className='row'>
-                          <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
-                            <p className='mt-4'>Filtrar por:</p>
-                            <div className='row'>
-                              <div className='col-lg-6 col-md-6 col-sm-12'>
-                                <div className='form-group gov-co-form-group ml-2'>
-                                  <div className='gov-co-dropdown'>
+                      </>
+                    )}
+                  </div>
+                  <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                    <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
+                      <ul className='nav nav-tabs' role='tablist'>
+                        <li className='nav-item encabezados'>
+                          <a
+                            className='nav-link active'
+                            data-toggle='tab'
+                            href='#tabs-1'
+                            role='tab'
+                            style={{ borderTop: '3px solid orange' }}
+                          >
+                            Notificación de observaciones
+                          </a>
+                        </li>
+                        <li className='nav-item encabezados'>
+                          <a
+                            className='nav-link'
+                            data-toggle='tab'
+                            href='#tabs-2'
+                            role='tab'
+                            style={{ borderTop: '3px solid orange' }}
+                          >
+                            Histórico notificaciones
+                          </a>
+                        </li>
+                      </ul>
+                      <div className='tab-content'>
+                        <div className='tab-pane active' id='tabs-1' role='tabpanel'>
+                          <div className='row'>
+                            <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
+                              <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
+                              <div className='row'>
+                                <div className='col-lg-6 col-md-6 col-sm-12'>
+                                  <div className='form-group gov-co-form-group ml-2'>
+                                    <div className='gov-co-dropdown'>
+                                      <Form.Item>
+                                        <SelectComponent
+                                          className='select_d'
+                                          placeholder='-- Seleccione --'
+                                          options={[]}
+                                          optionPropkey={''}
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='col-md-6 col-lg-6 col-sm-12'>
+                                  <div className='form-group gov-co-form-group'>
                                     <Form.Item>
-                                      <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                                      <input
+                                        type='text'
+                                        className='form-control gov-co-form-control panel_ds'
+                                        onKeyPress={(event) => {
+                                          if (!/[a-zA-Z]/.test(event.key)) {
+                                            event.preventDefault();
+                                          }
+                                        }}
+                                        onPaste={(event) => {
+                                          event.preventDefault();
+                                        }}
+                                      />
                                     </Form.Item>
                                   </div>
                                 </div>
                               </div>
-                              <div className='col-md-6 col-lg-6 col-sm-12'>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                            <table className='table table-bordered text-center mt-4' style={{ backgroundColor: '#ede9e3' }}>
-                              <thead>
-                                <tr
-                                  style={{
-                                    border: '2px solid #000',
-                                    backgroundColor: '#fff'
-                                  }}
-                                >
-                                  <th style={{ border: '2px solid #000' }}>No. de radicado</th>
-                                  <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
-                                  <th style={{ border: '2px solid #000' }}>Solicitante</th>
-                                  <th style={{ border: '2px solid #000' }}>Estado</th>
-                                  <th style={{ border: '2px solid #000' }}>Fecha</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr style={{ border: '2px solid #000' }}>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-12 col-md-12 col-sm-12'>
-                            <div className='info-tramite mt-3 ml-2'>
-                              <p className='mr-2'>1. Verificar validadores</p>
+                          <div className='row'>
+                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                              <table
+                                className='table table-bordered text-center mt-4 '
+                                style={{ backgroundColor: '#ede9e3', width: '800px' }}
+                              >
+                                <thead>
+                                  <tr
+                                    style={{
+                                      border: '2px solid #000',
+                                      backgroundColor: '#fff'
+                                    }}
+                                  >
+                                    <th style={{ border: '2px solid #000' }}>No. de radicado</th>
+                                    <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
+                                    <th style={{ border: '2px solid #000' }}>Solicitante</th>
+                                    <th style={{ border: '2px solid #000' }}>Estado</th>
+                                    <th style={{ border: '2px solid #000' }}>Fecha</th>
+                                    <th style={{ border: '2px solid #000' }}>Validador</th>
+                                    <th style={{ border: '2px solid #000' }}>Estado de validación</th>
+                                    <th style={{ border: '2px solid #000' }}>Observaciones</th>
+                                  </tr>
+                                </thead>
+                                <tbody className='cuerpo_table'>
+                                  <tr style={{ border: '2px solid #000' }}>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                  </tr>
+                                </tbody>
+                              </table>
                             </div>
                           </div>
-                          <div className='col-lg-11 col-md-11 col-sm-12 ml-5'>
-                            <table className='table table-bordered text-center mt-4' style={{ backgroundColor: '#ede9e3' }}>
-                              <thead>
-                                <tr
-                                  style={{
-                                    border: '2px solid  #000',
-                                    backgroundColor: '#fff'
-                                  }}
-                                >
-                                  <th style={{ border: '2px solid #000' }}>Validador</th>
-                                  <th style={{ border: '2px solid #000' }}>Estado de validación</th>
-                                  <th style={{ border: '2px solid #000' }}>Observaciones</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr style={{ border: '2px solid #000' }}>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          <div className='col-lg-12 col-md-12 col-sm-12 mt-3'>
-                            <div className='info-tramite mt-3 ml-2'>
-                              <p>2. Seleccionar tipo de notificación</p>
-                              <p className='text-dark' style={{ fontSize: '14px' }}>
-                                Campos obligatorios*
+                          <div className='row'>
+                            <div className='col-lg-11 col-md-11 col-sm-12 mt-3'>
+                              <p className='filtro'>
+                                <span className='text-danger font-weight-bold mr-1 ml-3 '>*</span> Tipo de notificación
                               </p>
-                            </div>
-                          </div>
-                          <div className='col-lg-6 col-md-6 col-sm-12'>
-                            <p>Tipo de notificación*</p>
-                            <div className='form-group gov-co-form-group ml-2'>
-                              <div className='gov-co-dropdown'>
-                                <select id='selector-simple' className='selectpicker form-control' title='Escoger'>
-                                  <option>Oficio de notificación</option>
-                                </select>
+                              <div className='form-group gov-co-form-group ml-2'>
+                                <div className='gov-co-dropdown'>
+                                  <select id='selector-simple' className='selectpicker form-control select' title='Escoger'>
+                                    <option>Oficio de notificación</option>
+                                  </select>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className='col-m-12 col-lg-12 col-sm-12'>
-                            <button className='btn btn-default' style={{ backgroundColor: ' #CBCBCB', float: 'right' }}>
-                              Notificar
-                            </button>
-                            <button className='btn btn-default mr-3' style={{ backgroundColor: ' #CBCBCB', float: 'right' }}>
-                              Ver vista previa
-                            </button>
+                            <div className='col-m-12 col-lg-12 col-sm-12 mt-3 ml-2 '>
+                              <button
+                                className='btn btn-default'
+                                style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
+                              >
+                                Notificar
+                              </button>
+                              <button
+                                className='btn btn-default mr-3'
+                                style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
+                              >
+                                Ver vista previa
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className='tab-pane' id='tabs-2' role='tabpanel'>
-                        <div className='row'>
-                          <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
-                            <p className='mt-4'>Filtrar por:</p>
-                            <div className='row'>
-                              <div className='col-lg-6 col-md-6 col-sm-12'>
-                                <div className='form-group gov-co-form-group ml-2'>
-                                  <div className='gov-co-dropdown'>
+                        <div className='tab-pane' id='tabs-2' role='tabpanel'>
+                          <div className='row'>
+                            <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
+                              <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
+                              <div className='row'>
+                                <div className='col-lg-6 col-md-6 col-sm-12'>
+                                  <div className='form-group gov-co-form-group ml-2'>
+                                    <div className='gov-co-dropdown'>
+                                      <Form.Item>
+                                        <SelectComponent
+                                          className='select_d'
+                                          placeholder='-- Seleccione --'
+                                          options={[]}
+                                          optionPropkey={''}
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='col-md-6 col-lg-6 col-sm-12'>
+                                  <div className='form-group gov-co-form-group'>
                                     <Form.Item>
-                                      <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
+                                      <input
+                                        type='text'
+                                        className='form-control gov-co-form-control panel_ds'
+                                        onKeyPress={(event) => {
+                                          if (!/[a-zA-Z]/.test(event.key)) {
+                                            event.preventDefault();
+                                          }
+                                        }}
+                                        onPaste={(event) => {
+                                          event.preventDefault();
+                                        }}
+                                      />
                                     </Form.Item>
                                   </div>
                                 </div>
                               </div>
-                              <div className='col-md-6 col-lg-6 col-sm-12'>
-                                <div className='form-group gov-co-form-group'>
-                                  <Form.Item>
-                                    <input
-                                      type='text'
-                                      className='form-control gov-co-form-control'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-Z]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                </div>
-                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className='row'>
-                          <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                            <table className='table table-bordered text-center mt-4' style={{ backgroundColor: '#ede9e3' }}>
-                              <thead>
-                                <tr
-                                  style={{
-                                    border: '2px solid  #000',
-                                    backgroundColor: '#fff'
-                                  }}
-                                >
-                                  <th style={{ border: '2px solid #000' }}>No. de radicado</th>
-                                  <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
-                                  <th style={{ border: '2px solid #000' }}>Fecha</th>
-                                  <th style={{ border: '2px solid #000' }}>Estado</th>
-                                  <th style={{ border: '2px solid #000' }}>Actividad en curso</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr style={{ border: '2px solid #000' }}>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                  <td style={{ border: '2px solid #000' }}></td>
-                                </tr>
-                              </tbody>
-                            </table>
+                          <div className='row'>
+                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                              <table
+                                className='table table-bordered text-center mt-4'
+                                style={{ backgroundColor: '#ede9e3', width: '800px' }}
+                              >
+                                <thead>
+                                  <tr
+                                    style={{
+                                      border: '2px solid  #000',
+                                      backgroundColor: '#fff'
+                                    }}
+                                  >
+                                    <th style={{ border: '2px solid #000' }}>No. de radicado</th>
+                                    <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
+                                    <th style={{ border: '2px solid #000' }}>Fecha</th>
+                                    <th style={{ border: '2px solid #000' }}>Estado</th>
+                                    <th style={{ border: '2px solid #000' }}>Actividad en curso</th>
+                                  </tr>
+                                </thead>
+                                <tbody className='cuerpo_table'>
+                                  <tr style={{ border: '2px solid #000' }}>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                    <td style={{ border: '2px solid #000' }}></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
