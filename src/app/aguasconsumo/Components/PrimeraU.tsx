@@ -433,9 +433,17 @@ export const PrimeraU = () => {
                 <>
                   <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
-                      <DatosFuente form={form} obj={objJson} tipo={'validador'} habilitar={true} />
+                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        Datos de la fuente de abastecimiento. <br />{' '}
+                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                      </p>
+                      <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={false} />
                     </div>
                     <div className='row mt-5 ml-2'>
+                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        Información de acueductos que captan la misma fuente. . <br />{' '}
+                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                      </p>
                       <DatosAcueducto form={form} obj={objJson} prop={addacueducto} habilitar={true} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -467,6 +475,10 @@ export const PrimeraU = () => {
                 <>
                   <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
+                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        Información adicional de la fuente de abastecimiento. <br />{' '}
+                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                      </p>
                       <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} habilitar={true} />
                     </div>
 
