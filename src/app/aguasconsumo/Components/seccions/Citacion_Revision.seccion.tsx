@@ -77,7 +77,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               <div className='form-group gov-co-form-group mr-4'>
                 <div className='gov-co-dropdown'>
                   <p className='text'>
-                    <span className='required'>*</span> Funcionario
+                    <span className='required'>*</span> Subred
                   </p>
                   <Form.Item initialValue={funcionario} name='funcionario' rules={[{ required: !modificar }]}>
                     <SelectComponent

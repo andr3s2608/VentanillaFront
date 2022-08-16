@@ -25,6 +25,7 @@ import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { Button, Radio, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
 
 export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const { obj, tipo, prop, habilitar } = props;
@@ -87,6 +88,21 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const validacionCaudal = (value: any) => {
+    const caudalde = props.form.getFieldValue('caudaldesign');
+    const caudaltra = props.form.getFieldValue('caudaltratado');
+    if (caudalde != undefined && caudaltra != undefined && caudalde != '' && caudaltra != '') {
+      if (caudalde > caudaltra) {
+        Swal.fire({
+          icon: 'info',
+
+          title: 'Caudal incorrecto',
+          text: `El caudal tratado no puede ser menor al caudal diseño`
+        });
+      }
+    }
+  };
 
   const onChange = (value: any) => {
     var nombre: string = value.target.id;
@@ -394,9 +410,10 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <Input
                   type='text'
                   className='form-control gov-co-form-control'
-                  maxLength={100}
+                  maxLength={10}
+                  onChange={validacionCaudal}
                   onKeyPress={(event) => {
-                    if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                    if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}
@@ -414,9 +431,10 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <Input
                   type='text'
                   className='form-control gov-co-form-control'
-                  maxLength={100}
+                  maxLength={10}
+                  onChange={validacionCaudal}
                   onKeyPress={(event) => {
-                    if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                    if (!/[0-9]/.test(event.key)) {
                       event.preventDefault();
                     }
                   }}

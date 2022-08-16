@@ -57,21 +57,23 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   }, []);
 
   const subida = (value: any) => {
-    let posicion = 1;
+    if (archivocargado.length === 0) {
+      let posicion = 1;
 
-    const array: any[] = [];
-    if (archivocargado.length > 0) {
-      for (let index = 0; index < archivocargado.length; index++) {
-        array.push(archivocargado[index]);
-        posicion++;
+      const array: any[] = [];
+      if (archivocargado.length > 0) {
+        for (let index = 0; index < archivocargado.length; index++) {
+          array.push(archivocargado[index]);
+          posicion++;
+        }
+        array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
+        setarchivocargado(array);
+        prop(array);
+      } else {
+        array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
+        setarchivocargado(array);
+        prop(array);
       }
-      array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
-      setarchivocargado(array);
-      prop(array);
-    } else {
-      array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
-      setarchivocargado(array);
-      prop(array);
     }
   };
 
