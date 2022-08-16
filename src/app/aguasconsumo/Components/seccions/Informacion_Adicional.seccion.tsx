@@ -319,61 +319,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     }
   ];
 
-  const structureColumns2 = [
-    {
-      title: 'No. ',
-      dataIndex: 'posicion',
-      key: 'posicion'
-    },
-    {
-      title: 'Caudal Diseño',
-      dataIndex: 'caudaldesign',
-      key: 'caudaldesign'
-    },
-    {
-      title: 'Caudal Tratado',
-      dataIndex: 'caudaltratado',
-      key: 'caudaltratado'
-    },
-    {
-      title: 'Acciones',
-      key: 'Acciones',
-      align: 'center' as 'center',
-
-      render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
-          return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              disabled={true}
-              key={`vali-${index}`}
-              onClick={() => onClickLlenarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-            >
-              Rellenar
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              disabled={true}
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-            >
-              Eliminar
-            </Button>
-          );
-        }
-      }
-    }
-  ];
-
   if (habilitar) {
     return (
       <>
@@ -466,7 +411,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <Table
                   id='tableGen'
                   dataSource={sistema}
-                  columns={structureColumns2}
+                  columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />
@@ -760,7 +705,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <Table
                   id='tableGen'
                   dataSource={sistema}
-                  columns={structureColumns2}
+                  columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />

@@ -255,61 +255,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   ];
 
-  const structureColumns2 = [
-    {
-      title: 'No. de Expediente',
-      dataIndex: 'posicion',
-      key: 'posicion'
-    },
-    {
-      title: 'Municipio/Vereda',
-      dataIndex: 'munver',
-      key: 'munver'
-    },
-    {
-      title: 'Uso de la Fuente',
-      dataIndex: 'usofuente',
-      key: 'usofuente'
-    },
-    {
-      title: 'Acciones',
-      key: 'Acciones',
-      align: 'center' as 'center',
-
-      render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
-          return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              key={`validar`}
-              onClick={() => onClickLlenarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-              disabled={true}
-            >
-              Rellenar
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-              disabled={true}
-            >
-              Eliminar
-            </Button>
-          );
-        }
-      }
-    }
-  ];
-
   if (habilitar) {
     return (
       <>
@@ -480,7 +425,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <Table
                   id='tableGen'
                   dataSource={acueductotabla}
-                  columns={structureColumns2}
+                  columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />
@@ -660,7 +605,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <Table
                   id='tableGen'
                   dataSource={acueductotabla}
-                  columns={structureColumns2}
+                  columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />
