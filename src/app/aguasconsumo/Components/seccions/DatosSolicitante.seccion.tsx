@@ -204,12 +204,94 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             </div>
             {!tipoSolicitante ? (
               <>
-                <div className='form-row'>
-                  <div className='col'>
-                    <input type='text' className='form-control' placeholder='First name'></input>
+                <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <div className='gov-co-dropdown'>
+                        <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                          <SelectComponent
+                            className='text'
+                            options={l_tipos_documentoRazon}
+                            onChange={cambiodocumentoRazon}
+                            optionPropkey='id'
+                            optionPropLabel='descripcion'
+                            disabled={modificar}
+                          />
+                        </Form.Item>
+                      </div>
+                    </div>
                   </div>
-                  <div className='col'>
-                    <input type='text' className='form-control' placeholder='Last name'></input>
+                </div>
+
+                <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <p className='text'>
+                        {' '}
+                        <span className='required'>*</span> Número de documento
+                      </p>
+                      <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                        <Input
+                          allowClear
+                          type='text'
+                          placeholder='Número Identificación'
+                          autoComplete='off'
+                          pattern={tipocampoRazon}
+                          maxLength={longitudmaximaRazon}
+                          disabled={modificar}
+                          onKeyPress={(event) => {
+                            if (!tipocampovalidacionRazon.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                          onInvalid={() => {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Datos inválidos',
+                              text:
+                                'recuerde que para el tipo de documento: ' +
+                                tipodocumentoRazon +
+                                ' solo se admiten valores ' +
+                                campoRazon +
+                                ' de longitud entre ' +
+                                longitudminimaRazon +
+                                ' y ' +
+                                longitudmaximaRazon
+                            });
+                          }}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <p className='text'>
+                        {' '}
+                        <span className='required'>*</span> Nombre de la entidad
+                      </p>
+                      <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                        <Input
+                          type='text'
+                          className='form-control gov-co-form-control'
+                          maxLength={50}
+                          disabled={modificar}
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
+                    </div>
                   </div>
                 </div>
               </>
