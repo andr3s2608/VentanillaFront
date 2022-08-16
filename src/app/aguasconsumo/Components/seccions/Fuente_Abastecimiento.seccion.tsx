@@ -35,7 +35,19 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const [
     [tipofuente, subca, descripcionotra, nombre, latitud, longitud, descricion, autoridad, nroresolu, fecha, tiposol],
     setdatos
-  ] = useState<[any, any, any, any, any, any, any, any, any, any, any]>([, , , , , , , , , , ,]);
+  ] = useState<[any, any, any, any, any, any, any, any, any, any, any]>([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  ]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);

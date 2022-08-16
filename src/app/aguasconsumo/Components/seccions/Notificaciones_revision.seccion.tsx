@@ -18,6 +18,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const [l_tipoNotificacion, setlTipoModificacion] = useState<any[]>([]);
   const [idPlantilla, setIdPlantilla] = useState<string>('');
   const [isvistaPrevia, setIsVistaPrevia] = useState<boolean>(false);
+  const [notificado, setnotificado] = useState<boolean>(false);
 
   const [body, setlBody] = useState<string>('');
   const [title, setlTitle] = useState<string>('');
@@ -33,7 +34,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
       );
     });
 
-    setlTipoModificacion(tipoNotificaciones);
+    setlTipoModificacion(filter);
     // setlTipoModificacionSeleccion(tipoNotificaciones[0]);
   }, []);
 
@@ -62,6 +63,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   }
 
   const notificar = async () => {
+    setnotificado(true);
     if (idPlantilla == '') {
       Swal.fire({
         icon: 'error',
@@ -393,6 +395,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
                 className='mr-3 float-right button btn btn-default'
                 type='primary'
                 htmlType='button'
+                disabled={notificado}
                 style={{
                   backgroundColor: '#CBCBCB',
                   border: '2px solid #CBCBCB',
