@@ -437,7 +437,7 @@ export const PrimeraU = () => {
                         Datos de la fuente de abastecimiento. <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                       </p>
-                      <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={false} />
+                      <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={true} />
                     </div>
                     <div className='row mt-5 ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>

@@ -266,12 +266,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Departamento
                 </label>
                 <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_departamentos}
-                    optionPropkey='idDepartamento'
-                    optionPropLabel='descripcion'
-                    disabled={true}
-                  />
+                  <SelectComponent options={l_departamentos} optionPropkey='idDepartamento' optionPropLabel='descripcion' />
                 </Form.Item>
               </div>
               <div className='col-lg-6'>
@@ -279,12 +274,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Localidad o vereda
                 </label>
                 <Form.Item name='localidad' rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_localidades}
-                    optionPropkey='idLocalidad'
-                    optionPropLabel='descripcion'
-                    disabled={true}
-                  />
+                  <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
                 </Form.Item>
               </div>
             </div>
@@ -299,7 +289,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     optionPropkey='idMunicipio'
                     optionPropLabel='descripcion'
                     value={idBogotac}
-                    disabled={true}
                     searchValue={idBogotac}
                   />
                 </Form.Item>
@@ -312,7 +301,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();
@@ -334,7 +322,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();
@@ -351,7 +338,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Uso de la fuente
                 </label>
                 <Form.Item name='usofuente' rules={[{ required: false }]}>
-                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' disabled={true} />
+                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
                 </Form.Item>
               </div>
             </div>
@@ -364,7 +351,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <input
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                         event.preventDefault();
@@ -384,7 +370,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <input
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                         event.preventDefault();
@@ -406,7 +391,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     </a>
                     <Button
                       className='fa-solid fa-circle-plus'
-                      disabled={true}
                       style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
                       type='primary'
                       htmlType='button'

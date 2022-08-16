@@ -195,7 +195,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     defaultValue={obj?.idTipoPersona ?? 'natural'}
                     optionPropkey='key'
                     optionPropLabel='value'
-                    disabled={true}
+                    disabled={modificar}
                     className='personal'
                     style={{ width: '780px' }}
                   />
@@ -230,7 +230,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     onChange={cambiodocumento}
                     optionPropkey='id'
                     optionPropLabel='descripcion'
-                    disabled={true}
+                    disabled={modificar}
                   />
                 </Form.Item>
               </div>
@@ -248,7 +248,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     autoComplete='off'
                     pattern={tipocampo}
                     maxLength={longitudmaxima}
-                    disabled={true}
+                    disabled={modificar}
                     onKeyPress={(event) => {
                       if (!tipocampovalidacion.test(event.key)) {
                         event.preventDefault();
@@ -286,7 +286,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     maxLength={50}
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
+                    disabled={modificar}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
@@ -305,7 +305,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
                   <Input
                     type='text'
-                    disabled={true}
+                    disabled={modificar}
                     maxLength={50}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -329,7 +329,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
                   <Input
                     maxLength={50}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -351,7 +351,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
                   <Input
                     maxLength={50}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -374,7 +374,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
                   <Input
-                    disabled={true}
+                    disabled={modificar}
                     maxLength={12}
                     type='text'
                     className='form-control gov-co-form-control'
@@ -397,7 +397,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
                   <Input
                     maxLength={12}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -422,7 +422,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <input
                     style={{ width: '780px' }}
                     maxLength={50}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {

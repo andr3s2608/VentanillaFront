@@ -98,7 +98,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                       defaultValue={obj?.idtipodeTramite}
                       optionPropkey='idTipoTramite'
                       optionPropLabel='descripcion'
-                      disabled={true}
                     />
                   </Form.Item>
                 </div>
@@ -123,7 +122,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                             defaultValue={obj?.idestado}
                             optionPropkey='idEstadoSolicitud'
                             optionPropLabel='nombre'
-                            disabled={true}
                           />
                         </Form.Item>
                       </div>
@@ -147,7 +145,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                         defaultValue={obj?.idactividadActualSolicitud}
                         optionPropkey='idActividad'
                         optionPropLabel='descripcion'
-                        disabled={true}
                       />
                     </Form.Item>
                   </div>
@@ -170,7 +167,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                         <Input
                           type='text'
                           className='form-control gov-co-form-control'
-                          disabled={true}
                           onKeyPress={(event) => {
                             if (!/[a-zA-Z ]/.test(event.key)) {
                               event.preventDefault();
@@ -203,7 +199,6 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                             defaultValue={obj?.idSubred}
                             optionPropkey='idSubRed'
                             optionPropLabel='zona'
-                            disabled={true}
                           />
                         </Form.Item>
                       </div>
