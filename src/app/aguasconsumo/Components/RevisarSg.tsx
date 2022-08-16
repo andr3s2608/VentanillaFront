@@ -111,25 +111,10 @@ export const RevisarSg = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota'>
-                      <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <p>Subdirector</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
-                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
+                    <div className='info-secion prueba_seccion'>
+                      <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
                             <a href='#'>Inicio</a>
@@ -151,7 +136,7 @@ export const RevisarSg = () => {
             <section className='panel-menu'>
               <div className='container'>
                 <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
                     <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
                       <nav className='nav panel'>
                         <a className='nav-link active' href='#'>
@@ -170,20 +155,20 @@ export const RevisarSg = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-2'>
+                <div className='row mt-5'>
+                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
+                    <div className='info-tramite mt-3 ml-5'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
 
-                <div className='row mt-5 ml-2'>
+                <div className='row mt-5 ml-2 datos_validador '>
                   <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} habilitar={false} />
                 </div>
               </div>
             </section>
-            <section className='panel-solicitud mt-5 mb-5'>
+            <section className='panel-solicitud mt-5 mb-5 datos_validadors'>
               <div className='container'>
                 <div className='row'>
                   <div className='col-lg-10 col-sm-12 col-md-10'>
@@ -205,7 +190,7 @@ export const RevisarSg = () => {
                             </h5>
                           </div>
                           <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='row mt-5 ml-2'>
+                            <div className='row mt-5 datos_validador'>
                               <DatosSolicitante form={form} obj={objJson} tipo={''} habilitar={false} />
                             </div>
                           </div>
@@ -433,7 +418,7 @@ export const RevisarSg = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row mt-4'>
+                <div className='row mt-4' style={{ marginLeft: '420px' }}>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
                     <Button
                       className='ml-3 float-right button btn btn-default'

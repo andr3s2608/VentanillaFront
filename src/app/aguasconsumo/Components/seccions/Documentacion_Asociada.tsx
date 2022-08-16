@@ -129,41 +129,45 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
 
   return (
     <>
-      <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-        <div className='row'>
-          <div className='col-lg-12 col-sm-12 col-md-12'>
-            <Upload
-              name='cargarArchivoDocumentacion'
-              onChange={subida}
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button
-                className='float-right button btn btn-default'
-                icon={<UploadOutlined />}
-                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-              >
-                Cargar archivo
-              </Button>
-            </Upload>
+      <section style={{ width: '100%' }}>
+        <div className='container-fluid'>
+          <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
+            <div className='row' style={{ marginLeft: '-40px' }}>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <Upload
+                  name='cargarArchivoDocumentacion'
+                  onChange={subida}
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button
+                    className='float-right button btn btn-default'
+                    icon={<UploadOutlined />}
+                    style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  >
+                    Cargar archivo
+                  </Button>
+                </Upload>
+              </div>
+            </div>
+            <div className='row mt-2' style={{ marginLeft: '-50px' }}>
+              <div className='col-lg-12 col-md-12 col-sm-12'>
+                <Table
+                  scroll={{ y: 240 }}
+                  id='tableGen'
+                  dataSource={archivocargado}
+                  columns={tabla}
+                  pagination={{ pageSize: Paginas }}
+                  className='table_info'
+                />{' '}
+                <br />
+              </div>
+            </div>
           </div>
         </div>
-        <div className='row mt-2'>
-          <div className='col-lg-12 col-md-12 col-sm-12'>
-            <Table
-              scroll={{ y: 240 }}
-              id='tableGen'
-              dataSource={archivocargado}
-              columns={tabla}
-              pagination={{ pageSize: Paginas }}
-              className='table_info'
-            />{' '}
-            <br />
-          </div>
-        </div>
-      </div>
+      </section>
     </>
   );
 };
