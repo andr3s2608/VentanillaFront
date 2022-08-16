@@ -26,6 +26,7 @@ export const RevisarSg = () => {
   const history = useHistory();
   const [documentos, setdocumentos] = useState<any[]>([]);
   const [rol, setrol] = useState<any>();
+  const [usuarionotificado, setusuarionotificado] = useState<boolean>(false);
   const [estados, setl_estados] = useState<any[]>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -53,20 +54,48 @@ export const RevisarSg = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const notificado = () => {
+    setusuarionotificado(true);
+  };
+
   const onSubmit = async (values: any) => {
+    let tiposolicitud: string = values.notificacion;
+    let notificacion = '';
+    let estadosolicitud = '';
+
+    //subsanacion
+    if (tiposolicitud.toLocaleUpperCase() === '6F8C18FE-69C2-40D7-BAF6-E9C1C7A44E09') {
+      tiposolicitud = '9124A97B-C2BD-46A0-A8B3-1AC702A06C82';
+      estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
+      notificacion = '8B6AB818-A560-4825-8C82-2CF4B9C58914';
+    }
+    //desistimiento
+    if (tiposolicitud.toLocaleUpperCase() === 'C7820293-C09E-4F86-A02F-9F299474C5B1') {
+      tiposolicitud = '5AB0DF72-9909-4459-8D52-D04A3F2ADC9A';
+      estadosolicitud = '2A31EB34-2AA0-428B-B8EF-A86683D8BB8D';
+      notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
+    }
+
     if (rol === 'Coordinador') {
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '5290025A-0967-417A-9737-FA5EAE85D97B');
+      if (tiposolicitud === undefined) {
+        tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
+      }
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Funcionario' || rol === 'AdminTI') {
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '8CA363C0-66AA-4273-8E63-CE3EAC234857');
+      if (tiposolicitud === undefined) {
+        tiposolicitud = '8CA363C0-66AA-4273-8E63-CE3EAC234857';
+      }
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Subdirector') {
       const estado = values.seguimiento;
       if (estado == '2e8808af-a294-4cde-8e9c-9a78b5172119') {
-        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
+        notificacion = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
       } else {
-        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '65A9BC67-04FC-47E5-B26C-E1A5555524CF');
+        notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
       }
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
     }
 
     const supportDocumentsEdit: any[] = [];
@@ -95,9 +124,60 @@ export const RevisarSg = () => {
       await api.uploadFiles(formData);
       await api.AddSupportDocumentsAguas(supportDocumentsEdit);
     }
+    if (!usuarionotificado) {
+      if (notificacion != '') {
+        const formato = await api.getFormatoAguas(notificacion);
+        const control: string = formato['asuntoNotificacion'];
+        switch (control) {
+          case 'Notificación de Desistimiento':
+            await api.sendEmail({
+              to: objJson.correoElectronico,
+              subject: 'Notificación de Desistimiento',
+              body: formato['cuerpo']
+            });
+            break;
+          case 'Notificación de subsanación':
+            await api.sendEmail({
+              to: objJson.correoElectronico,
+              subject: 'Notificación de subsanación',
+              body: formato['cuerpo']
+            });
+            break;
+
+          case 'Notificación Aprobación al Ciudadano':
+            const certificadoCiudadano = await api.getCertificadoAguas('4');
+
+            await api.sendEmailAttachment({
+              to: objJson.correoElectronico,
+              subject: 'Notificación Aprobación al Ciudadano',
+              body: agregarValoresDinamicos(
+                formato['cuerpo'],
+                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+                [
+                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                  objJson.renovafuentejson[0].numeroResolucion,
+                  objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                ]
+              ),
+              attachment: certificadoCiudadano,
+              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+            });
+            break;
+        }
+      }
+    }
     history.push('/tramites-servicios-aguas');
     localStorage.removeItem('register');
   };
+  function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
+    let nuevoHTML = HTML;
+
+    for (let index = 0; index < llavesAReemplazar.length; index++) {
+      nuevoHTML = nuevoHTML.replace(llavesAReemplazar[index], valoresDinamicos[index]);
+    }
+
+    return nuevoHTML;
+  }
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -318,7 +398,7 @@ export const RevisarSg = () => {
                             <div className='card-body'>
                               <div className='card-body'>
                                 <div className='row mt-5 ml-2'>
-                                  <TipoNotificacion form={form} obj={objJson} prop={null} />
+                                  <TipoNotificacion form={form} obj={objJson} prop={notificado} />
                                 </div>
                               </div>
                             </div>

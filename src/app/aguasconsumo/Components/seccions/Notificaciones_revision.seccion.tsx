@@ -64,6 +64,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
 
   const notificar = async () => {
     setnotificado(true);
+    prop();
     if (idPlantilla == '') {
       Swal.fire({
         icon: 'error',
