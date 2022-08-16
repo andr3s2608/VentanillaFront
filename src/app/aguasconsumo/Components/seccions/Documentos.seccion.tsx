@@ -404,127 +404,127 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   }
   return (
     <>
-      <div className='row'>
-        <div className='col-lg-12 col-md-12 col-sm-12'>
-          <div className='info-tramite mt-3'>
-            <p>Adicionar documentación requisito.</p>
-          </div>
-        </div>
-      </div>
-      <div className='row mt-2'>
-        <div className='col-lg-5 col-md-5 col-sm-12'>
-          <div className='check_d'>
-            <Table
-              scroll={{ y: 240 }}
-              id='tableGen'
-              dataSource={acueducto}
-              columns={tabla1}
-              pagination={{ pageSize: Paginas }}
-              className='table_info'
-            />{' '}
-            <br />
-          </div>
-        </div>
-        <div className='col-md-4 col-sm-12 col-lg-4 ml-5  justify-content-center text-center'>
-          {tipo != 'gestion' && (
-            <>
+      <section style={{ width: '100%' }}>
+        <div className='container-fluid'>
+          <div className='row mt-2'>
+            <div className='col-lg-5 col-md-5 col-sm-12'>
+              <div className='check_d'>
+                <Table
+                  scroll={{ y: 240 }}
+                  id='tableGen'
+                  dataSource={acueducto}
+                  columns={tabla1}
+                  pagination={{ pageSize: Paginas }}
+                  className='table_info'
+                />{' '}
+                <br />
+              </div>
+            </div>
+            <div className='col-md-4 col-sm-12 col-lg-4 ml-5  justify-content-center text-center'>
+              {tipo != 'gestion' && (
+                <>
+                  <div id='accordion' className='mt-3'>
+                    <Button
+                      className=' button btn btn-default'
+                      type='primary'
+                      htmlType='button'
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      onClick={() => {
+                        insertarArchivo();
+                      }}
+                    >
+                      Adicionar
+                    </Button>
+                  </div>
+                </>
+              )}
+
               <div id='accordion' className='mt-3'>
                 <Button
                   className=' button btn btn-default'
                   type='primary'
                   htmlType='button'
                   style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                  onClick={() => {
-                    insertarArchivo();
-                  }}
                 >
-                  Adicionar
+                  ver archivo
                 </Button>
               </div>
-            </>
-          )}
-
-          <div id='accordion' className='mt-3'>
-            <Button
-              className=' button btn btn-default'
-              type='primary'
-              htmlType='button'
-              style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            >
-              ver archivo
-            </Button>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className='row mt-3'>
-        {tipo != 'gestion' && (
-          <>
-            <div className='col-lg-8 col-sm-12 col-md-8'>
-              <Upload
-                name='cargarArchivo'
-                onChange={subia}
-                maxCount={1}
-                beforeUpload={() => false}
-                listType='text'
-                accept='application/pdf'
-              >
-                <Button
-                  className='float-right button btn btn-default'
-                  icon={<UploadOutlined />}
-                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                >
-                  Cargar archivo
-                </Button>
-              </Upload>
-            </div>
-          </>
-        )}
+          <div className='row mt-3'>
+            {tipo != 'gestion' && (
+              <>
+                <div className='col-lg-8 col-sm-12 col-md-8'>
+                  <Upload
+                    name='cargarArchivo'
+                    onChange={subia}
+                    maxCount={1}
+                    beforeUpload={() => false}
+                    listType='text'
+                    accept='application/pdf'
+                  >
+                    <Button
+                      className='float-right button btn btn-default'
+                      icon={<UploadOutlined />}
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                    >
+                      Cargar archivo
+                    </Button>
+                  </Upload>
+                </div>
+              </>
+            )}
 
-        <div className='col-lg-8 col-md-8 col-sm-12 mt-3'>
-          <Table
-            id='tableGen2'
-            dataSource={guardararchivostabla}
-            columns={tabla2}
-            pagination={{ pageSize: Paginas }}
-            className='table_info'
-          />{' '}
-          <br />
-          <small className='mt-1'>* Espacio del ciudadano para incluir documentación adicionar de ser requerido</small>
-        </div>
-        {tipo == 'gestion' && (
-          <>
-            <div className='col-lg-12 col-md-12 col-sm-12'>
-              <div className='apro'>
-                <span></span>¿Aprobado?
-                <Form.Item label='' name={'radioaprobacion'}>
-                  <Radio.Group name={'radiobut'} defaultValue={1}>
-                    <Radio value={1}>Si</Radio>
-                    <Radio value={2}>No</Radio>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item
-                  initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
-                  name='observations'
-                  rules={[{ required: false }]}
-                >
-                  <Input.TextArea rows={5} maxLength={300} style={{ width: '300px' }} />
-                </Form.Item>
+            <div className='form-row'>
+              <div className='col-lg-8  col-md-8  col-sm-12 mt-3'>
+                <Table
+                  id='tableGen2'
+                  dataSource={guardararchivostabla}
+                  columns={tabla2}
+                  pagination={{ pageSize: Paginas }}
+                  className='table_info'
+                />{' '}
+                <br />
               </div>
             </div>
-          </>
-        )}
-      </div>
+            <small className='mt-1'>* Espacio del ciudadano para incluir documentación adicionar de ser requerido</small>
 
-      <Modal
-        title={<p className='text-center'> Visualización de Documento </p>}
-        visible={enableModalViewDocument}
-        width={1000}
-        okButtonProps={{ hidden: true }}
-        onCancel={() => setEnableModalViewDocument(false)}
-        cancelText='Cerrar'
-      >
-        <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-      </Modal>
+            {tipo == 'gestion' && (
+              <>
+                <div className='col-lg-12 col-md-12 col-sm-12'>
+                  <div className='apro'>
+                    <span></span>¿Aprobado?
+                    <Form.Item label='' name={'radioaprobacion'}>
+                      <Radio.Group name={'radiobut'} defaultValue={1}>
+                        <Radio value={1}>Si</Radio>
+                        <Radio value={2}>No</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                    <Form.Item
+                      initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
+                      name='observations'
+                      rules={[{ required: false }]}
+                    >
+                      <Input.TextArea rows={5} maxLength={300} style={{ width: '300px' }} />
+                    </Form.Item>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          <Modal
+            title={<p className='text-center'> Visualización de Documento </p>}
+            visible={enableModalViewDocument}
+            width={1000}
+            okButtonProps={{ hidden: true }}
+            onCancel={() => setEnableModalViewDocument(false)}
+            cancelText='Cerrar'
+          >
+            <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+          </Modal>
+        </div>
+      </section>
     </>
   );
 };

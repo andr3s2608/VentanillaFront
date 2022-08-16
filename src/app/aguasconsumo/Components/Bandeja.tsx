@@ -588,7 +588,7 @@ export const Bandeja = (props: IDataSource) => {
                   <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                     <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
                       <ul className='nav nav-tabs' role='tablist'>
-                        <li className='nav-item encabezados'>
+                        <li className='nav-item encabezadosx'>
                           <a
                             className='nav-link active'
                             data-toggle='tab'
@@ -599,7 +599,7 @@ export const Bandeja = (props: IDataSource) => {
                             Notificación de observaciones
                           </a>
                         </li>
-                        <li className='nav-item encabezados'>
+                        <li className='nav-item encabezadosx'>
                           <a
                             className='nav-link'
                             data-toggle='tab'

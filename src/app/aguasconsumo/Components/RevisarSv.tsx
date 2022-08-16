@@ -183,35 +183,21 @@ export const RevisarSv = () => {
         <div className='card-body'>
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
-              <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota '>
-                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text mr-2 text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className='row mt-2'>
+              <div className='container-fluid'>
+                <div className='row mt-2 ml-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
                     <div className='info-secion'>
                       <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
-                            <a href='#'>Inicio</a>
+                            <a href='#' style={{ textDecoration: 'none' }}>
+                              Inicio
+                            </a>
                           </li>
                           <li className='breadcrumb-item'>
-                            <a href='#'>Bandeja de entrada</a>
+                            <a href='#' style={{ textDecoration: 'none' }}>
+                              Bandeja de entrada
+                            </a>
                           </li>
                           <li className='breadcrumb-item active' aria-current='page'>
                             Revisar solicitud
@@ -246,8 +232,8 @@ export const RevisarSv = () => {
                   </div>
                 </section>
                 <div className='row mt-5'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-3'>
+                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
+                    <div className='info-tramite mt-3 ml-5'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>

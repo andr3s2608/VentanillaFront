@@ -20,11 +20,19 @@
 
 .info-secion {
   width: 100% !important;
-  margin-left: -12px !important;
+  margin-left: -10px !important;
 }
 
 .info-tramite {
   margin-left: -6px !important;
+}
+
+.tramite {
+  margin-left: 21px;
+}
+
+.primera_seccion {
+  margin-left: 12px;
 }
 
 .img-bogota img {
@@ -275,14 +283,14 @@ a.nav-link.hero_b {
 
 .tarjeta {
 
-  height: 750px !important;
+  height: 800px !important;
 }
 
 .bandeja_panel {
 
   width: 1200px !important;
-  height: 400px !important;
-  margin-top: 10px !important;
+  height: 420px !important;
+  margin-top: -8px !important;
 }
 
 .encabezados {
@@ -306,10 +314,92 @@ a.nav-link.hero_b {
   width: 800px !important;
 }
 
+.primeros_campos {
+  margin-left: 10px;
+}
 
-@media (max-width: 992) {
+.select_datos {
+  margin-left: 112px !important;
+}
 
-  .bandeja_panel {
-    background-color: red !important;
-  }
+.contenedor_ubi {
+  margin-left: 12px !important;
+}
+
+.dpto {
+  margin-left: -4px;
+}
+
+.acciones {
+  margin-left: 150px;
+}
+
+.option {
+  margin-left: -5px !important;
+}
+
+.tramite_titulo {
+  margin-left: 31px !important;
+}
+
+.panel_menu {
+  margin-left: 33px !important;
+}
+
+.botones {
+  margin-right: 20px !important;
+}
+
+.prueba_seccion {
+  margin-left: 12px !important;
+}
+
+
+.cancelar {
+  margin-left: 20px !important;
+}
+
+.datos_validador {
+  margin-left: 23px !important;
+}
+
+.datos_validadors {
+  margin-left: 21px !important;
+}
+
+.objeto {
+  margin-left: 120px !important;
+}
+
+.datos_solicitante {
+  width: 100% !important;
+}
+
+.prueba_tramite {
+  margin-left: -25px !important;
+}
+
+.select_datosx {
+  width: 850px !important;
+}
+
+.prueba_campos {
+  margin-left: -30px !important;
+}
+
+.prueba_campo {
+  margin-top: 20px;
+  margin-left: -20px !important;
+}
+
+.persona {
+  width: 900px !important;
+}
+
+.titulos {
+  margin-left: 10px !important;
+}
+
+.personal {
+  width: 900px !important;
 }

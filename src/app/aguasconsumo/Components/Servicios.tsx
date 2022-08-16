@@ -223,27 +223,9 @@ export const Servicios = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota '>
-                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text mr-2 text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
+                    <div className='info-secion prueba_seccion'>
                       <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
@@ -263,7 +245,7 @@ export const Servicios = () => {
                 <section className='panel-menu'>
                   <div className='container'>
                     <div className='row'>
-                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
                         <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
                           <nav className='nav panel'>
                             <a className='nav-link active' href='#'>
@@ -285,13 +267,13 @@ export const Servicios = () => {
                   </div>
                 </section>
                 <div className='row mt-5'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-3'>
+                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
+                    <div className='info-tramite mt-3 ml-5'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
-                <div className='row'>
+                <div className='row primera_seccion'>
                   <div className='col-lg-12 col-sm-12 col-md-12'>
                     <div className='info-tramite mt-2'>
                       <p className='ml-3 mt-5' style={{ fontSize: '18px', fontWeight: 'bold' }}>
@@ -304,7 +286,7 @@ export const Servicios = () => {
                   </div>
                   <div className='col-lg-6 col-sm-6 col-md-6 mt-2 ml-2'>
                     <div className='panel-search'>
-                      <div className='form-group gov-co-form-group ml-2'>
+                      <div className='form-group gov-co-form-group'>
                         <p className='text'>
                           <span className='required'>*</span> Tipo de tramite
                         </p>
@@ -318,21 +300,22 @@ export const Servicios = () => {
                             defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
                             optionPropkey='idTipoTramite'
                             optionPropLabel='descripcion'
+                            className='mr-5 option'
                           />
                         </Form.Item>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className='row mt-5 ml-2'>
+                <div className='row mt-5 primeros_campos'>
                   <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                 </div>
-                <div className='row mt-5 ml-2'>
+                <div className='row mt-5 ml-2 '>
                   <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
                 </div>
-                <div className='row mt-3 '>
+                <div className='row mt-3 acciones'>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-                    <div className='accion ml-4'>
+                    <div className='accion ml-4 botnoes'>
                       <Button
                         className='ml-4 float-right button btn btn-default'
                         style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
@@ -343,7 +326,7 @@ export const Servicios = () => {
                       </Button>
 
                       <Button
-                        className='mr-3 float-right button btn btn-default'
+                        className='mr-3 float-right button btn btn-default cancelar'
                         style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
                         onClick={() => {
                           history.push('/tramites-servicios-aguas');

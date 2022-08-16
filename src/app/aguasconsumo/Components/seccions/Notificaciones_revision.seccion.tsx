@@ -240,131 +240,164 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
 
   return (
     <>
-      <div className='row mt-3'>
-        <div className='col-lg-12 col-sm-12 col-md-12'>
-          <div className='info-tramite mt-2'>
-            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Notificaciones generales de revisión. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className='col-lg-4 col-sm-12 col-md-4'>
-        <div className='form-group gov-co-form-group '>
-          <label className='text'>
-            <span className='required'>* </span> Tipo de notificación
-          </label>
-          <div className='gov-co-dropdown'>
-            <Form.Item name='notificacion' rules={[{ required: false }]}>
-              <SelectComponent
-                options={l_tipoNotificacion}
-                optionPropkey='idTipoNotificacion'
-                optionPropLabel='nombre'
-                onChange={onChangeNotificacion}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='col-lg-3 col-md-3 col-sm-12'>
-        <div className='form-group gov-co-form-group'>
-          <p>Descripción de la notificacion</p>
-          <Form.Item name='descripcionNotificacion' initialValue={''}>
-            <Input.TextArea maxLength={300} className='form-control gov-co-form-control' style={{ width: '300px' }} />
-          </Form.Item>
-        </div>
-      </div>
-      <Modal
-        title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Vista previa</p>}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        width={1000}
-        okButtonProps={{ hidden: true }}
-        cancelText='Cerrar'
-      >
-        <div style={{ padding: 0, margin: 0 }}>
-          <header style={{ backgroundColor: '#0072c6', marginTop: 0, padding: '20px' }}>
-            <h1
-              style={{
-                lineHeight: '20pt',
-                fontFamily: 'Segoe UI Light',
-                fontSize: '18pt',
-                color: '#ffffff',
-                fontWeight: 'normal',
-                textAlign: 'center',
-                marginTop: 0,
-                textTransform: 'uppercase'
-              }}
-            >
-              {title}
-            </h1>
-          </header>
-          <section style={{ padding: '1px', margin: '0 15px' }}>
-            <div>
-              <p style={{ fontFamily: 'Segoe UI,Tahoma,sans-serif', color: '#666', fontSize: '18px', textAlign: 'justify' }}>
-                {body}
-              </p>
+      <section style={{ width: '100%' }}>
+        <div className='container-fluid'>
+          <div className='form-row' style={{ marginLeft: '-50px' }}>
+            <div className='col-lg-6 col-md-6 col-md-6'>
+              <label className='text'>
+                <span className='required'>* </span> Tipo de notificación
+              </label>
+              <Form.Item name='notificacion' rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_tipoNotificacion}
+                  optionPropkey='idTipoNotificacion'
+                  optionPropLabel='nombre'
+                  onChange={onChangeNotificacion}
+                />
+              </Form.Item>
             </div>
-            <div>
-              <p style={{ fontFamily: 'Segoe UI,Tahoma,sans-serif', color: '#666', fontSize: '18px', textAlign: 'justify' }}>
-                Atentamente, Salud Capital
-              </p>
+          </div>
+          <div className='form-row mt-3' style={{ marginLeft: '-50px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Descripción de la notificacion
+              </label>
+              <Form.Item name='descripcionNotificacion' initialValue={''}>
+                <Input.TextArea maxLength={300} className='form-control gov-co-form-control' style={{ width: '300px' }} />
+              </Form.Item>
             </div>
-          </section>
-          <footer
-            style={{
-              borderBottom: '1px solid #e3e3e3',
-              borderTop: '1px solid #e3e3e3',
-              padding: '20px 0',
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}
+          </div>
+          <Modal
+            title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Vista previa</p>}
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            width={1000}
+            okButtonProps={{ hidden: true }}
+            cancelText='Cerrar'
           >
-            <div style={{ width: '40%', height: 'auto', display: 'flex', justifyContent: 'left' }}>
-              <p
+            <div style={{ padding: 0, margin: 0 }}>
+              <header style={{ backgroundColor: '#0072c6', marginTop: 0, padding: '20px' }}>
+                <h1
+                  style={{
+                    lineHeight: '20pt',
+                    fontFamily: 'Segoe UI Light',
+                    fontSize: '18pt',
+                    color: '#ffffff',
+                    fontWeight: 'normal',
+                    textAlign: 'center',
+                    marginTop: 0,
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {title}
+                </h1>
+              </header>
+              <section style={{ padding: '1px', margin: '0 15px' }}>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: 'Segoe UI,Tahoma,sans-serif',
+                      color: '#666',
+                      fontSize: '18px',
+                      textAlign: 'justify'
+                    }}
+                  >
+                    {body}
+                  </p>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: 'Segoe UI,Tahoma,sans-serif',
+                      color: '#666',
+                      fontSize: '18px',
+                      textAlign: 'justify'
+                    }}
+                  >
+                    Atentamente, Salud Capital
+                  </p>
+                </div>
+              </section>
+              <footer
                 style={{
-                  fontFamily: 'Segoe UI,Tahoma,sans-serif',
-                  margin: '0px 0px 0px 30px',
-                  color: '#666',
-                  fontSize: '10px',
-                  textAlign: 'justify',
-                  width: '50%'
+                  borderBottom: '1px solid #e3e3e3',
+                  borderTop: '1px solid #e3e3e3',
+                  padding: '20px 0',
+                  display: 'flex',
+                  justifyContent: 'space-between'
                 }}
               >
-                Este mensaje se envió desde una dirección de correo electrónico no supervisada. No responda a este mensaje.
-              </p>
+                <div
+                  style={{
+                    width: '40%',
+                    height: 'auto',
+                    display: 'flex',
+                    justifyContent: 'left'
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: 'Segoe UI,Tahoma,sans-serif',
+                      margin: '0px 0px 0px 30px',
+                      color: '#666',
+                      fontSize: '10px',
+                      textAlign: 'justify',
+                      width: '50%'
+                    }}
+                  >
+                    Este mensaje se envió desde una dirección de correo electrónico no supervisada. No responda a este mensaje.
+                  </p>
+                </div>
+                <div
+                  style={{
+                    width: '40%',
+                    height: 'auto',
+                    display: 'flex',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <img
+                    src='https://ci3.googleusercontent.com/proxy/ZpxLDJuQPMcU2hTY6tq8Wi0alaC3_6JiA9bKxMUbac0Lv-2fcRMkltE5gWgRrUynLheRSum3JMAGbW9FzeuOWjuE2UrXo6FNCvO8nBScaM9kiuc1YtD-n35UQuvCf02V7sXA6ZjmmWn95r585LfAzNifc0wRs5rGiN9KpBHB4c5uPJRg0JfPBzuKRLhOgdkJTpkJO-tw5p37nwwoUyaG=s0-d-e1-ft#https://aadcdn.msauthimages.net/dbd5a2dd-2e-tcdtzyzrfsl01uzp7pjmqwdsq0tlkufmmtftnkc4/logintenantbranding/0/bannerlogo?ts=637625143347821803'
+                    alt='logo'
+                  />
+                </div>
+              </footer>
             </div>
-            <div style={{ width: '40%', height: 'auto', display: 'flex', justifyContent: 'center' }}>
-              <img
-                src='https://ci3.googleusercontent.com/proxy/ZpxLDJuQPMcU2hTY6tq8Wi0alaC3_6JiA9bKxMUbac0Lv-2fcRMkltE5gWgRrUynLheRSum3JMAGbW9FzeuOWjuE2UrXo6FNCvO8nBScaM9kiuc1YtD-n35UQuvCf02V7sXA6ZjmmWn95r585LfAzNifc0wRs5rGiN9KpBHB4c5uPJRg0JfPBzuKRLhOgdkJTpkJO-tw5p37nwwoUyaG=s0-d-e1-ft#https://aadcdn.msauthimages.net/dbd5a2dd-2e-tcdtzyzrfsl01uzp7pjmqwdsq0tlkufmmtftnkc4/logintenantbranding/0/bannerlogo?ts=637625143347821803'
-                alt='logo'
-              />
+          </Modal>
+          <div className='form-row mt-3' style={{ marginLeft: '-120px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+              <Button
+                className='ml-3 float-right button btn btn-default'
+                style={{
+                  backgroundColor: '#CBCBCB',
+                  border: '2px solid #CBCBCB',
+                  color: '#000'
+                }}
+                type='primary'
+                htmlType='button'
+                onClick={vistaPrevia}
+              >
+                Ver vista previa
+              </Button>
             </div>
-          </footer>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2' style={{ marginLeft: '-240px' }}>
+              <Button
+                className='mr-3 float-right button btn btn-default'
+                type='primary'
+                htmlType='button'
+                style={{
+                  backgroundColor: '#CBCBCB',
+                  border: '2px solid #CBCBCB',
+                  color: '#000'
+                }}
+                onClick={notificar}
+              >
+                Notificar
+              </Button>
+            </div>
+          </div>
         </div>
-      </Modal>
-      <div className='row mt-4'>
-        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-          <Button
-            className='ml-3 float-right button btn btn-default'
-            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            type='primary'
-            htmlType='button'
-            onClick={vistaPrevia}
-          >
-            Ver vista previa
-          </Button>
-          <Button
-            className='mr-3 float-right button btn btn-default'
-            type='primary'
-            htmlType='button'
-            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            onClick={notificar}
-          >
-            Notificar
-          </Button>
-        </div>
-      </div>
+      </section>
     </>
   );
 };

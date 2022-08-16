@@ -18,8 +18,6 @@ import {
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
-//Redux
-
 import '../../../../css/estilos.css';
 import { Button } from 'antd';
 
@@ -79,7 +77,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   return (
     <>
-      <div className='col-lg-12 col-sm-12 col-md-12 '>
+      <div className='col-lg-12 col-sm-12 col-md-12 contenedor_ubi'>
         <div className='info-tramite mt-2'>
           <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
             Información del lugar de la localización del sistema de abastecimiento . <br />{' '}
@@ -96,7 +94,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                     maxLength={100}
                     type='text'
                     disabled={modificar}
-                    className='form-control gov-co-form-control ml-2'
+                    className='form-control gov-co-form-control ml-1'
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9-# ]/.test(event.key)) {
                         event.preventDefault();
@@ -113,7 +111,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <Button
                 className='ml-4 mr-3 float-right button btn btn-default'
                 type='primary'
-                style={{ backgroundColor: '#CBCBCB', border: '0px' }}
+                style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
               >
                 Buscar
               </Button>
@@ -136,6 +134,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                       optionPropkey='idDepartamento'
                       optionPropLabel='descripcion'
                       disabled={true}
+                      className='dpto'
                     />
                   </Form.Item>
                 </div>
