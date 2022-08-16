@@ -319,61 +319,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     }
   ];
 
-  const structureColumns2 = [
-    {
-      title: 'No. ',
-      dataIndex: 'posicion',
-      key: 'posicion'
-    },
-    {
-      title: 'Caudal Diseño',
-      dataIndex: 'caudaldesign',
-      key: 'caudaldesign'
-    },
-    {
-      title: 'Caudal Tratado',
-      dataIndex: 'caudaltratado',
-      key: 'caudaltratado'
-    },
-    {
-      title: 'Acciones',
-      key: 'Acciones',
-      align: 'center' as 'center',
-
-      render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
-          return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              disabled={true}
-              key={`vali-${index}`}
-              onClick={() => onClickLlenarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-            >
-              Rellenar
-            </Button>
-          );
-        } else {
-          return (
-            <Button
-              type='primary'
-              className='fa-solid fa-circle-xmark'
-              disabled={true}
-              key={`vali-${index}`}
-              onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
-              icon={<CheckOutlined />}
-            >
-              Eliminar
-            </Button>
-          );
-        }
-      }
-    }
-  ];
-
   if (habilitar) {
     return (
       <>
@@ -388,7 +333,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
               <div className='col-lg-6 col-sm-12 col-md-6'>
                 <Form.Item label='' name={'formradio'}>
-                  <Radio.Group name={'radiobut'} defaultValue={1} disabled={true}>
+                  <Radio.Group name={'radiobut'} defaultValue={1}>
                     <Radio value={1}>Si</Radio>
                     <Radio value={2}>No</Radio>
                   </Radio.Group>
@@ -402,7 +347,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     maxLength={100}
                     onChange={validacionCaudal}
                     onKeyPress={(event) => {
@@ -422,7 +366,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   <Input
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     maxLength={100}
                     onChange={validacionCaudal}
                     onKeyPress={(event) => {
@@ -450,7 +393,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     className='fa-solid fa-circle-plus'
                     style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
                     type='primary'
-                    disabled={true}
                     htmlType='button'
                     onClick={() => {
                       insertarsistema();
@@ -466,7 +408,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <Table
                   id='tableGen'
                   dataSource={sistema}
-                  columns={structureColumns2}
+                  columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />
@@ -484,38 +426,38 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }}>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox0' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} />
                   </Form.Item>
                   <label>Sedimentador</label>
                 </div>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox1 ' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[1]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[1]} />
                   </Form.Item>
                   <label>Mezcla Rapida</label>
                 </div>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox2' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[2]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[2]} />
                   </Form.Item>
                   <label>Almacenamiento</label>
                 </div>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox3' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[3]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[3]} />
                   </Form.Item>
                   <label>Torre de aireación</label>
                 </div>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox4' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[4]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[4]} />
                   </Form.Item>
                   <label>Desinfección</label>
                 </div>
                 <br />
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox5' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[5]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[5]} />
                   </Form.Item>
                   <label>Precloración</label>
                 </div>
@@ -523,38 +465,38 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox6' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} />
                   </Form.Item>
                   <label>Filtración</label>
                 </div>
 
                 <div className='form-check form-check-inline' style={{ marginLeft: '16px' }}>
                   <Form.Item name='checkbox7' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[7]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[7]} />
                   </Form.Item>
                   <label>Mezcla lenta</label>
                 </div>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox8' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[8]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[8]} />
                   </Form.Item>
                   <label>Oxidación</label>
                 </div>
                 <div className='form-check form-check-inline' style={{ marginLeft: '16px' }}>
                   <Form.Item name='checkbox9' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[9]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[9]} />
                   </Form.Item>
                   <label>Floculador</label>
                 </div>
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox10' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[10]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[10]} />
                   </Form.Item>
                   <label>Desarenador</label>
                 </div>
                 <div className='form-check form-check-inline' style={{ marginLeft: '3px' }}>
                   <Form.Item name='checkbox11' rules={[{ required: false }]}>
-                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[11]} disabled={true} />
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[11]} />
                   </Form.Item>
                   <label>Otra</label>
                 </div>
@@ -568,7 +510,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     <Input
                       type='text'
                       className='form-control gov-co-form-control personal'
-                      disabled={true}
                       onKeyPress={(event) => {
                         if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                           event.preventDefault();
@@ -593,7 +534,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     style={{ width: '350px', marginLeft: '-46px' }}
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                         event.preventDefault();
@@ -611,7 +551,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     style={{ width: '350px', marginLeft: '28px' }}
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                         event.preventDefault();
@@ -636,7 +575,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     style={{ width: '350px', marginLeft: '-46px' }}
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                         event.preventDefault();
@@ -654,7 +592,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     style={{ width: '350px', marginLeft: '28px' }}
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                         event.preventDefault();
@@ -760,7 +697,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <Table
                   id='tableGen'
                   dataSource={sistema}
-                  columns={structureColumns2}
+                  columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />
