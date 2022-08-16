@@ -103,6 +103,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   useEffect(() => {
     getListas();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -114,12 +115,14 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       check: true,
       nombre: 'La caracterización del agua cruda',
       valor: 'La_caracterización_del_agua_cruda',
+      tipo: 'Agua cruda',
       id: '79572C8A-FFFE-440B-BE57-049B42B655A1'
     });
     prueba.push({
       check: true,
       nombre: 'Resultados previos de agua cruda (no mayor a 12 meses)',
       valor: 'Resultados_previos_de_agua_cruda_(no mayor a 12 meses)',
+      tipo: 'Agua cruda',
       id: 'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346'
     });
 
@@ -128,6 +131,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       check: true,
       nombre: 'Planos, memorias y cálculo de diseño de la planta de tratamiento de agua para consumo humano',
       valor: 'Planos,memorias_y_cálculo_de_diseño_de_la_planta_de_tratamiento_de_agua_para_consumo_humano',
+      tipo: 'Descripción del sistema de tratamiento',
       id: '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0'
     });
 
@@ -135,6 +139,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       check: false,
       nombre: 'Plan de cumplimiento o el plan de acción',
       valor: 'Plan_de_cumplimiento_o_el_plan_de_acción',
+      tipo: 'Descripción del sistema de tratamiento',
       id: '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0'
     });
 
@@ -142,6 +147,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       check: false,
       nombre: 'Manual de operación y mantenimiento',
       valor: 'Manual_de_operación_y_mantenimiento',
+      tipo: 'Descripción del sistema de tratamiento',
       id: '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
     });
 
@@ -150,12 +156,14 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       check: false,
       nombre: 'Plan de contingencia de los sistemas de suministro',
       valor: 'Plan_de_contingencia_de_los_sistemas_de_suministro',
+      tipo: 'Análisis de riesgos',
       id: 'B54F609C-02A3-42A0-B43C-02E055447EF7'
     });
     prueba.push({
       check: false,
       nombre: 'Documento de la identificación del riesgos',
       valor: 'Documento_de_la_identificación_del_riesgos',
+      tipo: 'Análisis de riesgos',
       id: 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
     });
     setacueductos(prueba);
@@ -320,6 +328,32 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const tabla1 = [
     {
+      title: 'Tipo de Documento. ',
+      dataIndex: 'tipo',
+      key: 'tipo',
+      render: (text: any, row: any, index: number) => {
+        if (index === 2) {
+          return {
+            children: text,
+
+            props: { rowSpan: 3 }
+          };
+        } else {
+          if (index === 0 || index === 5) {
+            return {
+              children: text,
+
+              props: { rowSpan: 2 }
+            };
+          } else {
+            return {
+              props: { rowSpan: 0 }
+            };
+          }
+        }
+      }
+    },
+    {
       dataIndex: 'check',
       key: 'check',
       render: (Text: string) => (
@@ -329,6 +363,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       )
     },
     {
+      title: 'Nombre de Documento. ',
       dataIndex: 'nombre',
       key: 'nombre'
     }

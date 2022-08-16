@@ -25,6 +25,14 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const getListas = useCallback(async () => {
     const tipoNotificaciones = await api.getTipoNotificaciones();
 
+    const filter = tipoNotificaciones.filter(function (f: { idTipoNotificacion: string }) {
+      return (
+        f.idTipoNotificacion != '6f8c18fe-90c2-40d7-baf6-e9c1c7a67e09' &&
+        f.idTipoNotificacion != '56099d01-9f35-42d9-9a3c-fb4f3e48c73b' &&
+        f.idTipoNotificacion != '6f8c18fe-69C2-40d7-baf6-e9c1c7a67e09'
+      );
+    });
+
     setlTipoModificacion(tipoNotificaciones);
     // setlTipoModificacionSeleccion(tipoNotificaciones[0]);
   }, []);
