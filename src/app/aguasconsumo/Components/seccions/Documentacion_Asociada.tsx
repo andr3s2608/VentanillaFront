@@ -29,6 +29,7 @@ import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
 export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   const { tipo, obj, prop } = props;
   const [archivocargado, setarchivocargado] = useState<any>();
+  const [subioarchivo, setsubioarchivo] = useState<boolean>(false);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -74,6 +75,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
         setarchivocargado(array);
         prop(array);
       }
+      setsubioarchivo(true);
     }
   };
 
@@ -90,6 +92,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
         array.push(aux);
       }
     }
+    setsubioarchivo(false);
     setarchivocargado(array);
     prop(array);
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
@@ -145,6 +148,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
                   <Button
                     className='float-right button btn btn-default'
                     icon={<UploadOutlined />}
+                    disabled={subioarchivo}
                     style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   >
                     Cargar archivo

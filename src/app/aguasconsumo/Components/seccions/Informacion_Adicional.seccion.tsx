@@ -92,8 +92,9 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const validacionCaudal = (value: any) => {
     const caudalde = props.form.getFieldValue('caudaldesign');
     const caudaltra = props.form.getFieldValue('caudaltratado');
+
     if (caudalde != undefined && caudaltra != undefined && caudalde != '' && caudaltra != '') {
-      if (caudalde > caudaltra) {
+      if (parseInt(caudalde) > parseInt(caudaltra)) {
         Swal.fire({
           icon: 'info',
 
@@ -295,7 +296,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               className='fa-solid fa-circle-xmark'
               key={`vali-${index}`}
               onClick={() => onClickLlenarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
+              style={{ fontSize: '30xp' }}
               icon={<CheckOutlined />}
             >
               Rellenar
@@ -306,7 +307,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
             <Button
               type='primary'
               className='fa-solid fa-circle-xmark'
-              key={`vali-${index}`}
+              key={`validar`}
               onClick={() => onClickValidarInformacion(row)}
               style={{ fontSize: '30xp', color: 'red' }}
               icon={<CheckOutlined />}
