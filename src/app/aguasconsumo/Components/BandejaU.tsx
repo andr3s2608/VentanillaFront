@@ -39,6 +39,13 @@ export const BandejaU = (props: IDataSource) => {
     getListas();
   }, []);
 
+  function onClickFiltrar() {
+    
+  }
+
+  function onChangeFilterSelect(event: any) {
+    
+  }
   const onClickValidarInformacion = async (datos: any, tipo: any) => {
     const data = datos;
 
@@ -229,6 +236,15 @@ export const BandejaU = (props: IDataSource) => {
                               <Form.Item>
                                 <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
                               </Form.Item>
+                              <Button
+                                type='primary'
+                                key={`filtrar`}
+                                onClick={() => onClickFiltrar()}
+                                style={{ marginRight: '8px' }}
+                                icon={<CheckOutlined />}
+                              >
+                                Filtrar
+                              </Button>                              
                             </div>
                           </div>
                         </div>
