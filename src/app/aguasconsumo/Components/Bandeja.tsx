@@ -43,6 +43,8 @@ export const Bandeja = (props: IDataSource) => {
   const [verfecha, setFechaVisible] = useState<Boolean>(false);
   const [verfecha2, setFechaVisible2] = useState<Boolean>(false);
 
+  const [ocultarbandeja, setocultarbandeja] = useState<boolean>(false);
+  const [ocultarnotificacion, setocultarnotificacion] = useState<boolean>(true);
   const [dias, setdias] = useState<any>([]);
   const [selectedFilter, setFilterCambio] = useState<String>('');
 
@@ -391,6 +393,17 @@ export const Bandeja = (props: IDataSource) => {
 
   }
 
+  const ocultarbandejas = async (datos: any) => {
+    if (datos === 'bandeja') {
+      setocultarnotificacion(true);
+      setocultarbandeja(false);
+    }
+    if (datos === 'notificacion') {
+      setocultarnotificacion(false);
+      setocultarbandeja(true);
+    }
+  };
+
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
@@ -616,7 +629,11 @@ export const Bandeja = (props: IDataSource) => {
       }
     ];
   }
+<<<<<<< .mine
   const añadirinfo = (value: any) => { };
+=======
+
+>>>>>>> .theirs
 
   return (
     <div className='container-fluid'>
@@ -665,13 +682,13 @@ export const Bandeja = (props: IDataSource) => {
                       <div className='card-header' id='heading-2'>
                         <h5 className='mb-0'>
                           <a
-                            className='collapsed nuevo'
+                            className='bandeja'
                             role='button'
                             data-toggle='collapse'
                             href='#collapse-2'
                             aria-expanded='true'
                             aria-controls='collapse-2'
-                            onClick={añadirinfo}
+                            onClick={() => ocultarbandejas('bandeja')}
                           >
                             Bandeja de entrada
                           </a>
@@ -684,10 +701,11 @@ export const Bandeja = (props: IDataSource) => {
                       <div className='card-header' id='heading-2'>
                         <h5 className='mb-0'>
                           <a
-                            className='collapsed'
+                            className='collapsed notificacion'
                             role='button'
                             data-toggle='collapse'
                             href='#collapse-3'
+                            onClick={() => ocultarbandejas('notificacion')}
                             aria-expanded='false'
                             aria-controls='collapse-2'
                           >
@@ -699,7 +717,13 @@ export const Bandeja = (props: IDataSource) => {
                   </div>
                 </div>
                 <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
-                  <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                  <div
+                    id='collapse-2'
+                    className={`${ocultarbandeja == true ? 'expanded' : 'collapsed'} `}
+                    hidden={ocultarbandeja}
+                    data-parent='#accordion'
+                    aria-labelledby='heading-2'
+                  >
                     {mostrar && (
                       <>
                         <div className='col-lg-12 col-md-12 col-sm-12 bandeja_panel'>
@@ -1022,7 +1046,13 @@ export const Bandeja = (props: IDataSource) => {
                       </>
                     )}
                   </div>
-                  <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                  <div
+                    id='collapse-3'
+                    className={`${ocultarnotificacion == true ? 'expanded' : 'collapsed'} `}
+                    hidden={ocultarnotificacion}
+                    data-parent='#accordion'
+                    aria-labelledby='heading-2'
+                  >
                     <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
                       <ul className='nav nav-tabs' role='tablist'>
                         <li className='nav-item encabezadosx'>

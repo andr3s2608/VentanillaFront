@@ -35,7 +35,19 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const [
     [tipofuente, subca, descripcionotra, nombre, latitud, longitud, descricion, autoridad, nroresolu, fecha, tiposol],
     setdatos
-  ] = useState<[any, any, any, any, any, any, any, any, any, any, any]>([, , , , , , , , , , ,]);
+  ] = useState<[any, any, any, any, any, any, any, any, any, any, any]>([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  ]);
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -117,13 +129,14 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
   if (habilitar) {
     return (
-      <section className='datos_solicitante'>
+      <section style={{ width: '100%' }}>
         <div className='container-fluid'>
           <>
             {mostrar && (
               <>
                 <div className='form-row' style={{ marginLeft: '-16px' }}>
-                  <div className='col-lg-12 col-sm-12 col-md-12'>
+                  <div className='col-lg-12 col-md-12 col-sm-12'>
+                    <span className='required'>*</span>Tipo de solicitud de consecion*
                     <Form.Item name='tipo' initialValue={tiposol ?? 'primera'} rules={[{ required: true }]}>
                       <SelectComponent
                         options={[
@@ -133,7 +146,6 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         onChange={Onchangesolicitud}
                         optionPropkey='key'
                         optionPropLabel='value'
-                        disabled={true}
                         className='personal'
                       />
                     </Form.Item>
@@ -141,13 +153,13 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                 </div>
                 {seleccionar && (
                   <>
-                    <div className='form-row'>
+                    <div className='form-row' style={{ marginLeft: '-16px' }}>
                       <div className='col-lg-6 col-sm-12 col-md-6'>
+                        <span className='required'>*</span>Número de expediente de resolución
                         <Form.Item name='nroresolucion' initialValue={nroresolu} rules={[{ required: true }]}>
                           <Input
                             type='text'
                             className='form-control gov-co-form-control'
-                            disabled={true}
                             maxLength={15}
                             onKeyPress={(event) => {
                               if (!/[0-9]/.test(event.key)) {
@@ -161,15 +173,15 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         </Form.Item>
                       </div>
                     </div>
-                    <div className='form-row' style={{ marginLeft: '-16px' }}>
+                    <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
                       <div className='col-lg-6 col-md-6 col-sm-12'>
                         <span className='required'>*</span>Fecha de resolución
                         <Form.Item name='dateresolucion' initialValue={fecha} rules={[{ required: true }]}>
-                          <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' disabled={true} />
+                          <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                         </Form.Item>
                       </div>
                     </div>
-                    <div className='form-row'>
+                    <div className='form-row' style={{ marginLeft: '-16px' }}>
                       <div className='col-lg-6 col-md-6 col-sm-12'>
                         <Form.Item label='' name='cargarresolucion' rules={[{ required: true }]}>
                           <Upload
@@ -178,7 +190,6 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             beforeUpload={() => false}
                             listType='text'
                             accept='application/pdf'
-                            disabled={true}
                           >
                             <Button icon={<UploadOutlined />}>Adjuntar archivo</Button>
                           </Upload>
@@ -187,6 +198,125 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                     </div>
                   </>
                 )}
+
+                <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+                  <div className='col-lg-6 col-sm-12 col-md-6'>
+                    <span className='required'>*</span>Tipo de fuente*
+                    <Form.Item name='tipofuente' initialValue={tipofuente} rules={[{ required: true }]}>
+                      <SelectComponent
+                        options={l_fuentes}
+                        onChange={Onchangetipo}
+                        optionPropkey='idTipoFuente'
+                        optionPropLabel='nombre'
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className='col-lg-6 col-sm-12 col-md-6'>
+                    <span className='required'>*</span>Subcategoria de fuente*
+                    <Form.Item name='subcategoria' initialValue={subca} rules={[{ required: true }]}>
+                      <SelectComponent
+                        options={l_subcategorias}
+                        optionPropkey='idSubCategoriaFuente'
+                        optionPropLabel='nombreSubCategoria'
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
+                    <span className='required'>*</span>Nombre de la fuente*
+                    <Form.Item name='nombrefuente' initialValue={nombre} rules={[{ required: true }]}>
+                      <input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className='col-md-6 col-lg-6 col-sm-12'>
+                    <span className='required'>*</span>Descripción de otra fuente
+                    <Form.Item name='descripcionotra' initialValue={descripcionotra}>
+                      <input
+                        type='text'
+                        maxLength={500}
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+                  <div className='col-md-6 col-lg-6 col-sm-12'>
+                    <span className='required'>*</span>Localización de la bocatoma
+                    <Form.Item name='latitud' initialValue={latitud} rules={[{ required: true }]}>
+                      <input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[0-9'"° -]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div className='col-md-6 col-lg-6 col-sm-12'>
+                    <span className='required'>*</span>Longitud de la bocatoma
+                    <Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
+                      <input
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[0-9'"° -]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+                  <div className='col-lg-12 col-sm-12 col-m-12'>
+                    <span className='required'>*</span>Autoridad ambiental que otorga la concesión *
+                    <Form.Item name='autoridad' initialValue={autoridad} rules={[{ required: true }]}>
+                      <SelectComponent
+                        options={l_autoridad}
+                        optionPropkey='idAutoridadAmbiental'
+                        optionPropLabel='nombre'
+                        className='personal'
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
+                <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+                  <div className='col-lg-12 col-md-12 col-sm-12'>
+                    <span className='required'>*</span>Descripción de la fuente*
+                    <Form.Item name='descripcionfuente' initialValue={descricion} rules={[{ required: true }]}>
+                      <Input.TextArea rows={5} maxLength={500} style={{ width: '300px' }} />
+                    </Form.Item>
+                  </div>
+                </div>
               </>
             )}
           </>

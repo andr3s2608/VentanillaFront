@@ -195,7 +195,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     defaultValue={obj?.idTipoPersona ?? 'natural'}
                     optionPropkey='key'
                     optionPropLabel='value'
-                    disabled={true}
+                    disabled={modificar}
                     className='personal'
                     style={{ width: '780px' }}
                   />
@@ -204,12 +204,94 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             </div>
             {!tipoSolicitante ? (
               <>
-                <div className='form-row'>
-                  <div className='col'>
-                    <input type='text' className='form-control' placeholder='First name'></input>
+                <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <div className='gov-co-dropdown'>
+                        <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                          <SelectComponent
+                            className='text'
+                            options={l_tipos_documentoRazon}
+                            onChange={cambiodocumentoRazon}
+                            optionPropkey='id'
+                            optionPropLabel='descripcion'
+                            disabled={modificar}
+                          />
+                        </Form.Item>
+                      </div>
+                    </div>
                   </div>
-                  <div className='col'>
-                    <input type='text' className='form-control' placeholder='Last name'></input>
+                </div>
+
+                <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <p className='text'>
+                        {' '}
+                        <span className='required'>*</span> Número de documento
+                      </p>
+                      <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                        <Input
+                          allowClear
+                          type='text'
+                          placeholder='Número Identificación'
+                          autoComplete='off'
+                          pattern={tipocampoRazon}
+                          maxLength={longitudmaximaRazon}
+                          disabled={modificar}
+                          onKeyPress={(event) => {
+                            if (!tipocampovalidacionRazon.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                          onInvalid={() => {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Datos inválidos',
+                              text:
+                                'recuerde que para el tipo de documento: ' +
+                                tipodocumentoRazon +
+                                ' solo se admiten valores ' +
+                                campoRazon +
+                                ' de longitud entre ' +
+                                longitudminimaRazon +
+                                ' y ' +
+                                longitudmaximaRazon
+                            });
+                          }}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <p className='text'>
+                        {' '}
+                        <span className='required'>*</span> Nombre de la entidad
+                      </p>
+                      <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                        <Input
+                          type='text'
+                          className='form-control gov-co-form-control'
+                          maxLength={50}
+                          disabled={modificar}
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
+                    </div>
                   </div>
                 </div>
               </>
@@ -230,7 +312,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     onChange={cambiodocumento}
                     optionPropkey='id'
                     optionPropLabel='descripcion'
-                    disabled={true}
+                    disabled={modificar}
                   />
                 </Form.Item>
               </div>
@@ -248,7 +330,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     autoComplete='off'
                     pattern={tipocampo}
                     maxLength={longitudmaxima}
-                    disabled={true}
+                    disabled={modificar}
                     onKeyPress={(event) => {
                       if (!tipocampovalidacion.test(event.key)) {
                         event.preventDefault();
@@ -286,7 +368,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     maxLength={50}
                     type='text'
                     className='form-control gov-co-form-control'
-                    disabled={true}
+                    disabled={modificar}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z ]/.test(event.key)) {
                         event.preventDefault();
@@ -305,7 +387,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
                   <Input
                     type='text'
-                    disabled={true}
+                    disabled={modificar}
                     maxLength={50}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -329,7 +411,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
                   <Input
                     maxLength={50}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -351,7 +433,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
                   <Input
                     maxLength={50}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -374,7 +456,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
                   <Input
-                    disabled={true}
+                    disabled={modificar}
                     maxLength={12}
                     type='text'
                     className='form-control gov-co-form-control'
@@ -397,7 +479,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
                   <Input
                     maxLength={12}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -422,7 +504,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <input
                     style={{ width: '780px' }}
                     maxLength={50}
-                    disabled={true}
+                    disabled={modificar}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {

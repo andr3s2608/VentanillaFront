@@ -437,7 +437,7 @@ export const PrimeraU = () => {
                         Datos de la fuente de abastecimiento. <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                       </p>
-                      <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={false} />
+                      <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={true} />
                     </div>
                     <div className='row mt-5 ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
@@ -493,7 +493,7 @@ export const PrimeraU = () => {
                       type='info'
                     />
                     <div className='row mt-5 ml-2'>
-                      <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={null} />
+                      <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={undefined} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>
