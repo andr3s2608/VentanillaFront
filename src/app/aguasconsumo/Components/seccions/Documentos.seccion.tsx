@@ -246,7 +246,14 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     cargardatos();
   };
 
+  var posicionradio = -1;
   var posicionform = -1;
+
+  const counterradio = () => {
+    posicionradio = posicionradio + 1;
+    return posicionradio;
+  };
+
   const counterform = () => {
     posicionform = posicionform + 1;
     return posicionform;
@@ -393,6 +400,19 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         )
       },
       {
+        title: 'Cumple?',
+        dataIndex: 'Cumple',
+        key: 'cumple',
+        render: () => (
+          <Form.Item name={'form' + counterform()}>
+            <Radio.Group onChange={onChange} name={'radio' + counterradio()} defaultValue={1}>
+              <Radio value={1}>Si</Radio>
+              <Radio value={2}>No</Radio>
+            </Radio.Group>
+          </Form.Item>
+        )
+      },
+      {
         title: 'Acciones',
         key: 'Acciones',
         align: 'center' as 'center',
@@ -526,6 +546,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
             {tipo == 'gestion' && (
               <>
+                <div className='col-lg-12 col-md-12 col-sm-12'>
+                  <label htmlFor=''>Observaciones</label>
+                  <Form.Item label='' name='observacionesSubsanacion'>
+                    <Input.TextArea rows={5} maxLength={500} style={{ width: '360px' }} className='textarea' />
+                  </Form.Item>
+                </div>
                 <div className='col-lg-12 col-md-12 col-sm-12'>
                   <div className='apro'>
                     <span></span>¿Aprobado?
