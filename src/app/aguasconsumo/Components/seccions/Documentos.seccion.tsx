@@ -39,7 +39,17 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const [acueducto, setacueductos] = useState<any[]>([]);
 
+  const [orden, setorden] = useState<any[]>([
+    '79572C8A-FFFE-440B-BE57-049B42B655A1', //caracterizacion de agua cruda
+    'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346', //'Resultados_previos_de_agua_cruda_(no mayor a 12 meses)'
+    '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0', //'Planos,memorias_y_cálculo_de_diseño_de_la_planta_de_tratamiento_de_agua_para_consumo_humano'
+    '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0', //'Plan_de_cumplimiento_o_el_plan_de_acción'
+    '3C9CF345-E37D-4AB0-BACA-C803DBB8850B', //'Manual_de_operación_y_mantenimiento'
+    'B54F609C-02A3-42A0-B43C-02E055447EF7', //'Plan_de_contingencia_de_los_sistemas_de_suministro'
+    'E9057F6C-9DBB-458E-9F5E-15D8F1677C66' //'Documento_de_la_identificación_del_riesgos'
+  ]);
   const [archivos, setarchivos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0']);
+  const [tamanofila, settamanofila] = useState<any[]>([2, 0, 3, 0, 0, 0, 0]);
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
   const [consultararchivos, setconsultararchivos] = useState<any[]>([]);
@@ -61,16 +71,35 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'
         );
       });
-      setconsultararchivos(filter);
+      const ordenadotabla: any[] = [];
+      const ordenadocompleto: any[] = [];
+      let inserto = false;
+      for (let index = 0; index < orden.length; index++) {
+        for (let index2 = 0; index2 < filter.length; index2++) {
+          if (filter[index2].idTipoDocumentoAdjunto.toLocaleUpperCase() === orden[index]) {
+            const documento = filter[index2];
+            ordenadotabla.push({ documento, posicion: index + 1, path: documento.path });
+            ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path });
+            inserto = true;
+            break;
+          }
+        }
+        if (!inserto) {
+          ordenadocompleto.push(undefined);
+        }
+        inserto = false;
+      }
 
-      const array: any[] = [];
+      setconsultararchivos(ordenadotabla);
 
-      for (let index = 0; index < filter.length; index++) {
+      const arraytabla: any[] = [];
+      //para llenar el array de los documentos que se mostrara en la tabla de abajo
+      for (let index = 0; index < ordenadotabla.length; index++) {
         let posicion_ = 0;
 
-        const posicioninicial = filter[index].path.indexOf('/');
-        const path = filter[index].path;
-        const idtipo = filter[index].idTipoDocumentoAdjunto;
+        const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
+        const path = ordenadotabla[index].documento.path;
+        const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
 
         for (let index2 = 0; index2 < path.length; index2++) {
           if (path.substring(index2, index2 + 1) == '_') {
@@ -80,8 +109,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
         var cadena = path.substring(posicioninicial + 1, posicion_);
 
-        array.push({
-          posicion: index + 1,
+        arraytabla.push({
+          posicion: ordenadotabla[index].posicion,
           nombre: cadena,
           valor: cadena,
           id: idtipo,
@@ -89,11 +118,43 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           path: path
         });
       }
+      //para llenar el array de los documentos
+      console.log(ordenadocompleto);
+      const array: any[] = [];
+      for (let index = 0; index < ordenadocompleto.length; index++) {
+        if (ordenadocompleto[index] === undefined) {
+          array.push(undefined);
+        } else {
+          let posicion_ = 0;
+
+          const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
+          const path = ordenadocompleto[index].documento.path;
+          const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+
+          for (let index2 = 0; index2 < path.length; index2++) {
+            if (path.substring(index2, index2 + 1) == '_') {
+              posicion_ = index2;
+            }
+          }
+
+          var cadena = path.substring(posicioninicial + 1, posicion_);
+
+          array.push({
+            posicion: ordenadocompleto[index].posicion,
+            nombre: cadena,
+            valor: cadena,
+            id: idtipo,
+            subida: 'nube',
+            path: path
+          });
+        }
+      }
+
       setguardararchivos(array);
       if (prop != null) {
         prop(array);
       }
-      setguardararchivostabla(array);
+      setguardararchivostabla(arraytabla);
 
       cargardatos();
     },
@@ -173,6 +234,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     setarchivocargado(value);
   };
   const onChange = (value: any) => {
+    console.log('entro check');
     var nombre: string = value.target.id;
 
     var posicion: number = parseInt(nombre.substring(8, 9));
@@ -194,6 +256,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   };
 
   const insertarArchivo = async () => {
+    console.log('entro');
+    console.log(archivos);
+    console.log(guardararchivos);
     const archivo = archivocargado;
 
     const array: any[] = [];
@@ -203,7 +268,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     for (let index = 0; index < archivos.length; index++) {
       props.form.resetFields([`checkbox${index}`]);
       if (archivos[index] == '1') {
+        console.log('entro 1');
         if (guardararchivos[index] != undefined) {
+          console.log('entro vacio');
           array.push(guardararchivos[index]);
           arraytabla.push(guardararchivos[index]);
         } else {
@@ -211,6 +278,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             posicion: posicion,
             nombre: acueducto[index].nombre,
             valor: acueducto[index].valor,
+            path: '/' + acueducto[index].nombre + '_',
             id: acueducto[index].id,
             archivo: archivo,
             subida: 'local'
@@ -219,6 +287,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             posicion: posicion,
             nombre: acueducto[index].nombre,
             valor: acueducto[index].valor,
+            path: '/' + acueducto[index].nombre + '_',
             id: acueducto[index].id,
             archivo: archivo,
             subida: 'local'
@@ -235,9 +304,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       posicion++;
     }
+    console.log(array);
+    console.log(arraytabla);
 
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);
+    setconsultararchivos(arraytabla);
     if (prop != null) {
       prop(array);
     }
@@ -302,12 +374,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     setEnableModalViewDocument(true);
   };
 
-  let posicion = 0;
-
-  const calcularposicion = () => {
-    posicion++;
-    return posicion;
-  };
   var stringData = consultararchivos.reduce((result, item) => {
     return `${result}${item.path}|`;
   }, '');
@@ -325,35 +391,28 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     return cadena;
   };
+  let posicion = 0;
+  const sizerow = () => {
+    const size: number = tamanofila[posicion];
+    posicion++;
+    console.log('entro');
+    return size;
+  };
 
   const tabla1 = [
     {
       title: 'Tipo de Documento. ',
       dataIndex: 'tipo',
-      key: 'tipo',
-      render: (text: any, row: any, index: number) => {
-        if (index === 2) {
-          return {
-            children: text,
+      key: 'tipo'
+    },
 
-            props: { rowSpan: 3 }
-          };
-        } else {
-          if (index === 0 || index === 5) {
-            return {
-              children: text,
-
-              props: { rowSpan: 2 }
-            };
-          } else {
-            return {
-              props: { rowSpan: 0 }
-            };
-          }
-        }
-      }
+    {
+      title: 'Nombre de Documento. ',
+      dataIndex: 'nombre',
+      key: 'nombre'
     },
     {
+      title: 'Cargar  Documento. ',
       dataIndex: 'check',
       key: 'check',
       render: (Text: string) => (
@@ -361,11 +420,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           <Input className='form-check-input' onChange={onChange} type='checkbox' />
         </Form.Item>
       )
-    },
-    {
-      title: 'Nombre de Documento. ',
-      dataIndex: 'nombre',
-      key: 'nombre'
     }
   ];
   var tabla2: any[] = [];
@@ -375,12 +429,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       {
         title: 'No. ',
         dataIndex: 'posicion',
-        key: 'posicion',
-        render: (Text: string) => (
-          <Form.Item label='' name=''>
-            <text>{calcularposicion()}</text>
-          </Form.Item>
-        )
+        key: 'posicion'
       },
       {
         title: 'Nombre del Archivo',
@@ -442,13 +491,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       <section style={{ width: '100%' }}>
         <div className='container-fluid'>
           <div className='row mt-2'>
-            <div className='col-lg-5 col-md-5 col-sm-12'>
+            <div className='col-lg-7 col-md-7 col-sm-12'>
               <div className='check_d'>
                 <Table
                   scroll={{ y: 240 }}
                   id='tableGen'
                   dataSource={acueducto}
+                  bordered
                   columns={tabla1}
+                  size='large'
                   pagination={{ pageSize: Paginas }}
                   className='table_info'
                 />{' '}

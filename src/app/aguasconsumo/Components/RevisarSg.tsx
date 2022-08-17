@@ -63,6 +63,9 @@ export const RevisarSg = () => {
     let notificacion = '';
     let estadosolicitud = '';
 
+    if (tiposolicitud === undefined) {
+      tiposolicitud = '';
+    }
     //subsanacion
     if (tiposolicitud.toLocaleUpperCase() === '6F8C18FE-69C2-40D7-BAF6-E9C1C7A44E09') {
       tiposolicitud = '9124A97B-C2BD-46A0-A8B3-1AC702A06C82';
@@ -77,13 +80,13 @@ export const RevisarSg = () => {
     }
 
     if (rol === 'Coordinador') {
-      if (tiposolicitud === undefined) {
+      if (tiposolicitud === '') {
         tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
       }
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Funcionario' || rol === 'AdminTI') {
-      if (tiposolicitud === undefined) {
+      if (tiposolicitud === '') {
         tiposolicitud = '8CA363C0-66AA-4273-8E63-CE3EAC234857';
       }
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
