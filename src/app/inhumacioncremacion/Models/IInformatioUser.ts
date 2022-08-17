@@ -4,4 +4,6 @@ export interface IinformatioUser {
   razonSocial: string;
   tipoIdentificacion: number;
   email: string;
+  primerNombre: string;
+  primerApellido: string;
 }

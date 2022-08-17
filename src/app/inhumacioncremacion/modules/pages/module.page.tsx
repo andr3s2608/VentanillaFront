@@ -12,8 +12,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 
 import { dominioService, ETipoDominio } from 'app/services/dominio.service';
+import Swal from 'sweetalert2';
 
 const ModulePage = () => {
+  const [idUsuario, setIdUsuario] = useState<string>('');
+  const [primerNombre, setPrimerNombre] = useState<string>('');
+  const [primerApellido, setPrimerApellido] = useState<string>('');
+
   const history = useHistory();
   const [roles, setroles] = useState<IRoles[]>();
 
@@ -27,7 +32,30 @@ const ModulePage = () => {
   const onPersonJuridica = () => history.push('/registro/Juridico');
   const onNoAutorizo = () => {
     setBanderaPolicaSeguridad(false);
-    history.push('/');
+    Swal.fire({
+      icon: 'warning',
+
+      title: 'Política protección de datos personales',
+      text: `Se ha rechazado la politica de protección de datos personales, por lo tanto no puede realizar ningun tramite.`
+    });
+    //dispatch(ResetApplication());
+    //logout();
+  };
+  const onAutorizo = async () => {
+    setBanderaPolicaSeguridad(false);
+    await api.AddPoliticaSeguridad({
+      fecha: new Date(),
+      id_usuario: idUsuario,
+      aprobo_politica: true,
+      nombre: primerNombre,
+      apellido: primerApellido
+    });
+    Swal.fire({
+      icon: 'success',
+
+      title: 'Política protección de datos personales',
+      text: `Se ha aceptado la politica de protección de datos personales exitosamente`
+    });
   };
 
   const getListas = useCallback(
@@ -44,6 +72,30 @@ const ModulePage = () => {
       const roles = await api.GetRoles();
       const idUser = await api.getCodeUser();
       const infouser = await api.GetInformationUser(idUser);
+      const idUsuario = await api.getIdUsuario();
+      setIdUsuario(idUsuario);
+      setPrimerNombre(infouser.primerNombre.toLocaleUpperCase());
+      setPrimerApellido(infouser.primerApellido.toLocaleUpperCase());
+      /*
+      console.log(infouser);
+      console.log(infouser.fullName);
+      console.log();
+      console.log();
+      console.log(idUsuario);
+      */
+
+      const politicaSeguridad = await api.getPoliticaSeguridad(idUsuario);
+
+      if (politicaSeguridad == null) {
+        setBanderaPolicaSeguridad(true);
+      }
+
+      if (politicaSeguridad != null && !politicaSeguridad['aprobo_politica']) {
+        setBanderaPolicaSeguridad(true);
+      }
+
+      console.log(politicaSeguridad);
+      console.log(idUsuario);
 
       localStorage.setItem('paises', JSON.stringify(paises));
       localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
@@ -116,7 +168,7 @@ const ModulePage = () => {
             Política de Protección de Datos
           </a>
           <div className='d-flex justify-content-between mt-4'>
-            <Button type='primary' htmlType='button' onClick={onNoAutorizo}>
+            <Button type='primary' htmlType='button' onClick={onAutorizo}>
               Autorizo
             </Button>
             <Button type='primary' htmlType='submit' onClick={onNoAutorizo}>
