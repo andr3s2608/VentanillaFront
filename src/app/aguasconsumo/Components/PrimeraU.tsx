@@ -50,6 +50,8 @@ export const PrimeraU = () => {
   }, []);
 
   const onSubmit = async (values: any) => {
+    console.log('El formulario es:');
+    console.log(values);
     const archivo = values.cargarresolucion;
     let validacion = false;
     let planta = false;
@@ -493,7 +495,7 @@ export const PrimeraU = () => {
                       type='info'
                     />
                     <div className='row mt-5 ml-2'>
-                      <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={null} />
+                      <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={undefined} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>

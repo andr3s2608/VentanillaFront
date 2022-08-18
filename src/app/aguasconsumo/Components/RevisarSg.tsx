@@ -19,6 +19,7 @@ import { EditAguas } from './edit/Aguas';
 import { TipoNotificacion } from './seccions/Notificaciones_revision.seccion';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { store } from 'app/redux/app.reducers';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
@@ -26,6 +27,7 @@ export const RevisarSg = () => {
   const history = useHistory();
   const [documentos, setdocumentos] = useState<any[]>([]);
   const [rol, setrol] = useState<any>();
+  const [usuarionotificado, setusuarionotificado] = useState<boolean>(false);
   const [estados, setl_estados] = useState<any[]>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -53,20 +55,72 @@ export const RevisarSg = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const notificado = () => {
+    setusuarionotificado(true);
+  };
+
   const onSubmit = async (values: any) => {
+    const { seguimientoDocumentos } = store.getState();
+
+    let tiposolicitud: string = values.notificacion;
+    let notificacion = '';
+    let estadosolicitud = '';
+
+    if (tiposolicitud === undefined) {
+      tiposolicitud = '';
+    }
+    //subsanacion
+    if (tiposolicitud.toLocaleUpperCase() === '6F8C18FE-69C2-40D7-BAF6-E9C1C7A44E09') {
+      tiposolicitud = '9124A97B-C2BD-46A0-A8B3-1AC702A06C82';
+      estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
+      notificacion = '8B6AB818-A560-4825-8C82-2CF4B9C58914';
+    }
+    //desistimiento
+    if (tiposolicitud.toLocaleUpperCase() === 'C7820293-C09E-4F86-A02F-9F299474C5B1') {
+      tiposolicitud = '5AB0DF72-9909-4459-8D52-D04A3F2ADC9A';
+      estadosolicitud = '2A31EB34-2AA0-428B-B8EF-A86683D8BB8D';
+      notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
+    }
+
     if (rol === 'Coordinador') {
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '5290025A-0967-417A-9737-FA5EAE85D97B');
+      if (tiposolicitud === '') {
+        tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
+        estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
+      }
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Funcionario' || rol === 'AdminTI') {
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, objJson.idestado, '8CA363C0-66AA-4273-8E63-CE3EAC234857');
+      if (tiposolicitud === '') {
+        tiposolicitud = '8CA363C0-66AA-4273-8E63-CE3EAC234857';
+        estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
+      }
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Subdirector') {
       const estado = values.seguimiento;
       if (estado == '2e8808af-a294-4cde-8e9c-9a78b5172119') {
-        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
+        notificacion = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
       } else {
-        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '65A9BC67-04FC-47E5-B26C-E1A5555524CF');
+        notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
       }
+      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
+    }
+
+    if (seguimientoDocumentos && seguimientoDocumentos != []) {
+      const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
+
+      seguimientoDocumentos.forEach((item: any) => {
+        documentToSend.push({
+          idSolicitud: item.idSolicitud,
+          idDocumentoSoporte: item.idDocumentoSoporte,
+          path: item.path,
+          observaciones: values.observacionesSubsanacion,
+          estado_Documento: item.estadoDocumento,
+          tipoSeguimiento: item.tipoSeguimiento
+        });
+      });
+
+      await api.AddEstadoDocumentoSoporte(documentToSend);
     }
 
     const supportDocumentsEdit: any[] = [];
@@ -95,9 +149,60 @@ export const RevisarSg = () => {
       await api.uploadFiles(formData);
       await api.AddSupportDocumentsAguas(supportDocumentsEdit);
     }
+    if (!usuarionotificado) {
+      if (notificacion != '') {
+        const formato = await api.getFormatoAguas(notificacion);
+        const control: string = formato['asuntoNotificacion'];
+        switch (control) {
+          case 'Notificación de Desistimiento':
+            await api.sendEmail({
+              to: objJson.correoElectronico,
+              subject: 'Notificación de Desistimiento',
+              body: formato['cuerpo']
+            });
+            break;
+          case 'Notificación de subsanación':
+            await api.sendEmail({
+              to: objJson.correoElectronico,
+              subject: 'Notificación de subsanación',
+              body: formato['cuerpo']
+            });
+            break;
+
+          case 'Notificación Aprobación al Ciudadano':
+            const certificadoCiudadano = await api.getCertificadoAguas('4');
+
+            await api.sendEmailAttachment({
+              to: objJson.correoElectronico,
+              subject: 'Notificación Aprobación al Ciudadano',
+              body: agregarValoresDinamicos(
+                formato['cuerpo'],
+                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+                [
+                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                  objJson.renovafuentejson[0].numeroResolucion,
+                  objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                ]
+              ),
+              attachment: certificadoCiudadano,
+              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+            });
+            break;
+        }
+      }
+    }
     history.push('/tramites-servicios-aguas');
     localStorage.removeItem('register');
   };
+  function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
+    let nuevoHTML = HTML;
+
+    for (let index = 0; index < llavesAReemplazar.length; index++) {
+      nuevoHTML = nuevoHTML.replace(llavesAReemplazar[index], valoresDinamicos[index]);
+    }
+
+    return nuevoHTML;
+  }
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -173,126 +278,130 @@ export const RevisarSg = () => {
                 <div className='row'>
                   <div className='col-lg-10 col-sm-12 col-md-10'>
                     <div className='collapse-info'>
-                      <div id='accordion'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
-                              <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-2'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
-                              >
-                                Datos del solicitante
-                              </a>
-                            </h5>
-                          </div>
-                          <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='row mt-5 datos_validador'>
-                              <DatosSolicitante form={form} obj={objJson} tipo={''} habilitar={false} />
+                      {rol != 'Subdirector' && (
+                        <>
+                          <div id='accordion'>
+                            <div className='card'>
+                              <div className='card-header' id='heading-2'>
+                                <h5 className='mb-0'>
+                                  <a
+                                    className='collapsed'
+                                    role='button'
+                                    data-toggle='collapse'
+                                    href='#collapse-2'
+                                    aria-expanded='false'
+                                    aria-controls='collapse-2'
+                                  >
+                                    Datos del solicitante
+                                  </a>
+                                </h5>
+                              </div>
+                              <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='row mt-5 datos_validador'>
+                                  <DatosSolicitante form={form} obj={objJson} tipo={''} habilitar={false} />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
-                              <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-3'
-                                aria-expanded='false'
-                                aria-controls='collapse-3'
-                              >
-                                Datos de la fuente de abastacemiento
-                              </a>
-                            </h5>
-                          </div>
+                          <div id='accordion' className='mt-3'>
+                            <div className='card'>
+                              <div className='card-header' id='heading-2'>
+                                <h5 className='mb-0'>
+                                  <a
+                                    className='collapsed'
+                                    role='button'
+                                    data-toggle='collapse'
+                                    href='#collapse-3'
+                                    aria-expanded='false'
+                                    aria-controls='collapse-3'
+                                  >
+                                    Datos de la fuente de abastacemiento
+                                  </a>
+                                </h5>
+                              </div>
 
-                          <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='row mt-5 ml-2'>
-                              <DatosFuente form={form} obj={objJson} tipo={''} habilitar={false} />
+                              <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='row mt-5 ml-2'>
+                                  <DatosFuente form={form} obj={objJson} tipo={''} habilitar={false} />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
-                              <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-4'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
-                              >
-                                Información de acueductos que captan la misma fuente
-                              </a>
-                            </h5>
-                          </div>
-                          <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='card-body'>
-                              <DatosAcueducto form={form} obj={objJson} prop={null} habilitar={false} />
+                          <div id='accordion' className='mt-3'>
+                            <div className='card'>
+                              <div className='card-header' id='heading-2'>
+                                <h5 className='mb-0'>
+                                  <a
+                                    className='collapsed'
+                                    role='button'
+                                    data-toggle='collapse'
+                                    href='#collapse-4'
+                                    aria-expanded='false'
+                                    aria-controls='collapse-2'
+                                  >
+                                    Información de acueductos que captan la misma fuente
+                                  </a>
+                                </h5>
+                              </div>
+                              <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='card-body'>
+                                  <DatosAcueducto form={form} obj={objJson} prop={null} habilitar={false} />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
-                              <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-7'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
-                              >
-                                Información adicional de la fuente de abastecimiento
-                              </a>
-                            </h5>
-                          </div>
-                          <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='card-body'>
-                              <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
+                          <div id='accordion' className='mt-3'>
+                            <div className='card'>
+                              <div className='card-header' id='heading-2'>
+                                <h5 className='mb-0'>
+                                  <a
+                                    className='collapsed'
+                                    role='button'
+                                    data-toggle='collapse'
+                                    href='#collapse-7'
+                                    aria-expanded='false'
+                                    aria-controls='collapse-2'
+                                  >
+                                    Información adicional de la fuente de abastecimiento
+                                  </a>
+                                </h5>
+                              </div>
+                              <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='card-body'>
+                                  <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
-                              <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-6'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
-                              >
-                                Documentación requisito
-                              </a>
-                            </h5>
-                          </div>
-                          <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='card-body'>
-                              <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'gestion'} />
+                          <div id='accordion' className='mt-3'>
+                            <div className='card'>
+                              <div className='card-header' id='heading-2'>
+                                <h5 className='mb-0'>
+                                  <a
+                                    className='collapsed'
+                                    role='button'
+                                    data-toggle='collapse'
+                                    href='#collapse-6'
+                                    aria-expanded='false'
+                                    aria-controls='collapse-2'
+                                  >
+                                    Documentación requisito
+                                  </a>
+                                </h5>
+                              </div>
+                              <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='card-body'>
+                                  <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'gestion'} />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        </>
+                      )}
 
                       <div id='accordion' className='mt-3'>
                         <div className='card'>
@@ -314,7 +423,7 @@ export const RevisarSg = () => {
                             <div className='card-body'>
                               <div className='card-body'>
                                 <div className='row mt-5 ml-2'>
-                                  <TipoNotificacion form={form} obj={objJson} prop={null} />
+                                  <TipoNotificacion form={form} obj={objJson} prop={notificado} />
                                 </div>
                               </div>
                             </div>
@@ -365,15 +474,27 @@ export const RevisarSg = () => {
                                 </h5>
                               </div>
                               <div id='collapse-11' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                                <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+                                  <div className='panel-search'>
+                                    <p>Seguimiento</p>
+                                    <div className='form-group gov-co-form-group'>
+                                      <Form.Item name='seguimiento' rules={[{ required: true }]}>
+                                        <SelectComponent
+                                          options={estados}
+                                          optionPropkey='idEstadoSolicitud'
+                                          optionPropLabel='nombre'
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                </div>
                                 <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
                                   <div className='row mt-3'>
                                     <div className='col-md-12 col-lg-12 col-sm-12'>
                                       <div className='form-group gov-co-form-group'>
-                                        <textarea
-                                          className='form-control ml-2'
-                                          id='exampleFormControlTextarea1'
-                                          rows={5}
-                                        ></textarea>
+                                        <Form.Item initialValue={''} name='observationsgestion' rules={[{ required: false }]}>
+                                          <Input.TextArea rows={5} maxLength={230} style={{ width: '300px' }} />
+                                        </Form.Item>
                                       </div>
                                     </div>
                                   </div>
@@ -400,16 +521,6 @@ export const RevisarSg = () => {
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                            <div className='panel-search'>
-                              <p>Seguimiento</p>
-                              <div className='form-group gov-co-form-group'>
-                                <Form.Item name='seguimiento' rules={[{ required: true }]}>
-                                  <SelectComponent options={estados} optionPropkey='idEstadoSolicitud' optionPropLabel='nombre' />
-                                </Form.Item>
                               </div>
                             </div>
                           </div>
@@ -449,3 +560,12 @@ export const RevisarSg = () => {
     </div>
   );
 };
+
+interface IEstadoDocumentoSoporteDTO {
+  idSolicitud: string;
+  idDocumentoSoporte: string;
+  path: string;
+  observaciones: string;
+  estado_Documento: string;
+  tipoSeguimiento: string;
+}

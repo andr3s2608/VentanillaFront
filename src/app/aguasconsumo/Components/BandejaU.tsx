@@ -39,6 +39,13 @@ export const BandejaU = (props: IDataSource) => {
     getListas();
   }, []);
 
+  function onClickFiltrar() {
+    
+  }
+
+  function onChangeFilterSelect(event: any) {
+    
+  }
   const onClickValidarInformacion = async (datos: any, tipo: any) => {
     const data = datos;
 
@@ -197,24 +204,6 @@ export const BandejaU = (props: IDataSource) => {
                   </div>
                 </div>
               </div>
-              <div id='accordion' className='mt-3'>
-                <div className='card'>
-                  <div className='card-header' id='heading-2'>
-                    <h5 className='mb-0'>
-                      <a
-                        className='collapsed'
-                        role='button'
-                        data-toggle='collapse'
-                        href='#collapse-8'
-                        aria-expanded='false'
-                        aria-controls='collapse-2'
-                      >
-                        Mensajes
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
             </div>
             <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
               <ul className='nav nav-tabs' role='tablist'>
@@ -247,6 +236,15 @@ export const BandejaU = (props: IDataSource) => {
                               <Form.Item>
                                 <SelectComponent placeholder='-- Seleccione --' options={[]} optionPropkey={''} />
                               </Form.Item>
+                              <Button
+                                type='primary'
+                                key={`filtrar`}
+                                onClick={() => onClickFiltrar()}
+                                style={{ marginRight: '8px' }}
+                                icon={<CheckOutlined />}
+                              >
+                                Filtrar
+                              </Button>                              
                             </div>
                           </div>
                         </div>

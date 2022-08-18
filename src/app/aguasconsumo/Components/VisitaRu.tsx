@@ -165,6 +165,7 @@ export const VisitaRu = () => {
                             defaultValue={objJson?.idtipodeTramite}
                             optionPropkey='idTipoTramite'
                             optionPropLabel='descripcion'
+                            disabled
                           />
                         </Form.Item>
                       </div>
@@ -182,6 +183,7 @@ export const VisitaRu = () => {
                               defaultValue={objJson?.idSubred}
                               optionPropkey='idSubRed'
                               optionPropLabel='zona'
+                              disabled
                             />
                           </Form.Item>
                         </div>

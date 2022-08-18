@@ -12,27 +12,139 @@ import { ApiService } from 'app/services/Apis.service';
 import { useHistory } from 'react-router';
 import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { CheckOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
   const { data, datosusuario, datossolucionados } = props;
-  const [roles, setroles] = useState<string>('');
-  const [mostrar, setmostrar] = useState<boolean>(false);
-  const [dias, setdias] = useState<any>([]);
 
-  const [coordinador, setcoordinador] = useState<string>('');
+  const [dataInter, setDataInter] = useState<any[]>([]);
+  const [dataUsuario, setDataUsuario] = useState<any[]>([]);
+  const [dataSolucionado, setDataSolucionado] = useState<any[]>([]);
+
+  const [FilterTextID, setFilterTextID] = useState<String>();
+  const [FilterTextID2, setFilterTextID2] = useState<String>();
+
+  const [dateSelectedInicial, setDateIni] = useState<Date>();
+  const [dateSelectedFinal, setDateFin] = useState<Date>();
+  const [dateSelectedInicial2, setDateIni2] = useState<Date>();
+  const [dateSelectedFinal2, setDateFin2] = useState<Date>();
+
+  const [roles, setroles] = useState<String>('');
+  const [mostrar, setmostrar] = useState<Boolean>(false);
+
+  const [verImput, setImputVisible] = useState<Boolean>(true);
+  const [verImput2, setImputVisible2] = useState<Boolean>(true);
+  const [verEstado, setEstadoVisible] = useState<Boolean>(false);
+  const [verEstado2, setEstadoVisible2] = useState<Boolean>(false);
+  const [verfecha, setFechaVisible] = useState<Boolean>(false);
+  const [verfecha2, setFechaVisible2] = useState<Boolean>(false);
+
+  const [ocultarbandeja, setocultarbandeja] = useState<boolean>(false);
+  const [ocultarnotificacion, setocultarnotificacion] = useState<boolean>(true);
+  const [dias, setdias] = useState<any>([]);
+  const [selectedFilter, setFilterCambio] = useState<String>('');
+
+  const [selectedFilterReciente, setFilterReciente] = useState<String>();
+  const [selectedFilterReciente2, setFilterReciente2] = useState<String>();
+  const [selectedFilterEstado, setFilterEstado] = useState<String>();
+  const [selectedFilterEstado2, setFilterEstado2] = useState<String>();
+
+  const [coordinador, setcoordinador] = useState<String>('');
 
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+  const onChangeFilterSelect = (event: any) => {
+    setFilterCambio(event);
+  };
+
+  const onChangeFilterEstado = (event: any) => {
+    setFilterEstado(event);
+  };
+  const onChangeFilterEstado2 = (event: any) => {
+    setFilterEstado2(event);
+  };
+
+  const onChangeFilterReciente = (event: any) => {
+    const value = event;
+    console.log('VALOR CHANGEFILTER ' + value);
+    switch (value) {
+      case 'NoRadicado':
+        console.log('NUM RADICADO');
+        setImputVisible(true);
+        setEstadoVisible(false);
+        setFechaVisible(false);
+        break;
+      case 'FechaReg':
+        console.log('FECHA REG');
+        setImputVisible(false);
+        setFechaVisible(true);
+        setEstadoVisible(false);
+        break;
+      case 'Estado':
+        setEstadoVisible(true);
+        setImputVisible(false);
+        setFechaVisible(false);
+        break;
+      case 'todos':
+        console.log('TODOS');
+        setImputVisible(true);
+        setFechaVisible(false);
+        setEstadoVisible(false);
+        break;
+      case 'TipoTramite':
+        console.log('TIPO TRAMITE');
+        break;
+    }
+    setFilterReciente(value);
+  };
+  const onChangeFilterSolucionado = (event: any) => {
+    const value = event;
+    console.log('VALOR CHANGEFILTER ' + value);
+    switch (value) {
+      case 'NoRadicado':
+        console.log('NUM RADICADO');
+        setImputVisible2(true);
+        setEstadoVisible2(false);
+        setFechaVisible2(false);
+        break;
+      case 'FechaReg':
+        console.log('FECHA REG');
+        setImputVisible2(false);
+        setFechaVisible2(true);
+        setEstadoVisible2(false);
+        break;
+      case 'Estado':
+        setEstadoVisible2(true);
+        setImputVisible2(false);
+        setFechaVisible2(false);
+        break;
+      case 'todos':
+        console.log('TODOS');
+        setImputVisible2(true);
+        setFechaVisible2(false);
+        setEstadoVisible2(false);
+        break;
+      case 'TipoTramite':
+        console.log('TIPO TRAMITE');
+        break;
+    }
+    setFilterReciente2(value);
+  };
+  function ChangeSelected() {
+    console.log(selectedFilterReciente + ' SELECCION');
+  }
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
       const subredes = await api.getSubredes();
       localStorage.setItem('subredes', JSON.stringify(subredes));
+      console.log(JSON.stringify(subredes));
       const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
 
@@ -63,8 +175,238 @@ export const Bandeja = (props: IDataSource) => {
   );
 
   useEffect(() => {
+    console.log('DATA RECIBIDA \n ' + JSON.stringify(data));
+    setDataInter(data);
+    setDataUsuario(datosusuario);
+    setDataSolucionado(datossolucionados);
     getListas();
   }, []);
+
+  function onChangeFilterID(event: any) {
+    console.log(event.target.value);
+    setFilterTextID(event.target.value);
+  }
+
+  function onChangeFilterID2(event: any) {
+    console.log(event.target.value);
+    setFilterTextID2(event.target.value);
+  }
+  function onClickFiltrar(data: String) {
+    console.log('FILTRADO ' + data);
+    var allData = null;
+    switch (data) {
+      case 'reciente':
+        console.log('reciente opcion ->' + selectedFilterReciente);
+
+        console.log('filter TEXT' + FilterTextID);
+        switch (selectedFilterReciente) {
+          case 'NoRadicado':
+            console.log('NUM RADICADO');
+            allData = datosusuario?.filter(function (f) {
+              return f.numeroRadicado == FilterTextID;
+            });
+            break;
+          case 'FechaReg':
+            console.log('FECHA REG');
+            if (
+              dateSelectedInicial != undefined &&
+              dateSelectedFinal != undefined &&
+              dateSelectedInicial.toString() != 'Invalid Date' &&
+              dateSelectedFinal.toString() != 'Invalid Date'
+            ) {
+              console.log('entro FECHA I ' + dateSelectedInicial.toString() + ' FINAL ' + dateSelectedFinal.toString());
+              allData = datosusuario?.filter(function (f) {
+                // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
+
+                return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+              });
+            } else {
+              Swal.fire({
+                title: 'Fecha invalida',
+                text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione el rango',
+
+                icon: 'error'
+              });
+            }
+            break;
+          case 'todos':
+            console.log('TODOS');
+            allData = datosusuario?.filter(function (f) {
+              // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
+
+              return true;
+            });
+            setImputVisible(true);
+            setEstadoVisible(false);
+            setFechaVisible(false);
+            break;
+          case 'Estado':
+            switch (selectedFilterEstado) {
+              case 'gestion':
+                allData = datosusuario?.filter(function (f) {
+                  return f.estado.toString().trim() == 'En gestión';
+                });
+                break;
+              case 'anulada':
+                allData = datosusuario?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Anulada';
+                });
+                break;
+              case 'aprobada':
+                allData = datosusuario?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Aprobada';
+                });
+                break;
+              case 'cerrada':
+                allData = datosusuario?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Cerrada';
+                });
+                break;
+              case 'abierta':
+                allData = datosusuario?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Abierta';
+                });
+                break;
+              default:
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Para realizar una busqueda por Estado, por favor seleccione uno en la lista desplegable',
+
+                  icon: 'error'
+                });
+                break;
+            }
+            break;
+          default:
+            Swal.fire({
+              title: 'Filtrado de datos',
+              text: 'Para realizar una busqueda por favor seleccione los parametros a buscar en los datos.',
+
+              icon: 'error'
+            });
+            break;
+        }
+
+        setDataUsuario(allData != null ? allData : dataUsuario);
+        break;
+      case 'solucionado':
+        console.log('solucionado opcion ->' + selectedFilterReciente2);
+
+        console.log('filter TEXT' + FilterTextID2);
+        switch (selectedFilterReciente2) {
+          case 'NoRadicado':
+            console.log('NUM RADICADO');
+            allData = datossolucionados?.filter(function (f) {
+              return f.numeroRadicado == FilterTextID2;
+            });
+            break;
+          case 'FechaReg':
+            console.log('FECHA REG');
+            if (
+              dateSelectedInicial2 != undefined &&
+              dateSelectedFinal2 != undefined &&
+              dateSelectedInicial2.toString() != 'Invalid Date' &&
+              dateSelectedFinal2.toString() != 'Invalid Date'
+            ) {
+              console.log('entro FECHA I ' + dateSelectedInicial2.toString() + ' FINAL ' + dateSelectedFinal2.toString());
+              allData = datossolucionados?.filter(function (f) {
+                // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
+
+                return new Date(f.fechaSolicitud) >= dateSelectedInicial2 && new Date(f.fechaSolicitud) <= dateSelectedFinal2;
+              });
+            } else {
+              Swal.fire({
+                title: 'Fecha invalida',
+                text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione el rango',
+
+                icon: 'error'
+              });
+            }
+            break;
+          case 'todos':
+            console.log('TODOS');
+            allData = datossolucionados?.filter(function (f) {
+              // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
+
+              return true;
+            });
+            setImputVisible2(true);
+            setEstadoVisible2(false);
+            setFechaVisible2(false);
+            break;
+          case 'Estado':
+            switch (selectedFilterEstado2) {
+              case 'gestion':
+                allData = datossolucionados?.filter(function (f) {
+                  return f.estado.toString().trim() == 'En gestión';
+                });
+                break;
+              case 'anulada':
+                allData = datossolucionados?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Anulada';
+                });
+                break;
+              case 'aprobada':
+                allData = datossolucionados?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Aprobada';
+                });
+                break;
+              case 'cerrada':
+                allData = datossolucionados?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Cerrada';
+                });
+                break;
+              case 'abierta':
+                allData = datossolucionados?.filter(function (f) {
+                  return f.estado.toString().trim() == 'Abierta';
+                });
+                break;
+              default:
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Para realizar una busqueda por Estado, por favor seleccione uno en la lista desplegable',
+
+                  icon: 'error'
+                });
+                break;
+            }
+            break;
+          default:
+            Swal.fire({
+              title: 'Filtrado de datos',
+              text: 'Para realizar una busqueda por favor seleccione los parametros a buscar en los datos.',
+
+              icon: 'error'
+            });
+            break;
+        }
+
+        setDataSolucionado(allData != null ? allData : datossolucionados);
+
+        break;
+      default:
+        break;
+    }
+    console.log('all Data externo ' + JSON.stringify(allData));
+    //const dataFIN = allData != undefined ? allData : null;
+    //console.log('data FIN ' + JSON.stringify(dataFIN));
+
+    //console.log('entro ' + JSON.stringify(dataFIN));
+
+    //setDataInter(allData != null ? allData : dataUsuario);
+    //setDataSolucionado(allData != null ? allData : dataUsuario);
+  }
+
+  const ocultarbandejas = async (datos: any) => {
+    if (datos === 'bandeja') {
+      setocultarnotificacion(true);
+      setocultarbandeja(false);
+    }
+    if (datos === 'notificacion') {
+      setocultarnotificacion(false);
+      setocultarbandeja(true);
+    }
+  };
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
@@ -290,7 +632,6 @@ export const Bandeja = (props: IDataSource) => {
       }
     ];
   }
-  const añadirinfo = (value: any) => {};
 
   return (
     <div className='container-fluid'>
@@ -339,13 +680,13 @@ export const Bandeja = (props: IDataSource) => {
                       <div className='card-header' id='heading-2'>
                         <h5 className='mb-0'>
                           <a
-                            className='collapsed nuevo'
+                            className='bandeja'
                             role='button'
                             data-toggle='collapse'
                             href='#collapse-2'
                             aria-expanded='true'
                             aria-controls='collapse-2'
-                            onClick={añadirinfo}
+                            onClick={() => ocultarbandejas('bandeja')}
                           >
                             Bandeja de entrada
                           </a>
@@ -358,10 +699,11 @@ export const Bandeja = (props: IDataSource) => {
                       <div className='card-header' id='heading-2'>
                         <h5 className='mb-0'>
                           <a
-                            className='collapsed'
+                            className='collapsed notificacion'
                             role='button'
                             data-toggle='collapse'
                             href='#collapse-3'
+                            onClick={() => ocultarbandejas('notificacion')}
                             aria-expanded='false'
                             aria-controls='collapse-2'
                           >
@@ -373,7 +715,13 @@ export const Bandeja = (props: IDataSource) => {
                   </div>
                 </div>
                 <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
-                  <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                  <div
+                    id='collapse-2'
+                    className={`${ocultarbandeja == true ? 'expanded' : 'collapsed'} `}
+                    hidden={ocultarbandeja}
+                    data-parent='#accordion'
+                    aria-labelledby='heading-2'
+                  >
                     {mostrar && (
                       <>
                         <div className='col-lg-12 col-md-12 col-sm-12 bandeja_panel'>
@@ -414,10 +762,17 @@ export const Bandeja = (props: IDataSource) => {
                                         <div className='gov-co-dropdown'>
                                           <Form.Item>
                                             <SelectComponent
-                                              className='select_d'
+                                              onChange={onChangeFilterReciente}
+                                              id='filterReciente'
                                               placeholder='-- Seleccione --'
-                                              options={[]}
-                                              optionPropkey={''}
+                                              options={[
+                                                { key: 'NoRadicado', value: 'Numero Radicado' },
+                                                { key: 'FechaReg', value: 'Fecha de Registro' },
+                                                { key: 'Estado', value: 'Estado' },
+                                                { key: 'todos', value: 'Todos' }
+                                              ]}
+                                              optionPropkey='key'
+                                              optionPropLabel='value'
                                             />
                                           </Form.Item>
                                         </div>
@@ -429,17 +784,67 @@ export const Bandeja = (props: IDataSource) => {
                                           <input
                                             type='text'
                                             className='form-control gov-co-form-control panel_d'
-                                            onKeyPress={(event) => {
-                                              if (!/[a-zA-Z]/.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
+                                            /* onKeyPress={(event) => {
+                                               if (!/[a-zA-Z]/.test(event.key)) {
+                                                 event.preventDefault();
+                                               }
+                                             }}*/
                                             onPaste={(event) => {
                                               event.preventDefault();
                                             }}
+                                            onChange={onChangeFilterID}
+                                            hidden={!verImput}
+                                          />
+                                          <DatepickerComponent
+                                            id='datePicker1'
+                                            picker='date'
+                                            placeholder='Fecha Inicial'
+                                            dateDisabledType='default'
+                                            dateFormatType='default'
+                                            style={{ display: verfecha == true ? 'block' : 'none' }}
+                                            className='form-control'
+                                            onChange={(date) => {
+                                              setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            }}
+                                          />
+                                          <DatepickerComponent
+                                            id='datePicker2'
+                                            picker='date'
+                                            placeholder='Fecha Final'
+                                            dateDisabledType='default'
+                                            dateFormatType='default'
+                                            style={{ display: verfecha == true ? 'block' : 'none' }}
+                                            className='form-control'
+                                            onChange={(date) => {
+                                              setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            }}
+                                          />
+                                          <SelectComponent
+                                            onChange={onChangeFilterEstado}
+                                            id='filterEstado2'
+                                            placeholder='-- Seleccione --'
+                                            options={[
+                                              { key: 'gestion', value: 'En Gestion' },
+                                              { key: 'anulada', value: 'Anulada' },
+                                              { key: 'aprobada', value: 'Aprobada' },
+                                              { key: 'cerrada', value: 'Cerrada' },
+                                              { key: 'abierta', value: 'Abierta' }
+                                            ]}
+                                            optionPropkey='key'
+                                            optionPropLabel='value'
+                                            style={{ display: verEstado == true ? 'block' : 'none' }}
                                           />
                                         </Form.Item>
                                       </div>
+                                      <Button
+                                        type='primary'
+                                        key={`filtrarReciente`}
+                                        onClick={() => onClickFiltrar('reciente')}
+                                        style={{ marginRight: '8px' }}
+                                        icon={<CheckOutlined />}
+                                      >
+                                        Filtrar
+                                      </Button>
                                     </div>
                                   </div>
                                 </div>
@@ -450,7 +855,7 @@ export const Bandeja = (props: IDataSource) => {
                                     <>
                                       <Table
                                         id='tableGen'
-                                        dataSource={datosusuario}
+                                        dataSource={dataUsuario}
                                         columns={structureColumns}
                                         pagination={{ pageSize: Paginas }}
                                         className='table_info'
@@ -461,7 +866,7 @@ export const Bandeja = (props: IDataSource) => {
                                     <>
                                       <Table
                                         id='tableGen'
-                                        dataSource={data}
+                                        dataSource={dataInter}
                                         columns={structureColumns}
                                         pagination={{ pageSize: Paginas }}
                                         className='table_info'
@@ -482,10 +887,17 @@ export const Bandeja = (props: IDataSource) => {
                                         <div className='gov-co-dropdown'>
                                           <Form.Item>
                                             <SelectComponent
-                                              className='select_d'
                                               placeholder='-- Seleccione --'
-                                              options={[]}
-                                              optionPropkey={''}
+                                              onChange={onChangeFilterSolucionado}
+                                              id='idfilterSol'
+                                              options={[
+                                                { key: 'NoRadicado', value: 'Numero Radicado' },
+                                                { key: 'FechaReg', value: 'Fecha de Registro' },
+                                                { key: 'Estado', value: 'Estado' },
+                                                { key: 'todos', value: 'Todos' }
+                                              ]}
+                                              optionPropkey='key'
+                                              optionPropLabel='value'
                                             />
                                           </Form.Item>
                                         </div>
@@ -497,17 +909,62 @@ export const Bandeja = (props: IDataSource) => {
                                           <input
                                             type='text'
                                             className='form-control gov-co-form-control panel_d'
-                                            onKeyPress={(event) => {
-                                              if (!/[a-zA-Z]/.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
                                             onPaste={(event) => {
                                               event.preventDefault();
                                             }}
+                                            onChange={onChangeFilterID2}
+                                            hidden={!verImput2}
+                                          />
+                                          <DatepickerComponent
+                                            id='datePicker12'
+                                            picker='date'
+                                            placeholder='Fecha Inicial'
+                                            dateDisabledType='default'
+                                            dateFormatType='default'
+                                            style={{ display: verfecha2 == true ? 'block' : 'none' }}
+                                            className='form-control'
+                                            onChange={(date) => {
+                                              setDateIni2(new Date(moment(date).format('MM-DD-YYYY')));
+                                            }}
+                                          />
+                                          <DatepickerComponent
+                                            id='datePicker22'
+                                            picker='date'
+                                            placeholder='Fecha Final'
+                                            dateDisabledType='default'
+                                            dateFormatType='default'
+                                            style={{ display: verfecha2 == true ? 'block' : 'none' }}
+                                            className='form-control'
+                                            onChange={(date) => {
+                                              setDateFin2(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            }}
+                                          />
+                                          <SelectComponent
+                                            onChange={onChangeFilterEstado2}
+                                            id='filterEstado2'
+                                            placeholder='-- Seleccione --'
+                                            options={[
+                                              { key: 'gestion', value: 'En Gestion' },
+                                              { key: 'anulada', value: 'Anulada' },
+                                              { key: 'aprobada', value: 'Aprobada' },
+                                              { key: 'cerrada', value: 'Cerrada' },
+                                              { key: 'abierta', value: 'Abierta' }
+                                            ]}
+                                            optionPropkey='key'
+                                            optionPropLabel='value'
+                                            style={{ display: verEstado2 == true ? 'block' : 'none' }}
                                           />
                                         </Form.Item>
                                       </div>
+                                      <Button
+                                        type='primary'
+                                        key={`filtrar2`}
+                                        onClick={() => onClickFiltrar('solucionado')}
+                                        style={{ marginRight: '8px' }}
+                                        icon={<CheckOutlined />}
+                                      >
+                                        Filtrar
+                                      </Button>
                                     </div>
                                   </div>
                                 </div>
@@ -516,7 +973,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                   <Table
                                     id='tableGen2'
-                                    dataSource={datossolucionados}
+                                    dataSource={dataSolucionado}
                                     columns={structureColumns}
                                     pagination={{ pageSize: Paginas }}
                                     className='table_info'
@@ -571,7 +1028,7 @@ export const Bandeja = (props: IDataSource) => {
                                     <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                       <Table
                                         id='tableGen3'
-                                        dataSource={datosusuario}
+                                        dataSource={dataUsuario}
                                         columns={structureColumns}
                                         pagination={{ pageSize: Paginas }}
                                         className='table_info'
@@ -586,7 +1043,13 @@ export const Bandeja = (props: IDataSource) => {
                       </>
                     )}
                   </div>
-                  <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                  <div
+                    id='collapse-3'
+                    className={`${ocultarnotificacion == true ? 'expanded' : 'collapsed'} `}
+                    hidden={ocultarnotificacion}
+                    data-parent='#accordion'
+                    aria-labelledby='heading-2'
+                  >
                     <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
                       <ul className='nav nav-tabs' role='tablist'>
                         <li className='nav-item encabezadosx'>
@@ -623,10 +1086,18 @@ export const Bandeja = (props: IDataSource) => {
                                     <div className='gov-co-dropdown'>
                                       <Form.Item>
                                         <SelectComponent
-                                          className='select_d'
+                                          className='select_d2'
                                           placeholder='-- Seleccione --'
-                                          options={[]}
-                                          optionPropkey={''}
+                                          options={[
+                                            { key: 'NoRadicado', value: 'Numero Radicado' },
+                                            { key: 'FechaReg', value: 'Fecha de Registro' },
+                                            { key: 'solicitante', value: 'Solicitante' },
+                                            { key: 'validador', value: 'Validador' },
+                                            { key: 'Estado', value: 'Estado' },
+                                            { key: 'todos', value: 'Todos' }
+                                          ]}
+                                          optionPropkey='key'
+                                          optionPropLabel='value'
                                         />
                                       </Form.Item>
                                     </div>
@@ -730,9 +1201,14 @@ export const Bandeja = (props: IDataSource) => {
                                     <div className='gov-co-dropdown'>
                                       <Form.Item>
                                         <SelectComponent
-                                          className='select_d'
+                                          className='select_d3'
                                           placeholder='-- Seleccione --'
-                                          options={[]}
+                                          options={[
+                                            { key: 'NoRadicado', value: 'Numero Radicado' },
+                                            { key: 'FechaReg', value: 'Fecha de Registro' },
+                                            { key: 'Estado', value: 'Estado' },
+                                            { key: 'todos', value: 'Todos' }
+                                          ]}
                                           optionPropkey={''}
                                         />
                                       </Form.Item>
