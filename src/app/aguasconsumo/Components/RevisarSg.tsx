@@ -82,12 +82,14 @@ export const RevisarSg = () => {
     if (rol === 'Coordinador') {
       if (tiposolicitud === '') {
         tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
+        estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
       }
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Funcionario' || rol === 'AdminTI') {
       if (tiposolicitud === '') {
         tiposolicitud = '8CA363C0-66AA-4273-8E63-CE3EAC234857';
+        estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
       }
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
