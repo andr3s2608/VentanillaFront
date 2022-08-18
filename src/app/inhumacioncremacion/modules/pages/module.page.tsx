@@ -12,6 +12,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 
 import { dominioService, ETipoDominio } from 'app/services/dominio.service';
+import Swal from 'sweetalert2';
+import { ResetApplication } from 'app/redux/application/application.actions';
 
 const ModulePage = () => {
   const history = useHistory();
@@ -25,10 +27,6 @@ const ModulePage = () => {
 
   const onPersonNatural = () => history.push('/registro/Natural');
   const onPersonJuridica = () => history.push('/registro/Juridico');
-  const onNoAutorizo = () => {
-    setBanderaPolicaSeguridad(false);
-    history.push('/');
-  };
 
   const getListas = useCallback(
     async () => {
@@ -44,6 +42,7 @@ const ModulePage = () => {
       const roles = await api.GetRoles();
       const idUser = await api.getCodeUser();
       const infouser = await api.GetInformationUser(idUser);
+      const idUsuario = await api.getIdUsuario();
 
       localStorage.setItem('paises', JSON.stringify(paises));
       localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
@@ -85,47 +84,6 @@ const ModulePage = () => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      {banderaPolicaSeguridad ? (
-        <ModalComponent
-          visible={banderaPolicaSeguridad}
-          className='Política text-center'
-          title={`Política protección de datos personales`}
-          cancelButtonProps={{ hidden: true }}
-          okButtonProps={{ hidden: true }}
-          onCancel={onCancel}
-          closable={false}
-        >
-          <PageHeaderComponent
-            className='PageHeaderComponent text-justify'
-            title={''}
-            subTitle={`Autorizo en forma previa expresa e informada como titular de mis datos a la Secretaría Distrital de Salud y
-            el Fondo Financiero Distrital de Salud, para hacer uso y tratamiento de mis datos personales de conformidad con lo previsto
-            en el Decreto 1377 de 2013 que reglamenta la Ley 1581 de 2012. Los datos personales serán gestionados de forma segura y algunos
-            tratamientos podrán ser realizados de manera directa o a través de encargados, El tratamiento de los datos personales por parte
-            de la Secretaría Distrital de Salud se realizará dando cumplimiento a la Política de Privacidad y Protección de Datos personales
-            que puede ser consultada en: `}
-            backIcon={null}
-          />
-          <a
-            className='H d-flex'
-            style={{ marginTop: '-15px' }}
-            href={'http://www.saludcapital.gov.co/Documents/Politica_Proteccion_Datos_P.pdf'}
-            rel='noreferrer'
-            target='_blank'
-          >
-            Política de Protección de Datos
-          </a>
-          <div className='d-flex justify-content-between mt-4'>
-            <Button type='primary' htmlType='button' onClick={onNoAutorizo}>
-              Autorizo
-            </Button>
-            <Button type='primary' htmlType='submit' onClick={onNoAutorizo}>
-              No autorizo
-            </Button>
-          </div>
-        </ModalComponent>
-      ) : null}
-
       {roles?.length === 0 ? (
         <ModalComponent
           visible={true}

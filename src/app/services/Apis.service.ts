@@ -619,4 +619,25 @@ export class ApiService {
       id: '0'
     });
   };
+
+  //////////////////////////
+  //Apis Politica de seguridad
+  /////////////////////////
+
+  getPoliticaSeguridad = (idUsuario: string) => {
+    return get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `PoliticaSeguridad/GetPoliticaSeguridad/${idUsuario}`,
+      id: '0'
+    });
+  };
+
+  AddPoliticaSeguridad = (payload: any) =>
+    post({
+      endpoint: REACT_APP_LOCAL as string,
+      url: 'PoliticaSeguridad/AddPoliticaSeguridad',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
 }
