@@ -100,10 +100,9 @@ export const Bandeja = (props: IDataSource) => {
       case 'TipoTramite':
         console.log('TIPO TRAMITE');
         break;
-
     }
     setFilterReciente(value);
-  }
+  };
   const onChangeFilterSolucionado = (event: any) => {
     const value = event;
     console.log('VALOR CHANGEFILTER ' + value);
@@ -134,13 +133,11 @@ export const Bandeja = (props: IDataSource) => {
       case 'TipoTramite':
         console.log('TIPO TRAMITE');
         break;
-
     }
     setFilterReciente2(value);
-  }
+  };
   function ChangeSelected() {
     console.log(selectedFilterReciente + ' SELECCION');
-
   }
   const getListas = useCallback(
     async () => {
@@ -181,7 +178,7 @@ export const Bandeja = (props: IDataSource) => {
     console.log('DATA RECIBIDA \n ' + JSON.stringify(data));
     setDataInter(data);
     setDataUsuario(datosusuario);
-    setDataSolucionado(datossolucionados)
+    setDataSolucionado(datossolucionados);
     getListas();
   }, []);
 
@@ -211,7 +208,12 @@ export const Bandeja = (props: IDataSource) => {
             break;
           case 'FechaReg':
             console.log('FECHA REG');
-            if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
+            if (
+              dateSelectedInicial != undefined &&
+              dateSelectedFinal != undefined &&
+              dateSelectedInicial.toString() != 'Invalid Date' &&
+              dateSelectedFinal.toString() != 'Invalid Date'
+            ) {
               console.log('entro FECHA I ' + dateSelectedInicial.toString() + ' FINAL ' + dateSelectedFinal.toString());
               allData = datosusuario?.filter(function (f) {
                 // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
@@ -300,7 +302,12 @@ export const Bandeja = (props: IDataSource) => {
             break;
           case 'FechaReg':
             console.log('FECHA REG');
-            if (dateSelectedInicial2 != undefined && dateSelectedFinal2 != undefined && dateSelectedInicial2.toString() != 'Invalid Date' && dateSelectedFinal2.toString() != 'Invalid Date') {
+            if (
+              dateSelectedInicial2 != undefined &&
+              dateSelectedFinal2 != undefined &&
+              dateSelectedInicial2.toString() != 'Invalid Date' &&
+              dateSelectedFinal2.toString() != 'Invalid Date'
+            ) {
               console.log('entro FECHA I ' + dateSelectedInicial2.toString() + ' FINAL ' + dateSelectedFinal2.toString());
               allData = datossolucionados?.filter(function (f) {
                 // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
@@ -386,11 +393,8 @@ export const Bandeja = (props: IDataSource) => {
 
     //console.log('entro ' + JSON.stringify(dataFIN));
 
-
     //setDataInter(allData != null ? allData : dataUsuario);
     //setDataSolucionado(allData != null ? allData : dataUsuario);
-
-
   }
 
   const ocultarbandejas = async (datos: any) => {
@@ -403,7 +407,6 @@ export const Bandeja = (props: IDataSource) => {
       setocultarbandeja(true);
     }
   };
-
 
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
@@ -629,11 +632,6 @@ export const Bandeja = (props: IDataSource) => {
       }
     ];
   }
-<<<<<<< .mine
-  const añadirinfo = (value: any) => { };
-=======
-
->>>>>>> .theirs
 
   return (
     <div className='container-fluid'>
@@ -898,7 +896,6 @@ export const Bandeja = (props: IDataSource) => {
                                                 { key: 'Estado', value: 'Estado' },
                                                 { key: 'todos', value: 'Todos' }
                                               ]}
-
                                               optionPropkey='key'
                                               optionPropLabel='value'
                                             />
@@ -1290,4 +1287,3 @@ interface IDataSource {
   datosusuario: Array<any>;
   datossolucionados: Array<any>;
 }
-

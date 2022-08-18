@@ -23,6 +23,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 
 //Redux
 import { store } from 'app/redux/app.reducers';
+import { SetSeguimientoDocumentos } from 'app/redux/seguimientoDocumentos/seguimientoDocumentos.action';
 import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { Button, Radio, Table, Upload } from 'antd';
 import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
@@ -36,6 +37,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const [urlPdfDocumento, setUrlPdfDocumento] = useState<string>('default');
   const [enableModalViewDocument, setEnableModalViewDocument] = useState<boolean>(false);
+
+  /** Definición de constantes para validar el estado de aprobación de los documentos */
+  const CUMPLE_DOCUMENT = 'Cumple';
+  const NO_CUMPLE_DOCUMENT = 'No Cumple';
 
   const [acueducto, setacueductos] = useState<any[]>([]);
 
@@ -71,6 +76,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'
         );
       });
+
       const ordenadotabla: any[] = [];
       const ordenadocompleto: any[] = [];
       let inserto = false;
@@ -91,7 +97,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       }
 
       setconsultararchivos(ordenadotabla);
-
+      const stateDocumentSupportList: IStateDocumentSupport[] = [];
       const arraytabla: any[] = [];
       //para llenar el array de los documentos que se mostrara en la tabla de abajo
       for (let index = 0; index < ordenadotabla.length; index++) {
@@ -117,9 +123,21 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           subida: 'nube',
           path: path
         });
+
+        stateDocumentSupportList.push({
+          posicion: ordenadotabla[index].posicion,
+          idSolicitud: obj.idsolicitud,
+          idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
+          path: path,
+          observaciones: 'default',
+          estadoDocumento: CUMPLE_DOCUMENT,
+          tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
+        });
       }
+
+      store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
+
       //para llenar el array de los documentos
-      console.log(ordenadocompleto);
       const array: any[] = [];
       for (let index = 0; index < ordenadocompleto.length; index++) {
         if (ordenadocompleto[index] === undefined) {
@@ -366,6 +384,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
+  /**
+   * Función que controla la visualización de pdf, tanto los que
+   * están en local como los pdf ubicados en servidor remoto
+   */
   const viewPDF = async (DocumentsSupport: any) => {
     let pdfUrl: string = '';
 
@@ -379,6 +401,29 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     setUrlPdfDocumento(pdfUrl);
     setEnableModalViewDocument(true);
+  };
+
+  /**
+   *  Evento que controla la aprobación o negación
+   *  de documentos por parte de los validadores
+   */
+  const onChangeRadioButton = (event: any, row: any) => {
+    const { seguimientoDocumentos } = store.getState();
+    const { posicion } = row;
+
+    if (seguimientoDocumentos && seguimientoDocumentos != []) {
+      seguimientoDocumentos.forEach((item: IStateDocumentSupport) => {
+        if (item.posicion == posicion) {
+          if (event.target.value === 1) {
+            item.estadoDocumento = CUMPLE_DOCUMENT;
+          } else if (event.target.value === 2) {
+            item.estadoDocumento = NO_CUMPLE_DOCUMENT;
+          }
+        }
+      });
+    } else {
+      console.error('No se pudo cargar correctamente el estado de aprobación de los documentos');
+    }
   };
 
   var stringData = consultararchivos.reduce((result, item) => {
@@ -452,9 +497,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         title: 'Cumple?',
         dataIndex: 'Cumple',
         key: 'cumple',
-        render: () => (
+        render: (_: any, row: any) => (
           <Form.Item name={'form' + counterform()}>
-            <Radio.Group onChange={onChange} name={'radio' + counterradio()} defaultValue={1}>
+            <Radio.Group onChange={(event) => onChangeRadioButton(event, row)} defaultValue={1}>
               <Radio value={1}>Si</Radio>
               <Radio value={2}>No</Radio>
             </Radio.Group>
@@ -600,26 +645,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 <div className='col-lg-12 col-md-12 col-sm-12'>
                   <label htmlFor=''>Observaciones</label>
                   <Form.Item label='' name='observacionesSubsanacion'>
-                    <Input.TextArea rows={5} maxLength={500} style={{ width: '360px' }} className='textarea' />
+                    <Input.TextArea rows={5} maxLength={500} style={{ width: '100%' }} className='textarea' />
                   </Form.Item>
-                </div>
-                <div className='col-lg-12 col-md-12 col-sm-12'>
-                  <div className='apro'>
-                    <span></span>¿Aprobado?
-                    <Form.Item label='' name={'radioaprobacion'}>
-                      <Radio.Group name={'radiobut'} defaultValue={1}>
-                        <Radio value={1}>Si</Radio>
-                        <Radio value={2}>No</Radio>
-                      </Radio.Group>
-                    </Form.Item>
-                    <Form.Item
-                      initialValue={obj?.observacionUbicacion ? obj?.observacionUbicacion : ''}
-                      name='observations'
-                      rules={[{ required: false }]}
-                    >
-                      <Input.TextArea rows={5} maxLength={300} style={{ width: '300px' }} />
-                    </Form.Item>
-                  </div>
                 </div>
               </>
             )}
@@ -646,4 +673,15 @@ interface DatosDocumentos<T> {
   prop: any;
   tipo: any;
 }
+
+interface IStateDocumentSupport {
+  posicion: Number;
+  idSolicitud: String;
+  idDocumentoSoporte: String;
+  path: String;
+  observaciones: String;
+  estadoDocumento: String;
+  tipoSeguimiento: String;
+}
+
 export const KeysForm = ['statustramite', 'observations'];
