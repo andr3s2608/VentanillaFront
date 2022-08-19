@@ -19,11 +19,13 @@ import Swal from 'sweetalert2';
 
 export const Bandeja = (props: IDataSource) => {
   const history = useHistory();
-  const { data, datosusuario, datossolucionados } = props;
+  const { data, datosusuario, datossolucionados, notificaciones, historico } = props;
 
   const [dataInter, setDataInter] = useState<any[]>([]);
   const [dataUsuario, setDataUsuario] = useState<any[]>([]);
   const [dataSolucionado, setDataSolucionado] = useState<any[]>([]);
+  const [datanotificaciones, senotificaciones] = useState<any[]>([]);
+  const [datahistoriconotificaciones, sethistoriconotificaciones] = useState<any[]>([]);
 
   const [FilterTextID, setFilterTextID] = useState<String>();
   const [FilterTextID2, setFilterTextID2] = useState<String>();
@@ -59,6 +61,7 @@ export const Bandeja = (props: IDataSource) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+  //////filtros
   const onChangeFilterSelect = (event: any) => {
     setFilterCambio(event);
   };
@@ -139,24 +142,31 @@ export const Bandeja = (props: IDataSource) => {
   function ChangeSelected() {
     console.log(selectedFilterReciente + ' SELECCION');
   }
+
+  ///////////7
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
       const subredes = await api.getSubredes();
       localStorage.setItem('subredes', JSON.stringify(subredes));
-      console.log(JSON.stringify(subredes));
+      console.log(datosusuario);
+      console.log(notificaciones);
+      console.log('paso1');
       const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
-
+      console.log('paso2');
       if (
         permiso?.rol === 'Coordinador'
         //|| permiso?.rol === 'AdminTI'
       ) {
+        console.log('paso3');
         setcoordinador('Coordinador');
       } else {
         if (permiso?.rol === 'Funcionario' || permiso?.rol === 'AdminTI') {
+          console.log('paso4');
           setcoordinador('Funcionario');
         } else {
+          console.log('paso5');
           setcoordinador('Subdirector');
         }
       }
@@ -165,7 +175,7 @@ export const Bandeja = (props: IDataSource) => {
       array.push(await api.getConstantesAguas('E359580A-1AE8-452E-A9D4-017DB0FDA196'));
       array.push(await api.getConstantesAguas('557E18FD-C9A6-492D-AEF6-07BDB43A7BE0'));
       array.push(await api.getConstantesAguas('B4CE8B3A-24FF-4653-BEDC-05F29BB99303'));
-
+      console.log('paso1');
       setdias(array);
       setroles(permiso.rol);
       setmostrar(true);
@@ -175,7 +185,7 @@ export const Bandeja = (props: IDataSource) => {
   );
 
   useEffect(() => {
-    console.log('DATA RECIBIDA \n ' + JSON.stringify(data));
+    //console.log('DATA RECIBIDA \n ' + JSON.stringify(data));
     setDataInter(data);
     setDataUsuario(datosusuario);
     setDataSolucionado(datossolucionados);
@@ -429,12 +439,62 @@ export const Bandeja = (props: IDataSource) => {
   const onChangeColor = (datos: any) => {
     let array: any[] = [];
     let arrayusuario: any[] = [];
+    let arraynotificacion: any[] = [];
     if (coordinador == 'Funcionario') {
       array = datosusuario;
     } else {
       array = data;
       arrayusuario = datosusuario;
+      arraynotificacion = notificaciones;
+      //console.log('entro', arraynotificacion);
     }
+
+    if (arraynotificacion.length > 0) {
+      for (let index = 0; index < arraynotificacion.length; index++) {
+        if (arraynotificacion[index].numeroRadicado == datos) {
+          let diasproceso = 0;
+          if (arraynotificacion[index].tipodeSolicitud == 'Proceso de Citacion') {
+            diasproceso = dias[0].valorConstante;
+          } else {
+            if (
+              arraynotificacion[index].tipodeSolicitud == 'Gestion Validador' ||
+              arraynotificacion[index].tipodeSolicitud == 'Gestion Coordinador'
+            ) {
+              diasproceso = dias[1].valorConstante;
+            } else {
+              if (arraynotificacion[index].tipodeSolicitud == 'Gestion Subdirector') {
+                diasproceso = dias[2].valorConstante;
+              } else {
+                color = 'white';
+                return 'white';
+              }
+            }
+          }
+
+          const fechaactual = new Date();
+          const fechamod = arraynotificacion[index].fechaSolicitud;
+          const fechaprueb2 = moment(fechamod);
+          const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
+          //console.log(moment(fechaactual).diff(fechaprueb2, 'days'), ' dias de diferencia');
+
+          if (diaspasados < diasproceso / 2 - 1) {
+            color = 'lightgreen';
+            return 'lightgreen';
+          }
+          if (diaspasados >= diasproceso || diaspasados > diasproceso / 2 + 1) {
+            color = 'salmon ';
+            return 'salmon ';
+          }
+          if (diaspasados >= diasproceso / 2 - 1 && diaspasados <= diasproceso / 2 + 1) {
+            color = 'yellow';
+            return 'yellow';
+          }
+
+          break;
+        }
+      }
+    }
+    console.log('termino');
 
     if (arrayusuario.length > 0) {
       for (let index = 0; index < arrayusuario.length; index++) {
@@ -535,6 +595,8 @@ export const Bandeja = (props: IDataSource) => {
   };
 
   let structureColumns: any[] = [];
+  let structureColumnsnotificacion: any[] = [];
+  let structureColumnsnotificacionhistorico: any[] = [];
   if (mostrar) {
     structureColumns = [
       {
@@ -631,6 +693,123 @@ export const Bandeja = (props: IDataSource) => {
         }
       }
     ];
+    //////notificaciones
+    structureColumnsnotificacion = [
+      {
+        title: 'No. de Radicado',
+        dataIndex: 'numeroRadicado',
+        key: 'nroradicado',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: onChangeColor(text) }
+            },
+            children: <div>{text}</div>
+          };
+        }
+      },
+      {
+        title: 'Tipo de trámite',
+        dataIndex: 'tipodeTramite',
+        key: 'idTramite',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: color }
+            },
+            children: <div>{text}</div>
+          };
+        }
+      },
+      {
+        title: 'Estado ',
+        dataIndex: 'estado',
+        key: 'estado',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: color }
+            },
+            children: <div>{text}</div>
+          };
+        }
+      },
+      {
+        title: 'Fecha de Registro',
+        dataIndex: 'fechaSolicitud',
+        key: 'fechaSolicitud',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: color }
+            },
+            children: <div>{text}</div>
+          };
+        }
+      },
+      {
+        title: 'Validador',
+        dataIndex: 'idSubred',
+        key: 'idSubred',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: color }
+            },
+            children: <div>{text}</div>
+          };
+        }
+      },
+      {
+        title: 'Estado de validación',
+        dataIndex: 'tipodeSolicitud',
+        key: 'tipodeSolicitud',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: color }
+            },
+            children: <div>{text}</div>
+          };
+        }
+      },
+      {
+        title: 'Observaciones',
+        dataIndex: '',
+        key: '',
+        render(text: any, record: any) {
+          return {
+            props: {
+              style: { background: color }
+            },
+            children: <div>{}</div>
+          };
+        }
+      }
+    ];
+    ///historico
+    structureColumnsnotificacionhistorico = [
+      {
+        title: 'Tipo de trámite',
+        dataIndex: 'tipodeTramite',
+        key: 'idTramite'
+      },
+      {
+        title: 'Fecha de Registro',
+        dataIndex: 'fechaSolicitud',
+        key: 'fechaSolicitud'
+      },
+      {
+        title: 'Estado ',
+        dataIndex: 'estado',
+        key: 'estado'
+      },
+      {
+        title: 'Actividad en curso',
+        dataIndex: 'actividadActualSolicitud',
+        key: 'actividad'
+      }
+    ];
   }
 
   return (
@@ -694,25 +873,29 @@ export const Bandeja = (props: IDataSource) => {
                       </div>
                     </div>
                   </div>
-                  <div id='accordion' className='mt-3'>
-                    <div className='card'>
-                      <div className='card-header' id='heading-2'>
-                        <h5 className='mb-0'>
-                          <a
-                            className='collapsed notificacion'
-                            role='button'
-                            data-toggle='collapse'
-                            href='#collapse-3'
-                            onClick={() => ocultarbandejas('notificacion')}
-                            aria-expanded='false'
-                            aria-controls='collapse-2'
-                          >
-                            Notificaciones
-                          </a>
-                        </h5>
+                  {coordinador == 'Coordinador' && (
+                    <>
+                      <div id='accordion' className='mt-3'>
+                        <div className='card'>
+                          <div className='card-header' id='heading-2'>
+                            <h5 className='mb-0'>
+                              <a
+                                className='collapsed notificacion'
+                                role='button'
+                                data-toggle='collapse'
+                                href='#collapse-3'
+                                onClick={() => ocultarbandejas('notificacion')}
+                                aria-expanded='false'
+                                aria-controls='collapse-2'
+                              >
+                                Notificaciones
+                              </a>
+                            </h5>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
                 <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
                   <div
@@ -795,30 +978,33 @@ export const Bandeja = (props: IDataSource) => {
                                             onChange={onChangeFilterID}
                                             hidden={!verImput}
                                           />
-                                          <DatepickerComponent
-                                            id='datePicker1'
-                                            picker='date'
-                                            placeholder='Fecha Inicial'
-                                            dateDisabledType='default'
-                                            dateFormatType='default'
-                                            style={{ display: verfecha == true ? 'block' : 'none' }}
-                                            className='form-control'
-                                            onChange={(date) => {
-                                              setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
-                                            }}
-                                          />
-                                          <DatepickerComponent
-                                            id='datePicker2'
-                                            picker='date'
-                                            placeholder='Fecha Final'
-                                            dateDisabledType='default'
-                                            dateFormatType='default'
-                                            style={{ display: verfecha == true ? 'block' : 'none' }}
-                                            className='form-control'
-                                            onChange={(date) => {
-                                              setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
-                                            }}
-                                          />
+                                          <div className='form-row ml-4'>
+                                            <DatepickerComponent
+                                              id='datePicker1'
+                                              picker='date'
+                                              placeholder='Fecha Inicial'
+                                              dateDisabledType='default'
+                                              dateFormatType='default'
+                                              style={{ display: verfecha == true ? 'block' : 'none', width: 250 }}
+                                              className='form-control'
+                                              onChange={(date) => {
+                                                setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                              }}
+                                            />
+                                            <br></br>
+                                            <DatepickerComponent
+                                              id='datePicker2'
+                                              picker='date'
+                                              placeholder='Fecha Final'
+                                              dateDisabledType='default'
+                                              dateFormatType='default'
+                                              style={{ display: verfecha == true ? 'block' : 'none', width: 250 }}
+                                              className='form-control'
+                                              onChange={(date) => {
+                                                setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                              }}
+                                            />
+                                          </div>
                                           <SelectComponent
                                             onChange={onChangeFilterEstado}
                                             id='filterEstado2'
@@ -1043,235 +1229,191 @@ export const Bandeja = (props: IDataSource) => {
                       </>
                     )}
                   </div>
-                  <div
-                    id='collapse-3'
-                    className={`${ocultarnotificacion == true ? 'expanded' : 'collapsed'} `}
-                    hidden={ocultarnotificacion}
-                    data-parent='#accordion'
-                    aria-labelledby='heading-2'
-                  >
-                    <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
-                      <ul className='nav nav-tabs' role='tablist'>
-                        <li className='nav-item encabezadosx'>
-                          <a
-                            className='nav-link active'
-                            data-toggle='tab'
-                            href='#tabs-1'
-                            role='tab'
-                            style={{ borderTop: '3px solid orange' }}
-                          >
-                            Notificación de observaciones
-                          </a>
-                        </li>
-                        <li className='nav-item encabezadosx'>
-                          <a
-                            className='nav-link'
-                            data-toggle='tab'
-                            href='#tabs-2'
-                            role='tab'
-                            style={{ borderTop: '3px solid orange' }}
-                          >
-                            Histórico notificaciones
-                          </a>
-                        </li>
-                      </ul>
-                      <div className='tab-content'>
-                        <div className='tab-pane active' id='tabs-1' role='tabpanel'>
-                          <div className='row'>
-                            <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
-                              <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
+                  {coordinador == 'Coordinador' && (
+                    <>
+                      <div
+                        id='collapse-3'
+                        className={`${ocultarnotificacion == true ? 'expanded' : 'collapsed'} `}
+                        hidden={ocultarnotificacion}
+                        data-parent='#accordion'
+                        aria-labelledby='heading-2'
+                      >
+                        <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
+                          <ul className='nav nav-tabs' role='tablist'>
+                            <li className='nav-item encabezadosx'>
+                              <a
+                                className='nav-link active'
+                                data-toggle='tab'
+                                href='#tabs-1'
+                                role='tab'
+                                style={{ borderTop: '3px solid orange' }}
+                              >
+                                Notificación de observaciones
+                              </a>
+                            </li>
+                            <li className='nav-item encabezadosx'>
+                              <a
+                                className='nav-link'
+                                data-toggle='tab'
+                                href='#tabs-2'
+                                role='tab'
+                                style={{ borderTop: '3px solid orange' }}
+                              >
+                                Histórico notificaciones
+                              </a>
+                            </li>
+                          </ul>
+                          <div className='tab-content'>
+                            <div className='tab-pane active' id='tabs-1' role='tabpanel'>
                               <div className='row'>
-                                <div className='col-lg-6 col-md-6 col-sm-12'>
-                                  <div className='form-group gov-co-form-group ml-2'>
-                                    <div className='gov-co-dropdown'>
-                                      <Form.Item>
-                                        <SelectComponent
-                                          className='select_d2'
-                                          placeholder='-- Seleccione --'
-                                          options={[
-                                            { key: 'NoRadicado', value: 'Numero Radicado' },
-                                            { key: 'FechaReg', value: 'Fecha de Registro' },
-                                            { key: 'solicitante', value: 'Solicitante' },
-                                            { key: 'validador', value: 'Validador' },
-                                            { key: 'Estado', value: 'Estado' },
-                                            { key: 'todos', value: 'Todos' }
-                                          ]}
-                                          optionPropkey='key'
-                                          optionPropLabel='value'
-                                        />
-                                      </Form.Item>
+                                <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
+                                  <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
+                                  <div className='row'>
+                                    <div className='col-lg-6 col-md-6 col-sm-12'>
+                                      <div className='form-group gov-co-form-group ml-2'>
+                                        <div className='gov-co-dropdown'>
+                                          <Form.Item>
+                                            <SelectComponent
+                                              className='select_d2'
+                                              placeholder='-- Seleccione --'
+                                              options={[
+                                                { key: 'NoRadicado', value: 'Numero Radicado' },
+                                                { key: 'FechaReg', value: 'Fecha de Registro' },
+                                                { key: 'solicitante', value: 'Solicitante' },
+                                                { key: 'validador', value: 'Validador' },
+                                                { key: 'Estado', value: 'Estado' },
+                                                { key: 'todos', value: 'Todos' }
+                                              ]}
+                                              optionPropkey='key'
+                                              optionPropLabel='value'
+                                            />
+                                          </Form.Item>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className='col-md-6 col-lg-6 col-sm-12'>
+                                      <div className='form-group gov-co-form-group'>
+                                        <Form.Item>
+                                          <input
+                                            type='text'
+                                            className='form-control gov-co-form-control panel_ds'
+                                            onKeyPress={(event) => {
+                                              if (!/[a-zA-Z]/.test(event.key)) {
+                                                event.preventDefault();
+                                              }
+                                            }}
+                                            onPaste={(event) => {
+                                              event.preventDefault();
+                                            }}
+                                          />
+                                        </Form.Item>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                                <div className='col-md-6 col-lg-6 col-sm-12'>
-                                  <div className='form-group gov-co-form-group'>
-                                    <Form.Item>
-                                      <input
-                                        type='text'
-                                        className='form-control gov-co-form-control panel_ds'
-                                        onKeyPress={(event) => {
-                                          if (!/[a-zA-Z]/.test(event.key)) {
-                                            event.preventDefault();
-                                          }
-                                        }}
-                                        onPaste={(event) => {
-                                          event.preventDefault();
-                                        }}
-                                      />
-                                    </Form.Item>
-                                  </div>
-                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div className='row'>
-                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                              <table
-                                className='table table-bordered text-center mt-4 '
-                                style={{ backgroundColor: '#ede9e3', width: '800px' }}
-                              >
-                                <thead>
-                                  <tr
-                                    style={{
-                                      border: '2px solid #000',
-                                      backgroundColor: '#fff'
-                                    }}
-                                  >
-                                    <th style={{ border: '2px solid #000' }}>No. de radicado</th>
-                                    <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
-                                    <th style={{ border: '2px solid #000' }}>Solicitante</th>
-                                    <th style={{ border: '2px solid #000' }}>Estado</th>
-                                    <th style={{ border: '2px solid #000' }}>Fecha</th>
-                                    <th style={{ border: '2px solid #000' }}>Validador</th>
-                                    <th style={{ border: '2px solid #000' }}>Estado de validación</th>
-                                    <th style={{ border: '2px solid #000' }}>Observaciones</th>
-                                  </tr>
-                                </thead>
-                                <tbody className='cuerpo_table'>
-                                  <tr style={{ border: '2px solid #000' }}>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <div className='row'>
-                            <div className='col-lg-11 col-md-11 col-sm-12 mt-3'>
-                              <p className='filtro'>
-                                <span className='text-danger font-weight-bold mr-1 ml-3 '>*</span> Tipo de notificación
-                              </p>
-                              <div className='form-group gov-co-form-group ml-2'>
-                                <div className='gov-co-dropdown'>
-                                  <select id='selector-simple' className='selectpicker form-control select' title='Escoger'>
-                                    <option>Oficio de notificación</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div className='col-m-12 col-lg-12 col-sm-12 mt-3 ml-2 '>
-                              <button
-                                className='btn btn-default'
-                                style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
-                              >
-                                Notificar
-                              </button>
-                              <button
-                                className='btn btn-default mr-3'
-                                style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
-                              >
-                                Ver vista previa
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className='tab-pane' id='tabs-2' role='tabpanel'>
-                          <div className='row'>
-                            <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
-                              <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
                               <div className='row'>
-                                <div className='col-lg-6 col-md-6 col-sm-12'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <Table
+                                    id='tablenot'
+                                    dataSource={notificaciones}
+                                    columns={structureColumnsnotificacion}
+                                    pagination={{ pageSize: Paginas }}
+                                    className='table_info'
+                                  />
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-11 col-md-11 col-sm-12 mt-3'>
+                                  <p className='filtro'>
+                                    <span className='text-danger font-weight-bold mr-1 ml-3 '>*</span> Tipo de notificación
+                                  </p>
                                   <div className='form-group gov-co-form-group ml-2'>
                                     <div className='gov-co-dropdown'>
-                                      <Form.Item>
-                                        <SelectComponent
-                                          className='select_d3'
-                                          placeholder='-- Seleccione --'
-                                          options={[
-                                            { key: 'NoRadicado', value: 'Numero Radicado' },
-                                            { key: 'FechaReg', value: 'Fecha de Registro' },
-                                            { key: 'Estado', value: 'Estado' },
-                                            { key: 'todos', value: 'Todos' }
-                                          ]}
-                                          optionPropkey={''}
-                                        />
-                                      </Form.Item>
+                                      <select id='selector-simple' className='selectpicker form-control select' title='Escoger'>
+                                        <option>Oficio de notificación</option>
+                                      </select>
                                     </div>
                                   </div>
                                 </div>
-                                <div className='col-md-6 col-lg-6 col-sm-12'>
-                                  <div className='form-group gov-co-form-group'>
-                                    <Form.Item>
-                                      <input
-                                        type='text'
-                                        className='form-control gov-co-form-control panel_ds'
-                                        onKeyPress={(event) => {
-                                          if (!/[a-zA-Z]/.test(event.key)) {
-                                            event.preventDefault();
-                                          }
-                                        }}
-                                        onPaste={(event) => {
-                                          event.preventDefault();
-                                        }}
-                                      />
-                                    </Form.Item>
-                                  </div>
+                                <div className='col-m-12 col-lg-12 col-sm-12 mt-3 ml-2 '>
+                                  <button
+                                    className='btn btn-default'
+                                    style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
+                                  >
+                                    Notificar
+                                  </button>
+                                  <button
+                                    className='btn btn-default mr-3'
+                                    style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
+                                  >
+                                    Ver vista previa
+                                  </button>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div className='row'>
-                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                              <table
-                                className='table table-bordered text-center mt-4'
-                                style={{ backgroundColor: '#ede9e3', width: '800px' }}
-                              >
-                                <thead>
-                                  <tr
-                                    style={{
-                                      border: '2px solid  #000',
-                                      backgroundColor: '#fff'
-                                    }}
-                                  >
-                                    <th style={{ border: '2px solid #000' }}>No. de radicado</th>
-                                    <th style={{ border: '2px solid #000' }}>Tipo de trámite</th>
-                                    <th style={{ border: '2px solid #000' }}>Fecha</th>
-                                    <th style={{ border: '2px solid #000' }}>Estado</th>
-                                    <th style={{ border: '2px solid #000' }}>Actividad en curso</th>
-                                  </tr>
-                                </thead>
-                                <tbody className='cuerpo_table'>
-                                  <tr style={{ border: '2px solid #000' }}>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                    <td style={{ border: '2px solid #000' }}></td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                            <div className='tab-pane' id='tabs-2' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
+                                  <p className='mt-4 ml-1 filtro'>Filtrar por:</p>
+                                  <div className='row'>
+                                    <div className='col-lg-6 col-md-6 col-sm-12'>
+                                      <div className='form-group gov-co-form-group ml-2'>
+                                        <div className='gov-co-dropdown'>
+                                          <Form.Item>
+                                            <SelectComponent
+                                              className='select_d3'
+                                              placeholder='-- Seleccione --'
+                                              options={[
+                                                { key: 'NoRadicado', value: 'Numero Radicado' },
+                                                { key: 'FechaReg', value: 'Fecha de Registro' },
+                                                { key: 'Estado', value: 'Estado' },
+                                                { key: 'todos', value: 'Todos' }
+                                              ]}
+                                              optionPropkey={''}
+                                            />
+                                          </Form.Item>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className='col-md-6 col-lg-6 col-sm-12'>
+                                      <div className='form-group gov-co-form-group'>
+                                        <Form.Item>
+                                          <input
+                                            type='text'
+                                            className='form-control gov-co-form-control panel_ds'
+                                            onKeyPress={(event) => {
+                                              if (!/[a-zA-Z]/.test(event.key)) {
+                                                event.preventDefault();
+                                              }
+                                            }}
+                                            onPaste={(event) => {
+                                              event.preventDefault();
+                                            }}
+                                          />
+                                        </Form.Item>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <Table
+                                    id='tablehistnot'
+                                    dataSource={[]}
+                                    columns={structureColumnsnotificacionhistorico}
+                                    pagination={{ pageSize: Paginas }}
+                                    className='table_info'
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -1286,4 +1428,6 @@ interface IDataSource {
   data: Array<any>;
   datosusuario: Array<any>;
   datossolucionados: Array<any>;
+  notificaciones: Array<any>;
+  historico: Array<any>;
 }

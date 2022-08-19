@@ -57,6 +57,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const [tamanofila, settamanofila] = useState<any[]>([2, 0, 3, 0, 0, 0, 0]);
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
+  const [rechazados, setrechazados] = useState<any[]>([]);
   const [consultararchivos, setconsultararchivos] = useState<any[]>([]);
   const [guardararchivostabla, setguardararchivostabla] = useState<any[]>([]);
 
@@ -66,6 +67,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
+      //const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
+
+      //setrechazados(documentosrechazados);
+
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
       const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
@@ -336,13 +341,17 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     cargardatos();
   };
 
-  var posicionradio = -1;
-  var posicionform = -1;
-
-  const counterradio = () => {
-    posicionradio = posicionradio + 1;
-    return posicionradio;
+  let posicionrechazados = 0;
+  const documentosrechazados = (id: string) => {
+    let esrechazado = false;
+    for (let index = 0; index < rechazados.length; index++) {
+      if (id === rechazados[index].idDocumentoAdjunto) {
+        esrechazado = true;
+      }
+    }
+    return esrechazado;
   };
+  let posicionform = -1;
 
   const counterform = () => {
     posicionform = posicionform + 1;
@@ -443,13 +452,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     return cadena;
   };
-  let posicion = 0;
-  const sizerow = () => {
-    const size: number = tamanofila[posicion];
-    posicion++;
-    console.log('entro');
-    return size;
-  };
 
   const tabla1 = [
     {
@@ -511,7 +513,35 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         key: 'Acciones',
         align: 'center' as 'center',
 
-        render: (_: any, row: any, index: any) => <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
+        render: (_: any, row: any, index: any) => {
+          if (obj?.tipodeSolicitud === 'Subsanacion') {
+            return (
+              <>
+                <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
+                {documentosrechazados(row.id) && (
+                  <>
+                    <Button
+                      type='primary'
+                      className='fa-solid fa-circle-xmark'
+                      key={`vali-${index}`}
+                      onClick={() => onClickValidarInformacion(row)}
+                      style={{ fontSize: '30xp', color: 'red' }}
+                      icon={<CheckOutlined />}
+                    >
+                      Eliminar
+                    </Button>
+                  </>
+                )}
+              </>
+            );
+          } else {
+            return (
+              <>
+                <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />{' '}
+              </>
+            );
+          }
+        }
       }
     ];
   } else {
