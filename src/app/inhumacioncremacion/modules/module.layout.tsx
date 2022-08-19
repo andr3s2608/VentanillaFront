@@ -122,10 +122,20 @@ export const ModuleLayout = (props: { logout: () => void }) => {
     setBanderaPolicaSeguridad(false);
     Swal.fire({
       icon: 'warning',
-      title: 'Política protección de datos personales',
-      text: `Se ha rechazado la politica de protección de datos personales, por lo tanto no puede realizar ningun tramite.`
-    }).then(() => {
-      logout();
+      title: '<h3>Política protección de datos personales<h3>',
+
+      html: `<div style="text-align:justify;">Se ha rechazado la politica de protección de datos personales, por lo tanto no puede realizar ningún tramite y sera desconectado de la sesión.</div>`,
+      showDenyButton: true,
+      confirmButtonText: 'Confirmar',
+      denyButtonText: `Cancelar`,
+      confirmButtonColor: '#3366cc',
+      denyButtonColor: '#3366cc'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+      } else if (result.isDenied) {
+        setBanderaPolicaSeguridad(true);
+      }
     });
   };
   const onAutorizo = async () => {
@@ -150,7 +160,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
       <>
         {banderaPolicaSeguridad ? (
           <ModalComponent
-            visible={/*banderaPolicaSeguridad*/ false}
+            visible={false}
             className='Política text-center'
             title={`Política protección de datos personales`}
             cancelButtonProps={{ hidden: true }}
