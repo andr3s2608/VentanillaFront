@@ -257,7 +257,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     setarchivocargado(value);
   };
   const onChange = (value: any) => {
-    console.log('entro check');
     var nombre: string = value.target.id;
 
     var posicion: number = parseInt(nombre.substring(8, 9));
@@ -279,9 +278,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   };
 
   const insertarArchivo = async () => {
-    console.log('entro');
-    console.log(archivos);
-    console.log(guardararchivos);
     const archivo = archivocargado;
 
     const array: any[] = [];
@@ -291,9 +287,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     for (let index = 0; index < archivos.length; index++) {
       props.form.resetFields([`checkbox${index}`]);
       if (archivos[index] == '1') {
-        console.log('entro 1');
         if (guardararchivos[index] != undefined) {
-          console.log('entro vacio');
           array.push(guardararchivos[index]);
           arraytabla.push(guardararchivos[index]);
         } else {
@@ -327,8 +321,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       posicion++;
     }
-    console.log(array);
-    console.log(arraytabla);
 
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);

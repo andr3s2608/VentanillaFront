@@ -50,8 +50,6 @@ export const PrimeraU = () => {
   }, []);
 
   const onSubmit = async (values: any) => {
-    console.log('El formulario es:');
-    console.log(values);
     const archivo = values.cargarresolucion;
     let validacion = false;
     let planta = false;

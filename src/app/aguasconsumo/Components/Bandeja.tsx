@@ -364,9 +364,9 @@ export const Bandeja = (props: IDataSource) => {
         value={value}
         onChange={(e) => {
           const currValue: string = e.target.value;
-          console.log(currValue);
+
           setValue(currValue);
-          console.log(notificaciones);
+
           if (tipo == 'normal') {
             const filteredData: any = array.filter((datos: any) => {
               return datos.numeroRadicado.toString().includes(currValue);
