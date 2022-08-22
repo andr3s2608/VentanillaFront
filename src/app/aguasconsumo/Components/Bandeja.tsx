@@ -56,8 +56,6 @@ export const Bandeja = (props: IDataSource) => {
       const rolesstorage: any = localStorage.getItem('roles');
       const subredes = await api.getSubredes();
       localStorage.setItem('subredes', JSON.stringify(subredes));
-      console.log(datosusuario);
-      console.log(notificaciones);
 
       const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
@@ -107,7 +105,6 @@ export const Bandeja = (props: IDataSource) => {
       dateSelectedInicial.toString() != 'Invalid Date' &&
       dateSelectedFinal.toString() != 'Invalid Date'
     ) {
-      console.log('entro FECHA I ' + dateSelectedInicial.toString() + ' FINAL ' + dateSelectedFinal.toString());
       const datosusuariofecha = datosusuario?.filter(function (f) {
         return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
       });
@@ -141,7 +138,6 @@ export const Bandeja = (props: IDataSource) => {
       });
     }
 
-    console.log('TODOS');
     allData = datosusuario?.filter(function (f) {
       return true;
     });
@@ -336,7 +332,6 @@ export const Bandeja = (props: IDataSource) => {
 
   //resetear filtros
   const resetdata = () => {
-    console.log('entro');
     setValue('');
     setDateIni(undefined);
     setDateFin(undefined);
@@ -634,29 +629,29 @@ export const Bandeja = (props: IDataSource) => {
       },
       {
         title: 'Validador',
-        dataIndex: 'idSubred',
-        key: 'idSubred',
+        dataIndex: 'nombreSubred',
+        key: 'nombreSubred',
         filters: [
           {
             text: 'Subred Centro Oriente E.S.E.',
-            value: 'Oriente'
+            value: 'Subred Integrada de Servicios de Salud Centro Oriente E.S.E. '
           },
           {
             text: 'Subred Norte E.S.E.',
-            value: 'Norte'
+            value: 'Subred Integrada de Servicios de Salud Norte E.S.E. '
           },
           {
             text: 'Subred Sur E.S.E.',
-            value: 'Sur E.S.E.'
+            value: 'Subred integrada de Servicios de Salud Sur E.S.E. '
           },
           {
             text: 'Subred Sur Occidente E.S.E.',
-            value: 'Occidente'
+            value: 'Subred integrada de Servicios de Salud Sur Occidente E.S.E. '
           }
         ],
         filterSearch: true,
 
-        onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
+        onFilter: (value: string, record: { nombreSubred: string }) => record.nombreSubred.toString().includes(value),
         render(text: any, record: any) {
           return {
             props: {
