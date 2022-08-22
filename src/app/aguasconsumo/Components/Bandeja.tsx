@@ -32,6 +32,9 @@ export const Bandeja = (props: IDataSource) => {
   const [dateSelectedInicial, setDateIni] = useState<Date>();
   const [dateSelectedFinal, setDateFin] = useState<Date>();
 
+  const [dateSelectedInicial2, setDateIni2] = useState<Date>();
+  const [dateSelectedFinal2, setDateFin2] = useState<Date>();
+
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
 
@@ -100,46 +103,59 @@ export const Bandeja = (props: IDataSource) => {
 
   function onClickFiltrar(datos: String) {
     var allData = null;
+    if (datos == 'reciente') {
+      if (
+        dateSelectedInicial != undefined &&
+        dateSelectedFinal != undefined &&
+        dateSelectedInicial.toString() != 'Invalid Date' &&
+        dateSelectedFinal.toString() != 'Invalid Date'
+      ) {
+        const datosusuariofecha = datosusuario?.filter(function (f) {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
 
-    if (
-      dateSelectedInicial != undefined &&
-      dateSelectedFinal != undefined &&
-      dateSelectedInicial.toString() != 'Invalid Date' &&
-      dateSelectedFinal.toString() != 'Invalid Date'
-    ) {
-      console.log('entro FECHA I ' + dateSelectedInicial.toString() + ' FINAL ' + dateSelectedFinal.toString());
-      const datosusuariofecha = datosusuario?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
-      });
-      const datosinterfecha = data?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
-      });
+        });
 
-      const datossolucionadosfecha = datossolucionados?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
-      });
+        console.log('entro FECHA I ' + dateSelectedInicial.toString() + ' FINAL ' + dateSelectedFinal.toString());
 
-      const datosnotificacionfecha = notificaciones?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
-      });
+        //setDataInter(datosinterfecha);
+        //setDataSolucionado(datossolucionados);
+        setDataUsuario(datosusuariofecha);
+      } else {
+        Swal.fire({
+          title: 'Fecha invalida',
+          text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione el rango',
 
-      const datoshistoricofecha = historico?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
-      });
-
-      setDataInter(datosinterfecha);
-      setDataSolucionado(datossolucionados);
-      setDataUsuario(datosusuariofecha);
-      setnotificaciones(datosnotificacionfecha);
-      sethistoriconotificaciones(datoshistoricofecha);
+          icon: 'error'
+        });
+      }
     } else {
-      Swal.fire({
-        title: 'Fecha invalida',
-        text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione el rango',
+      if (
+        dateSelectedInicial2 != undefined &&
+        dateSelectedFinal2 != undefined &&
+        dateSelectedInicial2.toString() != 'Invalid Date' &&
+        dateSelectedFinal2.toString() != 'Invalid Date'
+      ) {
+        const datossolucionadosfecha = datossolucionados?.filter(function (f) {
+          var datFecha = new Date(f.fechaSolicitud);
+          console.log("🚀 ~ file: Bandeja.tsx ~ line 113 ~ datosusuariofecha ~ datFecha", datFecha.toDateString())
+          console.log("🚀 ~ file: Bandeja.tsx ~ line 115 ~ datosusuariofecha ~ dateSelectedInicial", dateSelectedInicial2.toDateString())
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial2 && new Date(f.fechaSolicitud) < dateSelectedFinal2;
+        });
 
-        icon: 'error'
-      });
+        console.log('entro FECHA I ' + dateSelectedInicial2.toString() + ' FINAL ' + dateSelectedFinal2.toString());
+
+        //setDataInter(datosinterfecha);
+        setDataSolucionado(datossolucionadosfecha);
+      } else {
+        Swal.fire({
+          title: 'Fecha invalida',
+          text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione el rango',
+
+          icon: 'error'
+        });
+      }
     }
+
 
     console.log('TODOS');
     allData = datosusuario?.filter(function (f) {
@@ -729,7 +745,7 @@ export const Bandeja = (props: IDataSource) => {
             props: {
               style: { background: color }
             },
-            children: <div>{}</div>
+            children: <div>{ }</div>
           };
         }
       }
@@ -967,6 +983,8 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
+                                            var seleccionIni = new Date(moment(date).format('MM-DD-YYYY'));
+                                            console.log("🚀 ~ file: Bandeja.tsx ~ line 982 ~ Bandeja ~ seleccionIni", seleccionIni.toString());
                                             setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
                                           }}
                                         />
@@ -982,7 +1000,9 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            var seleccion = new Date(moment(date).format('MM-DD-YYYY'));
+                                            console.log("🚀 ~ file: Bandeja.tsx ~ line 997 ~ Bandeja ~ seleccion", seleccion.toString());
+                                            setDateFin(new Date(moment(date).add(1, 'day').format('MM-DD-YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1043,7 +1063,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni2(new Date(moment(date).format('MM-DD-YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1058,7 +1078,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin2(new Date(moment(date).add(1, 'day').format('MM-DD-YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1066,7 +1086,7 @@ export const Bandeja = (props: IDataSource) => {
                                         <Button
                                           type='primary'
                                           key={`filtrarReciente`}
-                                          onClick={() => onClickFiltrar('reciente')}
+                                          onClick={() => onClickFiltrar('solucionado')}
                                           style={{ marginRight: '8px' }}
                                           icon={<CheckOutlined />}
                                         >
