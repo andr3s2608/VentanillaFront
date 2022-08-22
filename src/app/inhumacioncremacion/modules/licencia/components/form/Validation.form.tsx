@@ -544,6 +544,45 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           );
           notificarCementerio(datosDinamicosCementerio, emailCementerio, licencia, resumenSolicitud[0]['numeroLicencia']);
           notificarFuneraria(datosDinamicosFuneraria, emailFuneraria, licencia, resumenSolicitud[0]['numeroLicencia']);
+
+          const urlToFile = async (url: string, filename: string, mimeType: any) => {
+            const res = await fetch(url);
+            const buf = await res.arrayBuffer();
+            return new File([buf], filename, { type: mimeType });
+          };
+
+          (async () => {
+            const file = await urlToFile('data:application/pdf;base64,' + licencia, 'licencia', 'application/pdf');
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append(
+              'nameFile',
+              'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia']
+            );
+
+            let contenedor: string = 'contenedor';
+
+            switch (valor) {
+              case 'Inhumacion Individual':
+                contenedor = 'inhumacionindividual';
+                break;
+              case 'Inhumacion Fetal':
+                contenedor = 'inhumacionfetal';
+                break;
+              case 'Cremacion Individual':
+                contenedor = 'cremacionindividual';
+                break;
+              case 'Cremacion Fetal ':
+                contenedor = 'cremacionfetal';
+                break;
+            }
+
+            formData.append('containerName', contenedor);
+            formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
+            await api.uploadFiles(formData);
+            //console.log(file);
+          })();
         } else {
           let datosDinamicosGenericos = [
             solicitud[0]['razonSocialSolicitante'],
