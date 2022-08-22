@@ -89,7 +89,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       filtroFecha = allData.filter(function (f) {
         // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
 
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
       });
       input = true;
     } else {
@@ -232,7 +232,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 className='form-control'
                 onChange={(date) => {
                   setVisibleAlert(false);
-                  setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                  setDateFin(new Date(moment(date).add(1, 'day').format('MM-DD-YYYY')));
                 }}
               />
             </div>
