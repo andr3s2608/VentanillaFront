@@ -139,7 +139,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
   return (
     <div className='fadeInTop container-fluid'>
-      <Tabs style={{ width: 2000 }}>
+      <Tabs>
         {bandeja ? (
           <Bandeja
             data={grid}
