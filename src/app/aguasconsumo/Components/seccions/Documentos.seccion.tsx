@@ -68,9 +68,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
-      const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
+      //const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
 
-      setrechazados(documentosrechazados);
+      //setrechazados(documentosrechazados);
 
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
@@ -101,8 +101,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         }
         inserto = false;
       }
-      console.log(ordenadotabla);
-      console.log(ordenadocompleto);
+
 
       setconsultararchivos(ordenadotabla);
       const stateDocumentSupportList: IStateDocumentSupport[] = [];
@@ -158,8 +157,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         if (ordenadocompleto[index] === undefined) {
           array.push(undefined);
         } else {
-          console.log(ordenadocompleto[index])
-          console.log(ordenadocompleto[index].esValido)
+
           if (ordenadocompleto[index].esValido) {
             let posicion_ = 0;
 
@@ -190,11 +188,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         }
 
       }
-      console.log('local', array);
       localStorage.setItem('documentosiniciales', JSON.stringify(array));
       setguardararchivos(array);
       if (prop != null) {
-        console.log('entro')
+
         prop(array);
       }
       setguardararchivostabla(arraytabla);

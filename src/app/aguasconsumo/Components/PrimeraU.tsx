@@ -103,13 +103,13 @@ export const PrimeraU = () => {
         let descripcionsistema = 0;
         let analisisriesgo = 0;
         for (let index = 0; index < documento.length; index++) {
-          console.log(documento)
+
           if (documento[index] != undefined) {
             if (
               documento[index].id.toUpperCase() === '79572C8A-FFFE-440B-BE57-049B42B655A1' ||
               documento[index].id.toUpperCase() === 'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346'
             ) {
-              console.log('agua')
+
               aguacruda++;
             }
             if (
@@ -117,14 +117,14 @@ export const PrimeraU = () => {
               documento[index].id.toUpperCase() === '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0' ||
               documento[index].id.toUpperCase() === '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
             ) {
-              console.log('descripcion')
+
               descripcionsistema++;
             }
             if (
               documento[index].id.toUpperCase() === 'B54F609C-02A3-42A0-B43C-02E055447EF7' ||
               documento[index].id.toUpperCase() === 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
             ) {
-              console.log('analisis')
+
               analisisriesgo++;
             }
           }
@@ -231,20 +231,19 @@ export const PrimeraU = () => {
           const documentosiniciales: any = localStorage.getItem('documentosiniciales');
           const documentosjson = JSON.parse(documentosiniciales);
 
-          console.log(documentosjson)
-          console.log(documento)
+
 
           const supportDocumentsRejected: any[] = [];
           for (let index = 0; index < documentosjson.length; index++) {
             if (documentosjson[index] != null) {
               let cargo = false;
-              console.log(documentosjson[index].iddocumento);
+
               for (let index2 = 0; index2 < documento.length; index2++) {
 
                 if (documento[index2] != undefined) {
-                  console.log(documento[index2].iddocumento);
+
                   if (documento[index2].iddocumento.toUpperCase() === documentosjson[index].iddocumento.toUpperCase()) {
-                    console.log('esvalido')
+
                     cargo = true;
                     break;
                   }
@@ -252,8 +251,7 @@ export const PrimeraU = () => {
 
               }
               if (cargo == false) {
-                console.log('entro rechazados')
-                console.log(documentosjson[index].iddocumento)
+
                 supportDocumentsRejected.push({
                   idSolicitud: objJson.idsolicitud,
                   idTipoDocumentoAdjunto: documentosjson[index].id,
@@ -310,7 +308,7 @@ export const PrimeraU = () => {
 
 
           if (supportDocumentsRejected.length > 0) {
-            console.log('modifico rechazados')
+
             const bdrejec = await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
           }
           const valor = await api.AddSolicitudConsecion(json);
@@ -343,8 +341,7 @@ export const PrimeraU = () => {
     setinformacion(value);
   };
   const adddocumento = (value: any) => {
-    console.log('entro')
-    console.log(value);
+
     let va = 0;
     setdocumento(value);
     for (let index = 0; index < value.length; index++) {
