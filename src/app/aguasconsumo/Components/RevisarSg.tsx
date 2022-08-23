@@ -138,7 +138,9 @@ export const RevisarSg = () => {
             idSolicitud: objJson.idsolicitud,
             idTipoDocumentoAdjunto: '96D00032-4B60-4027-AFEA-0CC7115220B4',
             path: `${objJson.idusuario}/Documentos_Asociados_${objJson.idsolicitud}`,
-            idUsuario: objJson.idusuario
+            idUsuario: objJson.idusuario,
+            idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+            esValido: true
           });
         }
       });
