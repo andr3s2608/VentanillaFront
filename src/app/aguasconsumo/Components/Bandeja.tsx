@@ -1092,9 +1092,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            var seleccionIni = new Date(moment(date).format('MM-DD-YYYY'));
-
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1109,9 +1107,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            var seleccion = new Date(moment(date).format('MM-DD-YYYY'));
-
-                                            setDateFin(new Date(moment(date).add(1, 'day').format('MM-DD-YYYY')));
+                                            setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1172,7 +1168,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1187,7 +1183,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                           }}
                                         />
                                       </Form.Item>
@@ -1235,7 +1231,7 @@ export const Bandeja = (props: IDataSource) => {
                                               style={{ width: 300 }}
                                               className='form-control'
                                               onChange={(date) => {
-                                                setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                                setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                               }}
                                             />
                                           </Form.Item>
@@ -1250,7 +1246,7 @@ export const Bandeja = (props: IDataSource) => {
                                               style={{ width: 300 }}
                                               className='form-control'
                                               onChange={(date) => {
-                                                setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                                setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                               }}
                                             />
                                           </Form.Item>
@@ -1339,7 +1335,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1354,7 +1350,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                           }}
                                         />
                                       </Form.Item>
@@ -1427,7 +1423,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1442,7 +1438,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                           }}
                                         />
                                       </Form.Item>
