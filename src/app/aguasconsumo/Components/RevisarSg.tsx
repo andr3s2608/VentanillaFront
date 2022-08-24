@@ -405,6 +405,7 @@ export const RevisarSg = () => {
                         </>
                       )}
 
+
                       <div id='accordion' className='mt-3'>
                         <div className='card'>
                           <div className='card-header' id='heading-2'>

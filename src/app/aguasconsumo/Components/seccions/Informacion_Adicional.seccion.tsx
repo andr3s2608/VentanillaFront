@@ -530,7 +530,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
 
               <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item name='numero2' rules={[{ required: false }]}>
+                <Form.Item label='Rural' name='numero1' rules={[{ required: false }]}>
                   <Input
                     style={{ width: '350px', marginLeft: '-46px' }}
                     type='text'
@@ -547,7 +547,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item name='numero2' rules={[{ required: false }]}>
+                <Form.Item label='Urbano' name='numero2' rules={[{ required: false }]}>
                   <Input
                     style={{ width: '350px', marginLeft: '28px' }}
                     type='text'
@@ -571,7 +571,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
 
               <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item name='poblacion1' rules={[{ required: false }]}>
+                <Form.Item label='Rural' name='poblacion1' rules={[{ required: false }]}>
                   <Input
                     style={{ width: '350px', marginLeft: '-46px' }}
                     type='text'
@@ -588,7 +588,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item name='poblacion2' rules={[{ required: false }]}>
+                <Form.Item label='Urbano' name='poblacion2' rules={[{ required: false }]}>
                   <Input
                     style={{ width: '350px', marginLeft: '28px' }}
                     type='text'
