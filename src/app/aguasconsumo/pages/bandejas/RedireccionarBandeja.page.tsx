@@ -120,8 +120,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
           setnotificaciones(filtradonotificaciones);
           sethistoriconotificaciones(filtrado);
           setdatosusuario(filtradodatos);
-          console.log(filtradonotificaciones);
-          console.log(filtrado);
+
           const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');
 
           setGrid(resp);

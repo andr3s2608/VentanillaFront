@@ -32,6 +32,8 @@ export const Bandeja = (props: IDataSource) => {
   const [dateSelectedInicial, setDateIni] = useState<Date>();
   const [dateSelectedFinal, setDateFin] = useState<Date>();
 
+  const [filtroactual, setfiltroactual] = useState<String>('');
+
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
 
@@ -56,8 +58,6 @@ export const Bandeja = (props: IDataSource) => {
       const rolesstorage: any = localStorage.getItem('roles');
       const subredes = await api.getSubredes();
       localStorage.setItem('subredes', JSON.stringify(subredes));
-      console.log(datosusuario);
-      console.log(notificaciones);
 
       const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
@@ -89,7 +89,7 @@ export const Bandeja = (props: IDataSource) => {
   );
 
   useEffect(() => {
-    //console.log('DATA RECIBIDA \n ' + JSON.stringify(data));
+
     setDataInter(data);
     setDataUsuario(datosusuario);
     setDataSolucionado(datossolucionados);
@@ -99,36 +99,91 @@ export const Bandeja = (props: IDataSource) => {
   }, []);
 
   function onClickFiltrar(datos: String) {
-    var allData = null;
 
+    let datossinfiltrar = false;
+
+
+    ///datos
+
+    if (value === '') {
+      datossinfiltrar = true;
+
+    }
+    var allData = null;
     if (
       dateSelectedInicial != undefined &&
       dateSelectedFinal != undefined &&
       dateSelectedInicial.toString() != 'Invalid Date' &&
       dateSelectedFinal.toString() != 'Invalid Date'
     ) {
-      console.log('entro FECHA I ' + dateSelectedInicial.toString() + ' FINAL ' + dateSelectedFinal.toString());
-      const datosusuariofecha = datosusuario?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
-      });
+
+
+
+
       const datosinterfecha = data?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+
+        if (datossinfiltrar) {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return (
+            f.numeroRadicado.toString().includes(value) &&
+            (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
+          );
+        }
       });
 
       const datossolucionadosfecha = datossolucionados?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+        if (datossinfiltrar) {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return (
+            f.numeroRadicado.toString().includes(value) &&
+            (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
+          );
+        }
+      });
+
+      const datosusuariofecha = datosusuario?.filter(function (f) {
+        if (datossinfiltrar) {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return (
+            f.numeroRadicado.toString().includes(value) &&
+            (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
+          );
+        }
+
       });
 
       const datosnotificacionfecha = notificaciones?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+        if (datossinfiltrar) {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return (
+            f.numeroRadicado.toString().includes(value) &&
+            (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
+          );
+        }
       });
 
       const datoshistoricofecha = historico?.filter(function (f) {
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+        if (datossinfiltrar) {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return (
+            f.numeroRadicado.toString().includes(value) &&
+            (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
+          );
+        }
       });
 
       setDataInter(datosinterfecha);
-      setDataSolucionado(datossolucionados);
+      setDataSolucionado(datossolucionadosfecha);
       setDataUsuario(datosusuariofecha);
       setnotificaciones(datosnotificacionfecha);
       sethistoriconotificaciones(datoshistoricofecha);
@@ -141,7 +196,7 @@ export const Bandeja = (props: IDataSource) => {
       });
     }
 
-    console.log('TODOS');
+
     allData = datosusuario?.filter(function (f) {
       return true;
     });
@@ -187,7 +242,7 @@ export const Bandeja = (props: IDataSource) => {
       array = data;
       arrayusuario = datosusuario;
       arraynotificacion = notificaciones;
-      //console.log('entro', arraynotificacion);
+
     }
 
     if (arraynotificacion.length > 0) {
@@ -216,7 +271,7 @@ export const Bandeja = (props: IDataSource) => {
           const fechamod = arraynotificacion[index].fechaSolicitud;
           const fechaprueb2 = moment(fechamod);
           const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
-          //console.log(moment(fechaactual).diff(fechaprueb2, 'days'), ' dias de diferencia');
+
 
           if (diaspasados < diasproceso / 2 - 1) {
             color = 'lightgreen';
@@ -263,7 +318,6 @@ export const Bandeja = (props: IDataSource) => {
           const fechamod = arrayusuario[index].fechaSolicitud;
           const fechaprueb2 = moment(fechamod);
           const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
-          //console.log(moment(fechaactual).diff(fechaprueb2, 'days'), ' dias de diferencia');
 
           if (diaspasados < diasproceso / 2 - 1) {
             color = 'lightgreen';
@@ -309,7 +363,7 @@ export const Bandeja = (props: IDataSource) => {
         }
         const fechaprueb2 = moment(fechamod);
         const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
-        //console.log(moment(fechaactual).diff(fechaprueb2, 'days'), ' dias de diferencia');
+
 
         if (diaspasados < diasproceso / 2 - 1) {
           color = 'lightgreen';
@@ -334,9 +388,22 @@ export const Bandeja = (props: IDataSource) => {
     }
   };
 
+  const resetfecha = () => {
+    setValue('');
+    setDateIni(undefined);
+    setDateFin(undefined);
+
+
+    setDataSolucionado(datossolucionados);
+    setDataInter(data);
+    setDataUsuario(datosusuario);
+    setnotificaciones(notificaciones);
+
+    form.resetFields(['fechainicial', 'fechafinal']);
+  };
+
   //resetear filtros
   const resetdata = () => {
-    console.log('entro');
     setValue('');
     setDateIni(undefined);
     setDateFin(undefined);
@@ -345,6 +412,7 @@ export const Bandeja = (props: IDataSource) => {
     setDataInter(data);
     setDataUsuario(datosusuario);
     setnotificaciones(notificaciones);
+    sethistoriconotificaciones(historico);
 
     form.resetFields(['fechainicial', 'fechafinal']);
   };
@@ -353,6 +421,9 @@ export const Bandeja = (props: IDataSource) => {
   const FilterByNameInput = (tipo: string) => {
     let array: any[] = [];
     let arraysolucionados: any[] = [];
+    let fecha = false;
+    let fechain = new Date();
+    let fechafin = new Date();
 
     let arrayusuario: any[] = [];
     arraysolucionados = datossolucionados;
@@ -363,38 +434,92 @@ export const Bandeja = (props: IDataSource) => {
       array = data;
       arrayusuario = datosusuario;
     }
+    if (
+      dateSelectedInicial != undefined &&
+      dateSelectedFinal != undefined &&
+      dateSelectedInicial.toString() != 'Invalid Date' &&
+      dateSelectedFinal.toString() != 'Invalid Date'
+    ) {
+      fechain = dateSelectedInicial;
+      fechafin = dateSelectedFinal;
+      fecha = true;
+    }
+
+
+
     return (
       <Input
-        placeholder='Nro'
+        placeholder='Nro. de Radicado'
         value={value}
         onChange={(e) => {
           const currValue: string = e.target.value;
-          console.log(currValue);
+
           setValue(currValue);
-          console.log(notificaciones);
+
+
+
+
           if (tipo == 'normal') {
             const filteredData: any = array.filter((datos: any) => {
-              return datos.numeroRadicado.toString().includes(currValue);
+              if (fecha) {
+                return (
+                  datos.numeroRadicado.toString().includes(currValue) &&
+                  (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
+                );
+
+              }
+              else {
+                return datos.numeroRadicado.toString().includes(currValue);
+              }
             });
 
             if (coordinador == 'Funcionario') {
               setDataUsuario(filteredData);
             } else {
               const filteredData3: any = arrayusuario.filter((datos: any) => {
-                return datos.numeroRadicado.toString().includes(currValue);
+                if (fecha) {
+                  return (
+                    datos.numeroRadicado.toString().includes(currValue) &&
+                    (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
+                  );
+
+                }
+                else {
+                  return datos.numeroRadicado.toString().includes(currValue);
+                }
+
               });
               setDataInter(filteredData);
               setDataUsuario(filteredData3);
             }
 
             const filteredData2: any = arraysolucionados.filter((datos: any) => {
-              return datos.numeroRadicado.toString().includes(currValue);
+              if (fecha) {
+                return (
+                  datos.numeroRadicado.toString().includes(currValue) &&
+                  (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
+                );
+
+              }
+              else {
+                return datos.numeroRadicado.toString().includes(currValue);
+              }
+
             });
 
             setDataSolucionado(filteredData2);
           } else {
             const filteredDatanotificacion: any = notificaciones.filter((datos: any) => {
-              return datos.numeroRadicado.toString().includes(currValue);
+              if (fecha) {
+                return (
+                  datos.numeroRadicado.toString().includes(currValue) &&
+                  (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
+                );
+
+              }
+              else {
+                return datos.numeroRadicado.toString().includes(currValue);
+              }
             });
             setnotificaciones(filteredDatanotificacion);
           }
@@ -634,29 +759,29 @@ export const Bandeja = (props: IDataSource) => {
       },
       {
         title: 'Validador',
-        dataIndex: 'idSubred',
-        key: 'idSubred',
+        dataIndex: 'nombreSubred',
+        key: 'nombreSubred',
         filters: [
           {
             text: 'Subred Centro Oriente E.S.E.',
-            value: 'Oriente'
+            value: 'Subred Integrada de Servicios de Salud Centro Oriente E.S.E. '
           },
           {
             text: 'Subred Norte E.S.E.',
-            value: 'Norte'
+            value: 'Subred Integrada de Servicios de Salud Norte E.S.E. '
           },
           {
             text: 'Subred Sur E.S.E.',
-            value: 'Sur E.S.E.'
+            value: 'Subred integrada de Servicios de Salud Sur E.S.E. '
           },
           {
             text: 'Subred Sur Occidente E.S.E.',
-            value: 'Occidente'
+            value: 'Subred integrada de Servicios de Salud Sur Occidente E.S.E. '
           }
         ],
         filterSearch: true,
 
-        onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
+        onFilter: (value: string, record: { nombreSubred: string }) => record.nombreSubred.toString().includes(value),
         render(text: any, record: any) {
           return {
             props: {
@@ -729,7 +854,7 @@ export const Bandeja = (props: IDataSource) => {
             props: {
               style: { background: color }
             },
-            children: <div>{}</div>
+            children: <div>{ }</div>
           };
         }
       }
@@ -967,7 +1092,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -982,7 +1107,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1043,7 +1168,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1058,7 +1183,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                           }}
                                         />
                                       </Form.Item>
@@ -1066,7 +1191,7 @@ export const Bandeja = (props: IDataSource) => {
                                         <Button
                                           type='primary'
                                           key={`filtrarReciente`}
-                                          onClick={() => onClickFiltrar('reciente')}
+                                          onClick={() => onClickFiltrar('solucionado')}
                                           style={{ marginRight: '8px' }}
                                           icon={<CheckOutlined />}
                                         >
@@ -1106,7 +1231,7 @@ export const Bandeja = (props: IDataSource) => {
                                               style={{ width: 300 }}
                                               className='form-control'
                                               onChange={(date) => {
-                                                setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                                setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                               }}
                                             />
                                           </Form.Item>
@@ -1121,7 +1246,7 @@ export const Bandeja = (props: IDataSource) => {
                                               style={{ width: 300 }}
                                               className='form-control'
                                               onChange={(date) => {
-                                                setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                                setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                               }}
                                             />
                                           </Form.Item>
@@ -1210,7 +1335,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1225,7 +1350,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                           }}
                                         />
                                       </Form.Item>
@@ -1298,7 +1423,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
@@ -1313,7 +1438,7 @@ export const Bandeja = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
                                           }}
                                         />
                                       </Form.Item>

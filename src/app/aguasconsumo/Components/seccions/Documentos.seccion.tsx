@@ -28,6 +28,7 @@ import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicenc
 import { Button, Radio, Table, Upload } from 'antd';
 import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { arch } from 'os';
+import { stringify } from 'querystring';
 
 export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const { obj, prop, tipo } = props;
@@ -89,8 +90,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         for (let index2 = 0; index2 < filter.length; index2++) {
           if (filter[index2].idTipoDocumentoAdjunto.toLocaleUpperCase() === orden[index]) {
             const documento = filter[index2];
-            ordenadotabla.push({ documento, posicion: index + 1, path: documento.path });
-            ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path });
+            ordenadotabla.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
+            ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
             inserto = true;
             break;
           }
@@ -101,58 +102,20 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         inserto = false;
       }
 
+
       setconsultararchivos(ordenadotabla);
       const stateDocumentSupportList: IStateDocumentSupport[] = [];
       const arraytabla: any[] = [];
       //para llenar el array de los documentos que se mostrara en la tabla de abajo
       for (let index = 0; index < ordenadotabla.length; index++) {
-        let posicion_ = 0;
+        if (ordenadotabla[index].esValido) {
 
-        const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
-        const path = ordenadotabla[index].documento.path;
-        const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
 
-        for (let index2 = 0; index2 < path.length; index2++) {
-          if (path.substring(index2, index2 + 1) == '_') {
-            posicion_ = index2;
-          }
-        }
-
-        var cadena = path.substring(posicioninicial + 1, posicion_);
-
-        arraytabla.push({
-          posicion: ordenadotabla[index].posicion,
-          nombre: cadena,
-          valor: cadena,
-          id: idtipo,
-          subida: 'nube',
-          path: path
-        });
-
-        stateDocumentSupportList.push({
-          posicion: ordenadotabla[index].posicion,
-          idSolicitud: obj.idsolicitud,
-          idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
-          path: path,
-          observaciones: 'default',
-          estadoDocumento: CUMPLE_DOCUMENT,
-          tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
-        });
-      }
-
-      store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
-
-      //para llenar el array de los documentos
-      const array: any[] = [];
-      for (let index = 0; index < ordenadocompleto.length; index++) {
-        if (ordenadocompleto[index] === undefined) {
-          array.push(undefined);
-        } else {
           let posicion_ = 0;
 
-          const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
-          const path = ordenadocompleto[index].documento.path;
-          const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+          const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
+          const path = ordenadotabla[index].documento.path;
+          const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
 
           for (let index2 = 0; index2 < path.length; index2++) {
             if (path.substring(index2, index2 + 1) == '_') {
@@ -162,19 +125,73 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
           var cadena = path.substring(posicioninicial + 1, posicion_);
 
-          array.push({
-            posicion: ordenadocompleto[index].posicion,
+          arraytabla.push({
+            posicion: ordenadotabla[index].posicion,
             nombre: cadena,
             valor: cadena,
             id: idtipo,
             subida: 'nube',
             path: path
           });
+
+          stateDocumentSupportList.push({
+            posicion: ordenadotabla[index].posicion,
+            idSolicitud: obj.idsolicitud,
+            idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
+            path: path,
+            observaciones: 'default',
+            estadoDocumento: CUMPLE_DOCUMENT,
+            tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
+          });
         }
       }
 
+      store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
+
+      //para llenar el array de los documentos
+      const array: any[] = [];
+      for (let index = 0; index < ordenadocompleto.length; index++) {
+
+
+
+        if (ordenadocompleto[index] === undefined) {
+          array.push(undefined);
+        } else {
+
+          if (ordenadocompleto[index].esValido) {
+            let posicion_ = 0;
+
+            const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
+            const path = ordenadocompleto[index].documento.path;
+            const iddocumento = ordenadocompleto[index].documento.idDocumentoAdjunto;
+            const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+
+            for (let index2 = 0; index2 < path.length; index2++) {
+              if (path.substring(index2, index2 + 1) == '_') {
+                posicion_ = index2;
+              }
+            }
+
+            var cadena = path.substring(posicioninicial + 1, posicion_);
+
+            array.push({
+              posicion: ordenadocompleto[index].posicion,
+              nombre: cadena,
+              valor: cadena,
+              id: idtipo,
+              esvalido: true,
+              subida: 'nube',
+              path: path,
+              iddocumento: iddocumento
+            });
+          }
+        }
+
+      }
+      localStorage.setItem('documentosiniciales', JSON.stringify(array));
       setguardararchivos(array);
       if (prop != null) {
+
         prop(array);
       }
       setguardararchivostabla(arraytabla);
@@ -257,7 +274,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     setarchivocargado(value);
   };
   const onChange = (value: any) => {
-    console.log('entro check');
     var nombre: string = value.target.id;
 
     var posicion: number = parseInt(nombre.substring(8, 9));
@@ -279,9 +295,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   };
 
   const insertarArchivo = async () => {
-    console.log('entro');
-    console.log(archivos);
-    console.log(guardararchivos);
     const archivo = archivocargado;
 
     const array: any[] = [];
@@ -291,9 +304,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     for (let index = 0; index < archivos.length; index++) {
       props.form.resetFields([`checkbox${index}`]);
       if (archivos[index] == '1') {
-        console.log('entro 1');
         if (guardararchivos[index] != undefined) {
-          console.log('entro vacio');
           array.push(guardararchivos[index]);
           arraytabla.push(guardararchivos[index]);
         } else {
@@ -304,6 +315,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             path: '/' + acueducto[index].nombre + '_',
             id: acueducto[index].id,
             archivo: archivo,
+            esvalido: true,
+            iddocumento: null,
             subida: 'local'
           });
           arraytabla.push({
@@ -327,8 +340,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       posicion++;
     }
-    console.log(array);
-    console.log(arraytabla);
 
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);
@@ -341,14 +352,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     cargardatos();
   };
 
-  let posicionrechazados = 0;
+
   const documentosrechazados = (id: string) => {
     let esrechazado = false;
     for (let index = 0; index < rechazados.length; index++) {
-      if (id === rechazados[index].idDocumentoAdjunto) {
+      if (id === rechazados[index].idTipoDocumentoAdjunto) {
         esrechazado = true;
       }
     }
+
     return esrechazado;
   };
   let posicionform = -1;
@@ -514,7 +526,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
-          if (obj?.tipodeSolicitud === 'Subsanacion') {
+          if (obj?.tipodeSolicitud != 'Subsanacion') {
             return (
               <>
                 <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />

@@ -154,7 +154,9 @@ export const RevisarSv = () => {
         idSolicitud: objJson.idsolicitud,
         idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
         path: `${objJson.idusuario}/Documento_revision_${objJson.idsolicitud}`,
-        idUsuario: objJson.idusuario
+        idUsuario: objJson.idusuario,
+        idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+        esValido: true
       });
 
       formData.append('containerName', 'aguahumanos');
