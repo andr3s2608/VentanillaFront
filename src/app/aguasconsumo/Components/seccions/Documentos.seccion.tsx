@@ -526,7 +526,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
-          if (obj?.tipodeSolicitud != 'Subsanacion') {
+          if (obj?.tipodeSolicitud === 'Subsanacion') {
             return (
               <>
                 <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />

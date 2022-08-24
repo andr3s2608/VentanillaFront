@@ -1136,6 +1136,7 @@ export const Bandeja = (props: IDataSource) => {
                                       <>
                                         <Table
                                           id='tableGen'
+                                          scroll={{ y: 240 }}
                                           dataSource={dataUsuario}
                                           columns={structureColumns}
                                           pagination={{ pageSize: Paginas }}
@@ -1146,6 +1147,7 @@ export const Bandeja = (props: IDataSource) => {
                                     {coordinador != 'Funcionario' && (
                                       <>
                                         <Table
+                                          scroll={{ y: 240 }}
                                           id='tableGen'
                                           dataSource={dataInter}
                                           columns={structureColumns}
@@ -1209,6 +1211,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='row'>
                                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                     <Table
+                                      scroll={{ y: 240 }}
                                       id='tableGen2'
                                       dataSource={dataSolucionado}
                                       columns={structureColumns}
@@ -1272,6 +1275,7 @@ export const Bandeja = (props: IDataSource) => {
                                     <div className='row'>
                                       <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                         <Table
+                                          scroll={{ y: 240 }}
                                           id='tableGen3'
                                           dataSource={dataUsuario}
                                           columns={structureColumns}
@@ -1376,6 +1380,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='row'>
                                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                     <Table
+                                      scroll={{ y: 240 }}
                                       id='tablenot'
                                       dataSource={datanotificaciones}
                                       columns={structureColumnsnotificacion}
@@ -1464,6 +1469,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='row'>
                                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                     <Table
+                                      scroll={{ y: 240 }}
                                       id='tablehistnot'
                                       dataSource={datahistoriconotificaciones}
                                       columns={structureColumnsnotificacionhistorico}

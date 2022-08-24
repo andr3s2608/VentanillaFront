@@ -32,6 +32,7 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [validacioninfo, setvalidacioninfo] = useState<any>(false);
+  const [rolusuario, setrol] = useState<any>('');
 
   const sidenav = useSelector<AppState, boolean>((state) => state.ui.sidenav);
   const dispatch = useDispatch();
@@ -41,6 +42,11 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
       const infouser: any = localStorage.getItem('infouser');
       const info: any = JSON.parse(infouser);
 
+      const roles: any = localStorage.getItem('roles');
+      const rol: any = JSON.parse(roles);
+      const [permiso] = rol;
+
+      setrol(permiso.rol);
       if (info == undefined) {
         setvalidacioninfo(name);
       } else {
@@ -105,6 +111,7 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
         <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
             <b className='text-primary'>{validacioninfo}</b>
+
           </span>
         </span>
         <Menu className='bg-transparent' theme='dark' mode='horizontal'>

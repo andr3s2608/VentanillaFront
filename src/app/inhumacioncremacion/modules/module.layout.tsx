@@ -79,13 +79,11 @@ export const ModuleLayout = (props: { logout: () => void }) => {
 
       //Hasta que se publiquen las APIs
 
-      /*
       const politicaSeguridad = await api.getPoliticaSeguridad(idUsuario);
 
       if (politicaSeguridad == null) {
         setBanderaPolicaSeguridad(true);
       }
-      */
 
       dispatch(SetApplicationMenu(menu));
       await api.AddUser({
@@ -160,7 +158,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
       <>
         {banderaPolicaSeguridad ? (
           <ModalComponent
-            visible={false}
+            visible={banderaPolicaSeguridad}
             className='Política text-center'
             title={`Política protección de datos personales`}
             cancelButtonProps={{ hidden: true }}
