@@ -544,6 +544,15 @@ export class ApiService {
       id: '0'
     });
 
+  UpdateSupportDocumentsAguas = (payload: any[]) =>
+    put({
+      endpoint: REACT_APP_LOCAL as string,
+      url: 'SupportDocuments/UpdateSuport',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
+
   AddEstadoDocumentoSoporte = (payload: any[]) =>
     post({
       /*endpoint: REACT_APP_AGUAS as string,*/
@@ -626,7 +635,7 @@ export class ApiService {
 
   getPoliticaSeguridad = (idUsuario: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `PoliticaSeguridad/GetPoliticaSeguridad/${idUsuario}`,
       id: '0'
     });
@@ -634,7 +643,7 @@ export class ApiService {
 
   AddPoliticaSeguridad = (payload: any) =>
     post({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: 'PoliticaSeguridad/AddPoliticaSeguridad',
       payload,
       confirmModal: false,

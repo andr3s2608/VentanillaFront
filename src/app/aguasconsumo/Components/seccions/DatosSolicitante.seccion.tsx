@@ -179,14 +179,15 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <>
         <section style={{ width: '100%' }}>
           <div className='container-fluid'>
-            <div className='form-row' style={{ marginLeft: '-30px' }}>
+            <div className='form-row' style={{ marginLeft: '-25px' }}>
               <div className='col-lg-12'>
                 <p className='text'>
                   {' '}
-                  <span className='required'>*</span> Tipo de Solicitante
+                  <span className='required'>*</span> Tipo de Solicitantes
                 </p>
                 <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
+
                     options={[
                       { key: 'natural', value: 'Persona Natural' },
                       { key: 'juridica', value: 'Persona Jurídica' }
@@ -196,8 +197,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     optionPropkey='key'
                     optionPropLabel='value'
                     disabled={modificar}
-                    className='personal'
-                    style={{ width: '780px' }}
+
+                    style={{ width: '360px', marginLeft: '11px' }}
                   />
                 </Form.Item>
               </div>
@@ -296,7 +297,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </div>
               </>
             ) : null}
-            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+            <div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
                   {' '}
@@ -308,11 +309,13 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   name='IDType'
                 >
                   <SelectComponent
+                    style={{ width: '360px' }}
                     options={l_tipos_documento}
                     onChange={cambiodocumento}
                     optionPropkey='id'
                     optionPropLabel='descripcion'
                     disabled={modificar}
+
                   />
                 </Form.Item>
               </div>
@@ -502,7 +505,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
                   <input
-                    style={{ width: '780px' }}
+                    style={{ width: '365px' }}
                     maxLength={50}
                     disabled={modificar}
                     type='text'
@@ -528,7 +531,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       <>
         <section style={{ width: '100%' }}>
           <div className='container-fluid'>
-            <div className='form-row' style={{ marginLeft: '-30px' }}>
+            <div className='form-row' style={{ marginLeft: '-20px' }}>
               <div className='col-lg-12'>
                 <p className='text'>
                   {' '}
@@ -536,6 +539,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
+                    style={{ width: '296px' }}
                     options={[
                       { key: 'natural', value: 'Persona Natural' },
                       { key: 'juridica', value: 'Persona Jurídica' }
@@ -545,7 +549,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     optionPropkey='key'
                     optionPropLabel='value'
                     disabled={true}
-                    className='personal'
+
                   />
                 </Form.Item>
               </div>
@@ -574,6 +578,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   name='IDType'
                 >
                   <SelectComponent
+                    style={{ width: '296px' }}
                     options={l_tipos_documento}
                     onChange={cambiodocumento}
                     optionPropkey='id'
@@ -768,7 +773,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
                   <input
-                    style={{ width: '885px' }}
+                    style={{ width: '296px' }}
                     maxLength={50}
                     disabled={true}
                     type='text'

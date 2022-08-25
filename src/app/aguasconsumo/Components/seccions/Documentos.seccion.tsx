@@ -28,6 +28,7 @@ import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicenc
 import { Button, Radio, Table, Upload } from 'antd';
 import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { arch } from 'os';
+import { stringify } from 'querystring';
 
 export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const { obj, prop, tipo } = props;
@@ -89,8 +90,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         for (let index2 = 0; index2 < filter.length; index2++) {
           if (filter[index2].idTipoDocumentoAdjunto.toLocaleUpperCase() === orden[index]) {
             const documento = filter[index2];
-            ordenadotabla.push({ documento, posicion: index + 1, path: documento.path });
-            ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path });
+            ordenadotabla.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
+            ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
             inserto = true;
             break;
           }
@@ -101,58 +102,20 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         inserto = false;
       }
 
+
       setconsultararchivos(ordenadotabla);
       const stateDocumentSupportList: IStateDocumentSupport[] = [];
       const arraytabla: any[] = [];
       //para llenar el array de los documentos que se mostrara en la tabla de abajo
       for (let index = 0; index < ordenadotabla.length; index++) {
-        let posicion_ = 0;
+        if (ordenadotabla[index].esValido) {
 
-        const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
-        const path = ordenadotabla[index].documento.path;
-        const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
 
-        for (let index2 = 0; index2 < path.length; index2++) {
-          if (path.substring(index2, index2 + 1) == '_') {
-            posicion_ = index2;
-          }
-        }
-
-        var cadena = path.substring(posicioninicial + 1, posicion_);
-
-        arraytabla.push({
-          posicion: ordenadotabla[index].posicion,
-          nombre: cadena,
-          valor: cadena,
-          id: idtipo,
-          subida: 'nube',
-          path: path
-        });
-
-        stateDocumentSupportList.push({
-          posicion: ordenadotabla[index].posicion,
-          idSolicitud: obj.idsolicitud,
-          idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
-          path: path,
-          observaciones: 'default',
-          estadoDocumento: CUMPLE_DOCUMENT,
-          tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
-        });
-      }
-
-      store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
-
-      //para llenar el array de los documentos
-      const array: any[] = [];
-      for (let index = 0; index < ordenadocompleto.length; index++) {
-        if (ordenadocompleto[index] === undefined) {
-          array.push(undefined);
-        } else {
           let posicion_ = 0;
 
-          const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
-          const path = ordenadocompleto[index].documento.path;
-          const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+          const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
+          const path = ordenadotabla[index].documento.path;
+          const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
 
           for (let index2 = 0; index2 < path.length; index2++) {
             if (path.substring(index2, index2 + 1) == '_') {
@@ -162,19 +125,73 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
           var cadena = path.substring(posicioninicial + 1, posicion_);
 
-          array.push({
-            posicion: ordenadocompleto[index].posicion,
+          arraytabla.push({
+            posicion: ordenadotabla[index].posicion,
             nombre: cadena,
             valor: cadena,
             id: idtipo,
             subida: 'nube',
             path: path
           });
+
+          stateDocumentSupportList.push({
+            posicion: ordenadotabla[index].posicion,
+            idSolicitud: obj.idsolicitud,
+            idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
+            path: path,
+            observaciones: 'default',
+            estadoDocumento: CUMPLE_DOCUMENT,
+            tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
+          });
         }
       }
 
+      store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
+
+      //para llenar el array de los documentos
+      const array: any[] = [];
+      for (let index = 0; index < ordenadocompleto.length; index++) {
+
+
+
+        if (ordenadocompleto[index] === undefined) {
+          array.push(undefined);
+        } else {
+
+          if (ordenadocompleto[index].esValido) {
+            let posicion_ = 0;
+
+            const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
+            const path = ordenadocompleto[index].documento.path;
+            const iddocumento = ordenadocompleto[index].documento.idDocumentoAdjunto;
+            const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+
+            for (let index2 = 0; index2 < path.length; index2++) {
+              if (path.substring(index2, index2 + 1) == '_') {
+                posicion_ = index2;
+              }
+            }
+
+            var cadena = path.substring(posicioninicial + 1, posicion_);
+
+            array.push({
+              posicion: ordenadocompleto[index].posicion,
+              nombre: cadena,
+              valor: cadena,
+              id: idtipo,
+              esvalido: true,
+              subida: 'nube',
+              path: path,
+              iddocumento: iddocumento
+            });
+          }
+        }
+
+      }
+      localStorage.setItem('documentosiniciales', JSON.stringify(array));
       setguardararchivos(array);
       if (prop != null) {
+
         prop(array);
       }
       setguardararchivostabla(arraytabla);
@@ -298,6 +315,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             path: '/' + acueducto[index].nombre + '_',
             id: acueducto[index].id,
             archivo: archivo,
+            esvalido: true,
+            iddocumento: null,
             subida: 'local'
           });
           arraytabla.push({
@@ -333,7 +352,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     cargardatos();
   };
 
-  let posicionrechazados = 0;
+
   const documentosrechazados = (id: string) => {
     let esrechazado = false;
     for (let index = 0; index < rechazados.length; index++) {
@@ -341,6 +360,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         esrechazado = true;
       }
     }
+
     return esrechazado;
   };
   let posicionform = -1;
@@ -578,7 +598,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       <section style={{ width: '100%' }}>
         <div className='container-fluid'>
           <div className='row mt-2'>
-            <div className='col-lg-7 col-md-7 col-sm-12'>
+            <div className='col-lg-12 col-md-12 col-sm-12'>
               <div className='check_d'>
                 <Table
                   scroll={{ y: 240 }}
@@ -593,12 +613,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 <br />
               </div>
             </div>
-            <div className='col-md-4 col-sm-12 col-lg-4 ml-5  justify-content-center text-center'>
+
+          </div>
+          <div className="row mt-3">
+            <div className='col-md-12 col-sm-12 col-lg-12' style={{ marginLeft: '160px' }}>
               {tipo != 'gestion' && (
                 <>
                   <div id='accordion' className='mt-3'>
                     <Button
-                      className=' button btn btn-default'
+                      className='button btn btn-default '
                       type='primary'
                       htmlType='button'
                       style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
@@ -614,10 +637,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
               <div id='accordion' className='mt-3'>
                 <Button
-                  className=' button btn btn-default'
+                  className=' button btn btn-default float-right'
                   type='primary'
                   htmlType='button'
-                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  style={{ width: '100px', backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                 >
                   ver archivo
                 </Button>
@@ -664,10 +687,11 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
             {tipo == 'gestion' && (
               <>
-                <div className='col-lg-12 col-md-12 col-sm-12'>
+                <div className='col-lg-12 col-md-12 col-sm-12' >
                   <label htmlFor=''>Observaciones</label>
                   <Form.Item label='' name='observacionesSubsanacion'>
-                    <Input.TextArea rows={5} maxLength={500} style={{ width: '100%' }} className='textarea' />
+                    <Input.TextArea rows={5} maxLength={500} className='textarea'
+                    />
                   </Form.Item>
                 </div>
               </>

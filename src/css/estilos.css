@@ -251,7 +251,7 @@ a.nav-link.hero_b {
   }
 
   .textarea {
-    width: 320px !important;
+    width: 620px !important;
   }
 
   .documents {
@@ -279,11 +279,6 @@ a.nav-link.hero_b {
 
 .prueba {
   margin-left: -8px !important;
-}
-
-.tarjeta {
-
-  height: 800px !important;
 }
 
 .bandeja_panel {
@@ -401,5 +396,9 @@ a.nav-link.hero_b {
 }
 
 .personal {
-  width: 900px !important;
+  width: 296px !important;
+}
+
+th>.ant-table-cell {
+  color: red !important;
 }

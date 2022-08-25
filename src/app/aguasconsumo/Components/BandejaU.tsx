@@ -45,6 +45,8 @@ export const BandejaU = (props: IDataSource) => {
       const subredes = await api.getSubredes();
       localStorage.setItem('subredes', JSON.stringify(subredes));
       setroles(JSON.parse(rolesstorage));
+      setDataInter(data);
+      setDataSolucionado(datossolucionados);
       setmostrar(true);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,8 +54,7 @@ export const BandejaU = (props: IDataSource) => {
   );
 
   useEffect(() => {
-    setDataInter(data);
-    setDataSolucionado(datossolucionados);
+
     getListas();
   }, []);
 
@@ -307,7 +308,7 @@ export const BandejaU = (props: IDataSource) => {
               <>
                 <Button
                   type='primary'
-                  key={`vali-${index}`}
+                  key={`vali`}
                   onClick={() => onClickValidarInformacion(row, 'tramite')}
                   style={{ marginRight: '8px' }}
                   icon={<CheckOutlined />}
@@ -318,7 +319,7 @@ export const BandejaU = (props: IDataSource) => {
                 {row.actividadActualSolicitud == 'En visita de revisión' && (
                   <Button
                     type='primary'
-                    key={`vali-${index}`}
+                    key={`vali`}
                     onClick={() => onClickValidarInformacion(row, 'visita')}
                     style={{ marginRight: '8px' }}
                     icon={<CheckOutlined />}
@@ -340,66 +341,67 @@ export const BandejaU = (props: IDataSource) => {
       <div className='card'>
         <div className='card-body tarjeta h-100'>
           <Form form={form} {...layoutItems} layout='horizontal'>
-            <section className='info-panel'>
-              <div className='container'>
-                <div className='row mt-2'>
-                  <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
-                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
-                        <ol className='breadcrumb'>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Inicio</a>
-                          </li>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Bandeja de entrada</a>
-                          </li>
-                          <li className='breadcrumb-item active' aria-current='page'>
-                            Revisar solicitud
-                          </li>
-                        </ol>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section className='panel-menu'>
-              <div className='container'>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-2'>
-                      <p className='mr-2'>Bandeja de entrada y gestión</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section className='inbox'>
-              <div className='container'>
-                <div className='row'>
-                  <div className='col-md-4 col-sm-12 col-lg-4'>
-                    <div id='accordion' className='mt-3'>
-                      <div className='card'>
-                        <div className='card-header' id='heading-2'>
-                          <h5 className='mb-0'>
-                            <a
-                              className='collapsed'
-                              role='button'
-                              data-toggle='collapse'
-                              href='#collapse-8'
-                              aria-expanded='false'
-                              aria-controls='collapse-2'
-                            >
-                              Bandeja de entrada
-                            </a>
-                          </h5>
+            {mostrar && (
+              <>
+                <section className='info-panel'>
+                  <div className='container'>
+                    <div className='row mt-2'>
+                      <div className='col-lg-6 col-sm-12 col-md-6'>
+                        <div className='info-secion'>
+                          <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
+                            <ol className='breadcrumb'>
+                              <li className='breadcrumb-item'>
+                                <a href='#'>Inicio</a>
+                              </li>
+                              <li className='breadcrumb-item'>
+                                <a href='#'>Bandeja de entrada</a>
+                              </li>
+                              <li className='breadcrumb-item active' aria-current='page'>
+                                Revisar solicitud
+                              </li>
+                            </ol>
+                          </nav>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
-                    {mostrar && (
-                      <>
+                </section>
+                <section className='panel-menu'>
+                  <div className='container'>
+                    <div className='row'>
+                      <div className='col-lg-12 col-md-12'>
+                        <div className='info-tramite mt-3 ml-2'>
+                          <p className='mr-2'>Bandeja de entrada y gestión</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section className='inbox'>
+                  <div className='container'>
+                    <div className='row'>
+                      <div className='col-md-4 col-sm-12 col-lg-4'>
+                        <div id='accordion' className='mt-3'>
+                          <div className='card'>
+                            <div className='card-header' id='heading-2'>
+                              <h5 className='mb-0'>
+                                <a
+                                  className='collapsed'
+                                  role='button'
+                                  data-toggle='collapse'
+                                  href='#collapse-8'
+                                  aria-expanded='false'
+                                  aria-controls='collapse-2'
+                                >
+                                  Bandeja de entrada
+                                </a>
+                              </h5>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
+
                         <ul className='nav nav-tabs' role='tablist'>
                           <li className='nav-item'>
                             <a
@@ -478,8 +480,9 @@ export const BandejaU = (props: IDataSource) => {
                             <div className='row'>
                               <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                 <Table
+                                  scroll={{ y: 240 }}
                                   id='tableGen'
-                                  dataSource={dataInter}
+                                  dataSource={dataInter.length > 0 ? dataInter : data}
                                   columns={structureColumns}
                                   pagination={{ pageSize: Paginas }}
                                   className='table_info'
@@ -544,6 +547,7 @@ export const BandejaU = (props: IDataSource) => {
                             <div className='row'>
                               <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                 <Table
+                                  scroll={{ y: 240 }}
                                   id='tableGen'
                                   dataSource={dataSolucionado}
                                   columns={structureColumns}
@@ -555,12 +559,13 @@ export const BandejaU = (props: IDataSource) => {
                             </div>
                           </div>
                         </div>
-                      </>
-                    )}
+
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </section>
+                </section>
+              </>
+            )}
           </Form>
         </div>
       </div>

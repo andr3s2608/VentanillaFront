@@ -103,24 +103,28 @@ export const PrimeraU = () => {
         let descripcionsistema = 0;
         let analisisriesgo = 0;
         for (let index = 0; index < documento.length; index++) {
+
           if (documento[index] != undefined) {
             if (
-              documento[index].id === '79572C8A-FFFE-440B-BE57-049B42B655A1' ||
-              documento[index].id === 'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346'
+              documento[index].id.toUpperCase() === '79572C8A-FFFE-440B-BE57-049B42B655A1' ||
+              documento[index].id.toUpperCase() === 'C6D1F4B7-AFB9-4A1E-B9F9-0AEC2BA87346'
             ) {
+
               aguacruda++;
             }
             if (
-              documento[index].id === '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0' ||
-              documento[index].id === '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0' ||
-              documento[index].id === '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
+              documento[index].id.toUpperCase() === '9EDCE704-F1D9-4F9D-8764-A436BDFE5FF0' ||
+              documento[index].id.toUpperCase() === '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0' ||
+              documento[index].id.toUpperCase() === '3C9CF345-E37D-4AB0-BACA-C803DBB8850B'
             ) {
+
               descripcionsistema++;
             }
             if (
-              documento[index].id === 'B54F609C-02A3-42A0-B43C-02E055447EF7' ||
-              documento[index].id === 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
+              documento[index].id.toUpperCase() === 'B54F609C-02A3-42A0-B43C-02E055447EF7' ||
+              documento[index].id.toUpperCase() === 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
             ) {
+
               analisisriesgo++;
             }
           }
@@ -219,12 +223,52 @@ export const PrimeraU = () => {
             }
           };
 
-          const valor = await api.AddSolicitudConsecion(json);
+
 
           const supportDocumentsEdit: any[] = [];
           const formData = new FormData();
 
+          const documentosiniciales: any = localStorage.getItem('documentosiniciales');
+          const documentosjson = JSON.parse(documentosiniciales);
+
+
+
+          const supportDocumentsRejected: any[] = [];
+          for (let index = 0; index < documentosjson.length; index++) {
+            if (documentosjson[index] != null) {
+              let cargo = false;
+
+              for (let index2 = 0; index2 < documento.length; index2++) {
+
+                if (documento[index2] != undefined) {
+
+                  if (documento[index2].iddocumento.toUpperCase() === documentosjson[index].iddocumento.toUpperCase()) {
+
+                    cargo = true;
+                    break;
+                  }
+                }
+
+              }
+              if (cargo == false) {
+
+                supportDocumentsRejected.push({
+                  idSolicitud: objJson.idsolicitud,
+                  idTipoDocumentoAdjunto: documentosjson[index].id,
+                  path: `${objJson.idusuario}/${documentosjson[index].valor}_${objJson.idsolicitud}`,
+                  idUsuario: objJson.idusuario,
+                  idDocumentoAdjunto: documentosjson[index].iddocumento,
+                  esvalido: false
+                });
+              }
+            }
+
+
+          }
+
+
           documento.forEach((item: any, i: number) => {
+
             if (documento[i] != undefined) {
               const archivo = documento[i];
               if (archivo.subida == 'local') {
@@ -235,7 +279,9 @@ export const PrimeraU = () => {
                   idSolicitud: objJson.idsolicitud,
                   idTipoDocumentoAdjunto: archivo.id,
                   path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
-                  idUsuario: objJson.idusuario
+                  idUsuario: objJson.idusuario,
+                  idDocumentoAdjunto: archivo.iddocumento,
+                  esvalido: true
                 });
               }
             }
@@ -248,7 +294,9 @@ export const PrimeraU = () => {
               idSolicitud: objJson.idsolicitud,
               idTipoDocumentoAdjunto: '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0',
               path: `${objJson.idusuario}/Resolucion_renovacion_${objJson.idsolicitud}`,
-              idUsuario: objJson.idusuario
+              idUsuario: objJson.idusuario,
+              idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+              esvalido: true
             });
           }
 
@@ -256,7 +304,14 @@ export const PrimeraU = () => {
           formData.append('oid', objJson.idusuario);
 
           const nube = await api.uploadFiles(formData);
-          const bd = await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+          const bd = await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
+
+
+          if (supportDocumentsRejected.length > 0) {
+
+            const bdrejec = await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
+          }
+          const valor = await api.AddSolicitudConsecion(json);
 
           Swal.fire({
             icon: 'success',
@@ -286,6 +341,7 @@ export const PrimeraU = () => {
     setinformacion(value);
   };
   const adddocumento = (value: any) => {
+
     let va = 0;
     setdocumento(value);
     for (let index = 0; index < value.length; index++) {
