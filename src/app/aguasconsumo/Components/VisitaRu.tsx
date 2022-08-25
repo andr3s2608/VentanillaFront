@@ -46,7 +46,7 @@ export const VisitaRu = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: any) => { };
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -57,23 +57,7 @@ export const VisitaRu = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota '>
-                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text mr-2 text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
 
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>

@@ -251,7 +251,7 @@ a.nav-link.hero_b {
   }
 
   .textarea {
-    width: 320px !important;
+    width: 620px !important;
   }
 
   .documents {
@@ -396,5 +396,9 @@ a.nav-link.hero_b {
 }
 
 .personal {
-  width: 900px !important;
+  width: 296px !important;
+}
+
+th>.ant-table-cell {
+  color: red !important;
 }

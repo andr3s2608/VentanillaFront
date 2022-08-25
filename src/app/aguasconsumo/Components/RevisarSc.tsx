@@ -175,27 +175,11 @@ export const RevisarSc = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota'>
-                      <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
-                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
+                    <div className='info-secion prueba_seccion'>
+                      <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
                             <a href='#'>Inicio</a>
@@ -217,7 +201,7 @@ export const RevisarSc = () => {
             <section className='panel-menu'>
               <div className='container'>
                 <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
                     <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
                       <nav className='nav panel'>
                         <a className='nav-link active' href='#'>
@@ -236,15 +220,15 @@ export const RevisarSc = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-2'>
+                <div className='row mt-5'>
+                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
+                    <div className='info-tramite mt-3 ml-5'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
 
-                <div className='row mt-5 ml-2'>
+                <div className='row mt-5 ml-2 primeros_campos'>
                   <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>

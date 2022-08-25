@@ -62,7 +62,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             <div className='row' style={{ marginLeft: '5px' }}>
               <div className='col-lg-12 col-sm-12 col-md-12'>
                 <div className='info-tramite mt-2 prueba_tramite'>
-                  <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                  <p style={{ fontSize: '18px', fontWeight: 'bold', marginLeft: '18px' }}>
                     Datos de la solicitud. <br />{' '}
                     <small style={{ color: ' #000' }}>
                       <span className='required '>*</span> Campos Obligatorios
@@ -71,8 +71,8 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 </div>
               </div>
             </div>
-            <div className='row prueba_tramite'>
-              <div className='col-lg-6 col-md-6'>
+            <div className='row prueba_tramite' >
+              <div className='col-lg-6 col-md-6' style={{ marginLeft: '20px' }}>
                 <p className='text'>
                   <span className='required'>*</span>
                   Número de radicado
@@ -83,7 +83,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                   </Form.Item>
                 </div>
               </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' style={{ marginLeft: '20px' }}>
                 <p className='text'>
                   <span className='required'>*</span> Tipo de tramite
                 </p>
@@ -104,13 +104,13 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
               </div>
             </div>
             <div className='row prueba_tramite'>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' style={{ marginLeft: '20px' }} >
                 <div className='form-group gov-co-form-group'>
                   <div className='gov-co-dropdown'>
                     <div className='form-group gov-co-form-group '>
                       <div className='gov-co-dropdown'>
                         <p className='text'>
-                          <span className='required'>*</span> Estado
+                          <span className='required'>*</span> Estados
                         </p>
                         <Form.Item
                           initialValue={obj.idestado}
@@ -129,7 +129,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                   </div>
                 </div>
               </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' style={{ marginLeft: '15px' }}>
                 <p className='text'>
                   <span className='required'>*</span> Actividad Actual
                 </p>
@@ -154,7 +154,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             {tipousuario != 'validacion' && (
               <>
                 <div className='row'>
-                  <div className='col-lg-6 col-md-6 col-sm-12 '>
+                  <div className='col-lg-6 col-md-6 col-sm-12 ' style={{ marginLeft: '5px' }}>
                     <p className='text'>
                       <span className='required'>*</span> Actividad Siguiente
                     </p>
@@ -300,6 +300,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                       rules={[{ required: tipousuario == 'validacion' ? false : true }]}
                     >
                       <SelectComponent
+                        style={{ marginLeft: '-4px' }}
                         options={l_actividades}
                         defaultValue={obj?.idactividadActualSolicitud}
                         optionPropkey='idActividad'

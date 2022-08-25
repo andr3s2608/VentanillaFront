@@ -14,21 +14,7 @@ export const SegundaU = () => {
     <div>
       <section className='info-panel'>
         <div className='container'>
-          <div className='row mt-5'>
-            <div className='col-lg-6 col-md-6 col-sm-6'>
-              <div className='img-bogota'>
-                <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-              </div>
-            </div>
-            <div className='col-lg-6 col-md-6 col-sm-6'>
-              <div className='img-profile'>
-                <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                <div className='info-usuario'>
-                  <p>Subdirector</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
           <div className='row mt-2'>
             <div className='col-lg-6 col-sm-12 col-md-6'>
               <div className='info-secion'>

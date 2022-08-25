@@ -135,7 +135,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             {mostrar && (
               <>
                 <div className='form-row' style={{ marginLeft: '-16px' }}>
-                  <div className='col-lg-12 col-md-12 col-sm-12'>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
                     <span className='required'>*</span>Tipo de solicitud de consecion*
                     <Form.Item name='tipo' initialValue={tiposol ?? 'primera'} rules={[{ required: true }]}>
                       <SelectComponent
@@ -147,6 +147,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         optionPropkey='key'
                         optionPropLabel='value'
                         className='personal'
+                        style={{ width: '400px' }}
                       />
                     </Form.Item>
                   </div>
@@ -331,7 +332,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             {mostrar && (
               <>
                 <div className='form-row' style={{ marginLeft: '-16px' }}>
-                  <div className='col-lg-12 col-md-12 col-sm-12'>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
                     <span className='required'>*</span>Tipo de solicitud de consecion*
                     <Form.Item name='tipo' initialValue={tiposol ?? 'primera'} rules={[{ required: true }]}>
                       <SelectComponent
@@ -344,6 +345,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         optionPropLabel='value'
                         disabled={true}
                         className='personal'
+
                       />
                     </Form.Item>
                   </div>

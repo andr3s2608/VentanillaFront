@@ -598,7 +598,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       <section style={{ width: '100%' }}>
         <div className='container-fluid'>
           <div className='row mt-2'>
-            <div className='col-lg-7 col-md-7 col-sm-12'>
+            <div className='col-lg-12 col-md-12 col-sm-12'>
               <div className='check_d'>
                 <Table
                   scroll={{ y: 240 }}
@@ -613,12 +613,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 <br />
               </div>
             </div>
-            <div className='col-md-4 col-sm-12 col-lg-4 ml-5  justify-content-center text-center'>
+
+          </div>
+          <div className="row mt-3">
+            <div className='col-md-12 col-sm-12 col-lg-12' style={{ marginLeft: '160px' }}>
               {tipo != 'gestion' && (
                 <>
                   <div id='accordion' className='mt-3'>
                     <Button
-                      className=' button btn btn-default'
+                      className='button btn btn-default '
                       type='primary'
                       htmlType='button'
                       style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
@@ -634,10 +637,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
               <div id='accordion' className='mt-3'>
                 <Button
-                  className=' button btn btn-default'
+                  className=' button btn btn-default float-right'
                   type='primary'
                   htmlType='button'
-                  style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  style={{ width: '100px', backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                 >
                   ver archivo
                 </Button>
@@ -684,10 +687,11 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
             {tipo == 'gestion' && (
               <>
-                <div className='col-lg-12 col-md-12 col-sm-12'>
+                <div className='col-lg-12 col-md-12 col-sm-12' >
                   <label htmlFor=''>Observaciones</label>
                   <Form.Item label='' name='observacionesSubsanacion'>
-                    <Input.TextArea rows={5} maxLength={500} style={{ width: '100%' }} className='textarea' />
+                    <Input.TextArea rows={5} maxLength={500} className='textarea'
+                    />
                   </Form.Item>
                 </div>
               </>
