@@ -27,7 +27,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [selectedOption, setSelectedOption] = useState<String>();
   const [visibleGrid, setVisibleGrid] = useState<String>();
   const [visiblePicker, setVisiblePicker] = useState<String>();
-  const [dateSelectedPicker, setDate] = useState<String>();
+  const [dateSelectedPicker, setDate] = useState<Date>();
   const [FilterText, setFilterText] = useState<String>();
   const [disableFilter, setDisableFilter] = useState<Boolean>();
   const [textAlerta, setTextAlert] = useState<String>();
@@ -92,7 +92,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
     setSelectedOption(value);
   };
-  function changeValuePicker(event: any) {}
+  function changeValuePicker(event: any) { }
   function onChangeFilter(event: any) {
     setVisibleAlert(false);
     setFilterText(event.target.value);
@@ -134,12 +134,11 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
         setVisibleGrid('contents');
         break;
       case 'fechaReg':
-        if (dateSelectedPicker != 'Invalid Date' && dateSelectedPicker != undefined) {
+        if (dateSelectedPicker != undefined && dateSelectedPicker.toString() != 'Invalid Date') {
           const resultFilterFec = allData.filter(function (f) {
             // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
-            return new Date(f.fechaSolicitud).toDateString() == dateSelectedPicker;
+            return new Date(f.fechaSolicitud).toISOString().slice(0, 10) == dateSelectedPicker.toISOString().slice(0, 10);
           });
-
           setGrid(resultFilterFec);
           setVisibleGrid('contents');
         } else {
@@ -241,8 +240,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
                   className='form-control'
                   onChange={(date) => {
                     setVisibleAlert(false);
-                    const d = new Date(moment(date).format('MM-DD-YYYY')).toDateString();
-                    setDate(d);
+                    setDate(new Date(moment(date).format('MM/DD/YYYY')));
                   }}
                 />
               </Form.Item>
