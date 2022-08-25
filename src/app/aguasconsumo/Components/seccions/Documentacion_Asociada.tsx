@@ -134,8 +134,8 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
     <>
       <section style={{ width: '100%' }}>
         <div className='container-fluid'>
-          <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-            <div className='row' style={{ marginLeft: '-40px' }}>
+          <div className='card-body' style={{ marginTop: '-20px' }}>
+            <div className='row' style={{ marginLeft: '-20px' }}>
               <div className='col-lg-12 col-sm-12 col-md-12'>
                 <Upload
                   name='cargarArchivoDocumentacion'
@@ -156,7 +156,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
                 </Upload>
               </div>
             </div>
-            <div className='row mt-2' style={{ marginLeft: '-50px' }}>
+            <div className='row mt-2' style={{ marginLeft: '-28px' }}>
               <div className='col-lg-12 col-md-12 col-sm-12'>
                 <Table
                   scroll={{ y: 240 }}
