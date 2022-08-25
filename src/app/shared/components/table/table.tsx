@@ -10,6 +10,8 @@ import { Button, Modal, Upload } from 'antd';
 import { useHistory } from 'react-router';
 import Input from 'antd/es/input';
 import Table from 'antd/es/table';
+import { DatepickerComponent } from '../inputs/datepicker.component';
+import moment from 'moment';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
@@ -19,6 +21,14 @@ export const Gridview = (props: IDataSource) => {
   const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
   const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
+
+  const [datosUsuario, setdatosUsuario] = useState<any>([]);
+  const [fechafiltro, setfechafiltro] = useState<any>();
+  const [funerariafiltro, setfunerariafiltro] = useState<any>('');
+  const [idtramite, setidtramite] = useState<any>('');
+  const [documento, setdocumento] = useState<any>('');
+
+
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
@@ -27,7 +37,8 @@ export const Gridview = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
-
+      const datostabla: any = localStorage.getItem('tablainhcrem');
+      setdatosUsuario(JSON.parse(datostabla));
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
     },
@@ -41,140 +52,234 @@ export const Gridview = (props: IDataSource) => {
 
   const [Tipo] = roles;
 
-  var identify: string;
-  var tipotramite: any;
-  var fecha: any;
 
-  const Renovar = (datos: any) => {
-    if (data.length == 0) {
-    } else {
-      if (datos == undefined) {
-        datos = data;
-      }
+  var structureColumns: any = [];
 
-      if (Tipo.rol == 'Ciudadano') {
-        identify = datos.reduce((result: any, item: { noIdentificacionSolicitante: any }) => {
-          return `${result}${item.noIdentificacionSolicitante}|`;
-        }, '');
-        tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
-          return `${result}${item.tramite}|`;
-        }, '');
-        fecha = datos.reduce((result: any, item: { tramite: any }) => {
-          return `${result}${item.tramite}|`;
-        }, '');
-        fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
-          return `${result}${item.fechaSolicitud}|`;
-        }, '');
-      } else {
-        const { persona } = datos;
 
-        identify = '';
+  const FilterByNameInputfecha = () => {
 
-        for (let index = 0; index < datos.length; index++) {
-          identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
-        }
+    return (
+      <Form.Item style={{ width: 100 }} initialValue={fechafiltro}>
+        <DatepickerComponent
+          id='datePicker1'
+          picker='date'
+          placeholder='Fecha de Solicitud'
+          dateDisabledType='default'
+          dateFormatType='default'
+          style={{ width: 160 }}
+          className='form-control'
+          onChange={(e) => {
 
-        // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
-        // return `${result}${item['persona']['numeroIdentificacion']}|`;
-        // }, '');
+            setfechafiltro(e);
+            if (e != null) {
+              let fecha: any = '';
+              if (Tipo.rol !== 'Ciudadano') {
+                fecha = moment(e).format('YYYY-MM-DD');
+              }
+              else {
+                fecha = moment(e).format('DD-MM-YYYY');
+              }
 
-        tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
-          return `${result}${item.idTramite}|`;
-        }, '');
+              setfechafiltro(fecha);
 
-        fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
-          return `${result}${item.fechaSolicitud}|`;
-        }, '');
-      }
-    }
-  };
+              const filteredDataUsuario: any = data.filter((datos: any) => {
+                const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                return (
+                  datos.fechaSolicitud.toString().includes(fecha) &&
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              });
+              setdatosUsuario(filteredDataUsuario);
 
-  if (Validacion == '1') {
-    Renovar(undefined);
+            }
+            else {
+              const filteredDataUsuario: any = data.filter((datos: any) => {
+                const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                return (
+
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              });
+              setdatosUsuario(filteredDataUsuario);
+            }
+          }}
+        />
+      </Form.Item>
+    );
+
+  }
+  const FilterByNameInputfuneraria = () => {
+
+    return (
+
+      <Input
+        placeholder='Funeraria y/o Nombre'
+        value={funerariafiltro}
+        style={{ width: 160 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setfunerariafiltro(currValue);
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro == null) {
+              return (
+                funeraria.toString().includes(currValue.toUpperCase()) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+            else {
+              return (
+                funeraria.toString().includes(currValue.toUpperCase()) &&
+                datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputid = () => {
+
+    return (
+
+      <Input
+        placeholder='Id Tramite'
+        value={idtramite}
+        style={{ width: 160 }}
+        onKeyPress={(event) => {
+          if (!/[0-9]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setidtramite(currValue);
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.iD_Control_Tramite.toString().includes(currValue) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+            else {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                datos.iD_Control_Tramite.toString().includes(currValue) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputdocumento = () => {
+    return (
+      <Input
+        placeholder='Documento del Fallecido'
+        value={documento}
+        style={{ width: 160 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setdocumento(currValue);
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+              );
+            }
+            else {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+              );
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+    );
   }
 
-  var structureColumns;
-
-  const fecharecortada = () => {
-    if (Tipo.rol !== 'Ciudadano') {
-      const posicioninicial = 0;
-      const fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
-      const fechamodificada = fec.substring(posicioninicial, fecha.indexOf('T'));
-      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
-
-      return fechamodificada;
-    } else {
-      const posicioninicial = 0;
-      var fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
-      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
-
-      return fec;
-    }
-  };
-
-  const tiposolicitud = () => {
-    if (Tipo.rol !== 'Ciudadano') {
-      const posicioninicial = 0;
-      var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
-      tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
-      var valor = '';
-
-      switch (idTramite) {
-        case 'a289c362-e576-4962-962b-1c208afa0273':
-          valor = 'Inhumación Indivual';
-
-          break;
-        case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-          //inhumacion fetal
-          valor = 'Inhumación Fetal';
-
-          break;
-        case 'e69bda86-2572-45db-90dc-b40be14fe020':
-          //cremacion individual
-          valor = 'Cremación Individual';
-
-          break;
-        case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-          //cremacionfetal
-          valor = 'Cremación Fetal ';
-
-          break;
-      }
-      return valor;
-    } else {
-      const posicioninicial = 0;
-      var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
-      tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
-      return idTramite;
-    }
-  };
-
   if (Validacion == '1') {
+
     if (Tipo.rol !== 'Ciudadano') {
       structureColumns = [
         {
-          title: 'Id Tramite',
+          title: FilterByNameInputid(),
           dataIndex: 'iD_Control_Tramite',
-          key: 'idTramite'
+          key: 'idcontrolTramite',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            multiple: 3,
+          },
         },
         {
-          title: 'Documento del Fallecido',
+          title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionSolicitante',
-          key: 'numeroDocumento'
+          key: 'numeroDocumento',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { noIdentificacionSolicitante: number; }, b: { noIdentificacionSolicitante: number; }) =>
+              a.noIdentificacionSolicitante - b.noIdentificacionSolicitante,
+            multiple: 2,
+          }
         },
         {
-          title: 'Funeraria y/o Nombre',
+          title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto'
+          key: 'nombreCompleto',
+
+          sorter: {
+            compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
+              a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
+            multiple: 1,
+          }
         },
 
         {
-          title: 'Fecha de Registro',
-          dataIndex: '',
+          title: FilterByNameInputfecha(),
+          dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
           render: (Text: string) => (
             <Form.Item label='' name=''>
-              <text>{fecharecortada()}</text>
+              <text>{Text.substring(0, Text.indexOf('T'))}</text>
             </Form.Item>
           )
         },
@@ -190,15 +295,57 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Tipo Solicitud',
-          dataIndex: 'tramite',
+          dataIndex: 'idTramite',
           key: 'tipoSolicitud',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tiposolicitud()}</text>
-            </Form.Item>
-          )
-        },
+          filters: [
+            {
+              text: 'Inhumación Individual',
+              value: 'a289c362-e576-4962-962b-1c208afa0273'
+            },
+            {
+              text: 'Inhumación Fetal',
+              value: 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060'
+            },
+            {
+              text: 'Cremación Individual',
+              value: 'e69bda86-2572-45db-90dc-b40be14fe020'
+            },
+            {
+              text: 'Cremación Fetal ',
+              value: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { idTramite: string }) => record.idTramite.toString().includes(value),
+          render: (Text: string) => {
+            switch (Text) {
+              case 'a289c362-e576-4962-962b-1c208afa0273':
+                return <Form.Item label='' name=''>
+                  <text>{'Inhumación Individual'}</text>
+                </Form.Item>
 
+              case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+                //inhumacion fetal
+                return <Form.Item label='' name=''>
+                  <text>{'Inhumación Fetal'}</text>
+                </Form.Item>
+
+              case 'e69bda86-2572-45db-90dc-b40be14fe020':
+                //cremacion individual
+                return <Form.Item label='' name=''>
+                  <text>{'Cremación Individual'}</text>
+                </Form.Item>
+
+              case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+                //cremacionfetal
+                return <Form.Item label='' name=''>
+                  <text>{'Cremación Fetal '}</text>
+                </Form.Item>
+
+
+            }
+          }
+        },
         {
           title: 'Validar Tramite',
           key: 'Acciones',
@@ -225,22 +372,38 @@ export const Gridview = (props: IDataSource) => {
     } else {
       structureColumns = [
         {
-          title: 'Id Tramite',
+          title: FilterByNameInputid(),
           dataIndex: 'iD_Control_Tramite',
-          key: 'idTramite'
+          key: 'idcontrolTramite',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            multiple: 2,
+          },
         },
         {
-          title: 'Documento del Fallecido',
+          title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionSolicitante',
-          key: 'numeroDocumento'
+          key: 'numeroDocumento',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { noIdentificacionSolicitante: number; }, b: { noIdentificacionSolicitante: number; }) =>
+              a.noIdentificacionSolicitante - b.noIdentificacionSolicitante,
+            multiple: 1,
+          }
         },
         {
-          title: 'Funeraria y/o Nombre',
+          title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto'
+          key: 'nombreCompleto',
+          sorter: {
+            compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
+              a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
+            multiple: 1,
+          }
         },
         {
-          title: 'Fecha de Registro',
+          title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud'
         },
@@ -248,6 +411,35 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
+
+          filters: [
+            {
+              text: 'Anulado ',
+              value: 'Anulado validador de documentos'
+            },
+            {
+              text: 'Aprobado ',
+              value: 'Aprobado validador de documentos'
+            },
+            {
+              text: 'Documentos Inconsistentes',
+              value: 'Documentos Inconsistentes'
+            },
+            {
+              text: 'Negado ',
+              value: 'Negado validador de documentos'
+            }
+            ,
+            {
+              text: 'En tramite ',
+              value: 'Registro Usuario Externo'
+            }
+          ],
+          filterSearch: true,
+
+          onFilter: (value: string, record: { solicitud: string }) => record.solicitud.toString().includes(value),
+
+
           render: (row: any) => {
             return row.solicitud == 'Registro Usuario Externo' ? (
               <Form.Item label='' name=''>
@@ -264,11 +456,27 @@ export const Gridview = (props: IDataSource) => {
           title: 'Tipo Solicitud',
           dataIndex: 'tramite',
           key: 'tipoSolicitud',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tiposolicitud()}</text>
-            </Form.Item>
-          )
+          filters: [
+            {
+              text: 'Inhumación Individual',
+              value: 'Inhumación Individual'
+            },
+            {
+              text: 'Inhumación Fetal',
+              value: 'Inhumación Fetal'
+            },
+            {
+              text: 'Cremación Individual',
+              value: 'Cremación Individual'
+            },
+            {
+              text: 'Cremación Fetal ',
+              value: 'Cremación Fetal'
+            }
+          ],
+          filterSearch: true,
+
+          onFilter: (value: string, record: { tramite: string }) => record.tramite.toString().includes(value),
         },
         {
           title: 'Gestión',
@@ -487,18 +695,6 @@ export const Gridview = (props: IDataSource) => {
     );
   }
 
-  const onPageChange = (pagination: any, filters: any) => {
-    var valor: any = data.at(0);
-    var array: any[] = [];
-    for (let index = 0; index < data.length; index++) {
-      if (index >= (pagination.current - 1) * 10) {
-        valor = data.at(index);
-        array.push(valor);
-      }
-    }
-
-    Renovar(array);
-  };
 
   return (
     <div className='container-fluid'>
@@ -508,9 +704,9 @@ export const Gridview = (props: IDataSource) => {
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <Table
                 id='tableGen'
-                dataSource={data}
+                dataSource={datosUsuario}
                 columns={structureColumns}
-                onChange={onPageChange}
+
                 pagination={{ pageSize: Paginas }}
               />
             </div>

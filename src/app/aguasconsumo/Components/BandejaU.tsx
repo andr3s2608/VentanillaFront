@@ -217,12 +217,22 @@ export const BandejaU = (props: IDataSource) => {
       {
         title: FilterByNameInput(),
         dataIndex: 'numeroRadicado',
-        key: 'nroradicado'
+        key: 'nroradicado',
+        sorter: {
+          compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
+          multiple: 1,
+        },
       },
       {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',
-        key: 'idTramite'
+        key: 'idTramite',
+
+        sorter: {
+          compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
+            a.tipodeTramite > b.tipodeTramite ? 1 : -1,
+          multiple: 1,
+        }
       },
       {
         title: 'Fecha de Registro',
