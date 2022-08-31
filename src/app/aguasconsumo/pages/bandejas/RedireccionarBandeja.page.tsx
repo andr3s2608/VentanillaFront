@@ -63,7 +63,9 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
       setBandeja(false);
     } else {
       if (permiso?.rol === 'AdminTI' || permiso?.rol === 'Funcionario') {
+
         const datos = await api.GetSolicitudesUsuarioSubred();
+
         const datossolucionados: any = await api.GetSolicitudesUsuarioSubred();
 
         const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {

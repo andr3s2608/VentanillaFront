@@ -74,6 +74,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
+
       const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
         return (
           f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
@@ -104,6 +105,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
 
       setconsultararchivos(ordenadotabla);
+
       const stateDocumentSupportList: IStateDocumentSupport[] = [];
       const arraytabla: any[] = [];
       //para llenar el array de los documentos que se mostrara en la tabla de abajo
@@ -179,7 +181,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               nombre: cadena,
               valor: cadena,
               id: idtipo,
-              esvalido: true,
+              esValido: true,
               subida: 'nube',
               path: path,
               iddocumento: iddocumento
@@ -195,6 +197,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         prop(array);
       }
       setguardararchivostabla(arraytabla);
+
 
       cargardatos();
     },
@@ -315,8 +318,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             path: '/' + acueducto[index].nombre + '_',
             id: acueducto[index].id,
             archivo: archivo,
-            esvalido: true,
-            iddocumento: null,
+            esValido: true,
+            iddocumento: '00000000-0000-0000-0000-000000000000',
             subida: 'local'
           });
           arraytabla.push({
