@@ -208,7 +208,7 @@ export const BandejaU = (props: IDataSource) => {
       />
     );
   };
-
+  //comentario para actualizar bandejas
 
 
   let structureColumns: any[] = [];

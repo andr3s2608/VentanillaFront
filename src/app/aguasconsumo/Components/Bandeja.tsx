@@ -182,6 +182,7 @@ export const Bandeja = (props: IDataSource) => {
         }
       });
 
+      //comentario para actualizar bandejas
       setDataInter(datosinterfecha);
       setDataSolucionado(datossolucionadosfecha);
       setDataUsuario(datosusuariofecha);
@@ -537,7 +538,7 @@ export const Bandeja = (props: IDataSource) => {
         title: FilterByNameInput('normal'),
         dataIndex: 'numeroRadicado',
         key: 'nroradicado',
- width: 200,
+        width: 200,
         defaultSortOrder: 'descend',
         sorter: {
           compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
@@ -556,7 +557,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',
         key: 'idTramite',
- width: 200,
+        width: 200,
 
         sorter: {
           compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
