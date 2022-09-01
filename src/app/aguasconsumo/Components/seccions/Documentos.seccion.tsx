@@ -143,7 +143,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             path: path,
             observaciones: 'default',
             estadoDocumento: CUMPLE_DOCUMENT,
-            tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
+            tipoSeguimiento: '6A5913B7-5790-4E11-BF32-D327B98C2E0F'
           });
         }
       }
@@ -373,6 +373,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     return posicionform;
   };
 
+  let editable = false;
+  if (obj.idtipodeSolicitud != "d33fbb9c-9f47-4015-bbe6-96ff43f0dde4") {
+    editable = true;
+  }
+
+
   const onClickValidarInformacion = (datos: any) => {
     const data = datos;
 
@@ -442,6 +448,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             item.estadoDocumento = CUMPLE_DOCUMENT;
           } else if (event.target.value === 2) {
             item.estadoDocumento = NO_CUMPLE_DOCUMENT;
+            item.tipoSeguimiento = '96D00032-4B60-4027-AFEA-0CC7115220B4';
           }
         }
       });
@@ -514,14 +521,16 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         title: 'Cumple?',
         dataIndex: 'Cumple',
         key: 'cumple',
-        render: (_: any, row: any) => (
-          <Form.Item name={'form' + counterform()}>
-            <Radio.Group onChange={(event) => onChangeRadioButton(event, row)} defaultValue={1}>
-              <Radio value={1}>Si</Radio>
-              <Radio value={2}>No</Radio>
-            </Radio.Group>
-          </Form.Item>
-        )
+        render: (_: any, row: any) => {
+          return (
+            <Form.Item name={'form' + counterform()} >
+              <Radio.Group onChange={(event) => onChangeRadioButton(event, row)} defaultValue={1} disabled={editable}>
+                <Radio value={1}>Si</Radio>
+                <Radio value={2}>No</Radio>
+              </Radio.Group>
+            </Form.Item>
+          )
+        }
       },
       {
         title: 'Acciones',
@@ -604,6 +613,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             <div className='col-lg-12 col-md-12 col-sm-12'>
               <div className='check_d'>
                 <Table
+
                   scroll={{ y: 240 }}
                   id='tableGen'
                   dataSource={acueducto}
@@ -674,14 +684,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               </>
             )}
 
-            <div className='form-row'>
-              <div className='col-lg-8  col-md-8  col-sm-12 mt-3'>
+            <div className='row mt-2' style={{ marginLeft: '-28px' }}>
+              <div className={`col-lg-7  col-md-7 ${tipo === 'gestion' ? 'col-xl-6' : 'col-xl-9'}  col-sm-12 mt-3 `}
+              >
                 <Table
                   id='tableGen2'
                   dataSource={guardararchivostabla}
                   columns={tabla2}
                   pagination={{ pageSize: Paginas }}
-                  className='table_info'
+
                 />{' '}
                 <br />
               </div>
@@ -693,7 +704,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 <div className='col-lg-12 col-md-12 col-sm-12' >
                   <label htmlFor=''>Observaciones</label>
                   <Form.Item label='' name='observacionesSubsanacion'>
-                    <Input.TextArea rows={5} maxLength={500} className='textarea'
+                    <Input.TextArea rows={5} maxLength={500} className='textarea' disabled={editable}
                     />
                   </Form.Item>
                 </div>

@@ -479,10 +479,11 @@ export const RevisarSg = () => {
                               <div id='collapse-11' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
                                   <div className='panel-search'>
-                                    <p>Seguimiento</p>
+                                    <p style={{ marginLeft: '20px' }}>Seguimiento</p>
                                     <div className='form-group gov-co-form-group'>
                                       <Form.Item name='seguimiento' rules={[{ required: true }]}>
                                         <SelectComponent
+                                          style={{ marginLeft: '20px' }}
                                           options={estados}
                                           optionPropkey='idEstadoSolicitud'
                                           optionPropLabel='nombre'
@@ -491,12 +492,12 @@ export const RevisarSg = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
+                                <div className='card-body'>
                                   <div className='row mt-3'>
                                     <div className='col-md-12 col-lg-12 col-sm-12'>
                                       <div className='form-group gov-co-form-group'>
                                         <Form.Item initialValue={''} name='observationsgestion' rules={[{ required: false }]}>
-                                          <Input.TextArea rows={5} maxLength={230} style={{ width: '300px' }} />
+                                          <Input.TextArea rows={5} maxLength={230} style={{ width: '300px', marginLeft: '10px' }} />
                                         </Form.Item>
                                       </div>
                                     </div>

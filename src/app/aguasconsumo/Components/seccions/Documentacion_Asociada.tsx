@@ -133,7 +133,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
             style={{ fontSize: '30xp', color: 'red' }}
             icon={<CheckOutlined />}
           >
-            Validar Información
+            Eliminar
           </Button>
         );
       }

@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import { Form, Input } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
