@@ -34,6 +34,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const api = new ApiService(accountIdentifier);
 
   const [campos, setcampos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']);
+  const [tienefuente, settienefuente] = useState<number>(0);
   const [lista, setlista] = useState<boolean[]>([
     false,
     false,
@@ -55,6 +56,15 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     const array: any[] = [];
 
     for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
+
+      if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
+
+        settienefuente(1)
+      }
+      else {
+
+        settienefuente(2)
+      }
       array.push({
         posicion: index + 1,
         caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
@@ -332,14 +342,15 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   ¿Tiene planta de tratamiento de agua <br /> para el consumo humano?
                 </p>
               </div>
-              <div className='col-lg-6 col-sm-12 col-md-6'>
-                <Form.Item label='' name={'formradio'}>
-                  <Radio.Group name={'radiobut'} defaultValue={1}>
+              {tienefuente != 0 && (<><div className='col-lg-6 col-sm-12 col-md-6'>
+                <Form.Item label='' name={'formradio'} initialValue={tienefuente}>
+                  <Radio.Group name={'radiobut'} defaultValue={tienefuente}>
                     <Radio value={1}>Si</Radio>
                     <Radio value={2}>No</Radio>
                   </Radio.Group>
                 </Form.Item>
-              </div>
+              </div></>)}
+
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
@@ -620,14 +631,16 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   ¿Tiene planta de tratamiento de agua <br /> para el consumo humano?
                 </p>
               </div>
-              <div className='col-lg-6 col-sm-12 col-md-6'>
-                <Form.Item label='' name={'formradio'}>
-                  <Radio.Group name={'radiobut'} defaultValue={1} disabled={true}>
-                    <Radio value={1}>Si</Radio>
-                    <Radio value={2}>No</Radio>
-                  </Radio.Group>
-                </Form.Item>
-              </div>
+              {tienefuente != 0 && (<>
+                <div className='col-lg-6 col-sm-12 col-md-6'>
+                  <Form.Item label='' name={'formradio'} >
+                    <Radio.Group name={'radiobut'} defaultValue={tienefuente} disabled={true}>
+                      <Radio value={1}>Si</Radio>
+                      <Radio value={2}>No</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                </div></>)}
+
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
