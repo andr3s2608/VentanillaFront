@@ -91,7 +91,7 @@ export const RevisarSv = () => {
         idTipodeTramite: values.tipotramite,
         tipodeTramite: '',
         idUsuario: objJson.idusuario,
-        idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
+        idUsuarioAsignado: objJson.idusuarioAsignado,
         idCitacionRevision: '00000000-0000-0000-0000-000000000000',
 
         idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
