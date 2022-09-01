@@ -601,6 +601,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             <div className='col-lg-12 col-md-12 col-sm-12'>
               <div className='check_d'>
                 <Table
+
                   scroll={{ y: 240 }}
                   id='tableGen'
                   dataSource={acueducto}
@@ -671,14 +672,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               </>
             )}
 
-            <div className='form-row'>
-              <div className='col-lg-8  col-md-8  col-sm-12 mt-3'>
+            <div className='row'>
+              <div className='col-lg-7  col-md-7 col-xl-8  col-sm-12 mt-3'
+              >
                 <Table
                   id='tableGen2'
                   dataSource={guardararchivostabla}
                   columns={tabla2}
                   pagination={{ pageSize: Paginas }}
-                  className='table_info'
+
                 />{' '}
                 <br />
               </div>

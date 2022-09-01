@@ -274,7 +274,7 @@ export const Notificar = () => {
                 <div className='col-lg-8 col-sm-12 col-md-8'>
                   <table
                     className='table table-bordered text-center mt-4'
-                    style={{ backgroundColor: 'background-color:#ede9e3 ' }}
+                    style={{ backgroundColor: 'g:#ede9e3 ' }}
                   >
                     <thead>
                       <tr
