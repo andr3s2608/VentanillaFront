@@ -74,8 +74,6 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
-      console.log('====================================');
-      console.log(obj);
 
       const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
         return (
@@ -107,6 +105,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
 
       setconsultararchivos(ordenadotabla);
+
       const stateDocumentSupportList: IStateDocumentSupport[] = [];
       const arraytabla: any[] = [];
       //para llenar el array de los documentos que se mostrara en la tabla de abajo
@@ -198,6 +197,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         prop(array);
       }
       setguardararchivostabla(arraytabla);
+
 
       cargardatos();
     },
@@ -684,8 +684,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               </>
             )}
 
-            <div className='row'>
-              <div className='col-lg-7  col-md-7 col-xl-8  col-sm-12 mt-3'
+            <div className='row mt-2' style={{ marginLeft: '-28px' }}>
+              <div className={`col-lg-7  col-md-7 ${tipo === 'gestion' ? 'col-xl-6' : 'col-xl-9'}  col-sm-12 mt-3 `}
               >
                 <Table
                   id='tableGen2'

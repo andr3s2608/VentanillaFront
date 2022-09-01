@@ -182,6 +182,7 @@ export const Bandeja = (props: IDataSource) => {
       });
 
       //comentario para actualizar bandejas
+
       setDataInter(datosinterfecha);
       setDataSolucionado(datossolucionadosfecha);
       setDataUsuario(datosusuariofecha);

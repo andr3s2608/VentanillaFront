@@ -31,6 +31,8 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   const [archivocargado, setarchivocargado] = useState<any>();
   const [subioarchivo, setsubioarchivo] = useState<boolean>(false);
 
+
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
@@ -39,6 +41,14 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   const getListas = useCallback(
     async () => {
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+
+      const rolesjson: any = localStorage.getItem('roles');
+      const roles = JSON.parse(rolesjson)
+
+      if (roles[0].rol == 'Subdirector') {
+        setsubioarchivo(true);
+      }
+
       const filter = documentos.filter(
         (i: { idTipoDocumentoAdjunto: string }) => i.idTipoDocumentoAdjunto == '81c98a3c-730c-457a-bba1-877b737a9847'
       );
@@ -123,7 +133,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
             style={{ fontSize: '30xp', color: 'red' }}
             icon={<CheckOutlined />}
           >
-            Validar Información
+            Eliminar
           </Button>
         );
       }
@@ -141,6 +151,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
                   name='cargarArchivoDocumentacion'
                   onChange={subida}
                   maxCount={1}
+
                   beforeUpload={() => false}
                   listType='text'
                   accept='application/pdf'

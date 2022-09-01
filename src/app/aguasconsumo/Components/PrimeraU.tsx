@@ -505,15 +505,7 @@ export const PrimeraU = () => {
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>
                         <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-                          <Button
-                            className='mr-3 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
-                          </Button>
+
                           <Button
                             className='ml-3 float-right button btn btn-default'
                             style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
@@ -522,6 +514,15 @@ export const PrimeraU = () => {
                             onClick={() => validacionacueducto()}
                           >
                             Siguiente
+                          </Button>
+                          <Button
+                            className='mr-5 float-right button btn btn-default'
+                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                            onClick={() => {
+                              history.push('/tramites-servicios-aguas');
+                            }}
+                          >
+                            Cancelar
                           </Button>
                         </div>
                       </div>
