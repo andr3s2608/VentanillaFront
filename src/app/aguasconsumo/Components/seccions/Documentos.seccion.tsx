@@ -74,6 +74,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
+      console.log('====================================');
+      console.log(obj);
+
       const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
         return (
           f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
@@ -141,7 +144,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             path: path,
             observaciones: 'default',
             estadoDocumento: CUMPLE_DOCUMENT,
-            tipoSeguimiento: '6fa85f64-5717-4562-b3fc-2c963f66ffff'
+            tipoSeguimiento: '6A5913B7-5790-4E11-BF32-D327B98C2E0F'
           });
         }
       }
@@ -179,7 +182,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
               nombre: cadena,
               valor: cadena,
               id: idtipo,
-              esvalido: true,
+              esValido: true,
               subida: 'nube',
               path: path,
               iddocumento: iddocumento
@@ -315,8 +318,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             path: '/' + acueducto[index].nombre + '_',
             id: acueducto[index].id,
             archivo: archivo,
-            esvalido: true,
-            iddocumento: null,
+            esValido: true,
+            iddocumento: '00000000-0000-0000-0000-000000000000',
             subida: 'local'
           });
           arraytabla.push({
@@ -369,6 +372,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     posicionform = posicionform + 1;
     return posicionform;
   };
+
+  let editable = false;
+  if (obj.idtipodeSolicitud != "d33fbb9c-9f47-4015-bbe6-96ff43f0dde4") {
+    editable = true;
+  }
+
 
   const onClickValidarInformacion = (datos: any) => {
     const data = datos;
@@ -439,6 +448,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             item.estadoDocumento = CUMPLE_DOCUMENT;
           } else if (event.target.value === 2) {
             item.estadoDocumento = NO_CUMPLE_DOCUMENT;
+            item.tipoSeguimiento = '96D00032-4B60-4027-AFEA-0CC7115220B4';
           }
         }
       });
@@ -511,14 +521,16 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         title: 'Cumple?',
         dataIndex: 'Cumple',
         key: 'cumple',
-        render: (_: any, row: any) => (
-          <Form.Item name={'form' + counterform()}>
-            <Radio.Group onChange={(event) => onChangeRadioButton(event, row)} defaultValue={1}>
-              <Radio value={1}>Si</Radio>
-              <Radio value={2}>No</Radio>
-            </Radio.Group>
-          </Form.Item>
-        )
+        render: (_: any, row: any) => {
+          return (
+            <Form.Item name={'form' + counterform()} >
+              <Radio.Group onChange={(event) => onChangeRadioButton(event, row)} defaultValue={1} disabled={editable}>
+                <Radio value={1}>Si</Radio>
+                <Radio value={2}>No</Radio>
+              </Radio.Group>
+            </Form.Item>
+          )
+        }
       },
       {
         title: 'Acciones',
@@ -690,7 +702,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 <div className='col-lg-12 col-md-12 col-sm-12' >
                   <label htmlFor=''>Observaciones</label>
                   <Form.Item label='' name='observacionesSubsanacion'>
-                    <Input.TextArea rows={5} maxLength={500} className='textarea'
+                    <Input.TextArea rows={5} maxLength={500} className='textarea' disabled={editable}
                     />
                   </Form.Item>
                 </div>

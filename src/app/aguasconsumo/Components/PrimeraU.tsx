@@ -258,7 +258,7 @@ export const PrimeraU = () => {
                   path: `${objJson.idusuario}/${documentosjson[index].valor}_${objJson.idsolicitud}`,
                   idUsuario: objJson.idusuario,
                   idDocumentoAdjunto: documentosjson[index].iddocumento,
-                  esvalido: false
+                  esValido: false
                 });
               }
             }
@@ -280,8 +280,8 @@ export const PrimeraU = () => {
                   idTipoDocumentoAdjunto: archivo.id,
                   path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
                   idUsuario: objJson.idusuario,
-                  idDocumentoAdjunto: archivo.iddocumento,
-                  esvalido: true
+                  idDocumentoAdjunto: archivo.iddocumento != null ? archivo.iddocumento : '00000000-0000-0000-0000-000000000000',
+                  esValido: true
                 });
               }
             }
@@ -296,7 +296,7 @@ export const PrimeraU = () => {
               path: `${objJson.idusuario}/Resolucion_renovacion_${objJson.idsolicitud}`,
               idUsuario: objJson.idusuario,
               idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
-              esvalido: true
+              esValido: true
             });
           }
 
