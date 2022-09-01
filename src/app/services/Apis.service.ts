@@ -546,7 +546,7 @@ export class ApiService {
 
   UpdateSupportDocumentsAguas = (payload: any[]) =>
     put({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: 'SupportDocuments/UpdateSuport',
       payload,
       confirmModal: false,
