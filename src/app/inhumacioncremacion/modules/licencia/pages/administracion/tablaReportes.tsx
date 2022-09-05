@@ -174,7 +174,7 @@ export const TablaReportes = (props: IDataSource) => {
   }
 
   const onPageChange = (pagination: any, filters: any) => {
-    alert(pagination.current);
+
 
     var valor: any = data.at(0);
     var array: any[] = [];

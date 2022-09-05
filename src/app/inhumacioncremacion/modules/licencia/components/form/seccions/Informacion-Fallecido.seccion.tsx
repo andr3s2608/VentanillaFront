@@ -73,6 +73,7 @@ export const InformacionFallecidoSeccion = ({ obj }: any) => {
     if (obj?.idDepartamentoResidencia == undefined) {
       const filtronacionalidad = paisesjson.filter((i: { id: any }) => i.id == obj?.nationalidad);
 
+
       setnacionalidad(filtronacionalidad[0].descripcion);
     }
     setNombres([obj.name, obj.secondName, obj.surname, obj.secondSurname]);

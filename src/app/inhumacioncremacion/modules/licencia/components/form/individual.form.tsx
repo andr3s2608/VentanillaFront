@@ -197,7 +197,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       setlongitudmedico(longitud);
     }
   };
-  const getDataSolicitante = (solicitante: any) => {};
+  const getDataSolicitante = (solicitante: any) => { };
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     let causa = values.causaMuerte;
@@ -1216,7 +1216,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               <div className='form-row ml-4'>
                 {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
                   <>
-                    <Form.Item label='Hora' name='timenac' style={{ width: 400 }}>
+                    <Form.Item label='Hora' name='timenac' style={{ width: 380 }}>
                       <DatepickerComponent
                         picker='time'
                         dateDisabledType='default'

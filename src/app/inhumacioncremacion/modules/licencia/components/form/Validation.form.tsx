@@ -131,8 +131,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
 
         const all = await api.getCertificado(objJosn?.certificado);
-
+        console.log(all, 'numero');
         if (!all) {
+          console.log('entro')
           setIsModalValidarCertificado(true);
           setisvalidcertificado(true);
         }
