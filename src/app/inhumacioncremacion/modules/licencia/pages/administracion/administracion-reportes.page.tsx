@@ -210,7 +210,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 id='datePicker1'
                 picker='date'
                 placeholder='Fecha Inicial'
-                dateDisabledType='default'
+                dateDisabledType='before'
                 dateFormatType='default'
                 style={{ display: 'block' }}
                 className='form-control'
@@ -226,7 +226,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 id='datePicker2'
                 picker='date'
                 placeholder='Fecha Final'
-                dateDisabledType='default'
+                dateDisabledType='before'
                 dateFormatType='default'
                 style={{ display: 'block' }}
                 className='form-control'
@@ -346,11 +346,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           <div className='row mt-3'>
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
-                <div className='col-lg-12 col-sm-12 col-md-12'>
-                  <label>
-                    Número total de resultados encontrados: <span className='ml-3 font-weight-bold'></span>
-                  </label>
-                </div>
+
                 <Tabs style={{ border: 'none' }} className='mt-3'>
                   <TabPane tab='Resultados' key='1'>
                     <TablaReportes data={grid} />
