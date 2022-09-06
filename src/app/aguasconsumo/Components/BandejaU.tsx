@@ -349,7 +349,7 @@ export const BandejaU = (props: IDataSource) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        <div className='card-body tarjeta h-100'>
+        <div className='card-body tarjeta h-100 card_tarjeta'>
           <Form form={form} {...layoutItems} layout='horizontal'>
             {mostrar && (
               <>
@@ -357,7 +357,7 @@ export const BandejaU = (props: IDataSource) => {
                   <div className='container'>
                     <div className='row mt-2'>
                       <div className='col-lg-6 col-sm-12 col-md-6'>
-                        <div className='info-secion'>
+                        <div className='info-secciones'>
                           <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
                             <ol className='breadcrumb'>
                               <li className='breadcrumb-item'>
@@ -390,17 +390,17 @@ export const BandejaU = (props: IDataSource) => {
                 <section className='inbox'>
                   <div className='container'>
                     <div className='row'>
-                      <div className='col-md-4 col-sm-12 col-lg-4'>
+                      <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
                         <div id='accordion' className='mt-3'>
                           <div className='card'>
                             <div className='card-header' id='heading-2'>
                               <h5 className='mb-0'>
                                 <a
-                                  className='collapsed'
+                                  className='bandeja notificacion'
                                   role='button'
                                   data-toggle='collapse'
-                                  href='#collapse-8'
-                                  aria-expanded='false'
+                                  href='#collapse-2'
+                                  aria-expanded='true'
                                   aria-controls='collapse-2'
                                 >
                                   Bandeja de entrada
@@ -413,7 +413,7 @@ export const BandejaU = (props: IDataSource) => {
                       <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
 
                         <ul className='nav nav-tabs' role='tablist'>
-                          <li className='nav-item'>
+                          <li className='nav-item encabezados'>
                             <a
                               className='nav-link active'
                               data-toggle='tab'
@@ -425,7 +425,7 @@ export const BandejaU = (props: IDataSource) => {
                               Recientes
                             </a>
                           </li>
-                          <li className='nav-item'>
+                          <li className='nav-item encabezados'>
                             <a className='nav-link' data-toggle='tab' onClick={() => resetdata()}
                               href='#tabs-2' role='tab' style={{ borderTop: '3px solid orange' }}>
                               Solucionados
@@ -435,55 +435,55 @@ export const BandejaU = (props: IDataSource) => {
                         <div className='tab-content'>
                           <div className='tab-pane active' id='tabs-1' role='tabpanel'>
                             <div className='row'>
-                              <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
-                                <p className='mt-4'>Filtrar por:</p>
-                                <div className='form-row ml-7'>
-                                  <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                    <DatepickerComponent
-                                      id='datePicker1'
-                                      picker='date'
-                                      placeholder='Fecha Inicial'
-                                      dateDisabledType='default'
-                                      dateFormatType='default'
-                                      style={{ width: 300 }}
-                                      className='form-control'
-                                      onChange={(date) => {
-                                        var seleccionIni = new Date(moment(date).format('MM-DD-YYYY'));
-
-                                        setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <br></br>
-                                  <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                    <DatepickerComponent
-                                      id='datePicker2'
-                                      picker='date'
-                                      placeholder='Fecha Final'
-                                      dateDisabledType='default'
-                                      dateFormatType='default'
-                                      style={{ width: 300 }}
-                                      className='form-control'
-                                      onChange={(date) => {
-                                        var seleccion = new Date(moment(date).format('MM-DD-YYYY'));
-
-                                        setDateFin(new Date(moment(date).add(1, 'day').format('MM-DD-YYYY')));
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <Form.Item style={{ width: 400 }}>
-                                    <Button
-                                      type='primary'
-                                      key={`filtrarReciente`}
-                                      onClick={() => onClickFiltrar('reciente')}
-                                      style={{ marginRight: '8px' }}
-                                      icon={<CheckOutlined />}
-                                    >
-                                      Filtrar
-                                    </Button>
-                                  </Form.Item>
+                              <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                <div className="row " style={{ marginLeft: '2px' }}>
+                                  <div className="col-lg-5">
+                                    <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                      <DatepickerComponent
+                                        id='datePicker1'
+                                        picker='date'
+                                        placeholder='Fecha Inicial'
+                                        dateDisabledType='default'
+                                        dateFormatType='default'
+                                        style={{ width: 300 }}
+                                        className='form-control'
+                                        onChange={(date) => {
+                                          setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                        }}
+                                      />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-lg-5">
+                                    <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                      <DatepickerComponent
+                                        id='datePicker2'
+                                        picker='date'
+                                        placeholder='Fecha Final'
+                                        dateDisabledType='default'
+                                        dateFormatType='default'
+                                        style={{ width: 300 }}
+                                        className='form-control'
+                                        onChange={(date) => {
+                                          setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                        }}
+                                      />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-lg-2">
+                                    <Form.Item style={{ width: 400 }}>
+                                      <Button
+                                        type='primary'
+                                        key={`filtrarReciente`}
+                                        onClick={() => onClickFiltrar('reciente')}
+                                        style={{ marginRight: '8px' }}
+                                        icon={<CheckOutlined />}
+                                      >
+                                        Filtrar
+                                      </Button>
+                                    </Form.Item>
+                                  </div>
                                 </div>
-
                               </div>
                             </div>
 
@@ -503,54 +503,54 @@ export const BandejaU = (props: IDataSource) => {
                           </div>
                           <div className='tab-pane' id='tabs-2' role='tabpanel'>
                             <div className='row'>
-                              <div className='col-lg-12 col-sm-12 colmd-12 ml-2'>
-                                <p className='mt-4'>Filtrar por:</p>
-                                <p className='mt-4'>Filtrar por:</p>
-                                <div className='form-row ml-7'>
-                                  <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                    <DatepickerComponent
-                                      id='datePicker1'
-                                      picker='date'
-                                      placeholder='Fecha Inicial'
-                                      dateDisabledType='default'
-                                      dateFormatType='default'
-                                      style={{ width: 300 }}
-                                      className='form-control'
-                                      onChange={(date) => {
-                                        var seleccionIni = new Date(moment(date).format('MM-DD-YYYY'));
-
-                                        setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <br></br>
-                                  <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                    <DatepickerComponent
-                                      id='datePicker2'
-                                      picker='date'
-                                      placeholder='Fecha Final'
-                                      dateDisabledType='default'
-                                      dateFormatType='default'
-                                      style={{ width: 300 }}
-                                      className='form-control'
-                                      onChange={(date) => {
-                                        var seleccion = new Date(moment(date).format('MM-DD-YYYY'));
-
-                                        setDateFin(new Date(moment(date).add(1, 'day').format('MM-DD-YYYY')));
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <Form.Item style={{ width: 400 }}>
-                                    <Button
-                                      type='primary'
-                                      key={`filtrarReciente`}
-                                      onClick={() => onClickFiltrar('reciente')}
-                                      style={{ marginRight: '8px' }}
-                                      icon={<CheckOutlined />}
-                                    >
-                                      Filtrar
-                                    </Button>
-                                  </Form.Item>
+                              <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                <div className="row " style={{ marginLeft: '2px' }}>
+                                  <div className="col-lg-5">
+                                    <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                      <DatepickerComponent
+                                        id='datePicker1'
+                                        picker='date'
+                                        placeholder='Fecha Inicial'
+                                        dateDisabledType='default'
+                                        dateFormatType='default'
+                                        style={{ width: 300 }}
+                                        className='form-control'
+                                        onChange={(date) => {
+                                          setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                        }}
+                                      />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-lg-5">
+                                    <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                      <DatepickerComponent
+                                        id='datePicker2'
+                                        picker='date'
+                                        placeholder='Fecha Final'
+                                        dateDisabledType='default'
+                                        dateFormatType='default'
+                                        style={{ width: 300 }}
+                                        className='form-control'
+                                        onChange={(date) => {
+                                          setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                        }}
+                                      />
+                                    </Form.Item>
+                                  </div>
+                                  <div className="col-lg-2">
+                                    <Form.Item style={{ width: 400 }}>
+                                      <Button
+                                        type='primary'
+                                        key={`filtrarReciente`}
+                                        onClick={() => onClickFiltrar('reciente')}
+                                        style={{ marginRight: '8px' }}
+                                        icon={<CheckOutlined />}
+                                      >
+                                        Filtrar
+                                      </Button>
+                                    </Form.Item>
+                                  </div>
                                 </div>
                               </div>
                             </div>

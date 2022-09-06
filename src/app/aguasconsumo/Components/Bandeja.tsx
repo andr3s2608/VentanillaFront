@@ -2,6 +2,8 @@ import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import { Form, Input } from 'antd';
+import '../../../css/estilos.css';
+
 import Table, { ColumnsType } from 'antd/es/table';
 import { Alert, Button, Modal, Upload } from 'antd';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
@@ -1112,7 +1114,7 @@ export const Bandeja = (props: IDataSource) => {
                               <div className='tab-pane active' id='recientes' role='tabpanel'>
                                 <div className='row'>
                                   <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                    <p className='mt-4 ml-2  filtro'>Filtrar pors:</p>
+                                    <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
                                   </div>
                                 </div>
                                 <div className="row " style={{ marginLeft: '2px' }}>
