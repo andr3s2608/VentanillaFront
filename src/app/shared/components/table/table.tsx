@@ -25,7 +25,9 @@ export const Gridview = (props: IDataSource) => {
   const Paginas: number = 10;
 
   const getListas = useCallback(
+
     async () => {
+      console.log(data);
       const rolesstorage: any = localStorage.getItem('roles');
 
       setroles(JSON.parse(rolesstorage));
@@ -41,113 +43,15 @@ export const Gridview = (props: IDataSource) => {
 
   const [Tipo] = roles;
 
-  var identify: string;
-  var tipotramite: any;
-  var fecha: any;
 
-  const Renovar = (datos: any) => {
-    if (data.length == 0) {
-    } else {
-      if (datos == undefined) {
-        datos = data;
-      }
 
-      if (Tipo.rol == 'Ciudadano') {
-        identify = datos.reduce((result: any, item: { noIdentificacionSolicitante: any }) => {
-          return `${result}${item.noIdentificacionSolicitante}|`;
-        }, '');
-        tipotramite = datos.reduce((result: any, item: { tramite: any }) => {
-          return `${result}${item.tramite}|`;
-        }, '');
-        fecha = datos.reduce((result: any, item: { tramite: any }) => {
-          return `${result}${item.tramite}|`;
-        }, '');
-        fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
-          return `${result}${item.fechaSolicitud}|`;
-        }, '');
-      } else {
-        const { persona } = datos;
 
-        identify = '';
 
-        for (let index = 0; index < datos.length; index++) {
-          identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
-        }
 
-        // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
-        // return `${result}${item['persona']['numeroIdentificacion']}|`;
-        // }, '');
-
-        tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
-          return `${result}${item.idTramite}|`;
-        }, '');
-
-        fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
-          return `${result}${item.fechaSolicitud}|`;
-        }, '');
-      }
-    }
-  };
-
-  if (Validacion == '1') {
-    Renovar(undefined);
-  }
 
   var structureColumns;
 
-  const fecharecortada = () => {
-    if (Tipo.rol !== 'Ciudadano') {
-      const posicioninicial = 0;
-      const fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
-      const fechamodificada = fec.substring(posicioninicial, fecha.indexOf('T'));
-      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
 
-      return fechamodificada;
-    } else {
-      const posicioninicial = 0;
-      var fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
-      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
-
-      return fec;
-    }
-  };
-
-  const tiposolicitud = () => {
-    if (Tipo.rol !== 'Ciudadano') {
-      const posicioninicial = 0;
-      var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
-      tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
-      var valor = '';
-
-      switch (idTramite) {
-        case 'a289c362-e576-4962-962b-1c208afa0273':
-          valor = 'Inhumación Indivual';
-
-          break;
-        case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-          //inhumacion fetal
-          valor = 'Inhumación Fetal';
-
-          break;
-        case 'e69bda86-2572-45db-90dc-b40be14fe020':
-          //cremacion individual
-          valor = 'Cremación Individual';
-
-          break;
-        case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-          //cremacionfetal
-          valor = 'Cremación Fetal ';
-
-          break;
-      }
-      return valor;
-    } else {
-      const posicioninicial = 0;
-      var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
-      tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
-      return idTramite;
-    }
-  };
 
   if (Validacion == '1') {
     if (Tipo.rol !== 'Ciudadano') {
@@ -170,33 +74,65 @@ export const Gridview = (props: IDataSource) => {
 
         {
           title: 'Fecha de Registro',
-          dataIndex: '',
+          dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
           render: (Text: string) => (
             <Form.Item label='' name=''>
-              <text>{fecharecortada()}</text>
+              <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
             </Form.Item>
           )
         },
         {
           title: 'Estado Tramite',
-          dataIndex: '',
+          dataIndex: 'estadoSolicitud',
           key: 'estado',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tramite}</text>
-            </Form.Item>
-          )
+          render: (Text: string) => {
+            console.log(Text)
+            if (Text === '31a45854-bf40-44b6-2645-08da64f23b8e') {
+              return (<Form.Item label='' name=''>
+                <text>{'Cambio tipo de licencia'}</text>
+              </Form.Item>)
+            }
+            else {
+              return (<Form.Item label='' name=''>
+                <text>{tramite}</text>
+              </Form.Item>)
+            }
+
+          }
         },
         {
           title: 'Tipo Solicitud',
-          dataIndex: 'tramite',
+          dataIndex: 'idTramite',
           key: 'tipoSolicitud',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tiposolicitud()}</text>
-            </Form.Item>
-          )
+          render: (Text: string) => {
+            switch (Text) {
+              case 'a289c362-e576-4962-962b-1c208afa0273':
+                return <Form.Item label='' name=''>
+                  <text>{'Inhumación Individual'}</text>
+                </Form.Item>
+
+              case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+                //inhumacion fetal
+                return <Form.Item label='' name=''>
+                  <text>{'Inhumación Fetal'}</text>
+                </Form.Item>
+
+              case 'e69bda86-2572-45db-90dc-b40be14fe020':
+                //cremacion individual
+                return <Form.Item label='' name=''>
+                  <text>{'Cremación Individual'}</text>
+                </Form.Item>
+
+              case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+                //cremacionfetal
+                return <Form.Item label='' name=''>
+                  <text>{'Cremación Fetal '}</text>
+                </Form.Item>
+
+
+            }
+          }
         },
 
         {
@@ -263,18 +199,14 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Tipo Solicitud',
           dataIndex: 'tramite',
-          key: 'tipoSolicitud',
-          render: (Text: string) => (
-            <Form.Item label='' name=''>
-              <text>{tiposolicitud()}</text>
-            </Form.Item>
-          )
+          key: 'tipoSolicitud'
+
         },
         {
           title: 'Gestión',
           key: 'Acciones',
           render: (_: any, row: any, index: any) => {
-            if (row.solicitud == 'Documentos Inconsistentes') {
+            if (row.solicitud === 'Documentos Inconsistentes') {
               return (
                 <Button
                   type='primary'
@@ -286,7 +218,20 @@ export const Gridview = (props: IDataSource) => {
                 </Button>
               );
             } else {
-              return null;
+              if (row.solicitud === 'Cambio de Licencia') {
+                return (
+                  <Button
+                    type='primary'
+                    style={{ marginLeft: '5px' }}
+                    icon={<CheckOutlined />}
+                    onClick={() => onClickCambiarLicencia(row)}
+                  >
+                    Llenar Información
+                  </Button>
+                );
+              } else {
+                return null;
+              }
             }
           }
         }
@@ -303,6 +248,17 @@ export const Gridview = (props: IDataSource) => {
     store.dispatch(SetResetViewLicence());
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
+
+  const onClickCambiarLicencia = async ({ idSolicitud }: { [x: string]: string }) => {
+    const data = await api.getLicencia(idSolicitud);
+    console.log(data);
+    localStorage.setItem('register', JSON.stringify(data));
+    store.dispatch(SetResetViewLicence());
+    history.push('/modificar/Cambiar-Tipo-Licencia');
+  };
+
+
+
 
   const getNamesAndBlobForm = (values: any, tipoSolitudIN: string) => {
     let { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
@@ -487,18 +443,7 @@ export const Gridview = (props: IDataSource) => {
     );
   }
 
-  const onPageChange = (pagination: any, filters: any) => {
-    var valor: any = data.at(0);
-    var array: any[] = [];
-    for (let index = 0; index < data.length; index++) {
-      if (index >= (pagination.current - 1) * 10) {
-        valor = data.at(index);
-        array.push(valor);
-      }
-    }
 
-    Renovar(array);
-  };
 
   return (
     <div className='container-fluid'>
@@ -510,7 +455,7 @@ export const Gridview = (props: IDataSource) => {
                 id='tableGen'
                 dataSource={data}
                 columns={structureColumns}
-                onChange={onPageChange}
+
                 pagination={{ pageSize: Paginas }}
               />
             </div>

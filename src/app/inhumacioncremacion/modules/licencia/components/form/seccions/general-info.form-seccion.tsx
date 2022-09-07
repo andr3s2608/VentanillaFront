@@ -17,24 +17,66 @@ import { ApiService } from 'app/services/Apis.service';
 
 export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) => {
   const { obj } = props;
+  const [mostrar, setmostrar] = useState<boolean>(true);
   const [isHora, setIsHora] = useState<boolean>(true);
+  const [time, settime] = useState<any>(undefined);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
-  const time = obj?.time !== undefined ? moment(obj?.time) : null;
+
   const check = obj?.check === undefined ? false : obj?.check;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+
+  const getListas = useCallback(async () => {
+
+    if (obj?.time != undefined) {
+      settime(ObtenerHora(time + ''));
+    }
+    if (check) {
+      setIsHora(false);
+    }
+
+
+
+
+
+
+  }, []);
+
+  useEffect(() => {
+    getListas();
+  }, []);
+
+
+
+
+
   const onChangeSwitch = (check: any) => {
+    console.log(check)
     setIsHora(!check);
   };
 
-  const onChange = (value: any) => {};
+  const onChange = (value: any) => { };
 
   useEffect(() => {
-    if (obj?.check !== undefined && check) {
-      setIsHora(false);
-    }
+
+
   });
+
+  const ObtenerHora = (values: string) => {
+    const inicio: number = parseInt(values.substring(0, values.lastIndexOf(':')));
+    const fin: number = parseInt(values.substring(values.lastIndexOf(':') + 1, values.length));
+
+    const date = moment
+      .utc()
+      .hour(inicio) // numbers from 0 to 23
+      .minute(fin); // numbers from 0 to 59
+    return date;
+  };
+
+
+
+
 
   return (
     <>
@@ -61,7 +103,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
         />
       </Form.Item>
 
-      <Divider orientation='right'>Información General</Divider>
+      <Divider orientation='center'>Información General</Divider>
 
       <Form.Item label='Emergencia Sanitaria' name='causaMuerte' initialValue={0} rules={[{ required: true }]}>
         <Radio.Group>
@@ -83,20 +125,23 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
             <Switch onChange={onChangeSwitch} defaultChecked={check} />
           </Form.Item>
         </div>
-        <div className='form-group col-md-5 col-lg-4'>
-          {isHora && (
-            <Form.Item label='Hora' name='time' style={{ width: 350 }} rules={[{ required: isHora }]} initialValue={time}>
-              <DatepickerComponent
-                picker='time'
-                dateDisabledType='default'
-                dateFormatType='time'
-                value={time}
-                placeholder='-- Elija una hora --'
-                style={{ width: 100 }}
-              />
-            </Form.Item>
-          )}
-        </div>
+        {isHora && (
+          <>
+            <div className='form-group col-md-5 col-lg-4'>
+              <Form.Item label='Hora' name='time' style={{ width: 350 }} rules={[{ required: isHora }]} initialValue={time}>
+                <DatepickerComponent
+                  picker='time'
+                  dateDisabledType='default'
+                  dateFormatType='time'
+                  value={time}
+                  placeholder='-- Elija una hora --'
+                  style={{ width: 100 }}
+                />
+              </Form.Item>
+
+            </div>
+          </>
+        )}
       </div>
 
       <Form.Item

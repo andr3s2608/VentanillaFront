@@ -64,6 +64,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [solicitante, setsolicitante] = useState<[]>();
   const history = useHistory();
   const [valor, setvalor] = useState<string>('');
+  const [cambiar, setcambio] = useState<string>('');
   const [idcontrol, setidcontrol] = useState<string>('');
   const [isnull, setisnull] = useState<boolean>(false);
   const [gestionada, setgestionada] = useState<boolean>(false);
@@ -140,10 +141,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
         const data = await api.getLicencia(objJosn?.idSolicitud);
 
-        if (data[0].estadoSolicitud != 'fdcea488-2ea7-4485-b706-a2b96a86ffdf') {
-          setgestionada(true);
-        } else {
+
+        if (data[0].estadoSolicitud === 'fdcea488-2ea7-4485-b706-a2b96a86ffdf' || data[0].estadoSolicitud === '31a45854-bf40-44b6-2645-08da64f23b8e') {
+
           setgestionada2(true);
+
+        } else {
+          setgestionada(true);
         }
 
         var idcontrolinterno = '';
@@ -152,22 +156,24 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         const tipotramite: string = objJosn.idTramite;
         switch (tipotramite) {
           case 'a289c362-e576-4962-962b-1c208afa0273':
-            valorinterno = 'Inhumacion Individual';
+            valorinterno = 'Inhumación Individual';
+            setcambio('Cambiar tipo de licencia a Cremación Individual');
 
             break;
           case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
             //inhumacion fetal
-            valorinterno = 'Inhumacion Fetal';
+            valorinterno = 'Inhumación Fetal';
 
             break;
           case 'e69bda86-2572-45db-90dc-b40be14fe020':
             //cremacion individual
-            valorinterno = 'Cremacion Individual';
+            valorinterno = 'Cremación Individual';
+            setcambio('Cambiar tipo de licencia a Inhumación Individual');
 
             break;
           case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
             //cremacionfetal
-            valorinterno = 'Cremacion Fetal ';
+            valorinterno = 'Cremación Fetal ';
 
             break;
         }
@@ -920,6 +926,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     });
   };
 
+  const ModificarLicencia = async () => {
+    await api.ModificarEstadoSolicitudInh(objJosn.idSolicitud, '31A45854-BF40-44B6-2645-08DA64F23B8E');
+  };
+
   return (
     <>
       {isnull && onnull()}
@@ -941,9 +951,23 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                             TIPO DE SOLICITUD:{valor}
                           </Divider>
+                          {cambiar != '' && (<>
+                            <div className='contenedor' style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+
+                              <Form.Item  >
+                                <Button type='primary' className='ml-3 mt-1' onClick={ModificarLicencia} >
+                                  {cambiar}
+                                </Button>
+                              </Form.Item>
+                            </div>
+                          </>)}
                         </div>
                         <div className='fadeInLeft'>
-                          <InformacionFallecidoSeccion obj={objJosn} />
+                          <InformacionFallecidoSeccion obj={objJosn} licencia={false} props={form}
+                          />
                           {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
                             <AutorizadorCremacion obj={objJosn} />
                           ) : null}

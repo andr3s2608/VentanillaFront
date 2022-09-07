@@ -71,13 +71,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7c96a4d3-a0cb-484e-a01b-93bc39c2552e');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
   const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');

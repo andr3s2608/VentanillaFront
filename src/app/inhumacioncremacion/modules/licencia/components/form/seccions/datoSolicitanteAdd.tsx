@@ -19,8 +19,8 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [longitudminima, setLongitudminima] = useState<number>(5);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
-  const [correosol, setcorreosol] = useState<string>();
-  const [correofun, setcorreofun] = useState<string>();
+  const [correosol, setcorreosol] = useState<string>('');
+  const [correofun, setcorreofun] = useState<string>('');
   const [valorfuneraria, setvalorfuneraria] = useState<string>();
   const [validacionfuneraria, setvalidacionfuneraria] = useState<boolean>(false);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
@@ -232,14 +232,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     <>
       <Form.Item
         label='Tipo documento'
-        initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+        initialValue={obj?.tiposolicitante ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
         rules={[{ required: true }]}
         name='fiscalia'
       >
         <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
 
-      <Form.Item label='Numero documento' required={!sininformacion} name='ndoc'>
+      <Form.Item label='Numero documento' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
         <Input
           allowClear
           type='text'
@@ -274,7 +274,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         />
       </Form.Item>
 
-      <Form.Item label='Nombres' initialValue={null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
+      <Form.Item label='Nombres' initialValue={obj?.razonsocialsolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
         <Input
           allowClear
           placeholder='Nombres'
@@ -311,15 +311,15 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         <>
           <Form.Item
             label='Correo familiar contratante'
-            initialValue={correosol}
+            initialValue={correosol === '' ? obj?.correosolicitante : correosol}
             rules={[{ required: true, type: 'email', max: 50 }]}
             name='emailsolicitudadd'
           >
             <Input
               allowClear
               placeholder='Email Familiar'
-              value={correosol}
-              defaultValue={correosol}
+              value={correosol === '' ? obj?.correosolicitante : correosol}
+              defaultValue={correosol === '' ? obj?.correosolicitante : correosol}
               type='email'
               onKeyPress={(event) => {
                 if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
@@ -340,14 +340,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           <Form.Item
             label='Email Funeraria y/o solicitante'
             name='emailfuneraria'
-            initialValue={correofun}
+            initialValue={correofun === '' ? obj.correofuneraria : correofun}
             rules={[{ required: true, type: 'email', max: 50 }]}
           >
             <Input
               allowClear
               placeholder='Email Funeraria'
-              value={correofun}
-              defaultValue={correofun}
+              value={correofun === '' ? obj.correofuneraria : correofun}
+              defaultValue={correofun === '' ? obj.correofuneraria : correofun}
               type='email'
               onKeyPress={(event) => {
                 if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {

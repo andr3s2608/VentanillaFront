@@ -46,6 +46,9 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       const departamento: any = localStorage.getItem('departamentos');
       const resp = await Promise.all([JSON.parse(departamento), dominioService.get_cementerios_bogota(), JSON.parse(paises)]);
 
+      console.log(resp)
+
+
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,7 +226,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         {renderForm(lugar)}
       </div>
 
-      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true, type: 'email', max: 50 }]}>
+      <Form.Item label='Email Cementerio' name='emailcementerio' initialValue={obj?.correocementerio} rules={[{ required: true, type: 'email', max: 50 }]}>
         <Input
           allowClear
           placeholder='email@example.com'

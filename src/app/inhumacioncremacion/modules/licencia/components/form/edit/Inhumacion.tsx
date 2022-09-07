@@ -58,6 +58,10 @@ const formatObjJson = (obj: any, id: String) => {
       check: obj.sinEstablecer,
       sex: obj.idSexo,
       idSolicitud: obj.idSolicitud,
+      tiposolicitante: obj.tipoIdentificacionSolicitante,
+      nrosolicitante: obj.noIdentificacionSolicitante,
+      razonsocialsolicitante: obj.razonSocialSolicitante,
+
 
       idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
@@ -117,6 +121,10 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
+      correocementerio: obj.resumenSolicitud.correoCementerio,
+      correofuneraria: obj.resumenSolicitud.correoFuneraria,
+      correosolicitante: obj.resumenSolicitud.correoSolicitante,
+
 
       isLugar: () => {
         const { enBogota, fueraBogota, fueraPais } = datosCementerio;
@@ -144,6 +152,9 @@ const formatObjJson = (obj: any, id: String) => {
       check: obj.sinEstablecer,
       sex: obj.idSexo,
       idSolicitud: obj.idSolicitud,
+      tiposolicitante: obj.tipoIdentificacionSolicitante,
+      nrosolicitante: obj.noIdentificacionSolicitante,
+      razonsocialsolicitante: obj.razonSocialSolicitante,
 
       country: lugarDefuncion.idPais,
       state: lugarDefuncion.idDepartamento,
@@ -205,6 +216,9 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
+      correocementerio: obj.resumenSolicitud.correoCementerio,
+      correofuneraria: obj.resumenSolicitud.correoFuneraria,
+      correosolicitante: obj.resumenSolicitud.correoSolicitante,
 
       idmedico: certificador.idTipoPersona,
       medicalSignatureIDType: certificador.tipoIdentificacion,

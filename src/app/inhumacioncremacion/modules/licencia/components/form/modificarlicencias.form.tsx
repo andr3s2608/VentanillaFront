@@ -40,12 +40,12 @@ export const ModificarLicencia = ({ props }: any) => {
   );
 
   const [certificado, setcertificado] = useState<any>();
-  const [isHora, setIsHora] = useState<boolean>(true);
+  const [isHora, setIsHora] = useState<boolean>(false);
   const [check, setcheck] = useState<boolean>(true);
 
   const { setStatus } = useStepperForm<any>(form);
 
-  const getListas = useCallback(async () => {}, []);
+  const getListas = useCallback(async () => { }, []);
 
   useEffect(() => {
     getListas();
@@ -117,40 +117,10 @@ export const ModificarLicencia = ({ props }: any) => {
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
   };
-  const generateListFiles = (values: any) => {
-    const Objs = [];
-
-    const {
-      fileCertificadoDefuncion,
-      fileCCFallecido,
-      fileOtrosDocumentos,
-      fileAuthCCFamiliar,
-      fileAuthCremacion,
-      fileOficioIdentificacion,
-      fileOrdenAuthFiscal,
-      fileActaNotarialFiscal
-    } = values;
-
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
-    Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
-    Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
-    Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
-    Objs.push({ file: fileAuthCremacion, name: 'Documento_del_familiar' });
-    Objs.push({ file: fileOficioIdentificacion, name: 'Autorizacion_del_fiscal_para_cremar' });
-    Objs.push({ file: fileOrdenAuthFiscal, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
-    Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
-
-    const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
-    const files: Blob[] = filesName.map((item) => {
-      const [file] = item.file;
-      return file.originFileObj;
-    });
-    const names: string[] = filesName.map((item) => item.name);
-    return [files, names];
-  };
 
   const onSubmit = async (values: any) => {
-    var bandera = false;
+    let bandera = false;
+    let continuar = false;
     if (values.numerocert == obj.numeroCertificado) {
       bandera = true;
     } else {
@@ -161,7 +131,34 @@ export const ModificarLicencia = ({ props }: any) => {
         bandera = false;
       }
     }
-    if (bandera) {
+    if (!bandera) {
+      Swal.fire({
+        title: 'Usuario Registrado',
+        text: 'El Número de Certificado ya se Encuentra Registrado, desea continuar?',
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Modificar',
+        denyButtonText: `Cancelar`,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          continuar = true
+
+        } else if (result.isDenied) {
+        }
+      });
+    }
+
+    if (continuar) {
+
+
       const formatDate = 'MM-DD-YYYY';
       obj.persona[posicion].primerNombre = values.name;
       obj.persona[posicion].segundoNombre = values.secondName;
@@ -239,18 +236,6 @@ export const ModificarLicencia = ({ props }: any) => {
 
         title: 'Solicitud Modificada',
         text: 'Se ha modificado la Solicitud exitosamente'
-      });
-    } else {
-      Swal.fire({
-        title: 'Usuario Registrado',
-        text: 'El Número de Certificado ya se Encuentra Registrado',
-        showClass: {
-          popup: 'animate__animated animate__fadeInDown'
-        },
-        hideClass: {
-          popup: 'animate__animated animate__fadeOutUp'
-        },
-        icon: 'info'
       });
     }
   };

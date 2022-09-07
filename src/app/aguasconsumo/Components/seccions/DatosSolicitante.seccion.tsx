@@ -209,6 +209,10 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <div className='panel-search'>
                     <div className='form-group gov-co-form-group'>
                       <div className='gov-co-dropdown'>
+                        <p className='text'>
+                          {' '}
+                          <span className='required'>*</span> Tipo de documento
+                        </p>
                         <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
                           <SelectComponent
                             className='text'
