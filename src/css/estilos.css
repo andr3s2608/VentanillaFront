@@ -22,6 +22,11 @@
   margin-left: -10px !important;
 }
 
+.info-secciones {
+  margin-top: 30px;
+  margin-left: -20px;
+}
+
 .info-tramite {
   margin-left: -6px !important;
 }
@@ -253,6 +258,10 @@ a.nav-link.hero_b {
     width: 620px !important;
   }
 
+  .tarjetas {
+    margin-top: -300px !important;
+  }
+
   .documents {
     width: 30% !important;
     display: inline-block !important;
@@ -278,6 +287,10 @@ a.nav-link.hero_b {
 
 .prueba {
   margin-left: -8px !important;
+}
+
+.card_tarjeta {
+  height: 1300px !important;
 }
 
 .bandeja_panel {
