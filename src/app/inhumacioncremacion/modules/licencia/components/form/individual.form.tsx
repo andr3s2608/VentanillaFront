@@ -197,6 +197,12 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       setlongitudmedico(longitud);
     }
   };
+
+  const getDataCambio = () => {
+
+  };
+
+
   const getDataSolicitante = (solicitante: any) => { };
   const onSubmit = async (values: any) => {
     setStatus(undefined);
@@ -1098,6 +1104,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 form={form}
                 datofiscal={true}
                 required={true}
+                cambio={getDataCambio}
                 tipoLicencia={tipoLicencia}
               />
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>

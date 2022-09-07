@@ -132,9 +132,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
 
         const all = await api.getCertificado(objJosn?.certificado);
-        console.log(all, 'numero');
+
         if (!all) {
-          console.log('entro')
+
           setIsModalValidarCertificado(true);
           setisvalidcertificado(true);
         }
@@ -990,7 +990,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                             registrado={isvalidcertificado}
                           />
                           <hr />
-                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
+                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={'No Aplica'} escambio={false} instType={'80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'} />
 
                           <div className='fadeInLeft'>
                             <div className='container-fluid'>

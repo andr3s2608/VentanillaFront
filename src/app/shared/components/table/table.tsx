@@ -27,7 +27,7 @@ export const Gridview = (props: IDataSource) => {
   const getListas = useCallback(
 
     async () => {
-      console.log(data);
+
       const rolesstorage: any = localStorage.getItem('roles');
 
       setroles(JSON.parse(rolesstorage));
@@ -87,7 +87,7 @@ export const Gridview = (props: IDataSource) => {
           dataIndex: 'estadoSolicitud',
           key: 'estado',
           render: (Text: string) => {
-            console.log(Text)
+
             if (Text === '31a45854-bf40-44b6-2645-08da64f23b8e') {
               return (<Form.Item label='' name=''>
                 <text>{'Cambio tipo de licencia'}</text>
@@ -226,7 +226,7 @@ export const Gridview = (props: IDataSource) => {
                     icon={<CheckOutlined />}
                     onClick={() => onClickCambiarLicencia(row)}
                   >
-                    Llenar Información
+                    Actualizar Información
                   </Button>
                 );
               } else {
@@ -251,7 +251,7 @@ export const Gridview = (props: IDataSource) => {
 
   const onClickCambiarLicencia = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
-    console.log(data);
+
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
     history.push('/modificar/Cambiar-Tipo-Licencia');

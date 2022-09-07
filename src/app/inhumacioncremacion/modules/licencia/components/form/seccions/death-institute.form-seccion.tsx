@@ -19,7 +19,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const { obj, tipoLicencia, prop } = props;
+  const { obj, tipoLicencia, prop, cambio } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
   const { datofiscal } = props;
@@ -68,6 +68,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   //#endregion
   const onChangeTipoInst = (e: RadioChangeEvent) => {
+
+    cambio();
     props.form.resetFields([
       'instNumProtocolo',
       'instNumActaLevantamiento',
@@ -88,7 +90,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     const valorupper = valor.toUpperCase();
     if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(4);
-      setLongitudminima(10);
+      setLongitudmaxima(10);
       setTipocampo('[0-9]{4,10}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
@@ -97,7 +99,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     } else {
       if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
-        setLongitudminima(11);
+        setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
@@ -106,7 +108,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       } else {
         if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
-          setLongitudminima(15);
+          setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
@@ -115,7 +117,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
         } else {
           if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
             setLongitudminima(10);
-            setLongitudminima(11);
+            setLongitudmaxima(11);
             setTipocampo('[a-zA-Z0-9]{10,11}');
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('Numéricos');
@@ -123,7 +125,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             prop(10, 'deathinst');
           } else {
             setLongitudminima(6);
-            setLongitudminima(10);
+            setLongitudmaxima(10);
             setTipocampo('[a-zA-Z0-9]{6,10}');
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
@@ -154,7 +156,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Tipo Identificación'
             name='instTipoIdent'
-            initialValue={obj?.instTipoIdent ? obj?.instTipoIdent : 'NIT'}
+            initialValue={'NIT'}
             rules={[{ required: true }]}
           >
             <SelectComponent
@@ -169,7 +171,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Número Identificación'
             name='instNumIdent'
-            initialValue={obj?.instNumIdent ? obj?.instNumIdent : defaultValues.identification}
+            initialValue={defaultValues.identification}
             rules={[{ required: true }]}
           >
             <Input
@@ -208,7 +210,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <Form.Item
             label='Razón Social'
-            initialValue={obj?.instRazonSocial ?? defaultValues.businessName}
+            initialValue={defaultValues.businessName}
             name='instRazonSocial'
             rules={[{ required: true }]}
           >
@@ -241,7 +243,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             <>
               <Form.Item
                 label='Nombres y Apellidos del Fiscal'
-                initialValue={obj?.instNombreFiscal}
+                initialValue={(obj?.instNombreFiscal + obj?.instApellidoFiscal)}
                 name='instNombreFiscal'
                 rules={[{ required: isMedicinaLegal, max: 200 }]}
               >
@@ -287,7 +289,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <>
             <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-            <Form.Item label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: false, max: 10 }]}>
+            <Form.Item initialValue={obj?.instNumActaLevantamiento} label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: false, max: 10 }]}>
               <Input
                 allowClear
                 placeholder='Nueva acta de Levantamiento'
@@ -304,7 +306,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Fecha de Acta' required={false} name='DateAct'>
+            <Form.Item label='Fecha de Acta' initialValue={moment(obj?.instFechaActa)} required={false} name='DateAct'>
               <DatepickerComponent
                 picker='date'
                 dateDisabledType='before'
@@ -313,10 +315,11 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false }]}>
+            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' initialValue={obj?.instSeccionalFiscalia} rules={[{ required: false }]}>
               <SelectComponent options={l_seccionales} optionPropkey='DESCRIP' optionPropLabel='DESCRIP' />
             </Form.Item>
-            <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
+
+            <Form.Item label='No. Fiscal' initialValue={obj?.instNoFiscalMedicinaLegal} name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
               <Input
                 allowClear
                 placeholder='No. Fiscal'
@@ -333,7 +336,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               <>
                 <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
 
-                <Form.Item label='Nombre' rules={[{ required: true }]} name='fiscalianombreDC'>
+                <Form.Item label='Nombre' initialValue={obj?.instNombreFiscal} rules={[{ required: true }]} name='fiscalianombreDC'>
                   <Input
                     allowClear
                     placeholder='Nombre'
@@ -350,7 +353,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Apellido' rules={[{ required: true }]} name='fiscaliaapellidoDC'>
+                <Form.Item label='Apellido' initialValue={obj?.instApellidoFiscal} rules={[{ required: true }]} name='fiscaliaapellidoDC'>
                   <Input
                     allowClear
                     placeholder='Apellido'
@@ -367,7 +370,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Número de oficio de medicina legal' rules={[{ required: true }]} name='fiscalianumeroDC'>
+                <Form.Item label='Número de oficio de medicina legal' initialValue={obj?.instNumeroOficio} rules={[{ required: true }]} name='fiscalianumeroDC'>
                   <Input
                     allowClear
                     placeholder='Número de oficio de medicina legal'
@@ -384,7 +387,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Fecha del Oficio' rules={[{ required: true }]} name='fiscaliafechaDC'>
+                <Form.Item label='Fecha del Oficio' initialValue={moment(obj?.instFechaOficio)} rules={[{ required: true }]} name='fiscaliafechaDC'>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                 </Form.Item>
 
@@ -435,4 +438,5 @@ interface IDeathInstituteProps<T> {
   tipoLicencia: TypeLicencia;
   obj: any;
   prop: any;
+  cambio: any;
 }

@@ -59,19 +59,7 @@ export const RevisarSc = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const Asignar = async () => {
-    const usuario = form.getFieldValue('usuarioasignado');
-    if (usuario == 'vacio') {
-      Swal.fire({
-        icon: 'error',
-        title: 'Usuario No Asignado',
-        text: 'Debe ingresar el usuario al cual se va a asignar la solicitud'
-      });
-    } else {
-      await api.AsignarUsuario(usuario, objJson.idsolicitud);
-      history.push('/tramites-servicios-aguas');
-    }
-  };
+
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);

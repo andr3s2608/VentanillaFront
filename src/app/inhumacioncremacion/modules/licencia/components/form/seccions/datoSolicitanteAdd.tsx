@@ -307,7 +307,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           }}
         />
       </Form.Item>
-      {setearCampos() && (
+      {(setearCampos() && obj === undefined) && (
         <>
           <Form.Item
             label='Correo familiar contratante'
@@ -335,7 +335,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
       <div>{renderFormFuneria(lugarfuneraria)}</div>
 
-      {setearCampos() && (
+      {(setearCampos() && obj === undefined) && (
         <>
           <Form.Item
             label='Email Funeraria y/o solicitante'

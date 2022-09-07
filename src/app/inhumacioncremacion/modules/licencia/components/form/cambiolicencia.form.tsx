@@ -79,15 +79,12 @@ export const CambioLicencia = ({ props }: any) => {
 
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
   const [posicion, setposicion] = useState<number>(0);
-  const [[primerNombre, segundoNombre, primerApellido, segundoApellido], setnombres] = useState<[string, string, string, string]>(
-    ['', '', '', '']
-  );
+
 
   const [l_paises, setpaises] = useState<any>([]);
   const [l_tipos_documento, settipos] = useState<any>([]);
   const [l_tipo_muerte, settipomuerte] = useState<any>([]);
-  const [isHora, setIsHora] = useState<boolean>(true);
-  const [check, setcheck] = useState<boolean>(true);
+  const [insttype, setinsttype] = useState<string>(obj?.instType);
 
   const { setStatus } = useStepperForm<any>(form);
 
@@ -254,6 +251,11 @@ export const CambioLicencia = ({ props }: any) => {
       setlongitudmedico(longitud);
     }
     */
+  };
+
+  const getDataCambioInstituto = () => {
+
+    setinsttype(form.getFieldValue('instType'));
   };
 
 
@@ -511,10 +513,10 @@ export const CambioLicencia = ({ props }: any) => {
             </div>
             {licencia && (
               <>
-                <section className='panel-solicitud mt-5 mb-5 datos_validadors'>
+                <section className='panel-solicitud mt-8 mb-5 datos_validadors'>
                   <div className='container'>
                     <div className='row'>
-                      <div className='col-lg-12 col-sm-12 col-md-12'>
+                      <div className='col-lg-12 col-sm-12 col-md-12 col-xl-14'>
                         <div className='collapse-info'>
                           <div id='accordion' className='mt-3'>
                             <div className='card'>
@@ -564,8 +566,10 @@ export const CambioLicencia = ({ props }: any) => {
                                     obj={obj}
                                     form={form}
                                     datofiscal={true}
+
                                     required={true}
-                                    tipoLicencia={obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'Inhumación' : 'Cremación'}
+                                    cambio={getDataCambioInstituto}
+                                    tipoLicencia={obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'Cremación' : 'Inhumación'}
                                   />
 
                                 </div>
@@ -1023,7 +1027,7 @@ export const CambioLicencia = ({ props }: any) => {
                                   <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
                                   <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
                                   <CementerioInfoFormSeccion obj={obj} form={form}
-                                    tipoLicencia={obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'Inhumación' : 'Cremación'} />
+                                    tipoLicencia={obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'Cremación' : 'Inhumación'} />
 
                                 </div>
                               </div>
@@ -1049,7 +1053,9 @@ export const CambioLicencia = ({ props }: any) => {
                               <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block'>
 
-                                  <InformacionDocumentosGestion prop={getDataDocumentos} obj={obj} id={obj?.idSolicitud} />
+                                  <InformacionDocumentosGestion prop={getDataDocumentos} obj={obj} id={obj.idTramite ===
+                                    'a289c362-e576-4962-962b-1c208afa0273' ? 'Cremación' : 'Inhumación'} escambio={true}
+                                    instType={insttype} />
 
                                 </div>
                               </div>

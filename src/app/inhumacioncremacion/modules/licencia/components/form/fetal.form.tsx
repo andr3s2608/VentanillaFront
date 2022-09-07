@@ -209,7 +209,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     }
   };
 
-  const getDataSolicitante = (longitud: number) => {};
+
+  const getDataCambio = () => {
+
+  };
+
+  const getDataSolicitante = (longitud: number) => { };
 
   const onSubmit = async (values: any) => {
     let causa = values.causaMuerte;
@@ -1107,6 +1112,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               form={form}
               datofiscal={true}
               required={false}
+              cambio={getDataCambio}
               tipoLicencia={tipoLicencia}
             />
             <Divider orientation='right'> Tipo de Muerte </Divider>

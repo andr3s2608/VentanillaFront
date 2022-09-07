@@ -5,7 +5,7 @@ import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
 import Table from 'antd/es/table';
-import { List, Card, Layout, Radio, Modal } from 'antd';
+import { List, Card, Layout, Radio, Modal, Upload, Button } from 'antd';
 
 // Componentes
 
@@ -21,16 +21,18 @@ import { Viewer } from '@react-pdf-viewer/core';
 //import { Page, Document } from 'react-pdf';
 //import ReactPDF from '@react-pdf/renderer';
 //import { MyDocument } from '../seccions/documentoPDF';
-import { FilePdfOutlined } from '@ant-design/icons';
+import { FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 
 //import PDFReader from './PDFReader';
 //import BasicDocument from './BasicDocument';
 import '../../../../../../../css/estilos.css';
 // Services
 export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
-  const { prop, obj, id } = props;
+  const { prop, obj, id, escambio, instType } = props;
   const [grid, setGrid] = useState<any[]>([]);
   const [urlPdf, setUrlPdf] = useState<any>('');
+
+  const instTypebd = obj?.instRazonSocial;
   const [heightIframe, setHeightIframe] = useState<string>('');
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -71,6 +73,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
 
   let arrayarchivos: any[] = ['1', '1', '1', '1', '1', '1', '1', '1'];
   const getListas = useCallback(async () => {
+
     await GetValidateRol();
   }, []);
 
@@ -160,6 +163,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
 
   //
   useEffect(() => {
+
     getListas();
     setHeightIframe('0vh');
   }, []);
@@ -296,6 +300,81 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
           <iframe src={urlPdf} frameBorder='0' scrolling='auto' height='500px' width='100%'></iframe>
         </div>
       </div>
+
+      {escambio && (<>
+
+        {(instTypebd === 'Otros' && instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
+
+          <Form.Item label='Acta Notarial Fiscal' name='fileActaNotarialFiscal' rules={[{ required: true }]}>
+            <Upload
+              name='fileActaNotarialFiscal'
+              maxCount={1}
+              beforeUpload={() => false}
+              listType='text'
+              accept='application/pdf'
+            >
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+
+
+        </>)}
+        {id === 'Cremación' && (<>
+          <Form.Item label='Autorización de cremación del familiar' name='fileAuthCCFamiliar' rules={[{ required: true }]}>
+            <Upload
+              name='fileAuthCCFamiliar'
+              maxCount={1}
+              beforeUpload={() => false}
+              listType='text'
+              accept='application/pdf'
+            >
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+
+          <Form.Item label='Documento del familiar' name='fileDocCremacion' rules={[{ required: true }]}>
+            <Upload
+              name='fileDocCremacion'
+              maxCount={1}
+              beforeUpload={() => false}
+              listType='text'
+              accept='application/pdf'
+            >
+              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+            </Upload>
+          </Form.Item>
+          {(instTypebd === 'Otros' && instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
+            <Form.Item label='Autorización de cremacion del fiscal' name='fileAuthFiscalCremacion' rules={[{ required: true }]}>
+              <Upload
+                name='fileAuthFiscalCremacion'
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+              >
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+
+            <Form.Item label='Oficio de medicina legal al fiscal para cremar' name='fileOrdenAuthFiscal' rules={[{ required: true }]}>
+              <Upload
+                name='fileOrdenAuthFiscal'
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+              >
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+          </>)}
+
+
+        </>)}
+      </>)}
+
+
+
     </div>
   );
 };
@@ -304,4 +383,6 @@ interface documentosgestion {
   prop: any;
   id: string;
   obj: any;
+  escambio: boolean;
+  instType: string;
 }
