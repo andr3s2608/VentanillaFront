@@ -52,6 +52,24 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
     setlTipoModificacion(notificacion);
   };
 
+  function formatDate(inputDate: Date): string {
+    let date, month, year;
+
+    date = inputDate.getDate();
+    month = inputDate.getMonth() + 1;
+    year = inputDate.getFullYear();
+
+    date = date
+      .toString()
+      .padStart(2, '0');
+
+    month = month
+      .toString()
+      .padStart(2, '0');
+
+    return `${date}/${month}/${year}`;
+  }
+
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
     let nuevoHTML = HTML;
 
@@ -63,6 +81,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   }
 
   const notificar = async () => {
+    let date: Date = new Date();
     setnotificado(true);
     prop();
     if (idPlantilla == '') {
@@ -123,8 +142,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             ),
             attachment: certificadoAutoridad,
@@ -148,8 +167,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             ),
             attachment: certificadoCiudadano,
@@ -193,6 +212,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
     } else {
       const formato = await api.getFormatoAguas(idPlantilla);
 
+      let date: Date = new Date();
+
       let body0: string = formato['cuerpo'];
       let indice1 = body0.indexOf('Tahoma,sans-serif;color:#666;font-size:18px; text-align: justify;">');
 
@@ -209,8 +230,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             )
           );
@@ -223,8 +244,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             )
           );

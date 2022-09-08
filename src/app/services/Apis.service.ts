@@ -621,7 +621,7 @@ export class ApiService {
 
   getCertificadoAguas = (idSolicitud: string) => {
     return get<any>({
-      endpoint: REACT_APP_AGUAS as string,
+      endpoint: REACT_APP_LOCAL as string,
       url: `GeneratePDF/GenerateCertificadoPDF/${idSolicitud}`,
       id: '0'
     });

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
-import Button from 'antd/es/button';
+import { Button, Modal } from 'antd';
 import { useHistory } from 'react-router';
 import { Form, Input } from 'antd';
 import { DatosFuente } from './seccions/Fuente_Abastecimiento.seccion';
@@ -27,10 +27,13 @@ export const RevisarSg = () => {
   const history = useHistory();
   const [documentos, setdocumentos] = useState<any[]>([]);
   const [rol, setrol] = useState<any>();
+  const [vistaPrevia, setVistaPrevia] = useState<boolean>(true);
   const [usuarionotificado, setusuarionotificado] = useState<boolean>(false);
   const [estados, setl_estados] = useState<any[]>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const objJson: any = EditAguas();
 
   const getListas = useCallback(
@@ -59,7 +62,27 @@ export const RevisarSg = () => {
     setusuarionotificado(true);
   };
 
+  function formatDate(inputDate: Date): string {
+    let date, month, year;
+
+    date = inputDate.getDate();
+    month = inputDate.getMonth() + 1;
+    year = inputDate.getFullYear();
+
+    date = date
+      .toString()
+      .padStart(2, '0');
+
+    month = month
+      .toString()
+      .padStart(2, '0');
+
+    return `${date}/${month}/${year}`;
+  }
+
+
   const onSubmit = async (values: any) => {
+
     const { seguimientoDocumentos } = store.getState();
 
     let tiposolicitud: string = values.notificacion;
@@ -172,7 +195,9 @@ export const RevisarSg = () => {
             break;
 
           case 'Notificación Aprobación al Ciudadano':
-            const certificadoCiudadano = await api.getCertificadoAguas('4');
+            let date: Date = new Date();
+
+            const certificadoCiudadano = await api.getCertificadoAguas(objJson.idsolicitud);
 
             await api.sendEmailAttachment({
               to: objJson.correoElectronico,
@@ -182,13 +207,34 @@ export const RevisarSg = () => {
                 ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
                 [
                   objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                  objJson.renovafuentejson[0].numeroResolucion,
-                  objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                  "numero de resolucion",//objJson.renovafuentejson[0].numeroResolucion,
+                  formatDate(date)//objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
                 ]
               ),
               attachment: certificadoCiudadano,
               AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
             });
+
+            const urlToFile = async (url: string, filename: string, mimeType: any) => {
+              const res = await fetch(url);
+              const buf = await res.arrayBuffer();
+              return new File([buf], filename, { type: mimeType });
+            };
+
+            (async () => {
+              const file = await urlToFile('data:application/pdf;base64,' + certificadoCiudadano, 'resolucion', 'application/pdf');
+
+              const formData = new FormData();
+              formData.append('file', file);
+              formData.append(
+                'nameFile',
+                'RESOLUCION_' + 'N°' + objJson.numeroradicado + "(numero de radicado temporal)"
+              );
+              formData.append('containerName', "aguahumanos");
+              formData.append('oid', objJson.idusuario);
+              await api.uploadFiles(formData);
+              //console.log(file);
+            })()
             break;
         }
       }
@@ -196,6 +242,7 @@ export const RevisarSg = () => {
     history.push('/tramites-servicios-aguas');
     localStorage.removeItem('register');
   };
+
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
     let nuevoHTML = HTML;
 
@@ -211,10 +258,68 @@ export const RevisarSg = () => {
   const adddocumentos = (value: any) => {
     setdocumentos(value);
   };
+
+  const onChange = (value: string) => {
+    if (value.toLocaleUpperCase() === '2E8808AF-A294-4CDE-8E9C-9A78B5172119') {
+      setVistaPrevia(false);
+    } else {
+      setVistaPrevia(true);
+    }
+  };
+
+  const onPrevPDF = async () => {
+
+    let certificado = await api.getCertificadoAguas(objJson.idsolicitud);
+    setUrlPdfLicence("data:application/pdf;base64," + certificado);
+    setIsModalVisiblePdf(true);
+
+    /*
+    let bandera = await api.validarFirmaFuncionario(idUsuario);
+
+    if (bandera) {
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
+      const idSolicitud = objJosn?.idSolicitud;
+      const all = await api.GetSolicitud(idSolicitud);
+      let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, info.fullName);
+      const solicitante = await api.GetResumenSolicitud(idSolicitud);
+      setsolicitante(solicitante[0]['nombreSolicitante']);
+      setUrlPdfLicence(linkPdf);
+
+      setIsModalVisiblePdf(true);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'FIRMA NO REGISTRADA',
+        text:
+          'Su firma no se encuentra registrada ' +
+          'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
+      });
+    }
+    */
+  };
+
   return (
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body'>
+          <Modal
+            title={
+              <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                Visualización de la resolución
+              </p>
+            }
+            visible={isModalVisiblePdf}
+            onCancel={() => setIsModalVisiblePdf(false)}
+            width={1000}
+            okButtonProps={{ hidden: true }}
+            cancelText='Cerrar'
+          >
+            <div className='col-lg-12 text-center'>
+              <p>Nombre del Solicitante: {objJson.primerNombre + " " + objJson.primerApellido}</p>
+            </div>
+            <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+          </Modal>
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
@@ -239,7 +344,6 @@ export const RevisarSg = () => {
                 </div>
               </div>
             </section>
-
             <section className='panel-menu'>
               <div className='container'>
                 <div className='row'>
@@ -483,6 +587,7 @@ export const RevisarSg = () => {
                                     <div className='form-group gov-co-form-group'>
                                       <Form.Item name='seguimiento' rules={[{ required: true }]}>
                                         <SelectComponent
+                                          onChange={onChange}
                                           style={{ marginLeft: '20px' }}
                                           options={estados}
                                           optionPropkey='idEstadoSolicitud'
@@ -510,6 +615,8 @@ export const RevisarSg = () => {
                                           backgroundColor: '#CBCBCB',
                                           float: 'right'
                                         }}
+                                        disabled={vistaPrevia}
+                                        onClick={() => onPrevPDF()}
                                       >
                                         Ver vista previa
                                       </Button>
