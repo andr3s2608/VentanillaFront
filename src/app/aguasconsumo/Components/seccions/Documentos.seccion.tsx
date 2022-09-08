@@ -441,7 +441,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     const { seguimientoDocumentos } = store.getState();
     const { posicion } = row;
 
-    if (seguimientoDocumentos && seguimientoDocumentos != []) {
+    if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
       seguimientoDocumentos.forEach((item: IStateDocumentSupport) => {
         if (item.posicion == posicion) {
           if (event.target.value === 1) {

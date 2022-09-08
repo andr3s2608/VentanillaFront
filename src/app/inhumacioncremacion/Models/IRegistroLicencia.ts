@@ -54,6 +54,7 @@ export interface DatosFuneraria {
   idMunicipio: string;
 }
 export interface ResumenSolicitud {
+  idSolicitud?: string;
   correoCementerio: string;
   correoFuneraria: string;
   tipoDocumentoSolicitante: string;

@@ -1096,7 +1096,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} prop={null} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}

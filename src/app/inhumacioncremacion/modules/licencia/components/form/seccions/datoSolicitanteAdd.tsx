@@ -212,7 +212,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               className='fadeInRight'
               label='Funeraria de Bogotá D.C. y/o Solicitante'
               name='funerariaBogota'
-              initialValue={validacionfuneraria ? valorfuneraria : 'PARTICULAR'}
+              initialValue={validacionfuneraria ? valorfuneraria : (obj === undefined ? 'PARTICULAR' : obj?.funeraria)}
               rules={[{ required: true }]}
             >
               <SelectComponent
@@ -230,136 +230,143 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
   return (
     <>
-      <Form.Item
-        label='Tipo documento'
-        initialValue={obj?.tiposolicitante ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-        rules={[{ required: true }]}
-        name='fiscalia'
-      >
-        <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
-      </Form.Item>
-
-      <Form.Item label='Numero documento' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
-        <Input
-          allowClear
-          type='text'
-          placeholder='Número Identificación'
-          autoComplete='off'
-          pattern={tipocampo}
-          disabled={sininformacion}
-          maxLength={longitudmaxima}
-          onKeyPress={(event) => {
-            if (!tipocampovalidacion.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
-          onPaste={(event) => {
-            event.preventDefault();
-          }}
-          onInvalid={() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos inválidos',
-              text:
-                'Sección: DATOS DEL SOLICITANTE Y/O FUNERARIA \n recuerde que para el tipo de documento: ' +
-                tipodocumento +
-                ' solo se admiten valores ' +
-                campo +
-                ' de longitud entre ' +
-                longitudminima +
-                ' y ' +
-                longitudmaxima
-            });
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item label='Nombres' initialValue={obj?.razonsocialsolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
-        <Input
-          allowClear
-          placeholder='Nombres'
-          autoComplete='off'
-          type='text'
-          onKeyPress={(event) => {
-            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
-          onPaste={(event) => {
-            event.preventDefault();
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item label='Apellidos' initialValue={null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
-        <Input
-          allowClear
-          placeholder='Apellidos'
-          autoComplete='off'
-          type='text'
-          onKeyPress={(event) => {
-            if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
-          onPaste={(event) => {
-            event.preventDefault();
-          }}
-        />
-      </Form.Item>
-      {(setearCampos() && obj === undefined) && (
+      {obj !== undefined ? (<>
+        <div>{renderFormFuneria(lugarfuneraria)}</div>
+      </>) :
         <>
+
           <Form.Item
-            label='Correo familiar contratante'
-            initialValue={correosol === '' ? obj?.correosolicitante : correosol}
-            rules={[{ required: true, type: 'email', max: 50 }]}
-            name='emailsolicitudadd'
+            label='Tipo documento'
+            initialValue={obj?.tiposolicitante ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+            rules={[{ required: true }]}
+            name='fiscalia'
           >
+            <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
+          </Form.Item>
+
+          <Form.Item label='Numero documento' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
             <Input
               allowClear
-              placeholder='Email Familiar'
-              value={correosol === '' ? obj?.correosolicitante : correosol}
-              defaultValue={correosol === '' ? obj?.correosolicitante : correosol}
-              type='email'
+              type='text'
+              placeholder='Número Identificación'
+              autoComplete='off'
+              pattern={tipocampo}
+              disabled={sininformacion}
+              maxLength={longitudmaxima}
               onKeyPress={(event) => {
-                if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                if (!tipocampovalidacion.test(event.key)) {
                   event.preventDefault();
                 }
               }}
-              autoComplete='off'
-              id='emailsol'
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
+              onInvalid={() => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Datos inválidos',
+                  text:
+                    'Sección: DATOS DEL SOLICITANTE Y/O FUNERARIA \n recuerde que para el tipo de documento: ' +
+                    tipodocumento +
+                    ' solo se admiten valores ' +
+                    campo +
+                    ' de longitud entre ' +
+                    longitudminima +
+                    ' y ' +
+                    longitudmaxima
+                });
+              }}
             />
           </Form.Item>
-        </>
-      )}
 
-      <div>{renderFormFuneria(lugarfuneraria)}</div>
-
-      {(setearCampos() && obj === undefined) && (
-        <>
-          <Form.Item
-            label='Email Funeraria y/o solicitante'
-            name='emailfuneraria'
-            initialValue={correofun === '' ? obj.correofuneraria : correofun}
-            rules={[{ required: true, type: 'email', max: 50 }]}
-          >
+          <Form.Item label='Nombres' initialValue={obj?.razonsocialsolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
             <Input
               allowClear
-              placeholder='Email Funeraria'
-              value={correofun === '' ? obj.correofuneraria : correofun}
-              defaultValue={correofun === '' ? obj.correofuneraria : correofun}
-              type='email'
+              placeholder='Nombres'
+              autoComplete='off'
+              type='text'
               onKeyPress={(event) => {
-                if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                   event.preventDefault();
                 }
               }}
-              //onChange={(e) => cambioemailFUN(e.target.value)}
-              autoComplete='off'
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
             />
           </Form.Item>
+
+          <Form.Item label='Apellidos' initialValue={null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
+            <Input
+              allowClear
+              placeholder='Apellidos'
+              autoComplete='off'
+              type='text'
+              onKeyPress={(event) => {
+                if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }}
+              onPaste={(event) => {
+                event.preventDefault();
+              }}
+            />
+          </Form.Item>
+          {setearCampos() && (
+            <>
+              <Form.Item
+                label='Correo familiar contratante'
+                initialValue={correosol === '' ? obj?.correosolicitante : correosol}
+                rules={[{ required: true, type: 'email', max: 50 }]}
+                name='emailsolicitudadd'
+              >
+                <Input
+                  allowClear
+                  placeholder='Email Familiar'
+                  value={correosol === '' ? obj?.correosolicitante : correosol}
+                  defaultValue={correosol === '' ? obj?.correosolicitante : correosol}
+                  type='email'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  autoComplete='off'
+                  id='emailsol'
+                />
+              </Form.Item>
+            </>
+          )}
+
+          <div>{renderFormFuneria(lugarfuneraria)}</div>
+
+          {setearCampos() && (
+            <>
+              <Form.Item
+                label='Email Funeraria y/o solicitante'
+                name='emailfuneraria'
+                initialValue={correofun === '' ? obj.correofuneraria : correofun}
+                rules={[{ required: true, type: 'email', max: 50 }]}
+              >
+                <Input
+                  allowClear
+                  placeholder='Email Funeraria'
+                  value={correofun === '' ? obj.correofuneraria : correofun}
+                  defaultValue={correofun === '' ? obj.correofuneraria : correofun}
+                  type='email'
+                  onKeyPress={(event) => {
+                    if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+                  //onChange={(e) => cambioemailFUN(e.target.value)}
+                  autoComplete='off'
+                />
+              </Form.Item>
+            </>
+          )}
         </>
-      )}
+      }
     </>
   );
 };
