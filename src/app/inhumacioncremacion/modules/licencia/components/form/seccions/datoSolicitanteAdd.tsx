@@ -216,6 +216,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               rules={[{ required: true }]}
             >
               <SelectComponent
+                style={{ width: '90%' }}
                 options={l_funerarias}
                 optionPropkey='RAZON_S'
                 disabled={validacionfuneraria}
@@ -236,11 +237,12 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         rules={[{ required: true }]}
         name='fiscalia'
       >
-        <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
+        <SelectComponent style={{ width: '90%' }} options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
       </Form.Item>
 
       <Form.Item label='Numero documento' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
         <Input
+          style={{ width: '90%' }}
           allowClear
           type='text'
           placeholder='Número Identificación'
@@ -276,6 +278,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
       <Form.Item label='Nombres' initialValue={obj?.razonsocialsolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
         <Input
+          style={{ width: '90%' }}
           allowClear
           placeholder='Nombres'
           autoComplete='off'
@@ -293,6 +296,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
 
       <Form.Item label='Apellidos' initialValue={null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
         <Input
+          style={{ width: '90%' }}
           allowClear
           placeholder='Apellidos'
           autoComplete='off'

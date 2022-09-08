@@ -167,6 +167,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           <div className='fadeInRight'>
             <Form.Item label='País' name='cementerioPais' rules={[{ required: true }]} initialValue={obj?.cementerioPais}>
               <SelectComponent
+                style={{ width: '90%' }}
                 options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
                 optionPropkey='id'
                 optionPropLabel='descripcion'
@@ -197,7 +198,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               initialValue={obj?.cementerioBogota}
               rules={[{ required: true }]}
             >
-              <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+              <SelectComponent style={{ width: '90%' }} options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
             </Form.Item>
           </>
         );
