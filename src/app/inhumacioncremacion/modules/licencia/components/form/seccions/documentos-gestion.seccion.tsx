@@ -323,7 +323,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     ];
   }
   return (
-    <div className='container'>
+    <div className='container mt-4'>
       <div className='row'>
         <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
           <p style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }} className='text-uppercase font-weight-bold'>

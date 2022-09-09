@@ -976,7 +976,7 @@ export const CambioLicencia = ({ props }: any) => {
                                 </h5>
                               </div>
                               <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='fadeInRight d-block'>
+                                <div className='fadeInRight d-block mt-3'>
 
 
 
@@ -984,6 +984,8 @@ export const CambioLicencia = ({ props }: any) => {
 
                                   <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={obj.name}>
                                     <Input
+
+                                      style={{ width: '90%' }}
                                       allowClear
                                       placeholder='Primer Nombre'
                                       autoComplete='off'
@@ -1005,6 +1007,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     initialValue={obj.secondName}
                                   >
                                     <Input
+                                      style={{ width: '90%' }}
                                       allowClear
                                       placeholder='Segundo Nombre'
                                       autoComplete='off'
@@ -1026,6 +1029,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     initialValue={obj.surname}
                                   >
                                     <Input
+                                      style={{ width: '90%' }}
                                       allowClear
                                       placeholder='Primer Apellido'
                                       autoComplete='off'
@@ -1047,6 +1051,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     initialValue={obj.secondSurname}
                                   >
                                     <Input
+                                      style={{ width: '90%' }}
                                       allowClear
                                       placeholder='Segundo Apellido'
                                       autoComplete='off'
@@ -1068,6 +1073,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     rules={[{ required: true }]}
                                   >
                                     <SelectComponent
+                                      style={{ width: '90%' }}
                                       options={l_paises}
                                       placeholder='-- Elija una nacionalidad --'
                                       optionPropkey='id'
@@ -1093,7 +1099,7 @@ export const CambioLicencia = ({ props }: any) => {
 
                                     <Form.Item
                                       label='Fecha de Nacimiento'
-                                      style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 400 : 750 }}
+                                      style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 400 : 750, marginLeft: '80px' }}
                                       name='dateOfBirth'
                                       rules={[{ required: true }]}
                                       initialValue={date}
@@ -1104,7 +1110,7 @@ export const CambioLicencia = ({ props }: any) => {
                                         onChange={FechaNacimiento}
                                         dateDisabledType='before'
                                         dateFormatType='default'
-                                        style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 200 : 530 }}
+                                        style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 200 : 530, marginLeft: '10px' }}
                                         value={date}
                                       />
                                     </Form.Item>
@@ -1117,6 +1123,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     rules={[{ required: true }]}
                                   >
                                     <SelectComponent
+                                      style={{ width: '90%' }}
                                       options={l_tipos_documento}
                                       onChange={cambiodocumento}
                                       optionPropkey='id'
@@ -1125,6 +1132,7 @@ export const CambioLicencia = ({ props }: any) => {
                                   </Form.Item>
                                   <Form.Item label='Número de Identificación' initialValue={obj.IDNumber} name='IDNumber' rules={[{ required: !sininformacion }]}>
                                     <Input
+                                      style={{ width: '90%' }}
                                       allowClear
                                       type='text'
                                       placeholder='Número Identificación'
@@ -1167,7 +1175,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     initialValue={obj.deathType}
                                     rules={[{ required: true }]}
                                   >
-                                    <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
+                                    <SelectComponent style={{ width: '90%' }} options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
                                   </Form.Item>
 
 
@@ -1196,10 +1204,11 @@ export const CambioLicencia = ({ props }: any) => {
                                     </h5>
                                   </div>
                                   <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                    <div className='fadeInRight d-block'>
+                                    <div className='fadeInRight d-block mt-3'>
                                       <div className='fadeInRight'>
                                         <Form.Item {...layoutWrapper}>
                                           <Alert
+                                            style={{ width: '90%' }}
                                             message='Diligencie la información del familiar o persona que autoriza la cremación.'
                                             type='warning'
                                             showIcon
@@ -1207,12 +1216,14 @@ export const CambioLicencia = ({ props }: any) => {
                                         </Form.Item>
 
                                         <Form.Item
+                                          className='mt-4'
                                           label='Tipo Documento'
                                           name='authIDType'
                                           initialValue={'7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                                           rules={[{ required: true }]}
                                         >
                                           <SelectComponent
+                                            style={{ width: '90%' }}
                                             options={l_tipos_documento_autoriza}
                                             onChange={cambiodocumentoautoriza}
                                             optionPropkey='id'
@@ -1227,6 +1238,7 @@ export const CambioLicencia = ({ props }: any) => {
 
                                         >
                                           <Input
+                                            style={{ width: '90%' }}
                                             allowClear
                                             type='text'
                                             placeholder='Número Identificación'
@@ -1266,6 +1278,7 @@ export const CambioLicencia = ({ props }: any) => {
                                           rules={[{ required: true, max: 50 }]}
                                         >
                                           <Input
+                                            style={{ width: '90%' }}
                                             allowClear
                                             placeholder='Primer Nombre'
                                             autoComplete='off'
@@ -1287,6 +1300,7 @@ export const CambioLicencia = ({ props }: any) => {
                                           name='authSecondName'
                                         >
                                           <Input
+                                            style={{ width: '90%' }}
                                             allowClear
                                             placeholder='Segundo Nombre'
                                             autoComplete='off'
@@ -1308,6 +1322,7 @@ export const CambioLicencia = ({ props }: any) => {
                                           rules={[{ required: true, max: 50 }]}
                                         >
                                           <Input
+                                            style={{ width: '90%' }}
                                             allowClear
                                             placeholder='Primer Apellido'
                                             autoComplete='off'
@@ -1329,6 +1344,7 @@ export const CambioLicencia = ({ props }: any) => {
                                           rules={[{ max: 50 }]}
                                         >
                                           <Input
+                                            style={{ width: '90%' }}
                                             allowClear
                                             placeholder='Segundo Apellido'
                                             autoComplete='off'

@@ -216,6 +216,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               rules={[{ required: true }]}
             >
               <SelectComponent
+                style={{ width: '90%' }}
                 options={l_funerarias}
                 optionPropkey='RAZON_S'
                 disabled={validacionfuneraria}
@@ -241,7 +242,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             rules={[{ required: true }]}
             name='fiscalia'
           >
-            <SelectComponent options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
+            <SelectComponent style={{ width: '90%' }} options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
           </Form.Item>
 
           <Form.Item label='Numero documento' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
@@ -250,6 +251,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               type='text'
               placeholder='Número Identificación'
               autoComplete='off'
+              style={{ width: '90%' }}
               pattern={tipocampo}
               disabled={sininformacion}
               maxLength={longitudmaxima}
@@ -284,6 +286,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               allowClear
               placeholder='Nombres'
               autoComplete='off'
+              style={{ width: '90%' }}
               type='text'
               onKeyPress={(event) => {
                 if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
@@ -300,6 +303,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             <Input
               allowClear
               placeholder='Apellidos'
+              style={{ width: '90%' }}
               autoComplete='off'
               type='text'
               onKeyPress={(event) => {
