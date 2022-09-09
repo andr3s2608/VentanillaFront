@@ -164,7 +164,8 @@ export class ApiService {
   UpdateCementerios = (payload: any, id: string) =>
     put({ endpoint: REACT_APP_SHARED as string, url: `v1/Cementerio/UpdateCementerio/${id}`, payload, id: '0' });
 
-  putLicencia = (payload: any) => put({ endpoint: REACT_APP_LOCAL as string, url: 'Request/UpdateRequest', payload, id: '0' });
+  putLicencia = (payload: any) =>
+    put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
 
   ModificarConstante = (constante: string, valor: string, validacion: string) =>
     put({
