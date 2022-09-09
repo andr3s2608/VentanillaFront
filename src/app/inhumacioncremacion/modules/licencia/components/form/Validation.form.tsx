@@ -927,7 +927,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const ModificarLicencia = async () => {
-    await api.ModificarEstadoSolicitudInh(objJosn.idSolicitud, '31A45854-BF40-44B6-2645-08DA64F23B8E');
+    await api.ModificarEstadoSolicitudInh(objJosn.idSolicitud, '5E98C640-D9FB-4177-8F0C-E44DDC72EBAB');
   };
 
   return (

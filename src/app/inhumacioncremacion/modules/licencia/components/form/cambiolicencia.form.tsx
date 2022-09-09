@@ -342,7 +342,7 @@ export const CambioLicencia = ({ props }: any) => {
             sinEstablecer: values.check,
             hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
             idSexo: values.sex,
-            estadoSolicitud: estadoSolicitud,
+            estadoSolicitud: '31A45854-BF40-44B6-2645-08DA64F23B8E',
             idPersonaVentanilla: obj.idpersonaventanilla, //numero de usuario registrado
             idUsuarioSeguridad: obj.idusuarioseg,
             idTramite: obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'e69bda86-2572-45db-90dc-b40be14fe020' : 'a289c362-e576-4962-962b-1c208afa0273',

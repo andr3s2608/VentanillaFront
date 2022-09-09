@@ -218,7 +218,7 @@ export const Gridview = (props: IDataSource) => {
                 </Button>
               );
             } else {
-              if (row.solicitud === 'Cambio de Licencia') {
+              if (row.solicitud === 'Cambiar Tipo de Licencia') {
                 return (
                   <Button
                     type='primary'
