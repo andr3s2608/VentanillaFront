@@ -40,12 +40,17 @@ export const ModificarLicencia = ({ props }: any) => {
   );
 
   const [certificado, setcertificado] = useState<any>();
-  const [isHora, setIsHora] = useState<boolean>(false);
+  const [isHora, setIsHora] = useState<boolean>(true);
   const [check, setcheck] = useState<boolean>(true);
 
   const { setStatus } = useStepperForm<any>(form);
 
-  const getListas = useCallback(async () => { }, []);
+  const getListas = useCallback(async () => {
+
+
+
+
+  }, []);
 
   useEffect(() => {
     getListas();
@@ -81,12 +86,16 @@ export const ModificarLicencia = ({ props }: any) => {
       const fecha = solicitud[0].fechaDefuncion;
 
       setDate(moment(fecha));
-      setcheck(solicitud[0].sinEstablecer);
+
       if (solicitud[0].hora == 'Sin información') {
+        setcheck(true);
+        setIsHora(false);
         setTime(null);
       } else {
+        setcheck(false);
         setTime(ObtenerHora(solicitud[0].hora + ''));
       }
+
       setsexo(solicitud[0].idSexo);
 
       for (let index = 0; index < 3; index++) {
@@ -121,6 +130,7 @@ export const ModificarLicencia = ({ props }: any) => {
   const onSubmit = async (values: any) => {
     let bandera = false;
     let continuar = false;
+
     if (values.numerocert == obj.numeroCertificado) {
       bandera = true;
     } else {
@@ -155,6 +165,9 @@ export const ModificarLicencia = ({ props }: any) => {
         }
       });
     }
+    else {
+      continuar = true;
+    }
 
     if (continuar) {
 
@@ -176,7 +189,9 @@ export const ModificarLicencia = ({ props }: any) => {
 
       obj.idSexo = values.sex;
 
-      await api.putLicencia(obj);
+      const array = { solicitud: obj };
+
+      await api.putLicencia(array);
 
       if (nn) {
         let container = '';

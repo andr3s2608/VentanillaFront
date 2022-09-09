@@ -477,7 +477,14 @@ export const CambioLicencia = ({ props }: any) => {
             esValido: true
           });
           actavalida = 1;
+
         }
+        else {
+          if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+            actavalida = 1;
+          }
+        }
+
         for (let index = 0; index < filter.length; index++) {
           if (filter[index].idTipoDocumentoSoporte === '19a11490-261c-4114-9152-23c2b991cb36' ||
             filter[index].idTipoDocumentoSoporte === '9c4e62a4-ee76-4ba1-8dbe-8be172e23788') {
