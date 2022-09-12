@@ -218,6 +218,7 @@ export const BandejaU = (props: IDataSource) => {
         title: FilterByNameInput(),
         dataIndex: 'numeroRadicado',
         key: 'nroradicado',
+        width: 200,
         sorter: {
           compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
           multiple: 1,
@@ -227,7 +228,7 @@ export const BandejaU = (props: IDataSource) => {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',
         key: 'idTramite',
-
+        width: 200,
         sorter: {
           compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
             a.tipodeTramite > b.tipodeTramite ? 1 : -1,
@@ -237,7 +238,8 @@ export const BandejaU = (props: IDataSource) => {
       {
         title: 'Fecha de Registro',
         dataIndex: 'fechaSolicitud',
-        key: 'fechaSolicitud'
+        key: 'fechaSolicitud',
+        width: 200,
       },
       {
         title: 'Estado ',
@@ -272,6 +274,7 @@ export const BandejaU = (props: IDataSource) => {
         title: 'Actividad en curso',
         dataIndex: 'actividadActualSolicitud',
         key: 'actividad',
+        width: 200,
         filters: [
           {
             text: 'Aprobación de solicitud',
