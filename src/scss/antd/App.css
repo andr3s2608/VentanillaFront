@@ -125,3 +125,7 @@
 .prueba {
   display: none !important;
 }
+
+.ant-table-cell {
+  width: 300px !important;
+}

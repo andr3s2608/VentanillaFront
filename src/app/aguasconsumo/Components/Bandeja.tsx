@@ -579,7 +579,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Fecha de Registro',
         dataIndex: 'fechaSolicitud',
         key: 'fechaSolicitud',
-
+        width: 200,
         render(text: any, record: any) {
           return {
             props: {
@@ -593,7 +593,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Estados ',
         dataIndex: 'estado',
         key: 'estado',
-        width: 100,
+        width: 200,
         filters: [
           {
             text: 'Abierta',
@@ -631,6 +631,7 @@ export const Bandeja = (props: IDataSource) => {
       {
         title: 'Actividad en curso',
         dataIndex: 'actividadActualSolicitud',
+        width: 200,
         key: 'actividad',
         filters: [
           {
@@ -670,6 +671,7 @@ export const Bandeja = (props: IDataSource) => {
       {
         title: 'Validar Tramite',
         key: 'Acciones',
+        width: 200,
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
@@ -720,6 +722,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',
         key: 'idTramite',
+        width: 200,
 
         sorter: {
           compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
@@ -739,6 +742,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Estado ',
         dataIndex: 'estado',
         key: 'estado',
+        width: 200,
         filters: [
           {
             text: 'Abierta',
@@ -777,6 +781,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Fecha de Registro',
         dataIndex: 'fechaSolicitud',
         key: 'fechaSolicitud',
+        width: 200,
         render(text: any, record: any) {
           return {
             props: {
@@ -790,6 +795,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Validador',
         dataIndex: 'nombreSubred',
         key: 'nombreSubred',
+        width: 200,
         filters: [
           {
             text: 'Subred Centro Oriente E.S.E.',
@@ -824,6 +830,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Estado de validación',
         dataIndex: 'tipodeSolicitud',
         key: 'tipodeSolicitud',
+        width: 200,
         filters: [
           {
             text: 'Abierta',
@@ -877,6 +884,7 @@ export const Bandeja = (props: IDataSource) => {
       {
         title: 'Observaciones',
         dataIndex: '',
+        width: 200,
         key: '',
         render(text: any, record: any) {
           return {
@@ -894,6 +902,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',
         key: 'idTramite',
+        width: 200,
         sorter: {
           compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
             a.tipodeTramite > b.tipodeTramite ? 1 : -1,
@@ -903,12 +912,14 @@ export const Bandeja = (props: IDataSource) => {
       {
         title: 'Fecha de Registro',
         dataIndex: 'fechaSolicitud',
-        key: 'fechaSolicitud'
+        key: 'fechaSolicitud',
+        width: 200,
       },
       {
         title: 'Estado ',
         dataIndex: 'estado',
         key: 'estado',
+        width: 200,
         filters: [
           {
             text: 'Abierta',
@@ -939,6 +950,7 @@ export const Bandeja = (props: IDataSource) => {
         title: 'Actividad en curso',
         dataIndex: 'actividadActualSolicitud',
         key: 'actividad',
+        width: 200,
         filters: [
           {
             text: 'Aprobación de solicitud',
