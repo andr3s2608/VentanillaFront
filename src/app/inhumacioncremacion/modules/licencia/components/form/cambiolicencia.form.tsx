@@ -231,55 +231,116 @@ export const CambioLicencia = ({ props }: any) => {
 
         let persona: any[] = [];
 
+        let autorizador: any = [];
+
+
+
+
         if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
-          persona = [
-            //fallecido
-            {
-              idPersona: obj.idpersona,
-              tipoIdentificacion: values.IDType,
-              numeroIdentificacion: idnum,
-              primerNombre: values.name,
-              segundoNombre: values.secondName ?? '',
-              primerApellido: values.surname,
-              segundoApellido: values.secondSurname ?? '',
-              fechaNacimiento: values.dateOfBirth,
-              hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-              nacionalidad: values.nationalidad[0],
-              estado: true,
-              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-              otroParentesco: null,
-              idEstadoCivil: obj.civilStatus,
-              idNivelEducativo: obj.educationLevel,
-              idEtnia: obj.etnia,
-              idRegimen: obj.regime,
-              idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-              idParentesco: parentesco,
-              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-            },
-            //authorizador cremacion
-            {
-              //idPersona: '',
-              tipoIdentificacion: values.authIDType,
-              numeroIdentificacion: idnumaut,
-              primerNombre: values.authName,
-              segundoNombre: values.authSecondName ?? '',
-              primerApellido: values.authSurname,
-              segundoApellido: values.authSecondSurname ?? '',
-              fechaNacimiento: null,
-              estado: true,
-              hora: '',
-              nacionalidad: '00000000-0000-0000-0000-000000000000',
-              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-              otroParentesco: parentesco, //lista parentesco
-              idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-              idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-              idEtnia: '00000000-0000-0000-0000-000000000000',
-              idRegimen: '00000000-0000-0000-0000-000000000000',
-              idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-              idParentesco: parentesco,
-              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-            }
-          ];
+
+          if (obj?.autorizadorcremacion.length > 0) {
+
+            persona = [
+              //fallecido
+              {
+                idPersona: obj.idpersona,
+                tipoIdentificacion: values.IDType,
+                numeroIdentificacion: idnum,
+                primerNombre: values.name,
+                segundoNombre: values.secondName ?? '',
+                primerApellido: values.surname,
+                segundoApellido: values.secondSurname ?? '',
+                fechaNacimiento: values.dateOfBirth,
+                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                nacionalidad: values.nationalidad[0],
+                estado: true,
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: null,
+                idEstadoCivil: obj.civilStatus,
+                idNivelEducativo: obj.educationLevel,
+                idEtnia: obj.etnia,
+                idRegimen: obj.regime,
+                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              },
+              //authorizador cremacion
+              {
+                idPersona: obj.autorizadorcremacion[0].id,
+                tipoIdentificacion: values.authIDType,
+                numeroIdentificacion: idnumaut,
+                primerNombre: values.authName,
+                segundoNombre: values.authSecondName ?? '',
+                primerApellido: values.authSurname,
+                segundoApellido: values.authSecondSurname ?? '',
+                fechaNacimiento: null,
+                estado: true,
+                hora: '',
+                nacionalidad: '00000000-0000-0000-0000-000000000000',
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: parentesco, //lista parentesco
+                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                idEtnia: '00000000-0000-0000-0000-000000000000',
+                idRegimen: '00000000-0000-0000-0000-000000000000',
+                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              }
+            ];
+
+          }
+          else {
+            persona = [
+              //fallecido
+              {
+                idPersona: obj.idpersona,
+                tipoIdentificacion: values.IDType,
+                numeroIdentificacion: idnum,
+                primerNombre: values.name,
+                segundoNombre: values.secondName ?? '',
+                primerApellido: values.surname,
+                segundoApellido: values.secondSurname ?? '',
+                fechaNacimiento: values.dateOfBirth,
+                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                nacionalidad: values.nationalidad[0],
+                estado: true,
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: null,
+                idEstadoCivil: obj.civilStatus,
+                idNivelEducativo: obj.educationLevel,
+                idEtnia: obj.etnia,
+                idRegimen: obj.regime,
+                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              },
+              //authorizador cremacion
+              {
+                //idPersona: '',
+                tipoIdentificacion: values.authIDType,
+                numeroIdentificacion: idnumaut,
+                primerNombre: values.authName,
+                segundoNombre: values.authSecondName ?? '',
+                primerApellido: values.authSurname,
+                segundoApellido: values.authSecondSurname ?? '',
+                fechaNacimiento: null,
+                estado: true,
+                hora: '',
+                nacionalidad: '00000000-0000-0000-0000-000000000000',
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: parentesco, //lista parentesco
+                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                idEtnia: '00000000-0000-0000-0000-000000000000',
+                idRegimen: '00000000-0000-0000-0000-000000000000',
+                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              }
+            ];
+
+          }
         }
         else {
           persona = [
@@ -307,7 +368,7 @@ export const CambioLicencia = ({ props }: any) => {
               idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
             },
             {
-              //idPersona: '',
+              //authorizador cremacion
               idPersona: obj.autorizadorcremacion[0].id,
               tipoIdentificacion: obj.autorizadorcremacion[0].tipoid,
               numeroIdentificacion: obj.autorizadorcremacion[0].numeroid,
@@ -560,7 +621,7 @@ export const CambioLicencia = ({ props }: any) => {
 
             supportDocumentsEdit.push({
               idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: '',
+              idTipoDocumentoSoporte: '242A2E58-46B5-4C45-97BA-881A383F2CBB',
               path: `${obj.idusuarioseg}/Justificación del cambio de licencia_${obj.idSolicitud}`,
               idUsuario: obj.idusuarioseg,
               esValido: true
@@ -616,6 +677,7 @@ export const CambioLicencia = ({ props }: any) => {
           text: 'Se ha modificado la Solicitud exitosamente'
         });
       }
+      history.push('/tramites-servicios');
     }
   };
 
@@ -626,16 +688,28 @@ export const CambioLicencia = ({ props }: any) => {
 
 
   const Actions = () => (
-    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-      <div className='d-flex justify-content-between'>
-        <Button type='primary' htmlType='submit'>
-          Guardar o Modificar
-        </Button>
-        <Button type='primary' htmlType='button' onClick={() => history.push('/tramites-servicios')}>
-          cancelar
-        </Button>
+    <div className='container-fluid'>
+      <div className='row'>
+        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+          <div className='d-flex justify-content-center'>
+            <Button type='primary' htmlType='submit' >
+              Guardar
+            </Button>
+
+            <Button
+              type='dashed'
+              htmlType='button'
+              onClick={() => {
+                history.push('/tramites-servicios');
+              }}
+            >
+              Volver atrás
+            </Button>
+          </div>
+
+        </Form.Item>
       </div>
-    </Form.Item>
+    </div>
   );
 
   const getData = (longitud: number, procedencia: any) => {
@@ -1465,10 +1539,10 @@ export const CambioLicencia = ({ props }: any) => {
 
                                 </div>
                               </div>
-                              <Actions />
+
                             </div>
                           </div>
-
+                          <Actions />
                         </div>
                       </div>
                     </div>
