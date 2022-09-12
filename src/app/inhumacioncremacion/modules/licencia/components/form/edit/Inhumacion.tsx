@@ -233,9 +233,9 @@ const formatObjJson = (obj: any, id: String) => {
 
       idresumensolicitud: obj.resumenSolicitud.idSolicitud,
       nombresolicitante: obj.resumenSolicitud.nombreSolicitante,
-      apellidosolicitante: obj.resumenSolicitud.ApellidoSolicitante,
-      tipodocsolicitante: obj.resumenSolicitud.TipoDocumentoSolicitante,
-      nrosolicitante: obj.resumenSolicitud.NumeroDocumentoSolicitante,
+      apellidosolicitante: obj.resumenSolicitud.apellidoSolicitante,
+      tipodocsolicitante: obj.resumenSolicitud.tipoDocumentoSolicitante,
+      nrosolicitante: obj.resumenSolicitud.numeroDocumentoSolicitante,
       correocementerio: obj.resumenSolicitud.correoCementerio,
       correofuneraria: obj.resumenSolicitud.correoFuneraria,
       correosolicitante: obj.resumenSolicitud.correoSolicitante,
