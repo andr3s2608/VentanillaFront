@@ -688,33 +688,35 @@ export const CambioLicencia = ({ props }: any) => {
 
 
   const Actions = () => (
-    <div className='container-fluid'>
-      <div className='row'>
-        <div className="col-lg-12 col-sm-12 col-md-12 col-xl-12">
-          <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-            <div className='d-flex' style={{ margin: '0 auto' }}>
-              <Button type='primary' htmlType='submit' style={{ marginLeft: '-40px' }}>
-                Guardar
-              </Button>
+    <section>
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className="col-lg-12 col-sm-12 col-md-12 col-xl-12">
+            <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+              <div className='d-flex' style={{ margin: '0 auto' }}>
+                <Button type='primary' htmlType='submit' style={{ marginLeft: '-40px' }}>
+                  Guardar
+                </Button>
 
-              <Button
-                style={{ marginLeft: '300px' }}
-                type='dashed'
-                htmlType='button'
-                onClick={() => {
-                  history.push('/tramites-servicios');
-                }}
-              >
-                Volver atrás
-              </Button>
-            </div>
+                <Button
+                  style={{ marginLeft: '300px' }}
+                  type='dashed'
+                  htmlType='button'
+                  onClick={() => {
+                    history.push('/tramites-servicios');
+                  }}
+                >
+                  Volver atrás
+                </Button>
+              </div>
 
-          </Form.Item>
+            </Form.Item>
+
+          </div>
 
         </div>
-
       </div>
-    </div>
+    </section>
   );
 
   const getData = (longitud: number, procedencia: any) => {
