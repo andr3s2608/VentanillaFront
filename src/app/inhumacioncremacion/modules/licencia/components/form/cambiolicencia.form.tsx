@@ -690,24 +690,29 @@ export const CambioLicencia = ({ props }: any) => {
   const Actions = () => (
     <div className='container-fluid'>
       <div className='row'>
-        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-          <div className='d-flex justify-content-center'>
-            <Button type='primary' htmlType='submit' >
-              Guardar
-            </Button>
+        <div className="col-lg-12 col-sm-12 col-md-12 col-xl-12">
+          <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+            <div className='d-flex' style={{ margin: '0 auto' }}>
+              <Button type='primary' htmlType='submit' style={{ marginLeft: '-40px' }}>
+                Guardar
+              </Button>
 
-            <Button
-              type='dashed'
-              htmlType='button'
-              onClick={() => {
-                history.push('/tramites-servicios');
-              }}
-            >
-              Volver atrás
-            </Button>
-          </div>
+              <Button
+                style={{ marginLeft: '300px' }}
+                type='dashed'
+                htmlType='button'
+                onClick={() => {
+                  history.push('/tramites-servicios');
+                }}
+              >
+                Volver atrás
+              </Button>
+            </div>
 
-        </Form.Item>
+          </Form.Item>
+
+        </div>
+
       </div>
     </div>
   );
@@ -965,7 +970,7 @@ export const CambioLicencia = ({ props }: any) => {
         <div className='card-body'>
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <div className='row justify-content-center'>
-              <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
+              <div className='col-lg-12 col-sm-12 col-md-12 col-xl-12 justify-content-center text-center'>
                 <p
                   style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
                   className='text-uppercase font-weight-bold'
@@ -979,7 +984,7 @@ export const CambioLicencia = ({ props }: any) => {
                 <section className='panel-solicitud mt-8 mb-5 datos_validadors'>
                   <div className='container'>
                     <div className='row'>
-                      <div className='col-lg-12 col-sm-12 col-md-12 col-xl-14'>
+                      <div className='col-lg-12 col-sm-12 col-md-12 col-xl-12'>
                         <div className='collapse-info'>
                           <div id='accordion' className='mt-3'>
                             <div className='card'>
@@ -1058,11 +1063,6 @@ export const CambioLicencia = ({ props }: any) => {
                               </div>
                               <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block mt-3'>
-
-
-
-
-
                                   <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={obj.name}>
                                     <Input
 
@@ -1161,7 +1161,7 @@ export const CambioLicencia = ({ props }: any) => {
                                       optionPropLabel='descripcion'
                                     />
                                   </Form.Item>
-                                  <div className='form-row ml-4'>
+                                  <div className=''>
                                     {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
                                       <>
                                         <Form.Item label='Hora' name='timenac' style={{ width: 380 }}>
@@ -1180,18 +1180,19 @@ export const CambioLicencia = ({ props }: any) => {
 
                                     <Form.Item
                                       label='Fecha de Nacimiento'
-                                      style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 400 : 750, marginLeft: '80px' }}
+                                      style={{ width: '90%', marginLeft: '60px' }}
                                       name='dateOfBirth'
                                       rules={[{ required: true }]}
                                       initialValue={date}
                                     >
                                       <DatepickerComponent
+
                                         picker='date'
                                         disabled
                                         onChange={FechaNacimiento}
                                         dateDisabledType='before'
                                         dateFormatType='default'
-                                        style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 200 : 530, marginLeft: '10px' }}
+                                        style={{ width: '100%', marginLeft: '-18px' }}
                                         value={date}
                                       />
                                     </Form.Item>

@@ -209,7 +209,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         {setearCampos() && (
           <>
             <Form.Item
-              className='fadeInRight'
+              className='fadeInRight mt-4'
               label='Funeraria de Bogotá D.C. y/o Solicitante'
               name='funerariaBogota'
               initialValue={validacionfuneraria ? valorfuneraria : (obj === undefined ? 'PARTICULAR' : obj?.funeraria)}
