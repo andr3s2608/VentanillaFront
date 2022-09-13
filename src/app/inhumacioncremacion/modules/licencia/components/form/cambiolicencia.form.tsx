@@ -17,17 +17,17 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 
 //Redux
 import { store } from 'app/redux/app.reducers';
-import { UploadOutlined } from '@ant-design/icons';
 import { Alert, Input, Radio, RadioChangeEvent, Switch, Upload } from 'antd';
 import moment from 'moment';
-import { GeneralInfoFormSeccion } from './seccions/general-info.form-seccion';
+import { GeneralInfoFormSeccion, KeysForm as KeyFormGeneralInfo } from './seccions/general-info.form-seccion';
 import { EditInhumacion } from './edit/Inhumacion';
-import { DeathInstituteFormSeccion } from './seccions/death-institute.form-seccion';
+import { DeathInstituteFormSeccion, KeysForm as KeyFormDeathInstitute } from './seccions/death-institute.form-seccion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { SolicitudInfoFormSeccion } from './seccions/solicitud-info.form-seccion';
-import { DatoSolicitanteAdd } from './seccions/datoSolicitanteAdd';
-import { CementerioInfoFormSeccion } from './seccions/cementerio-info.form-seccion';
+import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './seccions/datoSolicitanteAdd';
+import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './seccions/cementerio-info.form-seccion';
 import { InformacionDocumentosGestion } from './seccions/documentos-gestion.seccion';
+import { IRegistroLicencia } from 'app/inhumacioncremacion/Models/IRegistroLicencia';
+import { useHistory } from 'react-router';
 
 export const CambioLicencia = ({ props }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
@@ -35,25 +35,15 @@ export const CambioLicencia = ({ props }: any) => {
   const [form] = Form.useForm<any>();
 
   const [licencia, setLicencia] = useState<boolean>(true);
-  const [nn, setnn] = useState<boolean>(false);
-  const [valores, setvalores] = useState<string>('tramite');
+
 
 
   const obj: any = EditInhumacion('0');
-  console.log(obj)
+
 
   const date = moment(obj.dateOfBirth);
 
-  const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String, String, String, String]>([
-    '1',
-    '1',
-    '1',
-    '1',
-    '1',
-    '1',
-    '1',
-    '1'
-  ]);
+
 
   //validaciones tipos de documentos
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
@@ -75,10 +65,11 @@ export const CambioLicencia = ({ props }: any) => {
   const [l_tipos_documento_autoriza, settiposautoriza] = useState<any>();
 
 
-
+  const history = useHistory();
 
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
   const [posicion, setposicion] = useState<number>(0);
+  const [causaMuerte, setCausaMuerte] = useState<string>('');
 
 
   const [l_paises, setpaises] = useState<any>([]);
@@ -87,6 +78,7 @@ export const CambioLicencia = ({ props }: any) => {
   const [insttype, setinsttype] = useState<string>(obj?.instType);
 
   const { setStatus } = useStepperForm<any>(form);
+
 
   const getListas = useCallback(async () => {
 
@@ -100,6 +92,10 @@ export const CambioLicencia = ({ props }: any) => {
     const tipomuerte: any = localStorage.getItem('tipomuerte');
 
     const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+
+
+    const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+    setCausaMuerte(causa['valor']);
 
     settiposautoriza(nuevalista);
 
@@ -118,8 +114,10 @@ export const CambioLicencia = ({ props }: any) => {
 
 
   const onSubmit = async (values: any) => {
+
+
     var bandera = false;
-    if (values.numerocert == obj.numeroCertificado) {
+    if (values.certificado == obj.numeroCertificado) {
       bandera = true;
     } else {
       const busquedacertificado = await api.ComprobarCertificado(values.numerocert + '');
@@ -129,89 +127,15 @@ export const CambioLicencia = ({ props }: any) => {
         bandera = false;
       }
     }
-    if (bandera) {
-      const formatDate = 'MM-DD-YYYY';
-      obj.persona[posicion].primerNombre = values.name;
-      obj.persona[posicion].segundoNombre = values.secondName;
-      obj.persona[posicion].primerApellido = values.surname;
-      obj.persona[posicion].segundoApellido = values.secondSurname;
-
-      if (values.time._i == 'Fecha invalida') {
-        obj.hora = 'Sin información';
-      } else {
-        obj.hora = values.check === true ? 'Sin información' : moment(values.time).format('LT');
-      }
-      obj.numeroCertificado = values.numerocert;
-      obj.fechaDefuncion = moment(values.date).format(formatDate);
-      obj.sinEstablecer = values.check;
-
-      obj.idSexo = values.sex;
-
-      await api.putLicencia(obj);
-
-      if (nn) {
-        let container = '';
-        switch (obj.idTramite) {
-          case 'a289c362-e576-4962-962b-1c208afa0273':
-            container = 'inhumacionindividual';
-
-            break;
-          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-            //inhumacion fetal
-            container = 'inhumacionfetal';
-
-            break;
-          case 'e69bda86-2572-45db-90dc-b40be14fe020':
-            //cremacion individual
-            container = 'cremacionindividual';
-
-            break;
-          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-            //cremacionfetal
-            container = 'cremacionfetal';
-
-            break;
-        }
-        const support = await api.getSupportDocuments(obj.idSolicitud);
-
-        const [doc] = support.filter((p: any) => p.path.includes('Otros_Documentos'));
-
-        const supportDocumentsEdit: any[] = [];
-        const formData = new FormData();
-
-        const archivo = values.fileOtrosDocumentos.file;
-
-        formData.append('file', archivo);
-        formData.append('nameFile', 'Otros_Documentos' + '_' + obj.idSolicitud);
-
-        supportDocumentsEdit.push({
-          idDocumentoSoporte: doc.idDocumentoSoporte,
-          idSolicitud: obj.idSolicitud,
-          idTipoDocumentoSoporte: 'abe33c1d-9370-4189-9e81-597e5b643481',
-          path: `${obj.idUsuarioSeguridad}/Otros_Documentos_${obj.idSolicitud}`,
-          idUsuario: obj.idUsuarioSeguridad,
-          fechaModificacion: new Date()
-        });
-
-        formData.append('containerName', container);
-        formData.append('oid', obj.idUsuarioSeguridad);
-
-        if (supportDocumentsEdit.length) {
-          await api.uploadFiles(formData);
-          await api.UpdateSupportDocuments(supportDocumentsEdit);
-        }
-      }
-      setLicencia(false);
-      Swal.fire({
-        icon: 'success',
-
-        title: 'Solicitud Modificada',
-        text: 'Se ha modificado la Solicitud exitosamente'
-      });
-    } else {
+    let continuar = false;
+    if (!bandera) {
       Swal.fire({
         title: 'Usuario Registrado',
-        text: 'El Número de Certificado ya se Encuentra Registrado',
+        text: 'El Número de Certificado ya se Encuentra Registrado, desea continuar?',
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Modificar',
+        denyButtonText: `Cancelar`,
         showClass: {
           popup: 'animate__animated animate__fadeInDown'
         },
@@ -219,7 +143,541 @@ export const CambioLicencia = ({ props }: any) => {
           popup: 'animate__animated animate__fadeOutUp'
         },
         icon: 'info'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          continuar = true
+
+        } else if (result.isDenied) {
+        }
       });
+    }
+    else {
+      continuar = true
+    }
+    if (continuar) {
+
+      if (datecorrect) {
+
+
+
+
+        let causa = values.causaMuerte;
+        let banderaCausa = true;
+        let observacionCausaMuerte = causaMuerte;
+
+        if (causa == 0) {
+          banderaCausa = false;
+          observacionCausaMuerte = '';
+        }
+
+        const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
+        const formatDate = 'MM-DD-YYYY';
+        let idnum = values.IDNumber;
+        let idnumaut = values.mauthIDNumber;
+
+        if (sininformacion && idnum == undefined) {
+          idnum = ' ';
+        }
+        if (sininformacionaut && idnumaut == undefined) {
+          idnumaut = ' ';
+        }
+
+
+        const tipoinst = values.instTipoIdent;
+        var tipoidinst = values.instTipoIdent;
+        var numeroins = values.instNumIdent;
+        var razonSocialins = values.instRazonSocial;
+        var numeroProtocoloins = values.instNumProtocolo;
+        if (tipoinst == undefined) {
+          tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+          numeroins = '0';
+          razonSocialins = 'Otros';
+          numeroProtocoloins = '452022';
+        } else {
+          tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+        }
+        const par = values.authParentesco;
+        var parentesco = '';
+        switch (par) {
+          case 'Padre / Madre':
+            parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
+            break;
+          case 'Hermano/a':
+            parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
+            break;
+          case 'Hijo/a':
+            parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
+            break;
+          case 'Cónyuge (Compañero/a Permanente)':
+            parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
+            break;
+          case 'Tío/a':
+            parentesco = '6880824b-39c2-4105-8195-c190885796d8';
+            break;
+          case 'Sobrino/a':
+            parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
+            break;
+          case 'Abuelo/a':
+            parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
+            break;
+          case 'Nieto/a':
+            parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
+            break;
+          case 'Otro':
+            parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+            break;
+        }
+
+        let persona: any[] = [];
+
+        let autorizador: any = [];
+
+
+
+
+        if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
+
+          if (obj?.autorizadorcremacion.length > 0) {
+
+            persona = [
+              //fallecido
+              {
+                idPersona: obj.idpersona,
+                tipoIdentificacion: values.IDType,
+                numeroIdentificacion: idnum,
+                primerNombre: values.name,
+                segundoNombre: values.secondName ?? '',
+                primerApellido: values.surname,
+                segundoApellido: values.secondSurname ?? '',
+                fechaNacimiento: values.dateOfBirth,
+                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                nacionalidad: values.nationalidad[0],
+                estado: true,
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: null,
+                idEstadoCivil: obj.civilStatus,
+                idNivelEducativo: obj.educationLevel,
+                idEtnia: obj.etnia,
+                idRegimen: obj.regime,
+                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              },
+              //authorizador cremacion
+              {
+                idPersona: obj.autorizadorcremacion[0].id,
+                tipoIdentificacion: values.authIDType,
+                numeroIdentificacion: idnumaut,
+                primerNombre: values.authName,
+                segundoNombre: values.authSecondName ?? '',
+                primerApellido: values.authSurname,
+                segundoApellido: values.authSecondSurname ?? '',
+                fechaNacimiento: null,
+                estado: true,
+                hora: '',
+                nacionalidad: '00000000-0000-0000-0000-000000000000',
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: parentesco, //lista parentesco
+                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                idEtnia: '00000000-0000-0000-0000-000000000000',
+                idRegimen: '00000000-0000-0000-0000-000000000000',
+                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              }
+            ];
+
+          }
+          else {
+            persona = [
+              //fallecido
+              {
+                idPersona: obj.idpersona,
+                tipoIdentificacion: values.IDType,
+                numeroIdentificacion: idnum,
+                primerNombre: values.name,
+                segundoNombre: values.secondName ?? '',
+                primerApellido: values.surname,
+                segundoApellido: values.secondSurname ?? '',
+                fechaNacimiento: values.dateOfBirth,
+                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                nacionalidad: values.nationalidad[0],
+                estado: true,
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: null,
+                idEstadoCivil: obj.civilStatus,
+                idNivelEducativo: obj.educationLevel,
+                idEtnia: obj.etnia,
+                idRegimen: obj.regime,
+                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              },
+              //authorizador cremacion
+              {
+                //idPersona: '',
+                tipoIdentificacion: values.authIDType,
+                numeroIdentificacion: idnumaut,
+                primerNombre: values.authName,
+                segundoNombre: values.authSecondName ?? '',
+                primerApellido: values.authSurname,
+                segundoApellido: values.authSecondSurname ?? '',
+                fechaNacimiento: null,
+                estado: true,
+                hora: '',
+                nacionalidad: '00000000-0000-0000-0000-000000000000',
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: parentesco, //lista parentesco
+                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                idEtnia: '00000000-0000-0000-0000-000000000000',
+                idRegimen: '00000000-0000-0000-0000-000000000000',
+                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              }
+            ];
+
+          }
+        }
+        else {
+          persona = [
+            //fallecido
+            {
+              idPersona: obj.idpersona,
+              tipoIdentificacion: values.IDType,
+              numeroIdentificacion: idnum,
+              primerNombre: values.name,
+              segundoNombre: values.secondName ?? '',
+              primerApellido: values.surname,
+              segundoApellido: values.secondSurname ?? '',
+              fechaNacimiento: values.dateOfBirth,
+              hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+              nacionalidad: values.nationalidad[0],
+              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+              otroParentesco: null,
+              estado: true,
+              idEstadoCivil: obj.civilStatus,
+              idNivelEducativo: obj.educationLevel,
+              idEtnia: obj.etnia,
+              idRegimen: obj.regime,
+              idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+              idParentesco: parentesco,
+              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+            },
+            {
+              //authorizador cremacion
+              idPersona: obj.autorizadorcremacion[0].id,
+              tipoIdentificacion: obj.autorizadorcremacion[0].tipoid,
+              numeroIdentificacion: obj.autorizadorcremacion[0].numeroid,
+              primerNombre: obj.autorizadorcremacion[0].name,
+              segundoNombre: obj.autorizadorcremacion[0].secondName,
+              primerApellido: obj.autorizadorcremacion[0].surname,
+              segundoApellido: obj.autorizadorcremacion[0].secondSurname,
+              fechaNacimiento: null,
+              estado: false,
+              hora: '',
+              nacionalidad: '00000000-0000-0000-0000-000000000000',
+              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+              otroParentesco: parentesco, //lista parentesco
+              idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+              idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+              idEtnia: '00000000-0000-0000-0000-000000000000',
+              idRegimen: '00000000-0000-0000-0000-000000000000',
+              idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+              idParentesco: obj.autorizadorcremacion[0].parentesco,
+              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+            }
+          ];
+
+        }
+
+
+        const json: IRegistroLicencia<any> = {
+          solicitud: {
+            idSolicitud: obj.idSolicitud,
+            numeroCertificado: values.certificado,
+            fechaDefuncion: moment(values.date).format(formatDate),
+            sinEstablecer: values.check,
+            hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
+            idSexo: values.sex,
+            estadoSolicitud: '31A45854-BF40-44B6-2645-08DA64F23B8E',
+            idPersonaVentanilla: obj.idpersonaventanilla, //numero de usuario registrado
+            idUsuarioSeguridad: obj.idusuarioseg,
+            idTramite: obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'e69bda86-2572-45db-90dc-b40be14fe020' : 'a289c362-e576-4962-962b-1c208afa0273',
+            idTipoMuerte: values.deathType,
+            tipoPersona: obj.tipopersonasolicitantesolicitud,
+            tipoIdentificacionSolicitante: obj.tiposolicitantesolicitud,
+            noIdentificacionSolicitante: obj.nrosolicitantesolicitud,
+            razonSocialSolicitante: obj.razonsocialsolicitantesolicitud,
+            persona,
+            lugarDefuncion: {
+              idPais: obj.country,
+              idDepartamento: obj.state,
+              idMunicipio: obj.city,
+              idAreaDefuncion: obj.areaDef,
+              idSitioDefuncion: obj.sitDef
+            },
+            ubicacionPersona: {
+              idPaisResidencia: obj.residencia,
+              idDepartamentoResidencia: obj.idDepartamentoResidencia,
+              idCiudadResidencia: obj.idCiudadResidencia,
+              idLocalidadResidencia: obj.idLocalidadResidencia,
+              idAreaResidencia: obj.idAreaResidencia,
+              idBarrioResidencia: obj.idBarrioResidencia
+            },
+            datosCementerio: {
+              idDatosCementerio: obj?.idDatosCementerio,
+              enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+              fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+              fueraPais: values.cementerioLugar === 'Fuera del País',
+              cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
+              otroSitio: values.otro,
+              ciudad: values.cementerioCiudad,
+              idPais: values.cementerioPais,
+              idDepartamento: values.cementerioDepartamento,
+              idMunicipio: values.cementerioMunicipio
+            },
+
+            datosFuneraria: {
+              idDatosFuneraria: obj?.idDatosfuneraria,
+              enBogota: true,
+              fueraBogota: false,
+              fueraPais: false,
+              funeraria: values.funerariaBogota,
+              otroSitio: values.otrofuneraria,
+              ciudad: values.funerariaCiudad,
+              idPais: values.funerariaPais,
+              idDepartamento: values.funerariaDepartamento,
+              idMunicipio: values.funerariaMunicipio
+            },
+
+            resumenSolicitud: {
+              idSolicitud: obj.idresumensolicitud,
+              correoCementerio: obj.correocementerio,
+              correoFuneraria: obj.correofuneraria,
+              tipoDocumentoSolicitante: obj.tipodocsolicitante,
+              numeroDocumentoSolicitante: obj.nrosolicitante,
+              nombreSolicitante: obj.nombresolicitante,
+              apellidoSolicitante: obj.apellidosolicitante,
+              correoSolicitante: obj.correosolicitante,
+              correoMedico: '',
+              cumpleCausa: banderaCausa,
+              observacionCausa: observacionCausaMuerte
+            },
+
+            institucionCertificaFallecimiento: {
+              idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
+              tipoIdentificacion: tipoidinst,
+              numeroIdentificacion: numeroins,
+              razonSocial: razonSocialins,
+              numeroProtocolo: numeroProtocoloins,
+              numeroActaLevantamiento: values?.numeroActLeva ?? '',
+              fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
+              seccionalFiscalia: values?.SecFiscalAct ?? '',
+              noFiscal: values?.NoFiscAct ?? '',
+              idTipoInstitucion: values?.instType ?? '',
+              NombreFiscal: values?.fiscalianombreDC ?? '',
+              ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
+              NumeroOficio: values?.fiscalianumeroDC ?? '',
+              NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
+              FechaOficio: values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null
+            }
+            // documentosSoporte: generateFormFiel(values.instType)
+          }
+        };
+
+
+
+
+        await api.putLicencia(json);
+
+        //general
+        const acta = form.getFieldValue('fileActaNotarialFiscal');
+        //de inhumacion a cremacion
+        const autcrem = form.getFieldValue('fileAuthCCFamiliar');
+        const docfam = form.getFieldValue('fileDocCremacion');
+        const fiscautcrem = form.getFieldValue('fileAuthFiscalCremacion');
+        const ofmedleg = form.getFieldValue('fileOrdenAuthFiscal');
+        const justificcrem = form.getFieldValue('filejustcambio');
+        //de cremacion a inhumacion
+        const justificinh = form.getFieldValue('filejustFamiliar');
+        const docauth = form.getFieldValue('fileDocaut');
+
+        const supportDocumentsEdit: any[] = [];
+        const formData = new FormData();
+
+
+
+
+
+        const resp = await api.getSupportDocuments(obj.idSolicitud);
+
+
+        const filter = resp.filter(function (f: { esValido: boolean }) {
+          return (
+            f.esValido != false
+          );
+        });
+
+
+
+        let actavalida = 0;
+
+        if (acta != undefined) {
+          formData.append('file', values.fileActaNotarialFiscal.file);
+          formData.append('nameFile', 'Acta_Notarial_del_Fiscal' + '_' + obj.idSolicitud);
+
+          supportDocumentsEdit.push({
+            idSolicitud: obj.idSolicitud,
+            idTipoDocumentoSoporte: '79320af6-943c-43bf-87d1-847b625f6203',
+            path: `${obj.idusuarioseg}/Acta_Notarial_del_Fiscal_${obj.idSolicitud}`,
+            idUsuario: obj.idusuarioseg,
+            esValido: true
+          });
+          actavalida = 1;
+
+        }
+        else {
+          if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+            actavalida = 1;
+          }
+        }
+
+        for (let index = 0; index < filter.length; index++) {
+          if (filter[index].idTipoDocumentoSoporte === '19a11490-261c-4114-9152-23c2b991cb36' ||
+            filter[index].idTipoDocumentoSoporte === '9c4e62a4-ee76-4ba1-8dbe-8be172e23788') {
+
+          }
+          else {
+            if (actavalida == 1 &&
+              filter[index].idTipoDocumentoSoporte === '79320af6-943c-43bf-87d1-847b625f6203') {
+
+            }
+            else {
+              filter[index].esValido = false;
+            }
+
+          }
+        }
+        await api.UpdateSupportDocuments(filter);
+
+        //de inhumacion a cremacion
+        if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
+          if (autcrem != undefined) {
+            formData.append('file', values.fileAuthCCFamiliar.file);
+            formData.append('nameFile', 'Autorizacion_de_cremacion_del_familiar' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: 'f67f1c4e-a6a5-4257-a995-17a926801f7c',
+              path: `${obj.idusuarioseg}/Autorizacion_de_cremacion_del_familiar_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+          if (docfam != undefined) {
+            formData.append('file', values.fileDocCremacion.file);
+            formData.append('nameFile', 'Documento_del_familiar' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: 'd6524742-e32d-4548-ab21-7a9cbb367926',
+              path: `${obj.idusuarioseg}/Documento_del_familiar_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+          if (fiscautcrem != undefined) {
+            formData.append('file', values.fileAuthFiscalCremacion.file);
+            formData.append('nameFile', 'Autorizacion_del_fiscal_para_cremar' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+              path: `${obj.idusuarioseg}/Autorizacion_del_fiscal_para_cremar_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+          if (ofmedleg != undefined) {
+            formData.append('file', values.fileOrdenAuthFiscal.file);
+            formData.append('nameFile', 'Oficio_de_medicina_legal_al_fiscal_para_cremar' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: '1266f06c-0bc1-4cf8-ba51-5e889d5e8178',
+              path: `${obj.idusuarioseg}/Oficio_de_medicina_legal_al_fiscal_para_cremar_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+
+          if (justificcrem != undefined) {
+            formData.append('file', values.filejustcambio.file);
+            formData.append('nameFile', 'Justificación del cambio de licencia' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: '242A2E58-46B5-4C45-97BA-881A383F2CBB',
+              path: `${obj.idusuarioseg}/Justificación del cambio de licencia_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+
+
+
+
+
+        }
+        else {
+          if (justificinh != undefined) {
+            formData.append('file', values.filejustFamiliar.file);
+            formData.append('nameFile', 'Justificación_de_inhumación' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+              path: `${obj.idusuarioseg}/Justificación_de_inhumación_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+          if (docauth != undefined) {
+            formData.append('file', values.fileDocaut.file);
+            formData.append('nameFile', 'Documento_de_quien_autoriza' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: '6E57212B-2266-4854-9C13-F805BB4BBCF8',
+              path: `${obj.idusuarioseg}/Documento_de_quien_autoriza_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+          }
+
+        }
+
+        formData.append('containerName', obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+          'cremacionindividual' : 'inhumacionindividual'
+        );
+        formData.append('oid', accountIdentifier);
+        await api.uploadFiles(formData);
+        await api.UpdateSupportDocuments(supportDocumentsEdit);
+
+
+
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Solicitud Modificada',
+          text: 'Se ha modificado la Solicitud exitosamente'
+        });
+      }
+      history.push('/tramites-servicios');
     }
   };
 
@@ -230,13 +688,28 @@ export const CambioLicencia = ({ props }: any) => {
 
 
   const Actions = () => (
-    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-      <div className='d-flex justify-content-between'>
-        <Button type='primary' htmlType='submit'>
-          Guardar o Modificar
-        </Button>
+    <div className='container-fluid'>
+      <div className='row'>
+        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+          <div className='d-flex justify-content-center'>
+            <Button type='primary' htmlType='submit' >
+              Guardar
+            </Button>
+
+            <Button
+              type='dashed'
+              htmlType='button'
+              onClick={() => {
+                history.push('/tramites-servicios');
+              }}
+            >
+              Volver atrás
+            </Button>
+          </div>
+
+        </Form.Item>
       </div>
-    </Form.Item>
+    </div>
   );
 
   const getData = (longitud: number, procedencia: any) => {
@@ -260,95 +733,85 @@ export const CambioLicencia = ({ props }: any) => {
 
 
   //validacion fecha de nacimiento
-  const FechaNacimiento = (value: any) => {
-    const valorfecha = form.getFieldValue('dateOfBirth');
+  const FechaNacimiento = () => {
+    const valorfecha = obj?.dateOfBirth;
 
-    if (valorfecha != undefined) {
-      const fecha = moment(valorfecha);
-      const time = form.getFieldValue('timenac');
-      let time2 = undefined;
-      if (time != undefined) {
-        time2 = moment(time).format('LT');
-      }
+    const fecha = moment(valorfecha);
+    const time = obj.hourOfBirth;
+    let time2 = undefined;
+    if (time != 'Sin información') {
+      time2 = moment(time).format('LT');
+    }
 
-      const timedef = form.getFieldValue('time');
-      let timedef2 = undefined;
-      if (timedef != undefined) {
-        timedef2 = moment(timedef).format('LT');
-      }
+    const timedef = form.getFieldValue('time');
+    let timedef2 = undefined;
+    if (timedef != undefined) {
+      timedef2 = moment(timedef).format('LT');
+    }
 
-      let tiempo = '';
-      if (timedef2 != undefined) {
-        if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
-          if (time2 != undefined) {
-            const posicion1 = time2.indexOf(':');
-            const posicion2 = timedef2.indexOf(':');
+    let tiempo = '';
+    if (timedef2 != undefined) {
+      if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
+        if (time2 != undefined) {
+          const posicion1 = time2.indexOf(':');
+          const posicion2 = timedef2.indexOf(':');
 
-            const horanac1 = time2.substring(0, posicion1);
-            const horanac2 = time2.substring(posicion1 + 1, time2.length);
+          const horanac1 = time2.substring(0, posicion1);
+          const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-            const horadef1 = timedef2.substring(0, posicion2);
-            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+          const horadef1 = timedef2.substring(0, posicion2);
+          const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
 
-            if (parseInt(horanac1) < parseInt(horadef1)) {
-              tiempo = 'es valida';
-            } else {
-              if (parseInt(horanac1) == parseInt(horadef1)) {
-                if (parseInt(horanac2) <= parseInt(horadef2)) {
-                  tiempo = 'es valida';
-                } else {
-                  tiempo = 'es invalida';
-                }
+          if (parseInt(horanac1) < parseInt(horadef1)) {
+            tiempo = 'es valida';
+          } else {
+            if (parseInt(horanac1) == parseInt(horadef1)) {
+              if (parseInt(horanac2) <= parseInt(horadef2)) {
+                tiempo = 'es valida';
               } else {
                 tiempo = 'es invalida';
               }
+            } else {
+              tiempo = 'es invalida';
             }
           }
         }
       }
-
-      let valor = form.getFieldValue('date');
-      let fechadef = moment(valor);
-
-      if (!fecha.isBefore(fechadef)) {
-        if (tiempo == 'es valida') {
-          setdatecorrect(true);
-        } else {
-          if (tiempo == 'es invalida') {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos inválidos',
-              text: `La Hora de nacimiento  debe ser menor a: ${timedef2}`
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Datos inválidos',
-              text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
-            });
-          }
-        }
-
-        setdatecorrect(false);
-      } else {
-        setdatecorrect(true);
-      }
     }
+
+    let valor = form.getFieldValue('date');
+    let fechadef = moment(valor);
+
+    if (!fecha.isBefore(fechadef)) {
+      if (tiempo == 'es valida') {
+        setdatecorrect(true);
+      } else {
+        if (tiempo == 'es invalida') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: `La Hora de fallecimiento debe ser mayor a: ${time2}`
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: `La fecha de fallecimiento debe ser mayor a: ${fecha.calendar()}`
+          });
+        }
+      }
+
+      setdatecorrect(false);
+    } else {
+      setdatecorrect(true);
+    }
+
   };
 
   const getDataSolicitante = (solicitante: any) => { };
 
   const getDataDocumentos = (rowData: string, valor: string) => {
-    const array: any = [];
 
-    for (let index = 0; index < DatosDocumento.length; index++) {
-      if (index == parseInt(rowData)) {
-        array.push(valor);
-      } else {
-        array.push(DatosDocumento.at(index));
-      }
-    }
-    setDatosDocumento(array);
   };
 
   const [isOtherParentesco, setIsOtherParentesco] = useState(false);
@@ -536,7 +999,7 @@ export const CambioLicencia = ({ props }: any) => {
                               </div>
                               <div id='collapse-1' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block'>
-                                  <GeneralInfoFormSeccion obj={obj} causaMuerte={''} tipoLicencia={'Cremación'} />
+                                  <GeneralInfoFormSeccion obj={obj} causaMuerte={''} tipoLicencia={'Cremación'} prop={FechaNacimiento} />
 
                                 </div>
                               </div>
@@ -709,6 +1172,7 @@ export const CambioLicencia = ({ props }: any) => {
                                             dateFormatType='time'
                                             placeholder='-- Elija una hora --'
                                             style={{ width: 100 }}
+                                            disabled
                                           />
                                         </Form.Item>
                                       </>
@@ -723,6 +1187,7 @@ export const CambioLicencia = ({ props }: any) => {
                                     >
                                       <DatepickerComponent
                                         picker='date'
+                                        disabled
                                         onChange={FechaNacimiento}
                                         dateDisabledType='before'
                                         dateFormatType='default'
@@ -731,6 +1196,7 @@ export const CambioLicencia = ({ props }: any) => {
                                       />
                                     </Form.Item>
                                   </div>
+
                                   <Form.Item
                                     label='Tipo Identificación'
                                     name='IDType'
@@ -1039,8 +1505,6 @@ export const CambioLicencia = ({ props }: any) => {
                               </div>
                               <div id='collapse-5' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block'>
-
-                                  <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
                                   <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
                                   <CementerioInfoFormSeccion obj={obj} form={form}
                                     tipoLicencia={obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'Cremación' : 'Inhumación'} />
@@ -1075,9 +1539,10 @@ export const CambioLicencia = ({ props }: any) => {
 
                                 </div>
                               </div>
+
                             </div>
                           </div>
-
+                          <Actions />
                         </div>
                       </div>
                     </div>

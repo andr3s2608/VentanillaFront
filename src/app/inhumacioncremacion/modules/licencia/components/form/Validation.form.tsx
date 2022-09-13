@@ -759,24 +759,25 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     <div className='container-fluid'>
       <div className='row'>
         <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-          <div className='col-lg-12 col-sm-12 col-md-12 '>
+          <div className='d-flex justify-content-between'>
+            <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>
+              Guardar
+            </Button>
+
             <Button
               type='dashed'
               htmlType='button'
               onClick={() => {
                 history.push('/tramites-servicios');
               }}
-              className='align-self-end'
             >
               Volver atrás
             </Button>
-            <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>
-              Guardar
-            </Button>
           </div>
+
         </Form.Item>
       </div>
-    </div>
+    </div >
   );
 
   //#endregion
@@ -927,7 +928,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const ModificarLicencia = async () => {
-    await api.ModificarEstadoSolicitudInh(objJosn.idSolicitud, '31A45854-BF40-44B6-2645-08DA64F23B8E');
+    await api.ModificarEstadoSolicitudInh('5E98C640-D9FB-4177-8F0C-E44DDC72EBAB', objJosn.idSolicitud);
+    Swal.fire({
+      icon: 'success',
+      title: 'Cambio de Licencia Exitoso',
+      text: 'se ha cambiado el tipo de licencia y le ha sido devuelta al usuario para que complete la informacion faltante'
+    })
+    history.push('/tramites-servicios');
+
 
     let inicial = "";
     let final = "";

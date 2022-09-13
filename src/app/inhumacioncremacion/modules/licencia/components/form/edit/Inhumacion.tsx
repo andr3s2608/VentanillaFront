@@ -35,6 +35,7 @@ const formatObjJson = (obj: any, id: String) => {
   const autorizadorcremacion: any = [];
   if (cremador != undefined) {
     autorizadorcremacion.push({
+      id: cremador.idPersona,
       name: cremador.primerNombre,
       secondName: cremador.segundoNombre,
       surname: cremador.primerApellido,
@@ -142,6 +143,7 @@ const formatObjJson = (obj: any, id: String) => {
       }
     };
   } else {
+
     jsonDt = {
       idTramite: obj.idTramite,
       idControlTramite: obj.iD_Control_Tramite,
@@ -152,9 +154,15 @@ const formatObjJson = (obj: any, id: String) => {
       check: obj.sinEstablecer,
       sex: obj.idSexo,
       idSolicitud: obj.idSolicitud,
-      tiposolicitante: obj.tipoIdentificacionSolicitante,
-      nrosolicitante: obj.noIdentificacionSolicitante,
-      razonsocialsolicitante: obj.razonSocialSolicitante,
+      idpersonaventanilla: obj.idPersonaVentanilla,
+      idusuarioseg: obj.idUsuarioSeguridad,
+
+
+      tiposolicitantesolicitud: obj.tipoIdentificacionSolicitante,
+      nrosolicitantesolicitud: obj.noIdentificacionSolicitante,
+      razonsocialsolicitantesolicitud: obj.razonSocialSolicitante,
+      tipopersonasolicitantesolicitud: obj.tipoPersona,
+
 
       country: lugarDefuncion.idPais,
       state: lugarDefuncion.idDepartamento,
@@ -187,12 +195,14 @@ const formatObjJson = (obj: any, id: String) => {
       idDatosCementerio: datosCementerio.idDatosCementerio,
       idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
 
+      idpersona: fallecido.idPersona,
       name: fallecido.primerNombre,
       secondName: fallecido.segundoNombre,
       surname: fallecido.primerApellido,
       secondSurname: fallecido.segundoApellido,
       nationalidad: [fallecido.nacionalidad],
       dateOfBirth: fallecido.fechaNacimiento,
+      hourOfBirth: fallecido.hora,
       IDType: fallecido.tipoIdentificacion,
       IDNumber: fallecido.numeroIdentificacion,
       civilStatus: fallecido.idEstadoCivil,
@@ -209,6 +219,9 @@ const formatObjJson = (obj: any, id: String) => {
       idAreaResidencia: ubicacionPersona.idAreaResidencia,
       idBarrioResidencia: ubicacionPersona.idBarrioResidencia,
 
+
+      funeraria: datosFuneraria.funeraria,
+
       cementerioLugar: datosCementerio.cementerio,
       cementerioBogota: datosCementerio.cementerio,
       cementerioDepartamento: datosCementerio.idDepartamento,
@@ -216,6 +229,13 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
+
+
+      idresumensolicitud: obj.resumenSolicitud.idSolicitud,
+      nombresolicitante: obj.resumenSolicitud.nombreSolicitante,
+      apellidosolicitante: obj.resumenSolicitud.apellidoSolicitante,
+      tipodocsolicitante: obj.resumenSolicitud.tipoDocumentoSolicitante,
+      nrosolicitante: obj.resumenSolicitud.numeroDocumentoSolicitante,
       correocementerio: obj.resumenSolicitud.correoCementerio,
       correofuneraria: obj.resumenSolicitud.correoFuneraria,
       correosolicitante: obj.resumenSolicitud.correoSolicitante,

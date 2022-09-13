@@ -49,8 +49,7 @@ export const Gridview = (props: IDataSource) => {
 
 
 
-  var structureColumns;
-
+  let structureColumns: any = [];
 
 
   if (Validacion == '1') {
@@ -59,7 +58,12 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Id Tramite',
           dataIndex: 'iD_Control_Tramite',
-          key: 'idTramite'
+          key: 'idcontrolTramite',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            multiple: 3,
+          },
         },
         {
           title: 'Documento del Fallecido',
@@ -163,7 +167,12 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Id Tramite',
           dataIndex: 'iD_Control_Tramite',
-          key: 'idTramite'
+          key: 'idcontrolTramite',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            multiple: 2,
+          },
         },
         {
           title: 'Documento del Fallecido',
@@ -218,7 +227,7 @@ export const Gridview = (props: IDataSource) => {
                 </Button>
               );
             } else {
-              if (row.solicitud === 'Cambio de Licencia') {
+              if (row.solicitud === 'Cambiar Tipo de Licencia') {
                 return (
                   <Button
                     type='primary'
