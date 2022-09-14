@@ -1013,7 +1013,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} licencia={false} props={form}
                           />
-                          {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
+                          {valor == 'Cremación Fetal ' || valor == 'Cremación Individual' ? (
                             <AutorizadorCremacion obj={objJosn} />
                           ) : null}
                           <hr />
