@@ -245,6 +245,7 @@ export const BandejaU = (props: IDataSource) => {
         title: 'Estado ',
         dataIndex: 'estado',
         key: 'estado',
+        width: 130,
         filters: [
           {
             text: 'Abierta',
@@ -274,7 +275,7 @@ export const BandejaU = (props: IDataSource) => {
         title: 'Actividad en curso',
         dataIndex: 'actividadActualSolicitud',
         key: 'actividad',
-        width: 200,
+        width: 260,
         filters: [
           {
             text: 'Aprobación de solicitud',
