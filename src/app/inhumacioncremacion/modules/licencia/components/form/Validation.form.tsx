@@ -936,6 +936,42 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     })
     history.push('/tramites-servicios');
 
+
+    let inicial = "";
+    let final = "";
+
+    const keys = [
+      "~:~tipo_inicial~:~",
+      "~:~tipo_final~:~",
+      "~:~numero_de_solicitud~:~"
+    ];
+
+    switch (valor) {
+      case "Inhumación Individual":
+        inicial = "Inhumación individual";
+        final = "Cremacion individual";
+        break;
+
+      case "Cremación Individual":
+        inicial = "Cremacion individual";
+        final = "Inhumación individual";
+        break;
+    }
+
+    const values = [
+      inicial,
+      final,
+      idcontrol
+    ];
+
+    let plantilla = await api.getFormato("985D236C-25B5-4A08-BB7B-98D22761BF11");
+    let body = agregarValoresDinamicos(plantilla.valor, keys, values);
+
+    api.sendEmail({
+      to: objJosn.correosolicitante,
+      subject: plantilla.asuntoNotificacion,
+      body: body
+    });
   };
 
   return (
