@@ -107,6 +107,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
+
       if (valid != undefined) {
         if (
           valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ||

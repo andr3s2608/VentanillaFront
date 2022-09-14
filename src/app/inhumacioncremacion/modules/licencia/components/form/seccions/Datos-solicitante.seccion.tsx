@@ -298,13 +298,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   } else {
     if (departamentoCementerio != undefined) {
       var otros: any = [];
+
       if (otroCementerio != undefined) {
-        otros = [
-          {
-            title: 'Otro Sitio',
-            describe: otroCementerio?.toLowerCase()
-          }
-        ];
+
+        otros =
+        {
+          title: 'Otro Sitio',
+          describe: otroCementerio?.toLowerCase()
+        }
+          ;
       }
       cementerios = [
         {

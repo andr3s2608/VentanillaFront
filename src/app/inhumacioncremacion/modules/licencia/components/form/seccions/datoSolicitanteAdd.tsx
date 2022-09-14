@@ -49,6 +49,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
       if (info.razonSocial != null) {
         //form.setFieldsValue({ emailsolicitudadd: undefined });
         //form.setFieldsValue({ emailfuneraria: undefined });
+
         setcorreofun(info.email);
         setvalidacionfuneraria(true);
 
@@ -78,6 +79,11 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         setvalidacionfuneraria(false);
 
         setvalidacion('1');
+      }
+
+      if (obj != undefined) {
+        setcorreofun(obj?.correofuneraria);
+        setcorreosol(obj?.correosolicitante);
       }
 
       const funeraria = await api.GetFunerarias();
@@ -209,7 +215,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         {setearCampos() && (
           <>
             <Form.Item
-              className='fadeInRight'
+              className='fadeInRight mt-4'
               label='Funeraria de Bogotá D.C. y/o Solicitante'
               name='funerariaBogota'
               initialValue={validacionfuneraria ? valorfuneraria : (obj === undefined ? 'PARTICULAR' : obj?.funeraria)}
@@ -320,15 +326,15 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             <>
               <Form.Item
                 label='Correo familiar contratante'
-                initialValue={correosol === '' ? obj?.correosolicitante : correosol}
+                initialValue={correosol}
                 rules={[{ required: true, type: 'email', max: 50 }]}
                 name='emailsolicitudadd'
               >
                 <Input
                   allowClear
                   placeholder='Email Familiar'
-                  value={correosol === '' ? obj?.correosolicitante : correosol}
-                  defaultValue={correosol === '' ? obj?.correosolicitante : correosol}
+                  value={correosol}
+                  defaultValue={correosol}
                   type='email'
                   onKeyPress={(event) => {
                     if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
@@ -349,14 +355,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               <Form.Item
                 label='Email Funeraria y/o solicitante'
                 name='emailfuneraria'
-                initialValue={correofun === '' ? obj.correofuneraria : correofun}
+                initialValue={correofun}
                 rules={[{ required: true, type: 'email', max: 50 }]}
               >
                 <Input
                   allowClear
                   placeholder='Email Funeraria'
-                  value={correofun === '' ? obj.correofuneraria : correofun}
-                  defaultValue={correofun === '' ? obj.correofuneraria : correofun}
+                  value={correofun}
+                  defaultValue={correofun}
                   type='email'
                   onKeyPress={(event) => {
                     if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {

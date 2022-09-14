@@ -89,17 +89,18 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
     <>
       {mostrar && (<>
         <Form.Item
+          className='mt-5'
           label='Número de Certificado'
           name='certificado'
           rules={[{ required: true, max: 14 }]}
           initialValue={obj?.certificado}
         >
           <Input
+            style={{ width: '90%' }}
             allowClear
             placeholder='Número de Certificado'
             autoComplete='off'
             maxLength={14}
-            disabled={obj !== undefined ? false : true}
             onChange={(e) => onChange(e.target.value)}
             onKeyPress={(event) => {
               if (!/[0-9]/.test(event.key)) {
@@ -122,7 +123,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
         </Form.Item>
 
         <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
-          <DatepickerComponent picker='date' onChange={compararfecha} dateDisabledType='before' dateFormatType='default' value={date} />
+          <DatepickerComponent picker='date' onChange={compararfecha} dateDisabledType='before' dateFormatType='default' value={date} style={{ width: '90%' }} />
         </Form.Item>
 
         <div className='form-row'>
