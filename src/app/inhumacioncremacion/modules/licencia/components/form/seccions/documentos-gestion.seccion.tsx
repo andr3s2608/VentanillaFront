@@ -331,7 +331,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
           </p>
         </div>
       </div>
-      <div className='row'>
+      <div className='row' style={{ marginLeft: '40px' }}>
         <div className='col-lg-6 col-sm-6 col-md-6 documents'>
           <Table dataSource={grid} columns={structureColumns} bordered pagination={{ pageSize: 50 }} />
         </div>
@@ -448,10 +448,6 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
           </>
         }
       </>)}
-
-
-
-
     </div>
   );
 };
