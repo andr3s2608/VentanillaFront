@@ -544,7 +544,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               idTipoDocumentoSoporte: item.value,
               path: `${accountIdentifier}/${name}_${resp}`,
               idUsuario: accountIdentifier,
-              fechaModificacion: new Date()
+              fechaModificacion: new Date(),
+              esValido: true
             });
           }
         });
@@ -581,7 +582,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 idSolicitud: idsol,
                 idTipoDocumentoSoporte: item.value,
                 path: `${accountIdentifier}/${name}_${idsol}`,
-                idUsuario: accountIdentifier
+                idUsuario: accountIdentifier,
+                esValido: true
               });
             }
           });
