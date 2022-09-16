@@ -572,16 +572,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             let contenedor: string = 'contenedor';
 
             switch (valor) {
-              case 'Inhumacion Individual':
+              case 'Inhumación Individual':
                 contenedor = 'inhumacionindividual';
                 break;
-              case 'Inhumacion Fetal':
+              case 'Inhumación Fetal':
                 contenedor = 'inhumacionfetal';
                 break;
-              case 'Cremacion Individual':
+              case 'Cremación Individual':
                 contenedor = 'cremacionindividual';
                 break;
-              case 'Cremacion Fetal ':
+              case 'Cremación Fetal ':
                 contenedor = 'cremacionfetal';
                 break;
             }
@@ -1013,7 +1013,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} licencia={false} props={form}
                           />
-                          {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
+                          {valor == 'Cremación Fetal ' || valor == 'Cremación Individual' ? (
                             <AutorizadorCremacion obj={objJosn} />
                           ) : null}
                           <hr />

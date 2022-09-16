@@ -542,6 +542,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       }
     };
 
+    //console.log(json)
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionfetal' : 'cremacionfetal';
     const formData = new FormData();
