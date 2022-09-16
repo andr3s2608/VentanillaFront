@@ -380,12 +380,20 @@ export class ApiService {
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
-    return (REACT_APP_LOCAL as string) + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador;
+    return (
+      (REACT_APP_INHCREMACION as string) +
+      'GeneratePDF/GeneratePDFPrev/' +
+      idTramite +
+      '/' +
+      idTramitador +
+      '/' +
+      nombreTramitador
+    );
   };
 
   generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): any => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}`,
       id: '0'
     });
