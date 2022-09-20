@@ -91,6 +91,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 <label className='text ml-2'>Dirección</label>
                 <Form.Item initialValue={obj?.direccion} name='direccion' rules={[{ required: true }]}>
                   <Input
+                    placeholder='DIRECCIÓN'
                     maxLength={100}
                     type='text'
                     disabled={modificar}
