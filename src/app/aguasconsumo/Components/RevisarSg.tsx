@@ -20,6 +20,7 @@ import { TipoNotificacion } from './seccions/Notificaciones_revision.seccion';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { store } from 'app/redux/app.reducers';
+import Swal from 'sweetalert2';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
@@ -149,6 +150,8 @@ export const RevisarSg = () => {
     const supportDocumentsEdit: any[] = [];
     const formData = new FormData();
 
+    let date: Date = new Date();
+
     if (documentos.length > 0) {
       documentos.forEach((item: any, i: number) => {
         if (documentos[i] != undefined) {
@@ -195,7 +198,7 @@ export const RevisarSg = () => {
             break;
 
           case 'Notificación Aprobación al Ciudadano':
-            let date: Date = new Date();
+
 
             const certificadoCiudadano = await api.getCertificadoAguas(objJson.idsolicitud);
 
@@ -214,6 +217,31 @@ export const RevisarSg = () => {
               attachment: certificadoCiudadano,
               AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
             });
+
+            /*
+            const certificadoAutoridad = await api.getCertificadoAguas(objJson.idsolicitud);
+
+            await api.sendEmailAttachment({
+              to: ,
+              subject: 'Notificación Aprobación Autoridad Ambiental',
+              body: agregarValoresDinamicos(
+                formato['cuerpo'],
+                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+                [
+                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                  "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                  formatDate(date)
+                ]
+              ),
+              attachment: certificadoAutoridad,
+              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+            });
+            Swal.fire({
+              icon: 'success',
+              title: 'Notificación exitosa',
+              text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
+            });
+          */
 
             const urlToFile = async (url: string, filename: string, mimeType: any) => {
               const res = await fetch(url);
@@ -234,7 +262,15 @@ export const RevisarSg = () => {
               formData.append('oid', objJson.idusuario);
               await api.uploadFiles(formData);
               //console.log(file);
-            })()
+            })();
+
+            //Recordar añadir referencia a la autoridad ambiental al pop up
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Trámite aprobado',
+              text: `Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano`
+            });
             break;
         }
       }

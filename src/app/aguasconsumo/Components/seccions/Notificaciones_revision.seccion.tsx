@@ -132,7 +132,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Aprobación Autoridad Ambiental':
-          const certificadoAutoridad = await api.getCertificadoAguas('2');
+          const certificadoAutoridad = await api.getCertificadoAguas(obj.idsolicitud);
 
           await api.sendEmailAttachment({
             to: obj.correoElectronico,
@@ -157,7 +157,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Aprobación al Ciudadano':
-          const certificadoCiudadano = await api.getCertificadoAguas('4');
+          const certificadoCiudadano = await api.getCertificadoAguas(obj.idsolicitud);
 
           await api.sendEmailAttachment({
             to: obj.correoElectronico,
