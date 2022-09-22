@@ -395,7 +395,7 @@ export class ApiService {
 
   generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string, control: boolean): any => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}/${control}`,
       id: '0'
     });
