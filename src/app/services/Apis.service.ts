@@ -66,7 +66,7 @@ export class ApiService {
     put<string>({
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/ModificarEstadoSolicitud/${estado}/${idsol}`,
-      id: '0'
+      id: '1'
     });
 
   agregarFirma = (payload: any) => {

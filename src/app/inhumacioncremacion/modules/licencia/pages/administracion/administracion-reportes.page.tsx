@@ -16,8 +16,11 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import Input from 'antd/es/input/Input';
 import Button from 'antd/es/button/button';
 import Swal from 'sweetalert2';
-
+import { formatTimeStr } from 'antd/lib/statistic/utils';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { layoutWrapper } from 'app/shared/utils/form-layout.util';
 const { TabPane } = Tabs;
+
 const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [allData, setAllData] = useState<any[]>([]);
@@ -83,6 +86,146 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   function onChangeFilterFun(event: any) {
     setChangeFilterFun(event.target.value);
   }
+
+  function downloadFileExcel() {
+    const ExportJsonExcel = require('js-export-excel');
+    var datos = grid;
+    let datatable = [];
+    let opciones = {};
+    if (datos && datos.length > 0) {
+      for (let i in datos) {
+        let tipo = '';
+        switch (datos[i].idTramite) {
+          case 'a289c362-e576-4962-962b-1c208afa0273':
+            tipo = 'Inhumación Individual';
+            break;
+          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+            //inhumacion fetal
+            tipo = 'Inhumación Fetal'
+            break;
+          case 'e69bda86-2572-45db-90dc-b40be14fe020':
+            //cremacion individual
+            tipo = 'Cremación Individual'
+            break;
+          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+            //cremacionfetal
+            tipo = 'Cremación Fetal '
+            break;
+
+        }
+        let ob = {
+          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
+          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
+          'Fecha de registro': datos[i].fechaSolicitud,
+          'Estado': datos[i].estadoString,
+          'Tipo Solicitud': tipo
+        }
+        datatable.push(ob);
+      }
+
+      opciones = {
+        fileName: 'Solicitudes inhumacion - cremacion',
+        datas: [
+          {
+            sheetData: datatable,
+            sheetName: 'Historial solicitudes',
+            sheetFilter: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+              , 'Fecha de registro', 'Estado', 'Tipo Solicitud'],
+            sheetHeader: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+              , 'Fecha de registro', 'Estado', 'Tipo Solicitud']
+          }
+        ]
+      };
+
+      var toExcel = new ExportJsonExcel(opciones);
+      toExcel.saveExcel()
+    }
+  }
+  function downloadTxt() {
+    var element = document.createElement('a');
+    let datos = grid;
+    let datatable = [];
+    let opciones = {};
+    if (datos && datos.length > 0) {
+      for (let i in datos) {
+        let tipo = '';
+        switch (datos[i].idTramite) {
+          case 'a289c362-e576-4962-962b-1c208afa0273':
+            tipo = 'Inhumación Individual';
+            break;
+          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+            //inhumacion fetal
+            tipo = 'Inhumación Fetal'
+            break;
+          case 'e69bda86-2572-45db-90dc-b40be14fe020':
+            //cremacion individual
+            tipo = 'Cremación Individual'
+            break;
+          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+            //cremacionfetal
+            tipo = 'Cremación Fetal '
+            break;
+
+        }
+        let ob = {
+          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
+          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
+          'Fecha de registro': datos[i].fechaSolicitud,
+          'Estado': datos[i].estadoString,
+          'Tipo Solicitud': tipo
+        }
+        datatable.push(ob);
+      }
+    }
+    let textoPlano = 'IDENTIFICADOR  |  DOCUMENTO DEL FALLECIDO  |  SOLICITANTE  |  REGISTRO  |  ESTADO  |  ESTADO  |  TIPO SOLICITUD \n';
+    for (let inf in datatable) {
+      textoPlano += datatable[inf]['Identificador Tramite'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
+        + datatable[inf]['Solicitante (funeraria o nombre)'] + '  |  ' + datatable[inf]['Fecha de registro'] +
+        '  |  ' + datatable[inf].Estado + '  |  ' + datatable[inf]['Tipo Solicitud'] + ' \n';
+
+    }
+
+
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textoPlano));
+    element.setAttribute('download', 'Solicitudes inhumacion - cremacion.txt');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+  function downloadFileExportar() {
+    Swal.fire({
+      title: 'Exportar archivo',
+      text: 'Esta a punto de exportar los datos encontrados, seleccione el tipo de documento deseado:',
+      showCloseButton: true,
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'xlsx',
+      denyButtonText: 'txt',
+      confirmButtonColor: 'green',
+      denyButtonColor: 'blue',
+      showClass: {
+        popup: 'animate_animated animate_fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate_animated animate_fadeOutUp'
+      },
+      icon: 'info'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        downloadFileExcel();
+      } else if (result.isDenied) {
+        downloadTxt();
+      }
+    })
+
+  }
+
   function busquedaFun() {
     var input = false;
     var filtroFecha = null;
@@ -329,19 +472,24 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 </div>
               </div>
             </div>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 mt-5'>
-                <Button
-                  type='primary'
-                  htmlType='submit'
-                  onClick={busquedaFun}
-                  className='d-flex text-center'
-                  style={{ marginLeft: '0px' }}
-                >
-                  Buscar
-                </Button>
+            <section>
+              <div className='container-fluid'>
+                <div className='row'>
+                  <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                      <div className='d-flex center-block' style={{ margin: '0 auto' }}>
+                        <Button type='primary'
+                          htmlType='submit'
+                          onClick={busquedaFun}
+                          style={{ marginLeft: '10px' }}>
+                          Buscar
+                        </Button>
+                      </div>
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
           </div>
 
           <div className='row mt-3'>
@@ -349,11 +497,32 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
               <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
 
                 <Tabs style={{ border: 'none' }} className='mt-3'>
-                  <TabPane tab='Resultados' key='1'>
-                    <TablaReportes data={grid} />
-                  </TabPane>
+                  <TablaReportes data={grid} />
                 </Tabs>
+
+                <section>
+                  <div className='container-fluid'>
+                    <div className='row'>
+                      <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
+                        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                          <div className='d-flex center-block' style={{ margin: '0 auto' }}>
+                            <Button type='primary'
+                              htmlType='submit'
+                              onClick={downloadFileExportar}
+                            >
+                              Exportar
+                            </Button>
+                          </div>
+                        </Form.Item>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </section>
               </div>
+
+
             </div>
           </div>
         </div>

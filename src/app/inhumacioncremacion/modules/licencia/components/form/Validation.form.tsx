@@ -929,50 +929,78 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   };
 
   const ModificarLicencia = async () => {
-    await api.ModificarEstadoSolicitudInh('5E98C640-D9FB-4177-8F0C-E44DDC72EBAB', objJosn.idSolicitud);
+
+    let continuar = false;
     Swal.fire({
-      icon: 'success',
-      title: 'Cambio de Licencia Exitoso',
-      text: 'se ha cambiado el tipo de licencia y le ha sido devuelta al usuario para que complete la informacion faltante'
-    })
-    history.push('/tramites-servicios');
+      title: `Cambio de tipo de Solicitud `,
+      text: `Se realizara un cambio de tipo de Solicitud de ${valor} a ${valor == 'Inhumación Individual' ? 'Cremación Individual'
+        : 'Inhumación Individual'} ,esta seguro de continuar?`,
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'Modificar',
+      denyButtonText: `Cancelar`,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      icon: 'info'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        continuar = true
 
-
-    let inicial = "";
-    let final = "";
-
-    const keys = [
-      "~:~tipo_inicial~:~",
-      "~:~tipo_final~:~",
-      "~:~numero_de_solicitud~:~"
-    ];
-
-    switch (valor) {
-      case "Inhumación Individual":
-        inicial = "Inhumación individual";
-        final = "Cremacion individual";
-        break;
-
-      case "Cremación Individual":
-        inicial = "Cremacion individual";
-        final = "Inhumación individual";
-        break;
-    }
-
-    const values = [
-      inicial,
-      final,
-      idcontrol
-    ];
-
-    let plantilla = await api.getFormato("985D236C-25B5-4A08-BB7B-98D22761BF11");
-    let body = agregarValoresDinamicos(plantilla.valor, keys, values);
-
-    api.sendEmail({
-      to: objJosn.correosolicitante,
-      subject: plantilla.asuntoNotificacion,
-      body: body
+      } else if (result.isDenied) {
+      }
     });
+    if (continuar) {
+
+      await api.ModificarEstadoSolicitudInh('5E98C640-D9FB-4177-8F0C-E44DDC72EBAB', objJosn.idSolicitud);
+      Swal.fire({
+        icon: 'success',
+        title: 'Cambio de Licencia Exitoso',
+        text: 'Se ha cambiado el tipo de licencia y le ha sido devuelta al usuario para que complete la informacion faltante'
+      })
+      history.push('/tramites-servicios');
+
+
+      let inicial = "";
+      let final = "";
+
+      const keys = [
+        "~:~tipo_inicial~:~",
+        "~:~tipo_final~:~",
+        "~:~numero_de_solicitud~:~"
+      ];
+
+      switch (valor) {
+        case "Inhumación Individual":
+          inicial = "Inhumación individual";
+          final = "Cremación individual";
+          break;
+
+        case "Cremación Individual":
+          inicial = "Cremación individual";
+          final = "Inhumación individual";
+          break;
+      }
+
+      const values = [
+        inicial,
+        final,
+        idcontrol
+      ];
+
+      let plantilla = await api.getFormato("985D236C-25B5-4A08-BB7B-98D22761BF11");
+      let body = agregarValoresDinamicos(plantilla.valor, keys, values);
+
+      api.sendEmail({
+        to: objJosn.correosolicitante,
+        subject: plantilla.asuntoNotificacion,
+        body: body
+      });
+    }
   };
 
   return (

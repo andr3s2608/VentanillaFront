@@ -282,6 +282,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                       </p>
                       <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
                         <Input
+                          placeholder='NOMBRE DE LA IDENTIDAD'
                           type='text'
                           className='form-control gov-co-form-control'
                           maxLength={50}
@@ -372,6 +373,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
                   <Input
+                    placeholder='PRIMER NOMBRE'
                     maxLength={50}
                     type='text'
                     className='form-control gov-co-form-control'
@@ -393,6 +395,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
                   <Input
+                    placeholder='SEGUNDO NOMBRE'
                     type='text'
                     disabled={modificar}
                     maxLength={50}
@@ -417,6 +420,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
                   <Input
+                    placeholder='PRIMER APELLIDO'
                     maxLength={50}
                     disabled={modificar}
                     type='text'
@@ -439,6 +443,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
                   <Input
+                    placeholder='SEGUNDO APELLIDO'
                     maxLength={50}
                     disabled={modificar}
                     type='text'
@@ -463,6 +468,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
                   <Input
+                    placeholder='TELÉFONO DE CONTACTO'
                     disabled={modificar}
                     maxLength={12}
                     type='text'
@@ -485,6 +491,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
                   <Input
+                    placeholder='TELÉFONO DE CONTACTO 2'
                     maxLength={12}
                     disabled={modificar}
                     type='text'
@@ -509,6 +516,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
                   <input
+                    placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '365px' }}
                     maxLength={50}
                     disabled={modificar}
@@ -601,7 +609,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     className='form-control'
                     allowClear
                     type='text'
-                    placeholder='Número Identificación'
+                    placeholder='NÚMERO DE IDENTIFICACIÓN'
                     autoComplete='off'
                     pattern={tipocampo}
                     maxLength={longitudmaxima}
@@ -640,6 +648,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
                   <Input
+                    placeholder='PRIMER NOMBRE'
                     maxLength={50}
                     type='text'
                     className='form-control gov-co-form-control'
@@ -661,6 +670,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
                   <Input
+                    placeholder='SEGUNDO NOMBRE'
                     type='text'
                     disabled={true}
                     maxLength={50}
@@ -685,6 +695,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
                   <Input
+                    placeholder='PRIMER APELLIDO'
                     maxLength={50}
                     disabled={true}
                     type='text'
@@ -707,6 +718,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
                   <Input
+                    placeholder='SEGUNDO APELLIDO'
                     maxLength={50}
                     disabled={true}
                     type='text'
@@ -731,6 +743,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
                   <Input
+                    placeholder='TELÉFONO DE CONTACTO'
                     disabled={true}
                     maxLength={12}
                     type='text'
@@ -753,6 +766,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
                   <Input
+                    placeholder='TELÉFONO DE CONTACTO 2'
                     maxLength={12}
                     disabled={true}
                     type='text'
@@ -777,6 +791,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
                   <input
+                    placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '296px' }}
                     maxLength={50}
                     disabled={true}

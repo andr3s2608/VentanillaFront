@@ -46,7 +46,14 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
       const departamento: any = localStorage.getItem('departamentos');
       const resp = await Promise.all([JSON.parse(departamento), dominioService.get_cementerios_bogota(), JSON.parse(paises)]);
 
-
+      if (obj != undefined) {
+        const municipios = await dominioService.get_all_municipios_by_departamento(obj?.cementerioDepartamento);
+        setLMunicipios(municipios);
+        setMunicipio({
+          departament: obj?.cementerioDepartamento,
+          municipio: obj?.cementerioMunicipio
+        });
+      }
 
 
       setListas(resp);
