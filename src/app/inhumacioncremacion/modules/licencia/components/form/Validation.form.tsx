@@ -515,7 +515,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
           const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo);
+          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
 
           let datosDinamicosAprobacion = [
             solicitud[0]['razonSocialSolicitante'],
@@ -881,10 +881,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       const info: any = JSON.parse(infouser);
       const idSolicitud = objJosn?.idSolicitud;
       const all = await api.GetSolicitud(idSolicitud);
-      let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, info.fullName);
+      let linkPdf = await api.generarPDF(idSolicitud, idUsuario, info.fullName, " ", false);
       const solicitante = await api.GetResumenSolicitud(idSolicitud);
       setsolicitante(solicitante[0]['nombreSolicitante']);
-      setUrlPdfLicence(linkPdf);
+      setUrlPdfLicence("data:application/pdf;base64," + linkPdf);
 
       setIsModalVisiblePdf(true);
     } else {

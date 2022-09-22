@@ -377,8 +377,10 @@ export class ApiService {
       }
     });
 
+  //
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 
+  //
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
       (REACT_APP_INHCREMACION as string) +
@@ -391,10 +393,10 @@ export class ApiService {
     );
   };
 
-  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): any => {
+  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string, control: boolean): any => {
     return get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
-      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}`,
+      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}/${control}`,
       id: '0'
     });
   };
