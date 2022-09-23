@@ -879,7 +879,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
       let tiempo = '';
       if (timedef2 != undefined) {
-        if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
+        if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
           if (time2 != undefined) {
             const posicion1 = time2.indexOf(':');
             const posicion2 = timedef2.indexOf(':');
@@ -1389,7 +1389,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 />
               </Form.Item>
               <div className='form-row ml-4'>
-                {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
+                {tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' && (
                   <>
                     <Form.Item label='Hora' name='timenac' style={{ width: 380 }}>
                       <DatepickerComponent
@@ -1406,7 +1406,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
                 <Form.Item
                   label='Fecha de Nacimiento'
-                  style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 400 : 750 }}
+                  style={{ width: tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' ? 400 : 750 }}
                   name='dateOfBirth'
                   rules={[{ required: true }]}
                   initialValue={date}
@@ -1416,7 +1416,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     onChange={FechaNacimiento}
                     dateDisabledType='before'
                     dateFormatType='default'
-                    style={{ width: tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' ? 200 : 530 }}
+                    style={{ width: tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' ? 200 : 530 }}
                     value={date}
                   />
                 </Form.Item>
