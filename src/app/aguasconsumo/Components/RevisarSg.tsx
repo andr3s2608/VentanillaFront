@@ -200,7 +200,7 @@ export const RevisarSg = () => {
           case 'Notificación Aprobación al Ciudadano':
 
 
-            const certificadoCiudadano = await api.getCertificadoAguas(objJson.idsolicitud);
+            const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
 
             await api.sendEmailAttachment({
               to: objJson.correoElectronico,
@@ -214,15 +214,15 @@ export const RevisarSg = () => {
                   formatDate(date)//objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
                 ]
               ),
-              attachment: certificadoCiudadano,
+              attachment: certificado,
               AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
             });
 
-            /*
-            const certificadoAutoridad = await api.getCertificadoAguas(objJson.idsolicitud);
+            let autoridadesAmbientales: IAutoridadAmbientalDTO[] = await api.getAutoridadAmbiental();
+            let autoridadAmbiental = autoridadesAmbientales.find(aa => aa.idAutoridadAmbiental == objJson.fuenteabastecimientojson[0].idAutoridadAmbiental);
 
             await api.sendEmailAttachment({
-              to: ,
+              to: "ppalacios@soaint.com",//autoridadAmbiental?.correo,
               subject: 'Notificación Aprobación Autoridad Ambiental',
               body: agregarValoresDinamicos(
                 formato['cuerpo'],
@@ -233,7 +233,7 @@ export const RevisarSg = () => {
                   formatDate(date)
                 ]
               ),
-              attachment: certificadoAutoridad,
+              attachment: certificado,
               AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
             });
             Swal.fire({
@@ -241,7 +241,6 @@ export const RevisarSg = () => {
               title: 'Notificación exitosa',
               text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
             });
-          */
 
             const urlToFile = async (url: string, filename: string, mimeType: any) => {
               const res = await fetch(url);
@@ -250,7 +249,7 @@ export const RevisarSg = () => {
             };
 
             (async () => {
-              const file = await urlToFile('data:application/pdf;base64,' + certificadoCiudadano, 'resolucion', 'application/pdf');
+              const file = await urlToFile('data:application/pdf;base64,' + certificado, 'resolucion', 'application/pdf');
 
               const formData = new FormData();
               formData.append('file', file);
@@ -264,12 +263,10 @@ export const RevisarSg = () => {
               //console.log(file);
             })();
 
-            //Recordar añadir referencia a la autoridad ambiental al pop up
-
             Swal.fire({
               icon: 'success',
               title: 'Trámite aprobado',
-              text: `Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano`
+              text: 'Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano ' + objJson.primerNombre + ' ' + objJson.primerApellido + ', y a la autoridad ambiental ' + autoridadAmbiental?.nombre
             });
             break;
         }
@@ -308,6 +305,7 @@ export const RevisarSg = () => {
     let certificado = await api.getCertificadoAguas(objJson.idsolicitud);
     setUrlPdfLicence("data:application/pdf;base64," + certificado);
     setIsModalVisiblePdf(true);
+
 
     /*
     let bandera = await api.validarFirmaFuncionario(idUsuario);
@@ -715,4 +713,11 @@ interface IEstadoDocumentoSoporteDTO {
   observaciones: string;
   estado_Documento: string;
   tipoSeguimiento: string;
+}
+
+interface IAutoridadAmbientalDTO {
+  idAutoridadAmbiental: string;
+  nombre: string;
+  estado: boolean;
+  correo: string;
 }
