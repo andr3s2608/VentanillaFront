@@ -305,6 +305,11 @@ export const RevisarSg = () => {
 
   const onPrevPDF = async () => {
 
+    let prueba = await api.getAutoridadAmbiental();
+
+    console.log(prueba);
+
+
     let certificado = await api.getCertificadoAguas(objJson.idsolicitud);
     setUrlPdfLicence("data:application/pdf;base64," + certificado);
     setIsModalVisiblePdf(true);
