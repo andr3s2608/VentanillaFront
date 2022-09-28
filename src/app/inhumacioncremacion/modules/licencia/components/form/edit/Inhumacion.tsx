@@ -122,6 +122,7 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
+      numerolicencia: obj.resumenSolicitud.numeroLicencia,
       correocementerio: obj.resumenSolicitud.correoCementerio,
       correofuneraria: obj.resumenSolicitud.correoFuneraria,
       correosolicitante: obj.resumenSolicitud.correoSolicitante,
@@ -231,6 +232,7 @@ const formatObjJson = (obj: any, id: String) => {
       otro: datosCementerio.otroSitio,
 
 
+      numerolicencia: obj.resumenSolicitud.numeroLicencia,
       idresumensolicitud: obj.resumenSolicitud.idSolicitud,
       nombresolicitante: obj.resumenSolicitud.nombreSolicitante,
       apellidosolicitante: obj.resumenSolicitud.apellidoSolicitante,

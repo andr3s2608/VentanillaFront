@@ -88,6 +88,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     '1',
     '1'
   ]);
+
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<any[]>([]);
   //create o edit
@@ -493,7 +494,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           aux = 1;
         }
         if (not == 2) {
-          const update = await api.updatelicencia(objJosn?.idSolicitud);
+          if (objJosn.numerolicencia == null) {
+            const update = await api.updatelicencia(objJosn?.idSolicitud);
+          }
+
         }
         /////////////////////////Enviar Notificacion//////////////////////////
         let tipoSeguimiento: string = values.validFunctionaltype;
@@ -636,38 +640,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }
     setDatosDocumento(array);
   };
-  const generateListFiles = (values: any) => {
-    const Objs = [];
 
-    const {
-      fileCertificadoDefuncion,
-      fileCCFallecido,
-      fileOtrosDocumentos,
-      fileAuthCCFamiliar,
-      fileAuthCremacion,
-      fileOficioIdentificacion,
-      fileOrdenAuthFiscal,
-      fileActaNotarialFiscal
-    } = values;
 
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
-    Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
-    Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
-    Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
-    Objs.push({ file: fileAuthCremacion, name: 'Documento_del_familiar' });
-    Objs.push({ file: fileOficioIdentificacion, name: 'Autorizacion_del_fiscal_para_cremar' });
-    Objs.push({ file: fileOrdenAuthFiscal, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
-    Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
-
-    const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
-
-    const files: Blob[] = filesName.map((item) => {
-      const [file] = item.file;
-      return file.originFileObj;
-    });
-    const names: string[] = filesName.map((item) => item.name);
-    return [files, names];
-  };
   const onSubmitFailed = () => {
     setStatus('error');
     store.dispatch(SetResetViewLicence());
@@ -930,7 +904,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const ModificarLicencia = async () => {
 
-    let continuar = false;
+
     Swal.fire({
       title: `Cambio de tipo de Solicitud `,
       text: `Se realizara un cambio de tipo de Solicitud de ${valor} a ${valor == 'Inhumación Individual' ? 'Cremación Individual'
@@ -946,63 +920,76 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         popup: 'animate__animated animate__fadeOutUp'
       },
       icon: 'info'
-    }).then((result) => {
+    }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        continuar = true
+        await api.ModificarEstadoSolicitudInh('5E98C640-D9FB-4177-8F0C-E44DDC72EBAB', objJosn.idSolicitud);
+        Swal.fire({
+          icon: 'success',
+          title: 'Cambio de Licencia Exitoso',
+          text: 'Se ha cambiado el tipo de licencia y le ha sido devuelta al usuario para que complete la informacion faltante'
+        })
+        history.push('/tramites-servicios');
+
+
+        let inicial = "";
+        let final = "";
+
+        const keys = [
+          "~:~tipo_inicial~:~",
+          "~:~tipo_final~:~",
+          "~:~numero_de_solicitud~:~"
+        ];
+
+        switch (valor) {
+          case "Inhumación Individual":
+            inicial = "Inhumación individual";
+            final = "Cremación individual";
+            break;
+
+          case "Cremación Individual":
+            inicial = "Cremación individual";
+            final = "Inhumación individual";
+            break;
+        }
+
+        const values = [
+          inicial,
+          final,
+          idcontrol
+        ];
+
+        let plantilla = await api.getFormato("985D236C-25B5-4A08-BB7B-98D22761BF11");
+        let body = agregarValoresDinamicos(plantilla.valor, keys, values);
+
+        api.sendEmail({
+          to: objJosn.correosolicitante,
+          subject: plantilla.asuntoNotificacion,
+          body: body
+        });
 
       } else if (result.isDenied) {
       }
     });
-    if (continuar) {
 
-      await api.ModificarEstadoSolicitudInh('5E98C640-D9FB-4177-8F0C-E44DDC72EBAB', objJosn.idSolicitud);
-      Swal.fire({
-        icon: 'success',
-        title: 'Cambio de Licencia Exitoso',
-        text: 'Se ha cambiado el tipo de licencia y le ha sido devuelta al usuario para que complete la informacion faltante'
-      })
-      history.push('/tramites-servicios');
-
-
-      let inicial = "";
-      let final = "";
-
-      const keys = [
-        "~:~tipo_inicial~:~",
-        "~:~tipo_final~:~",
-        "~:~numero_de_solicitud~:~"
-      ];
-
-      switch (valor) {
-        case "Inhumación Individual":
-          inicial = "Inhumación individual";
-          final = "Cremación individual";
-          break;
-
-        case "Cremación Individual":
-          inicial = "Cremación individual";
-          final = "Inhumación individual";
-          break;
-      }
-
-      const values = [
-        inicial,
-        final,
-        idcontrol
-      ];
-
-      let plantilla = await api.getFormato("985D236C-25B5-4A08-BB7B-98D22761BF11");
-      let body = agregarValoresDinamicos(plantilla.valor, keys, values);
-
-      api.sendEmail({
-        to: objJosn.correosolicitante,
-        subject: plantilla.asuntoNotificacion,
-        body: body
-      });
-    }
   };
 
+  /*
+
+                          {cambiar != '' && (<>
+                            <div className='contenedor' style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+
+                              <Form.Item  >
+                                <Button type='primary' className='ml-3 mt-1' onClick={ModificarLicencia} >
+                                  {cambiar}
+                                </Button>
+                              </Form.Item>
+                            </div>
+                          </>)}
+  */
   return (
     <>
       {isnull && onnull()}
@@ -1024,19 +1011,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                             TIPO DE SOLICITUD:{valor}
                           </Divider>
-                          {cambiar != '' && (<>
-                            <div className='contenedor' style={{
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}>
 
-                              <Form.Item  >
-                                <Button type='primary' className='ml-3 mt-1' onClick={ModificarLicencia} >
-                                  {cambiar}
-                                </Button>
-                              </Form.Item>
-                            </div>
-                          </>)}
                         </div>
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} licencia={false} props={form}

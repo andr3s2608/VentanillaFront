@@ -53,14 +53,22 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   const GetValidateRol = async (toRoles: IRoles[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
-    if (permiso?.rol === 'Ciudadano') {
+
+    if (permiso?.rol === 'Ciudadano'
+      //|| permiso?.rol === 'AdminTI'
+    ) {
+
       const resp = await api.GetEstadoSolicitudNuevo();
+      localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
       setAllData(resp);
       setVisibleGrid('contents');
     } else {
+
+
       let arraydatos = [];
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      localStorage.setItem('tablainhcrem', JSON.stringify(resp));
 
       setGrid(resp);
       setAllData(resp);

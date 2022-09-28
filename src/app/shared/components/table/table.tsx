@@ -10,6 +10,8 @@ import { Button, Modal, Upload } from 'antd';
 import { useHistory } from 'react-router';
 import Input from 'antd/es/input';
 import Table from 'antd/es/table';
+import { DatepickerComponent } from '../inputs/datepicker.component';
+import moment from 'moment';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
@@ -24,12 +26,20 @@ export const Gridview = (props: IDataSource) => {
   const api = new ApiService(accountIdentifier);
   const Paginas: number = 10;
 
+
+  const [datosUsuario, setdatosUsuario] = useState<any>([]);
+  const [fechafiltro, setfechafiltro] = useState<any>();
+  const [funerariafiltro, setfunerariafiltro] = useState<any>('');
+  const [idtramite, setidtramite] = useState<any>('');
+  const [documento, setdocumento] = useState<any>('');
+
   const getListas = useCallback(
 
     async () => {
 
       const rolesstorage: any = localStorage.getItem('roles');
-
+      const datostabla: any = localStorage.getItem('tablainhcrem');
+      setdatosUsuario(JSON.parse(datostabla));
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
     },
@@ -46,6 +56,187 @@ export const Gridview = (props: IDataSource) => {
 
 
 
+  const FilterByNameInputfecha = () => {
+
+    return (
+      <Form.Item style={{ width: 100 }} initialValue={fechafiltro}>
+        <DatepickerComponent
+          id='datePicker1'
+          picker='date'
+          placeholder='Fecha de Solicitud'
+          dateDisabledType='default'
+          dateFormatType='default'
+          style={{ width: 160 }}
+          className='form-control'
+          onChange={(e) => {
+
+            setfechafiltro(e);
+            if (e != null) {
+              let fecha: any = '';
+              if (Tipo.rol !== 'Ciudadano') {
+                fecha = moment(e).format('YYYY-MM-DD');
+              }
+              else {
+                fecha = moment(e).format('DD-MM-YYYY');
+              }
+
+              setfechafiltro(fecha);
+
+              const filteredDataUsuario: any = data.filter((datos: any) => {
+                const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                return (
+                  datos.fechaSolicitud.toString().includes(fecha) &&
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              });
+              setdatosUsuario(filteredDataUsuario);
+
+            }
+            else {
+              const filteredDataUsuario: any = data.filter((datos: any) => {
+                const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                return (
+
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              });
+              setdatosUsuario(filteredDataUsuario);
+            }
+          }}
+        />
+      </Form.Item>
+    );
+
+  }
+  const FilterByNameInputfuneraria = () => {
+
+    return (
+
+      <Input
+        placeholder='Funeraria y/o Nombre'
+        value={funerariafiltro}
+        style={{ width: 160 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setfunerariafiltro(currValue);
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro == null) {
+              return (
+                funeraria.toString().includes(currValue.toUpperCase()) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+            else {
+              return (
+                funeraria.toString().includes(currValue.toUpperCase()) &&
+                datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputid = () => {
+
+    return (
+
+      <Input
+        placeholder='Id Tramite'
+        value={idtramite}
+        style={{ width: 160 }}
+        onKeyPress={(event) => {
+          if (!/[0-9]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setidtramite(currValue);
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.iD_Control_Tramite.toString().includes(currValue) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+            else {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                datos.iD_Control_Tramite.toString().includes(currValue) &&
+                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+              );
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputdocumento = () => {
+    return (
+      <Input
+        placeholder='Documento del Fallecido'
+        value={documento}
+        style={{ width: 160 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setdocumento(currValue);
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+              );
+            }
+            else {
+              return (
+                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                datos.iD_Control_Tramite.toString().includes(idtramite) &&
+                datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+              );
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+    );
+  }
+
 
 
 
@@ -53,10 +244,12 @@ export const Gridview = (props: IDataSource) => {
 
 
   if (Validacion == '1') {
-    if (Tipo.rol !== 'Ciudadano') {
+    if (Tipo.rol !== 'Ciudadano'
+      //  && Tipo.rol !== 'AdminTI'
+    ) {
       structureColumns = [
         {
-          title: 'Id Tramite',
+          title: FilterByNameInputid(),
           dataIndex: 'iD_Control_Tramite',
           key: 'idcontrolTramite',
           defaultSortOrder: 'descend',
@@ -66,18 +259,30 @@ export const Gridview = (props: IDataSource) => {
           },
         },
         {
-          title: 'Documento del Fallecido',
+          title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionSolicitante',
-          key: 'numeroDocumento'
+          key: 'numeroDocumento',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { noIdentificacionSolicitante: number; }, b: { noIdentificacionSolicitante: number; }) =>
+              a.noIdentificacionSolicitante - b.noIdentificacionSolicitante,
+            multiple: 2,
+          }
         },
         {
-          title: 'Funeraria y/o Nombre',
+          title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto'
+          key: 'nombreCompleto',
+
+          sorter: {
+            compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
+              a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
+            multiple: 1,
+          }
         },
 
         {
-          title: 'Fecha de Registro',
+          title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
           render: (Text: string) => (
@@ -88,19 +293,59 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Estado Tramite',
-          dataIndex: 'estadoSolicitud',
+          dataIndex: 'estadoString',
           key: 'estado',
+          filters: [
+            {
+              text: 'Anulado ',
+              value: 'Anulado validador de documentos'
+            },
+            {
+              text: 'Aprobado ',
+              value: 'Aprobado validador de documentos'
+            },
+            {
+              text: 'Documentos Inconsistentes',
+              value: 'Documentos Inconsistentes'
+            },
+            {
+              text: 'Negado ',
+              value: 'Negado validador de documentos'
+            }
+            ,
+            {
+              text: 'En tramite ',
+              value: 'Registro Usuario Externo'
+            }
+            ,
+            {
+              text: 'En espera de gestion ',
+              value: 'Cambio de Licencia'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
+
+
           render: (Text: string) => {
 
-            if (Text === '31a45854-bf40-44b6-2645-08da64f23b8e') {
+            if (Text === 'Cambio de Licencia') {
               return (<Form.Item label='' name=''>
                 <text>{'Cambio tipo de licencia'}</text>
               </Form.Item>)
             }
             else {
-              return (<Form.Item label='' name=''>
-                <text>{tramite}</text>
-              </Form.Item>)
+              if (Text === 'Registro Usuario Externo') {
+                return (<Form.Item label='' name=''>
+                  <text>{'En Tramite'}</text>
+                </Form.Item>)
+              }
+              else {
+                return (<Form.Item label='' name=''>
+                  <text>{Text}</text>
+                </Form.Item>)
+              }
+
             }
 
           }
@@ -109,6 +354,26 @@ export const Gridview = (props: IDataSource) => {
           title: 'Tipo Solicitud',
           dataIndex: 'idTramite',
           key: 'tipoSolicitud',
+          filters: [
+            {
+              text: 'Inhumación Individual',
+              value: 'a289c362-e576-4962-962b-1c208afa0273'
+            },
+            {
+              text: 'Inhumación Fetal',
+              value: 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060'
+            },
+            {
+              text: 'Cremación Individual',
+              value: 'e69bda86-2572-45db-90dc-b40be14fe020'
+            },
+            {
+              text: 'Cremación Fetal ',
+              value: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { idTramite: string }) => record.idTramite.toString().includes(value),
           render: (Text: string) => {
             switch (Text) {
               case 'a289c362-e576-4962-962b-1c208afa0273':
@@ -145,9 +410,8 @@ export const Gridview = (props: IDataSource) => {
 
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
-
-            return permiso.rol !== 'Ciudadano' ? (
-              <>
+            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo') {
+              return (<Form.Item label='' name=''>
                 <Button
                   type='primary'
                   key={`vali-${index}`}
@@ -157,15 +421,15 @@ export const Gridview = (props: IDataSource) => {
                 >
                   Validar Información
                 </Button>
-              </>
-            ) : null;
+              </Form.Item>)
+            }
           }
         }
       ];
     } else {
       structureColumns = [
         {
-          title: 'Id Tramite',
+          title: FilterByNameInputid(),
           dataIndex: 'iD_Control_Tramite',
           key: 'idcontrolTramite',
           defaultSortOrder: 'descend',
@@ -175,17 +439,28 @@ export const Gridview = (props: IDataSource) => {
           },
         },
         {
-          title: 'Documento del Fallecido',
+          title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionSolicitante',
-          key: 'numeroDocumento'
+          key: 'numeroDocumento',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { noIdentificacionSolicitante: number; }, b: { noIdentificacionSolicitante: number; }) =>
+              a.noIdentificacionSolicitante - b.noIdentificacionSolicitante,
+            multiple: 1,
+          }
         },
         {
-          title: 'Funeraria y/o Nombre',
+          title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto'
+          key: 'nombreCompleto',
+          sorter: {
+            compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
+              a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
+            multiple: 1,
+          }
         },
         {
-          title: 'Fecha de Registro',
+          title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud'
         },
@@ -193,26 +468,89 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
+          filters: [
+            {
+              text: 'Anulado ',
+              value: 'Anulado validador de documentos'
+            },
+            {
+              text: 'Aprobado ',
+              value: 'Aprobado validador de documentos'
+            },
+            {
+              text: 'Documentos Inconsistentes',
+              value: 'Documentos Inconsistentes'
+            },
+            {
+              text: 'Negado ',
+              value: 'Negado validador de documentos'
+            }
+            ,
+            {
+              text: 'En tramite ',
+              value: 'Registro Usuario Externo'
+            }
+            ,
+            {
+              text: 'En espera de gestion ',
+              value: 'Cambio de Licencia'
+            }
+          ],
+          filterSearch: true,
+
+          onFilter: (value: string, record: { solicitud: string }) => record.solicitud.toString().includes(value),
           render: (row: any) => {
-            return row.solicitud == 'Registro Usuario Externo' ? (
-              <Form.Item label='' name=''>
-                <text>{tramite}</text>
-              </Form.Item>
-            ) : (
-              <Form.Item label='' name=''>
-                <text>{row.solicitud}</text>
-              </Form.Item>
-            );
+            if (row.solicitud == 'Registro Usuario Externo') {
+              return (<Form.Item label='' name=''>
+                <text>{'En Tramite'}</text>
+              </Form.Item>)
+            }
+            else {
+              if (row.solicitud == 'Cambio de Licencia') {
+                return (<Form.Item label='' name=''>
+                  <text>{'En espera de gestion'}</text>
+                </Form.Item>)
+              }
+              else {
+                return (<Form.Item label='' name=''>
+                  <text>{row.solicitud}</text>
+                </Form.Item>)
+              }
+            }
+
+
+
+
           }
         },
         {
           title: 'Tipo Solicitud',
           dataIndex: 'tramite',
-          key: 'tipoSolicitud'
+          key: 'tipoSolicitud',
+          filters: [
+            {
+              text: 'Inhumación Individual',
+              value: 'Inhumación Individual'
+            },
+            {
+              text: 'Inhumación Fetal',
+              value: 'Inhumación Fetal'
+            },
+            {
+              text: 'Cremación Individual',
+              value: 'Cremación Individual'
+            },
+            {
+              text: 'Cremación Fetal ',
+              value: 'Cremación Fetal'
+            }
+          ],
+          filterSearch: true,
 
+          onFilter: (value: string, record: { tramite: string }) => record.tramite.toString().includes(value),
         },
         {
-          title: 'Gestión',
+          title: 'Actualizar',
           key: 'Acciones',
           render: (_: any, row: any, index: any) => {
             if (row.solicitud === 'Documentos Inconsistentes') {
@@ -227,15 +565,20 @@ export const Gridview = (props: IDataSource) => {
                 </Button>
               );
             } else {
-              if (row.solicitud === 'Cambiar Tipo de Licencia') {
+              if (row.solicitud === 'Aprobado validador de documentos' &&
+                (row.tramite === 'Cremación Individual' || row.tramite === 'Inhumación Individual')) {
                 return (
                   <Button
                     type='primary'
-                    style={{ marginLeft: '5px' }}
-                    icon={<CheckOutlined />}
+                    style={{ marginLeft: '5px', height: 60 }}
                     onClick={() => onClickCambiarLicencia(row)}
                   >
-                    Actualizar Información
+                    <text>{`Cambio de licencia a`}
+                    </text>
+                    <br />
+                    <text>{`
+                    ${row.tramite === 'Cremación Individual' ? 'Inhumación Individual' :
+                        'Cremación Individual'} `}</text>
                   </Button>
                 );
               } else {
@@ -462,7 +805,7 @@ export const Gridview = (props: IDataSource) => {
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <Table
                 id='tableGen'
-                dataSource={data}
+                dataSource={datosUsuario}
                 columns={structureColumns}
 
                 pagination={{ pageSize: Paginas }}
