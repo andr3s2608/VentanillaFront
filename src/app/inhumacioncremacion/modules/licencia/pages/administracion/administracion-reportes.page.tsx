@@ -45,7 +45,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     async () => {
       const resp = await api.getallReports();
 
-      console.log(resp);
+
       setGrid(resp);
       setAllData(resp);
       setVisibleGrid('none');
