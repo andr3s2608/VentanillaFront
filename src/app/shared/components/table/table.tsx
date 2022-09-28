@@ -465,6 +465,7 @@ export const Gridview = (props: IDataSource) => {
         {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
+          width: 200,
           key: 'fechaSolicitud'
         },
         {
@@ -529,6 +530,7 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Tipo Solicitud',
           dataIndex: 'tramite',
+          width: 200,
           key: 'tipoSolicitud',
           filters: [
             {
@@ -810,7 +812,7 @@ export const Gridview = (props: IDataSource) => {
                 id='tableGen'
                 dataSource={datosUsuario}
                 columns={structureColumns}
-
+                scroll={{ x: 600 }}
                 pagination={{ pageSize: Paginas }}
               />
             </div>

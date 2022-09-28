@@ -494,7 +494,7 @@ export const BandejaU = (props: IDataSource) => {
                             <div className='row'>
                               <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                 <Table
-                                  scroll={{ y: 240 }}
+                                  scroll={{ y: 500 }}
                                   id='tableGen'
                                   dataSource={dataInter.length > 0 ? dataInter : data}
                                   columns={structureColumns}
@@ -561,7 +561,7 @@ export const BandejaU = (props: IDataSource) => {
                             <div className='row'>
                               <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                 <Table
-                                  scroll={{ y: 240 }}
+                                  scroll={{ y: 500 }}
                                   id='tableGen'
                                   dataSource={dataSolucionado}
                                   columns={structureColumns}

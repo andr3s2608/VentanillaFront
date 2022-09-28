@@ -206,7 +206,7 @@ export class ApiService {
     get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
   getallbyEstado = (solicitud: string) =>
-    get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
   getallReports = () => get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequestToGestion`, id: '0' });
 
