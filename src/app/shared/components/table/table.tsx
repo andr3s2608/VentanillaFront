@@ -295,7 +295,7 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: 'estadoString',
           key: 'estado',
-          width: 130,
+          width: 230,
           filters: [
             {
               text: 'Anulado ',
@@ -464,14 +464,14 @@ export const Gridview = (props: IDataSource) => {
         {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
-          width: 200,
+          with: 600,
           key: 'fechaSolicitud'
         },
         {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
-          width: 130,
+          width: 230,
           filters: [
             {
               text: 'Anulado ',
@@ -531,7 +531,7 @@ export const Gridview = (props: IDataSource) => {
           title: 'Tipo Solicituds',
           dataIndex: 'tramite',
           key: 'tipoSolicitud',
-          width: 200,
+          width: 300,
           filters: [
             {
               text: 'Inhumación Individual',
