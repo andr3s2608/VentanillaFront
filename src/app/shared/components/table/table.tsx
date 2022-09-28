@@ -66,7 +66,7 @@ export const Gridview = (props: IDataSource) => {
           placeholder='Fecha de Solicitud'
           dateDisabledType='default'
           dateFormatType='default'
-          style={{ width: 160 }}
+          style={{ width: 200 }}
           className='form-control'
           onChange={(e) => {
 
@@ -119,7 +119,7 @@ export const Gridview = (props: IDataSource) => {
       <Input
         placeholder='Funeraria y/o Nombre'
         value={funerariafiltro}
-        style={{ width: 160 }}
+        style={{ width: 200 }}
         onKeyPress={(event) => {
           if (!/[a-zA-Z0-9 ]/.test(event.key)) {
             event.preventDefault();
@@ -163,7 +163,7 @@ export const Gridview = (props: IDataSource) => {
       <Input
         placeholder='Id Tramite'
         value={idtramite}
-        style={{ width: 160 }}
+        style={{ width: 200 }}
         onKeyPress={(event) => {
           if (!/[0-9]/.test(event.key)) {
             event.preventDefault();
@@ -204,7 +204,7 @@ export const Gridview = (props: IDataSource) => {
       <Input
         placeholder='Documento del Fallecido'
         value={documento}
-        style={{ width: 160 }}
+        style={{ width: 200 }}
         onKeyPress={(event) => {
           if (!/[a-zA-Z0-9 ]/.test(event.key)) {
             event.preventDefault();
@@ -285,6 +285,7 @@ export const Gridview = (props: IDataSource) => {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
+          width: 200,
           render: (Text: string) => (
             <Form.Item label='' name=''>
               <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
@@ -295,6 +296,7 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: 'estadoString',
           key: 'estado',
+          width: 200,
           filters: [
             {
               text: 'Anulado ',
@@ -354,6 +356,7 @@ export const Gridview = (props: IDataSource) => {
           title: 'Tipo Solicitud',
           dataIndex: 'idTramite',
           key: 'tipoSolicitud',
+          width: 200,
           filters: [
             {
               text: 'Inhumación Individual',
@@ -407,7 +410,7 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Validar Tramite',
           key: 'Acciones',
-
+          width: 200,
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
             if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo') {
