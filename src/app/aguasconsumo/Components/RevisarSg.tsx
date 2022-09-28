@@ -180,6 +180,7 @@ export const RevisarSg = () => {
     if (!usuarionotificado) {
       if (notificacion != '') {
         const formato = await api.getFormatoAguas(notificacion);
+
         const control: string = formato['asuntoNotificacion'];
         switch (control) {
           case 'Notificación de Desistimiento':
@@ -220,12 +221,14 @@ export const RevisarSg = () => {
 
             let autoridadesAmbientales: IAutoridadAmbientalDTO[] = await api.getAutoridadAmbiental();
             let autoridadAmbiental = autoridadesAmbientales.find(aa => aa.idAutoridadAmbiental == objJson.fuenteabastecimientojson[0].idAutoridadAmbiental);
+            const formatoAutoridad = await api.getFormatoAguas("5A5076F6-7646-409E-A8CC-8CF8AAD60272");
+
 
             await api.sendEmailAttachment({
               to: "ppalacios@soaint.com",//autoridadAmbiental?.correo,
               subject: 'Notificación Aprobación Autoridad Ambiental',
               body: agregarValoresDinamicos(
-                formato['cuerpo'],
+                formatoAutoridad['cuerpo'],
                 ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
                 [
                   objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
