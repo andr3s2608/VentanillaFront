@@ -320,7 +320,7 @@ export const Gridview = (props: IDataSource) => {
             }
             ,
             {
-              text: 'En espera de gestion ',
+              text: 'Cambio de Licencia',
               value: 'Cambio de Licencia'
             }
           ],
@@ -496,7 +496,7 @@ export const Gridview = (props: IDataSource) => {
             }
             ,
             {
-              text: 'En espera de gestion ',
+              text: 'En espera de aprobacion ',
               value: 'Cambio de Licencia'
             }
           ],
@@ -512,7 +512,7 @@ export const Gridview = (props: IDataSource) => {
             else {
               if (row.solicitud == 'Cambio de Licencia') {
                 return (<Form.Item label='' name=''>
-                  <text>{'En espera de gestion'}</text>
+                  <text>{'En espera de aprobacion'}</text>
                 </Form.Item>)
               }
               else {
