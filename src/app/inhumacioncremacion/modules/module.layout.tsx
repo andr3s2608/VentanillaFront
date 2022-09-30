@@ -114,7 +114,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
 
   const assetsDocuments = require.context('../../../assets/documents', true);
 
-  const onCancel = (): void => {};
+  const onCancel = (): void => { };
 
   const onNoAutorizo = () => {
     setBanderaPolicaSeguridad(false);
