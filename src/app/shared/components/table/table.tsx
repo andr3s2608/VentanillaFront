@@ -59,14 +59,13 @@ export const Gridview = (props: IDataSource) => {
   const FilterByNameInputfecha = () => {
 
     return (
-      <Form.Item style={{ width: 100 }} initialValue={fechafiltro}>
+      <Form.Item style={{ width: 200, marginTop: 4, marginRight: 4 }} initialValue={fechafiltro}>
         <DatepickerComponent
           id='datePicker1'
           picker='date'
           placeholder='Fecha de Solicitud'
           dateDisabledType='default'
           dateFormatType='default'
-          style={{ width: 200 }}
           className='form-control'
           onChange={(e) => {
 
@@ -163,7 +162,7 @@ export const Gridview = (props: IDataSource) => {
       <Input
         placeholder='Id Tramite'
         value={idtramite}
-        style={{ width: 200 }}
+        style={{ width: 140 }}
         onKeyPress={(event) => {
           if (!/[0-9]/.test(event.key)) {
             event.preventDefault();
@@ -285,7 +284,7 @@ export const Gridview = (props: IDataSource) => {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
-          width: 200,
+          with: 600,
           render: (Text: string) => (
             <Form.Item label='' name=''>
               <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
@@ -296,7 +295,7 @@ export const Gridview = (props: IDataSource) => {
           title: 'Estado Tramite',
           dataIndex: 'estadoString',
           key: 'estado',
-          width: 200,
+          width: 230,
           filters: [
             {
               text: 'Anulado ',
@@ -321,7 +320,7 @@ export const Gridview = (props: IDataSource) => {
             }
             ,
             {
-              text: 'En espera de gestion ',
+              text: 'Cambio de Licencia',
               value: 'Cambio de Licencia'
             }
           ],
@@ -356,7 +355,7 @@ export const Gridview = (props: IDataSource) => {
           title: 'Tipo Solicitud',
           dataIndex: 'idTramite',
           key: 'tipoSolicitud',
-          width: 200,
+          width: 300,
           filters: [
             {
               text: 'Inhumación Individual',
@@ -465,13 +464,14 @@ export const Gridview = (props: IDataSource) => {
         {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
-          width: 200,
+          with: 600,
           key: 'fechaSolicitud'
         },
         {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
+          width: 230,
           filters: [
             {
               text: 'Anulado ',
@@ -496,7 +496,7 @@ export const Gridview = (props: IDataSource) => {
             }
             ,
             {
-              text: 'En espera de gestion ',
+              text: 'En espera de aprobacion ',
               value: 'Cambio de Licencia'
             }
           ],
@@ -512,7 +512,7 @@ export const Gridview = (props: IDataSource) => {
             else {
               if (row.solicitud == 'Cambio de Licencia') {
                 return (<Form.Item label='' name=''>
-                  <text>{'En espera de gestion'}</text>
+                  <text>{'En espera de aprobacion'}</text>
                 </Form.Item>)
               }
               else {
@@ -528,10 +528,10 @@ export const Gridview = (props: IDataSource) => {
           }
         },
         {
-          title: 'Tipo Solicitud',
+          title: 'Tipo Solicituds',
           dataIndex: 'tramite',
-          width: 200,
           key: 'tipoSolicitud',
+          width: 300,
           filters: [
             {
               text: 'Inhumación Individual',
@@ -812,7 +812,7 @@ export const Gridview = (props: IDataSource) => {
                 id='tableGen'
                 dataSource={datosUsuario}
                 columns={structureColumns}
-                scroll={{ x: 600 }}
+                scroll={{ x: 1200 }}
                 pagination={{ pageSize: Paginas }}
               />
             </div>

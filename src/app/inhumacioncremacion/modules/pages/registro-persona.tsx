@@ -150,107 +150,127 @@ const RegistroPage: React.FC<any> = (props) => {
     const emailconfmayus = confirEmail.toUpperCase();
 
     if (emailmayus == emailconfmayus) {
-      const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-      var numero1: number;
 
-      const fecha: String = value.date;
+      let numerorep: number = value.instNumIdent;
 
-      var fechaformato: string = fecha.toString();
-
-      var fechavalidacion = fechaformato.substring(11, 15);
-      if (avenida) {
-        numero1 = Num1;
-      } else {
-        numero1 = 10;
-      }
-
-      const dep = value.stateLive;
-      var mun1: string = value.cityLive;
-      var mun: number = parseInt(mun1);
-      switch (dep) {
-        case 1:
-          mun = 11001000;
-          break;
-      }
-
-      const depres = value.state;
-      var munres1: string = value.city;
-      var munres: number = parseInt(munres1);
-      switch (depres) {
-        case 1:
-          munres = 11001000;
-          break;
-      }
-
-      if (fechavalidacion >= '1900') {
-        const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-        const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
-        const data = {
-          primerNombre: value.name,
-          segundoNombre: value.secondName ?? '',
-          primerApellido: value.surname,
-          segundoApellido: value.secondSurname ?? '',
-          tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-          numeroIdentificacion: Number(value.instNumIdent),
-          telefonoFijo: value.phone ?? '',
-          telefonoCelular: value.phonecell,
-          email: value.email,
-          nacionalidad: value.country, //listado de paises
-          departamento: value.stateLive, //listado de departamentos
-          ciudadNacimientoOtro: !isColombia ? mun : '',
-          ciudadNacimiento: isColombia ? mun : 0, //listado municipios
-          departamentoResidencia: value.state, //listado departamentos
-          ciudadResidencia: munres, //listado municipios
-          direccionResidencia: direcion,
-          fechaNacimiento: value.date,
-          sexo: value.sex, //listado sexo
-          genero: value.gender, //lista quemada
-          orientacionSexual: value.sexual_orientation, //lista quemada
-          etnia: value.ethnicity ?? '', //listado etnia
-          estadoCivil: value.estadoCivil, //lista quemada
-          nivelEducativo: value.levelEducation //listado nivel educativo
-        };
-
-        const resApi = await api.personaNatural(data);
-
-        if (typeof resApi === 'number') {
-          api.sendEmail({
-            to: value.email,
-            subject: 'Registro de persona natural ',
-            body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario creado exitosamente'
-          });
-          const segundo = value.secondName ?? ' ';
-          const segundoape = value.secondSurname ?? '';
-          await api.putUser({
-            oid: accountIdentifier,
-            idPersonaVentanilla: resApi,
-            NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
-          });
-          await api.PostRolesUser({
-            idUser: accountIdentifier,
-            idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-          });
-          localStorage.setItem(accountIdentifier, resApi.toString());
-          store.dispatch(SetGrid({ key: 'relaodMenu' }));
-          Swal.fire({
-            icon: 'success',
-            title: 'Usuario Registrado',
-            text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
-            showClass: {
-              popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-              popup: 'animate__animated animate__fadeOutUp'
-            }
-          });
-          history.push('/');
-        }
-      } else {
+      if (numerorep > 999999999) {
         Swal.fire({
           icon: 'error',
-          title: 'Datos inválidos',
-          text: 'Por favor ingrese una fecha de nacimiento valida'
+          title: 'Datos Invalidos',
+          text: 'El numero de identificación del representante es invalido,porfavor verifiquelo',
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
         });
+      }
+      else {
+
+
+        const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+        var numero1: number;
+
+        const fecha: String = value.date;
+
+        var fechaformato: string = fecha.toString();
+
+        var fechavalidacion = fechaformato.substring(11, 15);
+        if (avenida) {
+          numero1 = Num1;
+        } else {
+          numero1 = 10;
+        }
+
+        const dep = value.stateLive;
+        var mun1: string = value.cityLive;
+        var mun: number = parseInt(mun1);
+        switch (dep) {
+          case 1:
+            mun = 11001000;
+            break;
+        }
+
+        const depres = value.state;
+        var munres1: string = value.city;
+        var munres: number = parseInt(munres1);
+        switch (depres) {
+          case 1:
+            munres = 11001000;
+            break;
+        }
+
+        if (fechavalidacion >= '1900') {
+          const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+          const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
+          const data = {
+            primerNombre: value.name,
+            segundoNombre: value.secondName ?? '',
+            primerApellido: value.surname,
+            segundoApellido: value.secondSurname ?? '',
+            tipoDocumento: value.instTipoIdent, //listado tipos de documentos
+            numeroIdentificacion: Number(value.instNumIdent),
+            telefonoFijo: value.phone ?? '',
+            telefonoCelular: value.phonecell,
+            email: value.email,
+            nacionalidad: value.country, //listado de paises
+            departamento: value.stateLive, //listado de departamentos
+            ciudadNacimientoOtro: !isColombia ? mun : '',
+            ciudadNacimiento: isColombia ? mun : 0, //listado municipios
+            departamentoResidencia: value.state, //listado departamentos
+            ciudadResidencia: munres, //listado municipios
+            direccionResidencia: direcion,
+            fechaNacimiento: value.date,
+            sexo: value.sex, //listado sexo
+            genero: value.gender, //lista quemada
+            orientacionSexual: value.sexual_orientation, //lista quemada
+            etnia: value.ethnicity ?? '', //listado etnia
+            estadoCivil: value.estadoCivil, //lista quemada
+            nivelEducativo: value.levelEducation //listado nivel educativo
+          };
+
+          const resApi = await api.personaNatural(data);
+
+          if (typeof resApi === 'number') {
+            api.sendEmail({
+              to: value.email,
+              subject: 'Registro de persona natural ',
+              body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario creado exitosamente'
+            });
+            const segundo = value.secondName ?? ' ';
+            const segundoape = value.secondSurname ?? '';
+            await api.putUser({
+              oid: accountIdentifier,
+              idPersonaVentanilla: resApi,
+              NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
+            });
+            await api.PostRolesUser({
+              idUser: accountIdentifier,
+              idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+            });
+            localStorage.setItem(accountIdentifier, resApi.toString());
+            store.dispatch(SetGrid({ key: 'relaodMenu' }));
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuario Registrado',
+              text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
+              showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              }
+            });
+            history.push('/');
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: 'Por favor ingrese una fecha de nacimiento valida'
+          });
+        }
       }
     } else {
       Swal.fire({
