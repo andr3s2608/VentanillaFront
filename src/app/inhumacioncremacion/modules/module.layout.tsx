@@ -114,7 +114,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
 
   const assetsDocuments = require.context('../../../assets/documents', true);
 
-  const onCancel = (): void => {};
+  const onCancel = (): void => { };
 
   const onNoAutorizo = () => {
     setBanderaPolicaSeguridad(false);
@@ -141,7 +141,6 @@ export const ModuleLayout = (props: { logout: () => void }) => {
     await api.AddPoliticaSeguridad({
       fecha: new Date(),
       id_usuario: idUsuario,
-      aprobo_politica: true,
       nombre: primerNombre,
       apellido: primerApellido
     });
