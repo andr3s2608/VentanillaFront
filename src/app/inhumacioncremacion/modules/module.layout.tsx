@@ -141,7 +141,6 @@ export const ModuleLayout = (props: { logout: () => void }) => {
     await api.AddPoliticaSeguridad({
       fecha: new Date(),
       id_usuario: idUsuario,
-      aprobo_politica: true,
       nombre: primerNombre,
       apellido: primerApellido
     });
