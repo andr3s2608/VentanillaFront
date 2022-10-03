@@ -173,6 +173,7 @@ export const BandejaU = (props: IDataSource) => {
     return (
       <Input
         placeholder='Nro. de Radicado'
+        style={{ width: 200, marginTop: 4, marginRight: 4 }}
         value={value}
         onChange={(e) => {
           const currValue: string = e.target.value;
@@ -231,7 +232,7 @@ export const BandejaU = (props: IDataSource) => {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',
         key: 'idTramite',
-        width: 200,
+        width: 230,
         sorter: {
           compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
             a.tipodeTramite > b.tipodeTramite ? 1 : -1,
@@ -242,13 +243,13 @@ export const BandejaU = (props: IDataSource) => {
         title: 'Fecha de Registro',
         dataIndex: 'fechaSolicitud',
         key: 'fechaSolicitud',
-        width: 200,
+        width: 230,
       },
       {
         title: 'Estado ',
         dataIndex: 'estado',
         key: 'estado',
-        width: 130,
+        width: 230,
         filters: [
           {
             text: 'Abierta',
