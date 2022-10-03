@@ -985,10 +985,10 @@ export const Bandeja = (props: IDataSource) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        <div className='card-body tarjeta h-100'>
+        <div className='card-body tarjeta h-100 card_tarjeta' >
           <Form form={form} {...layoutItems} layout='horizontal'>
             <section className='info-panel'>
-              <div className='container-fluid'>
+              <div className='container'>
                 <div className='row mt-2 ml-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
                     <div className='info-secion'>
@@ -1184,7 +1184,7 @@ export const Bandeja = (props: IDataSource) => {
                                         <Table
 
                                           id='tableGen'
-                                          scroll={{ y: 270 }}
+                                          scroll={{ x: 500 }}
                                           dataSource={dataUsuario}
                                           columns={structureColumns}
                                           pagination={{ pageSize: Paginas }}
@@ -1195,7 +1195,7 @@ export const Bandeja = (props: IDataSource) => {
                                     {coordinador != 'Funcionario' && (
                                       <>
                                         <Table
-                                          scroll={{ y: 270 }}
+                                          scroll={{ x: 500 }}
                                           id='tableGen'
                                           dataSource={dataInter}
                                           columns={structureColumns}
@@ -1264,7 +1264,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='row'>
                                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                     <Table
-                                      scroll={{ y: 270 }}
+                                      scroll={{ x: 500 }}
                                       id='tableGen2'
                                       dataSource={dataSolucionado}
                                       columns={structureColumns}
@@ -1333,7 +1333,7 @@ export const Bandeja = (props: IDataSource) => {
                                     <div className='row'>
                                       <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                         <Table
-                                          scroll={{ y: 270 }}
+                                          scroll={{ x: 500 }}
                                           id='tableGen3'
                                           dataSource={dataUsuario}
                                           columns={structureColumns}
@@ -1443,7 +1443,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='row'>
                                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                     <Table
-                                      scroll={{ y: 270 }}
+                                      scroll={{ x: 500 }}
                                       id='tablenot'
                                       dataSource={datanotificaciones}
                                       columns={structureColumnsnotificacion}
@@ -1532,7 +1532,7 @@ export const Bandeja = (props: IDataSource) => {
                                 <div className='row'>
                                   <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                                     <Table
-                                      scroll={{ y: 270 }}
+                                      scroll={{ x: 500 }}
                                       id='tablehistnot'
                                       dataSource={datahistoriconotificaciones}
                                       columns={structureColumnsnotificacionhistorico}
