@@ -403,14 +403,16 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
                   <Button
                     className='fa-solid fa-circle-plus'
-                    style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                    style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
                     type='primary'
                     htmlType='button'
+                    icon='fa-solid fa-circle-plus'
                     onClick={() => {
                       insertarsistema();
                     }}
                   >
-                    Enviar
+                    Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
+
                   </Button>
                 </>
               )}

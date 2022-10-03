@@ -385,20 +385,19 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
               {obj?.tipodeSolicitud == 'Primera vez' && (
                 <>
-                  <div className='col-lg-8 col-md-8 col-sm-12'>
-                    <a href='' style={{ textDecoration: 'none' }}>
-                      <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-                    </a>
+                  <div className='col-lg-10 col-md-10 col-sm-12'>
+
                     <Button
                       className='fa-solid fa-circle-plus'
-                      style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                      style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
                       type='primary'
                       htmlType='button'
                       onClick={() => {
                         insertarAcueducto();
                       }}
                     >
-                      Enviar
+
+                      Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
                     </Button>
                   </div>
                 </>
