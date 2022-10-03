@@ -225,7 +225,7 @@ export const RevisarSg = () => {
 
 
             await api.sendEmailAttachment({
-              to: "ppalacios@soaint.com",//autoridadAmbiental?.correo,
+              to: autoridadAmbiental?.correo,
               subject: 'Notificación Aprobación Autoridad Ambiental',
               body: agregarValoresDinamicos(
                 formatoAutoridad['cuerpo'],
