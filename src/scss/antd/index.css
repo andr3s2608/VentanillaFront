@@ -30141,7 +30141,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
 
 .sidebar_help {
   position: fixed;
-  top: 263px;
+  top: 275px;
   right: -8px;
   padding: 0px;
   margin: 0px;
@@ -30186,4 +30186,19 @@ div.ant-typography-edit-content.ant-typography-rtl {
 
 .social li button i:hover {
   color: #000 !important;
+}
+
+.dark {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+.light {
+  background-color: #fff !important;
+  color: #333 !important;
+}
+
+.enlace_inicio {
+  text-decoration: none !important;
+  font-weight: bold;
 }
