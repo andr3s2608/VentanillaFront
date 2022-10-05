@@ -33,7 +33,6 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
   const api = new ApiService(accountIdentifier);
   const [validacioninfo, setvalidacioninfo] = useState<any>(false);
   const [rolusuario, setrol] = useState<any>('');
-
   const sidenav = useSelector<AppState, boolean>((state) => state.ui.sidenav);
   const dispatch = useDispatch();
 

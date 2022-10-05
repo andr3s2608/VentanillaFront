@@ -30138,3 +30138,52 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-table-cell .ant-table-column-has-sorters {
   margin-left: 20px;
 }
+
+.sidebar_help {
+  position: fixed;
+  top: 263px;
+  right: -8px;
+  padding: 0px;
+  margin: 0px;
+  z-index: 1;
+}
+
+.social {
+  list-style: none;
+}
+
+.social li {
+  padding: 10px 10px;
+  font-size: 25px;
+}
+
+.social li button {
+  height: 55px;
+  width: 55px;
+  border-radius: 0px !important;
+  background-color: #E4E4E4 !important;
+  border: 1px solid #000 !important;
+  color: #000;
+}
+
+.social li button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.social li button .text {
+  color: #000;
+  font-size: 16px;
+}
+
+.social li button span:hover {
+  color: #000 !important;
+}
+
+.social li button i {
+  color: #000 !important;
+}
+
+.social li button i:hover {
+  color: #000 !important;
+}
