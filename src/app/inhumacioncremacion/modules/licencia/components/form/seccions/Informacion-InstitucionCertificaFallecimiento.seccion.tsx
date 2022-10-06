@@ -144,11 +144,7 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
           xl: 3,
           xxl: 3
         }}
-        dataSource={
-          obj.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e' || obj.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020'
-            ? dataCompleta
-            : dataParcial
-        }
+        dataSource={obj.instNombreFiscal != '' ? dataCompleta : dataParcial}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta title={item.title} description={item.describe} />

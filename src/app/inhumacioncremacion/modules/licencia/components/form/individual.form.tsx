@@ -43,9 +43,6 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { TypeDocument } from './seccions/TypeDocument';
 import { useHistory } from 'react-router';
-import { EditInhumacion } from './edit/Inhumacion';
-import { ValidationFuntional } from './seccions/validationfuntional';
-import { parse } from 'path';
 
 const { Step } = Steps;
 
@@ -53,21 +50,19 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const history = useHistory();
   const { tipoLicencia, tramite } = props;
   const [inputVal, setInputVal] = useState('');
-  const pruebatipo = /[0-9]/;
   const [form] = Form.useForm<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
-  const [sex, setSex] = useState<[]>([]);
+
   const api = new ApiService(accountIdentifier);
   const [user, setUser] = useState<any>();
-  const [isPersonNatural, setIsPersonNatural] = useState<boolean>(false);
+
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
   const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
   const [longitudmedico, setlongitudmedico] = useState<number>(6);
   const [supports, setSupports] = useState<any[]>([]);
-  const [type, setType] = useState<[]>([]);
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
@@ -76,13 +71,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
-  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7C96A4D3-A0CB-484E-A01B-93BC39C2552E');
+  const [sininformacion, setsininformacion] = useState<boolean>(false);
+  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7c96a4d3-a0cb-484e-a01b-93bc39c2552e');
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
   const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
@@ -92,7 +87,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   //create o edit
   //const objJosn: any = EditInhumacion('0');
   const objJosn: any = undefined;
-  const edit = objJosn?.idTramite ? true : false;
+  const edit = false;
+
   //form.setFieldsValue(objJosn?);
   //#region Listados
 
@@ -101,43 +97,45 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
+      const paises: any = localStorage.getItem('paises');
+      const paisesjson: any = JSON.parse(paises);
+
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+
+      const estadocivil: any = localStorage.getItem('estadocivil');
+
+      const nivel: any = localStorage.getItem('nivel');
+
+      const etnia: any = localStorage.getItem('etnia');
+
+      const tipomuerte: any = localStorage.getItem('tipomuerte');
+
       const resp = await Promise.all([
-        dominioService.get_type(ETipoDominio.Pais),
-        dominioService.get_type(ETipoDominio['Tipo Documento']),
-        dominioService.get_type(ETipoDominio['Estado Civil']),
-        dominioService.get_type(ETipoDominio['Nivel Educativo']),
-        dominioService.get_type(ETipoDominio.Etnia),
+        paisesjson,
+        tiposjson,
+        JSON.parse(estadocivil),
+        JSON.parse(nivel),
+        JSON.parse(etnia),
         dominioService.get_type(ETipoDominio.Regimen),
-        dominioService.get_type(ETipoDominio['Tipo de Muerte'])
+        JSON.parse(tipomuerte)
       ]);
 
-      const nuevodoc = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-      const nuevalista = nuevodoc.filter((i) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
+      const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settiposautoriza(nuevalista);
 
       const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
       setCausaMuerte(causa['valor']);
 
-      const sexo = await api.GetSexo();
-      const userres = await api.getCodeUser();
-      const informationUser = await api.GetInformationUser(userres);
+      const iduser: any = localStorage.getItem('idUser');
 
-      setSex(sexo);
-      setUser(userres);
+      setUser(JSON.parse(iduser));
       setListas(resp);
 
       if (edit) {
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
-        const typeList = await api.GetAllTypeValidation();
         setSupports(support);
-        setType(typeList);
-      }
-
-      if (informationUser.tipoIdentificacion == 5) {
-        setIsPersonNatural(false);
-      } else {
-        setIsPersonNatural(true);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -199,7 +197,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       setlongitudmedico(longitud);
     }
   };
-  const getDataSolicitante = (solicitante: any) => {};
+
+  const getDataCambio = () => {
+
+  };
+
+
+  const getDataSolicitante = (solicitante: any) => { };
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     let causa = values.causaMuerte;
@@ -214,8 +218,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
     const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-    const idUser = await api.getCodeUser();
-    const resp = await api.GetInformationUser(idUser);
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
     let idnum = values.IDNumber;
     let idnumaut = values.mauthIDNumber;
 
@@ -273,11 +277,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     var tipo = '';
     var razon = '';
-    var tipoid = resp.tipoIdentificacion + '';
-    var nroid = resp.numeroIdentificacion + '';
-    if (resp.tipoIdentificacion == 5) {
+    var tipoid = info.tipoIdentificacion + '';
+    var nroid = info.numeroIdentificacion + '';
+    if (info.razonSocial != null) {
       tipo = 'Juridica';
-      razon = resp.razonSocial;
+      razon = info.razonSocial;
     } else {
       tipo = 'Natural';
       razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
@@ -311,7 +315,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-          nacionalidad: values.nationalidad[0],
+          nacionalidad: values.nationalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -359,7 +363,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-          nacionalidad: values.nationalidad[0],
+          nacionalidad: values.nationalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -493,21 +497,20 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           numeroIdentificacion: numeroins,
           razonSocial: razonSocialins,
           numeroProtocolo: numeroProtocoloins,
-          numeroActaLevantamiento: values.numeroActLeva,
-          fechaActa: moment(values?.DateAct).format(formatDate) ?? null,
-          seccionalFiscalia: values.SecFiscalAct,
+          numeroActaLevantamiento: values?.numeroActLeva ?? '',
+          fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
+          seccionalFiscalia: values?.SecFiscalAct ?? '',
           noFiscal: values?.NoFiscAct ?? '',
           idTipoInstitucion: values?.instType ?? '',
           NombreFiscal: values?.fiscalianombreDC ?? '',
           ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
           NumeroOficio: values?.fiscalianumeroDC ?? '',
           NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
-          FechaOficio: moment(values?.fiscaliafechaDC).format(formatDate) ?? null
+          FechaOficio: values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null
         }
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
-
 
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
@@ -541,7 +544,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               idTipoDocumentoSoporte: item.value,
               path: `${accountIdentifier}/${name}_${resp}`,
               idUsuario: accountIdentifier,
-              fechaModificacion: new Date()
+              fechaModificacion: new Date(),
+              esValido: true
             });
           }
         });
@@ -562,6 +566,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const idsol: any = resp.substring(16, 52);
       const nrorad: any = resp.substring(66, resp.length - 2);
 
+
       if (idsol) {
         const [files, names] = generateListFiles(values);
 
@@ -577,7 +582,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 idSolicitud: idsol,
                 idTipoDocumentoSoporte: item.value,
                 path: `${accountIdentifier}/${name}_${idsol}`,
-                idUsuario: accountIdentifier
+                idUsuario: accountIdentifier,
+                esValido: true
               });
             }
           });
@@ -805,7 +811,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       Swal.fire({
         icon: 'error',
         title: 'Datos inválidos',
-        text: `Debe ingresar una fecha de nacimiento valida`
+        text: `Debe ingresar una fecha y hora de nacimiento valida`
       });
     }
   };
@@ -855,78 +861,78 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const date = objJosn?.dateOfBirth !== undefined ? moment(objJosn?.dateOfBirth) : null;
 
   const FechaNacimiento = (value: any) => {
-    const fecha = moment(value);
-    const documento = form.getFieldValue('IDNumber');
-    const time = form.getFieldValue('timenac');
-    let time2 = undefined;
-    if (time != undefined) {
-      time2 = moment(time).format('LT');
-    }
+    const valorfecha = form.getFieldValue('dateOfBirth');
 
-    const timedef = form.getFieldValue('time');
-    let timedef2 = undefined;
-    if (timedef != undefined) {
-      timedef2 = moment(timedef).format('LT');
-    }
+    if (valorfecha != undefined) {
+      const fecha = moment(valorfecha);
+      const time = form.getFieldValue('timenac');
+      let time2 = undefined;
+      if (time != undefined) {
+        time2 = moment(time).format('LT');
+      }
 
-    let tiempo = '';
-    if (timedef2 != undefined) {
-      if (documento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
-        if (time2 != undefined) {
-          const posicion1 = time2.indexOf(':');
-          const posicion2 = timedef2.indexOf(':');
+      const timedef = form.getFieldValue('time');
+      let timedef2 = undefined;
+      if (timedef != undefined) {
+        timedef2 = moment(timedef).format('LT');
+      }
 
-          const horanac1 = time2.substring(0, posicion1);
-          const horanac2 = time2.substring(posicion1 + 1, time2.length);
+      let tiempo = '';
+      if (timedef2 != undefined) {
+        if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
+          if (time2 != undefined) {
+            const posicion1 = time2.indexOf(':');
+            const posicion2 = timedef2.indexOf(':');
 
-          const horadef1 = timedef2.substring(0, posicion2);
-          const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
-          if (parseInt(horanac1) < parseInt(horadef1)) {
+            const horanac1 = time2.substring(0, posicion1);
+            const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-            tiempo = 'es valida';
-          } else {
-            if (parseInt(horanac1) == parseInt(horadef1)) {
+            const horadef1 = timedef2.substring(0, posicion2);
+            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
 
-
-              if (parseInt(horanac2) <= parseInt(horadef2)) {
-
-                tiempo = 'es valida';
+            if (parseInt(horanac1) < parseInt(horadef1)) {
+              tiempo = 'es valida';
+            } else {
+              if (parseInt(horanac1) == parseInt(horadef1)) {
+                if (parseInt(horanac2) <= parseInt(horadef2)) {
+                  tiempo = 'es valida';
+                } else {
+                  tiempo = 'es invalida';
+                }
               } else {
                 tiempo = 'es invalida';
               }
-            } else {
-              tiempo = 'es invalida';
             }
           }
         }
       }
-    }
 
-    let valor = form.getFieldValue('date');
-    let fechadef = moment(valor);
+      let valor = form.getFieldValue('date');
+      let fechadef = moment(valor);
 
-    if (!fecha.isBefore(fechadef)) {
-      if (tiempo == 'es valida') {
-        setdatecorrect(true);
-      } else {
-        if (tiempo == 'es invalida') {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `La Hora de nacimiento  debe ser menor a: ${timedef2}`
-          });
+      if (!fecha.isBefore(fechadef)) {
+        if (tiempo == 'es valida') {
+          setdatecorrect(true);
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
-          });
+          if (tiempo == 'es invalida') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: `La Hora de nacimiento  debe ser menor a: ${timedef2}`
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
+            });
+          }
         }
-      }
 
-      setdatecorrect(false);
-    } else {
-      setdatecorrect(true);
+        setdatecorrect(false);
+      } else {
+        setdatecorrect(true);
+      }
     }
   };
 
@@ -945,7 +951,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{5,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
-      setTipodocumento('Sin Información');
+      setTipodocumento('Sin Identificación');
       setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
     } else {
@@ -955,11 +961,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         setTipocampo('[0-9]{2,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
-        setTipodocumento('Tipo de Protocolo');
+        setTipodocumento('Número de Protocolo');
         form.setFieldsValue({ IDNumber: '8001508610' });
       } else {
         form.setFieldsValue({ IDNumber: undefined });
-        if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+        if (valorupper === '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
           setLongitudminima(4);
           setLongitudmaxima(10);
           setTipocampo('[0-9]{4,10}');
@@ -967,7 +973,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           setCampo('Numéricos');
           setTipodocumento('Cédula de Ciudadanía');
         } else {
-          if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+          if (valorupper === 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
             setLongitudminima(10);
             setLongitudmaxima(11);
             setTipocampo('[0-9]{10,11}');
@@ -975,7 +981,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             setCampo('Numéricos');
             setTipodocumento('Tarjeta de Identidad ');
           } else {
-            if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+            if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
               setLongitudminima(15);
               setLongitudmaxima(15);
               setTipocampo('[0-9]{15,15}');
@@ -983,20 +989,97 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               setCampo('Numéricos');
               setTipodocumento('Permiso Especial de Permanencia');
             } else {
-              if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+              if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
+                valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
+                valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminima(10);
                 setLongitudmaxima(11);
                 setTipocampo('[a-zA-Z0-9]{10,11}');
                 setTipocampovalidacion(/[a-zA-Z0-9]/);
                 setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+                setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
               } else {
-                setLongitudminima(6);
-                setLongitudmaxima(10);
-                setTipocampo('[a-zA-Z0-9]{6,10}');
-                setTipocampovalidacion(/[a-zA-Z0-9]/);
-                setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+                if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
+                  setLongitudminima(6);
+                  setLongitudmaxima(9);
+                  setTipocampo('[0-9]{6,9}');
+                  setTipocampovalidacion(/[0-9]/);
+                  setCampo('Numéricos');
+                  setTipodocumento('Certificado de nacido vivo ');
+
+                }
+                else {
+                  if (valorupper === '60518653-70B7-42AB-8622-CAA27B496184') {
+                    setLongitudminima(7);
+                    setLongitudmaxima(16);
+                    setTipocampo('[a-zA-Z0-9]{7,16}');
+                    setTipocampovalidacion(/[a-zA-Z0-9]/);
+                    setCampo('AlfaNumérico(Numéros y letras)');
+                    setTipodocumento('Documento Extranjero');
+
+                  }
+                  else {
+                    if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
+                      setLongitudminima(9);
+                      setLongitudmaxima(9);
+                      setTipocampo('[a-zA-Z0-9]{9,9}');
+                      setTipocampovalidacion(/[a-zA-Z0-9]/);
+                      setCampo('AlfaNumérico(Numéros y letras)');
+                      setTipodocumento('Salvoconducto');
+
+                    }
+                    else {
+                      if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
+                        setLongitudminima(5);
+                        setLongitudmaxima(11);
+                        setTipocampo('[a-zA-Z0-9]{5,11}');
+                        setTipocampovalidacion(/[a-zA-Z0-9]/);
+                        setCampo('AlfaNumérico(Numéros y letras)');
+                        setTipodocumento('Adulto Sin Identificar');
+
+                      }
+
+                      else {
+                        if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
+                          setLongitudminima(5);
+                          setLongitudmaxima(12);
+                          setTipocampo('[a-zA-Z0-9]{5,12}');
+                          setTipocampovalidacion(/[a-zA-Z0-9]/);
+                          setCampo('AlfaNumérico(Numéros y letras)');
+                          setTipodocumento('Menor Sin Identificar');
+
+                        }
+                        else {
+                          if (valorupper === 'E927B566-7B8E-4B4D-AE26-14454705CB5E') {
+                            setLongitudminima(4);
+                            setLongitudmaxima(18);
+                            setTipocampo('[a-zA-Z0-9]{4,18}');
+                            setTipocampovalidacion(/[a-zA-Z0-9]/);
+                            setCampo('AlfaNumérico(Numéros y letras)');
+                            setTipodocumento('Permiso de Protección Temporal');
+
+                          }
+                          else {
+                            setLongitudminima(6);
+                            setLongitudmaxima(10);
+                            setTipocampo('[a-zA-Z0-9]{6,10}');
+                            setTipocampovalidacion(/[a-zA-Z0-9]/);
+                            setCampo('AlfaNuméricos(Numéros y letras)');
+                            setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+                          }
+
+                        }
+
+                      }
+
+
+                    }
+
+                  }
+
+
+                }
+
               }
             }
           }
@@ -1011,52 +1094,141 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacionaut(false);
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
+      form.setFieldsValue({ IDNumber: undefined });
       setLongitudminimaautoriza(5);
       setLongitudmaximaautoriza(15);
-      setTipodocumentoautoriza('Sin Información');
       setTipocampoautoriza('[a-zA-Z0-9]{5,15}');
       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+      setTipodocumentoautoriza('Sin Identificación');
       setCampoautoriza('AlfaNuméricos(Numéros y letras)');
       setsininformacionaut(true);
     } else {
-      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-        setLongitudminimaautoriza(4);
+      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
+        setLongitudminimaautoriza(2);
         setLongitudmaximaautoriza(10);
-        setTipocampoautoriza('[0-9]{4,10}');
+        setTipocampoautoriza('[0-9]{2,10}');
         setTipocampovalidacionautoriza(/[0-9]/);
         setCampoautoriza('Numéricos');
-        setTipodocumentoautoriza('Cédula de Ciudadanía');
+        setTipodocumentoautoriza('Número de Protocolo');
+        form.setFieldsValue({ IDNumber: '8001508610' });
       } else {
-        if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
-          setLongitudminimaautoriza(10);
-          setLongitudmaximaautoriza(11);
-          setTipocampoautoriza('[0-9]{10,11}');
+        form.setFieldsValue({ IDNumber: undefined });
+        if (valorupper === '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+          setLongitudminimaautoriza(4);
+          setLongitudmaximaautoriza(10);
+          setTipocampoautoriza('[0-9]{4,10}');
           setTipocampovalidacionautoriza(/[0-9]/);
           setCampoautoriza('Numéricos');
-          setTipodocumentoautoriza('Tarjeta de Identidad ');
+          setTipodocumentoautoriza('Cédula de Ciudadanía');
         } else {
-          if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-            setLongitudminimaautoriza(15);
-            setLongitudmaximaautoriza(15);
-            setTipocampoautoriza('[0-9]{15,15}');
+          if (valorupper === 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+            setLongitudminimaautoriza(10);
+            setLongitudmaximaautoriza(11);
+            setTipocampoautoriza('[0-9]{10,11}');
             setTipocampovalidacionautoriza(/[0-9]/);
             setCampoautoriza('Numéricos');
-            setTipodocumentoautoriza('Permiso Especial de Permanencia');
+            setTipodocumentoautoriza('Tarjeta de Identidad ');
           } else {
-            if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-              setLongitudminimaautoriza(10);
-              setLongitudmaximaautoriza(11);
-              setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
-              setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
-              setCampoautoriza('AlfaNuméricos(Numéros y letras)');
-              setTipodocumentoautoriza('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+              setLongitudminimaautoriza(15);
+              setLongitudmaximaautoriza(15);
+              setTipocampoautoriza('[0-9]{15,15}');
+              setTipocampovalidacionautoriza(/[0-9]/);
+              setCampoautoriza('Numéricos');
+              setTipodocumentoautoriza('Permiso Especial de Permanencia');
             } else {
-              setLongitudminimaautoriza(6);
-              setLongitudmaximaautoriza(10);
-              setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
-              setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
-              setCampoautoriza('AlfaNuméricos(Numéros y letras)');
-              setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+              if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
+                valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
+                valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
+                setLongitudminimaautoriza(10);
+                setLongitudmaximaautoriza(11);
+                setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
+                setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                setCampoautoriza('AlfaNuméricos(Numéros y letras)');
+                setTipodocumentoautoriza('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
+              } else {
+                if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
+                  setLongitudminimaautoriza(6);
+                  setLongitudmaximaautoriza(9);
+                  setTipocampoautoriza('[0-9]{6,9}');
+                  setTipocampovalidacionautoriza(/[0-9]/);
+                  setCampoautoriza('Numéricos');
+                  setTipodocumentoautoriza('Certificado de nacido vivo ');
+
+                }
+                else {
+                  if (valorupper === '60518653-70B7-42AB-8622-CAA27B496184') {
+                    setLongitudminimaautoriza(7);
+                    setLongitudmaximaautoriza(16);
+                    setTipocampoautoriza('[a-zA-Z0-9]{7,16}');
+                    setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                    setCampoautoriza('AlfaNumérico(Numéros y letras)');
+                    setTipodocumentoautoriza('Documento Extranjero');
+
+                  }
+                  else {
+                    if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
+                      setLongitudminimaautoriza(9);
+                      setLongitudmaximaautoriza(9);
+                      setTipocampoautoriza('[a-zA-Z0-9]{9,9}');
+                      setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                      setCampoautoriza('AlfaNumérico(Numéros y letras)');
+                      setTipodocumentoautoriza('Salvoconducto');
+
+                    }
+                    else {
+                      if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
+                        setLongitudminimaautoriza(5);
+                        setLongitudmaximaautoriza(11);
+                        setTipocampoautoriza('[a-zA-Z0-9]{5,11}');
+                        setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                        setCampoautoriza('AlfaNumérico(Numéros y letras)');
+                        setTipodocumentoautoriza('Adulto Sin Identificar');
+
+                      }
+
+                      else {
+                        if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
+                          setLongitudminimaautoriza(5);
+                          setLongitudmaximaautoriza(12);
+                          setTipocampoautoriza('[a-zA-Z0-9]{5,12}');
+                          setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                          setCampoautoriza('AlfaNumérico(Numéros y letras)');
+                          setTipodocumentoautoriza('Menor Sin Identificar');
+
+                        }
+                        else {
+                          if (valorupper === 'E927B566-7B8E-4B4D-AE26-14454705CB5E') {
+                            setLongitudminimaautoriza(4);
+                            setLongitudmaximaautoriza(18);
+                            setTipocampoautoriza('[a-zA-Z0-9]{4,18}');
+                            setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                            setCampoautoriza('AlfaNumérico(Numéros y letras)');
+                            setTipodocumentoautoriza('Permiso de Protección Temporal');
+
+                          }
+                          else {
+                            setLongitudminimaautoriza(6);
+                            setLongitudmaximaautoriza(10);
+                            setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
+                            setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
+                            setCampoautoriza('AlfaNuméricos(Numéros y letras)');
+                            setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+                          }
+
+                        }
+
+                      }
+
+
+                    }
+
+                  }
+
+
+                }
+
+              }
             }
           }
         }
@@ -1092,7 +1264,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} prop={null} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}
@@ -1100,6 +1272,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 form={form}
                 datofiscal={true}
                 required={true}
+                cambio={getDataCambio}
                 tipoLicencia={tipoLicencia}
               />
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
@@ -1197,7 +1370,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               <Form.Item
                 label='Nacionalidad'
                 name='nationalidad'
-                initialValue={[objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c']}
+                initialValue={objJosn?.nacionalidad ? objJosn?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c'}
                 rules={[{ required: true }]}
               >
                 <SelectComponent
@@ -1215,10 +1388,25 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
-              <div className='form-row'>
+              <div className='form-row ml-4'>
+                {tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' && (
+                  <>
+                    <Form.Item label='Hora' name='timenac' style={{ width: 380 }}>
+                      <DatepickerComponent
+                        picker='time'
+                        dateDisabledType='default'
+                        onChange={FechaNacimiento}
+                        dateFormatType='time'
+                        placeholder='-- Elija una hora --'
+                        style={{ width: 100 }}
+                      />
+                    </Form.Item>
+                  </>
+                )}
+
                 <Form.Item
                   label='Fecha de Nacimiento'
-                  style={{ width: 400 }}
+                  style={{ width: tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' ? 400 : 750 }}
                   name='dateOfBirth'
                   rules={[{ required: true }]}
                   initialValue={date}
@@ -1228,24 +1416,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     onChange={FechaNacimiento}
                     dateDisabledType='before'
                     dateFormatType='default'
+                    style={{ width: tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' ? 200 : 530 }}
                     value={date}
                   />
                 </Form.Item>
-                {tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92' && (
-                  <>
-                    <div className='form-group col-md-5 col-lg-4'>
-                      <Form.Item label='Hora' name='timenac' style={{ width: 350 }}>
-                        <DatepickerComponent
-                          picker='time'
-                          dateDisabledType='default'
-                          dateFormatType='time'
-                          placeholder='-- Elija una hora --'
-                          style={{ width: 100 }}
-                        />
-                      </Form.Item>
-                    </div>
-                  </>
-                )}
               </div>
               <Form.Item
                 label='Tipo Identificación'

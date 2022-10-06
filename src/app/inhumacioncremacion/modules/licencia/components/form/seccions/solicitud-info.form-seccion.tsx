@@ -10,14 +10,8 @@ import Divider from 'antd/es/divider';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 import { IinformatioUser } from 'app/inhumacioncremacion/Models/IInformatioUser';
-import { DatoSolicitanteAdd, KeysForm as KeyFormSolicitante } from './datoSolicitanteAdd';
-
-import { toIdentifier } from '@babel/types';
 
 // Componentes
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
-
-import { ICementerio } from 'app/services/dominio.service';
 
 export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (props) => {
   const { name } = authProvider.getAccount();
@@ -27,7 +21,9 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     numeroIdentificacion: 0,
     fullName: '',
     razonSocial: '',
-    email: ''
+    email: '',
+    primerNombre: '',
+    primerApellido: ''
   });
   const { obj, prop, form } = props;
 
@@ -43,12 +39,11 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
   const getListas = useCallback(
     async () => {
       const funeraria = await api.GetFunerarias();
-      const idUser = await api.getCodeUser();
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
 
-      const resp = await api.GetInformationUser(idUser);
-
-      setUser(resp);
-      const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == resp.razonSocial);
+      setUser(info);
+      const existefuneraria = funeraria.filter((i: { RAZON_S: string }) => i.RAZON_S == info.razonSocial);
 
       setNroiden(existefuneraria.NROIDENT);
     },
@@ -61,8 +56,8 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const validPerson = (): boolean => {
-    const { tipoIdentificacion } = user;
-    if (tipoIdentificacion === 5) {
+    const { razonSocial } = user;
+    if (razonSocial != null) {
       return true;
     }
     return false;

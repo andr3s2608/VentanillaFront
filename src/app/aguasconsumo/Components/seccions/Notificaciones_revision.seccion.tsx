@@ -18,6 +18,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const [l_tipoNotificacion, setlTipoModificacion] = useState<any[]>([]);
   const [idPlantilla, setIdPlantilla] = useState<string>('');
   const [isvistaPrevia, setIsVistaPrevia] = useState<boolean>(false);
+  const [notificado, setnotificado] = useState<boolean>(false);
 
   const [body, setlBody] = useState<string>('');
   const [title, setlTitle] = useState<string>('');
@@ -25,7 +26,15 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const getListas = useCallback(async () => {
     const tipoNotificaciones = await api.getTipoNotificaciones();
 
-    setlTipoModificacion(tipoNotificaciones);
+    const filter = tipoNotificaciones.filter(function (f: { idTipoNotificacion: string }) {
+      return (
+        f.idTipoNotificacion != '6f8c18fe-90c2-40d7-baf6-e9c1c7a67e09' &&
+        f.idTipoNotificacion != '56099d01-9f35-42d9-9a3c-fb4f3e48c73b' &&
+        f.idTipoNotificacion != '6f8c18fe-69C2-40d7-baf6-e9c1c7a67e09'
+      );
+    });
+
+    setlTipoModificacion(filter);
     // setlTipoModificacionSeleccion(tipoNotificaciones[0]);
   }, []);
 
@@ -43,6 +52,24 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
     setlTipoModificacion(notificacion);
   };
 
+  function formatDate(inputDate: Date): string {
+    let date, month, year;
+
+    date = inputDate.getDate();
+    month = inputDate.getMonth() + 1;
+    year = inputDate.getFullYear();
+
+    date = date
+      .toString()
+      .padStart(2, '0');
+
+    month = month
+      .toString()
+      .padStart(2, '0');
+
+    return `${date}/${month}/${year}`;
+  }
+
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
     let nuevoHTML = HTML;
 
@@ -54,6 +81,9 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   }
 
   const notificar = async () => {
+    let date: Date = new Date();
+    setnotificado(true);
+    prop();
     if (idPlantilla == '') {
       Swal.fire({
         icon: 'error',
@@ -102,7 +132,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Aprobación Autoridad Ambiental':
-          const certificadoAutoridad = await api.getCertificadoAguas('2');
+          const certificadoAutoridad = await api.getCertificadoAguas(obj.idsolicitud);
 
           await api.sendEmailAttachment({
             to: obj.correoElectronico,
@@ -112,8 +142,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             ),
             attachment: certificadoAutoridad,
@@ -127,7 +157,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
           break;
 
         case 'Notificación Aprobación al Ciudadano':
-          const certificadoCiudadano = await api.getCertificadoAguas('4');
+          const certificadoCiudadano = await api.getCertificadoAguas(obj.idsolicitud);
 
           await api.sendEmailAttachment({
             to: obj.correoElectronico,
@@ -137,8 +167,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             ),
             attachment: certificadoCiudadano,
@@ -182,6 +212,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
     } else {
       const formato = await api.getFormatoAguas(idPlantilla);
 
+      let date: Date = new Date();
+
       let body0: string = formato['cuerpo'];
       let indice1 = body0.indexOf('Tahoma,sans-serif;color:#666;font-size:18px; text-align: justify;">');
 
@@ -198,8 +230,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             )
           );
@@ -212,8 +244,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
               [
                 obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                obj.renovafuentejson[0].numeroResolucion,
-                obj.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
               ]
             )
           );
@@ -240,131 +272,165 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
 
   return (
     <>
-      <div className='row mt-3'>
-        <div className='col-lg-12 col-sm-12 col-md-12'>
-          <div className='info-tramite mt-2'>
-            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Notificaciones generales de revisión. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className='col-lg-4 col-sm-12 col-md-4'>
-        <div className='form-group gov-co-form-group '>
-          <label className='text'>
-            <span className='required'>* </span> Tipo de notificación
-          </label>
-          <div className='gov-co-dropdown'>
-            <Form.Item name='notificacion' rules={[{ required: false }]}>
-              <SelectComponent
-                options={l_tipoNotificacion}
-                optionPropkey='idTipoNotificacion'
-                optionPropLabel='nombre'
-                onChange={onChangeNotificacion}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='col-lg-3 col-md-3 col-sm-12'>
-        <div className='form-group gov-co-form-group'>
-          <p>Descripción de la notificacion</p>
-          <Form.Item name='descripcionNotificacion' initialValue={''}>
-            <Input.TextArea maxLength={300} className='form-control gov-co-form-control' style={{ width: '300px' }} />
-          </Form.Item>
-        </div>
-      </div>
-      <Modal
-        title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Vista previa</p>}
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        width={1000}
-        okButtonProps={{ hidden: true }}
-        cancelText='Cerrar'
-      >
-        <div style={{ padding: 0, margin: 0 }}>
-          <header style={{ backgroundColor: '#0072c6', marginTop: 0, padding: '20px' }}>
-            <h1
-              style={{
-                lineHeight: '20pt',
-                fontFamily: 'Segoe UI Light',
-                fontSize: '18pt',
-                color: '#ffffff',
-                fontWeight: 'normal',
-                textAlign: 'center',
-                marginTop: 0,
-                textTransform: 'uppercase'
-              }}
-            >
-              {title}
-            </h1>
-          </header>
-          <section style={{ padding: '1px', margin: '0 15px' }}>
-            <div>
-              <p style={{ fontFamily: 'Segoe UI,Tahoma,sans-serif', color: '#666', fontSize: '18px', textAlign: 'justify' }}>
-                {body}
-              </p>
+      <section style={{ width: '100%' }}>
+        <div className='container-fluid'>
+          <div className='form-row' style={{ marginLeft: '-50px' }}>
+            <div className='col-lg-6 col-md-6 col-md-6'>
+              <label className='text'>
+                <span className='required'>* </span> Tipo de notificación
+              </label>
+              <Form.Item name='notificacion' rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_tipoNotificacion}
+                  optionPropkey='idTipoNotificacion'
+                  optionPropLabel='nombre'
+                  onChange={onChangeNotificacion}
+                />
+              </Form.Item>
             </div>
-            <div>
-              <p style={{ fontFamily: 'Segoe UI,Tahoma,sans-serif', color: '#666', fontSize: '18px', textAlign: 'justify' }}>
-                Atentamente, Salud Capital
-              </p>
+          </div>
+          <div className='form-row mt-3' style={{ marginLeft: '-50px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Descripción de la notificacion
+              </label>
+              <Form.Item name='descripcionNotificacion' initialValue={''}>
+                <Input.TextArea maxLength={300} className='form-control gov-co-form-control' style={{ width: '300px' }} />
+              </Form.Item>
             </div>
-          </section>
-          <footer
-            style={{
-              borderBottom: '1px solid #e3e3e3',
-              borderTop: '1px solid #e3e3e3',
-              padding: '20px 0',
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}
+          </div>
+          <Modal
+            title={<p className='text-center text-dark text-uppercase mb-0 titulo'>Vista previa</p>}
+            visible={isModalVisible}
+            onCancel={handleCancel}
+            width={1000}
+            okButtonProps={{ hidden: true }}
+            cancelText='Cerrar'
           >
-            <div style={{ width: '40%', height: 'auto', display: 'flex', justifyContent: 'left' }}>
-              <p
+            <div style={{ padding: 0, margin: 0 }}>
+              <header style={{ backgroundColor: '#0072c6', marginTop: 0, padding: '20px' }}>
+                <h1
+                  style={{
+                    lineHeight: '20pt',
+                    fontFamily: 'Segoe UI Light',
+                    fontSize: '18pt',
+                    color: '#ffffff',
+                    fontWeight: 'normal',
+                    textAlign: 'center',
+                    marginTop: 0,
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {title}
+                </h1>
+              </header>
+              <section style={{ padding: '1px', margin: '0 15px' }}>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: 'Segoe UI,Tahoma,sans-serif',
+                      color: '#666',
+                      fontSize: '18px',
+                      textAlign: 'justify'
+                    }}
+                  >
+                    {body}
+                  </p>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: 'Segoe UI,Tahoma,sans-serif',
+                      color: '#666',
+                      fontSize: '18px',
+                      textAlign: 'justify'
+                    }}
+                  >
+                    Atentamente, Salud Capital
+                  </p>
+                </div>
+              </section>
+              <footer
                 style={{
-                  fontFamily: 'Segoe UI,Tahoma,sans-serif',
-                  margin: '0px 0px 0px 30px',
-                  color: '#666',
-                  fontSize: '10px',
-                  textAlign: 'justify',
-                  width: '50%'
+                  borderBottom: '1px solid #e3e3e3',
+                  borderTop: '1px solid #e3e3e3',
+                  padding: '20px 0',
+                  display: 'flex',
+                  justifyContent: 'space-between'
                 }}
               >
-                Este mensaje se envió desde una dirección de correo electrónico no supervisada. No responda a este mensaje.
-              </p>
+                <div
+                  style={{
+                    width: '40%',
+                    height: 'auto',
+                    display: 'flex',
+                    justifyContent: 'left'
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: 'Segoe UI,Tahoma,sans-serif',
+                      margin: '0px 0px 0px 30px',
+                      color: '#666',
+                      fontSize: '10px',
+                      textAlign: 'justify',
+                      width: '50%'
+                    }}
+                  >
+                    Este mensaje se envió desde una dirección de correo electrónico no supervisada. No responda a este mensaje.
+                  </p>
+                </div>
+                <div
+                  style={{
+                    width: '40%',
+                    height: 'auto',
+                    display: 'flex',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <img
+                    src='https://ci3.googleusercontent.com/proxy/ZpxLDJuQPMcU2hTY6tq8Wi0alaC3_6JiA9bKxMUbac0Lv-2fcRMkltE5gWgRrUynLheRSum3JMAGbW9FzeuOWjuE2UrXo6FNCvO8nBScaM9kiuc1YtD-n35UQuvCf02V7sXA6ZjmmWn95r585LfAzNifc0wRs5rGiN9KpBHB4c5uPJRg0JfPBzuKRLhOgdkJTpkJO-tw5p37nwwoUyaG=s0-d-e1-ft#https://aadcdn.msauthimages.net/dbd5a2dd-2e-tcdtzyzrfsl01uzp7pjmqwdsq0tlkufmmtftnkc4/logintenantbranding/0/bannerlogo?ts=637625143347821803'
+                    alt='logo'
+                  />
+                </div>
+              </footer>
             </div>
-            <div style={{ width: '40%', height: 'auto', display: 'flex', justifyContent: 'center' }}>
-              <img
-                src='https://ci3.googleusercontent.com/proxy/ZpxLDJuQPMcU2hTY6tq8Wi0alaC3_6JiA9bKxMUbac0Lv-2fcRMkltE5gWgRrUynLheRSum3JMAGbW9FzeuOWjuE2UrXo6FNCvO8nBScaM9kiuc1YtD-n35UQuvCf02V7sXA6ZjmmWn95r585LfAzNifc0wRs5rGiN9KpBHB4c5uPJRg0JfPBzuKRLhOgdkJTpkJO-tw5p37nwwoUyaG=s0-d-e1-ft#https://aadcdn.msauthimages.net/dbd5a2dd-2e-tcdtzyzrfsl01uzp7pjmqwdsq0tlkufmmtftnkc4/logintenantbranding/0/bannerlogo?ts=637625143347821803'
-                alt='logo'
-              />
+          </Modal>
+          <div className='form-row mt-3' style={{ marginLeft: '-120px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+              <Button
+                className='ml-3 float-right button btn btn-default'
+                style={{
+                  backgroundColor: '#CBCBCB',
+                  border: '2px solid #CBCBCB',
+                  color: '#000'
+                }}
+                type='primary'
+                htmlType='button'
+                onClick={vistaPrevia}
+              >
+                Ver vista previa
+              </Button>
             </div>
-          </footer>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2' style={{ marginLeft: '-240px' }}>
+              <Button
+                className='mr-3 float-right button btn btn-default'
+                type='primary'
+                htmlType='button'
+                disabled={notificado}
+                style={{
+                  backgroundColor: '#CBCBCB',
+                  border: '2px solid #CBCBCB',
+                  color: '#000'
+                }}
+                onClick={notificar}
+              >
+                Notificar
+              </Button>
+            </div>
+          </div>
         </div>
-      </Modal>
-      <div className='row mt-4'>
-        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-          <Button
-            className='ml-3 float-right button btn btn-default'
-            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            type='primary'
-            htmlType='submit'
-            onClick={vistaPrevia}
-          >
-            Ver vista previa
-          </Button>
-          <Button
-            className='mr-3 float-right button btn btn-default'
-            type='primary'
-            htmlType='button'
-            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-            onClick={notificar}
-          >
-            Notificar
-          </Button>
-        </div>
-      </div>
+      </section>
     </>
   );
 };

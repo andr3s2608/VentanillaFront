@@ -3,19 +3,17 @@ import { useCallback, useEffect, useState } from 'react';
 // Antd
 
 import Form from 'antd/es/form';
-import Input from 'antd/es/input';
-import Alert from 'antd/es/alert';
+
 import Swal from 'sweetalert2';
 import Steps from 'antd/es/steps';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 
-import { Button, List, Modal } from 'antd';
+import { Button, Modal } from 'antd';
 import Table from 'antd/es/table';
 import Divider from 'antd/es/divider';
 import moment from 'moment';
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 
 // Hooks
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
@@ -33,8 +31,7 @@ import { InformacionDocumentosGestion } from './seccions/documentos-gestion.secc
 import { GestionTramite } from './seccions/gestion-tramite.seccion';
 
 // Servicios
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
-import { AutorizacionCremacion } from './seccions/autorizacionCremacion';
+
 import '../../../../../../css/estilos.css';
 //redux
 import { store } from 'app/redux/app.reducers';
@@ -43,11 +40,11 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 import { IGestionTramite } from 'app/inhumacioncremacion/Models/IGestion';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
-import { TypeDocument } from './seccions/TypeDocument';
+
 import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { EditFetal } from './edit/fetal';
-import { ValidationFuntional } from './seccions/validationfuntional';
+
 import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
 import '../../../../../.././scss/antd/index.css';
@@ -59,15 +56,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalValidarCertificado, setIsModalValidarCertificado] = useState<boolean>(false);
   const [isvalidcertificado, setisvalidcertificado] = useState<boolean>(false);
   const [isDisabledElement, setIsDisabledElement] = useState<boolean>(false);
-  const [nameUser, setNameUser] = useState<any>('');
+
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
   const [viewLicenceState, setViewLicenceState] = useState<any>();
   const { Step } = Steps;
   const [dataTable, setDataTable] = useState<[]>();
-  const [datos, setdatos] = useState<[]>();
   const [solicitante, setsolicitante] = useState<[]>();
   const history = useHistory();
   const [valor, setvalor] = useState<string>('');
+  const [cambiar, setcambio] = useState<string>('');
   const [idcontrol, setidcontrol] = useState<string>('');
   const [isnull, setisnull] = useState<boolean>(false);
   const [gestionada, setgestionada] = useState<boolean>(false);
@@ -77,7 +74,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [estado, setestado] = useState<string>('');
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [objJosn, setobjJosn] = useState<any>(EditInhumacion('1'));
@@ -91,6 +88,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     '1',
     '1'
   ]);
+
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<any[]>([]);
   //create o edit
@@ -102,8 +100,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   //#region Listados
 
   const formatDate = 'MM-DD-YYYY';
-  const [[l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte], setListas] =
-    useState<IDominio[][]>([]);
 
   store.subscribe(() => {
     const { viewLicence } = store.getState();
@@ -112,6 +108,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const getListas = useCallback(
     async () => {
+
       if (valid != undefined) {
         if (
           valid.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ||
@@ -123,18 +120,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         setisnull(true);
       }
       if (objJosn != undefined) {
-        const resp = await Promise.all([
-          dominioService.get_type(ETipoDominio.Pais),
-          dominioService.get_type(ETipoDominio['Tipo Documento']),
-          dominioService.get_type(ETipoDominio['Estado Civil']),
-          dominioService.get_type(ETipoDominio['Nivel Educativo']),
-          dominioService.get_type(ETipoDominio.Etnia),
-          dominioService.get_type(ETipoDominio.Regimen),
-          dominioService.get_type(ETipoDominio['Tipo de Muerte'])
-        ]);
-
-        setListas(resp);
-
         const support = await api.getSupportDocuments(objJosn?.idSolicitud);
         const typeList = await api.GetAllTypeValidation();
         setSupports(support);
@@ -151,17 +136,20 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         const all = await api.getCertificado(objJosn?.certificado);
 
         if (!all) {
+
           setIsModalValidarCertificado(true);
           setisvalidcertificado(true);
-          setIsDisabledElement(true);
         }
 
         const data = await api.getLicencia(objJosn?.idSolicitud);
 
-        if (data[0].estadoSolicitud != 'fdcea488-2ea7-4485-b706-a2b96a86ffdf') {
-          setgestionada(true);
-        } else {
+
+        if (data[0].estadoSolicitud === 'fdcea488-2ea7-4485-b706-a2b96a86ffdf' || data[0].estadoSolicitud === '31a45854-bf40-44b6-2645-08da64f23b8e') {
+
           setgestionada2(true);
+
+        } else {
+          setgestionada(true);
         }
 
         var idcontrolinterno = '';
@@ -170,22 +158,24 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         const tipotramite: string = objJosn.idTramite;
         switch (tipotramite) {
           case 'a289c362-e576-4962-962b-1c208afa0273':
-            valorinterno = 'Inhumacion Individual';
+            valorinterno = 'Inhumación Individual';
+            setcambio('Cambiar tipo de licencia a Cremación Individual');
 
             break;
           case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
             //inhumacion fetal
-            valorinterno = 'Inhumacion Fetal';
+            valorinterno = 'Inhumación Fetal';
 
             break;
           case 'e69bda86-2572-45db-90dc-b40be14fe020':
             //cremacion individual
-            valorinterno = 'Cremacion Individual';
+            valorinterno = 'Cremación Individual';
+            setcambio('Cambiar tipo de licencia a Inhumación Individual');
 
             break;
           case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
             //cremacionfetal
-            valorinterno = 'Cremacion Fetal ';
+            valorinterno = 'Cremación Fetal ';
 
             break;
         }
@@ -504,7 +494,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           aux = 1;
         }
         if (not == 2) {
-          const update = await api.updatelicencia(objJosn?.idSolicitud);
+          if (objJosn.numerolicencia == null) {
+            const update = await api.updatelicencia(objJosn?.idSolicitud);
+          }
+
         }
         /////////////////////////Enviar Notificacion//////////////////////////
         let tipoSeguimiento: string = values.validFunctionaltype;
@@ -521,12 +514,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
           //alert('aprobacion');
 
-          let codeUser = await api.getCodeUser();
-          let nameUser = await api.GetInformationUser(codeUser);
+          const infouser: any = localStorage.getItem('infouser');
+          const info: any = JSON.parse(infouser);
 
           const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, nameUser.fullName, codigo);
+          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
 
           let datosDinamicosAprobacion = [
             solicitud[0]['razonSocialSolicitante'],
@@ -563,6 +556,45 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           );
           notificarCementerio(datosDinamicosCementerio, emailCementerio, licencia, resumenSolicitud[0]['numeroLicencia']);
           notificarFuneraria(datosDinamicosFuneraria, emailFuneraria, licencia, resumenSolicitud[0]['numeroLicencia']);
+
+          const urlToFile = async (url: string, filename: string, mimeType: any) => {
+            const res = await fetch(url);
+            const buf = await res.arrayBuffer();
+            return new File([buf], filename, { type: mimeType });
+          };
+
+          (async () => {
+            const file = await urlToFile('data:application/pdf;base64,' + licencia, 'licencia', 'application/pdf');
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append(
+              'nameFile',
+              'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia']
+            );
+
+            let contenedor: string = 'contenedor';
+
+            switch (valor) {
+              case 'Inhumación Individual':
+                contenedor = 'inhumacionindividual';
+                break;
+              case 'Inhumación Fetal':
+                contenedor = 'inhumacionfetal';
+                break;
+              case 'Cremación Individual':
+                contenedor = 'cremacionindividual';
+                break;
+              case 'Cremación Fetal ':
+                contenedor = 'cremacionfetal';
+                break;
+            }
+
+            formData.append('containerName', contenedor);
+            formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
+            await api.uploadFiles(formData);
+            //console.log(file);
+          })();
         } else {
           let datosDinamicosGenericos = [
             solicitud[0]['razonSocialSolicitante'],
@@ -608,38 +640,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }
     setDatosDocumento(array);
   };
-  const generateListFiles = (values: any) => {
-    const Objs = [];
 
-    const {
-      fileCertificadoDefuncion,
-      fileCCFallecido,
-      fileOtrosDocumentos,
-      fileAuthCCFamiliar,
-      fileAuthCremacion,
-      fileOficioIdentificacion,
-      fileOrdenAuthFiscal,
-      fileActaNotarialFiscal
-    } = values;
 
-    Objs.push({ file: fileCertificadoDefuncion, name: 'Certificado_Defuncion' });
-    Objs.push({ file: fileCCFallecido, name: 'Documento_del_fallecido' });
-    Objs.push({ file: fileOtrosDocumentos, name: 'Otros_Documentos' });
-    Objs.push({ file: fileAuthCCFamiliar, name: 'Autorizacion_de_cremacion_del_familiar' });
-    Objs.push({ file: fileAuthCremacion, name: 'Documento_del_familiar' });
-    Objs.push({ file: fileOficioIdentificacion, name: 'Autorizacion_del_fiscal_para_cremar' });
-    Objs.push({ file: fileOrdenAuthFiscal, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
-    Objs.push({ file: fileActaNotarialFiscal, name: 'Acta_Notarial_del_Fiscal' });
-
-    const filesName = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
-
-    const files: Blob[] = filesName.map((item) => {
-      const [file] = item.file;
-      return file.originFileObj;
-    });
-    const names: string[] = filesName.map((item) => item.name);
-    return [files, names];
-  };
   const onSubmitFailed = () => {
     setStatus('error');
     store.dispatch(SetResetViewLicence());
@@ -732,17 +734,25 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     <div className='container-fluid'>
       <div className='row'>
         <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-          <div className='col-lg-12 col-sm-12 col-md-12 '>
-            <Button type='dashed' htmlType='button' onClick={onPrevStep} className='align-self-end'>
-              Volver atrás
-            </Button>
+          <div className='d-flex justify-content-between'>
             <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>
               Guardar
             </Button>
+
+            <Button
+              type='dashed'
+              htmlType='button'
+              onClick={() => {
+                history.push('/tramites-servicios');
+              }}
+            >
+              Volver atrás
+            </Button>
           </div>
+
         </Form.Item>
       </div>
-    </div>
+    </div >
   );
 
   //#endregion
@@ -841,16 +851,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let bandera = await api.validarFirmaFuncionario(idUsuario);
 
     if (bandera) {
-      const codeUser = await api.getCodeUser();
-
-      const nameUser = await api.GetInformationUser(codeUser);
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
       const idSolicitud = objJosn?.idSolicitud;
       const all = await api.GetSolicitud(idSolicitud);
-      let linkPdf = await api.getLinkPDF(idSolicitud, idUsuario, nameUser.fullName);
+      let linkPdf = await api.generarPDF(idSolicitud, idUsuario, info.fullName, " ", false);
       const solicitante = await api.GetResumenSolicitud(idSolicitud);
       setsolicitante(solicitante[0]['nombreSolicitante']);
-      setUrlPdfLicence(linkPdf);
-      setNameUser(nameUser);
+      setUrlPdfLicence("data:application/pdf;base64," + linkPdf);
+
       setIsModalVisiblePdf(true);
     } else {
       Swal.fire({
@@ -893,10 +902,94 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     });
   };
 
-  console.log('**************************************');
-  console.log(objJosn.autorizadorCremacion);
-  console.log('**************************************');
+  const ModificarLicencia = async () => {
 
+
+    Swal.fire({
+      title: `Cambio de tipo de Solicitud `,
+      text: `Se realizara un cambio de tipo de Solicitud de ${valor} a ${valor == 'Inhumación Individual' ? 'Cremación Individual'
+        : 'Inhumación Individual'} ,esta seguro de continuar?`,
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'Modificar',
+      denyButtonText: `Cancelar`,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      icon: 'info'
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        await api.ModificarEstadoSolicitudInh('5E98C640-D9FB-4177-8F0C-E44DDC72EBAB', objJosn.idSolicitud);
+        Swal.fire({
+          icon: 'success',
+          title: 'Cambio de Licencia Exitoso',
+          text: 'Se ha cambiado el tipo de licencia y le ha sido devuelta al usuario para que complete la informacion faltante'
+        })
+        history.push('/tramites-servicios');
+
+
+        let inicial = "";
+        let final = "";
+
+        const keys = [
+          "~:~tipo_inicial~:~",
+          "~:~tipo_final~:~",
+          "~:~numero_de_solicitud~:~"
+        ];
+
+        switch (valor) {
+          case "Inhumación Individual":
+            inicial = "Inhumación individual";
+            final = "Cremación individual";
+            break;
+
+          case "Cremación Individual":
+            inicial = "Cremación individual";
+            final = "Inhumación individual";
+            break;
+        }
+
+        const values = [
+          inicial,
+          final,
+          idcontrol
+        ];
+
+        let plantilla = await api.getFormato("985D236C-25B5-4A08-BB7B-98D22761BF11");
+        let body = agregarValoresDinamicos(plantilla.valor, keys, values);
+
+        api.sendEmail({
+          to: objJosn.correosolicitante,
+          subject: plantilla.asuntoNotificacion,
+          body: body
+        });
+
+      } else if (result.isDenied) {
+      }
+    });
+
+  };
+
+  /*
+
+                          {cambiar != '' && (<>
+                            <div className='contenedor' style={{
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+
+                              <Form.Item  >
+                                <Button type='primary' className='ml-3 mt-1' onClick={ModificarLicencia} >
+                                  {cambiar}
+                                </Button>
+                              </Form.Item>
+                            </div>
+                          </>)}
+  */
   return (
     <>
       {isnull && onnull()}
@@ -918,11 +1011,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                             TIPO DE SOLICITUD:{valor}
                           </Divider>
+
                         </div>
                         <div className='fadeInLeft'>
-                          <InformacionFallecidoSeccion obj={objJosn} />
-                          {valor == 'Cremacion Fetal ' || valor == 'Cremacion Individual' ? (
-                            <AutorizadorCremacion obj={objJosn.autorizadorCremacion} />
+                          <InformacionFallecidoSeccion obj={objJosn} licencia={false} props={form}
+                          />
+                          {valor == 'Cremación Fetal ' || valor == 'Cremación Individual' ? (
+                            <AutorizadorCremacion obj={objJosn} />
                           ) : null}
                           <hr />
                           {objJosn.instRazonSocial != 'Otros' ? (
@@ -943,7 +1038,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                             registrado={isvalidcertificado}
                           />
                           <hr />
-                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={objJosn?.idSolicitud} />
+                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={'No Aplica'} escambio={false} instType={'80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'} />
 
                           <div className='fadeInLeft'>
                             <div className='container-fluid'>
@@ -1018,6 +1113,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                               title={<p className='text-center'>Notificación</p>}
                               visible={isModalValidarCertificado}
                               width={500}
+                              onCancel={onModalNofificacion}
                               onOk={onModalNofificacion}
                             >
                               <div className='conteiner-fluid'>

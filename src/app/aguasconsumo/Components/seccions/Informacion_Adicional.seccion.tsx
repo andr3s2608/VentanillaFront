@@ -25,14 +25,16 @@ import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { Button, Radio, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
 
 export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
-  const { obj, tipo, prop } = props;
+  const { obj, tipo, prop, habilitar } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
   const [campos, setcampos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']);
+  const [tienefuente, settienefuente] = useState<number>(0);
   const [lista, setlista] = useState<boolean[]>([
     false,
     false,
@@ -49,11 +51,20 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   ]);
   const [sistema, setsistema] = useState<any[]>([]);
 
-  const Paginas: number = 5;
+  const Paginas: number = 10;
   const getListas = useCallback(async () => {
     const array: any[] = [];
 
     for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
+
+      if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
+
+        settienefuente(1)
+      }
+      else {
+
+        settienefuente(2)
+      }
       array.push({
         posicion: index + 1,
         caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
@@ -87,6 +98,22 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const validacionCaudal = (value: any) => {
+    const caudalde = props.form.getFieldValue('caudaldesign');
+    const caudaltra = props.form.getFieldValue('caudaltratado');
+
+    if (caudalde != undefined && caudaltra != undefined && caudalde != '' && caudaltra != '') {
+      if (parseInt(caudalde) > parseInt(caudaltra)) {
+        Swal.fire({
+          icon: 'info',
+
+          title: 'Caudal incorrecto',
+          text: `El caudal tratado no puede ser menor al caudal diseño`
+        });
+      }
+    }
+  };
 
   const onChange = (value: any) => {
     var nombre: string = value.target.id;
@@ -279,7 +306,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               className='fa-solid fa-circle-xmark'
               key={`vali-${index}`}
               onClick={() => onClickLlenarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
+              style={{ fontSize: '30xp' }}
               icon={<CheckOutlined />}
             >
               Rellenar
@@ -290,7 +317,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
             <Button
               type='primary'
               className='fa-solid fa-circle-xmark'
-              key={`vali-${index}`}
+              key={`validar`}
               onClick={() => onClickValidarInformacion(row)}
               style={{ fontSize: '30xp', color: 'red' }}
               icon={<CheckOutlined />}
@@ -303,304 +330,602 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     }
   ];
 
-  return (
-    <>
-      <div className='row mt-3'>
-        <div className='col-lg-12 col-sm-12 col-md-12'>
-          <div className='info-tramite mt-2'>
-            <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              Información adicional de la fuente de abastecimiento. <br />{' '}
-              <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className='row mt-3'>
-        <div className='col-lg-4 col-sm-12 col-md-3'>
-          <p>
-            ¿Tiene planta de tratamiento de agua <br /> para el consumo humano?
-          </p>
-        </div>
-        <div className='col-lg-3 col-sm-12 col-md-3'>
-          <Form.Item label='' name={'formradio'}>
-            <Radio.Group name={'radiobut'} defaultValue={1}>
-              <Radio value={1}>Si</Radio>
-              <Radio value={2}>No</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </div>
-      </div>
-      <div className='row'>
-        <div className='col-lg-4 col-md-4 col-sm-12'>
-          <span></span> Caudal de diseño (L/s)
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='caudaldesign' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                maxLength={100}
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-        <div className='col-lg-4 col-md-4 col-sm-12'>
-          <span></span> Caudal de tratado (L/s)
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='caudaltratado' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                maxLength={100}
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
+  if (habilitar) {
+    return (
+      <>
+        {' '}
+        <section style={{ width: '100%' }}>
+          <div className='container-fluid'>
+            <div className='form-row' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-6 col-sm-12 col-md-6'>
+                <p>
+                  ¿Tiene planta de tratamiento de agua <br /> para el consumo humano?
+                </p>
+              </div>
+              {tienefuente != 0 && (<><div className='col-lg-6 col-sm-12 col-md-6'>
+                <Form.Item label='' name={'formradio'} initialValue={tienefuente}>
+                  <Radio.Group name={'radiobut'} defaultValue={tienefuente}>
+                    <Radio value={1}>Si</Radio>
+                    <Radio value={2}>No</Radio>
+                  </Radio.Group>
+                </Form.Item>
+              </div></>)}
 
-      <div className='row mt-4'>
-        {obj?.tipodeSolicitud == 'Primera vez' && (
-          <>
-            <div className='col-lg-8 col-md-8 col-sm-12'>
-              <a href='' style={{ textDecoration: 'none' }}>
-                <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-              </a>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <span className='required'>*</span> Caudal de diseño (L/s)
+                <Form.Item name='caudaldesign' rules={[{ required: false }]}>
+                  <Input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    maxLength={100}
+                    onChange={validacionCaudal}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <span className='required'>*</span> Caudal de tratado (L/s)
+                <Form.Item name='caudaltratado' rules={[{ required: false }]}>
+                  <Input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    maxLength={100}
+                    onChange={validacionCaudal}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+              {obj?.tipodeSolicitud == 'Primera vez' && (
+                <>
+                  <div className='col-lg-12 col-md-12 col-sm-12'>
+                    <a href='' style={{ textDecoration: 'none' }}>
+                      <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+                    </a>
+                  </div>
+
+                  <Button
+                    className='fa-solid fa-circle-plus'
+                    style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
+                    type='primary'
+                    htmlType='button'
+                    icon='fa-solid fa-circle-plus'
+                    onClick={() => {
+                      insertarsistema();
+                    }}
+                  >
+                    Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
+
+                  </Button>
+                </>
+              )}
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <Table
+                  id='tableGen'
+                  dataSource={sistema}
+                  columns={structureColumns}
+                  pagination={{ pageSize: Paginas }}
+                  className='table_info'
+                />
+                <br />
+              </div>
+            </div>
+            <div className='form-row mt-5' style={{ marginLeft: '-16px' }}>
+              <div className='col-md-4 col-lg-4 col-sm-12'>
+                <p>
+                  Unidades principales que <br />
+                  componen el sistema de <br />
+                  mantenimiento.*
+                </p>
+              </div>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }}>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox0' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} />
+                  </Form.Item>
+                  <label>Sedimentador</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox1 ' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[1]} />
+                  </Form.Item>
+                  <label>Mezcla Rapida</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox2' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[2]} />
+                  </Form.Item>
+                  <label>Almacenamiento</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox3' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[3]} />
+                  </Form.Item>
+                  <label>Torre de aireación</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox4' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[4]} />
+                  </Form.Item>
+                  <label>Desinfección</label>
+                </div>
+                <br />
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox5' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[5]} />
+                  </Form.Item>
+                  <label>Precloración</label>
+                </div>
+              </div>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox6' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} />
+                  </Form.Item>
+                  <label>Filtración</label>
+                </div>
+
+                <div className='form-check form-check-inline' style={{ marginLeft: '16px' }}>
+                  <Form.Item name='checkbox7' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[7]} />
+                  </Form.Item>
+                  <label>Mezcla lenta</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox8' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[8]} />
+                  </Form.Item>
+                  <label>Oxidación</label>
+                </div>
+                <div className='form-check form-check-inline' style={{ marginLeft: '16px' }}>
+                  <Form.Item name='checkbox9' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[9]} />
+                  </Form.Item>
+                  <label>Floculador</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox10' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[10]} />
+                  </Form.Item>
+                  <label>Desarenador</label>
+                </div>
+                <div className='form-check form-check-inline' style={{ marginLeft: '3px' }}>
+                  <Form.Item name='checkbox11' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[11]} />
+                  </Form.Item>
+                  <label>Otra</label>
+                </div>
+              </div>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+              <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
+                <span></span>Descripción de otro componente del sistema de tratamiento
+                <div className='form-group gov-co-form-group'>
+                  <Form.Item name='descripcion' rules={[{ required: false }]}>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control personal'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+              <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
+                <span></span>Número de usuarios
+              </div>
+
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item label='Rural' name='numero1' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '-46px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item label='Urbano' name='numero2' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '28px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
             </div>
 
-            <Button
-              className='fa-solid fa-circle-plus'
-              style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
-              type='primary'
-              htmlType='button'
-              onClick={() => {
-                insertarsistema();
-              }}
-            >
-              Enviar
-            </Button>
-          </>
-        )}
+            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+              <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
+                <span></span>Población beneficiada
+              </div>
 
-        <div className='col-lg-8 col-sm-12 col-md-8'>
-          <Table
-            id='tableGen'
-            dataSource={sistema}
-            columns={structureColumns}
-            pagination={{ pageSize: Paginas }}
-            className='table_info'
-          />{' '}
-          <br />
-        </div>
-      </div>
-      <div className='row mt-5'>
-        <div className='col-md-4 col-lg-4 col-sm-12'>
-          <p>
-            Unidades principales que <br />
-            componen el sistema de <br />
-            mantenimiento.*
-          </p>
-        </div>
-        <div className='col-md-3 col-lg-3 col-sm-12'>
-          <div className='form-check'>
-            <Form.Item name='checkbox0' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} />
-            </Form.Item>
-            <span></span>Sedimentador
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item label='Rural' name='poblacion1' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '-46px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item label='Urbano' name='poblacion2' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '28px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
           </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox1' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[1]} />
-            </Form.Item>
-            <span></span>Mezcla Rapida
+        </section>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <section style={{ width: '100%' }}>
+          <div className='container-fluid'>
+            <div className='form-row' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-6 col-sm-12 col-md-6'>
+                <p>
+                  ¿Tiene planta de tratamiento de agua <br /> para el consumo humano?
+                </p>
+              </div>
+              {tienefuente != 0 && (<>
+                <div className='col-lg-6 col-sm-12 col-md-6'>
+                  <Form.Item label='' name={'formradio'} >
+                    <Radio.Group name={'radiobut'} defaultValue={tienefuente} disabled={true}>
+                      <Radio value={1}>Si</Radio>
+                      <Radio value={2}>No</Radio>
+                    </Radio.Group>
+                  </Form.Item>
+                </div></>)}
+
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <span className='required'>*</span> Caudal de diseño (L/s)
+                <Form.Item name='caudaldesign' rules={[{ required: false }]}>
+                  <Input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    maxLength={100}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <span className='required'>*</span> Caudal de tratado (L/s)
+                <Form.Item name='caudaltratado' rules={[{ required: false }]}>
+                  <Input
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    maxLength={100}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+              {obj?.tipodeSolicitud == 'Primera vez' && (
+                <>
+                  <div className='col-lg-12 col-md-12 col-sm-12'>
+                    <a href='' style={{ textDecoration: 'none' }}>
+                      <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+                    </a>
+                  </div>
+
+                  <Button
+                    className='fa-solid fa-circle-plus'
+                    style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                    type='primary'
+                    disabled={true}
+                    htmlType='button'
+                    onClick={() => {
+                      insertarsistema();
+                    }}
+                  >
+                    Enviar
+                  </Button>
+                </>
+              )}
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <Table
+                  id='tableGen'
+                  dataSource={sistema}
+                  columns={structureColumns}
+                  pagination={{ pageSize: Paginas }}
+                  className='table_info'
+                />
+                <br />
+              </div>
+            </div>
+            <div className='form-row mt-5' style={{ marginLeft: '-16px' }}>
+              <div className='col-md-4 col-lg-4 col-sm-12'>
+                <p>
+                  Unidades principales que <br />
+                  componen el sistema de <br />
+                  mantenimiento.*
+                </p>
+              </div>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }}>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox0' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} disabled={true} />
+                  </Form.Item>
+                  <label>Sedimentador</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox1 ' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[1]} disabled={true} />
+                  </Form.Item>
+                  <label>Mezcla Rapida</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox2' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[2]} disabled={true} />
+                  </Form.Item>
+                  <label>Almacenamiento</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox3' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[3]} disabled={true} />
+                  </Form.Item>
+                  <label>Torre de aireación</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox4' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[4]} disabled={true} />
+                  </Form.Item>
+                  <label>Desinfección</label>
+                </div>
+                <br />
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox5' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[5]} disabled={true} />
+                  </Form.Item>
+                  <label>Precloración</label>
+                </div>
+              </div>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox6' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} disabled={true} />
+                  </Form.Item>
+                  <label>Filtración</label>
+                </div>
+
+                <div className='form-check form-check-inline' style={{ marginLeft: '16px' }}>
+                  <Form.Item name='checkbox7' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[7]} disabled={true} />
+                  </Form.Item>
+                  <label>Mezcla lenta</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox8' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[8]} disabled={true} />
+                  </Form.Item>
+                  <label>Oxidación</label>
+                </div>
+                <div className='form-check form-check-inline' style={{ marginLeft: '16px' }}>
+                  <Form.Item name='checkbox9' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[9]} disabled={true} />
+                  </Form.Item>
+                  <label>Floculador</label>
+                </div>
+                <div className='form-check form-check-inline'>
+                  <Form.Item name='checkbox10' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[10]} disabled={true} />
+                  </Form.Item>
+                  <label>Desarenador</label>
+                </div>
+                <div className='form-check form-check-inline' style={{ marginLeft: '3px' }}>
+                  <Form.Item name='checkbox11' rules={[{ required: false }]}>
+                    <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[11]} disabled={true} />
+                  </Form.Item>
+                  <label>Otra</label>
+                </div>
+              </div>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+              <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
+                <span></span>Descripción de otro componente del sistema de tratamiento
+                <div className='form-group gov-co-form-group'>
+                  <Form.Item name='descripcion' rules={[{ required: false }]}>
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control personal'
+                      disabled={true}
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+              <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
+                <span></span>Número de usuarios
+              </div>
+
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item name='numero2' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '-46px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item name='numero2' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '28px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+
+            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+              <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
+                <span></span>Población beneficiada
+              </div>
+
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item name='poblacion1' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '-46px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-4 col-md-4 col-sm-12'>
+                <Form.Item name='poblacion2' rules={[{ required: false }]}>
+                  <Input
+                    style={{ width: '350px', marginLeft: '28px' }}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
           </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox2' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[2]} />
-            </Form.Item>
-            <span></span>Almacenamiento
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox3' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[3]} />
-            </Form.Item>
-            <span></span>Torre de aireación
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox4' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[4]} />
-            </Form.Item>
-            <span></span>Desinfección
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox5' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[5]} />
-            </Form.Item>
-            <span></span>Precloración
-          </div>
-        </div>
-        <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
-          <div className='form-check'>
-            <Form.Item name='checkbox6' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} />
-            </Form.Item>
-            <span></span>Filtración
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox7' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[7]} />
-            </Form.Item>
-            <span></span>Mezcla lenta
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox8' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[8]} />
-            </Form.Item>
-            <span></span>Oxidación
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox9' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[9]} />
-            </Form.Item>
-            <span></span>Floculador
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox10' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[10]} />
-            </Form.Item>
-            <span></span>Desarenador
-          </div>
-          <div className='form-check'>
-            <Form.Item name='checkbox11' rules={[{ required: false }]}>
-              <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[11]} />
-            </Form.Item>
-            <span></span>Otra
-          </div>
-        </div>
-        <div className='col-lg-8 col-sm-12 col-md-8 mt-3'>
-          <span></span>Descripción de otro componente del sistema de tratamiento
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='descripcion' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='row mt-3'>
-        <div className='col-lg-4 col-sm-12 col-md-4'>
-          <span></span>Número de usuarios
-        </div>
-        <div className='col-lg-2 col-md-2 col-sm-12'>
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='numero1' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-        <div className='col-lg-2 col-md-2 col-sm-12'>
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='numero2' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-      <div className='row mt-2'>
-        <div className='col-lg-4 col-sm-12 col-md-4'>
-          <span></span>Población beneficiada
-        </div>
-        <div className='col-lg-2 col-md-2 col-sm-12'>
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='poblacion1' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-        <div className='col-lg-2 col-md-2 col-sm-12'>
-          <div className='form-group gov-co-form-group'>
-            <Form.Item name='poblacion2' rules={[{ required: false }]}>
-              <Input
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </section>
+      </>
+    );
+  }
 };
 interface DatosAdicionales<T> {
   form: FormInstance<T>;
   obj: any;
   tipo: string;
   prop: any;
+  habilitar: boolean;
 }
 export const KeysForm = [
   'tipo',

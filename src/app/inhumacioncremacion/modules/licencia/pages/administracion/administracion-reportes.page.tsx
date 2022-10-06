@@ -15,8 +15,12 @@ import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import Input from 'antd/es/input/Input';
 import Button from 'antd/es/button/button';
-
+import Swal from 'sweetalert2';
+import { formatTimeStr } from 'antd/lib/statistic/utils';
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { layoutWrapper } from 'app/shared/utils/form-layout.util';
 const { TabPane } = Tabs;
+
 const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [allData, setAllData] = useState<any[]>([]);
@@ -34,13 +38,13 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [FilterTextID, setFilterTextID] = useState<String>();
   const [FilterTextDoc, setChangeFilterDoc] = useState<String>();
   const [FilterTextFun, setChangeFilterFun] = useState<String>();
-
   const [disableFilter, setDisableFilter] = useState<Boolean>();
   const [textAlerta, setTextAlert] = useState<String>();
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
   const getListas = useCallback(
     async () => {
       const resp = await api.getallReports();
+
 
       setGrid(resp);
       setAllData(resp);
@@ -82,18 +86,164 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   function onChangeFilterFun(event: any) {
     setChangeFilterFun(event.target.value);
   }
+
+  function downloadFileExcel() {
+    const ExportJsonExcel = require('js-export-excel');
+    var datos = grid;
+    let datatable = [];
+    let opciones = {};
+    if (datos && datos.length > 0) {
+      for (let i in datos) {
+        let tipo = '';
+        switch (datos[i].idTramite) {
+          case 'a289c362-e576-4962-962b-1c208afa0273':
+            tipo = 'Inhumación Individual';
+            break;
+          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+            //inhumacion fetal
+            tipo = 'Inhumación Fetal'
+            break;
+          case 'e69bda86-2572-45db-90dc-b40be14fe020':
+            //cremacion individual
+            tipo = 'Cremación Individual'
+            break;
+          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+            //cremacionfetal
+            tipo = 'Cremación Fetal '
+            break;
+
+        }
+        let ob = {
+          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
+          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
+          'Fecha de registro': datos[i].fechaSolicitud,
+          'Estado': datos[i].estadoString,
+          'Tipo Solicitud': tipo
+        }
+        datatable.push(ob);
+      }
+
+      opciones = {
+        fileName: 'Solicitudes inhumacion - cremacion',
+        datas: [
+          {
+            sheetData: datatable,
+            sheetName: 'Historial solicitudes',
+            sheetFilter: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+              , 'Fecha de registro', 'Estado', 'Tipo Solicitud'],
+            sheetHeader: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+              , 'Fecha de registro', 'Estado', 'Tipo Solicitud']
+          }
+        ]
+      };
+
+      var toExcel = new ExportJsonExcel(opciones);
+      toExcel.saveExcel()
+    }
+  }
+  function downloadTxt() {
+    var element = document.createElement('a');
+    let datos = grid;
+    let datatable = [];
+    let opciones = {};
+    if (datos && datos.length > 0) {
+      for (let i in datos) {
+        let tipo = '';
+        switch (datos[i].idTramite) {
+          case 'a289c362-e576-4962-962b-1c208afa0273':
+            tipo = 'Inhumación Individual';
+            break;
+          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+            //inhumacion fetal
+            tipo = 'Inhumación Fetal'
+            break;
+          case 'e69bda86-2572-45db-90dc-b40be14fe020':
+            //cremacion individual
+            tipo = 'Cremación Individual'
+            break;
+          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+            //cremacionfetal
+            tipo = 'Cremación Fetal '
+            break;
+
+        }
+        let ob = {
+          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
+          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
+          'Fecha de registro': datos[i].fechaSolicitud,
+          'Estado': datos[i].estadoString,
+          'Tipo Solicitud': tipo
+        }
+        datatable.push(ob);
+      }
+    }
+    let textoPlano = 'IDENTIFICADOR  |  DOCUMENTO DEL FALLECIDO  |  SOLICITANTE  |  REGISTRO  |  ESTADO  |  ESTADO  |  TIPO SOLICITUD \n';
+    for (let inf in datatable) {
+      textoPlano += datatable[inf]['Identificador Tramite'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
+        + datatable[inf]['Solicitante (funeraria o nombre)'] + '  |  ' + datatable[inf]['Fecha de registro'] +
+        '  |  ' + datatable[inf].Estado + '  |  ' + datatable[inf]['Tipo Solicitud'] + ' \n';
+
+    }
+
+
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textoPlano));
+    element.setAttribute('download', 'Solicitudes inhumacion - cremacion.txt');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+  function downloadFileExportar() {
+    Swal.fire({
+      title: 'Exportar archivo',
+      text: 'Esta a punto de exportar los datos encontrados, seleccione el tipo de documento deseado:',
+      showCloseButton: true,
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'xlsx',
+      denyButtonText: 'txt',
+      confirmButtonColor: 'green',
+      denyButtonColor: 'blue',
+      showClass: {
+        popup: 'animate_animated animate_fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate_animated animate_fadeOutUp'
+      },
+      icon: 'info'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        downloadFileExcel();
+      } else if (result.isDenied) {
+        downloadTxt();
+      }
+    })
+
+  }
+
   function busquedaFun() {
     var input = false;
     var filtroFecha = null;
-    if (dateSelectedInicial != undefined && dateSelectedFinal != undefined) {
+    if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
       filtroFecha = allData.filter(function (f) {
         // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
 
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) <= dateSelectedFinal;
+        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
       });
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
+      Swal.fire({
+        title: 'Fecha invalida',
+        text: 'La Fecha no ha sido seleccionada hasta el momento, por favor seleccione una',
+
+        icon: 'error'
+      });
       setVisibleAlert(true);
     }
     if (input == true && FilterTextID != undefined && FilterTextID != '') {
@@ -169,6 +319,12 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
         setGrid(dataFIN);
+        Swal.fire({
+          title: 'Resultados encontrados',
+          text: 'Señor usuario con los filtros de busqueda se encontraron ' + dataFIN.length + ' resultados.',
+
+          icon: 'info'
+        });
         setVisibleGrid('contents');
       } else {
         setVisibleGrid('none');
@@ -187,123 +343,186 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       <div className='card'>
         <div className='card-body'>
           <div className='row h-100'>
-            <div className='col-lg-6 col-md-6 col-sm-12'>
+            <div className='col-md-12 col-lg-12 col-sm-12  mt-3'>
+              <label>
+                <span style={{ color: 'red', fontWeight: 'bold' }}>*</span>Ingrese el rango de fechas que desea consultar
+              </label>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+              <label>Fecha Inicial</label>
               <DatepickerComponent
                 id='datePicker1'
                 picker='date'
                 placeholder='Fecha Inicial'
-                dateDisabledType='default'
+                dateDisabledType='before'
                 dateFormatType='default'
                 style={{ display: 'block' }}
                 className='form-control'
                 onChange={(date) => {
                   setVisibleAlert(false);
-                  setDateIni(new Date(moment(date).format('MM-DD-YYYY')));
+                  setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
                 }}
               />
             </div>
-            <div className='col-lg-6 col-md-6 col-sm-12'>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+              <label>Fecha Final</label>
               <DatepickerComponent
                 id='datePicker2'
                 picker='date'
                 placeholder='Fecha Final'
-                dateDisabledType='default'
+                dateDisabledType='before'
                 dateFormatType='default'
                 style={{ display: 'block' }}
                 className='form-control'
                 onChange={(date) => {
                   setVisibleAlert(false);
-                  setDateFin(new Date(moment(date).format('MM-DD-YYYY') + 1));
+                  setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
                 }}
               />
             </div>
           </div>
-          <div className='row h-100 justify-content-center align-items-center'>
-            <div className='col-gl-6 col-md-6 col-sm-12' style={{ margin: '10px', display: 'block' }}>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='ID Tramite' name='' rules={[{ required: false }]}>
-                  <Input
-                    id='tramiteID'
-                    placeholder='ID Tramite'
-                    className='form-control ml-1'
-                    onChange={onChangeFilterID}
-                    style={{ display: 'block' }}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='No. Documento Fallecido' name='' rules={[{ required: false }]}>
-                  <Input
-                    id='docFallecido'
-                    placeholder='No. documento'
-                    className='form-control ml-1'
-                    onChange={onChangeFilterDoc}
-                    style={{ display: 'block' }}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='Funeraria' name='' rules={[{ required: false }]}>
-                  <Input
-                    id='funeraria'
-                    placeholder='Nombre Funeraria'
-                    className='form-control ml-1'
-                    onChange={onChangeFilterFun}
-                    style={{ display: 'block' }}
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='Tipo Solicitud' name='' rules={[{ required: false }]}>
-                  <SelectComponent
-                    className='ml-3'
-                    id='filterTipoSol'
-                    onChange={selectChange}
-                    options={[
-                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
-                      { key: 'inhuFetal', value: 'Inhumación Fetal' },
-                      { key: 'cremInd', value: 'Cremación Individual' },
-                      { key: 'cremFetal', value: 'Cremación Fetal' },
-                      { key: 'todos', value: 'Todos' }
-                    ]}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                  />
-                </Form.Item>
-              </div>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='Estado Tramite' name='' rules={[{ required: false }]}>
-                  <SelectComponent
-                    className='ml-3'
-                    id='filterEstadoTra'
-                    onChange={selectChangeEstado}
-                    options={[
-                      { key: 'registroExt', value: 'Registro Usuario Externo' },
-                      { key: 'aprobado', value: 'Aprobado validador de documentos' },
-                      { key: 'buscar', value: 'por investigar' }
-                    ]}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                  />
-                </Form.Item>
-              </div>
+          <div className='row mt-5' style={{ marginLeft: '2px' }}>
+            <div className='col-md-12 col-lg-12 col-sm-12 mt-3'>
+              <label>Ingrese los valores que desea buscar</label>
+            </div>
 
-              <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 ml-5'>
-                <Button type='primary' htmlType='submit' onClick={busquedaFun}>
-                  Buscar
-                </Button>
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row mt-3'>
+                <label className='col-sm-2 col-form-label'>Id Tramite</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <Input id='tramiteID' placeholder='ID Tramite' className='form-control ml-1' onChange={onChangeFilterID} />
+                  </Form.Item>
+                </div>
               </div>
             </div>
-          </div>
-          <div className='row' style={{ marginTop: '-8px' }}>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
-                <Tabs style={{ border: 'none' }}>
-                  <TabPane tab='Resultados' key='1'>
-                    <TablaReportes data={grid} />
-                  </TabPane>
-                </Tabs>
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>No. Documento Fallecido</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <Input
+                      id='docFallecido'
+                      placeholder='No. documento'
+                      className='form-control ml-1'
+                      onChange={onChangeFilterDoc}
+                    />
+                  </Form.Item>
+                </div>
               </div>
+            </div>
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>Funeraria</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <Input
+                      id='funeraria'
+                      placeholder='Nombre Funeraria'
+                      className='form-control ml-1'
+                      onChange={onChangeFilterFun}
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>Tipo Solicitud</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <SelectComponent
+                      style={{ width: '1012px', marginLeft: '5px' }}
+                      id='filterTipoSol'
+                      onChange={selectChange}
+                      options={[
+                        { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                        { key: 'inhuFetal', value: 'Inhumación Fetal' },
+                        { key: 'cremInd', value: 'Cremación Individual' },
+                        { key: 'cremFetal', value: 'Cremación Fetal' },
+                        { key: 'todos', value: 'Todos' }
+                      ]}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-lg-12 col-sm-12 co-md-12'>
+              <div className='form-group row'>
+                <label className='col-sm-2 col-form-label'>Estado Tramite</label>
+                <div className='col-sm-10'>
+                  <Form.Item name='' rules={[{ required: false }]}>
+                    <SelectComponent
+                      style={{ width: '1012px', marginLeft: '5px' }}
+                      id='filterEstadoTra'
+                      onChange={selectChangeEstado}
+                      options={[
+                        { key: 'registroExt', value: 'Registro Usuario Externo' },
+                        { key: 'aprobado', value: 'Aprobado validador de documentos' },
+                        { key: 'buscar', value: 'por investigar' }
+                      ]}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                    />
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+            <section>
+              <div className='container-fluid'>
+                <div className='row'>
+                  <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                      <div className='d-flex center-block' style={{ margin: '0 auto' }}>
+                        <Button type='primary'
+                          htmlType='submit'
+                          onClick={busquedaFun}
+                          style={{ marginLeft: '10px' }}>
+                          Buscar
+                        </Button>
+                      </div>
+                    </Form.Item>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div className='row mt-3'>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
+
+                <Tabs style={{ border: 'none' }} className='mt-3'>
+                  <TablaReportes data={grid} />
+                </Tabs>
+
+                <section>
+                  <div className='container-fluid'>
+                    <div className='row'>
+                      <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
+                        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                          <div className='d-flex center-block' style={{ margin: '0 auto' }}>
+                            <Button type='primary'
+                              htmlType='submit'
+                              onClick={downloadFileExportar}
+                            >
+                              Exportar
+                            </Button>
+                          </div>
+                        </Form.Item>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+
             </div>
           </div>
         </div>

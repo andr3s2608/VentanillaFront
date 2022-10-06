@@ -34,8 +34,9 @@ export const TablaReportes = (props: IDataSource) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      setroles(mysRoles);
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      setroles(JSON.parse(rolesstorage));
       setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,11 +147,11 @@ export const TablaReportes = (props: IDataSource) => {
 
       {
         title: 'Fecha de Registro',
-        dataIndex: '',
+        dataIndex: 'fechaSolicitud',
         key: 'fechaSolicitud',
         render: (Text: string) => (
           <Form.Item label='' name=''>
-            <text>{fecharecortada()}</text>
+            <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
           </Form.Item>
         )
       },
@@ -161,19 +162,42 @@ export const TablaReportes = (props: IDataSource) => {
       },
       {
         title: 'Tipo Solicitud',
-        dataIndex: 'tramite',
+        dataIndex: 'idTramite',
         key: 'tipoSolicitud',
-        render: (Text: string) => (
-          <Form.Item label='' name=''>
-            <text>{tiposolicitud()}</text>
-          </Form.Item>
-        )
+        render: (Text: string) => {
+          switch (Text) {
+            case 'a289c362-e576-4962-962b-1c208afa0273':
+              return <Form.Item label='' name=''>
+                <text>{'Inhumación Individual'}</text>
+              </Form.Item>
+
+            case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+              //inhumacion fetal
+              return <Form.Item label='' name=''>
+                <text>{'Inhumación Fetal'}</text>
+              </Form.Item>
+
+            case 'e69bda86-2572-45db-90dc-b40be14fe020':
+              //cremacion individual
+              return <Form.Item label='' name=''>
+                <text>{'Cremación Individual'}</text>
+              </Form.Item>
+
+            case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+              //cremacionfetal
+              return <Form.Item label='' name=''>
+                <text>{'Cremación Fetal '}</text>
+              </Form.Item>
+
+
+          }
+        }
       }
     ];
   }
 
   const onPageChange = (pagination: any, filters: any) => {
-    alert(pagination.current);
+
 
     var valor: any = data.at(0);
     var array: any[] = [];
@@ -192,6 +216,7 @@ export const TablaReportes = (props: IDataSource) => {
       <div className='card'>
         <div className='card-body'>
           <div className='row'>
+            <span> Resultados = {data.length}</span>
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <Table
                 id='tableGen'

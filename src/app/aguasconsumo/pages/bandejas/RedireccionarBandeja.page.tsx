@@ -19,6 +19,8 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [datosusuario, setdatosusuario] = useState<any[]>([]);
   const [datossolucionadosusuario, setdatossolucionadosusuario] = useState<any[]>([]);
+  const [notificaciones, setnotificaciones] = useState<any[]>([]);
+  const [historiconotificaciones, sethistoriconotificaciones] = useState<any[]>([]);
 
   const getListas = useCallback(
     async () => {
@@ -61,7 +63,9 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
       setBandeja(false);
     } else {
       if (permiso?.rol === 'AdminTI' || permiso?.rol === 'Funcionario') {
+
         const datos = await api.GetSolicitudesUsuarioSubred();
+
         const datossolucionados: any = await api.GetSolicitudesUsuarioSubred();
 
         const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
@@ -103,8 +107,22 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
             );
           });
 
+          const filtradonotificaciones = datos.filter(function (f: { idEstado: string; idTipodeSolicitud: string }) {
+            return (
+              f.idEstado != '2e8808af-a294-4cde-8e9c-9a78b5172119' && //aprobado
+              f.idEstado != '2a31eb34-2aa0-428b-b8ef-a86683d8bb8d' && //cerrado
+              f.idEstado != '7e2eaa50-f22f-4798-840d-5b98048d38a9' && //anulado
+              f.idTipodeSolicitud != 'b1ba9304-c16b-43f0-9afa-e92d7b7f3df9' &&
+              f.idTipodeSolicitud != '8ca363c0-66aa-4273-8e63-ce3eac234857' &&
+              f.idTipodeSolicitud != ' 5290025a-0967-417a-9737-fa5eae85d97b'
+            );
+          });
+
           setdatossolucionadosusuario(filtrado);
+          setnotificaciones(filtradonotificaciones);
+          sethistoriconotificaciones(filtrado);
           setdatosusuario(filtradodatos);
+
           const resp = await api.getSolicitudesByTipoSolicitud('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9');
 
           setGrid(resp);
@@ -124,7 +142,13 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     <div className='fadeInTop container-fluid'>
       <Tabs>
         {bandeja ? (
-          <Bandeja data={grid} datosusuario={datosusuario} datossolucionados={datossolucionadosusuario} />
+          <Bandeja
+            data={grid}
+            datosusuario={datosusuario}
+            datossolucionados={datossolucionadosusuario}
+            notificaciones={notificaciones}
+            historico={historiconotificaciones}
+          />
         ) : (
           <BandejaU data={grid} datossolucionados={datossolucionadosusuario} />
         )}

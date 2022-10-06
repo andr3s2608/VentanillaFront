@@ -29,9 +29,6 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [[NROIDENT_PROPF, NOMBRE_PROPF, NUM_SALASF, TIPO_I_REPF, NROIDENT_REPF, NOMBRE_REPF], setFunerariaDatos2] = useState<
     [String, string, String, String, String, String]
   >(['', '', '', '', '', '']);
-  const [[RazonF, DireccionF, TelefonoF, NombreRepF, TipoRepF, NroIdenF], setFunerariaDatos] = useState<
-    [String, string, String, String, String, String]
-  >(['', '', '', '', '', '']);
   const [IdOrNameGraveyard, setIdOrNameGraveyard] = useState('');
   const [IdOrNameMortuary, setIdOrNameMortuary] = useState('');
   const [isModalVisibleGraveyard, setIsModalVisibleGraveyard] = useState(false);
@@ -61,20 +58,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const [PaisCementerio, setPaisCementerio] = useState<string | undefined>();
   const [otroCementerio, setotroCementerio] = useState<string | undefined>();
 
-  const [[l_paises, l_departamento, l_tipo_identificacion], setListas] = useState<[IDominio[], IDepartamento[], IDominio[]]>([
-    [],
-
-    [],
-    []
-  ]);
+  const [l_tipo_identificacion, setListas] = useState<IDominio[]>([]);
 
   const getListas = useCallback(async () => {
-    const resp = await Promise.all([
-      dominioService.get_type(ETipoDominio.Pais),
-      dominioService.get_departamentos_colombia(),
-      // dominioService.get_all_municipios_by_departamento(idMunicipio),
-      dominioService.get_type(ETipoDominio['Tipo Documento'])
-    ]);
+    const paises: any = localStorage.getItem('paises');
+    const paisesjson: any = JSON.parse(paises);
+
+    const tipos: any = localStorage.getItem('tipoid');
+    const tiposjson: any = JSON.parse(tipos);
+
     const fun = await api.GetFunerarias();
     const cem = await dominioService.get_cementerios_bogota();
 
@@ -126,12 +118,12 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     setl_cementerio(cem);
     setl_funeraria(fun);
 
-    const dep = dominioService.get_departamentos_colombia();
+    const dep: any = localStorage.getItem('departamentos');
+    const departamentos = JSON.parse(dep);
 
-    const pais = await dominioService.get_type(ETipoDominio.Pais);
-    const filtropais = pais.filter((i) => i.id == obj?.cementerioPais);
+    const filtropais = paisesjson.filter((i: { id: any }) => i.id == obj?.cementerioPais);
 
-    const iddepart = (await dep).filter((i) => i.idDepartamento == obj?.cementerioDepartamento);
+    const iddepart = departamentos.filter((i: { idDepartamento: any }) => i.idDepartamento == obj?.cementerioDepartamento);
 
     if (obj?.cementerioDepartamento != undefined) {
       const idMun: string = iddepart[0].idDepartamento + '';
@@ -177,7 +169,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     }
     setfuneraria(funeraria);
     setcargofuneraria(true);
-    setListas(resp);
+    setListas(tiposjson);
   }, []);
 
   useEffect(() => {
@@ -306,13 +298,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   } else {
     if (departamentoCementerio != undefined) {
       var otros: any = [];
+
       if (otroCementerio != undefined) {
-        otros = [
-          {
-            title: 'Otro Sitio',
-            describe: otroCementerio?.toLowerCase()
-          }
-        ];
+
+        otros =
+        {
+          title: 'Otro Sitio',
+          describe: otroCementerio?.toLowerCase()
+        }
+          ;
       }
       cementerios = [
         {

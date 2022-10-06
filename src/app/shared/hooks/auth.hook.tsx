@@ -1,19 +1,12 @@
-import React from 'react';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import { AuthenticationState, IAzureADFunctionProps } from 'react-aad-msal';
-
-// Antd
-import Spin from 'antd/es/spin';
-
-// Pages
-import { LoginPage } from 'app/core/pages/login.page';
-
-// Modules
 import { ModuleLayout } from 'app/inhumacioncremacion/modules/module.layout';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import { LoginPage } from 'app/core/pages/login.page';
+import Spin from 'antd/es/spin';
 
 export const useAuthProvider = () => {
   const bodyFunction = (dataFunction: IAzureADFunctionProps) => {
-    const { authenticationState, login, logout } = dataFunction;
+    const { login, logout, authenticationState, error, accountInfo } = dataFunction;
 
     switch (authenticationState) {
       case AuthenticationState.Authenticated:

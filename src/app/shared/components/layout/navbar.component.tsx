@@ -32,22 +32,30 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [validacioninfo, setvalidacioninfo] = useState<any>(false);
-
+  const [rolusuario, setrol] = useState<any>('');
   const sidenav = useSelector<AppState, boolean>((state) => state.ui.sidenav);
   const dispatch = useDispatch();
 
   const getListas = useCallback(
     async () => {
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
+      debugger;
+      const roles: any = localStorage.getItem('roles');
+      const rol: any = JSON.parse(roles);
 
-      if (resp == undefined) {
+
+      if (rol !== undefined && rol.length > 0) {
+        const [permiso] = rol == undefined ? 'ninguno' : rol;
+        setrol(permiso.rol);
+      }
+      if (info == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.tipoIdentificacion == 5) {
-          setvalidacioninfo(resp.razonSocial);
+        if (info.razonSocial != null) {
+          setvalidacioninfo(info.razonSocial);
         } else {
-          setvalidacioninfo(resp.fullName);
+          setvalidacioninfo(info.fullName);
         }
       }
     },
@@ -105,6 +113,7 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
         <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
             <b className='text-primary'>{validacioninfo}</b>
+
           </span>
         </span>
         <Menu className='bg-transparent' theme='dark' mode='horizontal'>

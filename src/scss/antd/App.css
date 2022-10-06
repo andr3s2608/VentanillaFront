@@ -2,6 +2,8 @@
   text-decoration: none !important;
 }
 
+
+
 .navbar {
   border-bottom: 3px solid rgb(4, 195, 209);
   background-color: #cbcbcb !important;
@@ -24,6 +26,10 @@
   width: 20%;
   float: right;
   margin-top: -30px;
+}
+
+.info-secion {
+  display: none;
 }
 
 .info-usuario {
@@ -91,7 +97,7 @@
 }
 
 .mb-0>a:after {
-  content: '\f078';
+  content: '\f105';
   /* fa-chevron-down */
   font-family: 'FontAwesome';
   position: absolute;
@@ -114,4 +120,12 @@
 #accordion .button {
   width: 40%;
   margin-right: 210px !important;
+}
+
+.prueba {
+  display: none !important;
+}
+
+.ant-table-cell {
+  width: 300px !important;
 }

@@ -30,36 +30,25 @@ import { EditAguas } from './edit/Aguas';
 export const RevisarSc = () => {
   const objJson: any = EditAguas();
 
-  const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
   const history = useHistory();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+  const { setStatus } = useStepperForm<any>(form);
 
   //validacion campos
-  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(5);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
-  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
-  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
-  const [campo, setCampo] = useState<string>('Numéricos');
 
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
   //
   const [rol, setrol] = useState<any>();
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
+      const rolesstorage: any = localStorage.getItem('roles');
 
-      const [permiso] = mysRoles;
+      const [permiso] = JSON.parse(rolesstorage);
 
       setrol(permiso.rol);
-      const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
-
-      setListaTipoDocumento(tipoDocumento);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -70,19 +59,7 @@ export const RevisarSc = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const Asignar = async () => {
-    const usuario = form.getFieldValue('usuarioasignado');
-    if (usuario == 'vacio') {
-      Swal.fire({
-        icon: 'error',
-        title: 'Usuario No Asignado',
-        text: 'Debe ingresar el usuario al cual se va a asignar la solicitud'
-      });
-    } else {
-      await api.AsignarUsuario(usuario, objJson.idsolicitud);
-      history.push('/tramites-servicios-aguas');
-    }
-  };
+
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
@@ -186,27 +163,11 @@ export const RevisarSc = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota'>
-                      <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
-                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
+                    <div className='info-secion prueba_seccion'>
+                      <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
                             <a href='#'>Inicio</a>
@@ -228,7 +189,7 @@ export const RevisarSc = () => {
             <section className='panel-menu'>
               <div className='container'>
                 <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
                     <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
                       <nav className='nav panel'>
                         <a className='nav-link active' href='#'>
@@ -247,19 +208,19 @@ export const RevisarSc = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-2'>
+                <div className='row mt-5'>
+                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
+                    <div className='info-tramite mt-3 ml-5'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
 
-                <div className='row mt-5 ml-2'>
-                  <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} />
+                <div className='row mt-5 ml-2 primeros_campos'>
+                  <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} />
+                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={''} />

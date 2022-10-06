@@ -3,13 +3,44 @@ import 'app/shared/components/table/estilos.css';
 import '../../../../../../../css/estilos.css';
 import Divider from 'antd/es/divider';
 import { List } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
 
 export const AutorizadorCremacion: React.FC<any> = (props) => {
   const { obj } = props;
+  const [objJson, setobj] = useState<any>(obj);
+  const [[primernombre, segundonombre, primerapellido, segundoapellido, nroiden], setNombres] = useState<
+    [string, string, string, string, string]
+  >(['', '', '', '', '']);
+  const [mostrar, setmostrar] = useState<boolean>(false);
+
+  const getListas = useCallback(
+    async () => {
+      if (obj != undefined) {
+        setobj(obj.autorizadorcremacion[0]);
+        setNombres([
+          obj.autorizadorcremacion[0].name,
+
+          obj.autorizadorcremacion[0].secondName,
+          obj.autorizadorcremacion[0].surname,
+          obj.autorizadorcremacion[0].secondSurname,
+          obj.autorizadorcremacion[0].numeroid
+        ]);
+
+        setmostrar(true);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  useEffect(() => {
+    getListas();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getTipoParentesco = (objeto: any) => {
     let parentesco = 'ninguno';
-    switch (objeto.idParentesco) {
+    switch (objeto.parentesco) {
       case '4c00cd98-9a25-400a-9c31-1f6fca7de562':
         parentesco = 'Cónyuge (Compañero/a Permanente)';
         break;
@@ -45,7 +76,7 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
   const getTipoIdentificacion = (objeto: any) => {
     let tipoIdentificacion = 'ninguno';
 
-    switch (objeto.tipoIdentificacion) {
+    switch (objeto.tipoid) {
       case '2491bc4b-8a60-408f-9fd1-136213f1e4fb':
         tipoIdentificacion = 'Permiso Especial Permanencia';
         break;
@@ -95,35 +126,36 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
 
     return tipoIdentificacion;
   };
+  let data: any[] = [];
 
-  let data = [
+  data = [
     {
       title: 'Primer Nombre',
-      describe: obj.primerNombre
+      describe: primernombre
     },
     {
       title: 'Segundo Nombre',
-      describe: obj.segundoNombre
+      describe: segundonombre
     },
     {
       title: 'Primer Apellido',
-      describe: obj.primerApellido
+      describe: primerapellido
     },
     {
       title: 'Segundo Apellido',
-      describe: obj.segundoApellido
+      describe: segundoapellido
     },
     {
       title: 'No. Identificacion.',
-      describe: obj.numeroIdentificacion
+      describe: nroiden
     },
     {
       title: 'Tipo de identificación',
-      describe: getTipoIdentificacion(obj)
+      describe: getTipoIdentificacion(objJson)
     },
     {
       title: 'Parentesco',
-      describe: getTipoParentesco(obj)
+      describe: getTipoParentesco(objJson)
     }
   ];
 
@@ -139,23 +171,25 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
           </div>
         </div>
       </div>
-      <List
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 1,
-          md: 3,
-          lg: 3,
-          xl: 3,
-          xxl: 3
-        }}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta title={item.title} description={item.describe} />
-          </List.Item>
-        )}
-      />
+      {mostrar && (
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3
+          }}
+          dataSource={data}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta title={item.title} description={item.describe} />
+            </List.Item>
+          )}
+        />
+      )}
     </>
   );
 };

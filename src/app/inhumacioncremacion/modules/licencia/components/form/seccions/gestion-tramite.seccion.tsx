@@ -1,16 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
-
-// Antd
-import Form, { FormInstance } from 'antd/es/form';
-import Input from 'antd/es/input';
-import Divider from 'antd/es/divider';
-import '../../../../../../../css/estilos.css';
-// Componentes
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
-
-//Redux
-import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import React, { useCallback, useEffect, useState } from 'react';
+import Form, { FormInstance } from 'antd/es/form';
+import '../../../../../../../css/estilos.css';
+import { store } from 'app/redux/app.reducers';
+import Input from 'antd/es/input';
 
 export const GestionTramite: React.FC<gestiontramite> = (props) => {
   const { type, idSolicitud, idTramite, valor, registrado } = props;

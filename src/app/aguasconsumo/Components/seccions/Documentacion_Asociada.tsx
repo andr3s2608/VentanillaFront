@@ -29,15 +29,26 @@ import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
 export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   const { tipo, obj, prop } = props;
   const [archivocargado, setarchivocargado] = useState<any>();
+  const [subioarchivo, setsubioarchivo] = useState<boolean>(false);
+
+
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
-  const Paginas: number = 5;
+  const Paginas: number = 10;
 
   const getListas = useCallback(
     async () => {
       const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+
+      const rolesjson: any = localStorage.getItem('roles');
+      const roles = JSON.parse(rolesjson)
+
+      if (roles[0].rol == 'Subdirector') {
+        setsubioarchivo(true);
+      }
+
       const filter = documentos.filter(
         (i: { idTipoDocumentoAdjunto: string }) => i.idTipoDocumentoAdjunto == '81c98a3c-730c-457a-bba1-877b737a9847'
       );
@@ -57,21 +68,24 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   }, []);
 
   const subida = (value: any) => {
-    let posicion = 1;
+    if (archivocargado.length === 0) {
+      let posicion = 1;
 
-    const array: any[] = [];
-    if (archivocargado.length > 0) {
-      for (let index = 0; index < archivocargado.length; index++) {
-        array.push(archivocargado[index]);
-        posicion++;
+      const array: any[] = [];
+      if (archivocargado.length > 0) {
+        for (let index = 0; index < archivocargado.length; index++) {
+          array.push(archivocargado[index]);
+          posicion++;
+        }
+        array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
+        setarchivocargado(array);
+        prop(array);
+      } else {
+        array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
+        setarchivocargado(array);
+        prop(array);
       }
-      array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
-      setarchivocargado(array);
-      prop(array);
-    } else {
-      array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
-      setarchivocargado(array);
-      prop(array);
+      setsubioarchivo(true);
     }
   };
 
@@ -88,6 +102,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
         array.push(aux);
       }
     }
+    setsubioarchivo(false);
     setarchivocargado(array);
     prop(array);
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
@@ -118,7 +133,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
             style={{ fontSize: '30xp', color: 'red' }}
             icon={<CheckOutlined />}
           >
-            Validar Información
+            Eliminar
           </Button>
         );
       }
@@ -127,41 +142,47 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
 
   return (
     <>
-      <div className='card-body' style={{ backgroundColor: '#ede9e3' }}>
-        <div className='row'>
-          <div className='col-lg-12 col-sm-12 col-md-12'>
-            <Upload
-              name='cargarArchivoDocumentacion'
-              onChange={subida}
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button
-                className='float-right button btn btn-default'
-                icon={<UploadOutlined />}
-                style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-              >
-                Cargar archivo
-              </Button>
-            </Upload>
+      <section style={{ width: '100%' }}>
+        <div className='container-fluid'>
+          <div className='card-body' style={{ marginTop: '-20px' }}>
+            <div className='row' style={{ marginLeft: '-20px' }}>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+                <Upload
+                  name='cargarArchivoDocumentacion'
+                  onChange={subida}
+                  maxCount={1}
+
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button
+                    className='float-right button btn btn-default'
+                    icon={<UploadOutlined />}
+                    disabled={subioarchivo}
+                    style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                  >
+                    Cargar archivo
+                  </Button>
+                </Upload>
+              </div>
+            </div>
+            <div className='row mt-2' style={{ marginLeft: '-28px' }}>
+              <div className='col-lg-12 col-md-12 col-sm-12'>
+                <Table
+                  scroll={{ y: 240 }}
+                  id='tableGen'
+                  dataSource={archivocargado}
+                  columns={tabla}
+                  pagination={{ pageSize: Paginas }}
+                  className='table_info'
+                />{' '}
+                <br />
+              </div>
+            </div>
           </div>
         </div>
-        <div className='row mt-2'>
-          <div className='col-lg-12 col-md-12 col-sm-12'>
-            <Table
-              scroll={{ y: 240 }}
-              id='tableGen'
-              dataSource={archivocargado}
-              columns={tabla}
-              pagination={{ pageSize: Paginas }}
-              className='table_info'
-            />{' '}
-            <br />
-          </div>
-        </div>
-      </div>
+      </section>
     </>
   );
 };

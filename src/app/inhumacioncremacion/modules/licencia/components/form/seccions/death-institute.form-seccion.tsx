@@ -11,7 +11,7 @@ import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.com
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 // Servicios
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import { IDominio } from 'app/services/dominio.service';
 import { TypeLicencia } from 'app/shared/utils/types.util';
 import moment from 'moment';
 import Swal from 'sweetalert2';
@@ -19,10 +19,10 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
 export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (props) => {
-  const { obj, tipoLicencia, prop } = props;
+  const { obj, tipoLicencia, prop, cambio } = props;
   const isMedicina = obj?.instTipoIdent !== undefined ? true : false;
   const [isMedicinaLegal, setIsMedicinaLegal] = useState<boolean>(isMedicina);
-  const { datofiscal, required } = props;
+  const { datofiscal } = props;
   const [l_seccionales, setlseccionales] = useState<any[]>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
@@ -38,10 +38,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   const getListas = useCallback(
     async () => {
-      const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+
       const sec = await api.GetSeccionales();
       setlseccionales(sec);
-      setListaTipoDocumento(resp);
+      setListaTipoDocumento(tiposjson);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -66,6 +68,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   //#endregion
   const onChangeTipoInst = (e: RadioChangeEvent) => {
+
+    cambio();
     props.form.resetFields([
       'instNumProtocolo',
       'instNumActaLevantamiento',
@@ -84,53 +88,133 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     props.form.setFieldsValue({ instNumIdent: undefined });
     const valor: string = value;
     const valorupper = valor.toUpperCase();
-    if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+
+    if (valorupper === '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
       setLongitudminima(4);
-      setLongitudminima(10);
+      setLongitudmaxima(10);
       setTipocampo('[0-9]{4,10}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');
-      prop(6, 'deathinst');
+      prop(4, 'deathinst');
     } else {
-      if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+      if (valorupper === 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
         setLongitudminima(10);
-        setLongitudminima(11);
+        setLongitudmaxima(11);
         setTipocampo('[0-9]{10,11}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Tarjeta de Identidad ');
         prop(10, 'deathinst');
       } else {
-        if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+        if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
           setLongitudminima(15);
-          setLongitudminima(15);
+          setLongitudmaxima(15);
           setTipocampo('[0-9]{15,15}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
           prop(15, 'deathinst');
         } else {
-          if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+          if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
+            valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
+            valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
             setLongitudminima(10);
-            setLongitudminima(11);
+            setLongitudmaxima(11);
             setTipocampo('[a-zA-Z0-9]{10,11}');
             setTipocampovalidacion(/[a-zA-Z0-9]/);
-            setCampo('Numéricos');
-            setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+            setCampo('AlfaNuméricos(Numéros y letras)');
+            setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
             prop(10, 'deathinst');
           } else {
-            setLongitudminima(6);
-            setLongitudminima(10);
-            setTipocampo('[a-zA-Z0-9]{6,10}');
-            setTipocampovalidacion(/[a-zA-Z0-9]/);
-            setCampo('AlfaNuméricos(Numéros y letras)');
-            setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-            prop(6, 'deathinst');
+            if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
+              setLongitudminima(6);
+              setLongitudmaxima(9);
+              setTipocampo('[0-9]{6,9}');
+              setTipocampovalidacion(/[0-9]/);
+              setCampo('Numéricos');
+              setTipodocumento('Certificado de nacido vivo ');
+              prop(6, 'deathinst');
+            }
+            else {
+              if (valorupper === '60518653-70B7-42AB-8622-CAA27B496184') {
+                setLongitudminima(7);
+                setLongitudmaxima(16);
+                setTipocampo('[a-zA-Z0-9]{7,16}');
+                setTipocampovalidacion(/[a-zA-Z0-9]/);
+                setCampo('AlfaNumérico(Numéros y letras)');
+                setTipodocumento('Documento Extranjero');
+                prop(7, 'deathinst');
+              }
+              else {
+                if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
+                  setLongitudminima(9);
+                  setLongitudmaxima(9);
+                  setTipocampo('[a-zA-Z0-9]{9,9}');
+                  setTipocampovalidacion(/[a-zA-Z0-9]/);
+                  setCampo('AlfaNumérico(Numéros y letras)');
+                  setTipodocumento('Salvoconducto');
+                  prop(9, 'deathinst');
+                }
+                else {
+                  if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
+                    setLongitudminima(5);
+                    setLongitudmaxima(11);
+                    setTipocampo('[a-zA-Z0-9]{5,11}');
+                    setTipocampovalidacion(/[a-zA-Z0-9]/);
+                    setCampo('AlfaNumérico(Numéros y letras)');
+                    setTipodocumento('Adulto Sin Identificar');
+                    prop(5, 'deathinst');
+                  }
+
+                  else {
+                    if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
+                      setLongitudminima(5);
+                      setLongitudmaxima(12);
+                      setTipocampo('[a-zA-Z0-9]{5,12}');
+                      setTipocampovalidacion(/[a-zA-Z0-9]/);
+                      setCampo('AlfaNumérico(Numéros y letras)');
+                      setTipodocumento('Menor Sin Identificar');
+                      prop(5, 'deathinst');
+                    }
+                    else {
+                      if (valorupper === 'E927B566-7B8E-4B4D-AE26-14454705CB5E') {
+                        setLongitudminima(4);
+                        setLongitudmaxima(18);
+                        setTipocampo('[a-zA-Z0-9]{4,18}');
+                        setTipocampovalidacion(/[a-zA-Z0-9]/);
+                        setCampo('AlfaNumérico(Numéros y letras)');
+                        setTipodocumento('Permiso de Protección Temporal');
+                        prop(4, 'deathinst');
+                      }
+                      else {
+                        setLongitudminima(6);
+                        setLongitudmaxima(10);
+                        setTipocampo('[a-zA-Z0-9]{6,10}');
+                        setTipocampovalidacion(/[a-zA-Z0-9]/);
+                        setCampo('AlfaNuméricos(Numéros y letras)');
+                        setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+                        prop(6, 'deathinst');
+                      }
+
+                    }
+
+                  }
+
+
+                }
+
+              }
+
+
+            }
+
           }
         }
       }
     }
+
+
   };
   return (
     <>
@@ -152,7 +236,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Tipo Identificación'
             name='instTipoIdent'
-            initialValue={obj?.instTipoIdent ? obj?.instTipoIdent : 'NIT'}
+            initialValue={'NIT'}
             rules={[{ required: true }]}
           >
             <SelectComponent
@@ -167,7 +251,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Form.Item
             label='Número Identificación'
             name='instNumIdent'
-            initialValue={obj?.instNumIdent ? obj?.instNumIdent : defaultValues.identification}
+            initialValue={defaultValues.identification}
             rules={[{ required: true }]}
           >
             <Input
@@ -206,7 +290,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <Form.Item
             label='Razón Social'
-            initialValue={obj?.instRazonSocial ?? defaultValues.businessName}
+            initialValue={defaultValues.businessName}
             name='instRazonSocial'
             rules={[{ required: true }]}
           >
@@ -239,7 +323,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             <>
               <Form.Item
                 label='Nombres y Apellidos del Fiscal'
-                initialValue={obj?.instNombreFiscal}
+                initialValue={(obj?.instNombreFiscal + obj?.instApellidoFiscal)}
                 name='instNombreFiscal'
                 rules={[{ required: isMedicinaLegal, max: 200 }]}
               >
@@ -285,7 +369,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
           <>
             <Divider orientation='right'>DATOS DEL ACTA NOTARIAL DE LA FISCALÍA</Divider>
-            <Form.Item label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: false, max: 10 }]}>
+            <Form.Item initialValue={obj?.instNumActaLevantamiento} label='Número acta de Levantamiento' name='numeroActLeva' rules={[{ required: false, max: 10 }]}>
               <Input
                 allowClear
                 placeholder='Nueva acta de Levantamiento'
@@ -302,7 +386,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Fecha de Acta' required={false} name='DateAct'>
+            <Form.Item label='Fecha de Acta' initialValue={moment(obj?.instFechaActa)} required={false} name='DateAct'>
               <DatepickerComponent
                 picker='date'
                 dateDisabledType='before'
@@ -311,10 +395,11 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' rules={[{ required: false }]}>
-              <SelectComponent options={l_seccionales} optionPropkey='CODIGO' optionPropLabel='DESCRIP' />
+            <Form.Item label='Seccional Fiscalia' name='SecFiscalAct' initialValue={obj?.instSeccionalFiscalia} rules={[{ required: false }]}>
+              <SelectComponent options={l_seccionales} optionPropkey='DESCRIP' optionPropLabel='DESCRIP' />
             </Form.Item>
-            <Form.Item label='No. Fiscal' name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
+
+            <Form.Item label='No. Fiscal' initialValue={obj?.instNoFiscalMedicinaLegal} name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
               <Input
                 allowClear
                 placeholder='No. Fiscal'
@@ -331,7 +416,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               <>
                 <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
 
-                <Form.Item label='Nombre' rules={[{ required: true }]} name='fiscalianombreDC'>
+                <Form.Item label='Nombre' initialValue={obj?.instNombreFiscal} rules={[{ required: true }]} name='fiscalianombreDC'>
                   <Input
                     allowClear
                     placeholder='Nombre'
@@ -348,7 +433,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Apellido' rules={[{ required: true }]} name='fiscaliaapellidoDC'>
+                <Form.Item label='Apellido' initialValue={obj?.instApellidoFiscal} rules={[{ required: true }]} name='fiscaliaapellidoDC'>
                   <Input
                     allowClear
                     placeholder='Apellido'
@@ -365,7 +450,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Número de oficio de medicina legal' rules={[{ required: true }]} name='fiscalianumeroDC'>
+                <Form.Item label='Número de oficio de medicina legal' initialValue={obj?.instNumeroOficio} rules={[{ required: true }]} name='fiscalianumeroDC'>
                   <Input
                     allowClear
                     placeholder='Número de oficio de medicina legal'
@@ -382,7 +467,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Fecha del Oficio' rules={[{ required: true }]} name='fiscaliafechaDC'>
+                <Form.Item label='Fecha del Oficio' initialValue={moment(obj?.instFechaOficio)} rules={[{ required: true }]} name='fiscaliafechaDC'>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                 </Form.Item>
 
@@ -433,4 +518,5 @@ interface IDeathInstituteProps<T> {
   tipoLicencia: TypeLicencia;
   obj: any;
   prop: any;
+  cambio: any;
 }
