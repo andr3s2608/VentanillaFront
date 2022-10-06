@@ -27,17 +27,9 @@ const ModulePage = () => {
   const api = new ApiService(accountIdentifier);
   const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(false);
 
-  //Aumentar y disminuir texto
-  const [size, setSize] = useState(16);
-  const styles = { fontSize: size };
-
 
   //Cambiar de tema oscuro y claro
   const [isDarkTheme, setIsSetDarkTheme] = useState(false);
-  const onViewValue = () => {
-    debugger;
-    ChangeTheme();
-  }
 
   const onPersonNatural = () => history.push('/registro/Natural');
   const onPersonJuridica = () => history.push('/registro/Juridico');
@@ -96,10 +88,6 @@ const ModulePage = () => {
 
   //Funcion que permite aumentar o disminuir el tamaño de la
   const onCancel = (): void => { };
-  function handleClick(symbol: string) {
-    if (symbol === "+") setSize(size + 2);
-    else if (symbol === "-") setSize(size - 2);
-  }
 
 
   return (
@@ -132,26 +120,20 @@ const ModulePage = () => {
         </ModalComponent>
       ) : null}
 
-      <PageHeaderComponent style={styles}
+      <PageHeaderComponent
         title={`¡Bienvenido/a ${validacioninfo}!`}
         subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
         backIcon={null}
       />
 
-      <div className='sidebar_help'>
-        <ul className="social">
-          <li><button className='btn ant-btn-primary' onClick={() => handleClick("+")}><span className='text'>+</span><i className="fa-solid fa-a ml-2"></i></button></li>
-          <li><button style={{ marginTop: '-19px' }} className='btn ant-btn-primary' onClick={() => handleClick("-")}><span className='text'>-</span><i className="fa-solid fa-a ml-2"></i></button></li>
-          <li><button onClick={onViewValue} style={{ marginTop: '-20px' }} className='btn ant-btn-primary'><i className="fa-sharp fa-solid fa-circle-half-stroke fa-lg"></i></button></li>
-        </ul>
-      </div>
+
 
 
       <div className='card card-body' >
-        <span ><h4 className='app-subtitle mt-3' style={styles}><span>Tramites y Servicios</span></h4></span>
+        <span ><h4 className='app-subtitle mt-3'><span>Tramites y Servicios</span></h4></span>
 
 
-        <p style={styles} className="mt-2">
+        <p className="mt-2">
           <span >
             La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
             la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
@@ -161,13 +143,13 @@ const ModulePage = () => {
           </span>
         </p>
 
-        <p style={styles}>
+        <p>
           <span >
             Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
             <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
             ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
             sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;<br />
-            <a className="enlace_inicio" style={styles} href='mailto:contactenos@saludcapital.gov.co'><span >contactenos@saludcapital.gov.co</span></a>.
+            <a className="enlace_inicio" href='mailto:contactenos@saludcapital.gov.co'><span >contactenos@saludcapital.gov.co</span></a>.
           </span>
         </p>
       </div>
