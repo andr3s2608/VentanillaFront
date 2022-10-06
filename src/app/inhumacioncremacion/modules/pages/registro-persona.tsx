@@ -153,7 +153,7 @@ const RegistroPage: React.FC<any> = (props) => {
 
       let numerorep: number = value.instNumIdent;
 
-      if (numerorep > 999999999) {
+      if (numerorep > 2000000000) {
         Swal.fire({
           icon: 'error',
           title: 'Datos Invalidos',

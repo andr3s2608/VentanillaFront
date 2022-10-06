@@ -43,9 +43,10 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
 
       const roles: any = localStorage.getItem('roles');
       const rol: any = JSON.parse(roles);
-      const [permiso] = rol;
-
-      setrol(permiso.rol);
+      if (rol !== undefined && rol.length > 0) {
+        const [permiso] = rol == undefined ? 'ninguno' : rol;
+        setrol(permiso.rol);
+      }
       if (info == undefined) {
         setvalidacioninfo(name);
       } else {
