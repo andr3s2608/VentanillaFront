@@ -39,7 +39,9 @@ export const Gridview = (props: IDataSource) => {
 
       const rolesstorage: any = localStorage.getItem('roles');
       const datostabla: any = localStorage.getItem('tablainhcrem');
-      setdatosUsuario(JSON.parse(datostabla));
+      const datosjson = JSON.parse(datostabla)
+      setdatosUsuario(datosjson);
+      console.log(datosjson);
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
     },
