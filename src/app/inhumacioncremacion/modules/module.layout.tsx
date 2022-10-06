@@ -74,8 +74,10 @@ export const ModuleLayout = (props: { logout: () => void }) => {
       const infouser = await api.GetInformationUser(idUser);
       const idUsuario = await api.getIdUsuario();
       setIdUsuario(idUsuario);
-      setPrimerNombre(infouser.primerNombre.toLocaleUpperCase());
-      setPrimerApellido(infouser.primerApellido.toLocaleUpperCase());
+      if (infouser != null) {
+        setPrimerNombre(infouser.primerNombre.toLocaleUpperCase());
+        setPrimerApellido(infouser.primerApellido.toLocaleUpperCase());
+      }
 
       //Hasta que se publiquen las APIs
 
