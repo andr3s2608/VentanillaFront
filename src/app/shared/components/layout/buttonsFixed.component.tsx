@@ -16,7 +16,7 @@ export const ButtonsComponent = () => {
   }
 
   const changeFont = (operator: string = '') => {
-    debugger
+
     if (fontSize === 24 && operator === '+') {
       return
     }
