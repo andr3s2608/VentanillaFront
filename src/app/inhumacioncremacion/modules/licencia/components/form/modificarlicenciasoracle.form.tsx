@@ -17,8 +17,8 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 
 //Redux
 import { store } from 'app/redux/app.reducers';
-import { UploadOutlined } from '@ant-design/icons';
-import { Input, Radio, Switch, Upload } from 'antd';
+import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
+import { Input, Radio, Switch, Table, Upload } from 'antd';
 import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
@@ -28,9 +28,16 @@ export const ModificarLicencia = ({ props }: any) => {
   const [form] = Form.useForm<any>();
 
   const [licencia, setLicencia] = useState<boolean>(false);
+
+  const [licenciaseleccionada, setLicenciaseleccionada] = useState<boolean>(false);
   const [nn, setnn] = useState<boolean>(false);
   const [valores, setvalores] = useState<string>('licencia');
   const [date, setDate] = useState<any>();
+
+  const [fechafiltro, setfechafiltro] = useState<any>();
+
+  const [datosUsuario, setdatosUsuario] = useState<any>([]);
+  const [data, setdata] = useState<any>([]);
 
   //////////////7777
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
@@ -39,7 +46,7 @@ export const ModificarLicencia = ({ props }: any) => {
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [sininformacion, setsininformacion] = useState<boolean>(false);
-  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7c96a4d3-a0cb-484e-a01b-93bc39c2552e');
+
   const [campo, setCampo] = useState<string>('Numéricos');
   ///////////////
   const [l_tipos_documento, settipos] = useState<any>([]);
@@ -47,7 +54,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const [obj, setobj] = useState<any>();
 
-  const [posicion, setposicion] = useState<number>(0);
+
   const [[primerNombre, segundoNombre, primerApellido, segundoApellido], setnombres] = useState<[string, string, string, string]>(
     ['', '', '', '']
   );
@@ -95,228 +102,244 @@ export const ModificarLicencia = ({ props }: any) => {
     } else {
       console.log(solicitud);
 
+      setdata(solicitud);
+      setdatosUsuario(solicitud);
+      form.resetFields(['name', 'secondName', 'surname', 'secondSurname', 'numerocert', 'IDType', 'deathType', 'IDNumber', 'cementerio'
+        , 'razoninst', 'codinst', 'radicado', 'numerolic', 'date']);
+      setLicenciaseleccionada(false);
+      setLicencia(true)
 
-      setobj(solicitud[0]);
-      setcertificado(solicitud[0].NUM_CERTIFICADO_DEFUNCION);
-      setnumerolicencia(solicitud[0].INH_NUM_LICENCIA);
-      const fecha = solicitud[0].INH_FEC_LICENCIA;
-
-      setDate(moment(fecha));
-
-      setnombres([
-        solicitud[0].PRIMER_NOMBRE ?? '',
-        solicitud[0].SEGUNDO_NOMBRE ?? '',
-        solicitud[0].PRIMER_APELLIDO ?? '',
-        solicitud[0].SEGUNDO_APELLIDO ?? ''
-      ])
-
-      let tipoid = '';
-      switch (solicitud[0].TIPO_IDENT) {
-        case 'CD' || 'Carné Diplomático':
-          tipoid = '97f5657d-d8ec-48ef-bbe3-1babefecb1a4'
-          setLongitudminima(10);
-          setLongitudmaxima(11);
-          setTipocampo('[a-zA-Z0-9]{10,11}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
-          break;
-        case 'CC' || 'Cédula de Ciudadanía':
-          tipoid = '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
-          setLongitudminima(4);
-          setLongitudmaxima(10);
-          setTipocampo('[0-9]{4,10}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Cédula de Ciudadanía');
-          break;
-
-        case 'CE' || 'Cédula de extranjería':
-          setLongitudminima(6);
-          setLongitudmaxima(10);
-          setTipocampo('[a-zA-Z0-9]{6,10}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-          break;
-        case 'CN' || 'Certificado de Nacido Vivo':
-          tipoid = '0d69523b-4676-4e3d-8a3d-c6800a3acf3e'
-          setLongitudminima(6);
-          setLongitudmaxima(9);
-          setTipocampo('[0-9]{6,9}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Certificado de nacido vivo ');
-          break;
-
-        case 'DE' || 'Documento Extranjero':
-          tipoid = '60518653-70b7-42ab-8622-caa27b496184'
-          setLongitudminima(7);
-          setLongitudmaxima(16);
-          setTipocampo('[a-zA-Z0-9]{7,16}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNumérico(Numéros y letras)');
-          setTipodocumento('Documento Extranjero');
-          break;
-
-        case 'NP' || 'Número de Protocolo':
-          tipoid = '7c96a4d3-a0cb-484e-a01b-93bc39c7902e'
-          setLongitudminima(2);
-          setLongitudmaxima(10);
-          setTipocampo('[0-9]{2,10}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Número de Protocolo');
-          form.setFieldsValue({ IDNumber: '8001508610' });
-          break;
-        case 'NUIP' || 'Numero único de identificacíon personal':
-          tipoid = 'ffe88939-06d5-486c-887c-e52d50b7f35d'
-          setLongitudminima(10);
-          setLongitudmaxima(11);
-          setTipocampo('[a-zA-Z0-9]{10,11}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
-          break;
-
-        case 'PA' || 'Pasaporte':
-          tipoid = 'f1b570ee-f628-4438-a47f-6d7bff1f06d7'
-          setLongitudminima(6);
-          setLongitudmaxima(10);
-          setTipocampo('[a-zA-Z0-9]{6,10}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-          break;
-
-        case 'PEP' || 'Permiso Especial de Permanencia':
-          tipoid = '2491bc4b-8a60-408f-9fd1-136213f1e4fb'
-          setLongitudminima(15);
-          setLongitudmaxima(15);
-          setTipocampo('[0-9]{15,15}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Permiso Especial de Permanencia');
-          break;
-
-        case 'RC' || 'Registro Civil de Nacimiento':
-          tipoid = '71f659be-9d6b-4169-9ee2-e70bf0d65f92'
-          setLongitudminima(10);
-          setLongitudmaxima(11);
-          setTipocampo('[a-zA-Z0-9]{10,11}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
-          break;
-
-        case 'SC' || 'Salvoconducto':
-          tipoid = 'c532c358-56ae-4f93-8b9b-344ddf1256b7'
-          setLongitudminima(9);
-          setLongitudmaxima(9);
-          setTipocampo('[a-zA-Z0-9]{9,9}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNumérico(Numéros y letras)');
-          setTipodocumento('Salvoconducto');
-
-          break;
-
-        case 'TE' || 'Tarjeta de Extranjería':
-          tipoid = '0676c046-d93a-4551-a37e-72e3a653bd1b'
-          setLongitudminima(6);
-          setLongitudmaxima(10);
-          setTipocampo('[a-zA-Z0-9]{6,10}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-          break;
-
-
-        case 'TI' || 'Tarjeta de Identidad':
-          tipoid = 'ac3629d8-5c87-46ce-a8e2-530b0495cbf6'
-          setLongitudminima(10);
-          setLongitudmaxima(11);
-          setTipocampo('[0-9]{10,11}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Tarjeta de Identidad ');
-
-          break;
-
-        case 'AS' || 'Adulto Sin Identificar':
-          tipoid = '6ae7e477-2de5-4149-8c93-12aca6668ff0'
-          setLongitudminima(5);
-          setLongitudmaxima(11);
-          setTipocampo('[a-zA-Z0-9]{5,11}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNumérico(Numéros y letras)');
-          setTipodocumento('Adulto Sin Identificar');
-          setTipodocumento('Adulto Sin Identificar');
-          break;
-
-        case 'MS' || 'Menor Sin Identificar':
-          tipoid = '5fa5bf3f-b342-4596-933f-0956ae4b9109'
-          setLongitudminima(5);
-          setLongitudmaxima(12);
-          setTipocampo('[a-zA-Z0-9]{5,12}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNumérico(Numéros y letras)');
-          setTipodocumento('Menor Sin Identificar');
-
-          break;
-
-        case 'PEP' || 'Permiso de Protección Temporal':
-          tipoid = 'e927b566-7b8e-4b4d-ae26-14454705cb5e'
-          setLongitudminima(4);
-          setLongitudmaxima(18);
-          setTipocampo('[a-zA-Z0-9]{4,18}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setCampo('AlfaNumérico(Numéros y letras)');
-          setTipodocumento('Permiso de Protección Temporal');
-          break;
-
-        case 'SI' || 'Sin identificación':
-          tipoid = 'c087d833-3cfb-460f-aa78-e5cf2fe83f25'
-          setLongitudminima(5);
-          setLongitudmaxima(15);
-          setTipocampo('[a-zA-Z0-9]{5,15}');
-          setTipocampovalidacion(/[a-zA-Z0-9]/);
-          setTipodocumento('Sin Identificación');
-          setCampo('AlfaNuméricos(Numéros y letras)');
-          break;
-
-      }
-
-      let tipom = '';
-      switch (solicitud[0].TIPO_MUERTE) {
-        case 'N' || 'Natural':
-          tipom = '475c280d-67af-47b0-a8bc-de420f6ac740'
-          break;
-
-        case 'V' || 'Violenta':
-          tipom = '253eaa61-81be-4bc0-9003-2eb1c9e37606'
-          break;
-
-        case 'EE' || 'En estudio':
-          tipom = '3df924db-7307-4be1-9fe8-1cce8cfb9584'
-          break;
-        default:
-          break;
-      }
-
-      setcamposoracle([
-        tipoid,
-        solicitud[0].NROIDENT,
-        solicitud[0].CEMENTERIO,
-        tipom,
-        solicitud[0].COD_INST,
-        solicitud[0].RAZON_INST,
-        solicitud[0].RADICADO
-      ])
-      form.resetFields(['name', 'secondName', 'surname', 'secondSurname', 'numerocert', 'date', 'check', 'time', 'sex']);
-      setLicencia(true);
 
     }
   };
+
+  const onClickValidarInformacion = async (solicitud: any) => {
+    setLicencia(false);
+
+    setobj(solicitud);
+    setcertificado(solicitud.NUM_CERTIFICADO_DEFUNCION);
+    setnumerolicencia(solicitud.INH_NUM_LICENCIA);
+    const fecha = solicitud.INH_FEC_LICENCIA;
+
+    setDate(moment(fecha));
+
+    setnombres([
+      solicitud.PRIMER_NOMBRE ?? '',
+      solicitud.SEGUNDO_NOMBRE ?? '',
+      solicitud.PRIMER_APELLIDO ?? '',
+      solicitud.SEGUNDO_APELLIDO ?? ''
+    ])
+
+    let tipoid = '';
+    switch (solicitud.TIPO_IDENT) {
+      case 'CD' || 'Carné Diplomático':
+        tipoid = '97f5657d-d8ec-48ef-bbe3-1babefecb1a4'
+        setLongitudminima(10);
+        setLongitudmaxima(11);
+        setTipocampo('[a-zA-Z0-9]{10,11}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
+        break;
+      case 'CC' || 'Cédula de Ciudadanía':
+        tipoid = '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+        setLongitudminima(4);
+        setLongitudmaxima(10);
+        setTipocampo('[0-9]{4,10}');
+        setTipocampovalidacion(/[0-9]/);
+        setCampo('Numéricos');
+        setTipodocumento('Cédula de Ciudadanía');
+        break;
+
+      case 'CE' || 'Cédula de extranjería':
+        setLongitudminima(6);
+        setLongitudmaxima(10);
+        setTipocampo('[a-zA-Z0-9]{6,10}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+        break;
+      case 'CN' || 'Certificado de Nacido Vivo':
+        tipoid = '0d69523b-4676-4e3d-8a3d-c6800a3acf3e'
+        setLongitudminima(6);
+        setLongitudmaxima(9);
+        setTipocampo('[0-9]{6,9}');
+        setTipocampovalidacion(/[0-9]/);
+        setCampo('Numéricos');
+        setTipodocumento('Certificado de nacido vivo ');
+        break;
+
+      case 'DE' || 'Documento Extranjero':
+        tipoid = '60518653-70b7-42ab-8622-caa27b496184'
+        setLongitudminima(7);
+        setLongitudmaxima(16);
+        setTipocampo('[a-zA-Z0-9]{7,16}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNumérico(Numéros y letras)');
+        setTipodocumento('Documento Extranjero');
+        break;
+
+      case 'NP' || 'Número de Protocolo':
+        tipoid = '7c96a4d3-a0cb-484e-a01b-93bc39c7902e'
+        setLongitudminima(2);
+        setLongitudmaxima(10);
+        setTipocampo('[0-9]{2,10}');
+        setTipocampovalidacion(/[0-9]/);
+        setCampo('Numéricos');
+        setTipodocumento('Número de Protocolo');
+        form.setFieldsValue({ IDNumber: '8001508610' });
+        break;
+      case 'NUIP' || 'Numero único de identificacíon personal':
+        tipoid = 'ffe88939-06d5-486c-887c-e52d50b7f35d'
+        setLongitudminima(10);
+        setLongitudmaxima(11);
+        setTipocampo('[a-zA-Z0-9]{10,11}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
+        break;
+
+      case 'PA' || 'Pasaporte':
+        tipoid = 'f1b570ee-f628-4438-a47f-6d7bff1f06d7'
+        setLongitudminima(6);
+        setLongitudmaxima(10);
+        setTipocampo('[a-zA-Z0-9]{6,10}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+        break;
+
+      case 'PEP' || 'Permiso Especial de Permanencia':
+        tipoid = '2491bc4b-8a60-408f-9fd1-136213f1e4fb'
+        setLongitudminima(15);
+        setLongitudmaxima(15);
+        setTipocampo('[0-9]{15,15}');
+        setTipocampovalidacion(/[0-9]/);
+        setCampo('Numéricos');
+        setTipodocumento('Permiso Especial de Permanencia');
+        break;
+
+      case 'RC' || 'Registro Civil de Nacimiento':
+        tipoid = '71f659be-9d6b-4169-9ee2-e70bf0d65f92'
+        setLongitudminima(10);
+        setLongitudmaxima(11);
+        setTipocampo('[a-zA-Z0-9]{10,11}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
+        break;
+
+      case 'SC' || 'Salvoconducto':
+        tipoid = 'c532c358-56ae-4f93-8b9b-344ddf1256b7'
+        setLongitudminima(9);
+        setLongitudmaxima(9);
+        setTipocampo('[a-zA-Z0-9]{9,9}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNumérico(Numéros y letras)');
+        setTipodocumento('Salvoconducto');
+
+        break;
+
+      case 'TE' || 'Tarjeta de Extranjería':
+        tipoid = '0676c046-d93a-4551-a37e-72e3a653bd1b'
+        setLongitudminima(6);
+        setLongitudmaxima(10);
+        setTipocampo('[a-zA-Z0-9]{6,10}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+        break;
+
+
+      case 'TI' || 'Tarjeta de Identidad':
+        tipoid = 'ac3629d8-5c87-46ce-a8e2-530b0495cbf6'
+        setLongitudminima(10);
+        setLongitudmaxima(11);
+        setTipocampo('[0-9]{10,11}');
+        setTipocampovalidacion(/[0-9]/);
+        setCampo('Numéricos');
+        setTipodocumento('Tarjeta de Identidad ');
+
+        break;
+
+      case 'AS' || 'Adulto Sin Identificar':
+        tipoid = '6ae7e477-2de5-4149-8c93-12aca6668ff0'
+        setLongitudminima(5);
+        setLongitudmaxima(11);
+        setTipocampo('[a-zA-Z0-9]{5,11}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNumérico(Numéros y letras)');
+        setTipodocumento('Adulto Sin Identificar');
+        setTipodocumento('Adulto Sin Identificar');
+        break;
+
+      case 'MS' || 'Menor Sin Identificar':
+        tipoid = '5fa5bf3f-b342-4596-933f-0956ae4b9109'
+        setLongitudminima(5);
+        setLongitudmaxima(12);
+        setTipocampo('[a-zA-Z0-9]{5,12}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNumérico(Numéros y letras)');
+        setTipodocumento('Menor Sin Identificar');
+
+        break;
+
+      case 'PEP' || 'Permiso de Protección Temporal':
+        tipoid = 'e927b566-7b8e-4b4d-ae26-14454705cb5e'
+        setLongitudminima(4);
+        setLongitudmaxima(18);
+        setTipocampo('[a-zA-Z0-9]{4,18}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNumérico(Numéros y letras)');
+        setTipodocumento('Permiso de Protección Temporal');
+        break;
+
+      case 'SI' || 'Sin identificación':
+        tipoid = 'c087d833-3cfb-460f-aa78-e5cf2fe83f25'
+        setLongitudminima(5);
+        setLongitudmaxima(15);
+        setTipocampo('[a-zA-Z0-9]{5,15}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setTipodocumento('Sin Identificación');
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        break;
+
+    }
+
+    let tipom = '';
+    switch (solicitud.TIPO_MUERTE) {
+      case 'N' || 'Natural':
+        tipom = '475c280d-67af-47b0-a8bc-de420f6ac740'
+        break;
+
+      case 'V' || 'Violenta':
+        tipom = '253eaa61-81be-4bc0-9003-2eb1c9e37606'
+        break;
+
+      case 'EE' || 'En estudio':
+        tipom = '3df924db-7307-4be1-9fe8-1cce8cfb9584'
+        break;
+      default:
+        break;
+    }
+
+    setcamposoracle([
+      tipoid,
+      solicitud.NROIDENT,
+      solicitud.CEMENTERIO,
+      tipom,
+      solicitud.COD_INST,
+      solicitud.RAZON_INST,
+      solicitud.RADICADO
+    ])
+    form.resetFields(['name', 'secondName', 'surname', 'secondSurname', 'numerocert', 'IDType', 'deathType', 'IDNumber', 'cementerio'
+      , 'razoninst', 'codinst', 'radicado', 'numerolic', 'date']);
+    setLicenciaseleccionada(true);
+  };
+
+
+
+
 
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
@@ -471,6 +494,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
       console.log(obj)
 
+      await api.putLicenciaOracle(obj)
 
       //    await api.putLicencia();
 
@@ -526,7 +550,7 @@ export const ModificarLicencia = ({ props }: any) => {
           await api.UpdateSupportDocuments(supportDocumentsEdit);
         }
       }
-      setLicencia(false);
+      setLicenciaseleccionada(false);
       Swal.fire({
         icon: 'success',
 
@@ -555,7 +579,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const cambiodocumento = (value: any) => {
     const valor: string = value;
-    settipodocumentohoranacimiento(valor);
+
 
     const valorupper = valor.toUpperCase();
     setsininformacion(false);
@@ -703,6 +727,107 @@ export const ModificarLicencia = ({ props }: any) => {
     }
   };
 
+  const FilterByNameInputfecha = () => {
+
+    return (
+      <Form.Item style={{ width: 300, marginTop: 4, marginRight: 4 }} initialValue={fechafiltro}>
+        <DatepickerComponent
+          id='datePicker1'
+          picker='date'
+          placeholder='Fecha de Licencia'
+          dateDisabledType='default'
+          dateFormatType='default'
+          className='form-control'
+          onChange={(e) => {
+
+            setfechafiltro(e);
+            if (e != null) {
+              let fecha: any = '';
+              fecha = moment(e).format('YYYY-MM-DD');
+              setfechafiltro(fecha);
+
+              const filteredDataUsuario: any = data.filter((datos: any) => {
+
+                return (
+                  datos.INH_FEC_LICENCIA.toString().includes(fecha)
+                );
+              });
+              setdatosUsuario(filteredDataUsuario);
+
+            }
+            else {
+              setdatosUsuario(data);
+            }
+          }}
+        />
+      </Form.Item>
+    );
+
+  }
+
+  let structureColumns = [
+    {
+      title: 'Numero de Licencia',
+      dataIndex: 'INH_NUM_LICENCIA',
+      key: 'INH_NUM_LICENCIA',
+      width: 300,
+
+    },
+    {
+      title: FilterByNameInputfecha(),
+      dataIndex: 'INH_FEC_LICENCIA',
+      with: 100,
+      key: 'INH_FEC_LICENCIA',
+      render: (Text: string) => (
+        <Form.Item label='' name=''>
+          <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
+        </Form.Item>
+      )
+    },
+    {
+      title: 'Nombres',
+      dataIndex: '',
+      with: 300,
+      key: 'nombre',
+      render: (_: any, row: any, index: any) => {
+        return (<Form.Item label='' name=''>
+          <text>{row.PRIMER_NOMBRE + ' ' + row.PRIMER_APELLIDO}</text>
+        </Form.Item>)
+
+      }
+    },
+
+    {
+      title: 'Actualizar',
+      key: 'Acciones',
+      render: (_: any, row: any, index: any) => {
+        return (
+          <Button
+            type='primary'
+            style={{ marginLeft: '5px' }}
+            icon={<CheckOutlined />}
+            onClick={() => onClickValidarInformacion(row)}
+          >
+            Seleccionar
+          </Button>
+        );
+
+      }
+    }
+  ];
+
+
+  /*
+    <div className='row mt-3 justify-content-center text-center'>
+      <div className='col-lg-12 col-sm-12 col-md-12'>
+        <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
+        <Radio.Group onChange={changeRadioButton} defaultValue={'licencia'}>
+          <Radio value='licencia'>Número de Licencia</Radio>
+        </Radio.Group>
+      </div>
+    </div>
+
+  */
   return (
     <div className='container-fluid'>
       <div className='card'>
@@ -718,18 +843,11 @@ export const ModificarLicencia = ({ props }: any) => {
                 </p>
               </div>
             </div>
-            <div className='row mt-3 justify-content-center text-center'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
-                <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
-                <Radio.Group onChange={changeRadioButton} defaultValue={'licencia'}>
-                  <Radio value='licencia'>Número de Licencia</Radio>
-                </Radio.Group>
-              </div>
-            </div>
+
 
             <div className='row mt-5 mr-5 justify-content-center'>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <Form.Item label='Número' name='numero'>
+                <Form.Item label='Número de Licencia' name='numero'>
                   <Input
                     allowClear
                     placeholder='Número'
@@ -754,7 +872,26 @@ export const ModificarLicencia = ({ props }: any) => {
                 </Button>
               </div>
             </div>
+
             {licencia && (
+              <>
+                <div className='row'>
+                  <div className='col-lg-8 col-sm-8 col-md-8'>
+                    <Table
+                      id='tableGen'
+                      dataSource={datosUsuario}
+                      size='middle'
+                      columns={structureColumns}
+                      scroll={{ x: 900 }}
+                      pagination={{ pageSize: 10 }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+
+            {licenciaseleccionada && (
               <>
                 <Form.Item label='Fecha de la Licencia' name='date' rules={[{ required: false }]} initialValue={date}>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={date} disabled />

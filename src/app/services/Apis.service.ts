@@ -463,6 +463,13 @@ export class ApiService {
       url: `v2/Persona/GetPersonFromLicenNumber/${numlicen}/${idtype}`,
       id: '0'
     });
+  putLicenciaOracle = (payload: any) =>
+    put({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `v2/Persona/UpdatePersonFromLicenNumber`,
+      payload,
+      id: '0'
+    });
 
   //////////////////////////
   //Apis Aguas
