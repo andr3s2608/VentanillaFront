@@ -1082,6 +1082,7 @@ export const ModificarLicencia = ({ props }: any) => {
                     allowClear
                     placeholder='Cementerio'
                     autoComplete='off'
+                    disabled
                     type='text'
                     onKeyPress={(event) => {
                       if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
