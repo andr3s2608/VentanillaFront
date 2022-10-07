@@ -3,13 +3,18 @@ export const ChangeTheme = () => {
 
   var header = document.getElementsByTagName("header");
   var label = document.getElementsByTagName("label");
-  var antMenuItem = document.getElementsByClassName("ant-menu-item");
+  var antMenuItem = document.getElementsByClassName("ant-menu-title-content");
   var h2 = document.getElementsByTagName("h2");
   var p = document.getElementsByTagName("p");
-  var span = document.getElementsByTagName("h4");
+  var b = document.getElementsByTagName("b");
+  var li = document.getElementsByTagName("li");
+  var h4 = document.getElementsByTagName("h4");
+  var antMenuItemContent = document.getElementsByClassName("ant-steps-item-content");
+  var element = document.getElementsByTagName("div");
+  var section = document.getElementsByTagName("section");
+  var footer = document.getElementsByTagName("footer");
 
   if (localStorage.getItem('isBlack') === 'true') {
-    var element = document.getElementsByTagName("div");
 
     for (let index = 0; index < element.length; index++) {
       element[index].classList.add("black");
@@ -33,20 +38,46 @@ export const ChangeTheme = () => {
     for (let index = 0; index < h2.length; index++) {
       h2[index].classList.add("border");
       h2[index].classList.add("border-warning");
+      h2[index].classList.add("text-white");
     }
 
     for (let index = 0; index < p.length; index++) {
       p[index].classList.add("border");
       p[index].classList.add("border-warning");
+      p[index].classList.add("text-white");
     }
 
-    for (let index = 0; index < span.length; index++) {
-      span[index].classList.add("border");
-      span[index].classList.add("border-warning");
+    for (let index = 0; index < b.length; index++) {
+      b[index].classList.add("border");
+      b[index].classList.add("border-warning");
+      b[index].classList.add("text-white");
+    }
+
+    for (let index = 0; index < h4.length; index++) {
+      h4[index].classList.add("border");
+      h4[index].classList.add("border-warning");
+    }
+
+    for (let index = 0; index < li.length; index++) {
+      li[index].classList.add("border");
+      li[index].classList.add("border-warning");
+    }
+
+    for (let index = 0; index < antMenuItemContent.length; index++) {
+      antMenuItemContent[index].classList.add("border");
+      antMenuItemContent[index].classList.add("border-warning");
+    }
+
+    for (let index = 0; index < section.length; index++) {
+      section[index].classList.add("black");
+    }
+
+    for (let index = 0; index < footer.length; index++) {
+      footer[index].classList.add("black");
     }
 
   } else {
-    var element = document.getElementsByTagName("div");
+
     for (let index = 0; index < element.length; index++) {
       element[index].classList.remove("black");
     }
@@ -65,20 +96,48 @@ export const ChangeTheme = () => {
       antMenuItem[index].classList.remove("border-warning");
       antMenuItem[index].classList.remove("border");
     }
+
     for (let index = 0; index < h2.length; index++) {
       h2[index].classList.remove("border");
       h2[index].classList.remove("border-warning");
+      h2[index].classList.remove("text-white");
     }
 
     for (let index = 0; index < p.length; index++) {
       p[index].classList.remove("border");
       p[index].classList.remove("border-warning");
+      p[index].classList.remove("text-white");
     }
 
-    for (let index = 0; index < span.length; index++) {
-      span[index].classList.remove("border");
-      span[index].classList.remove("border-warning");
+    for (let index = 0; index < b.length; index++) {
+      b[index].classList.remove("border");
+      b[index].classList.remove("border-warning");
+      b[index].classList.remove("text-white");
     }
+
+    for (let index = 0; index < h4.length; index++) {
+      h4[index].classList.remove("border");
+      h4[index].classList.remove("border-warning");
+    }
+
+    for (let index = 0; index < li.length; index++) {
+      li[index].classList.remove("border");
+      li[index].classList.remove("border-warning");
+    }
+
+    for (let index = 0; index < antMenuItemContent.length; index++) {
+      antMenuItemContent[index].classList.remove("border");
+      antMenuItemContent[index].classList.remove("border-warning");
+    }
+
+    for (let index = 0; index < section.length; index++) {
+      section[index].classList.remove("black");
+    }
+
+    for (let index = 0; index < footer.length; index++) {
+      footer[index].classList.remove("black");
+    }
+
   }
 
   // var element = document.getElementsByTagName("div");
