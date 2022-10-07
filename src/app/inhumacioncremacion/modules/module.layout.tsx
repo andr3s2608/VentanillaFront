@@ -169,28 +169,16 @@ export const ModuleLayout = (props: { logout: () => void }) => {
   const refCallback = (node: any) => {
     if (node) {
       theme &&
-        Object.keys(theme).forEach((element: any) => {
-          console.log("🚀 ~ file: module.layout.tsx ~ line 173 ~ Object.keys ~ element", element)
-          node.style.setProperty(element, theme[element], 'important');
-          if (element === 'background-color' || element === 'background') {
-            // apply the same background mentioned for theme to the body of the website
-            document.body.style.background = theme[element];
-          }
-        });
-      debugger;
-      console.log("🚀 ~ file: module.layout.tsx ~ line 182 ~ refCallback ~ localStorage.getItem('isBlack')", localStorage.getItem('isBlack'))
-      if (localStorage.getItem('isBlack') === 'true') {
-
-        var element = document.getElementsByTagName("div");
-        for (let index = 0; index < element.length; index++) {
-          element[index].classList.add("black");
-        }
-      } else {
-        var element = document.getElementsByTagName("div");
-        for (let index = 0; index < element.length; index++) {
-          element[index].classList.remove("black");
-        }
-      }
+        // Object.keys(theme).forEach((element: any) => {
+        //   console.log("🚀 ~ file: module.layout.tsx ~ line 173 ~ Object.keys ~ element", element)
+        //   node.style.setProperty(element, theme[element], 'important');
+        //   if (element === 'background-color' || element === 'background') {
+        //     // apply the same background mentioned for theme to the body of the website
+        //     document.body.style.background = theme[element];
+        //   }
+        // });
+        //debugger;
+        ChangeTheme();
 
     }
   };
