@@ -67,6 +67,12 @@ export const ModuleLayout = (props: { logout: () => void }) => {
         console.log('Error obteniendo el token de sesión', error);
       }
 
+
+      await api.AddUser({
+        oid: accountIdentifier,
+        email: email[0]
+      });
+
       const myMenu = await api.GetMenuUser();
       const menu = MapperMenu.mapMenu(myMenu);
 
@@ -90,10 +96,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
       }
 
       dispatch(SetApplicationMenu(menu));
-      await api.AddUser({
-        oid: accountIdentifier,
-        email: email[0]
-      });
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

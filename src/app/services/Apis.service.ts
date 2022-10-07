@@ -457,6 +457,13 @@ export class ApiService {
       id: '0'
     });
 
+  getLicenciaOracle = (numlicen: string, idtype: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `v2/Persona/GetPersonFromLicenNumber/${numlicen}/${idtype}`,
+      id: '0'
+    });
+
   //////////////////////////
   //Apis Aguas
   /////////////////////////
