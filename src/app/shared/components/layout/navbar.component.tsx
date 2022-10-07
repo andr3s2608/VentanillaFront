@@ -40,12 +40,11 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
     async () => {
       const infouser: any = localStorage.getItem('infouser');
       const info: any = JSON.parse(infouser);
-      //debugger;
       const roles: any = localStorage.getItem('roles');
       const rol: any = JSON.parse(roles);
 
 
-      if (rol !== undefined && rol.length > 0 && rol != null) {
+      if (rol !== undefined && rol.length > 0 && rol !== null) {
         const [permiso] = rol == undefined ? 'ninguno' : rol;
         setrol(permiso.rol);
       }
