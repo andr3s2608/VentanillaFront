@@ -1,19 +1,19 @@
-import { ChangeTheme } from 'app/Theme';
+import themes from 'app/Theme/themes';
 import { useState } from 'react';
 
-export const ButtonsComponent = () => {
+export const ButtonsComponent = ({ handleChange }: any) => {
 
   var fontSize = 16;
-  const [size, setSize] = useState(16);
+  const [stateTheme, setStateTheme] = useState(false);
 
   const onChangeTheme = () => {
-    ChangeTheme();
+    // ChangeTheme();
+    debugger;
+    setStateTheme(!stateTheme);
+    console.log("🚀 ~ file: buttonsFixed.component.tsx ~ line 13 ~ onChangeTheme ~ stateTheme", stateTheme)
+    localStorage.setItem('isBlack', stateTheme.toString());
+    (stateTheme) ? handleChange(themes.black) : handleChange(themes.default)
   };
-
-  function handleClick(symbol: string) {
-    if (symbol === "+") setSize(size + 2);
-    else if (symbol === "-") setSize(size - 2);
-  }
 
   const changeFont = (operator: string = '') => {
     debugger
@@ -34,7 +34,7 @@ export const ButtonsComponent = () => {
         <ul className="social">
           <li><button className='btn ant-btn-primary' onClick={() => changeFont("+")}><span className='text'>+</span><i className="fa-solid fa-a ml-2"></i></button></li>
           <li><button style={{ marginTop: '-19px' }} className='btn ant-btn-primary' onClick={() => changeFont("-")}><span className='text'>-</span><i className="fa-solid fa-a ml-2"></i></button></li>
-          <li><button onClick={onChangeTheme} style={{ marginTop: '-20px' }} className='btn ant-btn-primary'><i className="fa-sharp fa-solid fa-circle-half-stroke fa-lg"></i></button></li>
+          <li><button onClick={() => onChangeTheme()} style={{ marginTop: '-20px' }} className='btn ant-btn-primary'><i className="fa-sharp fa-solid fa-circle-half-stroke fa-lg"></i></button></li>
         </ul>
       </div>
     </>
