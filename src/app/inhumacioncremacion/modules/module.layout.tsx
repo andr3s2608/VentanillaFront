@@ -34,6 +34,7 @@ import { ModalComponent } from 'app/shared/components/modal.component';
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { Button } from 'antd';
 import Swal from 'sweetalert2';
+import { ButtonsComponent } from 'app/shared/components/layout/buttonsFixed.component';
 
 // Fragmentos
 const { Content } = Layout;
@@ -211,6 +212,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
           {sidenav && (
             <div className='d-block d-md-none app-layout-backdrop' style={{ marginTop }} onClick={toggleSidenav} role='button' />
           )}
+          <ButtonsComponent />
           <Content className={classLayout} style={{ marginTop }}>
             <ModuleRoutes />
           </Content>
