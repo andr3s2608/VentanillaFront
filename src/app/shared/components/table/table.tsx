@@ -709,8 +709,10 @@ export const Gridview = (props: IDataSource) => {
             formData.append('nameFile', nameFile);
 
             supportDocumentsEdit.push({
+              idSolicitud: listDocument[j].idSolicitud,
               idDocumentoSoporte: listDocument[j].idDocumentoSoporte,
-              fechaModificacion: new Date()
+              fechaModificacion: new Date(),
+              esValido: true
             });
           }
         }
