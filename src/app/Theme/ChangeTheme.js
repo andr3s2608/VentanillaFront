@@ -180,16 +180,4 @@ export const ChangeTheme = () => {
     }
   }
 
-  // var element = document.getElementsByTagName("div");
-
-
-
-
-
-  // for (let index = 0; index < element.length; index++) {
-  //   element[index].classList.toggle("black");
-  // }
-
-
-
 }
