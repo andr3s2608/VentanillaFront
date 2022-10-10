@@ -232,7 +232,7 @@ export const ModuleLayout = (props: { logout: () => void }) => {
           ) : null}
         </>
         {loading && <Spin className='fadeIn app-loading' tip='Cargando Componentes...' />}
-        <Layout className='fadeIn' style={{ minHeight: '100vh' }}>
+        <Layout className='fadeIn ' style={{ minHeight: '100vh' }}>
           <SidenavComponent style={{ marginTop }} />
           <Layout>
             <NavbarComponent {...props} />

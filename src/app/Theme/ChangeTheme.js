@@ -13,6 +13,11 @@ export const ChangeTheme = () => {
   var element = document.getElementsByTagName("div");
   var section = document.getElementsByTagName("section");
   var footer = document.getElementsByTagName("footer");
+  var input = document.getElementsByTagName("input");
+  var ant_input_affix_wrapper = document.getElementsByClassName("ant-input-affix-wrapper");
+  var ant_steps_icon = document.getElementsByClassName("ant-steps-icon");
+  var ant_steps_item_icon = document.getElementsByClassName("ant-steps-item-icon");
+  var ant_steps_item_icon = document.getElementsByClassName("ant-steps-item-icon");
 
   if (localStorage.getItem('isBlack') === 'true') {
 
@@ -43,6 +48,7 @@ export const ChangeTheme = () => {
 
     for (let index = 0; index < p.length; index++) {
       p[index].classList.add("border");
+      p[index].classList.remove("text-muted");
       p[index].classList.add("border-warning");
       p[index].classList.add("text-white");
     }
@@ -76,6 +82,23 @@ export const ChangeTheme = () => {
       footer[index].classList.add("black");
     }
 
+    for (let index = 0; index < ant_input_affix_wrapper.length; index++) {
+      ant_input_affix_wrapper[index].classList.add("black");
+    }
+
+    for (let index = 0; index < input.length; index++) {
+      input[index].classList.add("black");
+    }
+
+    for (let index = 0; index < ant_steps_icon.length; index++) {
+      ant_steps_icon[index].classList.add("text-warning");
+    }
+
+    for (let index = 0; index < ant_steps_item_icon.length; index++) {
+      ant_steps_item_icon[index].classList.add("border");
+      ant_steps_item_icon[index].classList.add("border-warning");
+    }
+
   } else {
 
     for (let index = 0; index < element.length; index++) {
@@ -105,6 +128,7 @@ export const ChangeTheme = () => {
 
     for (let index = 0; index < p.length; index++) {
       p[index].classList.remove("border");
+      p[index].classList.add("text-muted");
       p[index].classList.remove("border-warning");
       p[index].classList.remove("text-white");
     }
@@ -138,18 +162,22 @@ export const ChangeTheme = () => {
       footer[index].classList.remove("black");
     }
 
+    for (let index = 0; index < ant_input_affix_wrapper.length; index++) {
+      ant_input_affix_wrapper[index].classList.remove("black");
+    }
+
+    for (let index = 0; index < input.length; index++) {
+      input[index].classList.remove("black");
+    }
+
+    for (let index = 0; index < ant_steps_icon.length; index++) {
+      ant_steps_icon[index].classList.remove("text-warning");
+    }
+
+    for (let index = 0; index < ant_steps_item_icon.length; index++) {
+      ant_steps_item_icon[index].classList.remove("border");
+      ant_steps_item_icon[index].classList.remove("border-warning");
+    }
   }
-
-  // var element = document.getElementsByTagName("div");
-
-
-
-
-
-  // for (let index = 0; index < element.length; index++) {
-  //   element[index].classList.toggle("black");
-  // }
-
-
 
 }

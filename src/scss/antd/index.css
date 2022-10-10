@@ -30160,7 +30160,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .social li button {
   height: 55px;
   width: 55px;
-  border-radius: 0px !important;
+  border-radius: 10% !important;
   background-color: #E4E4E4 !important;
   border: 1px solid #000 !important;
   color: #000;
