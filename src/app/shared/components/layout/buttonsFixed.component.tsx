@@ -8,9 +8,7 @@ export const ButtonsComponent = ({ handleChange }: any) => {
 
   const onChangeTheme = () => {
     // ChangeTheme();
-    debugger;
     setStateTheme(!stateTheme);
-    console.log("🚀 ~ file: buttonsFixed.component.tsx ~ line 13 ~ onChangeTheme ~ stateTheme", stateTheme)
     localStorage.setItem('isBlack', stateTheme.toString());
     (stateTheme) ? handleChange(themes.black) : handleChange(themes.default)
   };
