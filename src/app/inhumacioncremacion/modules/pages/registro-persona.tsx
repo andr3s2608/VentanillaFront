@@ -1,29 +1,25 @@
-// Componentes
-import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-
-// Utilidades
 import { EstadoCivil, direcionOrienta, letras, nomesclatura } from 'app/shared/utils/constants.util';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import Form from 'antd/es/form';
-import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
-import { BasicaInformacion } from './components/form/BasicaInformacion';
+import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
+import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
+import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import React, { useCallback, useEffect, useState, useReducer } from 'react';
 import { IDepartamento, IMunicipio } from 'app/services/dominio.service';
+import { BasicaInformacion } from './components/form/BasicaInformacion';
+import { authProvider } from 'app/shared/utils/authprovider.util';
+import Form from 'antd/es/form';
 import Alert from 'antd/es/alert';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
+import { errorMessage } from 'app/services/settings/message.service';
+import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
 import { dominioService } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
-import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { store } from 'app/redux/app.reducers';
 import { SetGrid } from 'app/redux/Grid/grid.actions';
 import Swal from 'sweetalert2';
 import 'app/shared/components/table/estilos.css';
-
-import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
-import { ConsoleSqlOutlined, ContactsOutlined } from '@ant-design/icons';
 
 const RegistroPage: React.FC<any> = (props) => {
   const [direccionCompleta, setDireccionCompleta] = useState<string>('');
@@ -58,11 +54,9 @@ const RegistroPage: React.FC<any> = (props) => {
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const getListas = useCallback(
     async () => {
-      const [municipios, ...resp] = await Promise.all([
-        dominioService.get_all_municipios_by_departamento(idDepartamentoBogota),
-        dominioService.get_departamentos_colombia(),
-        api.getPaises()
-      ]);
+      const departamento: any = localStorage.getItem('departamentos');
+      const municipiosbogota: any = localStorage.getItem('municipiosbogota');
+      const [municipios, ...resp] = await Promise.all([JSON.parse(municipiosbogota), JSON.parse(departamento), api.getPaises()]);
 
       setLMunicipios(municipios);
       setLMunicipiosres(municipios);
@@ -107,8 +101,8 @@ const RegistroPage: React.FC<any> = (props) => {
   };
   const onChangeDepartamento = async (value: string) => {
     form.setFieldsValue({ cityLive: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepPai == parseInt(value));
+
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
 
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
@@ -123,8 +117,8 @@ const RegistroPage: React.FC<any> = (props) => {
 
   const onChangeDepartamentor = async (value: string) => {
     form.setFieldsValue({ city: undefined });
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepPai == parseInt(value));
+
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
 
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
@@ -156,109 +150,127 @@ const RegistroPage: React.FC<any> = (props) => {
     const emailconfmayus = confirEmail.toUpperCase();
 
     if (emailmayus == emailconfmayus) {
-      const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-      var numero1: number;
-      const numero2: number = Num2;
 
-      const telcel: number = value.phonecell;
-      const fecha: String = value.date;
+      let numerorep: number = value.instNumIdent;
 
-      var fechaformato: string = fecha.toString();
-
-      var fechavalidacion = fechaformato.substring(11, 15);
-      if (avenida) {
-        numero1 = Num1;
-      } else {
-        numero1 = 10;
-      }
-
-      const dep = value.stateLive;
-      var mun1: string = value.cityLive;
-      var mun: number = parseInt(mun1);
-      switch (dep) {
-        case 1:
-          mun = 11001000;
-          break;
-      }
-
-      const depres = value.state;
-      var munres1: string = value.city;
-      var munres: number = parseInt(munres1);
-      switch (depres) {
-        case 1:
-          munres = 11001000;
-          break;
-      }
-
-      if (fechavalidacion >= '1900') {
-        const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-        const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
-        const data = {
-          primerNombre: value.name,
-          segundoNombre: value.secondName ?? '',
-          primerApellido: value.surname,
-          segundoApellido: value.secondSurname ?? '',
-          tipoDocumento: value.instTipoIdent, //listado tipos de documentos
-          numeroIdentificacion: Number(value.instNumIdent),
-          telefonoFijo: value.phone ?? '',
-          telefonoCelular: value.phonecell,
-          email: value.email,
-          nacionalidad: value.country, //listado de paises
-          departamento: value.stateLive, //listado de departamentos
-          ciudadNacimientoOtro: !isColombia ? mun : '',
-          ciudadNacimiento: isColombia ? mun : 0, //listado municipios
-          departamentoResidencia: value.state, //listado departamentos
-          ciudadResidencia: munres, //listado municipios
-          direccionResidencia: direcion,
-          fechaNacimiento: value.date,
-          sexo: value.sex, //listado sexo
-          genero: value.gender, //lista quemada
-          orientacionSexual: value.sexual_orientation, //lista quemada
-          etnia: value.ethnicity ?? '', //listado etnia
-          estadoCivil: value.estadoCivil, //lista quemada
-          nivelEducativo: value.levelEducation //listado nivel educativo
-        };
-
-        const resApi = await api.personaNatural(data);
-
-        if (typeof resApi === 'number') {
-          api.sendEmail({
-            to: value.email,
-            subject: 'Registro de persona natural ',
-            body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario creado exitosamente'
-          });
-          const segundo = value.secondName ?? ' ';
-          const segundoape = value.secondSurname ?? '';
-          await api.putUser({
-            oid: accountIdentifier,
-            idPersonaVentanilla: resApi,
-            NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
-          });
-          await api.PostRolesUser({
-            idUser: accountIdentifier,
-            idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-          });
-          localStorage.setItem(accountIdentifier, resApi.toString());
-          store.dispatch(SetGrid({ key: 'relaodMenu' }));
-          Swal.fire({
-            icon: 'success',
-            title: 'Usuario Registrado',
-            text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
-            showClass: {
-              popup: 'animate__animated animate__fadeInDown'
-            },
-            hideClass: {
-              popup: 'animate__animated animate__fadeOutUp'
-            }
-          });
-          history.push('/');
-        }
-      } else {
+      if (numerorep > 2100000000) {
         Swal.fire({
           icon: 'error',
-          title: 'Datos inválidos',
-          text: 'Por favor ingrese una fecha de nacimiento valida'
+          title: 'Datos Invalidos',
+          text: 'El numero de identificación del representante es invalido,porfavor verifiquelo',
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          }
         });
+      }
+      else {
+
+
+        const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+        var numero1: number;
+
+        const fecha: String = value.date;
+
+        var fechaformato: string = fecha.toString();
+
+        var fechavalidacion = fechaformato.substring(11, 15);
+        if (avenida) {
+          numero1 = Num1;
+        } else {
+          numero1 = 10;
+        }
+
+        const dep = value.stateLive;
+        var mun1: string = value.cityLive;
+        var mun: number = parseInt(mun1);
+        switch (dep) {
+          case 1:
+            mun = 11001000;
+            break;
+        }
+
+        const depres = value.state;
+        var munres1: string = value.city;
+        var munres: number = parseInt(munres1);
+        switch (depres) {
+          case 1:
+            munres = 11001000;
+            break;
+        }
+
+        if (fechavalidacion >= '1900') {
+          const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
+          const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
+          const data = {
+            primerNombre: value.name,
+            segundoNombre: value.secondName ?? '',
+            primerApellido: value.surname,
+            segundoApellido: value.secondSurname ?? '',
+            tipoDocumento: value.instTipoIdent, //listado tipos de documentos
+            numeroIdentificacion: Number(value.instNumIdent),
+            telefonoFijo: value.phone ?? '',
+            telefonoCelular: value.phonecell,
+            email: value.email,
+            nacionalidad: value.country, //listado de paises
+            departamento: value.stateLive, //listado de departamentos
+            ciudadNacimientoOtro: !isColombia ? mun : '',
+            ciudadNacimiento: isColombia ? mun : 0, //listado municipios
+            departamentoResidencia: value.state, //listado departamentos
+            ciudadResidencia: munres, //listado municipios
+            direccionResidencia: direcion,
+            fechaNacimiento: value.date,
+            sexo: value.sex, //listado sexo
+            genero: value.gender, //lista quemada
+            orientacionSexual: value.sexual_orientation, //lista quemada
+            etnia: value.ethnicity ?? '', //listado etnia
+            estadoCivil: value.estadoCivil, //lista quemada
+            nivelEducativo: value.levelEducation //listado nivel educativo
+          };
+
+          const resApi = await api.personaNatural(data);
+
+          if (typeof resApi === 'number') {
+            api.sendEmail({
+              to: value.email,
+              subject: 'Registro de persona natural ',
+              body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario creado exitosamente'
+            });
+            const segundo = value.secondName ?? ' ';
+            const segundoape = value.secondSurname ?? '';
+            await api.putUser({
+              oid: accountIdentifier,
+              idPersonaVentanilla: resApi,
+              NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
+            });
+            await api.PostRolesUser({
+              idUser: accountIdentifier,
+              idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+            });
+            localStorage.setItem(accountIdentifier, resApi.toString());
+            store.dispatch(SetGrid({ key: 'relaodMenu' }));
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuario Registrado',
+              text: 'El Usuario ' + value.name + ' ' + value.surname + ' ha sido Registrado de manera exitosa',
+              showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+              }
+            });
+            history.push('/');
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: 'Por favor ingrese una fecha de nacimiento valida'
+          });
+        }
       }
     } else {
       Swal.fire({
@@ -331,21 +343,27 @@ const RegistroPage: React.FC<any> = (props) => {
       let idUPZ = 74;
       let idBarrio = '10119BD';
 
-      const list_zona: Array<any> = await api.getListSubRedes();
+      let list_zona: Array<any> = await api.getListSubRedes();
       const list_barrios: Array<any> = await api.getListBarrios();
       const list_upz: Array<any> = await api.getListUPZ();
       const list_localidades: Array<any> = await api.getListLocalidades();
 
-      setListOfZona(list_zona);
-      setListOfLocalidad(list_localidades);
-      setListOfUPZ(list_upz);
-      setListOfBarrio(list_barrios);
-      setStateDisplayBox('block');
+      list_zona = [];
 
-      setInitialValueZona(idZona);
-      setInitialValueLocalidad(idLocalidad);
-      setInitialValueUPZ(idUPZ);
-      setInitialValueBarrio(idBarrio);
+      if (list_zona !== [] && listOfBarrio !== [] && list_upz !== [] && list_localidades !== []) {
+        setListOfZona(list_zona);
+        setListOfLocalidad(list_localidades);
+        setListOfUPZ(list_upz);
+        setListOfBarrio(list_barrios);
+        setStateDisplayBox('block');
+
+        setInitialValueZona(idZona);
+        setInitialValueLocalidad(idLocalidad);
+        setInitialValueUPZ(idUPZ);
+        setInitialValueBarrio(idBarrio);
+      } else {
+        errorMessage({ content: 'No se pudo obtener la lista de zona, localidades, barrios ni Upz' });
+      }
     }
   };
 
@@ -449,7 +467,7 @@ const RegistroPage: React.FC<any> = (props) => {
           <Alert
             message='Información!'
             description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
-                                en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón verde Confirmar Dirección.
+                                en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón azul Confirmar Dirección.
                                 Esta funcionalidad permitirá autocompletar datos de UPZ, Localidad y Barrio para las direcciones de Bogotá D.C. y
                                 estandarizar la dirección para el resto de ciudades.'
             type='info'
@@ -668,8 +686,8 @@ const RegistroPage: React.FC<any> = (props) => {
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfLocalidad}
-                    optionPropkey='locId'
-                    optionPropLabel='descripcion'
+                    optionPropkey='idLocalidad'
+                    optionPropLabel='nombre'
                   />
                 </Form.Item>
               </div>
@@ -682,8 +700,8 @@ const RegistroPage: React.FC<any> = (props) => {
                   <SelectComponent
                     style={{ width: '395px' }}
                     options={listOfUPZ}
-                    optionPropkey='descripcion'
-                    optionPropLabel='descripcion'
+                    optionPropkey='id_upz'
+                    optionPropLabel='nom_upz'
                   />
                 </Form.Item>
               </div>

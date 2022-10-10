@@ -1,8 +1,8 @@
 import Form from 'antd/es/form';
 import Input from 'antd/es/input';
-import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
+import { IDominio } from 'app/services/dominio.service';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
@@ -10,8 +10,7 @@ import Swal from 'sweetalert2';
 
 export const BasicaInformacion: React.FC<any> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
-  const [form] = Form.useForm<any>();
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+
   const [l_tipos_documento, setListaTipoDocumento] = useState<IDominio[]>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
@@ -24,7 +23,6 @@ export const BasicaInformacion: React.FC<any> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      //const resp = await dominioService.get_type(ETipoDominio['Tipo Documento']);
       const tipoDocumento = await api.getTipoDocumeto();
       const listDocument = tipoDocumento.map((res: any) => {
         return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
@@ -50,8 +48,8 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(4);
-      setLongitudmaxima(10);
-      setTipocampo('[0-9]{4,10}');
+      setLongitudmaxima(11);
+      setTipocampo('[0-9]{4,11}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');

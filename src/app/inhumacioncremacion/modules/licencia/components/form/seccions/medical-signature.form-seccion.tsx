@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> = (props) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
   const { obj, prop } = props;
-  const { tipoLicencia } = props;
+
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
@@ -26,10 +26,9 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
   //#region Cargar Listas
   const getLista = useCallback(
     async () => {
-      const resp = await Promise.all([
-        dominioService.get_type(ETipoDominio['Tipo de Profesional']),
-        dominioService.get_type(ETipoDominio['Tipo Documento'])
-      ]);
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+      const resp = await Promise.all([dominioService.get_type(ETipoDominio['Tipo de Profesional']), tiposjson]);
       setLTipoDocumento(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

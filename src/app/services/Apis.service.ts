@@ -62,6 +62,13 @@ export class ApiService {
       id: '0'
     });
 
+  ModificarEstadoSolicitudInh = (estado: string, idsol: string) =>
+    put<string>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/ModificarEstadoSolicitud/${estado}/${idsol}`,
+      id: '1'
+    });
+
   agregarFirma = (payload: any) => {
     return post<any>({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -100,8 +107,6 @@ export class ApiService {
   getTipoDocumeto = () => get<[]>({ endpoint: this.endpoint, url: 'v1/TipoIdentificacion/GetTipoIdentificacion', id: '0' });
 
   getPaises = () => get<[]>({ endpoint: this.endpoint, url: 'v1/Pais/GetPais', id: '0' });
-
-  getDepartament = () => get<[]>({ endpoint: this.endpoint, url: 'v1/Departamento/GetDepartamento', id: '0' });
 
   getMunicipio = (id: string) =>
     get<[]>({ endpoint: this.endpoint, url: `v1/Municipio/GetMunicipioByIdDepartamento/${id}`, id: '0' });
@@ -304,7 +309,7 @@ export class ApiService {
   //consulta fallecidos con nro de id duplicados
   GetDuplicadosFallecido = (nrotramite: string, id: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/ConsultarFallecidoGestion/${nrotramite}/${id}`,
       id: '0'
     });
@@ -372,16 +377,26 @@ export class ApiService {
       }
     });
 
+  //
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 
+  //
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
-    return (REACT_APP_LOCAL as string) + 'GeneratePDF/GeneratePDFPrev/' + idTramite + '/' + idTramitador + '/' + nombreTramitador;
+    return (
+      (REACT_APP_INHCREMACION as string) +
+      'GeneratePDF/GeneratePDFPrev/' +
+      idTramite +
+      '/' +
+      idTramitador +
+      '/' +
+      nombreTramitador
+    );
   };
 
-  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): any => {
+  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string, control: boolean): any => {
     return get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
-      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}`,
+      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}/${control}`,
       id: '0'
     });
   };
@@ -523,9 +538,9 @@ export class ApiService {
 
   getFormatoAguas = (idFormato: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Formatos/getByIdPlantilla/${idFormato}`,
-      id: '1'
+      id: '0'
     });
   };
 
@@ -535,6 +550,32 @@ export class ApiService {
       url: 'SupportDocuments/AddSupportDocuments',
       payload,
       confirmModal: false,
+      id: '0'
+    });
+
+  UpdateSupportDocumentsAguas = (payload: any[]) =>
+    put({
+      endpoint: REACT_APP_AGUAS as string,
+      url: 'SupportDocuments/UpdateSuport',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
+
+  AddEstadoDocumentoSoporte = (payload: any[]) =>
+    post({
+      endpoint: REACT_APP_AGUAS as string,
+      url: 'EstadoDocumentoSoporte/AddEstadoDocumentoSoporte',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
+
+  GetRejectedDocumentoSoporte = (idsolicitud: string) =>
+    get({
+      /*endpoint: REACT_APP_AGUAS as string,*/
+      endpoint: REACT_APP_AGUAS as string,
+      url: `EstadoDocumentoSoporte/GetSuportRejected/${idsolicitud}`,
       id: '0'
     });
 
@@ -582,7 +623,7 @@ export class ApiService {
 
   getCertificadoAguas = (idSolicitud: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `GeneratePDF/GenerateCertificadoPDF/${idSolicitud}`,
       id: '0'
     });
@@ -590,9 +631,30 @@ export class ApiService {
 
   getConstantesAguas = (idConstante: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Constantes/getByIdConstante/${idConstante}`,
       id: '0'
     });
   };
+
+  //////////////////////////
+  //Apis Politica de seguridad
+  /////////////////////////
+
+  getPoliticaSeguridad = (idUsuario: string) => {
+    return get<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `PoliticaSeguridad/GetPoliticaSeguridad/${idUsuario}`,
+      id: '0'
+    });
+  };
+
+  AddPoliticaSeguridad = (payload: any) =>
+    post({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: 'PoliticaSeguridad/AddPoliticaSeguridad',
+      payload,
+      confirmModal: false,
+      id: '0'
+    });
 }

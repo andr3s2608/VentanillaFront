@@ -20,13 +20,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
   const api = new ApiService(accountIdentifier);
 
   const getListas = useCallback(async () => {
-    const lusuarios = await api.getFuncionarios();
-    const usuarios: any[] = [];
-    usuarios.push({ idPersona: 'vacio', fullName: 'No Asignar', oid: 'vacio' });
-
-    for (let index = 0; index < lusuarios.length; index++) {
-      usuarios.push(lusuarios.at(index));
-    }
+    const subredes: any = localStorage.getItem('subredes');
 
     if (obj.citacion[0] != undefined) {
       const date = obj.citacion[0].fechaCitacion;
@@ -34,11 +28,9 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
       setfecha(moment(date));
       setfuncionario(obj?.citacion[0].idUsuarioCitacion);
       setobservacion(obj?.citacion[0].observacionCitacion);
-    } else {
-      setfuncionario('vacio');
     }
     setmostrar(true);
-    setLl_usuarios(usuarios);
+    setLl_usuarios(JSON.parse(subredes));
     if (tipo != 'Funcionario') {
       setmodificar(true);
     } else {
@@ -85,14 +77,14 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               <div className='form-group gov-co-form-group mr-4'>
                 <div className='gov-co-dropdown'>
                   <p className='text'>
-                    <span className='required'>*</span> Funcionario
+                    <span className='required'>*</span> Subred
                   </p>
                   <Form.Item initialValue={funcionario} name='funcionario' rules={[{ required: !modificar }]}>
                     <SelectComponent
                       options={l_usuarios}
                       defaultValue={funcionario}
-                      optionPropkey='oid'
-                      optionPropLabel='fullName'
+                      optionPropkey='idSubRed'
+                      optionPropLabel='zona'
                       disabled={modificar}
                     />
                   </Form.Item>

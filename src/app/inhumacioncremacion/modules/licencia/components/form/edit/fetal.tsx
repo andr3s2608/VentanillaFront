@@ -107,6 +107,17 @@ const formatObjJson = (obj: any) => {
     cementerioCiudad: datosCementerio.ciudad,
     otro: datosCementerio.otroSitio,
 
+
+    numerolicencia: obj.resumenSolicitud.numeroLicencia,
+    idresumensolicitud: obj.resumenSolicitud.idSolicitud,
+    nombresolicitante: obj.resumenSolicitud.nombreSolicitante,
+    apellidosolicitante: obj.resumenSolicitud.apellidoSolicitante,
+    tipodocsolicitante: obj.resumenSolicitud.tipoDocumentoSolicitante,
+    nrosolicitante: obj.resumenSolicitud.numeroDocumentoSolicitante,
+    correocementerio: obj.resumenSolicitud.correoCementerio,
+    correofuneraria: obj.resumenSolicitud.correoFuneraria,
+    correosolicitante: obj.resumenSolicitud.correoSolicitante,
+
     idmedico: certicador.idPersona,
     medicalSignatureIDType: certicador.tipoIdentificacion,
     medicalSignatureIDNumber: certicador.numeroIdentificacion,

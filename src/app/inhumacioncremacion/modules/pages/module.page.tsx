@@ -8,59 +8,72 @@ import { ModalComponent } from 'app/shared/components/modal.component';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
-import { store } from 'app/redux/app.reducers';
-import { ResetGrid } from 'app/redux/Grid/grid.actions';
+
+
+import { dominioService, ETipoDominio } from 'app/services/dominio.service';
+import Swal from 'sweetalert2';
+import { ResetApplication } from 'app/redux/application/application.actions';
+import { ChangeTheme } from 'app/Theme';
 
 const ModulePage = () => {
   const history = useHistory();
   const [roles, setroles] = useState<IRoles[]>();
-  const [info, setinfo] = useState<any>();
+
   const [validacioninfo, setvalidacioninfo] = useState<any>('');
-  const { name, userName } = authProvider.getAccount();
+  const { name } = authProvider.getAccount();
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(false);
 
+
+  //Cambiar de tema oscuro y claro
+  const [isDarkTheme, setIsSetDarkTheme] = useState(false);
+
   const onPersonNatural = () => history.push('/registro/Natural');
   const onPersonJuridica = () => history.push('/registro/Juridico');
-  const onNoAutorizo = () => {
-    setBanderaPolicaSeguridad(false);
-    history.push('/');
-  };
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      //solo era para permitir volver a registrar sin necesidad de crear otro correo(prueba)
-      /*
-      const validar: string = mysRoles[0].codigoUsuario;
-      console.log('validar ' + validar);
-      if (validar == 'e2d9efd7-de49-46e3-9782-36e2aee6270f') {
-        console.log('entro');
-        setroles([]);
-      } else {
-        console.log('entro2');
-        setroles(mysRoles);
-      }
-      */
-
-      setroles(mysRoles);
+      const paises = await dominioService.get_type(ETipoDominio.Pais);
+      const tiposdocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const estadocivil = await dominioService.get_type(ETipoDominio['Estado Civil']);
+      const nivel = await dominioService.get_type(ETipoDominio['Nivel Educativo']);
+      const etnia = await dominioService.get_type(ETipoDominio.Etnia);
+      const tipomuerte = await dominioService.get_type(ETipoDominio['Tipo de Muerte']);
+      const departamentos = await dominioService.get_departamentos_colombia();
+      const localidades = await dominioService.get_localidades_bogota();
+      const municipiosbogota = await dominioService.get_all_municipios_by_departamento('31b870aa-6cd0-4128-96db-1f08afad7cdd');
+      const roles = await api.GetRoles();
       const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
+      const infouser = await api.GetInformationUser(idUser);
+      const idUsuario = await api.getIdUsuario();
 
-      if (resp == undefined) {
+      localStorage.setItem('paises', JSON.stringify(paises));
+      localStorage.setItem('tipoid', JSON.stringify(tiposdocumento));
+      localStorage.setItem('estadocivil', JSON.stringify(estadocivil));
+      localStorage.setItem('nivel', JSON.stringify(nivel));
+      localStorage.setItem('etnia', JSON.stringify(etnia));
+      localStorage.setItem('tipomuerte', JSON.stringify(tipomuerte));
+      localStorage.setItem('departamentos', JSON.stringify(departamentos));
+      localStorage.setItem('localidades', JSON.stringify(localidades));
+      localStorage.setItem('municipiosbogota', JSON.stringify(municipiosbogota));
+      localStorage.setItem('roles', JSON.stringify(roles));
+      localStorage.setItem('idUser', JSON.stringify(idUser));
+      localStorage.setItem('infouser', JSON.stringify(infouser));
+
+      setroles(roles);
+
+      if (infouser == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.tipoIdentificacion == 5) {
-          setvalidacioninfo(resp.razonSocial);
+        if (infouser.razonSocial != null) {
+          setvalidacioninfo(infouser.razonSocial);
         } else {
-          setvalidacioninfo(resp.fullName);
+          setvalidacioninfo(infouser.fullName);
         }
       }
-
-      setinfo(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -73,51 +86,13 @@ const ModulePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onCancel = (): void => {};
+  //Funcion que permite aumentar o disminuir el tamaño de la
+  const onCancel = (): void => { };
+
 
   return (
-    <div className='fadeInTop container-fluid'>
-      {banderaPolicaSeguridad ? (
-        <ModalComponent
-          visible={banderaPolicaSeguridad}
-          className='Política text-center'
-          title={`Política protección de datos personales`}
-          cancelButtonProps={{ hidden: true }}
-          okButtonProps={{ hidden: true }}
-          onCancel={onCancel}
-          closable={false}
-        >
-          <PageHeaderComponent
-            className='PageHeaderComponent text-justify'
-            title={''}
-            subTitle={`Autorizo en forma previa expresa e informada como titular de mis datos a la Secretaría Distrital de Salud y
-            el Fondo Financiero Distrital de Salud, para hacer uso y tratamiento de mis datos personales de conformidad con lo previsto
-            en el Decreto 1377 de 2013 que reglamenta la Ley 1581 de 2012. Los datos personales serán gestionados de forma segura y algunos
-            tratamientos podrán ser realizados de manera directa o a través de encargados, El tratamiento de los datos personales por parte
-            de la Secretaría Distrital de Salud se realizará dando cumplimiento a la Política de Privacidad y Protección de Datos personales
-            que puede ser consultada en: `}
-            backIcon={null}
-          />
-          <a
-            className='H d-flex'
-            style={{ marginTop: '-15px' }}
-            href={'http://www.saludcapital.gov.co/Documents/Politica_Proteccion_Datos_P.pdf'}
-            rel='noreferrer'
-            target='_blank'
-          >
-            Política de Protección de Datos
-          </a>
-          <div className='d-flex justify-content-between mt-4'>
-            <Button type='primary' htmlType='button' onClick={onNoAutorizo}>
-              Autorizo
-            </Button>
-            <Button type='primary' htmlType='submit' onClick={onNoAutorizo}>
-              No autorizo
-            </Button>
-          </div>
-        </ModalComponent>
-      ) : null}
 
+    <div className='fadeInTop container-fluid ' style={{ position: 'relative' }}>
       {roles?.length === 0 ? (
         <ModalComponent
           visible={true}
@@ -130,8 +105,8 @@ const ModulePage = () => {
           <PageHeaderComponent
             title={''}
             subTitle={`Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el
-          REGISTRO DEL CIUDADANO (persona natural o jurídica),
-          el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
+            REGISTRO DEL CIUDADANO (persona natural o jurídica),
+            el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
             backIcon={null}
           />
           <div className='d-flex justify-content-between'>
@@ -151,25 +126,36 @@ const ModulePage = () => {
         backIcon={null}
       />
 
-      <div className='card card-body'>
-        <h4 className='app-subtitle mt-3'>Tramites y Servicios</h4>
+
+
+
+      <div className='card card-body' >
+        <span ><h4 className='app-subtitle mt-3'><span>Tramites y Servicios</span></h4></span>
+
+
+        <p className="mt-2">
+          <span >
+            La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
+            la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
+            con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez
+            y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los
+            principios de seguridad de la información.
+          </span>
+        </p>
 
         <p>
-          La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
-          la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
-          con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez
-          y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los
-          principios de seguridad de la información.
-        </p>
-        <p>
-          Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
-          <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
-          ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
-          sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;
-          <a href='mailto:contactenos@saludcapital.gov.co'>contactenos@saludcapital.gov.co</a>.
+          <span >
+            Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
+            <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
+            ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
+            sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;<br />
+            <a className="enlace_inicio" href='mailto:contactenos@saludcapital.gov.co'><span >contactenos@saludcapital.gov.co</span></a>.
+          </span>
         </p>
       </div>
+
     </div>
+
   );
 };
 

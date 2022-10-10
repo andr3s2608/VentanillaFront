@@ -18,5 +18,8 @@
     "**/.hg": false,
     "**/.svn": false,
     "**/CVS": false
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

@@ -32,22 +32,29 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [validacioninfo, setvalidacioninfo] = useState<any>(false);
-
+  const [rolusuario, setrol] = useState<any>('');
   const sidenav = useSelector<AppState, boolean>((state) => state.ui.sidenav);
   const dispatch = useDispatch();
 
   const getListas = useCallback(
     async () => {
-      const idUser = await api.getCodeUser();
-      const resp = await api.GetInformationUser(idUser);
+      const infouser: any = localStorage.getItem('infouser');
+      const info: any = JSON.parse(infouser);
+      const roles: any = localStorage.getItem('roles');
+      const rol: any = JSON.parse(roles);
 
-      if (resp == undefined) {
+
+      if (rol !== undefined && rol.length > 0) {
+        const [permiso] = rol == undefined ? 'ninguno' : rol;
+        setrol(permiso.rol);
+      }
+      if (info == undefined) {
         setvalidacioninfo(name);
       } else {
-        if (resp.tipoIdentificacion == 5) {
-          setvalidacioninfo(resp.razonSocial);
+        if (info.razonSocial != null) {
+          setvalidacioninfo(info.razonSocial);
         } else {
-          setvalidacioninfo(resp.fullName);
+          setvalidacioninfo(info.fullName);
         }
       }
     },
@@ -83,10 +90,10 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
       style={{ zIndex: 1003 }}
     >
       <div className='d-flex'>
-        <b className='text-primary px-3 d-none d-md-flex align-items-center' style={{ lineHeight: 1, maxWidth: 250 }}>
+        <b className='text-primary px-3 d-none d-md-flex align-items-center' style={{ lineHeight: 1, maxWidth: 288 }}>
           {projectInfo.name}
         </b>
-        <Menu className='bg-transparent' theme='dark' mode='horizontal'>
+        <Menu className='bg-transparent w-35' theme='dark' mode='horizontal'>
           <Menu.Item className='bg-transparent' key='1' onClick={toggleSidenav} title='Mostrar / Ocultar menú'>
             {React.createElement(sidenav ? MenuFoldOutlined : MenuUnfoldOutlined, {
               className: 'text-muted',
@@ -105,6 +112,7 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
         <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
             <b className='text-primary'>{validacioninfo}</b>
+
           </span>
         </span>
         <Menu className='bg-transparent' theme='dark' mode='horizontal'>

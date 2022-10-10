@@ -52,9 +52,9 @@ export const Servicios = () => {
   const getListas = useCallback(
     async () => {
       const tramites = await api.getTipoTramites();
+      const rolesstorage: any = localStorage.getItem('roles');
 
-      const mysRoles = await api.GetRoles();
-      const [permiso] = mysRoles;
+      const [permiso] = JSON.parse(rolesstorage);
 
       setrol(permiso.rol);
 
@@ -69,76 +69,7 @@ export const Servicios = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cambiodocumento = (value: any) => {
-    const valor: string = value;
-    const valorupper = valor.toUpperCase();
-    setsininformacion(false);
 
-    if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
-      setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{5,15}');
-      setTipocampovalidacion(/[a-zA-Z0-9]/);
-      setTipodocumento('Sin Información');
-      setCampo('AlfaNuméricos(Numéros y letras)');
-      setsininformacion(true);
-    } else {
-      if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
-        setLongitudminima(2);
-        setLongitudmaxima(10);
-        setTipocampo('[0-9]{2,10}');
-        setTipocampovalidacion(/[0-9]/);
-        setCampo('Numéricos');
-        setTipodocumento('Tipo de Protocolo');
-        form.setFieldsValue({ IDNumber: '8001508610' });
-      } else {
-        form.setFieldsValue({ IDNumber: undefined });
-        if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
-          setLongitudminima(5);
-          setLongitudmaxima(10);
-          setTipocampo('[0-9]{5,10}');
-          setTipocampovalidacion(/[0-9]/);
-          setCampo('Numéricos');
-          setTipodocumento('Cédula de Ciudadanía');
-        } else {
-          if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
-            setLongitudminima(10);
-            setLongitudmaxima(11);
-            setTipocampo('[0-9]{10,11}');
-            setTipocampovalidacion(/[0-9]/);
-            setCampo('Numéricos');
-            setTipodocumento('Tarjeta de Identidad ');
-          } else {
-            if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminima(15);
-              setLongitudmaxima(15);
-              setTipocampo('[0-9]{15,15}');
-              setTipocampovalidacion(/[0-9]/);
-              setCampo('Numéricos');
-              setTipodocumento('Permiso Especial de Permanencia');
-            } else {
-              if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
-                setLongitudminima(10);
-                setLongitudmaxima(11);
-                setTipocampo('[a-zA-Z0-9]{10,11}');
-                setTipocampovalidacion(/[a-zA-Z0-9]/);
-                setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
-              } else {
-                setLongitudminima(6);
-                setLongitudmaxima(10);
-                setTipocampo('[a-zA-Z0-9]{6,10}');
-                setTipocampovalidacion(/[a-zA-Z0-9]/);
-                setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-              }
-            }
-          }
-        }
-      }
-    }
-  };
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
@@ -223,27 +154,9 @@ export const Servicios = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota '>
-                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text mr-2 text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
+                    <div className='info-secion prueba_seccion'>
                       <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
@@ -263,7 +176,7 @@ export const Servicios = () => {
                 <section className='panel-menu'>
                   <div className='container'>
                     <div className='row'>
-                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
+                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
                         <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
                           <nav className='nav panel'>
                             <a className='nav-link active' href='#'>
@@ -285,13 +198,13 @@ export const Servicios = () => {
                   </div>
                 </section>
                 <div className='row mt-5'>
-                  <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-3'>
+                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
+                    <div className='info-tramite mt-3 ml-5'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
-                <div className='row'>
+                <div className='row primera_seccion'>
                   <div className='col-lg-12 col-sm-12 col-md-12'>
                     <div className='info-tramite mt-2'>
                       <p className='ml-3 mt-5' style={{ fontSize: '18px', fontWeight: 'bold' }}>
@@ -304,7 +217,7 @@ export const Servicios = () => {
                   </div>
                   <div className='col-lg-6 col-sm-6 col-md-6 mt-2 ml-2'>
                     <div className='panel-search'>
-                      <div className='form-group gov-co-form-group ml-2'>
+                      <div className='form-group gov-co-form-group'>
                         <p className='text'>
                           <span className='required'>*</span> Tipo de tramite
                         </p>
@@ -318,21 +231,22 @@ export const Servicios = () => {
                             defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
                             optionPropkey='idTipoTramite'
                             optionPropLabel='descripcion'
+                            className='mr-5 option'
                           />
                         </Form.Item>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} />
+                <div className='row mt-5 primeros_campos'>
+                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                 </div>
-                <div className='row mt-5 ml-2'>
+                <div className='row mt-5 ml-2 '>
                   <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
                 </div>
-                <div className='row mt-3 '>
+                <div className='row mt-3 acciones'>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-                    <div className='accion ml-4'>
+                    <div className='accion ml-4 botnoes'>
                       <Button
                         className='ml-4 float-right button btn btn-default'
                         style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
@@ -343,7 +257,7 @@ export const Servicios = () => {
                       </Button>
 
                       <Button
-                        className='mr-3 float-right button btn btn-default'
+                        className='mr-3 float-right button btn btn-default cancelar'
                         style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
                         onClick={() => {
                           history.push('/tramites-servicios-aguas');

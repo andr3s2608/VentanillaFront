@@ -1,14 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
+
 * {
   text-decoration: none !important;
 }
 
+
+.ant-table table {
+  font-size: 14px !important;
+}
+
 .navbar {
   border-bottom: 3px solid rgb(4, 195, 209);
-  background-color: #CBCBCB !important;
+  background-color: #cbcbcb !important;
   color: #000;
   font-weight: 500;
+}
+
+.info-secion {
+  width: 100% !important;
+  margin-left: -10px !important;
+}
+
+.info-secciones {
+  margin-top: 30px;
+  margin-left: -20px;
+}
+
+.info-tramite {
+  margin-left: -6px !important;
+}
+
+.tramite {
+  margin-left: 21px;
+}
+
+.primera_seccion {
+  margin-left: 12px;
 }
 
 .img-bogota img {
@@ -34,7 +62,9 @@
   right: 16px;
   font-size: 18px;
   margin-right: -1px;
+  margin-top: 100px !important;
 }
+
 
 .breadcrumb {
   background-color: #fff !important;
@@ -43,7 +73,7 @@
 .breadcrumb .breadcrumb-item+.breadcrumb-item::before {
   font-family: 'fontAwesome';
   font-weight: bold;
-  content: "\f105";
+  content: '\f105';
   color: #000;
   font-size: 17px;
 }
@@ -65,7 +95,7 @@
 }
 
 .ubi-menu .panel a {
-  background-color: #CBCBCB !important;
+  background-color: #cbcbcb !important;
 }
 
 .ubi-menu .panel a {
@@ -74,15 +104,14 @@
 }
 
 .panel>.active {
-  color: #0055FF;
+  color: #0055ff;
   font-size: 17px !;
   font-weight: 600;
   text-decoration: none;
 }
 
-
 .info-tramite p {
-  color: #4111A8;
+  color: #4111a8;
   font-size: 17px !important;
   font-weight: 600;
   text-decoration: none;
@@ -100,7 +129,7 @@
 }
 
 .mb-0>a:after {
-  content: "\f078";
+  content: '\f105';
   /* fa-chevron-down */
   font-family: 'FontAwesome';
   position: absolute;
@@ -108,14 +137,14 @@
   color: #000;
 }
 
-.mb-0>a[aria-expanded="true"]:after {
-  content: "\f077";
+.mb-0>a[aria-expanded='true']:after {
+  content: '\f077';
   color: #000;
   /* fa-chevron-up */
 }
 
-.mb-0>a[aria-expanded="true"]:after {
-  content: "\f077";
+.mb-0>a[aria-expanded='true']:after {
+  content: '\f105';
   color: #000;
   /* fa-chevron-up */
 }
@@ -133,7 +162,7 @@
 }
 
 a.collapsed.dm::after {
-  content: "\f054";
+  content: '\f054';
   color: #000;
   font-weight: bold !important;
   /* fa-chevron-up */
@@ -171,11 +200,15 @@ a.nav-link.hero_b {
 }
 
 .bandeja_panel a.nav-link {
-  border-top: 2px solid #FF7F26 !important;
+  border-top: 2px solid #ff7f26 !important;
   font-family: 'Roboto', sans-serif !important;
   font-size: 16px !important;
   font-weight: bold !important;
   margin-right: 14px;
+}
+
+.ant-table table {
+  font-size: 10px;
 }
 
 .nav-link .active {
@@ -193,7 +226,8 @@ a.nav-link.hero_b {
   color: #000 !important;
 }
 
-.ant-pagination, .ant-table {
+.ant-pagination,
+.ant-table {
   width: 95% !important;
 }
 
@@ -221,7 +255,11 @@ a.nav-link.hero_b {
   }
 
   .textarea {
-    width: 320px !important;
+    width: 620px !important;
+  }
+
+  .tarjetas {
+    margin-top: -300px !important;
   }
 
   .documents {
@@ -235,4 +273,144 @@ a.nav-link.hero_b {
     width: 50% !important;
     display: inline-block !important;
   }
+}
+
+.home {
+  background-color: #058131 !important;
+  height: 50px !important;
+}
+
+.home p {
+  font-size: 18px;
+  float: right;
+}
+
+.prueba {
+  margin-left: -8px !important;
+}
+
+.card_tarjeta {
+  height: 1300px !important;
+}
+
+.bandeja_panel {
+
+  width: 1200px !important;
+  height: 420px !important;
+  margin-top: -8px !important;
+}
+
+.encabezados {
+  margin-top: 20px;
+  margin-left: 5px;
+}
+
+.panel_d {
+  width: 434px !important;
+}
+
+.panel_ds {
+  width: 380px !important;
+}
+
+.select_d {
+  margin-left: -5px !important;
+}
+
+.select {
+  width: 800px !important;
+}
+
+.primeros_campos {
+  margin-left: 10px;
+}
+
+.select_datos {
+  margin-left: 112px !important;
+}
+
+.contenedor_ubi {
+  margin-left: 12px !important;
+}
+
+.dpto {
+  margin-left: -4px;
+}
+
+.acciones {
+  margin-left: 150px;
+}
+
+.option {
+  margin-left: -5px !important;
+}
+
+.tramite_titulo {
+  margin-left: 31px !important;
+}
+
+.panel_menu {
+  margin-left: 33px !important;
+}
+
+.botones {
+  margin-right: 20px !important;
+}
+
+.prueba_seccion {
+  margin-left: 12px !important;
+}
+
+
+.cancelar {
+  margin-left: 20px !important;
+}
+
+.datos_validador {
+  margin-left: 23px !important;
+}
+
+.datos_validadors {
+  margin-left: 21px !important;
+}
+
+.objeto {
+  margin-left: 120px !important;
+}
+
+.datos_solicitante {
+  width: 100% !important;
+}
+
+.prueba_tramite {
+  margin-left: -25px !important;
+}
+
+.select_datosx {
+  width: 850px !important;
+}
+
+.prueba_campos {
+  margin-left: -30px !important;
+}
+
+.prueba_campo {
+  margin-top: 20px;
+  margin-left: -20px !important;
+}
+
+.persona {
+  width: 900px !important;
+}
+
+.titulos {
+  margin-left: 10px !important;
+}
+
+.personal {
+  width: 296px !important;
+}
+
+th>.ant-table-cell {
+  color: red !important;
 }

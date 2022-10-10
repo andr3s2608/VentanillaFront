@@ -1,4 +1,3 @@
-import React from 'react';
 import { AzureAD } from 'react-aad-msal';
 
 // Utils

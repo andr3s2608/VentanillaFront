@@ -5,7 +5,6 @@ import Form, { FormInstance } from 'antd/es/form';
 import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
-import { Row, Col } from 'antd';
 
 // Utilidades
 import { ITipoLicencia } from 'app/shared/utils/types.util';
@@ -14,7 +13,6 @@ import { ITipoLicencia } from 'app/shared/utils/types.util';
 import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { validateClaimsRequest } from 'msal/lib-commonjs/AuthenticationParameters';
 
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -44,11 +42,22 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
   const getListas = useCallback(
     async () => {
-      const resp = await Promise.all([
-        dominioService.get_departamentos_colombia(),
-        dominioService.get_cementerios_bogota(),
-        dominioService.get_type(ETipoDominio.Pais)
-      ]);
+      const paises: any = localStorage.getItem('paises');
+      const departamento: any = localStorage.getItem('departamentos');
+      const resp = await Promise.all([JSON.parse(departamento), dominioService.get_cementerios_bogota(), JSON.parse(paises)]);
+
+      if (obj != undefined) {
+        if (obj?.cementerioDepartamento != null) {
+          const municipios = await dominioService.get_all_municipios_by_departamento(obj?.cementerioDepartamento);
+          setLMunicipios(municipios);
+          setMunicipio({
+            departament: obj?.cementerioDepartamento,
+            municipio: obj?.cementerioMunicipio
+          });
+        }
+
+      }
+
 
       setListas(resp);
     },
@@ -87,8 +96,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   };
 
   const onChangeDepartamento = async (value: string) => {
-    const depart = await dominioService.get_departamentos_colombia();
-    let departamento = (await depart).filter((i) => i.idDepartamento == value);
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepartamento == value);
 
     const { idDepartamento } = departamento[0];
 
@@ -169,6 +177,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           <div className='fadeInRight'>
             <Form.Item label='País' name='cementerioPais' rules={[{ required: true }]} initialValue={obj?.cementerioPais}>
               <SelectComponent
+                style={{ width: '90%' }}
                 options={l_paises.filter((i) => i.descripcion !== 'Colombia')}
                 optionPropkey='id'
                 optionPropLabel='descripcion'
@@ -199,7 +208,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               initialValue={obj?.cementerioBogota}
               rules={[{ required: true }]}
             >
-              <SelectComponent options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
+              <SelectComponent style={{ width: '90%' }} options={l_cementerios} optionPropkey='RAZON_S' optionPropLabel='RAZON_S' />
             </Form.Item>
           </>
         );
@@ -227,20 +236,22 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         </Form.Item>
         {renderForm(lugar)}
       </div>
+      {obj === undefined && (<>
+        <Form.Item label='Email Cementerio' name='emailcementerio' initialValue={obj?.correocementerio} rules={[{ required: true, type: 'email', max: 50 }]}>
+          <Input
+            allowClear
+            placeholder='email@example.com'
+            type='email'
+            onKeyPress={(event) => {
+              if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                event.preventDefault();
+              }
+            }}
+            autoComplete='off'
+          />
+        </Form.Item>
+      </>)}
 
-      <Form.Item label='Email Cementerio' name='emailcementerio' rules={[{ required: true, type: 'email', max: 50 }]}>
-        <Input
-          allowClear
-          placeholder='email@example.com'
-          type='email'
-          onKeyPress={(event) => {
-            if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-              event.preventDefault();
-            }
-          }}
-          autoComplete='off'
-        />
-      </Form.Item>
     </>
   );
 };

@@ -72,48 +72,13 @@ const RegistroPage: React.FC<any> = (props) => {
     const emailconfmayus = confirEmail.toUpperCase();
 
     if (emailmayus == emailconfmayus) {
-      const json = {
-        primerNombre: value.name,
-        segundoNombre: value.secondName ?? '',
-        primerApellido: value.surname,
-        segundoApellido: value.secondSurname ?? '',
-        tipoDocumento: value.TipoIdent, //listado tipos de documentos
-        numeroIdentificacion: Number(value.nit),
-        telefonoFijo: value.phone ?? 0,
-        telefonoCelular: value.phonecell,
-        email: value.email,
-        tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
-        numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
-        nombreRazonSocial: value.razonsocial
-      };
+      let numerorep: number = value.instNumIdent;
 
-      const resApi = await api.personaJuridica(json);
-
-      if (typeof resApi === 'number') {
-        await api.sendEmail({
-          to: value.email,
-          subject: 'Registro de persona jurídica ',
-          body: 'Señores ' + value.razonsocial + ' su usuario creado exitosamente'
-        });
-        const segundo = value.secondName ?? ' ';
-        const segundoape = value.secondSurname ?? '';
-        await api.putUser({
-          oid: accountIdentifier,
-          idPersonaVentanilla: resApi,
-          NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
-        });
-
-        await api.PostRolesUser({
-          idUser: accountIdentifier,
-          idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
-        });
-        localStorage.setItem(accountIdentifier, resApi.toString());
-        store.dispatch(SetGrid({ key: 'relaodMenu' }));
-
+      if (numerorep > 2100000000) {
         Swal.fire({
-          icon: 'success',
-          title: 'Usuario Registrado',
-          text: 'El Usuario ' + value.razonsocial + ' ha sido Registrado de manera exitosa',
+          icon: 'error',
+          title: 'Datos Invalidos',
+          text: 'El numero de identificación del representante es invalido,porfavor verifiquelo',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -121,7 +86,60 @@ const RegistroPage: React.FC<any> = (props) => {
             popup: 'animate__animated animate__fadeOutUp'
           }
         });
-        history.push('/');
+      }
+      else {
+
+        const json = {
+          primerNombre: value.name,
+          segundoNombre: value.secondName ?? '',
+          primerApellido: value.surname,
+          segundoApellido: value.secondSurname ?? '',
+          tipoDocumento: value.TipoIdent, //listado tipos de documentos
+          numeroIdentificacion: Number(value.nit),
+          telefonoFijo: value.phone ?? 0,
+          telefonoCelular: value.phonecell,
+          email: value.email,
+          tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
+          numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
+          nombreRazonSocial: value.razonsocial
+        };
+
+        const resApi = await api.personaJuridica(json);
+
+        if (typeof resApi === 'number') {
+          await api.sendEmail({
+            to: value.email,
+            subject: 'Registro de persona jurídica ',
+            body: 'Señores ' + value.razonsocial + ' su usuario creado exitosamente'
+          });
+          const segundo = value.secondName ?? ' ';
+          const segundoape = value.secondSurname ?? '';
+          await api.putUser({
+            oid: accountIdentifier,
+            idPersonaVentanilla: resApi,
+            NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
+          });
+
+          await api.PostRolesUser({
+            idUser: accountIdentifier,
+            idRole: '58EDA51F-7E19-47C4-947F-F359BD1FC732'
+          });
+          localStorage.setItem(accountIdentifier, resApi.toString());
+          store.dispatch(SetGrid({ key: 'relaodMenu' }));
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Usuario Registrado',
+            text: 'El Usuario ' + value.razonsocial + ' ha sido Registrado de manera exitosa',
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            }
+          });
+          history.push('/');
+        }
       }
     } else {
       Swal.fire({
@@ -131,14 +149,14 @@ const RegistroPage: React.FC<any> = (props) => {
       });
     }
   };
-  const onSubmitFailed = () => {};
+  const onSubmitFailed = () => { };
   const cambiodocumento = (value: any) => {
     form.setFieldsValue({ nit: undefined });
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(4);
-      setLongitudmaxima(10);
-      setTipocampo('[0-9]{4,10}');
+      setLongitudmaxima(11);
+      setTipocampo('[0-9]{4,11}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');

@@ -24,13 +24,27 @@ const formatObjJson = (obj: any, id: String) => {
 
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
-  const [autorizadorCremacion] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
+  const [cremador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
 
   //en caso de que no exista un fallecido, se tomara el de la madre
   if (id == '1') {
     if (fallecido == undefined) {
       fallecido = isPerson(persona, '342d934b-c316-46cb-a4f3-3aac5845d246');
     }
+  }
+  const autorizadorcremacion: any = [];
+  if (cremador != undefined) {
+    autorizadorcremacion.push({
+      id: cremador.idPersona,
+      name: cremador.primerNombre,
+      secondName: cremador.segundoNombre,
+      surname: cremador.primerApellido,
+      secondSurname: cremador.segundoApellido,
+      tipoid: cremador.tipoIdentificacion,
+      numeroid: cremador.numeroIdentificacion,
+      tipopersona: cremador.idTipoPersona,
+      parentesco: cremador.otroParentesco
+    });
   }
 
   let jsonDt;
@@ -45,6 +59,10 @@ const formatObjJson = (obj: any, id: String) => {
       check: obj.sinEstablecer,
       sex: obj.idSexo,
       idSolicitud: obj.idSolicitud,
+      tiposolicitante: obj.tipoIdentificacionSolicitante,
+      nrosolicitante: obj.noIdentificacionSolicitante,
+      razonsocialsolicitante: obj.razonSocialSolicitante,
+
 
       idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
@@ -104,6 +122,11 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
+      numerolicencia: obj.resumenSolicitud.numeroLicencia,
+      correocementerio: obj.resumenSolicitud.correoCementerio,
+      correofuneraria: obj.resumenSolicitud.correoFuneraria,
+      correosolicitante: obj.resumenSolicitud.correoSolicitante,
+
 
       isLugar: () => {
         const { enBogota, fueraBogota, fueraPais } = datosCementerio;
@@ -121,6 +144,7 @@ const formatObjJson = (obj: any, id: String) => {
       }
     };
   } else {
+
     jsonDt = {
       idTramite: obj.idTramite,
       idControlTramite: obj.iD_Control_Tramite,
@@ -131,12 +155,23 @@ const formatObjJson = (obj: any, id: String) => {
       check: obj.sinEstablecer,
       sex: obj.idSexo,
       idSolicitud: obj.idSolicitud,
+      idpersonaventanilla: obj.idPersonaVentanilla,
+      idusuarioseg: obj.idUsuarioSeguridad,
+
+
+      tiposolicitantesolicitud: obj.tipoIdentificacionSolicitante,
+      nrosolicitantesolicitud: obj.noIdentificacionSolicitante,
+      razonsocialsolicitantesolicitud: obj.razonSocialSolicitante,
+      tipopersonasolicitantesolicitud: obj.tipoPersona,
+
 
       country: lugarDefuncion.idPais,
       state: lugarDefuncion.idDepartamento,
       city: lugarDefuncion.idMunicipio,
       areaDef: lugarDefuncion.idAreaDefuncion,
       sitDef: lugarDefuncion.idSitioDefuncion,
+
+      autorizadorcremacion,
 
       idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
@@ -161,12 +196,14 @@ const formatObjJson = (obj: any, id: String) => {
       idDatosCementerio: datosCementerio.idDatosCementerio,
       idInstitucionCertificaFallecimiento: institucionCertificaFallecimiento.idInstitucionCertificaFallecimiento,
 
+      idpersona: fallecido.idPersona,
       name: fallecido.primerNombre,
       secondName: fallecido.segundoNombre,
       surname: fallecido.primerApellido,
       secondSurname: fallecido.segundoApellido,
       nationalidad: [fallecido.nacionalidad],
       dateOfBirth: fallecido.fechaNacimiento,
+      hourOfBirth: fallecido.hora,
       IDType: fallecido.tipoIdentificacion,
       IDNumber: fallecido.numeroIdentificacion,
       civilStatus: fallecido.idEstadoCivil,
@@ -183,6 +220,9 @@ const formatObjJson = (obj: any, id: String) => {
       idAreaResidencia: ubicacionPersona.idAreaResidencia,
       idBarrioResidencia: ubicacionPersona.idBarrioResidencia,
 
+
+      funeraria: datosFuneraria.funeraria,
+
       cementerioLugar: datosCementerio.cementerio,
       cementerioBogota: datosCementerio.cementerio,
       cementerioDepartamento: datosCementerio.idDepartamento,
@@ -190,6 +230,17 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
+
+
+      numerolicencia: obj.resumenSolicitud.numeroLicencia,
+      idresumensolicitud: obj.resumenSolicitud.idSolicitud,
+      nombresolicitante: obj.resumenSolicitud.nombreSolicitante,
+      apellidosolicitante: obj.resumenSolicitud.apellidoSolicitante,
+      tipodocsolicitante: obj.resumenSolicitud.tipoDocumentoSolicitante,
+      nrosolicitante: obj.resumenSolicitud.numeroDocumentoSolicitante,
+      correocementerio: obj.resumenSolicitud.correoCementerio,
+      correofuneraria: obj.resumenSolicitud.correoFuneraria,
+      correosolicitante: obj.resumenSolicitud.correoSolicitante,
 
       idmedico: certificador.idTipoPersona,
       medicalSignatureIDType: certificador.tipoIdentificacion,
@@ -214,8 +265,7 @@ const formatObjJson = (obj: any, id: String) => {
           value = 'Fuera del País';
         }
         return value;
-      },
-      autorizadorCremacion
+      }
     };
   }
 

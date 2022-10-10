@@ -1,4 +1,4 @@
-import { Form, Grid } from 'antd';
+import { Form } from 'antd';
 import Tabs from 'antd/es/tabs';
 
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -8,7 +8,7 @@ import { Gridview } from 'app/shared/components/table';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import React, { useCallback, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
+
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import moment from 'moment';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -21,13 +21,13 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [allData, setAllData] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
-  const [search, setSearch] = React.useState('');
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [selectedOption, setSelectedOption] = useState<String>();
   const [visibleGrid, setVisibleGrid] = useState<String>();
   const [visiblePicker, setVisiblePicker] = useState<String>();
-  const [dateSelectedPicker, setDate] = useState<String>();
+  const [dateSelectedPicker, setDate] = useState<Date>();
   const [FilterText, setFilterText] = useState<String>();
   const [disableFilter, setDisableFilter] = useState<Boolean>();
   const [textAlerta, setTextAlert] = useState<String>();
@@ -53,12 +53,22 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
   const GetValidateRol = async (toRoles: IRoles[]) => {
     const [permiso] = roles.length > 0 ? roles : toRoles;
 
-    if (permiso?.rol === 'Ciudadano') {
-      const resp = await api.GetEstadoSolicitudNuevo();
+
+    if (permiso?.rol === 'Ciudadano'
+      //|| permiso?.rol === 'AdminTI'
+    ) {
+
+      const resp: any = await api.GetEstadoSolicitudNuevo();
+      localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
+      setAllData(resp);
+      setVisibleGrid('contents');
     } else {
-      let arraydatos = [];
+
+
+
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      localStorage.setItem('tablainhcrem', JSON.stringify(resp));
 
       setGrid(resp);
       setAllData(resp);
@@ -90,7 +100,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
     setSelectedOption(value);
   };
-  function changeValuePicker(event: any) {}
+  function changeValuePicker(event: any) { }
   function onChangeFilter(event: any) {
     setVisibleAlert(false);
     setFilterText(event.target.value);
@@ -132,12 +142,11 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
         setVisibleGrid('contents');
         break;
       case 'fechaReg':
-        if (dateSelectedPicker != 'Invalid Date' && dateSelectedPicker != undefined) {
+        if (dateSelectedPicker != undefined && dateSelectedPicker.toString() != 'Invalid Date') {
           const resultFilterFec = allData.filter(function (f) {
             // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
-            return new Date(f.fechaSolicitud).toDateString() == dateSelectedPicker;
+            return new Date(f.fechaSolicitud).toISOString().slice(0, 10) == dateSelectedPicker.toISOString().slice(0, 10);
           });
-
           setGrid(resultFilterFec);
           setVisibleGrid('contents');
         } else {
@@ -208,7 +217,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
                       { key: 'docFallec', value: 'Documento del fallecido' },
                       { key: 'funOnombre', value: 'Funeraria o Nombre' },
                       { key: 'fechaReg', value: 'Fecha de registro' },
-                      { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                      { key: 'inhuIndi', value: 'Inhumación Individual' },
                       { key: 'inhuFetal', value: 'Inhumación Fetal' },
                       { key: 'cremInd', value: 'Cremación Individual' },
                       { key: 'cremFetal', value: 'Cremación Fetal' },
@@ -239,8 +248,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
                   className='form-control'
                   onChange={(date) => {
                     setVisibleAlert(false);
-                    const d = new Date(moment(date).format('MM-DD-YYYY')).toDateString();
-                    setDate(d);
+                    setDate(new Date(moment(date).format('MM/DD/YYYY')));
                   }}
                 />
               </Form.Item>

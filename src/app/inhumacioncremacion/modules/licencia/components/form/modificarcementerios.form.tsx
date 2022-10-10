@@ -115,6 +115,10 @@ export const ModificarCementerio = ({ props }: any) => {
       form.setFieldsValue({ cementerioid: undefined });
     }
 
+    if (values.target.value + '' == 'Id') {
+      form.setFieldsValue({ cementerio: undefined });
+    }
+
     form.resetFields(['razon', 'direccion', 'telefono', 'nombrerep', 'tiporep', 'nrorep']);
     setselecciono(false);
   };

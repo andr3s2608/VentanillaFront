@@ -160,6 +160,10 @@ export const ModificarFuneraria = ({ props }: any) => {
       form.setFieldsValue({ funerariaid: undefined });
     }
 
+    if (values.target.value + '' == 'Id') {
+      form.setFieldsValue({ funeraria: undefined });
+    }
+
     setselecciono(false);
     form.resetFields([
       'tipoidf',

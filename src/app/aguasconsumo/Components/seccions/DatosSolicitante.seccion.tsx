@@ -1,22 +1,13 @@
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { Form, FormInstance, Input } from 'antd';
-import {
-  dominioService,
-  ETipoDominio,
-  IBarrio,
-  IDepartamento,
-  IDominio,
-  ILocalidad,
-  IMunicipio,
-  IUpz
-} from 'app/services/dominio.service';
+import { IDominio } from 'app/services/dominio.service';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import '../../../../css/estilos.css';
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
-  const { obj, form, tipo } = props;
+  const { obj, form, tipo, habilitar } = props;
 
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
 
@@ -53,17 +44,14 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-
-      const [permiso] = mysRoles;
-
       if (tipo == 'revision') {
         setmodificar(true);
       } else {
         setmodificar(false);
       }
 
-      const tipoDocumento = await dominioService.get_type(ETipoDominio['Tipo Documento']);
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
       const tipoDocumentorazon = await api.getTipoDocumeto();
       const listDocument = tipoDocumentorazon.map((res: any) => {
         return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
@@ -77,7 +65,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       }
       setListaTipoDocumentoRazon(listDocument);
 
-      setListaTipoDocumento(tipoDocumento);
+      setListaTipoDocumento(tiposjson);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -127,7 +115,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{5,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
-      setTipodocumento('Sin Información');
+      setTipodocumento('Sin Identificación');
       setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
     } else {
@@ -137,11 +125,11 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         setTipocampo('[0-9]{2,10}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
-        setTipodocumento('Tipo de Protocolo');
+        setTipodocumento('Número de Protocolo');
         form.setFieldsValue({ IDNumber: '8001508610' });
       } else {
         form.setFieldsValue({ IDNumber: undefined });
-        if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
+        if (valorupper === '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
           setLongitudminima(4);
           setLongitudmaxima(10);
           setTipocampo('[0-9]{4,10}');
@@ -149,7 +137,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
           setCampo('Numéricos');
           setTipodocumento('Cédula de Ciudadanía');
         } else {
-          if (valorupper == 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
+          if (valorupper === 'AC3629D8-5C87-46CE-A8E2-530B0495CBF6') {
             setLongitudminima(10);
             setLongitudmaxima(11);
             setTipocampo('[0-9]{10,11}');
@@ -157,7 +145,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             setCampo('Numéricos');
             setTipodocumento('Tarjeta de Identidad ');
           } else {
-            if (valorupper == '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+            if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
               setLongitudminima(15);
               setLongitudmaxima(15);
               setTipocampo('[0-9]{15,15}');
@@ -165,20 +153,97 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               setCampo('Numéricos');
               setTipodocumento('Permiso Especial de Permanencia');
             } else {
-              if (valorupper == 'FFE88939-06D5-486C-887C-E52D50B7F35D' || valorupper == '71F659BE-9D6B-4169-9EE2-E70BF0D65F92') {
+              if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
+                valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
+                valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminima(10);
                 setLongitudmaxima(11);
                 setTipocampo('[a-zA-Z0-9]{10,11}');
                 setTipocampovalidacion(/[a-zA-Z0-9]/);
                 setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Registro Civil de Nacimiento y Numero único de identificacíon personal');
+                setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
               } else {
-                setLongitudminima(6);
-                setLongitudmaxima(10);
-                setTipocampo('[a-zA-Z0-9]{6,10}');
-                setTipocampovalidacion(/[a-zA-Z0-9]/);
-                setCampo('AlfaNuméricos(Numéros y letras)');
-                setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+                if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
+                  setLongitudminima(6);
+                  setLongitudmaxima(9);
+                  setTipocampo('[0-9]{6,9}');
+                  setTipocampovalidacion(/[0-9]/);
+                  setCampo('Numéricos');
+                  setTipodocumento('Certificado de nacido vivo ');
+
+                }
+                else {
+                  if (valorupper === '60518653-70B7-42AB-8622-CAA27B496184') {
+                    setLongitudminima(7);
+                    setLongitudmaxima(16);
+                    setTipocampo('[a-zA-Z0-9]{7,16}');
+                    setTipocampovalidacion(/[a-zA-Z0-9]/);
+                    setCampo('AlfaNumérico(Numéros y letras)');
+                    setTipodocumento('Documento Extranjero');
+
+                  }
+                  else {
+                    if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
+                      setLongitudminima(9);
+                      setLongitudmaxima(9);
+                      setTipocampo('[a-zA-Z0-9]{9,9}');
+                      setTipocampovalidacion(/[a-zA-Z0-9]/);
+                      setCampo('AlfaNumérico(Numéros y letras)');
+                      setTipodocumento('Salvoconducto');
+
+                    }
+                    else {
+                      if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
+                        setLongitudminima(5);
+                        setLongitudmaxima(11);
+                        setTipocampo('[a-zA-Z0-9]{5,11}');
+                        setTipocampovalidacion(/[a-zA-Z0-9]/);
+                        setCampo('AlfaNumérico(Numéros y letras)');
+                        setTipodocumento('Adulto Sin Identificar');
+
+                      }
+
+                      else {
+                        if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
+                          setLongitudminima(5);
+                          setLongitudmaxima(12);
+                          setTipocampo('[a-zA-Z0-9]{5,12}');
+                          setTipocampovalidacion(/[a-zA-Z0-9]/);
+                          setCampo('AlfaNumérico(Numéros y letras)');
+                          setTipodocumento('Menor Sin Identificar');
+
+                        }
+                        else {
+                          if (valorupper === 'E927B566-7B8E-4B4D-AE26-14454705CB5E') {
+                            setLongitudminima(4);
+                            setLongitudmaxima(18);
+                            setTipocampo('[a-zA-Z0-9]{4,18}');
+                            setTipocampovalidacion(/[a-zA-Z0-9]/);
+                            setCampo('AlfaNumérico(Numéros y letras)');
+                            setTipodocumento('Permiso de Protección Temporal');
+
+                          }
+                          else {
+                            setLongitudminima(6);
+                            setLongitudmaxima(10);
+                            setTipocampo('[a-zA-Z0-9]{6,10}');
+                            setTipocampovalidacion(/[a-zA-Z0-9]/);
+                            setCampo('AlfaNuméricos(Numéros y letras)');
+                            setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
+                          }
+
+                        }
+
+                      }
+
+
+                    }
+
+                  }
+
+
+                }
+
               }
             }
           }
@@ -186,30 +251,20 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       }
     }
   };
-
-  return (
-    <>
-      <div className='col-lg-12 col-sm-12 col-md-12'>
-        <div className='info-tramite mt-2'>
-          <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            Datos del solicitante. <br />{' '}
-            <small style={{ color: '#000' }}>
-              {' '}
-              <span className='required'>*</span> Campos Obligatorios
-            </small>
-          </p>
-        </div>
-
-        <div className='col-lg-6 col-sm-4 col-md-6 mt-2'>
-          <div className='panel-search'>
-            <div className='form-group gov-co-form-group'>
-              <div className='gov-co-dropdown'>
+  if (habilitar) {
+    return (
+      <>
+        <section style={{ width: '100%' }}>
+          <div className='container-fluid'>
+            <div className='form-row' style={{ marginLeft: '-25px' }}>
+              <div className='col-lg-12'>
                 <p className='text'>
                   {' '}
-                  <span className='required'>*</span> Tipo de Solicitante
+                  <span className='required'>*</span> Tipo de Solicitantes
                 </p>
                 <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
+
                     options={[
                       { key: 'natural', value: 'Persona Natural' },
                       { key: 'juridica', value: 'Persona Jurídica' }
@@ -219,44 +274,141 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     optionPropkey='key'
                     optionPropLabel='value'
                     disabled={modificar}
+
+                    style={{ width: '360px', marginLeft: '11px' }}
                   />
                 </Form.Item>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {!tipoSolicitante ? (
-        <>
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-            <div className='panel-search'>
-              <div className='form-group gov-co-form-group'>
-                <div className='gov-co-dropdown'>
-                  <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
-                    <SelectComponent
-                      className='text'
-                      options={l_tipos_documentoRazon}
-                      onChange={cambiodocumentoRazon}
-                      optionPropkey='id'
-                      optionPropLabel='descripcion'
-                      disabled={modificar}
-                    />
-                  </Form.Item>
+            {!tipoSolicitante ? (
+              <>
+                <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <div className='gov-co-dropdown'>
+                        <p className='text'>
+                          {' '}
+                          <span className='required'>*</span> Tipo de documento
+                        </p>
+                        <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                          <SelectComponent
+                            className='text'
+                            options={l_tipos_documentoRazon}
+                            onChange={cambiodocumentoRazon}
+                            optionPropkey='id'
+                            optionPropLabel='descripcion'
+                            disabled={modificar}
+                          />
+                        </Form.Item>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
 
-          <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
-            <div className='panel-search'>
-              <div className='form-group gov-co-form-group'>
+                <div className='col-lg-4 col-sm-4 col-md-4  ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <p className='text'>
+                        {' '}
+                        <span className='required'>*</span> Número de documento
+                      </p>
+                      <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                        <Input
+                          allowClear
+                          type='text'
+                          placeholder='Número Identificación'
+                          autoComplete='off'
+                          pattern={tipocampoRazon}
+                          maxLength={longitudmaximaRazon}
+                          disabled={modificar}
+                          onKeyPress={(event) => {
+                            if (!tipocampovalidacionRazon.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                          onInvalid={() => {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Datos inválidos',
+                              text:
+                                'recuerde que para el tipo de documento: ' +
+                                tipodocumentoRazon +
+                                ' solo se admiten valores ' +
+                                campoRazon +
+                                ' de longitud entre ' +
+                                longitudminimaRazon +
+                                ' y ' +
+                                longitudmaximaRazon
+                            });
+                          }}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
+                  <div className='panel-search'>
+                    <div className='form-group gov-co-form-group'>
+                      <p className='text'>
+                        {' '}
+                        <span className='required'>*</span> Nombre de la entidad
+                      </p>
+                      <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                        <Input
+                          placeholder='NOMBRE DE LA IDENTIDAD'
+                          type='text'
+                          className='form-control gov-co-form-control'
+                          maxLength={50}
+                          disabled={modificar}
+                          onKeyPress={(event) => {
+                            if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                          onPaste={(event) => {
+                            event.preventDefault();
+                          }}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : null}
+            <div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
                   {' '}
+                  <span className='required'>*</span> Tipo de documento:
+                </p>
+                <Form.Item
+                  rules={[{ required: true }]}
+                  initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+                  name='IDType'
+                >
+                  <SelectComponent
+                    style={{ width: '360px' }}
+                    options={l_tipos_documento}
+                    onChange={cambiodocumento}
+                    optionPropkey='id'
+                    optionPropLabel='descripcion'
+                    disabled={modificar}
+
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <p className='text'>
                   <span className='required'>*</span> Número de documento
                 </p>
-                <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+
+                <Form.Item initialValue={obj?.numeroIdentificacion} rules={[{ required: true }]} name='IDNumber'>
                   <Input
+                    className='form-control'
                     allowClear
                     type='text'
                     placeholder='Número Identificación'
@@ -277,7 +429,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         icon: 'error',
                         title: 'Datos inválidos',
                         text:
-                          'recuerde que para el tipo de documento: ' +
+                          'Recuerde que para el tipo de documento: ' +
                           tipodocumento +
                           ' solo se admiten valores ' +
                           campo +
@@ -291,23 +443,164 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-          </div>
-
-          <div className='col-lg-4 col-sm-4 col-md-4 mt-4 ml-2'>
-            <div className='panel-search'>
-              <div className='form-group gov-co-form-group'>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col-lg-6 col-dm-6 col-sm-12'>
                 <p className='text'>
-                  {' '}
-                  <span className='required'>*</span> Nombre de la entidad
+                  <span className='required'>*</span> Primer Nombre
                 </p>
-                <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
                   <Input
+                    placeholder='PRIMER NOMBRE'
+                    maxLength={50}
                     type='text'
                     className='form-control gov-co-form-control'
-                    maxLength={50}
                     disabled={modificar}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-dm-6 col-sm-12'>
+                <p className='text'>
+                  <span className='text'></span> Segundo Nombre
+                </p>
+                <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
+                  <Input
+                    placeholder='SEGUNDO NOMBRE'
+                    type='text'
+                    disabled={modificar}
+                    maxLength={50}
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col'>
+                <p className='text'>
+                  <span className='required'>* </span> Primer Apellido
+                </p>
+                <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
+                  <Input
+                    placeholder='PRIMER APELLIDO'
+                    maxLength={50}
+                    disabled={modificar}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col'>
+                <p className='text'>
+                  {' '}
+                  <span className='text'> </span> Segundo Apellido
+                </p>
+                <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
+                  <Input
+                    placeholder='SEGUNDO APELLIDO'
+                    maxLength={50}
+                    disabled={modificar}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col'>
+                <p className='text'>
+                  {' '}
+                  <span className='required'>* </span> Teléfono de Contacto
+                </p>
+                <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
+                  <Input
+                    placeholder='TELÉFONO DE CONTACTO'
+                    disabled={modificar}
+                    maxLength={12}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col'>
+                <p className='text'>
+                  <span className='text'> </span>
+                  Teléfono de Contacto 2
+                </p>
+                <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
+                  <Input
+                    placeholder='TELÉFONO DE CONTACTO 2'
+                    maxLength={12}
+                    disabled={modificar}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col'>
+                <p className='text'>
+                  <span className='required'>* </span>
+                  Correo Electrónico
+                </p>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                  <input
+                    placeholder='CORREO ELECTRÓNICO'
+                    style={{ width: '365px' }}
+                    maxLength={50}
+                    disabled={modificar}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -319,272 +612,290 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
             </div>
           </div>
-        </>
-      ) : null}
+        </section>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <section style={{ width: '100%' }}>
+          <div className='container-fluid'>
+            <div className='form-row' style={{ marginLeft: '-20px' }}>
+              <div className='col-lg-12'>
+                <p className='text'>
+                  {' '}
+                  <span className='required'>*</span> Tipo de Solicitante
+                </p>
+                <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
+                  <SelectComponent
+                    style={{ width: '296px' }}
+                    options={[
+                      { key: 'natural', value: 'Persona Natural' },
+                      { key: 'juridica', value: 'Persona Jurídica' }
+                    ]}
+                    onChange={Onchangetipo}
+                    defaultValue={obj?.idTipoPersona ?? 'natural'}
+                    optionPropkey='key'
+                    optionPropLabel='value'
+                    disabled={true}
 
-      <div className='col-lg-5 col-sm-6 col-md-5 mt-4 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <div className='gov-co-dropdown'>
-              <p className='text'>
-                {' '}
-                <span className='required'>*</span> Tipo de documento:
-              </p>
-              <Form.Item
-                rules={[{ required: true }]}
-                initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                name='IDType'
-              >
-                <SelectComponent
-                  options={l_tipos_documento}
-                  onChange={cambiodocumento}
-                  optionPropkey='id'
-                  optionPropLabel='descripcion'
-                  disabled={modificar}
-                />
-              </Form.Item>
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            {!tipoSolicitante ? (
+              <>
+                <div className='form-row'>
+                  <div className='col'>
+                    <input type='text' className='form-control' placeholder='First name'></input>
+                  </div>
+                  <div className='col'>
+                    <input type='text' className='form-control' placeholder='Last name'></input>
+                  </div>
+                </div>
+              </>
+            ) : null}
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <p className='text'>
+                  {' '}
+                  <span className='required'>*</span> Tipo de documento:
+                </p>
+                <Form.Item
+                  rules={[{ required: true }]}
+                  initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+                  name='IDType'
+                >
+                  <SelectComponent
+                    style={{ width: '296px' }}
+                    options={l_tipos_documento}
+                    onChange={cambiodocumento}
+                    optionPropkey='id'
+                    optionPropLabel='descripcion'
+                    disabled={true}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <p className='text'>
+                  <span className='required'>*</span> Número de documento
+                </p>
+
+                <Form.Item initialValue={obj?.numeroIdentificacion} rules={[{ required: true }]} name='IDNumber'>
+                  <Input
+                    className='form-control'
+                    allowClear
+                    type='text'
+                    placeholder='NÚMERO DE IDENTIFICACIÓN'
+                    autoComplete='off'
+                    pattern={tipocampo}
+                    maxLength={longitudmaxima}
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!tipocampovalidacion.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                    onInvalid={() => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Datos inválidos',
+                        text:
+                          'Recuerde que para el tipo de documento: ' +
+                          tipodocumento +
+                          ' solo se admiten valores ' +
+                          campo +
+                          ' de longitud entre ' +
+                          longitudminima +
+                          ' y ' +
+                          longitudmaxima
+                      });
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col-lg-6 col-dm-6 col-sm-12'>
+                <p className='text'>
+                  <span className='required'>*</span> Primer Nombre
+                </p>
+                <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
+                  <Input
+                    placeholder='PRIMER NOMBRE'
+                    maxLength={50}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-dm-6 col-sm-12'>
+                <p className='text'>
+                  <span className='text'></span> Segundo Nombre
+                </p>
+                <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
+                  <Input
+                    placeholder='SEGUNDO NOMBRE'
+                    type='text'
+                    disabled={true}
+                    maxLength={50}
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col'>
+                <p className='text'>
+                  <span className='required'>* </span> Primer Apellido
+                </p>
+                <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
+                  <Input
+                    placeholder='PRIMER APELLIDO'
+                    maxLength={50}
+                    disabled={true}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col'>
+                <p className='text'>
+                  {' '}
+                  <span className='text'> </span> Segundo Apellido
+                </p>
+                <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
+                  <Input
+                    placeholder='SEGUNDO APELLIDO'
+                    maxLength={50}
+                    disabled={true}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col'>
+                <p className='text'>
+                  {' '}
+                  <span className='required'>* </span> Teléfono de Contacto
+                </p>
+                <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
+                  <Input
+                    placeholder='TELÉFONO DE CONTACTO'
+                    disabled={true}
+                    maxLength={12}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col'>
+                <p className='text'>
+                  <span className='text'> </span>
+                  Teléfono de Contacto 2
+                </p>
+                <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
+                  <Input
+                    placeholder='TELÉFONO DE CONTACTO 2'
+                    maxLength={12}
+                    disabled={true}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+              <div className='col'>
+                <p className='text'>
+                  <span className='required'>* </span>
+                  Correo Electrónico
+                </p>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                  <input
+                    placeholder='CORREO ELECTRÓNICO'
+                    style={{ width: '296px' }}
+                    maxLength={50}
+                    disabled={true}
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-4'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>*</span> Número de documento
-            </p>
-
-            <Form.Item initialValue={obj?.numeroIdentificacion} rules={[{ required: true }]} name='IDNumber'>
-              <Input
-                className='form-control'
-                allowClear
-                type='text'
-                placeholder='Número Identificación'
-                autoComplete='off'
-                pattern={tipocampo}
-                maxLength={longitudmaxima}
-                disabled={modificar}
-                onKeyPress={(event) => {
-                  if (!tipocampovalidacion.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos inválidos',
-                    text:
-                      'Sección:INFORMACIÓN DEL FALLECIDO \n recuerde que para el tipo de documento: ' +
-                      tipodocumento +
-                      ' solo se admiten valores ' +
-                      campo +
-                      ' de longitud entre ' +
-                      longitudminima +
-                      ' y ' +
-                      longitudmaxima
-                  });
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-5 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>*</span> Primer Nombre
-            </p>
-            <Form.Item initialValue={obj?.primerNombre} name='name' rules={[{ required: true }]}>
-              <Input
-                maxLength={50}
-                type='text'
-                className='form-control gov-co-form-control'
-                disabled={modificar}
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-5 col-md-5 mt-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='text'></span> Segundo Nombre
-            </p>
-            <Form.Item initialValue={obj?.segundoNombre} name='secondname' required={false}>
-              <Input
-                type='text'
-                disabled={modificar}
-                maxLength={50}
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>* </span> Primer Apellido
-            </p>
-            <Form.Item initialValue={obj?.primerApellido} name='surname' rules={[{ required: true }]}>
-              <Input
-                maxLength={50}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              {' '}
-              <span className='text'> </span> Segundo Apellido
-            </p>
-            <Form.Item initialValue={obj?.segundoApellido} name='secondsurname' required={false}>
-              <Input
-                maxLength={50}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z ]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              {' '}
-              <span className='required'>* </span> Teléfono de Contacto
-            </p>
-            <Form.Item initialValue={obj?.telefonoContacto} name='telefono' rules={[{ required: true }]}>
-              <Input
-                disabled={modificar}
-                maxLength={12}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-5 col-md-4 mt-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='text'> </span>
-              Teléfono de Contacto 2
-            </p>
-            <Form.Item initialValue={obj?.celularContacto} name='telefono2' required={false}>
-              <Input
-                maxLength={12}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[0-9]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-
-      <div className='col-lg-5 col-sm-4 col-md-5 mt-2 ml-2'>
-        <div className='panel-search'>
-          <div className='form-group gov-co-form-group'>
-            <p className='text'>
-              <span className='required'>* </span>
-              Correo Electrónico
-            </p>
-            <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
-              <input
-                maxLength={50}
-                disabled={modificar}
-                type='text'
-                className='form-control gov-co-form-control'
-                onKeyPress={(event) => {
-                  if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-              />
-            </Form.Item>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </section>
+      </>
+    );
+  }
 };
 
 interface DatosSolicitante<T> {
   form: FormInstance<T>;
   obj: any;
   tipo: any;
+  habilitar: boolean;
 }

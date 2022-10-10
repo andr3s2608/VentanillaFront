@@ -24,16 +24,17 @@ export const VisitaRu = () => {
   const [form] = Form.useForm<any>();
   const [rol, setrol] = useState<any>();
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
-  const [[l_tramites, l_estados, l_subredes], setListas] = useState<[any[], any[], any[]]>([[], [], []]);
+  const [[l_tramites, l_subredes], setListas] = useState<[any[], any[]]>([[], []]);
 
   const getListas = useCallback(
     async () => {
-      const mysRoles = await api.GetRoles();
-      const [permiso] = mysRoles;
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      const [permiso] = JSON.parse(rolesstorage);
 
       setrol(permiso.rol);
-
-      const resp = await Promise.all([api.getTipoTramites(), api.getEstadosSolicitudAguas(), api.getSubredes()]);
+      const subredes: any = localStorage.getItem('subredes');
+      const resp = await Promise.all([api.getTipoTramites(), JSON.parse(subredes)]);
       setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +46,7 @@ export const VisitaRu = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: any) => { };
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -56,23 +57,7 @@ export const VisitaRu = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota '>
-                      <img src={logo} alt='logo' className='img-fluid float-end mr-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <Form.Item>
-                          <span className='ant-form-text mr-2 text'>{rol}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
 
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
@@ -164,6 +149,7 @@ export const VisitaRu = () => {
                             defaultValue={objJson?.idtipodeTramite}
                             optionPropkey='idTipoTramite'
                             optionPropLabel='descripcion'
+                            disabled
                           />
                         </Form.Item>
                       </div>
@@ -181,6 +167,7 @@ export const VisitaRu = () => {
                               defaultValue={objJson?.idSubred}
                               optionPropkey='idSubRed'
                               optionPropLabel='zona'
+                              disabled
                             />
                           </Form.Item>
                         </div>
@@ -189,7 +176,7 @@ export const VisitaRu = () => {
                   </div>
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante obj={objJson} form={form} tipo={'revision'} />
+                  <DatosSolicitante obj={objJson} form={form} tipo={'revision'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />
