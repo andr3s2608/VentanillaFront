@@ -90,10 +90,10 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
       style={{ zIndex: 1003 }}
     >
       <div className='d-flex'>
-        <b className='text-primary px-3 d-none d-md-flex align-items-center' style={{ lineHeight: 1, maxWidth: 250 }}>
+        <b className='text-primary px-3 d-none d-md-flex align-items-center' style={{ lineHeight: 1, maxWidth: 288 }}>
           {projectInfo.name}
         </b>
-        <Menu className='bg-transparent' theme='dark' mode='horizontal'>
+        <Menu className='bg-transparent w-35' theme='dark' mode='horizontal'>
           <Menu.Item className='bg-transparent' key='1' onClick={toggleSidenav} title='Mostrar / Ocultar menú'>
             {React.createElement(sidenav ? MenuFoldOutlined : MenuUnfoldOutlined, {
               className: 'text-muted',
