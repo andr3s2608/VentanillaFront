@@ -643,7 +643,7 @@ export class ApiService {
 
   getPoliticaSeguridad = (idUsuario: string) => {
     return get<any>({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: REACT_APP_SHARED as string,
       url: `PoliticaSeguridad/GetPoliticaSeguridad/${idUsuario}`,
       id: '0'
     });
@@ -651,7 +651,7 @@ export class ApiService {
 
   AddPoliticaSeguridad = (payload: any) =>
     post({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: REACT_APP_SHARED as string,
       url: 'PoliticaSeguridad/AddPoliticaSeguridad',
       payload,
       confirmModal: false,
