@@ -146,6 +146,7 @@ const formatObjJson = (obj: any, id: String) => {
   } else {
 
     jsonDt = {
+      consecutivo: obj.consecutivo,
       idTramite: obj.idTramite,
       idControlTramite: obj.iD_Control_Tramite,
       certificado: obj.numeroCertificado,

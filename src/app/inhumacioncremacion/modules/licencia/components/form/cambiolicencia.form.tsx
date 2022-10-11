@@ -398,6 +398,7 @@ export const CambioLicencia = ({ props }: any) => {
         const json: IRegistroLicencia<any> = {
           solicitud: {
             idSolicitud: obj.idSolicitud,
+            consecutivo: obj.consecutivo,
             numeroCertificado: values.certificado,
             fechaDefuncion: moment(values.date).format(formatDate),
             sinEstablecer: values.check,

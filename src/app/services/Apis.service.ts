@@ -143,9 +143,9 @@ export class ApiService {
     });
 
   postLicencia = (payload: any) =>
-    post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
+    post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
 
-  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
+  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
 
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
@@ -470,6 +470,14 @@ export class ApiService {
     put({
       endpoint: REACT_APP_SHARED as string,
       url: `v2/Persona/UpdatePersonFromLicenNumber`,
+      payload,
+      id: '0'
+    });
+
+  GetConsecutivoVentanilla = (payload: any) =>
+    post({
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `NumeracionTramites`,
       payload,
       id: '0'
     });

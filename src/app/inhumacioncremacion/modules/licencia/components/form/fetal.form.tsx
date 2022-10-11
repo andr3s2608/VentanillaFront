@@ -229,6 +229,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const certificado = values.certificado;
 
     ////////////Guarda Solicitud///////////
+
+    let codigotramite = { codigotramite: (tramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ? '13' : '14') };
+
+    const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
+
+
+
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     setStatus(undefined);
     const formatDate = 'MM-DD-YYYY';
@@ -454,6 +461,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const json: IRegistroLicencia<any> = {
       solicitud: {
         idSolicitud: obj?.idSolicitud,
+        consecutivo: consecutivoventanilla.consecutivo + '',
         numeroCertificado: values.certificado,
         fechaDefuncion: moment(values.date).format(formatDate),
         sinEstablecer: values.check,
@@ -650,10 +658,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           icon: 'success',
 
           title: 'Solicitud Creada',
-          text: `Se ha creado la Solicitud exitosamente con número de tramite ${nrorad}`
+          text: `Se ha creado la Solicitud exitosamente con número de tramite ${consecutivoventanilla.consecutivo + ''}`
         });
 
-        let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), nrorad];
+        let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), consecutivoventanilla.consecutivo + ''];
         let plantillaRadicado = await api.getFormato('903C641E-C65B-494B-AA79-B091C55287FC');
         let bodyRadicado = agregarValoresDinamicos(plantillaRadicado.valor, llavesAReemplazarRadicado, datosDinamicosAprobacion);
 

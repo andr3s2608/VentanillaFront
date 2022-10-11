@@ -204,6 +204,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
 
   const getDataSolicitante = (solicitante: any) => { };
+
+
+
   const onSubmit = async (values: any) => {
     setStatus(undefined);
     let causa = values.causaMuerte;
@@ -214,6 +217,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       banderaCausa = false;
       observacionCausaMuerte = '';
     }
+
+    ////////////////Guardar Informacion////////////////////
+
+    let codigotramite = { codigotramite: (tramite === 'a289c362-e576-4962-962b-1c208afa0273' ? '13' : '14') };
+
+    const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
+
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -425,6 +435,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     const json: IRegistroLicencia<any> = {
       solicitud: {
         idSolicitud: objJosn?.idSolicitud,
+        consecutivo: consecutivoventanilla.consecutivo + '',
         numeroCertificado: values.certificado,
         fechaDefuncion: moment(values.date).format(formatDate),
         sinEstablecer: values.check,
@@ -598,10 +609,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           icon: 'success',
 
           title: 'Solicitud Creada',
-          text: `Se ha creado la Solicitud exitosamente con número de tramite ${nrorad}`
+          text: `Se ha creado la Solicitud exitosamente con número de tramite ${consecutivoventanilla.consecutivo + ''}`
         });
 
-        let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), nrorad];
+        let datosDinamicosAprobacion = [razon, getDescripcionTramite(tramite), consecutivoventanilla.consecutivo + ''];
         let plantillaRadicado = await api.getFormato('903C641E-C65B-494B-AA79-B091C55287FC');
         let bodyRadicado = agregarValoresDinamicos(plantillaRadicado.valor, llavesAReemplazarRadicado, datosDinamicosAprobacion);
 
