@@ -20,8 +20,12 @@ const LicenciaPruebaPage = lazy(() => import('./pages/gestion-tramite/gestion-in
 const AdministrationFirmasPage = lazy(() => import('./pages/administracion/administracion-firmas.page'));
 const AdministrationHorarioPage = lazy(() => import('./pages/administracion/administracion-horario.page'));
 const ValidarDocumentPage = lazy(() => import('./pages/validacion/validaciondocumentos.page'));
-const ModificarLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-licencia.page'));
+
 const CambiarTipoLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia.page'));
+//modificar licencias
+const ModificarLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-licencia.page'));
+const ModificarLicenciaOraclePage = lazy(() => import('./pages/actualizacion/actualizacion-licenciaoracle.page'));
+
 const ModificarMedicosPage = lazy(() => import('./pages/actualizacion/actualizacion-medicos.page'));
 const ModificarCementeriosPage = lazy(() => import('./pages/actualizacion/actualizacion-cementerios.page'));
 const ModificarFunerariasPage = lazy(() => import('./pages/actualizacion/actualizacion-funerarias.page'));
@@ -98,6 +102,10 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${updatepath}/licencia`,
     component: ModificarLicenciaPage
+  },
+  {
+    path: `${updatepath}/licencia-Oracle`,
+    component: ModificarLicenciaOraclePage
   },
   {
     path: `${updatepath}/Cambiar-Tipo-Licencia`,

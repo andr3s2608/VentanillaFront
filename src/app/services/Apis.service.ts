@@ -197,6 +197,9 @@ export class ApiService {
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
+  GetEstadoSolicitudNuevoCambio = () =>
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllSolicitudByIdUser/${this.oid}`, id: '0' });
+
   updatelicencia = (solicitud: string) =>
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
 
@@ -454,6 +457,20 @@ export class ApiService {
     get<any>({
       endpoint: REACT_APP_ENDPOINTV1 as string,
       url: `Barrio/GetBarrios`,
+      id: '0'
+    });
+
+  getLicenciaOracle = (numlicen: string, idtype: string) =>
+    get<any>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v2/Persona/GetPersonFromLicenNumber/${numlicen}/${idtype}`,
+      id: '0'
+    });
+  putLicenciaOracle = (payload: any) =>
+    put({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v2/Persona/UpdatePersonFromLicenNumber`,
+      payload,
       id: '0'
     });
 

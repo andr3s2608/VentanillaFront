@@ -368,8 +368,8 @@ export const ModificarLicencia = ({ props }: any) => {
                 )}
                 <Form.Item label='Sexo' name='sex' initialValue={sexo} rules={[{ required: true }]}>
                   <Radio.Group>
-                    <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
-                    <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>
+                    <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>MASCULINO</Radio>
+                    <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>FEMENINO</Radio>
                     <Radio value='0347ea5e-691e-44a0-87a5-b22d39f1ff94'>INDETERMINADO</Radio>
                   </Radio.Group>
                 </Form.Item>

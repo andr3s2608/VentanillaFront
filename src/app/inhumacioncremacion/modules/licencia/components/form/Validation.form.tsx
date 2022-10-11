@@ -606,6 +606,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
           notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante, null, null);
         }
+        Swal.fire({
+          icon: 'success',
+          title: 'Solicitud gestionada',
+          text: 'La Solicitud ha sido gestionada exitosamente'
+        });
         history.push('/tramites-servicios');
         store.dispatch(SetResetViewLicence());
       }

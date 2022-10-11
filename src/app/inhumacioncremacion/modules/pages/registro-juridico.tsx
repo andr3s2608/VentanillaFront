@@ -74,7 +74,7 @@ const RegistroPage: React.FC<any> = (props) => {
     if (emailmayus == emailconfmayus) {
       let numerorep: number = value.instNumIdent;
 
-      if (numerorep > 999999999) {
+      if (numerorep > 2100000000) {
         Swal.fire({
           icon: 'error',
           title: 'Datos Invalidos',

@@ -22,7 +22,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 
 //Redux
 
-import { Button, Table } from 'antd';
+import { Button, InputNumber, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2';
@@ -111,6 +111,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     const uso = props.form.getFieldValue('usofuente');
     const desc = props.form.getFieldValue('descripcionotrouso');
     const caudal = props.form.getFieldValue('caudal');
+
     if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
       mun = '31211657-3386-420a-8620-f9c07a8ca491';
     }
@@ -121,50 +122,89 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         text: 'Debe llenar todos los campos obligatorios de la seccion:  Información de acueductos que captan la misma fuente '
       });
     } else {
-      const array: any[] = [];
-      const arraytabla: any[] = [];
-      var posicion: number = 0;
-      for (let index = 0; index < acueducto.length; index++) {
-        array.push(acueducto[index]);
-        arraytabla.push(acueductotabla[index]);
-        posicion++;
+      if (lat.length > 5) {
+        if (long.length > 5) {
+          if (Number.parseFloat(caudal) >= 100) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos Invalidos',
+              text: 'El caudal debe ser manor a los 100 L/S'
+            });
+          }
+          else {
+
+
+
+            const array: any[] = [];
+            const arraytabla: any[] = [];
+            var posicion: number = 0;
+            for (let index = 0; index < acueducto.length; index++) {
+              array.push(acueducto[index]);
+              arraytabla.push(acueductotabla[index]);
+              posicion++;
+            }
+
+            //push al array que se guardara en la bd
+            array.push({
+              posicion: posicion,
+              departamento: dep,
+              localidad: loc,
+              municipio: mun,
+              latitud: lat,
+              longitud: long,
+              usofuente: uso,
+              descripcion: desc,
+              caudal: caudal
+            });
+            //push al array que se mostrara en la tabla
+            //municipio
+
+            const municipios = (await l_municipios).filter((i) => i.idMunicipio == mun);
+
+            const { descripcion } = municipios[0];
+            //localidad
+            const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
+            const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
+
+            arraytabla.push({
+              posicion: posicion,
+              munver: descripcion + ' / ' + localidad[0].descripcion,
+              usofuente: usofuente[0].nombre
+            });
+
+            ////
+
+            setacueductos(array);
+            prop(array);
+            setacueductostabla(arraytabla);
+
+            props.form.resetFields(['localidad', 'latituduso', 'longituduso', 'descripcionotrouso', 'caudal', 'usofuente']);
+
+
+
+
+
+          }
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+
+            title: 'Datos invalidos',
+            text: 'La longitud minima para el campo longitud es de 6 caracteres'
+          });
+
+        }
+      }
+      else {
+        Swal.fire({
+          icon: 'error',
+
+          title: 'Datos invalidos',
+          text: 'La longitud minima para el campo Coordenadas de capacitación es de 6 caracteres'
+        });
       }
 
-      //push al array que se guardara en la bd
-      array.push({
-        posicion: posicion,
-        departamento: dep,
-        localidad: loc,
-        municipio: mun,
-        latitud: lat,
-        longitud: long,
-        usofuente: uso,
-        descripcion: desc,
-        caudal: caudal
-      });
-      //push al array que se mostrara en la tabla
-      //municipio
-
-      const municipios = (await l_municipios).filter((i) => i.idMunicipio == mun);
-
-      const { descripcion } = municipios[0];
-      //localidad
-      const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
-      const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
-
-      arraytabla.push({
-        posicion: posicion,
-        munver: descripcion + ' / ' + localidad[0].descripcion,
-        usofuente: usofuente[0].nombre
-      });
-
-      ////
-
-      setacueductos(array);
-      prop(array);
-      setacueductostabla(arraytabla);
-
-      props.form.resetFields(['localidad', 'latituduso', 'longituduso', 'descripcionotrouso', 'caudal', 'usofuente']);
     }
   };
   const onClickLlenarInformacion = async (datos: any) => {
@@ -180,6 +220,18 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
+  const ValorCaudal = (letra: string) => {
+    const caudal = props.form.getFieldValue('caudal');
+    if (/[0-9,]/.test(letra)) {
+
+
+      return caudal + letra;
+    }
+    else {
+      return caudal;
+    }
+    //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
+  };
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
     const array: any[] = [];
@@ -300,6 +352,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <Form.Item name='latituduso' rules={[{ required: false }]}>
                   <Input
                     type='text'
+                    maxLength={9}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
@@ -321,6 +374,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <Form.Item name='longituduso' rules={[{ required: false }]}>
                   <Input
                     type='text'
+                    maxLength={9}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
@@ -351,14 +405,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <input
                     type='text'
                     className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
                   />
                 </Form.Item>
               </div>
@@ -367,11 +413,38 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Caudal total(L/S)
                 </label>
                 <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
-                  <input
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
+                    maxLength={4}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+
+                      let caudal: string = ValorCaudal(event.key);
+                      let count = 0;
+                      let posicion = -1;
+                      for (let index = 0; index < caudal.length; index++) {
+                        if (caudal.substring(index, index + 1) == ',') {
+                          if (posicion == -1) {
+                            posicion = index;
+                          }
+                          count++;
+                        }
+
+                      }
+
+                      if (count == 2 && event.key == ',') {
+
+                        event.preventDefault();
+                      }
+                      caudal = caudal.substring(0, caudal.length - 1)
+
+                      if (posicion != -1 &&
+                        caudal.substring(posicion, caudal.length).length > 2) {
+                        event.preventDefault();
+                      }
+
+
+                      if (!/[0-9,]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -385,20 +458,19 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
               {obj?.tipodeSolicitud == 'Primera vez' && (
                 <>
-                  <div className='col-lg-8 col-md-8 col-sm-12'>
-                    <a href='' style={{ textDecoration: 'none' }}>
-                      <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-                    </a>
+                  <div className='col-lg-10 col-md-10 col-sm-12'>
+
                     <Button
                       className='fa-solid fa-circle-plus'
-                      style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                      style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
                       type='primary'
                       htmlType='button'
                       onClick={() => {
                         insertarAcueducto();
                       }}
                     >
-                      Enviar
+
+                      Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
                     </Button>
                   </div>
                 </>
@@ -477,6 +549,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
+                    maxLength={9}
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();
@@ -499,6 +572,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
+                    maxLength={9}
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();
@@ -529,14 +603,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
                   />
                 </Form.Item>
               </div>
@@ -545,12 +611,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Caudal total(L/S)
                 </label>
                 <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
-                  <input
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                      if (!/[0-9.]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

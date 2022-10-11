@@ -373,21 +373,6 @@ export const PrimeraU = () => {
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <section className='info-panel'>
               <div className='container'>
-                <div className='row mt-5'>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-bogota'>
-                      <img src={logo} alt='logo' className='img-fluid float-end ml-2' />
-                    </div>
-                  </div>
-                  <div className='col-lg-6 col-md-6 col-sm-6'>
-                    <div className='img-profile'>
-                      <img src={profile} alt='logo' className='img-fluid float-end mr-2' />
-                      <div className='info-usuario'>
-                        <p>Subdirector</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
                     <div className='info-secion'>
@@ -432,14 +417,14 @@ export const PrimeraU = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row'>
+                <div className='row mt-5 ml-3'>
                   <div className='col-lg-12 col-md-12'>
                     <div className='info-tramite mt-3 ml-2'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
-                <div className='row'>
+                <div className='row mt-3'>
                   <div className='col-lg-12 col-sm-12 col-md-12'>
                     <div className='info-tramite mt-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>

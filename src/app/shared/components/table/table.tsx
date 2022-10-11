@@ -12,6 +12,7 @@ import Input from 'antd/es/input';
 import Table from 'antd/es/table';
 import { DatepickerComponent } from '../inputs/datepicker.component';
 import moment from 'moment';
+import { errorMessage, infoMessage } from 'app/services/settings/message.service';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
@@ -21,6 +22,8 @@ export const Gridview = (props: IDataSource) => {
   const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
   const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
+  const [statusGestion, setStatusGestion] = useState<boolean>(false);
+  const [mostrar, setmostrar] = useState<boolean>(false);
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
@@ -38,10 +41,24 @@ export const Gridview = (props: IDataSource) => {
     async () => {
 
       const rolesstorage: any = localStorage.getItem('roles');
+
+      /*
+      let resp: any = [];
+      if (rolesstorage.rol === 'Ciudadano') {
+        resp = await api.GetEstadoSolicitudNuevoCambio();
+      }
+      else {
+        resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      }
+*/
+
       const datostabla: any = localStorage.getItem('tablainhcrem');
-      setdatosUsuario(JSON.parse(datostabla));
+      const datosjson = JSON.parse(datostabla)
+      setdatosUsuario(datosjson);
+      //console.log(datosjson);
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
+      setmostrar(true);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -654,6 +671,10 @@ export const Gridview = (props: IDataSource) => {
 
   /** Evento que se ejecuta cuando se da click en el boton de gestionar */
   const onGestionarDocumento = async (solicitud: Solicitud) => {
+    console.log("El valor de la fila sobre el cual diste click es: ");
+    console.log(solicitud);
+
+
     const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
 
     setObservacion(resultResponse[0].observaciones);
@@ -673,16 +694,16 @@ export const Gridview = (props: IDataSource) => {
      * al que se debe enviar los archivos
      */
     switch (tipoSolicitud) {
-      case 'Inhumacion Individual':
+      case 'Inhumación Individual':
         container = 'inhumacionindividual';
         break;
-      case 'Cremacion Individual':
+      case 'Cremación Individual':
         container = 'cremacionindividual';
         break;
-      case 'Cremacion Fetal':
+      case 'Cremación Fetal':
         container = 'cremacionfetal';
         break;
-      case 'Inhumacion Fetal':
+      case 'Inhumación Fetal':
         container = 'inhumacionfetal';
         break;
     }
@@ -707,8 +728,10 @@ export const Gridview = (props: IDataSource) => {
             formData.append('nameFile', nameFile);
 
             supportDocumentsEdit.push({
+              idSolicitud: listDocument[j].idSolicitud,
               idDocumentoSoporte: listDocument[j].idDocumentoSoporte,
-              fechaModificacion: new Date()
+              fechaModificacion: new Date(),
+              esValido: true
             });
           }
         }
@@ -721,8 +744,15 @@ export const Gridview = (props: IDataSource) => {
         await api.uploadFiles(formData);
         await api.UpdateSupportDocuments(supportDocumentsEdit);
         await api.updateStateRequest(listDocument[0].idSolicitud, 'FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+        await infoMessage({ title: "Actualización de Documentos Inconsistentes", content: "Los documentos fueron actualizados correctamente" });
         window.location.reload();
+      } else {
+        console.error("No se cargaron correctamente los archivos a actualizar");
+        errorMessage({ title: "Actualización de Documentos Inconsistentes", content: "No se pudo actualizar los archivos. Por favor contactar a soporte técnico" });
       }
+    } else {
+      console.error("No se encontró un contenedor donde subir los archivos");
+      errorMessage({ title: "Actualización de Documentos Inconsistentes", content: "No se pudo actualizar los archivos. Por favor contactar a soporte técnico" });
     }
   };
 
@@ -805,42 +835,47 @@ export const Gridview = (props: IDataSource) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <Table
-                id='tableGen'
-                dataSource={datosUsuario}
-                columns={structureColumns}
-                scroll={{ x: 1200 }}
-                pagination={{ pageSize: Paginas }}
-              />
+        {datosUsuario.length > 0 && (<>
+          <div className='card-body'>
+            <div className='row'>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+
+                <Table
+                  id='tableGen'
+                  dataSource={datosUsuario}
+                  columns={structureColumns}
+                  scroll={{ x: 1200 }}
+                  pagination={{ pageSize: Paginas }}
+                />
+              </div>
+            </div>
+            <div className='row'>
+              {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+              <Modal
+                title={<p className='text-center'>Gestión de Documentos</p>}
+                visible={isVisibleDocumentoGestion}
+                width={800}
+                onCancel={() => setVisibleDocumentoGestion(false)}
+                footer={[]}
+              >
+                <div className='row'>
+                  <div className='col-gl-12 col-sm-12 col-md-12'>
+                    <label>Observaciones:</label>
+                    <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+                  </div>
+                </div>
+                <div className='row  justify-content-md-center'>
+                  <label className='mt-3'>Lista de documentos:</label>
+                  <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
+                    <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
-          <div className='row'>
-            {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
-            <Modal
-              title={<p className='text-center'>Gestión de Documentos</p>}
-              visible={isVisibleDocumentoGestion}
-              width={800}
-              onCancel={() => setVisibleDocumentoGestion(false)}
-              footer={[]}
-            >
-              <div className='row'>
-                <div className='col-gl-12 col-sm-12 col-md-12'>
-                  <label>Observaciones:</label>
-                  <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
-                </div>
-              </div>
-              <div className='row  justify-content-md-center'>
-                <label className='mt-3'>Lista de documentos:</label>
-                <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
-                  <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
-                </div>
-              </div>
-            </Modal>
-          </div>
-        </div>
+
+        </>)}
+
       </div>
     </div>
   );
