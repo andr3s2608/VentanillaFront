@@ -9,6 +9,7 @@ export const ChangeTheme = () => {
   var b = document.getElementsByTagName("b");
   var li = document.getElementsByTagName("li");
   var h4 = document.getElementsByTagName("h4");
+  var th = document.getElementsByTagName("th");
   var antMenuItemContent = document.getElementsByClassName("ant-steps-item-content");
   var element = document.getElementsByTagName("div");
   var section = document.getElementsByTagName("section");
@@ -62,6 +63,10 @@ export const ChangeTheme = () => {
     for (let index = 0; index < h4.length; index++) {
       h4[index].classList.add("border");
       h4[index].classList.add("border-warning");
+    }
+
+    for (let index = 0; index < th.length; index++) {
+      th[index].classList.add("black");
     }
 
     for (let index = 0; index < li.length; index++) {
@@ -142,6 +147,10 @@ export const ChangeTheme = () => {
     for (let index = 0; index < h4.length; index++) {
       h4[index].classList.remove("border");
       h4[index].classList.remove("border-warning");
+    }
+
+    for (let index = 0; index < th.length; index++) {
+      th[index].classList.remove("black");
     }
 
     for (let index = 0; index < li.length; index++) {
