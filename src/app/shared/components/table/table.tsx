@@ -23,6 +23,7 @@ export const Gridview = (props: IDataSource) => {
   const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
   const [statusGestion, setStatusGestion] = useState<boolean>(false);
+  const [mostrar, setmostrar] = useState<boolean>(false);
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
@@ -40,12 +41,24 @@ export const Gridview = (props: IDataSource) => {
     async () => {
 
       const rolesstorage: any = localStorage.getItem('roles');
+
+      /*
+      let resp: any = [];
+      if (rolesstorage.rol === 'Ciudadano') {
+        resp = await api.GetEstadoSolicitudNuevoCambio();
+      }
+      else {
+        resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      }
+*/
+
       const datostabla: any = localStorage.getItem('tablainhcrem');
       const datosjson = JSON.parse(datostabla)
       setdatosUsuario(datosjson);
-      console.log(datosjson);
+      //console.log(datosjson);
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
+      setmostrar(true);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -822,42 +835,47 @@ export const Gridview = (props: IDataSource) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <Table
-                id='tableGen'
-                dataSource={datosUsuario}
-                columns={structureColumns}
-                scroll={{ x: 1200 }}
-                pagination={{ pageSize: Paginas }}
-              />
+        {datosUsuario.length > 0 && (<>
+          <div className='card-body'>
+            <div className='row'>
+              <div className='col-lg-12 col-sm-12 col-md-12'>
+
+                <Table
+                  id='tableGen'
+                  dataSource={datosUsuario}
+                  columns={structureColumns}
+                  scroll={{ x: 1200 }}
+                  pagination={{ pageSize: Paginas }}
+                />
+              </div>
+            </div>
+            <div className='row'>
+              {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+              <Modal
+                title={<p className='text-center'>Gestión de Documentos</p>}
+                visible={isVisibleDocumentoGestion}
+                width={800}
+                onCancel={() => setVisibleDocumentoGestion(false)}
+                footer={[]}
+              >
+                <div className='row'>
+                  <div className='col-gl-12 col-sm-12 col-md-12'>
+                    <label>Observaciones:</label>
+                    <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+                  </div>
+                </div>
+                <div className='row  justify-content-md-center'>
+                  <label className='mt-3'>Lista de documentos:</label>
+                  <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
+                    <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
-          <div className='row'>
-            {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
-            <Modal
-              title={<p className='text-center'>Gestión de Documentos</p>}
-              visible={isVisibleDocumentoGestion}
-              width={800}
-              onCancel={() => setVisibleDocumentoGestion(false)}
-              footer={[]}
-            >
-              <div className='row'>
-                <div className='col-gl-12 col-sm-12 col-md-12'>
-                  <label>Observaciones:</label>
-                  <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
-                </div>
-              </div>
-              <div className='row  justify-content-md-center'>
-                <label className='mt-3'>Lista de documentos:</label>
-                <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
-                  <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
-                </div>
-              </div>
-            </Modal>
-          </div>
-        </div>
+
+        </>)}
+
       </div>
     </div>
   );

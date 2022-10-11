@@ -58,15 +58,12 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       //|| permiso?.rol === 'AdminTI'
     ) {
 
-      const resp: any = await api.GetEstadoSolicitudNuevo();
+      const resp: any = await api.GetEstadoSolicitudNuevoCambio();
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
       setAllData(resp);
       setVisibleGrid('contents');
     } else {
-
-
-
       const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
 
