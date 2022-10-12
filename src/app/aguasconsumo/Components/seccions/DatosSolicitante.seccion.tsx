@@ -113,7 +113,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       form.setFieldsValue({ IDNumber: undefined });
       setLongitudminima(5);
       setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{5,15}');
+      setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
       setTipodocumento('Sin Identificación');
       setCampo('AlfaNuméricos(Numéros y letras)');

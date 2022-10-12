@@ -380,6 +380,16 @@ export class ApiService {
       }
     });
 
+  GetBlobInhumacionCremacion = (contenedor: string, path: string) =>
+    get({
+      endpoint: REACT_APP_BLOB as string,
+      url: `Storage/GetBlob/${contenedor}/${path}`,
+      id: '0',
+      options: {
+        responseType: 'blob'
+      }
+    });
+
   //
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 

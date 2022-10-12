@@ -28,6 +28,7 @@ import { CementerioInfoFormSeccion, KeysForm as KeyFormCementerio } from './secc
 import { InformacionDocumentosGestion } from './seccions/documentos-gestion.seccion';
 import { IRegistroLicencia } from 'app/inhumacioncremacion/Models/IRegistroLicencia';
 import { useHistory } from 'react-router';
+import { type } from 'os';
 
 export const CambioLicencia = ({ props }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
@@ -523,6 +524,41 @@ export const CambioLicencia = ({ props }: any) => {
           );
         });
 
+        formData.append('containerName', obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+          'cremacionindividual' : 'inhumacionindividual'
+        );
+        formData.append('oid', accountIdentifier);
+        const blobcertificado: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+          'inhumacionindividual' : 'cremacionindividual', obj.idusuarioseg + '/Certificado_Defuncion_' + obj.idSolicitud + '.pdf')
+
+        const blobdocumento: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+          'inhumacionindividual' : 'cremacionindividual', obj.idusuarioseg + '/Documento_del_fallecido_' + obj.idSolicitud + '.pdf')
+
+
+
+        /*
+        var reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = function () {
+          var base64data = reader.result;
+          console.log(base64data);
+        }
+        */
+        const type: any = { type: 'application/pdf' };
+        const uid: any = { uid: 'rc-upload-1665609235853-5' }
+        var filecertificado = new File([blobcertificado as Blob], "Certificado_defuncion.pdf", type);
+        var filedocumento = new File([blobdocumento as Blob], "Documento_familiar.pdf", type);
+
+
+
+        formData.append('file', filecertificado);
+        formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
+
+
+        formData.append('file', filedocumento);
+        formData.append('nameFile', 'Documento_del_fallecido' + '_' + obj.idSolicitud);
+
+
 
 
         let actavalida = 0;
@@ -841,7 +877,7 @@ export const CambioLicencia = ({ props }: any) => {
       form.setFieldsValue({ IDNumber: undefined });
       setLongitudminima(5);
       setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{5,15}');
+      setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
       setTipodocumento('Sin Identificación');
       setCampo('AlfaNuméricos(Numéros y letras)');
@@ -991,7 +1027,7 @@ export const CambioLicencia = ({ props }: any) => {
       form.setFieldsValue({ IDNumber: undefined });
       setLongitudminimaautoriza(5);
       setLongitudmaximaautoriza(15);
-      setTipocampoautoriza('[a-zA-Z0-9]{5,15}');
+      setTipocampoautoriza('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
       setTipodocumentoautoriza('Sin Identificación');
       setCampoautoriza('AlfaNuméricos(Numéros y letras)');

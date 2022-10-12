@@ -960,7 +960,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       form.setFieldsValue({ IDNumber: undefined });
       setLongitudminima(5);
       setLongitudmaxima(15);
-      setTipocampo('[a-zA-Z0-9]{5,15}');
+      setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
       setTipodocumento('Sin Identificación');
       setCampo('AlfaNuméricos(Numéros y letras)');
@@ -1108,7 +1108,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       form.setFieldsValue({ IDNumber: undefined });
       setLongitudminimaautoriza(5);
       setLongitudmaximaautoriza(15);
-      setTipocampoautoriza('[a-zA-Z0-9]{5,15}');
+      setTipocampoautoriza('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
       setTipodocumentoautoriza('Sin Identificación');
       setCampoautoriza('AlfaNuméricos(Numéros y letras)');
