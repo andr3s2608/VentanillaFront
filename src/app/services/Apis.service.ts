@@ -358,6 +358,15 @@ export class ApiService {
     });
   };
 
+  UpdateHTML = (payload: any) => {
+    return put<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `UpdateHTML`,
+      payload,
+      id: '1'
+    });
+  };
+
   getFormato = (idPlantilla: string) =>
     get<Iformato>({
       endpoint: REACT_APP_FORMATOS as string,

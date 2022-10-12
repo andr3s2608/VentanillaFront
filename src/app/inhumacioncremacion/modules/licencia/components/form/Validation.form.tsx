@@ -852,7 +852,86 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }
   ];
 
+  function htmlInhumacionIndividual() {
+
+    const fechaActual = new Date();
+
+    function padTo2Digits(num: number) {
+      return num.toString().padStart(2, '0');
+    }
+
+    function formatDate(fechaActual: Date) {
+      return [
+        padTo2Digits(fechaActual.getDate()),
+        padTo2Digits(fechaActual.getMonth() + 1),
+        fechaActual.getFullYear(),
+      ].join('/');
+    }
+
+    function formatDateHours(fechaActual: Date) {
+      return [
+        padTo2Digits(fechaActual.getHours()),
+        padTo2Digits(fechaActual.getMinutes()),
+        padTo2Digits(fechaActual.getSeconds()),
+      ].join(':');
+    }
+
+
+
+    const keys = [
+      "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
+      "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
+      "~:~nombre_completo_fallecido~:~", "~:~nacionalidad~:~", "~:~fecha_fallecido~:~",
+      "~:~hora_fallecido~:~", "~:~sexo_fallecido~:~", "~:~tipo_identificacion_fallecido~:~",
+      "~:~numero_identificacion_fallecido~:~", "~:~tipo_muerte~:~", "~:~edad_fallecido~:~",
+      "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~", "~:~causa~:~", "~:~observacion_causa~:~",
+      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+
+    console.log(formatDate(fechaActual));
+    console.log(formatDateHours(fechaActual));
+    /*
+    const values = [formatDate(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    datoSolitud.NumeroCertificado, funeraria.Data[0].Funeraria.ToUpper(), datoSolitud.RazonSocialSolicitante.ToUpper(),
+    nombreFallecido.ToUpper(), nacionalidad.Data.Descripcion.ToUpper(), datoSolitud.FechaDefuncion.ToString("dd--MM-yyyy"),
+    datoSolitud.Hora, genero.Data.Descripcion.ToUpper(), tipoIdentificacion.Data.Descripcion.ToUpper(),
+    datosPersonaFallecida.NumeroIdentificacion, tipoMuerte.Data.Descripcion.ToUpper(), Utilities.ConvertTypes.GetdifFechas(DateTime.Parse(datosPersonaFallecida.FechaNacimiento), datoSolitud.FechaDefuncion),
+    nombreMedico1.ToUpper(), nombreMedico2.ToUpper(), nombreCementeio.ToUpper(), label, resumen.Data[0].ObservacionCausa,
+      firmaAprobador, nombreValidador.ToUpper(), firmaValidador, codigo];
+
+      */
+  }
+
   const onPrevPDF = async () => {
+
+    const tipotramite: string = objJosn.idTramite;
+
+    //-----------------------------------------
+
+    switch (tipotramite) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        //Inhumación Individual;
+        htmlInhumacionIndividual();
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        //Inhumacion fetal
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        //Cremacion individual
+
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        //Cremacionfetal
+
+        break;
+      default:
+        break;
+    }
+
+    //-----------------------------------------
+
+
+    /*
+
     let bandera = await api.validarFirmaFuncionario(idUsuario);
 
     if (bandera) {
@@ -875,6 +954,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
       });
     }
+
+    */
   };
   const onModalNofificacion = async () => {
     setIsModalValidarCertificado(false);
