@@ -36,6 +36,28 @@ export const Gridview = (props: IDataSource) => {
   const [idtramite, setidtramite] = useState<any>('');
   const [documento, setdocumento] = useState<any>('');
 
+
+  const listaprueba: any[] =
+    [{ consecutivo: '2022REINC00000046' },
+    { consecutivo: '2020REINC00000046' },
+    { consecutivo: '2021REINC00000046' },
+    { consecutivo: '2022REINC00000047' },
+    { consecutivo: '2022RECRC00000045' },
+    { consecutivo: '2022RECRC00000046' },
+    { consecutivo: '2022RECRC00000048' },
+    { consecutivo: '2022RECRC00000049' },
+    { consecutivo: '2022RECRC00000040' },
+    { consecutivo: '2022RECRC00000047' },
+    { consecutivo: '2022REINC00000048' },
+    { consecutivo: '2020REINC00000045' },
+    { consecutivo: '2021REINC00000046' },
+    { consecutivo: '2021REINC00000046' },]
+    ;
+
+
+
+
+
   const getListas = useCallback(
 
     async () => {
@@ -55,7 +77,7 @@ export const Gridview = (props: IDataSource) => {
       const datostabla: any = localStorage.getItem('tablainhcrem');
       const datosjson = JSON.parse(datostabla)
       setdatosUsuario(datosjson);
-      //console.log(datosjson);
+
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
       setmostrar(true);
@@ -98,29 +120,58 @@ export const Gridview = (props: IDataSource) => {
 
               setfechafiltro(fecha);
 
-              const filteredDataUsuario: any = data.filter((datos: any) => {
-                const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
-                return (
-                  datos.fechaSolicitud.toString().includes(fecha) &&
-                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                  datos.iD_Control_Tramite.toString().includes(idtramite) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
-                );
-              });
-              setdatosUsuario(filteredDataUsuario);
+              if (idtramite === '') {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
+                    datos.fechaSolicitud.toString().includes(fecha) &&
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+
+                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+              else {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
+                    datos.fechaSolicitud.toString().includes(fecha) &&
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+
 
             }
             else {
-              const filteredDataUsuario: any = data.filter((datos: any) => {
-                const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
-                return (
+              if (idtramite === '') {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
 
-                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                  datos.iD_Control_Tramite.toString().includes(idtramite) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
-                );
-              });
-              setdatosUsuario(filteredDataUsuario);
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+              else {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
+
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+
             }
           }}
         />
@@ -149,19 +200,39 @@ export const Gridview = (props: IDataSource) => {
 
             const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
             if (fechafiltro == null) {
-              return (
-                funeraria.toString().includes(currValue.toUpperCase()) &&
-                datos.iD_Control_Tramite.toString().includes(idtramite) &&
-                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
-              );
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+
             }
             else {
-              return (
-                funeraria.toString().includes(currValue.toUpperCase()) &&
-                datos.fechaSolicitud.toString().includes(fechafiltro) &&
-                datos.iD_Control_Tramite.toString().includes(idtramite) &&
-                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
-              );
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+
             }
           });
           setdatosUsuario(filteredDataUsuario);
@@ -177,35 +248,59 @@ export const Gridview = (props: IDataSource) => {
     return (
 
       <Input
-        placeholder='Id Tramite'
+        placeholder='Consecutivo'
         value={idtramite}
         style={{ width: 140 }}
         onKeyPress={(event) => {
-          if (!/[0-9]/.test(event.key)) {
+          if (!/[0-9A-Za-z]/.test(event.key)) {
             event.preventDefault();
           }
         }}
 
         onChange={(e) => {
           const currValue: string = e.target.value;
-          setidtramite(currValue);
+          setidtramite(currValue.toUpperCase());
 
           const filteredDataUsuario: any = data.filter((datos: any) => {
             const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
             if (fechafiltro === null || fechafiltro === undefined) {
-              return (
-                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                datos.iD_Control_Tramite.toString().includes(currValue) &&
-                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
-              );
+              if (currValue === '') {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+
+
             }
             else {
-              return (
-                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                datos.fechaSolicitud.toString().includes(fechafiltro) &&
-                datos.iD_Control_Tramite.toString().includes(currValue) &&
-                datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
-              );
+              if (currValue === '') {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
+                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                );
+              }
+
             }
           });
           setdatosUsuario(filteredDataUsuario);
@@ -232,19 +327,39 @@ export const Gridview = (props: IDataSource) => {
           const filteredDataUsuario: any = data.filter((datos: any) => {
             const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
             if (fechafiltro === null || fechafiltro === undefined) {
-              return (
-                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                datos.iD_Control_Tramite.toString().includes(idtramite) &&
-                datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
-              );
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+
+                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                );
+              }
+
             }
             else {
-              return (
-                funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                datos.fechaSolicitud.toString().includes(fechafiltro) &&
-                datos.iD_Control_Tramite.toString().includes(idtramite) &&
-                datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
-              );
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                );
+              }
+
             }
           });
           setdatosUsuario(filteredDataUsuario);
@@ -266,13 +381,14 @@ export const Gridview = (props: IDataSource) => {
       structureColumns = [
         {
           title: FilterByNameInputid(),
-          dataIndex: 'iD_Control_Tramite',
-          key: 'idcontrolTramite',
+          dataIndex: 'consecutivo',
+          key: 'consecutivo',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+              a.consecutivo > b.consecutivo ? 1 : -1,
             multiple: 3,
-          },
+          }
         },
         {
           title: FilterByNameInputdocumento(),
@@ -449,13 +565,14 @@ export const Gridview = (props: IDataSource) => {
       structureColumns = [
         {
           title: FilterByNameInputid(),
-          dataIndex: 'iD_Control_Tramite',
-          key: 'idcontrolTramite',
+          dataIndex: 'consecutivo',
+          key: 'consecutivo',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
-            multiple: 2,
-          },
+            compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+              a.consecutivo > b.consecutivo ? 1 : -1,
+            multiple: 3,
+          }
         },
         {
           title: FilterByNameInputdocumento(),
@@ -671,8 +788,7 @@ export const Gridview = (props: IDataSource) => {
 
   /** Evento que se ejecuta cuando se da click en el boton de gestionar */
   const onGestionarDocumento = async (solicitud: Solicitud) => {
-    console.log("El valor de la fila sobre el cual diste click es: ");
-    console.log(solicitud);
+
 
 
     const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
@@ -835,46 +951,45 @@ export const Gridview = (props: IDataSource) => {
   return (
     <div className='container-fluid'>
       <div className='card'>
-        {datosUsuario.length > 0 && (<>
-          <div className='card-body'>
-            <div className='row'>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
+        <div className='card-body'>
+          <div className='row'>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
 
-                <Table
-                  id='tableGen'
-                  dataSource={datosUsuario}
-                  columns={structureColumns}
-                  scroll={{ x: 1200 }}
-                  pagination={{ pageSize: Paginas }}
-                />
-              </div>
-            </div>
-            <div className='row'>
-              {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
-              <Modal
-                title={<p className='text-center'>Gestión de Documentos</p>}
-                visible={isVisibleDocumentoGestion}
-                width={800}
-                onCancel={() => setVisibleDocumentoGestion(false)}
-                footer={[]}
-              >
-                <div className='row'>
-                  <div className='col-gl-12 col-sm-12 col-md-12'>
-                    <label>Observaciones:</label>
-                    <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
-                  </div>
-                </div>
-                <div className='row  justify-content-md-center'>
-                  <label className='mt-3'>Lista de documentos:</label>
-                  <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
-                    <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
-                  </div>
-                </div>
-              </Modal>
+              <Table
+                id='tableGen'
+                dataSource={datosUsuario}
+                columns={structureColumns}
+                scroll={{ x: 1200 }}
+                pagination={{ pageSize: Paginas }}
+              />
             </div>
           </div>
+          <div className='row'>
+            {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+            <Modal
+              title={<p className='text-center'>Gestión de Documentos</p>}
+              visible={isVisibleDocumentoGestion}
+              width={800}
+              onCancel={() => setVisibleDocumentoGestion(false)}
+              footer={[]}
+            >
+              <div className='row'>
+                <div className='col-gl-12 col-sm-12 col-md-12'>
+                  <label>Observaciones:</label>
+                  <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+                </div>
+              </div>
+              <div className='row  justify-content-md-center'>
+                <label className='mt-3'>Lista de documentos:</label>
+                <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
+                  <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+                </div>
+              </div>
+            </Modal>
+          </div>
+        </div>
 
-        </>)}
+
 
       </div>
     </div>

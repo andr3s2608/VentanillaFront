@@ -114,7 +114,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'consecutivo': datos[i].consecutivo,
           'Documento del fallecido': datos[i].noIdentificacionSolicitante,
           'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
           'Fecha de registro': datos[i].fechaSolicitud,
@@ -130,9 +130,9 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           {
             sheetData: datatable,
             sheetName: 'Historial solicitudes',
-            sheetFilter: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+            sheetFilter: ['consecutivo', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
               , 'Fecha de registro', 'Estado', 'Tipo Solicitud'],
-            sheetHeader: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+            sheetHeader: ['consecutivo', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
               , 'Fecha de registro', 'Estado', 'Tipo Solicitud']
           }
         ]
@@ -169,7 +169,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'consecutivo': datos[i].consecutivo,
           'Documento del fallecido': datos[i].noIdentificacionSolicitante,
           'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
           'Fecha de registro': datos[i].fechaSolicitud,
@@ -181,7 +181,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     }
     let textoPlano = 'IDENTIFICADOR  |  DOCUMENTO DEL FALLECIDO  |  SOLICITANTE  |  REGISTRO  |  ESTADO  |  ESTADO  |  TIPO SOLICITUD \n';
     for (let inf in datatable) {
-      textoPlano += datatable[inf]['Identificador Tramite'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
+      textoPlano += datatable[inf]['consecutivo'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
         + datatable[inf]['Solicitante (funeraria o nombre)'] + '  |  ' + datatable[inf]['Fecha de registro'] +
         '  |  ' + datatable[inf].Estado + '  |  ' + datatable[inf]['Tipo Solicitud'] + ' \n';
 
@@ -248,7 +248,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     }
     if (input == true && FilterTextID != undefined && FilterTextID != '') {
       filtroFecha = filtroFecha?.filter(function (f) {
-        return f.iD_Control_Tramite == FilterTextID;
+        return f.consecutivo == FilterTextID;
       });
     }
 

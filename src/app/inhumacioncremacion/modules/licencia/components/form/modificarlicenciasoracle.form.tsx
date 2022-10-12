@@ -78,7 +78,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
     const tipomuerte: any = localStorage.getItem('tipomuerte');
     settipos(tiposjson);
-    console.log(JSON.parse(tipomuerte))
+
     settipomuerte(JSON.parse(tipomuerte));
 
   }, []);
@@ -100,7 +100,7 @@ export const ModificarLicencia = ({ props }: any) => {
       });
       setLicencia(false);
     } else {
-      console.log(solicitud);
+
 
       setdata(solicitud);
       setdatosUsuario(solicitud);
@@ -492,7 +492,7 @@ export const ModificarLicencia = ({ props }: any) => {
       obj.RAZON_INST = values.razoninst;
       obj.RADICADO = values.radicado;
 
-      console.log(obj)
+
 
       await api.putLicenciaOracle(obj)
 

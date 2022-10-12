@@ -35,6 +35,7 @@ const formatObjJson = (obj: any) => {
 
   const jsonDt = {
     idTramite: obj.idTramite,
+    consecutivo: obj.consecutivo,
     idControlTramite: obj.iD_Control_Tramite,
     idSolicitud: obj.idSolicitud,
     certificado: obj.numeroCertificado,

@@ -66,6 +66,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [valor, setvalor] = useState<string>('');
   const [cambiar, setcambio] = useState<string>('');
   const [idcontrol, setidcontrol] = useState<string>('');
+  const [idConsecutivo, setidConsecutivo] = useState<string>('');
   const [isnull, setisnull] = useState<boolean>(false);
   const [gestionada, setgestionada] = useState<boolean>(false);
   const [gestionada2, setgestionada2] = useState<boolean>(false);
@@ -153,8 +154,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
 
         var idcontrolinterno = '';
+        var idconsecutivointerno = '';
         var valorinterno = '';
         idcontrolinterno = objJosn.idControlTramite;
+        idconsecutivointerno = objJosn.consecutivo;
         const tipotramite: string = objJosn.idTramite;
         switch (tipotramite) {
           case 'a289c362-e576-4962-962b-1c208afa0273':
@@ -181,6 +184,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
         setvalor(valorinterno);
         setidcontrol(idcontrolinterno);
+        setidConsecutivo(idconsecutivointerno);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1092,7 +1096,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                       <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
                         <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
                           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
-                            ID TRAMITE:{idcontrol}
+                            CONSECUTIVO TRAMITE:{idConsecutivo}
                           </Divider>
                           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                             TIPO DE SOLICITUD:{valor}

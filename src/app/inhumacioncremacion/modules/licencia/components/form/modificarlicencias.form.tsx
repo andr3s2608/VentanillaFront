@@ -125,6 +125,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
+    form.resetFields(['numero']);
   };
 
   const onSubmit = async (values: any) => {
@@ -293,7 +294,7 @@ export const ModificarLicencia = ({ props }: any) => {
               <div className='col-lg-12 col-sm-12 col-md-12'>
                 <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
                 <Radio.Group onChange={changeRadioButton} defaultValue={'tramite'}>
-                  <Radio value='tramite'>Número de tramite</Radio>
+                  <Radio value='tramite'>Consecutivo de tramite</Radio>
                   <Radio value='certificado'>Número de Certificado</Radio>
                   <Radio value='fallecido'>Número de Identificación</Radio>
                 </Radio.Group>
@@ -308,9 +309,17 @@ export const ModificarLicencia = ({ props }: any) => {
                     placeholder='Número'
                     autoComplete='off'
                     onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
+                      if (valores === 'tramite') {
+                        if (!/[0-9A-Za-z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
                       }
+                      else {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }
+
                     }}
                     onPaste={(event) => {
                       event.preventDefault();
