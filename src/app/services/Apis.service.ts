@@ -78,6 +78,14 @@ export class ApiService {
     });
   };
 
+  obtenerFirma = (idUsuario: string) => {
+    return get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/GetFirma/${idUsuario}`,
+      id: '1'
+    });
+  };
+
   getFuncionarios = () => get<any>({ endpoint: REACT_APP_SHARED as string, url: `v2/Persona/GetUsers`, id: '0' });
 
   personaNatural = (tipoDominio: IPersonaNatural) =>
@@ -117,6 +125,13 @@ export class ApiService {
     get<any>({
       endpoint: REACT_APP_ENDPOINTV1 as string,
       url: `CertificadoDefuncion/ValidateCertificadoDefuncion/${id}`,
+      id: '0'
+    });
+
+  getDescripcionDominioByGuid = (idDominio: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `GeneratePDF/GetDescripcionDominio/${idDominio}`,
       id: '0'
     });
 
@@ -204,7 +219,7 @@ export class ApiService {
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
 
   GetResumenSolicitud = (solicitud: string) =>
-    get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
+    get<any>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
   GetFunerariasAzure = (solicitud: string) =>
     get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
