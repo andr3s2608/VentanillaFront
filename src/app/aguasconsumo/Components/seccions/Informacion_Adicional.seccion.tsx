@@ -35,6 +35,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
   const [campos, setcampos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']);
   const [tienefuente, settienefuente] = useState<number>(0);
+  const [otra, setisotra] = useState<boolean>(false);
   const [lista, setlista] = useState<boolean[]>([
     false,
     false,
@@ -125,9 +126,15 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     for (let index = 0; index < campos.length; index++) {
       if (index == posicion) {
         if (campos[index] == '0') {
+          if (posicion === 11) {
+            setisotra(true)
+          }
           array.push('1');
           arraylista.push(true);
         } else {
+          if (posicion === 11) {
+            setisotra(false)
+          }
           array.push('0');
           arraylista.push(false);
         }
@@ -516,27 +523,30 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </div>
               </div>
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
-              <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
-                <span></span>Descripción de otro componente del sistema de tratamiento
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item name='descripcion' rules={[{ required: false }]}>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control personal'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            {otra && (<>
+              <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+                <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
+                  <span></span>Descripción de otro componente del sistema de tratamiento
+                  <div className='form-group gov-co-form-group'>
+                    <Form.Item name='descripcion' rules={[{ required: false }]}>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control personal'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
                           event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
                 </div>
               </div>
-            </div>
+            </>)}
+
             <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
               <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
                 <span></span>Número de usuarios
@@ -807,28 +817,31 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </div>
               </div>
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
-              <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
-                <span></span>Descripción de otro componente del sistema de tratamiento
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item name='descripcion' rules={[{ required: false }]}>
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control personal'
-                      disabled={true}
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            {otra && (<>
+              <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
+                <div className='col-lg-6 col-sm-12 col-md-6 mt-3'>
+                  <span></span>Descripción de otro componente del sistema de tratamiento
+                  <div className='form-group gov-co-form-group'>
+                    <Form.Item name='descripcion' rules={[{ required: false }]}>
+                      <Input
+                        type='text'
+                        className='form-control gov-co-form-control personal'
+                        disabled={true}
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
                           event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
                 </div>
               </div>
-            </div>
+            </>)}
+
             <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
               <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
                 <span></span>Número de usuarios

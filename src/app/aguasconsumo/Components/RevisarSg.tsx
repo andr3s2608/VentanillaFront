@@ -130,7 +130,7 @@ export const RevisarSg = () => {
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
     }
 
-    if (seguimientoDocumentos && seguimientoDocumentos != []) {
+    if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
       const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
 
       seguimientoDocumentos.forEach((item: any) => {

@@ -220,10 +220,10 @@ export const RevisarSc = () => {
                   <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
+                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} habilitar={false} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={''} />
+                  <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />
                 </div>
                 <div className='row mt-3 '>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>

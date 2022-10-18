@@ -228,8 +228,8 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       Swal.fire({
         icon: 'success',
 
-        title: 'Funeraria Modiicada',
-        text: 'Se modificado la Funeraria exitosamente'
+        title: 'Cementerio Modiicado',
+        text: 'Se modificado el Cementerio exitosamente'
       });
     }
   };

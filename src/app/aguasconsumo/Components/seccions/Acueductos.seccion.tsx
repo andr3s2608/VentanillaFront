@@ -347,7 +347,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <label className='text'>
-                  <span className='required'>* </span> Coordenadas de capacitación
+                  <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
                 <Form.Item name='latituduso' rules={[{ required: false }]}>
                   <Input
@@ -369,7 +369,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <label className='text'>
-                  <span className='required'>* </span> Longitud
+                  <span className='required'>* </span> Coordenadas de captación  Longitud
                 </label>
                 <Form.Item name='longituduso' rules={[{ required: false }]}>
                   <Input
@@ -542,7 +542,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <label className='text'>
-                  <span className='required'>* </span> Coordenadas de capacitación
+                  <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
                 <Form.Item name='latituduso' rules={[{ required: false }]}>
                   <Input
@@ -565,7 +565,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <label className='text'>
-                  <span className='required'>* </span> Longitud
+                  <span className='required'>* </span> Coordenadas de captación Longitud
                 </label>
                 <Form.Item name='longituduso' rules={[{ required: false }]}>
                   <Input
