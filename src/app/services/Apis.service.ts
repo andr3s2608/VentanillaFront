@@ -48,6 +48,23 @@ export class ApiService {
       url: `v1/ValidacionDocumentos/getIdUnico/${numero}`,
       id: '0'
     });
+
+  ObtenerPDFShared = (payload: any) =>
+    post<any>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/PDF/GetPDF`,
+      payload,
+      id: '1'
+    });
+
+  ObtenerEdad = (payload: any) =>
+    post<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `GeneratePDF/GetEdad`,
+      payload,
+      id: '1'
+    });
+
   Obteneridcontroltramite = (numero: string) =>
     get<any>({
       endpoint: REACT_APP_SHARED as string,
@@ -80,7 +97,7 @@ export class ApiService {
 
   obtenerFirma = (idUsuario: string) => {
     return get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/GetFirma/${idUsuario}`,
       id: '1'
     });
@@ -130,7 +147,7 @@ export class ApiService {
 
   getDescripcionDominioByGuid = (idDominio: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `GeneratePDF/GetDescripcionDominio/${idDominio}`,
       id: '0'
     });
@@ -219,7 +236,7 @@ export class ApiService {
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
 
   GetResumenSolicitud = (solicitud: string) =>
-    get<any>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
+    get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
   GetFunerariasAzure = (solicitud: string) =>
     get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
@@ -375,8 +392,8 @@ export class ApiService {
 
   UpdateHTML = (payload: any) => {
     return put<any>({
-      endpoint: REACT_APP_LOCAL as string,
-      url: `UpdateHTML`,
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/UpdateHTML`,
       payload,
       id: '1'
     });

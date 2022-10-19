@@ -65,6 +65,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [solicitante, setsolicitante] = useState<[]>();
   const history = useHistory();
   const [valor, setvalor] = useState<string>('');
+  const [htmlFinal, sethtmlFinal] = useState<string>('');
   const [cambiar, setcambio] = useState<string>('');
   const [idcontrol, setidcontrol] = useState<string>('');
   const [idConsecutivo, setidConsecutivo] = useState<string>('');
@@ -520,12 +521,45 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
           //alert('aprobacion');
 
-          const infouser: any = localStorage.getItem('infouser');
-          const info: any = JSON.parse(infouser);
+          //const infouser: any = localStorage.getItem('infouser');
+          //const info: any = JSON.parse(infouser);
 
-          const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+          //const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-          const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
+          const tipotramite: string = objJosn.idTramite;
+
+          //-----------------------------------------
+
+          switch (tipotramite) {
+            case 'a289c362-e576-4962-962b-1c208afa0273':
+              //Inhumación Individual;
+              await htmlInhumacionIndividual(true);
+              break;
+            case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+              //Inhumacion fetal
+              htmlInhumacionFetal(true);
+              break;
+            case 'e69bda86-2572-45db-90dc-b40be14fe020':
+              //Cremacion individual
+              await htmlCremacionIndividual(true);
+              break;
+            case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+              //Cremacionfetal
+              await htmlCremacionFetal(true);
+              break;
+            default:
+              break;
+          }
+
+          const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+          const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+          console.log(htmlFinal);
+          const licencia: any = await api.ObtenerPDFShared({
+            html: htmlFinal
+          });
+
+
+          //const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
 
           let datosDinamicosAprobacion = [
             solicitud[0]['razonSocialSolicitante'],
@@ -878,7 +912,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     ].join(':');
   }
 
-  async function htmlInhumacionIndividual() {
+  async function htmlInhumacionIndividual(bandera: boolean) {
 
     /**
      * Variables
@@ -891,6 +925,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let nombreCementerio: string = "";
     let numeroLicencia: string = "";
     let label: string = " ";
+    let codigoVerificacion: string = "";
     const paises: any = localStorage.getItem("paises");
     const paisesJson: any = JSON.parse(paises);
     const departamentos: any = localStorage.getItem("departamentos");
@@ -905,8 +940,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      */
 
     const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-    const Solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+    const Solicitud = await api.getLicencia(objJosn?.idSolicitud);
     const funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
+
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
+
+    if (bandera) {
+      codigoVerificacion = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+    }
 
     /**
      * Condicionales para la construccion de datos
@@ -995,9 +1037,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }
 
 
-
-
-
     //Se obtienen descripciones por id Guid
 
     const idNacionalidad: string = fallecido['nacionalidad'];
@@ -1005,6 +1044,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const nacionalidad: any = paisesJson.filter((i: { id: string }) => i.id == idNacionalidad);
 
     const fechaDefuncion: Date = new Date(Solicitud[0]['fechaDefuncion']);
+
+    const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
+
+    const edad = await api.ObtenerEdad({
+      fechaNacimiento: fechaNacimiento,
+      fechaDefuncion: fechaDefuncion
+    })
+
 
     const ifGenero: string = Solicitud[0]['idSexo'];
 
@@ -1017,20 +1064,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    // const ejemplo = new Date();
-    //const ejemplo2 = new Date(fechaDefuncion);
-
-
-    console.log(firmaAprobador['firma']);
-    console.log(firmaValidador['firma']);
-
-    console.log("cementerio: " + nombreCementerio);
-    console.log(generos);
-    console.log(formatDates(fechaDefuncion));
-    console.log(Solicitud[0]);
-    console.log("El nombre del fallecido es " + nombreFallecido);
-
-
     const keys = [
       "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
       "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
@@ -1040,53 +1073,736 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~", "~:~causa~:~", "~:~observacion_causa~:~",
       "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
-    console.log(formatDates(fechaActual));
-    console.log(formatDateHours(fechaActual));
 
-    /*
-    const values = [formatDate(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
     Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
     Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
-    fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), 'edad',
+    fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
-      firmaAprobador['firma'], nombreValidador.ToUpper(), firmaValidador['firma'];
+    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
 
-      */
+    //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
+
+    const formato: any = await api.getFormato("201E2CE5-FC99-4032-970E-18B8D8251656");
+
+    const HTML: string = agregarValoresDinamicos(formato['valor'], keys, values);
+
+
+    const result: any = await api.UpdateHTML({
+      idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
+      html: HTML
+    });
+
+  }
+
+  async function htmlCremacionIndividual(bandera: boolean) {
+
+    /**
+     * Variables
+     */
+
+    const fechaActual = new Date();
+    let nombreFallecido: string = "";
+    let nombreAutorizadorCremacion: string = "";
+    let nombreMedico1: string = "";
+    let nombreMedico2: string = "";
+    let nombreCementerio: string = "";
+    let numeroLicencia: string = "";
+    let label: string = " ";
+    let codigoVerificacion: string = "";
+    let fiscalia1: string = "";
+    let fiscalia2: string = "";
+    let fiscalia3: string = "";
+    let labelFiscalia1: string = "";
+    let labelFiscalia2: string = "";
+    let labelFiscalia3: string = "";
+    const paises: any = localStorage.getItem("paises");
+    const paisesJson: any = JSON.parse(paises);
+    const departamentos: any = localStorage.getItem("departamentos");
+    const departamentosJson: any = JSON.parse(departamentos);
+    const generos: any = [{ 'id': '11C463F3-8135-4545-B58F-3FC748EDDE94', 'Descripcion': 'Hombre' },
+    { 'id': '259CF2DA-6175-4DBA-BD55-62723ADF0DFA', 'Descripcion': 'Mujer' },
+    { 'id': '0347EA5E-691E-44A0-87A5-B22D39F1FF94', 'Descripcion': 'Indeterminado' }];
+
+
+    /**
+     * LLamada a las APIs
+     */
+
+    const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+    const Solicitud = await api.getLicencia(objJosn?.idSolicitud);
+    const funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
+
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
+
+    if (bandera) {
+      codigoVerificacion = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+    }
+
+    /**
+     * Condicionales para la construccion de datos
+     */
+
+    let fallecido = null;
+    let medico = null;
+    let autorizadorCremacion = null;
+
+    for (let index = 0; index < Solicitud[0]["persona"].length; index++) {
+      if (Solicitud[0]["persona"][index]["idTipoPersona"] == '01f64f02-373b-49d4-8cb1-cb677f74292c') {
+
+        fallecido = Solicitud[0]["persona"][index];
+
+      } else if (Solicitud[0]["persona"][index]["idTipoPersona"] == 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06') {
+
+        autorizadorCremacion = Solicitud[0]["persona"][index];
+
+      } else {
+        medico = Solicitud[0]["persona"][index];
+      }
+
+    }
+
+    //validacion de fiscalia
+
+
+    if (Solicitud[0]['institucionCertificaFallecimiento']["razonSocial"] != "Otros") {
+      labelFiscalia1 = "Autoriza Cremación FISCAL: ";
+      labelFiscalia2 = "Número Fiscal: ";
+      labelFiscalia3 = "Oficio: ";
+      fiscalia1 = Solicitud[0]['institucionCertificaFallecimiento']["nombreFiscal"].toLocaleUpperCase() + " " + Solicitud[0]['institucionCertificaFallecimiento']["apellidoFiscal"].toLocaleUpperCase();
+      fiscalia2 = Solicitud[0]['institucionCertificaFallecimiento']["noFiscalMedicinaLegal"];
+      fiscalia3 = Solicitud[0]['institucionCertificaFallecimiento']["numeroOficio"];
+    }
+
+    //validacion de autorizador de cremacion
+
+    if (autorizadorCremacion['segundoNombre'] == null) {
+      nombreAutorizadorCremacion = autorizadorCremacion['primerNombre'] + ' ' + autorizadorCremacion['primerApellido'];
+
+    }
+    else {
+      nombreAutorizadorCremacion = autorizadorCremacion['primerNombre'] + ' ' + autorizadorCremacion['segundoNombre'] + ' ' + autorizadorCremacion['primerApellido'];
+    }
+
+    if (autorizadorCremacion['segundoApellido'] != null) {
+      nombreAutorizadorCremacion = nombreAutorizadorCremacion + ' ' + autorizadorCremacion['segundoApellido'];
+
+    }
+
+    //validacion de nombres del fallecido
+
+    if (fallecido['segundoNombre'] == null) {
+      nombreFallecido = fallecido['primerNombre'] + ' ' + fallecido['primerApellido'];
+
+    }
+    else {
+      nombreFallecido = fallecido['primerNombre'] + ' ' + fallecido['segundoNombre'] + ' ' + fallecido['primerApellido'];
+    }
+
+    if (fallecido['segundoApellido'] != null) {
+      nombreFallecido = nombreFallecido + ' ' + fallecido['segundoApellido'];
+
+    }
+
+    //validacion de nombres del medico
+
+    if (medico['segundoNombre'] == null) {
+      nombreMedico1 = medico['primerNombre'];
+    }
+    else {
+      nombreMedico1 = medico['primerNombre'] + ' ' + medico['segundoNombre'];
+    }
+
+    if (medico['segundoApellido'] == null) {
+      nombreMedico2 = medico['primerApellido'];
+
+    }
+    else {
+      nombreMedico2 = medico['primerApellido'] + ' ' + medico['segundoApellido'];
+    }
+
+    //Validacion del cementerio
+
+    if (Solicitud[0]['datosCementerio']['enBogota'] == true) {
+      nombreCementerio = Solicitud[0]['datosCementerio']['cementerio'].toLocaleUpperCase();
+    }
+    else if (Solicitud[0]['datosCementerio']['fueraBogota'] == true) {
+
+      const departamento: any = departamentosJson.filter((i: { idDepartamento: string }) => i.idDepartamento == Solicitud[0]['datosCementerio']['idDepartamento']);
+      const municipios = await dominioService.get_all_municipios_by_departamento(Solicitud[0]['datosCementerio']['idDepartamento']);
+
+      const municipio: any = municipios.filter((i: { idMunicipio: string }) => i.idMunicipio == Solicitud[0]['datosCementerio']['idMunicipio']);
+
+      nombreCementerio = nombreCementerio = "FUERA DE BOGOTá, " + departamento[0]['descripcion'].toLocaleUpperCase() + " " + municipio[0]['descripcion'].toLocaleUpperCase();
+    }
+    else {
+      const pais: any = await api.getDescripcionDominioByGuid(Solicitud[0]['datosCementerio']['idPais']);
+      nombreCementerio = "FUERA DEL PAÍS, " + pais['descripcion'].toLocaleUpperCase() + " " + Solicitud[0]['datosCementerio']['ciudad'];
+    }
+
+    if (Solicitud[0]['datosCementerio']['otroSitio'] != null) {
+      nombreCementerio = nombreCementerio + " " + "Otro sitio, " + Solicitud[0]['datosCementerio']['otroSitio'];
+    }
+
+    //validacion de la emergencia sanitaria
+
+
+    if (resumenSolicitud[0]['cumpleCausa']) {
+      label = "Emergencia Sanitaria: ";
+    }
+
+    //validacion del numero de licencia
+
+    if (resumenSolicitud[0]['numeroLicencia'] != null) {
+      numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+    }
+
+
+
+
+
+    //Se obtienen descripciones por id Guid
+
+    const idNacionalidad: string = fallecido['nacionalidad'];
+
+    const nacionalidad: any = paisesJson.filter((i: { id: string }) => i.id == idNacionalidad);
+
+    const fechaDefuncion: Date = new Date(Solicitud[0]['fechaDefuncion']);
+
+    const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
+
+    const edad = await api.ObtenerEdad({
+      fechaNacimiento: fechaNacimiento,
+      fechaDefuncion: fechaDefuncion
+    })
+
+    const ifGenero: string = Solicitud[0]['idSexo'];
+
+    const genero: any = generos.filter((i: { id: string }) => i.id == ifGenero.toLocaleUpperCase());
+
+    const tipoIdentificacionFallecido: any = await api.getDescripcionDominioByGuid(fallecido['tipoIdentificacion']);
+
+    const tipoIdentificacionAutorizador: any = await api.getDescripcionDominioByGuid(autorizadorCremacion['tipoIdentificacion']);
+
+    const parentesco: any = await api.getDescripcionDominioByGuid(autorizadorCremacion['idParentesco']);
+
+    const tipoMuerte: any = await api.getDescripcionDominioByGuid(Solicitud[0]['idTipoMuerte']);
+
+    const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
+    const firmaValidador: any = await api.obtenerFirma(idUsuario);
+
+    const keys = [
+      "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
+      "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
+      "~:~nombre_completo_fallecido~:~", "~:~nacionalidad~:~", "~:~fecha_fallecido~:~",
+      "~:~hora_fallecido~:~", "~:~sexo_fallecido~:~", "~:~tipo_identificacion_fallecido~:~",
+      "~:~numero_identificacion_fallecido~:~", "~:~tipo_muerte~:~", "~:~edad_fallecido~:~",
+      "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~", "~:~causa~:~", "~:~observacion_causa~:~", "~:~autorizador_cremacion~:~",
+      "~:~tipo_identificacion_autorizador_cremacion~:~", "~:~numero_identificacion_autorizador_cremacion~:~",
+      "~:~parentesco~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
+      "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
+      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+
+
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
+    Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
+    fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
+    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
+    nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(), autorizadorCremacion['numeroIdentificacion'],
+    parentesco['descripcion'].toLocaleUpperCase(), fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
+    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+
+    //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
+
+
+
+    const formato: any = await api.getFormato("517E24F5-BFA5-4339-BB4D-9D6EA7261A4B");
+
+    const HTML: string = agregarValoresDinamicos(formato['valor'], keys, values);
+
+
+    const result: any = await api.UpdateHTML({
+      idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
+      html: HTML
+    });
+
+
+  }
+
+  async function htmlCremacionFetal(bandera: boolean) {
+
+    /**
+     * Variables
+     */
+
+    const fechaActual = new Date();
+    let nombreFallecido: string = "";
+    let nombreMadre: string = "";
+    let nombreAutorizadorCremacion: string = "";
+    let nombreMedico1: string = "";
+    let nombreMedico2: string = "";
+    let nombreCementerio: string = "";
+    let numeroLicencia: string = "";
+    let label: string = " ";
+    let codigoVerificacion: string = "";
+    let fiscalia1: string = "";
+    let fiscalia2: string = "";
+    let fiscalia3: string = "";
+    let labelFiscalia1: string = "";
+    let labelFiscalia2: string = "";
+    let labelFiscalia3: string = "";
+    const paises: any = localStorage.getItem("paises");
+    const paisesJson: any = JSON.parse(paises);
+    const departamentos: any = localStorage.getItem("departamentos");
+    const departamentosJson: any = JSON.parse(departamentos);
+    const generos: any = [{ 'id': '11C463F3-8135-4545-B58F-3FC748EDDE94', 'Descripcion': 'Hombre' },
+    { 'id': '259CF2DA-6175-4DBA-BD55-62723ADF0DFA', 'Descripcion': 'Mujer' },
+    { 'id': '0347EA5E-691E-44A0-87A5-B22D39F1FF94', 'Descripcion': 'Indeterminado' }];
+
+
+    /**
+     * LLamada a las APIs
+     */
+
+    const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+    const Solicitud = await api.getLicencia(objJosn?.idSolicitud);
+    const funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
+
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
+
+    if (bandera) {
+      codigoVerificacion = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+    }
+
+    /**
+     * Condicionales para la construccion de datos
+     */
+
+    let medico = null;
+    let madre = null;
+    let autorizadorCremacion = null;
+
+
+
+    for (let index = 0; index < Solicitud[0]["persona"].length; index++) {
+      if (Solicitud[0]["persona"][index]["idTipoPersona"] == '342d934b-c316-46cb-a4f3-3aac5845d246') {
+
+        madre = Solicitud[0]["persona"][index];
+
+      } else if (Solicitud[0]["persona"][index]["idTipoPersona"] == 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06') {
+
+        autorizadorCremacion = Solicitud[0]["persona"][index];
+
+      } else {
+        medico = Solicitud[0]["persona"][index];
+      }
+
+    }
+
+    //validacion de fiscalia
+
+    if (Solicitud[0]['institucionCertificaFallecimiento']["razonSocial"] != "Otros") {
+      labelFiscalia1 = "Autoriza Cremación FISCAL: ";
+      labelFiscalia2 = "Número Fiscal: ";
+      labelFiscalia3 = "Oficio: ";
+      fiscalia1 = Solicitud[0]['institucionCertificaFallecimiento']["nombreFiscal"].toLocaleUpperCase() + " " + Solicitud[0]['institucionCertificaFallecimiento']["apellidoFiscal"].toLocaleUpperCase();
+      fiscalia2 = Solicitud[0]['institucionCertificaFallecimiento']["noFiscalMedicinaLegal"];
+      fiscalia3 = Solicitud[0]['institucionCertificaFallecimiento']["numeroOficio"];
+    }
+
+    //validacion de la madre
+
+    if (madre['segundoNombre'] == null) {
+      nombreMadre = madre['primerNombre'] + ' ' + madre['primerApellido'];
+
+    }
+    else {
+      nombreMadre = madre['primerNombre'] + ' ' + madre['segundoNombre'] + ' ' + madre['primerApellido'];
+    }
+
+    if (madre['segundoApellido'] != null) {
+      nombreMadre = nombreMadre + ' ' + madre['segundoApellido'];
+
+    }
+
+    //validacion de autorizador de cremacion
+
+    if (autorizadorCremacion['segundoNombre'] == null) {
+      nombreAutorizadorCremacion = autorizadorCremacion['primerNombre'] + ' ' + autorizadorCremacion['primerApellido'];
+
+    }
+    else {
+      nombreAutorizadorCremacion = autorizadorCremacion['primerNombre'] + ' ' + autorizadorCremacion['segundoNombre'] + ' ' + autorizadorCremacion['primerApellido'];
+    }
+
+    if (autorizadorCremacion['segundoApellido'] != null) {
+      nombreAutorizadorCremacion = nombreAutorizadorCremacion + ' ' + autorizadorCremacion['segundoApellido'];
+
+    }
+
+    //validacion de nombres del fallecido
+
+    const ifGenero: string = Solicitud[0]['idSexo'];
+
+    const genero: any = generos.filter((i: { id: string }) => i.id == ifGenero.toLocaleUpperCase());
+
+    if (genero[0]['Descripcion'].toLocaleUpperCase() == "MUJER") {
+      nombreFallecido = "MORTINATO FEMENINO";
+
+    }
+    else if (genero[0]['Descripcion'].toLocaleUpperCase() == "HOMBRE") {
+      nombreFallecido = "MORTINATO MASCULINO";
+    }
+    else {
+      nombreFallecido = "MORTINATO";
+    }
+
+    //validacion de nombres del medico
+
+    if (medico['segundoNombre'] == null) {
+      nombreMedico1 = medico['primerNombre'];
+    }
+    else {
+      nombreMedico1 = medico['primerNombre'] + ' ' + medico['segundoNombre'];
+    }
+
+    if (medico['segundoApellido'] == null) {
+      nombreMedico2 = medico['primerApellido'];
+
+    }
+    else {
+      nombreMedico2 = medico['primerApellido'] + ' ' + medico['segundoApellido'];
+    }
+
+    //Validacion del cementerio
+
+    if (Solicitud[0]['datosCementerio']['enBogota'] == true) {
+      nombreCementerio = Solicitud[0]['datosCementerio']['cementerio'].toLocaleUpperCase();
+    }
+    else if (Solicitud[0]['datosCementerio']['fueraBogota'] == true) {
+
+      const departamento: any = departamentosJson.filter((i: { idDepartamento: string }) => i.idDepartamento == Solicitud[0]['datosCementerio']['idDepartamento']);
+      const municipios = await dominioService.get_all_municipios_by_departamento(Solicitud[0]['datosCementerio']['idDepartamento']);
+
+      const municipio: any = municipios.filter((i: { idMunicipio: string }) => i.idMunicipio == Solicitud[0]['datosCementerio']['idMunicipio']);
+
+      nombreCementerio = nombreCementerio = "FUERA DE BOGOTá, " + departamento[0]['descripcion'].toLocaleUpperCase() + " " + municipio[0]['descripcion'].toLocaleUpperCase();
+    }
+    else {
+      const pais: any = await api.getDescripcionDominioByGuid(Solicitud[0]['datosCementerio']['idPais']);
+      nombreCementerio = "FUERA DEL PAÍS, " + pais['descripcion'].toLocaleUpperCase() + " " + Solicitud[0]['datosCementerio']['ciudad'];
+    }
+
+    if (Solicitud[0]['datosCementerio']['otroSitio'] != null) {
+      nombreCementerio = nombreCementerio + " " + "Otro sitio, " + Solicitud[0]['datosCementerio']['otroSitio'];
+    }
+
+    //validacion de la emergencia sanitaria
+
+
+    if (resumenSolicitud[0]['cumpleCausa']) {
+      label = "Emergencia Sanitaria: ";
+    }
+
+    //validacion del numero de licencia
+
+    if (resumenSolicitud[0]['numeroLicencia'] != null) {
+      numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+    }
+
+    //Se obtienen descripciones por id Guid
+
+    const idNacionalidad: string = madre['nacionalidad'];
+
+    const nacionalidad: any = paisesJson.filter((i: { id: string }) => i.id == idNacionalidad);
+
+    const fechaDefuncion: Date = new Date(Solicitud[0]['fechaDefuncion']);
+
+    const tipoIdentificacionFallecido: any = await api.getDescripcionDominioByGuid(madre['tipoIdentificacion']);
+
+    const tipoIdentificacionAutorizador: any = await api.getDescripcionDominioByGuid(autorizadorCremacion['tipoIdentificacion']);
+
+    const parentesco: any = await api.getDescripcionDominioByGuid(autorizadorCremacion['idParentesco']);
+
+    const tipoMuerte: any = await api.getDescripcionDominioByGuid(Solicitud[0]['idTipoMuerte']);
+
+    const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
+    const firmaValidador: any = await api.obtenerFirma(idUsuario);
+
+
+    const keys = [
+      "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
+      "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
+      "~:~nombre_completo_fallecido~:~", "~:~nombre_completo_madre~:~", "~:~nacionalidad~:~",
+      "~:~sexo_fallecido~:~", "~:~fecha_fallecido~:~",
+      "~:~hora_fallecido~:~", "~:~tipo_muerte~:~",
+      "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~", "~:~autorizador_cremacion~:~",
+      "~:~tipo_identificacion_autorizador_cremacion~:~", "~:~numero_identificacion_autorizador_cremacion~:~",
+      "~:~parentesco~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
+      "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
+      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+    console.log()
+
+
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
+    genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
+    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
+    nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(),
+    parentesco['descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
+      fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
+    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+
+    //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
+
+
+
+    const formato: any = await api.getFormato("9FF9E542-7AEF-4A04-9594-3CCABB5E8DD1");
+
+    const HTML: string = agregarValoresDinamicos(formato['valor'], keys, values);
+
+
+    const result: any = await api.UpdateHTML({
+      idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
+      html: HTML
+    });
+
+  }
+
+
+  async function htmlInhumacionFetal(bandera: boolean) {
+
+    /**
+     * Variables
+     */
+
+    const fechaActual = new Date();
+    let nombreFallecido: string = "";
+    let nombreMadre: string = "";
+    let nombreMedico1: string = "";
+    let nombreMedico2: string = "";
+    let nombreCementerio: string = "";
+    let numeroLicencia: string = "";
+    let label: string = " ";
+    let codigoVerificacion: string = "";
+    const paises: any = localStorage.getItem("paises");
+    const paisesJson: any = JSON.parse(paises);
+    const departamentos: any = localStorage.getItem("departamentos");
+    const departamentosJson: any = JSON.parse(departamentos);
+    const generos: any = [{ 'id': '11C463F3-8135-4545-B58F-3FC748EDDE94', 'Descripcion': 'Hombre' },
+    { 'id': '259CF2DA-6175-4DBA-BD55-62723ADF0DFA', 'Descripcion': 'Mujer' },
+    { 'id': '0347EA5E-691E-44A0-87A5-B22D39F1FF94', 'Descripcion': 'Indeterminado' }];
+
+
+    /**
+     * LLamada a las APIs
+     */
+
+    const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+    const Solicitud = await api.getLicencia(objJosn?.idSolicitud);
+    const funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
+
+    const infouser: any = localStorage.getItem('infouser');
+    const info: any = JSON.parse(infouser);
+
+    if (bandera) {
+      codigoVerificacion = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+    }
+
+    /**
+     * Condicionales para la construccion de datos
+     */
+
+    let medico = null;
+    let madre = null;
+    let autorizadorCremacion = null;
+
+
+
+    for (let index = 0; index < Solicitud[0]["persona"].length; index++) {
+      if (Solicitud[0]["persona"][index]["idTipoPersona"] == '342d934b-c316-46cb-a4f3-3aac5845d246') {
+
+        madre = Solicitud[0]["persona"][index];
+
+      } else {
+        medico = Solicitud[0]["persona"][index];
+      }
+
+    }
+
+    //validacion de la madre
+
+    if (madre['segundoNombre'] == null) {
+      nombreMadre = madre['primerNombre'] + ' ' + madre['primerApellido'];
+
+    }
+    else {
+      nombreMadre = madre['primerNombre'] + ' ' + madre['segundoNombre'] + ' ' + madre['primerApellido'];
+    }
+
+    if (madre['segundoApellido'] != null) {
+      nombreMadre = nombreMadre + ' ' + madre['segundoApellido'];
+
+    }
+
+    //validacion de nombres del fallecido
+
+    const ifGenero: string = Solicitud[0]['idSexo'];
+
+    const genero: any = generos.filter((i: { id: string }) => i.id == ifGenero.toLocaleUpperCase());
+
+    if (genero[0]['Descripcion'].toLocaleUpperCase() == "MUJER") {
+      nombreFallecido = "MORTINATO FEMENINO";
+
+    }
+    else if (genero[0]['Descripcion'].toLocaleUpperCase() == "HOMBRE") {
+      nombreFallecido = "MORTINATO MASCULINO";
+    }
+    else {
+      nombreFallecido = "MORTINATO";
+    }
+
+    //validacion de nombres del medico
+
+    if (medico['segundoNombre'] == null) {
+      nombreMedico1 = medico['primerNombre'];
+    }
+    else {
+      nombreMedico1 = medico['primerNombre'] + ' ' + medico['segundoNombre'];
+    }
+
+    if (medico['segundoApellido'] == null) {
+      nombreMedico2 = medico['primerApellido'];
+
+    }
+    else {
+      nombreMedico2 = medico['primerApellido'] + ' ' + medico['segundoApellido'];
+    }
+
+    //Validacion del cementerio
+
+    if (Solicitud[0]['datosCementerio']['enBogota'] == true) {
+      nombreCementerio = Solicitud[0]['datosCementerio']['cementerio'].toLocaleUpperCase();
+    }
+    else if (Solicitud[0]['datosCementerio']['fueraBogota'] == true) {
+
+      const departamento: any = departamentosJson.filter((i: { idDepartamento: string }) => i.idDepartamento == Solicitud[0]['datosCementerio']['idDepartamento']);
+      const municipios = await dominioService.get_all_municipios_by_departamento(Solicitud[0]['datosCementerio']['idDepartamento']);
+
+      const municipio: any = municipios.filter((i: { idMunicipio: string }) => i.idMunicipio == Solicitud[0]['datosCementerio']['idMunicipio']);
+
+      nombreCementerio = nombreCementerio = "FUERA DE BOGOTá, " + departamento[0]['descripcion'].toLocaleUpperCase() + " " + municipio[0]['descripcion'].toLocaleUpperCase();
+    }
+    else {
+      const pais: any = await api.getDescripcionDominioByGuid(Solicitud[0]['datosCementerio']['idPais']);
+      nombreCementerio = "FUERA DEL PAÍS, " + pais['descripcion'].toLocaleUpperCase() + " " + Solicitud[0]['datosCementerio']['ciudad'];
+    }
+
+    if (Solicitud[0]['datosCementerio']['otroSitio'] != null) {
+      nombreCementerio = nombreCementerio + " " + "Otro sitio, " + Solicitud[0]['datosCementerio']['otroSitio'];
+    }
+
+    //validacion de la emergencia sanitaria
+
+
+    if (resumenSolicitud[0]['cumpleCausa']) {
+      label = "Emergencia Sanitaria: ";
+    }
+
+    //validacion del numero de licencia
+
+    if (resumenSolicitud[0]['numeroLicencia'] != null) {
+      numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+    }
+
+    //Se obtienen descripciones por id Guid
+
+    const idNacionalidad: string = madre['nacionalidad'];
+
+    const nacionalidad: any = paisesJson.filter((i: { id: string }) => i.id == idNacionalidad);
+
+    const fechaDefuncion: Date = new Date(Solicitud[0]['fechaDefuncion']);
+
+    const tipoMuerte: any = await api.getDescripcionDominioByGuid(Solicitud[0]['idTipoMuerte']);
+
+    const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
+    const firmaValidador: any = await api.obtenerFirma(idUsuario);
+
+    const keys = [
+      "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
+      "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
+      "~:~nombre_completo_fallecido~:~", "~:~nombre_completo_madre~:~", "~:~nacionalidad~:~",
+      "~:~sexo_fallecido~:~", "~:~fecha_fallecido~:~",
+      "~:~hora_fallecido~:~", "~:~tipo_muerte~:~",
+      "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~",
+      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+
+
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
+    genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
+    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
+    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+
+    //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
+
+
+
+    const formato: any = await api.getFormato("88FD1E95-DDD5-436C-ABB1-90EEA4976AD0");
+
+    const HTML: string = agregarValoresDinamicos(formato['valor'], keys, values);
+
+
+    const result: any = await api.UpdateHTML({
+      idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
+      html: HTML
+    });
+
   }
 
   const onPrevPDF = async () => {
 
+
     const tipotramite: string = objJosn.idTramite;
-
-
 
     //-----------------------------------------
 
     switch (tipotramite) {
       case 'a289c362-e576-4962-962b-1c208afa0273':
         //Inhumación Individual;
-        htmlInhumacionIndividual();
+        await htmlInhumacionIndividual(false);
         break;
       case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
         //Inhumacion fetal
+        htmlInhumacionFetal(false);
         break;
       case 'e69bda86-2572-45db-90dc-b40be14fe020':
         //Cremacion individual
-
+        await htmlCremacionIndividual(false);
         break;
       case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
         //Cremacionfetal
-
+        await htmlCremacionFetal(false);
         break;
       default:
         break;
     }
 
+    const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+    const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+    console.log(htmlFinal);
+    const PDF: any = await api.ObtenerPDFShared({
+      html: htmlFinal
+    });
+
     //-----------------------------------------
-
-
-    /*
 
     let bandera = await api.validarFirmaFuncionario(idUsuario);
 
@@ -1095,10 +1811,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       const info: any = JSON.parse(infouser);
       const idSolicitud = objJosn?.idSolicitud;
       const all = await api.GetSolicitud(idSolicitud);
-      let linkPdf = await api.generarPDF(idSolicitud, idUsuario, info.fullName, " ", false);
       const solicitante = await api.GetResumenSolicitud(idSolicitud);
       setsolicitante(solicitante[0]['nombreSolicitante']);
-      setUrlPdfLicence("data:application/pdf;base64," + linkPdf);
+      setUrlPdfLicence("data:application/pdf;base64," + PDF);
 
       setIsModalVisiblePdf(true);
     } else {
@@ -1110,8 +1825,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
       });
     }
-
-    */
   };
   const onModalNofificacion = async () => {
     setIsModalValidarCertificado(false);
