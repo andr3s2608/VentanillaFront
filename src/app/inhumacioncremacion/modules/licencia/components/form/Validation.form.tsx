@@ -564,7 +564,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           let datosDinamicosAprobacion = [
             solicitud[0]['razonSocialSolicitante'],
             getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            objJosn.idControlTramite,
+            idConsecutivo,
             fechaSolicitud.substring(0, 10),
             getDescripcionTramite(idTramite.toLocaleUpperCase())
           ];
@@ -639,7 +639,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           let datosDinamicosGenericos = [
             solicitud[0]['razonSocialSolicitante'],
             getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            objJosn.idControlTramite,
+            idConsecutivo,
             fechaSolicitud.substring(0, 10),
             values.observations
           ];
