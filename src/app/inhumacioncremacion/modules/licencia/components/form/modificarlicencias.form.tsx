@@ -192,7 +192,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
       const array = { solicitud: obj };
 
-      await api.putLicencia(array);
+      await api.putLicencia(array, '0');
 
       if (nn) {
         let container = '';

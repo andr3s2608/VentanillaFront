@@ -217,23 +217,24 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (longitud: number) => { };
 
   const onSubmit = async (values: any) => {
-    let causa = values.causaMuerte;
-    let banderaCausa = true;
-    let observacionCausaMuerte = causaMuerte;
 
-    if (causa == 0) {
-      banderaCausa = false;
-      observacionCausaMuerte = ' ';
-    }
-
-    const certificado = values.certificado;
 
     ////////////Guarda Solicitud///////////
 
     let codigotramite = { codigotramite: (tramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ? '13' : '14') };
 
     const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
+    const Mensaje = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
 
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
+    let observacionCausaMuerte = Mensaje.valor;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = ' ';
+    }
 
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
@@ -557,7 +558,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const supportDocuments: any[] = [];
 
     if (isEdit) {
-      const resp = await api.putLicencia(json.solicitud);
+      const resp = await api.putLicencia(json.solicitud, '0');
 
       const [files, names] = generateListFiles(values, container);
       const supportDocumentsEdit: any[] = [];

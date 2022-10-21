@@ -129,6 +129,7 @@ export const CambioLicencia = ({ props }: any) => {
       }
     }
     let continuar = false;
+    let continuarusuario = false;
     if (!bandera) {
       Swal.fire({
         title: 'Usuario Registrado',
@@ -160,561 +161,590 @@ export const CambioLicencia = ({ props }: any) => {
 
       if (datecorrect) {
 
+        Swal.fire({
+          title: 'Cambio de Licencia',
+          text: `Esta a punto de solicitar cambio de
+          ${obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'inhumación' : 'cremación'}
+           a
+            ${obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'cremación' : 'inhumación'}
+           , ¿Está seguro de continuar?` ,
+          showConfirmButton: true,
+          showDenyButton: true,
+          confirmButtonText: 'Modificar',
+          denyButtonText: `Cancelar`,
+          showClass: {
+            popup: 'animate__animated animate__fadeInDown'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+          },
+          icon: 'info'
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            continuarusuario = true
 
-
-
-        let causa = values.causaMuerte;
-        let banderaCausa = true;
-        let observacionCausaMuerte = causaMuerte;
-
-        if (causa == 0) {
-          banderaCausa = false;
-          observacionCausaMuerte = '';
-        }
-
-        const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
-        const formatDate = 'MM-DD-YYYY';
-        let idnum = values.IDNumber;
-        let idnumaut = values.mauthIDNumber;
-
-        if (sininformacion && idnum == undefined) {
-          idnum = ' ';
-        }
-        if (sininformacionaut && idnumaut == undefined) {
-          idnumaut = ' ';
-        }
-
-
-        const tipoinst = values.instTipoIdent;
-        var tipoidinst = values.instTipoIdent;
-        var numeroins = values.instNumIdent;
-        var razonSocialins = values.instRazonSocial;
-        var numeroProtocoloins = values.instNumProtocolo;
-        if (tipoinst == undefined) {
-          tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
-          numeroins = '0';
-          razonSocialins = 'Otros';
-          numeroProtocoloins = '452022';
-        } else {
-          tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
-        }
-        const par = values.authParentesco;
-        var parentesco = '';
-        switch (par) {
-          case 'Padre / Madre':
-            parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
-            break;
-          case 'Hermano/a':
-            parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
-            break;
-          case 'Hijo/a':
-            parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
-            break;
-          case 'Cónyuge (Compañero/a Permanente)':
-            parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
-            break;
-          case 'Tío/a':
-            parentesco = '6880824b-39c2-4105-8195-c190885796d8';
-            break;
-          case 'Sobrino/a':
-            parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
-            break;
-          case 'Abuelo/a':
-            parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
-            break;
-          case 'Nieto/a':
-            parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
-            break;
-          case 'Otro':
-            parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
-            break;
-        }
-
-        let persona: any[] = [];
-
-        let autorizador: any = [];
-
-
-
-
-        if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
-
-          if (obj?.autorizadorcremacion.length > 0) {
-
-            persona = [
-              //fallecido
-              {
-                idPersona: obj.idpersona,
-                tipoIdentificacion: values.IDType,
-                numeroIdentificacion: idnum,
-                primerNombre: values.name,
-                segundoNombre: values.secondName ?? '',
-                primerApellido: values.surname,
-                segundoApellido: values.secondSurname ?? '',
-                fechaNacimiento: values.dateOfBirth,
-                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                nacionalidad: values.nationalidad[0],
-                estado: true,
-                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                otroParentesco: null,
-                idEstadoCivil: obj.civilStatus,
-                idNivelEducativo: obj.educationLevel,
-                idEtnia: obj.etnia,
-                idRegimen: obj.regime,
-                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-                idParentesco: parentesco,
-                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-              },
-              //authorizador cremacion
-              {
-                idPersona: obj.autorizadorcremacion[0].id,
-                tipoIdentificacion: values.authIDType,
-                numeroIdentificacion: idnumaut,
-                primerNombre: values.authName,
-                segundoNombre: values.authSecondName ?? '',
-                primerApellido: values.authSurname,
-                segundoApellido: values.authSecondSurname ?? '',
-                fechaNacimiento: null,
-                estado: true,
-                hora: '',
-                nacionalidad: '00000000-0000-0000-0000-000000000000',
-                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                otroParentesco: parentesco, //lista parentesco
-                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-                idEtnia: '00000000-0000-0000-0000-000000000000',
-                idRegimen: '00000000-0000-0000-0000-000000000000',
-                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-                idParentesco: parentesco,
-                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-              }
-            ];
+          } else if (result.isDenied) {
 
           }
-          else {
-            persona = [
-              //fallecido
-              {
-                idPersona: obj.idpersona,
-                tipoIdentificacion: values.IDType,
-                numeroIdentificacion: idnum,
-                primerNombre: values.name,
-                segundoNombre: values.secondName ?? '',
-                primerApellido: values.surname,
-                segundoApellido: values.secondSurname ?? '',
-                fechaNacimiento: values.dateOfBirth,
-                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                nacionalidad: values.nationalidad[0],
-                estado: true,
-                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                otroParentesco: null,
-                idEstadoCivil: obj.civilStatus,
-                idNivelEducativo: obj.educationLevel,
-                idEtnia: obj.etnia,
-                idRegimen: obj.regime,
-                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-                idParentesco: parentesco,
-                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-              },
-              //authorizador cremacion
-              {
-                //idPersona: '',
-                tipoIdentificacion: values.authIDType,
-                numeroIdentificacion: idnumaut,
-                primerNombre: values.authName,
-                segundoNombre: values.authSecondName ?? '',
-                primerApellido: values.authSurname,
-                segundoApellido: values.authSecondSurname ?? '',
-                fechaNacimiento: null,
-                estado: true,
-                hora: '',
-                nacionalidad: '00000000-0000-0000-0000-000000000000',
-                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                otroParentesco: parentesco, //lista parentesco
-                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-                idEtnia: '00000000-0000-0000-0000-000000000000',
-                idRegimen: '00000000-0000-0000-0000-000000000000',
-                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-                idParentesco: parentesco,
-                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-              }
-            ];
-
-          }
-        }
-        else {
-          persona = [
-            //fallecido
-            {
-              idPersona: obj.idpersona,
-              tipoIdentificacion: values.IDType,
-              numeroIdentificacion: idnum,
-              primerNombre: values.name,
-              segundoNombre: values.secondName ?? '',
-              primerApellido: values.surname,
-              segundoApellido: values.secondSurname ?? '',
-              fechaNacimiento: values.dateOfBirth,
-              hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-              nacionalidad: values.nationalidad[0],
-              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-              otroParentesco: null,
-              estado: true,
-              idEstadoCivil: obj.civilStatus,
-              idNivelEducativo: obj.educationLevel,
-              idEtnia: obj.etnia,
-              idRegimen: obj.regime,
-              idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
-              idParentesco: parentesco,
-              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-            },
-            {
-              //authorizador cremacion
-              idPersona: obj.autorizadorcremacion[0].id,
-              tipoIdentificacion: obj.autorizadorcremacion[0].tipoid,
-              numeroIdentificacion: obj.autorizadorcremacion[0].numeroid,
-              primerNombre: obj.autorizadorcremacion[0].name,
-              segundoNombre: obj.autorizadorcremacion[0].secondName,
-              primerApellido: obj.autorizadorcremacion[0].surname,
-              segundoApellido: obj.autorizadorcremacion[0].secondSurname,
-              fechaNacimiento: null,
-              estado: false,
-              hora: '',
-              nacionalidad: '00000000-0000-0000-0000-000000000000',
-              segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-              otroParentesco: parentesco, //lista parentesco
-              idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-              idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-              idEtnia: '00000000-0000-0000-0000-000000000000',
-              idRegimen: '00000000-0000-0000-0000-000000000000',
-              idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-              idParentesco: obj.autorizadorcremacion[0].parentesco,
-              idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-            }
-          ];
-
-        }
-
-
-        const json: IRegistroLicencia<any> = {
-          solicitud: {
-            idSolicitud: obj.idSolicitud,
-            consecutivo: obj.consecutivo,
-            numeroCertificado: values.certificado,
-            fechaDefuncion: moment(values.date).format(formatDate),
-            sinEstablecer: values.check,
-            hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
-            idSexo: values.sex,
-            estadoSolicitud: '31A45854-BF40-44B6-2645-08DA64F23B8E',
-            idPersonaVentanilla: obj.idpersonaventanilla, //numero de usuario registrado
-            idUsuarioSeguridad: obj.idusuarioseg,
-            idTramite: obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'e69bda86-2572-45db-90dc-b40be14fe020' : 'a289c362-e576-4962-962b-1c208afa0273',
-            idTipoMuerte: values.deathType,
-            tipoPersona: obj.tipopersonasolicitantesolicitud,
-            tipoIdentificacionSolicitante: obj.tiposolicitantesolicitud,
-            noIdentificacionSolicitante: obj.nrosolicitantesolicitud,
-            razonSocialSolicitante: obj.razonsocialsolicitantesolicitud,
-            persona,
-            lugarDefuncion: {
-              idPais: obj.country,
-              idDepartamento: obj.state,
-              idMunicipio: obj.city,
-              idAreaDefuncion: obj.areaDef,
-              idSitioDefuncion: obj.sitDef
-            },
-            ubicacionPersona: {
-              idPaisResidencia: obj.residencia,
-              idDepartamentoResidencia: obj.idDepartamentoResidencia,
-              idCiudadResidencia: obj.idCiudadResidencia,
-              idLocalidadResidencia: obj.idLocalidadResidencia,
-              idAreaResidencia: obj.idAreaResidencia,
-              idBarrioResidencia: obj.idBarrioResidencia
-            },
-            datosCementerio: {
-              idDatosCementerio: obj?.idDatosCementerio,
-              enBogota: values.cementerioLugar === 'Dentro de Bogotá',
-              fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
-              fueraPais: values.cementerioLugar === 'Fuera del País',
-              cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
-              otroSitio: values.otro,
-              ciudad: values.cementerioCiudad,
-              idPais: values.cementerioPais,
-              idDepartamento: values.cementerioDepartamento,
-              idMunicipio: values.cementerioMunicipio
-            },
-
-            datosFuneraria: {
-              idDatosFuneraria: obj?.idDatosfuneraria,
-              enBogota: true,
-              fueraBogota: false,
-              fueraPais: false,
-              funeraria: values.funerariaBogota,
-              otroSitio: values.otrofuneraria,
-              ciudad: values.funerariaCiudad,
-              idPais: values.funerariaPais,
-              idDepartamento: values.funerariaDepartamento,
-              idMunicipio: values.funerariaMunicipio
-            },
-
-            resumenSolicitud: {
-              idSolicitud: obj.idresumensolicitud,
-              correoCementerio: obj.correocementerio,
-              correoFuneraria: obj.correofuneraria,
-              tipoDocumentoSolicitante: obj.tipodocsolicitante,
-              numeroDocumentoSolicitante: obj.nrosolicitante,
-              nombreSolicitante: obj.nombresolicitante,
-              apellidoSolicitante: obj.apellidosolicitante,
-              correoSolicitante: obj.correosolicitante,
-              correoMedico: '',
-              cumpleCausa: banderaCausa,
-              observacionCausa: observacionCausaMuerte
-            },
-
-            institucionCertificaFallecimiento: {
-              idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
-              tipoIdentificacion: tipoidinst,
-              numeroIdentificacion: numeroins,
-              razonSocial: razonSocialins,
-              numeroProtocolo: numeroProtocoloins,
-              numeroActaLevantamiento: values?.numeroActLeva ?? '',
-              fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
-              seccionalFiscalia: values?.SecFiscalAct ?? '',
-              noFiscal: values?.NoFiscAct ?? '',
-              idTipoInstitucion: values?.instType ?? '',
-              NombreFiscal: values?.fiscalianombreDC ?? '',
-              ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
-              NumeroOficio: values?.fiscalianumeroDC ?? '',
-              NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
-              FechaOficio: values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null
-            }
-            // documentosSoporte: generateFormFiel(values.instType)
-          }
-        };
-
-
-
-
-        await api.putLicencia(json);
-
-        //general
-        const acta = form.getFieldValue('fileActaNotarialFiscal');
-        //de inhumacion a cremacion
-        const autcrem = form.getFieldValue('fileAuthCCFamiliar');
-        const docfam = form.getFieldValue('fileDocCremacion');
-        const fiscautcrem = form.getFieldValue('fileAuthFiscalCremacion');
-        const ofmedleg = form.getFieldValue('fileOrdenAuthFiscal');
-        const justificcrem = form.getFieldValue('filejustcambio');
-        //de cremacion a inhumacion
-        const justificinh = form.getFieldValue('filejustFamiliar');
-        const docauth = form.getFieldValue('fileDocaut');
-
-        const supportDocumentsEdit: any[] = [];
-        const formData = new FormData();
-
-
-
-
-
-        const resp = await api.getSupportDocuments(obj.idSolicitud);
-
-
-        const filter = resp.filter(function (f: { esValido: boolean }) {
-          return (
-            f.esValido != false
-          );
         });
+        if (continuarusuario) {
 
-        formData.append('containerName', obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
-          'cremacionindividual' : 'inhumacionindividual'
-        );
-        formData.append('oid', accountIdentifier);
-        const blobcertificado: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
-          'inhumacionindividual' : 'cremacionindividual', obj.idusuarioseg + '/Certificado_Defuncion_' + obj.idSolicitud + '.pdf')
+          let causa = values.causaMuerte;
+          let banderaCausa = true;
+          let observacionCausaMuerte = causaMuerte;
 
-        const blobdocumento: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
-          'inhumacionindividual' : 'cremacionindividual', obj.idusuarioseg + '/Documento_del_fallecido_' + obj.idSolicitud + '.pdf')
-
-
-
-        /*
-        var reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = function () {
-          var base64data = reader.result;
-
-        }
-        */
-        const type: any = { type: 'application/pdf' };
-        const uid: any = { uid: 'rc-upload-1665609235853-5' }
-        var filecertificado = new File([blobcertificado as Blob], "Certificado_defuncion.pdf", type);
-        var filedocumento = new File([blobdocumento as Blob], "Documento_familiar.pdf", type);
-
-
-
-        formData.append('file', filecertificado);
-        formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
-
-
-        formData.append('file', filedocumento);
-        formData.append('nameFile', 'Documento_del_fallecido' + '_' + obj.idSolicitud);
-
-
-
-
-        let actavalida = 0;
-
-        if (acta != undefined) {
-          formData.append('file', values.fileActaNotarialFiscal.file);
-          formData.append('nameFile', 'Acta_Notarial_del_Fiscal' + '_' + obj.idSolicitud);
-
-          supportDocumentsEdit.push({
-            idSolicitud: obj.idSolicitud,
-            idTipoDocumentoSoporte: '79320af6-943c-43bf-87d1-847b625f6203',
-            path: `${obj.idusuarioseg}/Acta_Notarial_del_Fiscal_${obj.idSolicitud}`,
-            idUsuario: obj.idusuarioseg,
-            esValido: true
-          });
-          actavalida = 1;
-
-        }
-        else {
-          if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
-            actavalida = 1;
+          if (causa == 0) {
+            banderaCausa = false;
+            observacionCausaMuerte = '';
           }
-        }
 
-        for (let index = 0; index < filter.length; index++) {
-          if (filter[index].idTipoDocumentoSoporte === '19a11490-261c-4114-9152-23c2b991cb36' ||
-            filter[index].idTipoDocumentoSoporte === '9c4e62a4-ee76-4ba1-8dbe-8be172e23788') {
+          const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
+          const formatDate = 'MM-DD-YYYY';
+          let idnum = values.IDNumber;
+          let idnumaut = values.mauthIDNumber;
 
+          if (sininformacion && idnum == undefined) {
+            idnum = ' ';
           }
-          else {
-            if (actavalida == 1 &&
-              filter[index].idTipoDocumentoSoporte === '79320af6-943c-43bf-87d1-847b625f6203') {
+          if (sininformacionaut && idnumaut == undefined) {
+            idnumaut = ' ';
+          }
+
+
+          const tipoinst = values.instTipoIdent;
+          var tipoidinst = values.instTipoIdent;
+          var numeroins = values.instNumIdent;
+          var razonSocialins = values.instRazonSocial;
+          var numeroProtocoloins = values.instNumProtocolo;
+          if (tipoinst == undefined) {
+            tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+            numeroins = '0';
+            razonSocialins = 'Otros';
+            numeroProtocoloins = '452022';
+          } else {
+            tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+          }
+          const par = values.authParentesco;
+          var parentesco = '';
+          switch (par) {
+            case 'Padre / Madre':
+              parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
+              break;
+            case 'Hermano/a':
+              parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
+              break;
+            case 'Hijo/a':
+              parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
+              break;
+            case 'Cónyuge (Compañero/a Permanente)':
+              parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
+              break;
+            case 'Tío/a':
+              parentesco = '6880824b-39c2-4105-8195-c190885796d8';
+              break;
+            case 'Sobrino/a':
+              parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
+              break;
+            case 'Abuelo/a':
+              parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
+              break;
+            case 'Nieto/a':
+              parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
+              break;
+            case 'Otro':
+              parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+              break;
+          }
+
+          let persona: any[] = [];
+
+          let autorizador: any = [];
+
+
+
+
+          if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
+
+            if (obj?.autorizadorcremacion.length > 0) {
+
+              persona = [
+                //fallecido
+                {
+                  idPersona: obj.idpersona,
+                  tipoIdentificacion: values.IDType,
+                  numeroIdentificacion: idnum,
+                  primerNombre: values.name,
+                  segundoNombre: values.secondName ?? '',
+                  primerApellido: values.surname,
+                  segundoApellido: values.secondSurname ?? '',
+                  fechaNacimiento: values.dateOfBirth,
+                  hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                  nacionalidad: values.nationalidad[0],
+                  estado: true,
+                  segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                  otroParentesco: null,
+                  idEstadoCivil: obj.civilStatus,
+                  idNivelEducativo: obj.educationLevel,
+                  idEtnia: obj.etnia,
+                  idRegimen: obj.regime,
+                  idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                  idParentesco: parentesco,
+                  idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                },
+                //authorizador cremacion
+                {
+                  idPersona: obj.autorizadorcremacion[0].id,
+                  tipoIdentificacion: values.authIDType,
+                  numeroIdentificacion: idnumaut,
+                  primerNombre: values.authName,
+                  segundoNombre: values.authSecondName ?? '',
+                  primerApellido: values.authSurname,
+                  segundoApellido: values.authSecondSurname ?? '',
+                  fechaNacimiento: null,
+                  estado: true,
+                  hora: '',
+                  nacionalidad: '00000000-0000-0000-0000-000000000000',
+                  segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                  otroParentesco: parentesco, //lista parentesco
+                  idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                  idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                  idEtnia: '00000000-0000-0000-0000-000000000000',
+                  idRegimen: '00000000-0000-0000-0000-000000000000',
+                  idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                  idParentesco: parentesco,
+                  idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                }
+              ];
 
             }
             else {
-              filter[index].esValido = false;
+              persona = [
+                //fallecido
+                {
+                  idPersona: obj.idpersona,
+                  tipoIdentificacion: values.IDType,
+                  numeroIdentificacion: idnum,
+                  primerNombre: values.name,
+                  segundoNombre: values.secondName ?? '',
+                  primerApellido: values.surname,
+                  segundoApellido: values.secondSurname ?? '',
+                  fechaNacimiento: values.dateOfBirth,
+                  hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                  nacionalidad: values.nationalidad[0],
+                  estado: true,
+                  segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                  otroParentesco: null,
+                  idEstadoCivil: obj.civilStatus,
+                  idNivelEducativo: obj.educationLevel,
+                  idEtnia: obj.etnia,
+                  idRegimen: obj.regime,
+                  idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                  idParentesco: parentesco,
+                  idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                },
+                //authorizador cremacion
+                {
+                  //idPersona: '',
+                  tipoIdentificacion: values.authIDType,
+                  numeroIdentificacion: idnumaut,
+                  primerNombre: values.authName,
+                  segundoNombre: values.authSecondName ?? '',
+                  primerApellido: values.authSurname,
+                  segundoApellido: values.authSecondSurname ?? '',
+                  fechaNacimiento: null,
+                  estado: true,
+                  hora: '',
+                  nacionalidad: '00000000-0000-0000-0000-000000000000',
+                  segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                  otroParentesco: parentesco, //lista parentesco
+                  idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                  idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                  idEtnia: '00000000-0000-0000-0000-000000000000',
+                  idRegimen: '00000000-0000-0000-0000-000000000000',
+                  idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                  idParentesco: parentesco,
+                  idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                }
+              ];
+
+            }
+          }
+          else {
+            persona = [
+              //fallecido
+              {
+                idPersona: obj.idpersona,
+                tipoIdentificacion: values.IDType,
+                numeroIdentificacion: idnum,
+                primerNombre: values.name,
+                segundoNombre: values.secondName ?? '',
+                primerApellido: values.surname,
+                segundoApellido: values.secondSurname ?? '',
+                fechaNacimiento: values.dateOfBirth,
+                hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                nacionalidad: values.nationalidad[0],
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: null,
+                estado: true,
+                idEstadoCivil: obj.civilStatus,
+                idNivelEducativo: obj.educationLevel,
+                idEtnia: obj.etnia,
+                idRegimen: obj.regime,
+                idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
+                idParentesco: parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              },
+              {
+                //authorizador cremacion
+                idPersona: obj.autorizadorcremacion[0].id,
+                tipoIdentificacion: obj.autorizadorcremacion[0].tipoid,
+                numeroIdentificacion: obj.autorizadorcremacion[0].numeroid,
+                primerNombre: obj.autorizadorcremacion[0].name,
+                segundoNombre: obj.autorizadorcremacion[0].secondName,
+                primerApellido: obj.autorizadorcremacion[0].surname,
+                segundoApellido: obj.autorizadorcremacion[0].secondSurname,
+                fechaNacimiento: null,
+                estado: false,
+                hora: '',
+                nacionalidad: '00000000-0000-0000-0000-000000000000',
+                segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                otroParentesco: parentesco, //lista parentesco
+                idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                idEtnia: '00000000-0000-0000-0000-000000000000',
+                idRegimen: '00000000-0000-0000-0000-000000000000',
+                idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                idParentesco: obj.autorizadorcremacion[0].parentesco,
+                idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+              }
+            ];
+
+          }
+
+
+          const json: IRegistroLicencia<any> = {
+            solicitud: {
+              idSolicitud: obj.idSolicitud,
+              consecutivo: obj.consecutivo,
+              numeroCertificado: values.certificado,
+              fechaDefuncion: moment(values.date).format(formatDate),
+              sinEstablecer: values.check,
+              hora: values.check === true ? 'Sin información' : moment(values.time).format('LT'),
+              idSexo: values.sex,
+              estadoSolicitud: '31A45854-BF40-44B6-2645-08DA64F23B8E',
+              idPersonaVentanilla: obj.idpersonaventanilla, //numero de usuario registrado
+              idUsuarioSeguridad: obj.idusuarioseg,
+              idTramite: obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'e69bda86-2572-45db-90dc-b40be14fe020' : 'a289c362-e576-4962-962b-1c208afa0273',
+              idTipoMuerte: values.deathType,
+              tipoPersona: obj.tipopersonasolicitantesolicitud,
+              tipoIdentificacionSolicitante: obj.tiposolicitantesolicitud,
+              noIdentificacionSolicitante: obj.nrosolicitantesolicitud,
+              razonSocialSolicitante: obj.razonsocialsolicitantesolicitud,
+              persona,
+              lugarDefuncion: {
+                idPais: obj.country,
+                idDepartamento: obj.state,
+                idMunicipio: obj.city,
+                idAreaDefuncion: obj.areaDef,
+                idSitioDefuncion: obj.sitDef
+              },
+              ubicacionPersona: {
+                idPaisResidencia: obj.residencia,
+                idDepartamentoResidencia: obj.idDepartamentoResidencia,
+                idCiudadResidencia: obj.idCiudadResidencia,
+                idLocalidadResidencia: obj.idLocalidadResidencia,
+                idAreaResidencia: obj.idAreaResidencia,
+                idBarrioResidencia: obj.idBarrioResidencia
+              },
+              datosCementerio: {
+                idDatosCementerio: obj?.idDatosCementerio,
+                enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+                fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+                fueraPais: values.cementerioLugar === 'Fuera del País',
+                cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
+                otroSitio: values.otro,
+                ciudad: values.cementerioCiudad,
+                idPais: values.cementerioPais,
+                idDepartamento: values.cementerioDepartamento,
+                idMunicipio: values.cementerioMunicipio
+              },
+
+              datosFuneraria: {
+                idDatosFuneraria: obj?.idDatosfuneraria,
+                enBogota: true,
+                fueraBogota: false,
+                fueraPais: false,
+                funeraria: values.funerariaBogota,
+                otroSitio: values.otrofuneraria,
+                ciudad: values.funerariaCiudad,
+                idPais: values.funerariaPais,
+                idDepartamento: values.funerariaDepartamento,
+                idMunicipio: values.funerariaMunicipio
+              },
+
+              resumenSolicitud: {
+                idSolicitud: obj.idresumensolicitud,
+                correoCementerio: obj.correocementerio,
+                correoFuneraria: obj.correofuneraria,
+                tipoDocumentoSolicitante: obj.tipodocsolicitante,
+                numeroDocumentoSolicitante: obj.nrosolicitante,
+                nombreSolicitante: obj.nombresolicitante,
+                apellidoSolicitante: obj.apellidosolicitante,
+                correoSolicitante: obj.correosolicitante,
+                correoMedico: '',
+                cumpleCausa: banderaCausa,
+                observacionCausa: observacionCausaMuerte
+              },
+
+              institucionCertificaFallecimiento: {
+                idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
+                tipoIdentificacion: tipoidinst,
+                numeroIdentificacion: numeroins,
+                razonSocial: razonSocialins,
+                numeroProtocolo: numeroProtocoloins,
+                numeroActaLevantamiento: values?.numeroActLeva ?? '',
+                fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
+                seccionalFiscalia: values?.SecFiscalAct ?? '',
+                noFiscal: values?.NoFiscAct ?? '',
+                idTipoInstitucion: values?.instType ?? '',
+                NombreFiscal: values?.fiscalianombreDC ?? '',
+                ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
+                NumeroOficio: values?.fiscalianumeroDC ?? '',
+                NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
+                FechaOficio: values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null
+              }
+              // documentosSoporte: generateFormFiel(values.instType)
+            }
+          };
+
+
+
+
+          await api.putLicencia(json, '1');
+
+          //general
+          const acta = form.getFieldValue('fileActaNotarialFiscal');
+          //de inhumacion a cremacion
+          const autcrem = form.getFieldValue('fileAuthCCFamiliar');
+          const docfam = form.getFieldValue('fileDocCremacion');
+          const fiscautcrem = form.getFieldValue('fileAuthFiscalCremacion');
+          const ofmedleg = form.getFieldValue('fileOrdenAuthFiscal');
+          const justificcrem = form.getFieldValue('filejustcambio');
+          //de cremacion a inhumacion
+          const justificinh = form.getFieldValue('filejustFamiliar');
+          const docauth = form.getFieldValue('fileDocaut');
+
+          const supportDocumentsEdit: any[] = [];
+          const formData = new FormData();
+
+
+
+
+
+          const resp = await api.getSupportDocuments(obj.idSolicitud);
+
+
+          const filter = resp.filter(function (f: { esValido: boolean }) {
+            return (
+              f.esValido != false
+            );
+          });
+
+          formData.append('containerName', obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+            'cremacionindividual' : 'inhumacionindividual'
+          );
+          formData.append('oid', accountIdentifier);
+          const blobcertificado: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+            'inhumacionindividual' : 'cremacionindividual', obj.idusuarioseg + '/Certificado_Defuncion_' + obj.idSolicitud + '.pdf')
+
+          const blobdocumento: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+            'inhumacionindividual' : 'cremacionindividual', obj.idusuarioseg + '/Documento_del_fallecido_' + obj.idSolicitud + '.pdf')
+
+
+
+          /*
+          var reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = function () {
+            var base64data = reader.result;
+
+          }
+          */
+          const type: any = { type: 'application/pdf' };
+          const uid: any = { uid: 'rc-upload-1665609235853-5' }
+          var filecertificado = new File([blobcertificado as Blob], "Certificado_defuncion.pdf", type);
+          var filedocumento = new File([blobdocumento as Blob], "Documento_familiar.pdf", type);
+
+
+
+          formData.append('file', filecertificado);
+          formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
+
+
+          formData.append('file', filedocumento);
+          formData.append('nameFile', 'Documento_del_fallecido' + '_' + obj.idSolicitud);
+
+
+
+
+          let actavalida = 0;
+
+          if (acta != undefined) {
+            formData.append('file', values.fileActaNotarialFiscal.file);
+            formData.append('nameFile', 'Acta_Notarial_del_Fiscal' + '_' + obj.idSolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: obj.idSolicitud,
+              idTipoDocumentoSoporte: '79320af6-943c-43bf-87d1-847b625f6203',
+              path: `${obj.idusuarioseg}/Acta_Notarial_del_Fiscal_${obj.idSolicitud}`,
+              idUsuario: obj.idusuarioseg,
+              esValido: true
+            });
+            actavalida = 1;
+
+          }
+          else {
+            if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+              actavalida = 1;
+            }
+          }
+
+          for (let index = 0; index < filter.length; index++) {
+            if (filter[index].idTipoDocumentoSoporte === '19a11490-261c-4114-9152-23c2b991cb36' ||
+              filter[index].idTipoDocumentoSoporte === '9c4e62a4-ee76-4ba1-8dbe-8be172e23788') {
+
+            }
+            else {
+              if (actavalida == 1 &&
+                filter[index].idTipoDocumentoSoporte === '79320af6-943c-43bf-87d1-847b625f6203') {
+
+              }
+              else {
+                filter[index].esValido = false;
+              }
+
+            }
+          }
+          await api.UpdateSupportDocuments(filter);
+
+          //de inhumacion a cremacion
+          if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
+            if (autcrem != undefined) {
+              formData.append('file', values.fileAuthCCFamiliar.file);
+              formData.append('nameFile', 'Autorizacion_de_cremacion_del_familiar' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: 'f67f1c4e-a6a5-4257-a995-17a926801f7c',
+                path: `${obj.idusuarioseg}/Autorizacion_de_cremacion_del_familiar_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
+            }
+            if (docfam != undefined) {
+              formData.append('file', values.fileDocCremacion.file);
+              formData.append('nameFile', 'Documento_del_familiar' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: 'd6524742-e32d-4548-ab21-7a9cbb367926',
+                path: `${obj.idusuarioseg}/Documento_del_familiar_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
+            }
+            if (fiscautcrem != undefined) {
+              formData.append('file', values.fileAuthFiscalCremacion.file);
+              formData.append('nameFile', 'Autorizacion_del_fiscal_para_cremar' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+                path: `${obj.idusuarioseg}/Autorizacion_del_fiscal_para_cremar_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
+            }
+            if (ofmedleg != undefined) {
+              formData.append('file', values.fileOrdenAuthFiscal.file);
+              formData.append('nameFile', 'Oficio_de_medicina_legal_al_fiscal_para_cremar' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: '1266f06c-0bc1-4cf8-ba51-5e889d5e8178',
+                path: `${obj.idusuarioseg}/Oficio_de_medicina_legal_al_fiscal_para_cremar_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
+            }
+
+            if (justificcrem != undefined) {
+              formData.append('file', values.filejustcambio.file);
+              formData.append('nameFile', 'Justificación del cambio de licencia' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: '242A2E58-46B5-4C45-97BA-881A383F2CBB',
+                path: `${obj.idusuarioseg}/Justificación del cambio de licencia_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
+            }
+
+
+
+
+
+          }
+          else {
+            if (justificinh != undefined) {
+              formData.append('file', values.filejustFamiliar.file);
+              formData.append('nameFile', 'Justificación_de_inhumación' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+                path: `${obj.idusuarioseg}/Justificación_de_inhumación_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
+            }
+            if (docauth != undefined) {
+              formData.append('file', values.fileDocaut.file);
+              formData.append('nameFile', 'Documento_de_quien_autoriza' + '_' + obj.idSolicitud);
+
+              supportDocumentsEdit.push({
+                idSolicitud: obj.idSolicitud,
+                idTipoDocumentoSoporte: '6E57212B-2266-4854-9C13-F805BB4BBCF8',
+                path: `${obj.idusuarioseg}/Documento_de_quien_autoriza_${obj.idSolicitud}`,
+                idUsuario: obj.idusuarioseg,
+                esValido: true
+              });
             }
 
           }
+
+          formData.append('containerName', obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
+            'cremacionindividual' : 'inhumacionindividual'
+          );
+          formData.append('oid', accountIdentifier);
+          await api.uploadFiles(formData);
+          await api.UpdateSupportDocuments(supportDocumentsEdit);
+
+
+
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Solicitud Modificada',
+            text: 'Se ha modificado la Solicitud exitosamente'
+          });
+
+          history.push('/tramites-servicios');
         }
-        await api.UpdateSupportDocuments(filter);
-
-        //de inhumacion a cremacion
-        if (obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273') {
-          if (autcrem != undefined) {
-            formData.append('file', values.fileAuthCCFamiliar.file);
-            formData.append('nameFile', 'Autorizacion_de_cremacion_del_familiar' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: 'f67f1c4e-a6a5-4257-a995-17a926801f7c',
-              path: `${obj.idusuarioseg}/Autorizacion_de_cremacion_del_familiar_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-          if (docfam != undefined) {
-            formData.append('file', values.fileDocCremacion.file);
-            formData.append('nameFile', 'Documento_del_familiar' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: 'd6524742-e32d-4548-ab21-7a9cbb367926',
-              path: `${obj.idusuarioseg}/Documento_del_familiar_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-          if (fiscautcrem != undefined) {
-            formData.append('file', values.fileAuthFiscalCremacion.file);
-            formData.append('nameFile', 'Autorizacion_del_fiscal_para_cremar' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
-              path: `${obj.idusuarioseg}/Autorizacion_del_fiscal_para_cremar_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-          if (ofmedleg != undefined) {
-            formData.append('file', values.fileOrdenAuthFiscal.file);
-            formData.append('nameFile', 'Oficio_de_medicina_legal_al_fiscal_para_cremar' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: '1266f06c-0bc1-4cf8-ba51-5e889d5e8178',
-              path: `${obj.idusuarioseg}/Oficio_de_medicina_legal_al_fiscal_para_cremar_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-
-          if (justificcrem != undefined) {
-            formData.append('file', values.filejustcambio.file);
-            formData.append('nameFile', 'Justificación del cambio de licencia' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: '242A2E58-46B5-4C45-97BA-881A383F2CBB',
-              path: `${obj.idusuarioseg}/Justificación del cambio de licencia_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-
-
-
-
-
-        }
-        else {
-          if (justificinh != undefined) {
-            formData.append('file', values.filejustFamiliar.file);
-            formData.append('nameFile', 'Justificación_de_inhumación' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
-              path: `${obj.idusuarioseg}/Justificación_de_inhumación_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-          if (docauth != undefined) {
-            formData.append('file', values.fileDocaut.file);
-            formData.append('nameFile', 'Documento_de_quien_autoriza' + '_' + obj.idSolicitud);
-
-            supportDocumentsEdit.push({
-              idSolicitud: obj.idSolicitud,
-              idTipoDocumentoSoporte: '6E57212B-2266-4854-9C13-F805BB4BBCF8',
-              path: `${obj.idusuarioseg}/Documento_de_quien_autoriza_${obj.idSolicitud}`,
-              idUsuario: obj.idusuarioseg,
-              esValido: true
-            });
-          }
-
-        }
-
-        formData.append('containerName', obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ?
-          'cremacionindividual' : 'inhumacionindividual'
-        );
-        formData.append('oid', accountIdentifier);
-        await api.uploadFiles(formData);
-        await api.UpdateSupportDocuments(supportDocumentsEdit);
-
-
-
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Solicitud Modificada',
-          text: 'Se ha modificado la Solicitud exitosamente'
-        });
       }
-      history.push('/tramites-servicios');
+
     }
   };
 

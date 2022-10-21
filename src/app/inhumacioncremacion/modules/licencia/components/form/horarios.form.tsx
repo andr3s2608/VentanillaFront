@@ -3,12 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
 
-import Divider from 'antd/es/divider';
+
 
 // Componentes
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
+
 import { ApiService } from 'app/services/Apis.service';
-import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
+import { ICementerio } from 'app/services/dominio.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
@@ -18,8 +18,7 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 
 //Redux
 import { store } from 'app/redux/app.reducers';
-import { UploadOutlined } from '@ant-design/icons';
-import { Input, Radio } from 'antd';
+
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import moment from 'moment';
 
@@ -27,20 +26,15 @@ export const HorariosGestion = ({ props }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
-  const [l_cementerios, setl_cementerios] = useState<ICementerio[]>([]);
   const [selecciono, setselecciono] = useState<boolean>(false);
-  const [RazonC, setRazonC] = useState<String>('');
-  const [valores, setvalores] = useState<String>('Name');
   const [iniciosem, setiniciosem] = useState<any>();
   const [finsem, setfinsem] = useState<any>();
   const [iniciofinde, setiniciofinde] = useState<any>();
   const [finfinde, setfinfinde] = useState<any>();
 
-  const [[DireccionC, TelefonoC, NombreRepC, TipoRepC, NroIdenC], setCementerioDatos] = useState<
-    [string, string, string, string, string]
-  >(['', '', '', '', '']);
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+
+  const { setStatus } = useStepperForm<any>(form);
 
   const getListas = useCallback(async () => {
     let HoraInicioAtencion_LV = await api.getCostante('5DF03735-503B-4D22-8169-E4FCDD19DA26');

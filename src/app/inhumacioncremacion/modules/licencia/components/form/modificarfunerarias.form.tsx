@@ -259,7 +259,7 @@ export const ModificarFuneraria = ({ props }: any) => {
                 <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
                 <Radio.Group onChange={changeRadioButton} defaultValue={'Name'}>
                   <Radio value='Name'>Nombre de la Funeraria</Radio>
-                  <Radio value='Id'>No. Identificación</Radio>
+                  <Radio value='Id'>No. Registro SDS Funeraria</Radio>
                 </Radio.Group>
               </div>
             </div>
@@ -271,7 +271,7 @@ export const ModificarFuneraria = ({ props }: any) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12 '>
-                <Form.Item label='No. Funeraria' name='funerariaid'>
+                <Form.Item label='Registros SDS Funeraria' name='funerariaid'>
                   <Input
                     allowClear
                     placeholder='Número'
