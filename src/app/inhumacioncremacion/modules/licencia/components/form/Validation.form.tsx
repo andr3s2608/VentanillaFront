@@ -516,7 +516,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         let idTramite = objJosn?.idTramite;
         let cementerio = solicitud[0]['datosCementerio']['cementerio'];
         let date = new Date();
-        let emailSolicitante = resumenSolicitud[0]['correoSolicitante'];
+        let emailSolicitante = resumenSolicitud[0]['correoFuneraria'];
+        let emailFamiliarContratante = resumenSolicitud[0]['correoSolicitante'];
 
         if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
           //alert('aprobacion');
@@ -590,7 +591,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           notificar(
             values.validFunctionaltype,
             datosDinamicosAprobacion,
-            emailSolicitante,
+            emailFamiliarContratante,
             licencia,
             resumenSolicitud[0]['numeroLicencia']
           );
@@ -2226,7 +2227,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           llavesAReemplazarGenericas,
           datosDinamicos
         );
-
         api.sendEmail({
           to: emailSolicitante,
           subject: plantillaDocumentosInconsistentes.asuntoNotificacion,
