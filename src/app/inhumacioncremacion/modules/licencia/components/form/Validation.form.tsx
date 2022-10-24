@@ -554,7 +554,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
           const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
           const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
-          console.log(htmlFinal);
+
           const licencia: any = await api.ObtenerPDFShared({
             html: htmlFinal
           });
@@ -1547,7 +1547,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~parentesco~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
       "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
       "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
-    console.log()
+
 
 
     const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
@@ -1798,7 +1798,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
     const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
-    console.log(htmlFinal);
+
     const PDF: any = await api.ObtenerPDFShared({
       html: htmlFinal
     });

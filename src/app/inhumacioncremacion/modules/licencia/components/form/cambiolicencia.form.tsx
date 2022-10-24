@@ -541,7 +541,7 @@ export const CambioLicencia = ({ props }: any) => {
         reader.readAsDataURL(blob);
         reader.onloadend = function () {
           var base64data = reader.result;
-          console.log(base64data);
+
         }
         */
         const type: any = { type: 'application/pdf' };
