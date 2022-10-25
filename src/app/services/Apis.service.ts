@@ -51,7 +51,7 @@ export class ApiService {
 
   ObtenerPDFShared = (payload: any) =>
     post<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_SHARED as string,
       url: `v1/PDF/GetPDF`,
       payload,
       id: '1'
