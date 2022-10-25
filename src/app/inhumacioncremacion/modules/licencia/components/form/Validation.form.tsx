@@ -924,6 +924,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let nombreMedico1: string = "";
     let nombreMedico2: string = "";
     let nombreCementerio: string = "";
+    let nombreSolicitante: string = "";
     let numeroLicencia: string = "";
     let label: string = " ";
     let codigoVerificacion: string = "";
@@ -1065,7 +1066,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
+
     const keys = [
+      "~:~fecha_actualizacion~:~", "~:~hora_actualizacion~:~",
       "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
       "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
       "~:~nombre_completo_fallecido~:~", "~:~nacionalidad~:~", "~:~fecha_fallecido~:~",
@@ -1075,8 +1079,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
     Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
     fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
@@ -1108,6 +1112,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let nombreAutorizadorCremacion: string = "";
     let nombreMedico1: string = "";
     let nombreMedico2: string = "";
+    let nombreSolicitante: string = "";
     let nombreCementerio: string = "";
     let numeroLicencia: string = "";
     let label: string = " ";
@@ -1294,7 +1299,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
+
     const keys = [
+      "~:~fecha_actualizacion~:~", "~:~hora_actualizacion~:~",
       "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
       "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
       "~:~nombre_completo_fallecido~:~", "~:~nacionalidad~:~", "~:~fecha_fallecido~:~",
@@ -1304,18 +1312,20 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~tipo_identificacion_autorizador_cremacion~:~", "~:~numero_identificacion_autorizador_cremacion~:~",
       "~:~parentesco~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
       "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
-      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~",
+      "~:~hora_fallecido_2~:~", "~:~fecha_fallecido_2~:~"];
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
     Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
     fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
     nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(), autorizadorCremacion['numeroIdentificacion'],
     parentesco['descripcion'].toLocaleUpperCase(), fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
-    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
+    Solicitud[0]["hora"], formatDates(fechaDefuncion)];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
@@ -1343,6 +1353,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const fechaActual = new Date();
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
+    let nombreSolicitante: string = "";
     let nombreAutorizadorCremacion: string = "";
     let nombreMedico1: string = "";
     let nombreMedico2: string = "";
@@ -1535,8 +1546,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
+
 
     const keys = [
+      "~:~fecha_actualizacion~:~", "~:~hora_actualizacion~:~",
       "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
       "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
       "~:~nombre_completo_fallecido~:~", "~:~nombre_completo_madre~:~", "~:~nacionalidad~:~",
@@ -1546,19 +1560,21 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~tipo_identificacion_autorizador_cremacion~:~", "~:~numero_identificacion_autorizador_cremacion~:~",
       "~:~parentesco~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
       "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
-      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~",
+      "~:~hora_fallecido_2~:~", "~:~fecha_fallecido_2~:~"];
 
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
     genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
     nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(),
-    parentesco['descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
+    autorizadorCremacion['numeroIdentificacion'], parentesco['descripcion'].toLocaleUpperCase(),
       fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
-    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
+    Solicitud[0]["hora"], formatDates(fechaDefuncion)];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
@@ -1584,6 +1600,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      */
 
     const fechaActual = new Date();
+    let nombreSolicitante: string = "";
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
     let nombreMedico1: string = "";
@@ -1735,7 +1752,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
+
     const keys = [
+      "~:~fecha_actualizacion~:~", "~:~hora_actualizacion~:~",
       "~:~fecha_actual~:~", "~:~hora_actual~:~", "~:~numero_licencia~:~",
       "~:~numero_certificado_defuncion~:~", "~:~funeraria~:~", "~:~nombre_completo_solicitante~:~",
       "~:~nombre_completo_fallecido~:~", "~:~nombre_completo_madre~:~", "~:~nacionalidad~:~",
@@ -1745,8 +1765,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], Solicitud[0]["razonSocialSolicitante"].toString().toLocaleUpperCase(),
+    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
     genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
