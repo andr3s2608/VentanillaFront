@@ -177,7 +177,7 @@ export const RevisarSg = () => {
       await api.uploadFiles(formData);
       await api.AddSupportDocumentsAguas(supportDocumentsEdit);
     }
-    if (!usuarionotificado) {
+  
       if (notificacion != '') {
         const formato = await api.getFormatoAguas(notificacion);
 
@@ -274,7 +274,7 @@ export const RevisarSg = () => {
             break;
         }
       }
-    }
+    
     history.push('/tramites-servicios-aguas');
     localStorage.removeItem('register');
   };
