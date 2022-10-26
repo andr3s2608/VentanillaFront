@@ -466,7 +466,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           idCiudadResidencia: values.ciudad,
           idLocalidadResidencia: values.localidad,
           idAreaResidencia: values.area,
-          idBarrioResidencia: values.barrio
+          idBarrioResidencia: values.barrio,
+          ciudad: values.barrio
         },
         datosCementerio: {
           enBogota: values.cementerioLugar === 'Dentro de Bogotá',
@@ -493,13 +494,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         },
 
         resumenSolicitud: {
-          correoCementerio: values.emailcementerio,
-          correoFuneraria: values.emailfuneraria,
+          correoCementerio: values.emailcementerio.toString().toLowerCase(),
+          correoFuneraria: values.emailfuneraria.toString().toLowerCase(),
           tipoDocumentoSolicitante: values.fiscalia,
           numeroDocumentoSolicitante: values.ndoc,
           nombreSolicitante: values.namesolicitudadd,
           apellidoSolicitante: values.lastnamesolicitudadd,
-          correoSolicitante: values.emailsolicitudadd,
+          correoSolicitante: values.emailsolicitudadd.toString().toLowerCase(),
           correoMedico: '',
           cumpleCausa: banderaCausa,
           observacionCausa: observacionCausaMuerte

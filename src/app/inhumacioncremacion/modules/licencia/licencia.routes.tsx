@@ -20,9 +20,13 @@ const LicenciaPruebaPage = lazy(() => import('./pages/gestion-tramite/gestion-in
 const AdministrationFirmasPage = lazy(() => import('./pages/administracion/administracion-firmas.page'));
 const AdministrationHorarioPage = lazy(() => import('./pages/administracion/administracion-horario.page'));
 const ValidarDocumentPage = lazy(() => import('./pages/validacion/validaciondocumentos.page'));
-
-const CambiarTipoLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia.page'));
-//modificar licencias
+//cambiar tipo de licencia usuario ciudadano
+const CambiarTipoLicenciaIndividualPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia-individual.page'));
+const CambiarTipoLicenciaFetalPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia-fetal.page'));
+//modificar solicitud usuario ciudadano
+const ModificarLicenciaIndividualPage = lazy(() => import('./pages/actualizacion/actualizacion-datos-individual.page'));
+const ModificarLicenciaFetalPage = lazy(() => import('./pages/actualizacion/actualizacion-datos-fetal.page'));
+//modificar licencias administrador
 const ModificarLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-licencia.page'));
 const ModificarLicenciaOraclePage = lazy(() => import('./pages/actualizacion/actualizacion-licenciaoracle.page'));
 
@@ -107,10 +111,25 @@ export const LicenciaRoutes: IRouteProps[] = [
     path: `${updatepath}/licencia-Oracle`,
     component: ModificarLicenciaOraclePage
   },
+  //cambiar tipo de licencias
   {
-    path: `${updatepath}/Cambiar-Tipo-Licencia`,
-    component: CambiarTipoLicenciaPage
+    path: `${updatepath}/Cambiar-Tipo-Licencia-Individual`,
+    component: CambiarTipoLicenciaIndividualPage
   },
+  {
+    path: `${updatepath}/Cambiar-Tipo-Licencia-Fetal`,
+    component: CambiarTipoLicenciaFetalPage
+  },
+  //actualizar datos de solicitudes
+  {
+    path: `${updatepath}/Actualizar-Datos-Individual`,
+    component: ModificarLicenciaIndividualPage
+  },
+  {
+    path: `${updatepath}/Actualizar-Datos-Fetal`,
+    component: ModificarLicenciaFetalPage
+  },
+  ///////
   {
     path: `${updatepath}/funerarias`,
     component: ModificarFunerariasPage

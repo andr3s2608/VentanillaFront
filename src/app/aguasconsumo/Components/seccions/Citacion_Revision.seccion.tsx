@@ -21,12 +21,12 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
 
   const getListas = useCallback(async () => {
     const subredes: any = localStorage.getItem('subredes');
-
+    setfuncionario(obj.idSubred);
     if (obj.citacion[0] != undefined) {
       const date = obj.citacion[0].fechaCitacion;
 
       setfecha(moment(date));
-      setfuncionario(obj?.citacion[0].idUsuarioCitacion);
+      //setfuncionario(obj?.citacion[0].idUsuarioCitacion);
       setobservacion(obj?.citacion[0].observacionCitacion);
     }
     setmostrar(true);

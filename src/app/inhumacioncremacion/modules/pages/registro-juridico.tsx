@@ -98,7 +98,7 @@ const RegistroPage: React.FC<any> = (props) => {
           numeroIdentificacion: Number(value.nit),
           telefonoFijo: value.phone ?? 0,
           telefonoCelular: value.phonecell,
-          email: value.email,
+          email: value.email.toString().toLowerCase(),
           tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
           numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
           nombreRazonSocial: value.razonsocial

@@ -456,7 +456,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     className='form-control gov-co-form-control'
                     disabled={modificar}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -478,7 +478,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     maxLength={50}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -503,7 +503,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -526,7 +526,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[a-zA-Z ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

@@ -111,7 +111,7 @@ export const Servicios = () => {
           segundoApellido: values.secondsurname,
           telefonoContacto: values.telefono,
           celularContacto: values.telefono2,
-          correoElectronico: values.email,
+          correoElectronico: values.email.toString().toLowerCase(),
           idTipoPersona: values.persona,
           tipoDocumentoRazon: values?.IDTypeRazon ?? '',
           nit: values?.IDNumberRazon ?? '',

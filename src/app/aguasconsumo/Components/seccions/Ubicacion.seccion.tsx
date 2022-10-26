@@ -108,15 +108,8 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-            <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '-230px' }}>
-              <Button
-                className='ml-4 mr-3 float-right button btn btn-default'
-                type='primary'
-                style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-              >
-                Buscar
-              </Button>
-            </div>
+            //////
+
           </div>
           <div className='row ml-2'>
             <div className='col-lg-5 col-sm-4 col-md-5 mt-2'>
@@ -204,6 +197,17 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
     </>
   );
 };
+
+/*
+ <div className='col-lg-2 col-sm-12 col-md-12' style={{ marginTop: '32px', marginLeft: '-230px' }}>
+              <Button
+                className='ml-4 mr-3 float-right button btn btn-default'
+                type='primary'
+                style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+              >
+                Buscar
+              </Button>
+            </div>*/
 interface ubicacion<T> {
   form: FormInstance<T>;
   obj: any;

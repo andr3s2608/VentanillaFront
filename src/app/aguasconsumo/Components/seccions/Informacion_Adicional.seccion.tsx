@@ -369,7 +369,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     maxLength={100}
                     onChange={validacionCaudal}
                     onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                      if (!/[0-9,.]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -388,7 +388,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     maxLength={100}
                     onChange={validacionCaudal}
                     onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
+                      if (!/[0-9,.]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

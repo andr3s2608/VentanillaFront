@@ -104,7 +104,7 @@ export const EmergenciaSanitaria = ({ props }: any) => {
                       initialValue={mensajeEmergencia}
                       rules={[{ required: true }]}
                     >
-                      <Input.TextArea rows={5} maxLength={450} style={{ width: '360px' }} className='textarea' />
+                      <Input.TextArea rows={5} maxLength={200} style={{ width: '360px' }} className='textarea' />
                     </Form.Item>
                   </div>
                 </div>

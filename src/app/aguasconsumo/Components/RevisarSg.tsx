@@ -121,10 +121,13 @@ export const RevisarSg = () => {
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Subdirector') {
+
       const estado = values.seguimiento;
       if (estado == '2e8808af-a294-4cde-8e9c-9a78b5172119') {
+
         notificacion = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
       } else {
+
         notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
       }
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
@@ -177,104 +180,105 @@ export const RevisarSg = () => {
       await api.uploadFiles(formData);
       await api.AddSupportDocumentsAguas(supportDocumentsEdit);
     }
-    if (!usuarionotificado) {
-      if (notificacion != '') {
-        const formato = await api.getFormatoAguas(notificacion);
-
-        const control: string = formato['asuntoNotificacion'];
-        switch (control) {
-          case 'Notificación de Desistimiento':
-            await api.sendEmail({
-              to: objJson.correoElectronico,
-              subject: 'Notificación de Desistimiento',
-              body: formato['cuerpo']
-            });
-            break;
-          case 'Notificación de subsanación':
-            await api.sendEmail({
-              to: objJson.correoElectronico,
-              subject: 'Notificación de subsanación',
-              body: formato['cuerpo']
-            });
-            break;
-
-          case 'Notificación Aprobación al Ciudadano':
 
 
-            const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
+    if (notificacion != '') {
+      const formato = await api.getFormatoAguas(notificacion);
 
-            await api.sendEmailAttachment({
-              to: objJson.correoElectronico,
-              subject: 'Notificación Aprobación al Ciudadano',
-              body: agregarValoresDinamicos(
-                formato['cuerpo'],
-                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
-                [
-                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                  "numero de resolucion",//objJson.renovafuentejson[0].numeroResolucion,
-                  formatDate(date)//objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
-                ]
-              ),
-              attachment: certificado,
-              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
-            });
+      const control: string = formato['asuntoNotificacion'];
+      switch (control) {
+        case 'Notificación de Desistimiento':
+          await api.sendEmail({
+            to: objJson.correoElectronico,
+            subject: 'Notificación de Desistimiento',
+            body: formato['cuerpo']
+          });
+          break;
+        case 'Notificación de subsanación':
+          await api.sendEmail({
+            to: objJson.correoElectronico,
+            subject: 'Notificación de subsanación',
+            body: formato['cuerpo']
+          });
+          break;
 
-            let autoridadesAmbientales: IAutoridadAmbientalDTO[] = await api.getAutoridadAmbiental();
-            let autoridadAmbiental = autoridadesAmbientales.find(aa => aa.idAutoridadAmbiental == objJson.fuenteabastecimientojson[0].idAutoridadAmbiental);
-            const formatoAutoridad = await api.getFormatoAguas("5A5076F6-7646-409E-A8CC-8CF8AAD60272");
+        case 'Notificación Aprobación al Ciudadano':
 
 
-            await api.sendEmailAttachment({
-              to: autoridadAmbiental?.correo,
-              subject: 'Notificación Aprobación Autoridad Ambiental',
-              body: agregarValoresDinamicos(
-                formatoAutoridad['cuerpo'],
-                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
-                [
-                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                  "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
-                  formatDate(date)
-                ]
-              ),
-              attachment: certificado,
-              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
-            });
-            Swal.fire({
-              icon: 'success',
-              title: 'Notificación exitosa',
-              text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
-            });
+          const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
 
-            const urlToFile = async (url: string, filename: string, mimeType: any) => {
-              const res = await fetch(url);
-              const buf = await res.arrayBuffer();
-              return new File([buf], filename, { type: mimeType });
-            };
+          await api.sendEmailAttachment({
+            to: objJson.correoElectronico,
+            subject: 'Notificación Aprobación al Ciudadano',
+            body: agregarValoresDinamicos(
+              formato['cuerpo'],
+              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+              [
+                objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                "numero de resolucion",//objJson.renovafuentejson[0].numeroResolucion,
+                formatDate(date)//objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
+              ]
+            ),
+            attachment: certificado,
+            AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+          });
 
-            (async () => {
-              const file = await urlToFile('data:application/pdf;base64,' + certificado, 'resolucion', 'application/pdf');
+          let autoridadesAmbientales: IAutoridadAmbientalDTO[] = await api.getAutoridadAmbiental();
+          let autoridadAmbiental = autoridadesAmbientales.find(aa => aa.idAutoridadAmbiental == objJson.fuenteabastecimientojson[0].idAutoridadAmbiental);
+          const formatoAutoridad = await api.getFormatoAguas("5A5076F6-7646-409E-A8CC-8CF8AAD60272");
 
-              const formData = new FormData();
-              formData.append('file', file);
-              formData.append(
-                'nameFile',
-                'RESOLUCION_' + 'N°' + objJson.numeroradicado + "(numero de radicado temporal)"
-              );
-              formData.append('containerName', "aguahumanos");
-              formData.append('oid', objJson.idusuario);
-              await api.uploadFiles(formData);
-              //console.log(file);
-            })();
 
-            Swal.fire({
-              icon: 'success',
-              title: 'Trámite aprobado',
-              text: 'Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano ' + objJson.primerNombre + ' ' + objJson.primerApellido + ', y a la autoridad ambiental ' + autoridadAmbiental?.nombre
-            });
-            break;
-        }
+          await api.sendEmailAttachment({
+            to: autoridadAmbiental?.correo,
+            subject: 'Notificación Aprobación Autoridad Ambiental',
+            body: agregarValoresDinamicos(
+              formatoAutoridad['cuerpo'],
+              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+              [
+                objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
+                formatDate(date)
+              ]
+            ),
+            attachment: certificado,
+            AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Notificación exitosa',
+            text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
+          });
+
+          const urlToFile = async (url: string, filename: string, mimeType: any) => {
+            const res = await fetch(url);
+            const buf = await res.arrayBuffer();
+            return new File([buf], filename, { type: mimeType });
+          };
+
+          (async () => {
+            const file = await urlToFile('data:application/pdf;base64,' + certificado, 'resolucion', 'application/pdf');
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append(
+              'nameFile',
+              'RESOLUCION_' + 'N°' + objJson.numeroradicado + "(numero de radicado temporal)"
+            );
+            formData.append('containerName', "aguahumanos");
+            formData.append('oid', objJson.idusuario);
+            await api.uploadFiles(formData);
+            //console.log(file);
+          })();
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Trámite aprobado',
+            text: 'Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano ' + objJson.primerNombre + ' ' + objJson.primerApellido + ', y a la autoridad ambiental ' + autoridadAmbiental?.nombre
+          });
+          break;
       }
     }
+
     history.push('/tramites-servicios-aguas');
     localStorage.removeItem('register');
   };

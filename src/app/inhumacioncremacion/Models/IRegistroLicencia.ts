@@ -144,4 +144,5 @@ export interface UbicacionPersona {
   idLocalidadResidencia: string;
   idAreaResidencia: string;
   idBarrioResidencia: string;
+  ciudad: string;
 }

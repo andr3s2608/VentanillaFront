@@ -1,5 +1,5 @@
 import { Modal } from 'antd';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import swal from 'sweetalert2';
 import { ApiService } from 'app/services/Apis.service';
@@ -10,6 +10,20 @@ const App = () => {
   const api = new ApiService(accountIdentifier);
   const [visible, setVisible] = React.useState(true);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+
+  const getListas = useCallback(
+    async () => {
+      isNotCovid();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  useEffect(() => {
+
+    getListas();
+  }, []);
+
+
   const festivos = [
     {
       fecha: {
@@ -144,10 +158,12 @@ const App = () => {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {
-        setVisible(false);
+        setVisible(true);
         swal.fire({
           title: 'Horario de atención',
-          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 13:00 PM; sábados, domingos y festivos en el horario de: 08:00 AM a 11:00 AM. Por favor vuelva a intentarlo en estos horarios.',
+          text: 'Las solicitudes de licencia que están ' +
+            'asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 1:00 PM' +
+            ' sábados, domingos y festivos en el horario de: 08: 00 AM a 11: 00 AM.Por favor vuelva a intentarlo en estos horarios.',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -156,16 +172,18 @@ const App = () => {
           },
           icon: 'info'
         });
-        history.push('/');
+
       }
     } else {
       if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
         setVisible(false);
       } else {
-        setVisible(false);
+        setVisible(true);
         swal.fire({
           title: 'Horario de atención',
-          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 13:00 PM; sábados, domingos y festivos en el horario de: 08:00 AM a 11:00 AM. Por favor vuelva a intentarlo en estos horarios.',
+          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de ' +
+            'lunes a viernes en el horario de: 7: 00 AM a 13: 00 PM; sábados, domingos y festivos en el' +
+            'horario de: 08:00 AM a 11:00 AM.Por favor vuelva a intentarlo en estos horarios.',
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -174,13 +192,15 @@ const App = () => {
           },
           icon: 'info'
         });
-        history.push('/');
+
       }
     }
   };
 
   return (
-    <></>
+    <>
+
+    </>
     /*
     <Modal
       title='VALIDACIÓN DE SOLICITUD'
