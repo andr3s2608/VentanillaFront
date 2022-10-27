@@ -920,6 +920,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      */
 
     const fechaActual = new Date();
+    let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreMedico1: string = "";
     let nombreMedico2: string = "";
@@ -1066,6 +1067,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
+
+
+    if (fechaActualizacionSeguimiento != null) {
+      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
     const keys = [
@@ -1079,7 +1087,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
     Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
     Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
@@ -1108,6 +1116,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      */
 
     const fechaActual = new Date();
+    let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreAutorizadorCremacion: string = "";
     let nombreMedico1: string = "";
@@ -1299,6 +1308,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
+
+
+    if (fechaActualizacionSeguimiento != null) {
+      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
     const keys = [
@@ -1316,7 +1332,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~hora_fallecido_2~:~", "~:~fecha_fallecido_2~:~"];
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
     Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
     Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
@@ -1351,6 +1367,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      */
 
     const fechaActual = new Date();
+    let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
     let nombreSolicitante: string = "";
@@ -1546,6 +1563,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
+
+
+    if (fechaActualizacionSeguimiento != null) {
+      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
 
@@ -1565,7 +1589,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
     Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
     genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
@@ -1600,6 +1624,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      */
 
     const fechaActual = new Date();
+    let fechaActualizacion = fechaActual;
     let nombreSolicitante: string = "";
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
@@ -1752,6 +1777,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
+
+
+    if (fechaActualizacionSeguimiento != null) {
+      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
     const keys = [
@@ -1765,7 +1797,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
-    const values = [formatDates(fechaActual), formatDateHours(fechaActual), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
+    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
     Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
     nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
     genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
