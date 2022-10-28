@@ -103,6 +103,14 @@ export class ApiService {
     });
   };
 
+  GetUpdateDateByIdSolicitud = (idSolicitud: string) => {
+    return get<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Seguimiento/GetUpdateDateByIdSolicitud/${idSolicitud}`,
+      id: '1'
+    });
+  };
+
   getFuncionarios = () => get<any>({ endpoint: REACT_APP_SHARED as string, url: `v2/Persona/GetUsers`, id: '0' });
 
   personaNatural = (tipoDominio: IPersonaNatural) =>
