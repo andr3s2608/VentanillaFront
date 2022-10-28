@@ -117,7 +117,7 @@ const RegistroPage: React.FC<any> = (props) => {
           await api.putUser({
             oid: accountIdentifier,
             idPersonaVentanilla: resApi,
-            NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
+            NombreCompleto: value.razonsocial
           });
 
           await api.PostRolesUser({
