@@ -306,7 +306,7 @@ export class ApiService {
 
   getLicencia = (solicitud: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/GetRequestById/${solicitud}`,
       id: '0'
     });
