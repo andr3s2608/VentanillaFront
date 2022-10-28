@@ -667,7 +667,24 @@ export const CambioLicencia = ({ props }: any) => {
 
 
             await api.putLicencia(json, '1');
+            let observacion = '';
 
+            if (cambioacremacion || cambioainhumacion) {
+              observacion = 'cambio de licencia';
+            }
+            else {
+              observacion = 'modificación datos';
+            }
+            const idUsuario = await api.getIdUsuario();
+            const seguimiento = {
+              fechaRegistro: obj.fechasol,
+              usuario: idUsuario,
+              estado: '00000000-0000-0000-0000-000000000000',
+              idSolicitud: obj.idSolicitud,
+              observacion: observacion
+
+            }
+            await api.addSeguimiento(seguimiento);
             if (cambioacremacion || cambioainhumacion) {
               //general
               const acta = form.getFieldValue('fileActaNotarialFiscal');

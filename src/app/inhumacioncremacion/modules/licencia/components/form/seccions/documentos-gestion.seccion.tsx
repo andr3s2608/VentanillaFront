@@ -190,7 +190,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     return `${result}${item.path}|`;
   }, '');
 
-  var validara = 0;
+
   const validar = () => {
     const posicioninicial = stringData.indexOf('/');
     var posicion_ = 0;
@@ -219,7 +219,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     return posicionform;
   };
 
-  var valorradio = 'sin modificar';
+
 
   //Capturar que documento se modifico(cumple,no cumple)
   const onChange = (value: any) => {

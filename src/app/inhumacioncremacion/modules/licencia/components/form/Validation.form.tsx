@@ -148,7 +148,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         const data = await api.getLicencia(objJosn?.idSolicitud);
 
 
-        if (data[0].estadoSolicitud === 'fdcea488-2ea7-4485-b706-a2b96a86ffdf' || data[0].estadoSolicitud === '31a45854-bf40-44b6-2645-08da64f23b8e') {
+        if (data[0].estadoSolicitud === 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'
+          || data[0].estadoSolicitud === '31a45854-bf40-44b6-2645-08da64f23b8e'
+          || data[0].estadoSolicitud === '40a8ac96-6513-42ae-9e44-a5c0e47ac6d8'
+          || data[0].estadoSolicitud === 'c5f3301a-4dba-463f-8459-eb32c78e7420') {
 
           setgestionada2(true);
 
@@ -500,10 +503,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           const resp = await api.AddGestion(json, aux + '');
           aux = 1;
         }
+        let observacion = '';
         if (not == 2) {
           if (objJosn.numerolicencia == null) {
             const update = await api.updatelicencia(objJosn?.idSolicitud);
+            observacion = 'generación licencia';
           }
+          observacion = 'aprobación actualización';
 
         }
         /////////////////////////Enviar Notificacion//////////////////////////
@@ -646,6 +652,36 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
           notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante, null, null);
         }
+
+        if (tipoSeguimiento.toLocaleUpperCase() === 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9') {
+          if (objJosn.numerolicencia == null) {
+            observacion = 'anulación';
+          }
+          observacion = 'anulación actualización';
+        }
+        if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
+          if (objJosn.numerolicencia == null) {
+            observacion = 'negación';
+          }
+          observacion = 'negación actualización';
+        }
+        if (tipoSeguimiento.toLocaleUpperCase() === 'FE691637-BE8A-425F-A309-E2032221553F') {
+          if (objJosn.numerolicencia == null) {
+            observacion = 'documentos inconsistentes';
+          }
+          observacion = 'documentos inconsistentes actualización';
+        }
+        const idUsuario = await api.getIdUsuario();
+        const seguimiento = {
+          fechaRegistro: objJosn.fechasol,
+          usuario: idUsuario,
+          estado: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJosn.idSolicitud,
+          observacion: observacion
+
+        }
+
+        await api.addSeguimiento(seguimiento);
         Swal.fire({
           icon: 'success',
           title: 'Solicitud gestionada',

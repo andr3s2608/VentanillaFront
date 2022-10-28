@@ -10,7 +10,7 @@ const { TabPane } = Tabs;
 const PruebaPage = () => {
   return (
     <div className='fadeInTop container-fluid'>
-      <PageHeaderComponent title='Cambiar Licencia' />
+      <PageHeaderComponent title='Actualizar Solicitud' />
 
       <Tabs>
         {<CambioLicencia props={0} />}

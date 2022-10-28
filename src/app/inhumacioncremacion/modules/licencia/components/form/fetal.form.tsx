@@ -656,6 +656,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
 
+        const idUsuario = await api.getIdUsuario();
+        const seguimiento = {
+          fechaRegistro: new Date(),
+          usuario: idUsuario,
+          estado: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: idsol,
+          observacion: 'radicación solicitud'
+
+        }
+        await api.addSeguimiento(seguimiento)
         Swal.fire({
           icon: 'success',
 

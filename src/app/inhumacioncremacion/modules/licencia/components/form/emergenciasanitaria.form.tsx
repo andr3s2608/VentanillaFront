@@ -37,7 +37,7 @@ export const EmergenciaSanitaria = ({ props }: any) => {
 
   const getListas = useCallback(async () => {
     const Mensaje = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
-    console.log(Mensaje, "/ Mensaje")
+
     setmensajeEmergencia(Mensaje.valor);
     setselecciono(true);
   }, []);
