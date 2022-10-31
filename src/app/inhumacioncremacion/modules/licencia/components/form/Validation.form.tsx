@@ -184,7 +184,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             break;
           case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
             //cremacionfetal
-            valorinterno = 'Cremación Fetal ';
+            valorinterno = 'Cremación Fetal';
 
             break;
         }
