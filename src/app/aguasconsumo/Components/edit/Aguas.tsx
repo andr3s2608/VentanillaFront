@@ -151,7 +151,7 @@ const formatObjJson = (obj: any) => {
     nit: persona.nit,
     tipoDocumentoRazon: persona.tipoDocumentoRazon,
     celularContacto: persona.celularContacto,
-    correoElectronico: persona.correoElectronico,
+    correoElectronico: persona.correoElectronico.toString().toLowerCase(),
     telefonoContacto: persona.telefonoContacto,
     razonSocial: persona.razonSocial,
 

@@ -22,7 +22,7 @@ export const Gridview = (props: IDataSource) => {
   const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
   const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
-  const [statusGestion, setStatusGestion] = useState<boolean>(false);
+  const [fechasolicitud, setfechasolicitud] = useState<any>();
   const [mostrar, setmostrar] = useState<boolean>(false);
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
@@ -79,6 +79,7 @@ export const Gridview = (props: IDataSource) => {
       const datostabla: any = localStorage.getItem('tablainhcrem');
       const datosjson = JSON.parse(datostabla)
       setdatosUsuario(datosjson);
+
 
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
@@ -206,14 +207,14 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
 
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
               else {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
 
@@ -223,7 +224,7 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
               else {
@@ -231,7 +232,7 @@ export const Gridview = (props: IDataSource) => {
                   funeraria.toString().includes(currValue.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
 
@@ -270,7 +271,7 @@ export const Gridview = (props: IDataSource) => {
 
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
               else {
@@ -278,7 +279,7 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
 
@@ -290,7 +291,7 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
               else {
@@ -299,7 +300,7 @@ export const Gridview = (props: IDataSource) => {
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
-                  datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
 
@@ -333,14 +334,14 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
 
-                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
                 );
               }
               else {
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
                 );
               }
 
@@ -350,7 +351,7 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
-                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
                 );
               }
               else {
@@ -358,7 +359,7 @@ export const Gridview = (props: IDataSource) => {
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                  datos.noIdentificacionSolicitante.toString().includes(currValue.toUpperCase())
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
                 );
               }
 
@@ -394,12 +395,12 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: FilterByNameInputdocumento(),
-          dataIndex: 'noIdentificacionSolicitante',
+          dataIndex: 'noIdentificacionFallecido',
           key: 'numeroDocumento',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { noIdentificacionSolicitante: number; }, b: { noIdentificacionSolicitante: number; }) =>
-              a.noIdentificacionSolicitante - b.noIdentificacionSolicitante,
+            compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
+              a.noIdentificacionFallecido - b.noIdentificacionFallecido,
             multiple: 2,
           }
         },
@@ -413,6 +414,24 @@ export const Gridview = (props: IDataSource) => {
               a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
             multiple: 1,
           }
+        },
+        {
+          title: 'Institución Certifica',
+          dataIndex: 'institucionCertifica',
+          key: 'InstitucionCertifica',
+
+          filters: [
+            {
+              text: 'Medicina Legal ',
+              value: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES'
+            },
+            {
+              text: 'Otros ',
+              value: 'Otros'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { institucionCertifica: string }) => record.institucionCertifica.toString().includes(value),
         },
 
         {
@@ -594,12 +613,12 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: FilterByNameInputdocumento(),
-          dataIndex: 'noIdentificacionSolicitante',
+          dataIndex: 'noIdentificacionFallecido',
           key: 'numeroDocumento',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { noIdentificacionSolicitante: number; }, b: { noIdentificacionSolicitante: number; }) =>
-              a.noIdentificacionSolicitante - b.noIdentificacionSolicitante,
+            compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
+              a.noIdentificacionFallecido - b.noIdentificacionFallecido,
             multiple: 1,
           }
         },
@@ -612,6 +631,24 @@ export const Gridview = (props: IDataSource) => {
               a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
             multiple: 1,
           }
+        },
+        {
+          title: 'Institución Certifica',
+          dataIndex: 'institucionCertifica',
+          key: 'InstitucionCertifica',
+
+          filters: [
+            {
+              text: 'Medicina Legal ',
+              value: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES'
+            },
+            {
+              text: 'Otros ',
+              value: 'Otros'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { institucionCertifica: string }) => record.institucionCertifica.toString().includes(value),
         },
         {
           title: FilterByNameInputfecha(),
@@ -656,13 +693,13 @@ export const Gridview = (props: IDataSource) => {
 
           onFilter: (value: string, record: { solicitud: string }) => record.solicitud.toString().includes(value),
           render: (row: any) => {
-            if (row.solicitud == 'Registro Usuario Externo') {
+            if (row.solicitud == 'Registro Usuario Externo' || row.solicitud == 'Actualización Documentos') {
               return (<Form.Item label='' name=''>
                 <text>{'En Tramite'}</text>
               </Form.Item>)
             }
             else {
-              if (row.solicitud == 'Cambio de Licencia') {
+              if (row.solicitud == 'Cambio de Licencia' || row.solicitud == 'Actualización Solicitud') {
                 return (<Form.Item label='' name=''>
                   <text>{'En espera de aprobacion'}</text>
                 </Form.Item>)
@@ -680,7 +717,7 @@ export const Gridview = (props: IDataSource) => {
           }
         },
         {
-          title: 'Tipo Solicituds',
+          title: 'Tipo Solicitud',
           dataIndex: 'tramite',
           key: 'tipoSolicitud',
           width: 300,
@@ -727,6 +764,7 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   <Button
                     type='primary'
+                    disabled={row.cambiolicencia < 4 ? false : true}
                     style={{ marginLeft: '5px', height: 60 }}
                     onClick={() => onClickCambiarLicencia(row)}
                   >
@@ -739,8 +777,51 @@ export const Gridview = (props: IDataSource) => {
                   </Button>
                 );
               } else {
-                return null;
+                if (row.solicitud === 'Aprobado validador de documentos' &&
+                  (row.tramite === 'Cremación Fetal' || row.tramite === 'Inhumación Fetal')) {
+                  return (
+                    <Button
+                      type='primary'
+                      disabled={row.cambiolicencia < 4 ? false : true}
+                      style={{ marginLeft: '5px', height: 60 }}
+                      onClick={() => onClickCambiarLicencia(row)}
+                    >
+                      <text>{`Cambio de licencia a`}
+                      </text>
+                      <br />
+                      <text>{`
+                    ${row.tramite === 'Cremación Fetal' ? 'Inhumación Fetal' :
+                          'Cremación Fetal'} `}</text>
+                    </Button>
+                  );
+                }
+                else {
+                  return null;
+                }
+
               }
+            }
+          }
+        },
+        {
+          title: 'Recurso de Aclaración',
+          key: 'Recurso',
+          render: (_: any, row: any, index: any) => {
+            if (row.solicitud === 'Aprobado validador de documentos') {
+              return (
+                <Button
+                  type='primary'
+                  disabled={row.modificacion < 4 ? false : true}
+                  style={{ marginLeft: '5px', height: 60 }}
+                  onClick={() => onClickModificarSolicitud(row)}
+                >
+                  <text>{`Actualizar Datos`}
+                  </text>
+                </Button>
+              );
+            } else {
+              return null;
+
             }
           }
         }
@@ -816,12 +897,36 @@ export const Gridview = (props: IDataSource) => {
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
 
-  const onClickCambiarLicencia = async ({ idSolicitud }: { [x: string]: string }) => {
-    const data = await api.getLicencia(idSolicitud);
+  const onClickCambiarLicencia = async (fila: any) => {
+    const data = await api.getLicencia(fila.idSolicitud);
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    history.push('/modificar/Cambiar-Tipo-Licencia');
+    if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+      history.push('/modificar/Cambiar-Tipo-Licencia-Individual');
+    }
+    else {
+      history.push('/modificar/Cambiar-Tipo-Licencia-Fetal');
+    }
+
+  };
+
+  const onClickModificarSolicitud = async (fila: any) => {
+    const data = await api.getLicencia(fila.idSolicitud);
+
+    localStorage.setItem('register', JSON.stringify(data));
+    store.dispatch(SetResetViewLicence());
+
+
+    if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+
+      history.push('/modificar/Actualizar-Datos-Individual');
+    }
+    else {
+
+      history.push('/modificar/Actualizar-Datos-Fetal');
+    }
+
   };
 
 
@@ -869,6 +974,7 @@ export const Gridview = (props: IDataSource) => {
 
     const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
 
+    setfechasolicitud(solicitud.fechaSolicitud);
     setObservacion(resultResponse[0].observaciones);
     setTipoSolicitud(solicitud.tramite);
     setListadoDocumento(resultResponse);
@@ -935,7 +1041,19 @@ export const Gridview = (props: IDataSource) => {
       if (supportDocumentsEdit.length) {
         await api.uploadFiles(formData);
         await api.UpdateSupportDocuments(supportDocumentsEdit);
-        await api.updateStateRequest(listDocument[0].idSolicitud, 'FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+        await api.updateStateRequest(listDocument[0].idSolicitud, 'C5F3301A-4DBA-463F-8459-EB32C78E7420');
+
+        const idUsuario = await api.getIdUsuario();
+
+        const seguimiento = {
+          fechaRegistro: fechasolicitud,
+          usuario: idUsuario,
+          estado: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: listDocument[0].idSolicitud,
+          observacion: 'subsanacion documentos inconsistentes'
+
+        }
+        await api.addSeguimiento(seguimiento);
         await infoMessage({ title: "Actualización de Documentos Inconsistentes", content: "Los documentos fueron actualizados correctamente" });
         window.location.reload();
       } else {

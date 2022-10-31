@@ -101,7 +101,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
   return (
     true && (
       <>
-        <Divider orientation='right'>DATOS DEL SOLICITANTE Y/O FUNERARIA</Divider>
+        <Divider orientation='right'>DATOS DEL {validPerson() && ('FUNERARIA Y/O SOLICITANTE')} SOLICITANTE Y/O FUNERARIA</Divider>
         {/* TODO: [2021-06-12] Determinar si es persona natural o jurídica. */}
         {false ? (
           <>
@@ -164,7 +164,7 @@ export const SolicitudInfoFormSeccion: React.FC<ISolicitudInfoProps<any>> = (pro
             <Form.Item label={validPerson() ? 'Nit' : 'CC'} name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.numeroIdentificacion}</span>
             </Form.Item>
-            <Form.Item label='Nombre del Solicitante y/o del Representante Legal' name='solicitudIDTramitador'>
+            <Form.Item label={validPerson() ? 'Nombre del Representante Legal' : 'Nombre del Solicitante'} name='solicitudIDTramitador'>
               <span className='ant-form-text'>{user?.fullName.toUpperCase()}</span>
             </Form.Item>
           </>

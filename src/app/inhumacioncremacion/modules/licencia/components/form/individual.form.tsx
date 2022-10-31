@@ -209,21 +209,23 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
     setStatus(undefined);
-    let causa = values.causaMuerte;
-    let banderaCausa = true;
-    let observacionCausaMuerte = causaMuerte;
 
-    if (causa == 0) {
-      banderaCausa = false;
-      observacionCausaMuerte = '';
-    }
 
     ////////////////Guardar Informacion////////////////////
 
     let codigotramite = { codigotramite: (tramite === 'a289c362-e576-4962-962b-1c208afa0273' ? '13' : '14') };
 
     const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
+    const Mensaje = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
 
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
+    let observacionCausaMuerte = Mensaje.valor;
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = '';
+    }
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';
@@ -464,7 +466,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           idCiudadResidencia: values.ciudad,
           idLocalidadResidencia: values.localidad,
           idAreaResidencia: values.area,
-          idBarrioResidencia: values.barrio
+          idBarrioResidencia: values.barrio,
+          ciudad: values.barrio
         },
         datosCementerio: {
           enBogota: values.cementerioLugar === 'Dentro de Bogotá',
@@ -491,13 +494,13 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         },
 
         resumenSolicitud: {
-          correoCementerio: values.emailcementerio,
-          correoFuneraria: values.emailfuneraria,
+          correoCementerio: values.emailcementerio.toString().toLowerCase(),
+          correoFuneraria: values.emailfuneraria.toString().toLowerCase(),
           tipoDocumentoSolicitante: values.fiscalia,
           numeroDocumentoSolicitante: values.ndoc,
           nombreSolicitante: values.namesolicitudadd,
           apellidoSolicitante: values.lastnamesolicitudadd,
-          correoSolicitante: values.emailsolicitudadd,
+          correoSolicitante: values.emailsolicitudadd.toString().toLowerCase(),
           correoMedico: '',
           cumpleCausa: banderaCausa,
           observacionCausa: observacionCausaMuerte
@@ -534,7 +537,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
       const formData = new FormData();
 
-      const resp = await api.putLicencia(json.solicitud);
+      const resp = await api.putLicencia(json.solicitud, '0');
       localStorage.removeItem('register');
 
       const [files, names] = generateListFiles(values);
@@ -605,6 +608,17 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
 
+
+        const idUsuario = await api.getIdUsuario();
+        const seguimiento = {
+          fechaRegistro: new Date(),
+          usuario: idUsuario,
+          estado: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: idsol,
+          observacion: 'radicación solicitud'
+
+        }
+        await api.addSeguimiento(seguimiento);
         Swal.fire({
           icon: 'success',
 

@@ -217,23 +217,24 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const getDataSolicitante = (longitud: number) => { };
 
   const onSubmit = async (values: any) => {
-    let causa = values.causaMuerte;
-    let banderaCausa = true;
-    let observacionCausaMuerte = causaMuerte;
 
-    if (causa == 0) {
-      banderaCausa = false;
-      observacionCausaMuerte = ' ';
-    }
-
-    const certificado = values.certificado;
 
     ////////////Guarda Solicitud///////////
 
     let codigotramite = { codigotramite: (tramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ? '13' : '14') };
 
     const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
+    const Mensaje = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
 
+    let causa = values.causaMuerte;
+    let banderaCausa = true;
+    //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
+    let observacionCausaMuerte = Mensaje.valor;
+
+    if (causa == 0) {
+      banderaCausa = false;
+      observacionCausaMuerte = ' ';
+    }
 
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
@@ -492,7 +493,8 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           idCiudadResidencia: munres,
           idLocalidadResidencia: values.localidad,
           idAreaResidencia: values.area,
-          idBarrioResidencia: values.barrio
+          idBarrioResidencia: values.barrio,
+          ciudad: values.ciudadfuera
         },
         datosCementerio: {
           idDatosCementerio: obj?.idDatosCementerio,
@@ -520,13 +522,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         },
 
         resumenSolicitud: {
-          correoCementerio: values.emailcementerio,
-          correoFuneraria: values.emailfuneraria,
+          correoCementerio: values.emailcementerio.toString().toLowerCase(),
+          correoFuneraria: values.emailfuneraria.toString().toLowerCase(),
           tipoDocumentoSolicitante: values.fiscalia,
           numeroDocumentoSolicitante: values.ndoc,
           nombreSolicitante: values.namesolicitudadd,
           apellidoSolicitante: values.lastnamesolicitudadd,
-          correoSolicitante: values.emailsolicitudadd,
+          correoSolicitante: values.emailsolicitudadd.toString().toLowerCase(),
           correoMedico: '',
           cumpleCausa: banderaCausa,
           observacionCausa: observacionCausaMuerte
@@ -557,7 +559,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     const supportDocuments: any[] = [];
 
     if (isEdit) {
-      const resp = await api.putLicencia(json.solicitud);
+      const resp = await api.putLicencia(json.solicitud, '0');
 
       const [files, names] = generateListFiles(values, container);
       const supportDocumentsEdit: any[] = [];
@@ -654,6 +656,16 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         await api.uploadFiles(formData);
         await api.AddSupportDocuments(supportDocuments);
 
+        const idUsuario = await api.getIdUsuario();
+        const seguimiento = {
+          fechaRegistro: new Date(),
+          usuario: idUsuario,
+          estado: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: idsol,
+          observacion: 'radicación solicitud'
+
+        }
+        await api.addSeguimiento(seguimiento)
         Swal.fire({
           icon: 'success',
 
@@ -1237,57 +1249,6 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
           <div className={`${current != 1 && 'd-none'} fadeInRight ${current === 1 && 'd-block'}`}>
             <Divider orientation='right'> INFORMACIÓN DE LA MADRE</Divider>
-            <Form.Item
-              label='Tipo Identificación'
-              name='IDType'
-              rules={[{ required: true }]}
-              initialValue={obj?.IDType ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-            >
-              <SelectComponent
-                options={l_tipos_documento}
-                optionPropkey='id'
-                onChange={cambiodocumento}
-                optionPropLabel='descripcion'
-              />
-            </Form.Item>
-            <Form.Item
-              label='Número de Identificación'
-              initialValue={obj?.IDNumber}
-              name='IDNumber'
-              rules={[{ required: !sininformacion }]}
-            >
-              <Input
-                allowClear
-                type='text'
-                placeholder='Número Identificación'
-                autoComplete='off'
-                pattern={tipocampo}
-                maxLength={longitudmaxima}
-                onKeyPress={(event) => {
-                  if (!tipocampovalidacion.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                onPaste={(event) => {
-                  event.preventDefault();
-                }}
-                onInvalid={() => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Datos inválidos',
-                    text:
-                      'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
-                      tipodocumento +
-                      ' solo se admiten valores ' +
-                      campo +
-                      ' de longitud entre ' +
-                      longitudminima +
-                      ' y ' +
-                      longitudmaxima
-                  });
-                }}
-              />
-            </Form.Item>
 
             <Form.Item
               label='Primer Nombre'
@@ -1367,6 +1328,58 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
                 }}
               />
             </Form.Item>
+            <Form.Item
+              label='Tipo Identificación'
+              name='IDType'
+              rules={[{ required: true }]}
+              initialValue={obj?.IDType ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+            >
+              <SelectComponent
+                options={l_tipos_documento}
+                optionPropkey='id'
+                onChange={cambiodocumento}
+                optionPropLabel='descripcion'
+              />
+            </Form.Item>
+            <Form.Item
+              label='Número de Identificación'
+              initialValue={obj?.IDNumber}
+              name='IDNumber'
+              rules={[{ required: !sininformacion }]}
+            >
+              <Input
+                allowClear
+                type='text'
+                placeholder='Número Identificación'
+                autoComplete='off'
+                pattern={tipocampo}
+                maxLength={longitudmaxima}
+                onKeyPress={(event) => {
+                  if (!tipocampovalidacion.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
+                  event.preventDefault();
+                }}
+                onInvalid={() => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Datos inválidos',
+                    text:
+                      'Sección: INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
+                      tipodocumento +
+                      ' solo se admiten valores ' +
+                      campo +
+                      ' de longitud entre ' +
+                      longitudminima +
+                      ' y ' +
+                      longitudmaxima
+                  });
+                }}
+              />
+            </Form.Item>
+
 
             <Form.Item
               label='Nacionalidad de la Madre'
@@ -1448,7 +1461,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
               <Form.Item
                 label='Ciudad de Residencia'
                 name='ciudadfuera'
-                initialValue={obj?.idCiudadResidencia}
+                initialValue={obj?.ciudad}
                 rules={[{ required: true }]}
               >
                 <Input

@@ -50,7 +50,9 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     '19A11490-261C-4114-9152-23C2B991CB36',
     'D2D3ABA7-3B92-446A-AA8C-80A75DE246A7',
     '79320AF6-943C-43BF-87D1-847B625F6203',
-    'ABE33C1D-9370-4189-9E81-597E5B643481'
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+    '6E57212B-2266-4854-9C13-F805BB4BBCF8'
   ];
   const arraycremind: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
@@ -71,7 +73,8 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     'D6524742-E32D-4548-AB21-7A9CBB367926',
     'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
     '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
-    'ABE33C1D-9370-4189-9E81-597E5B643481'
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '242A2E58-46B5-4C45-97BA-881A383F2CBB'
   ];
 
   let arrayarchivos: any[] = ['1', '1', '1', '1', '1', '1', '1', '1'];
@@ -187,7 +190,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     return `${result}${item.path}|`;
   }, '');
 
-  var validara = 0;
+
   const validar = () => {
     const posicioninicial = stringData.indexOf('/');
     var posicion_ = 0;
@@ -216,7 +219,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     return posicionform;
   };
 
-  var valorradio = 'sin modificar';
+
 
   //Capturar que documento se modifico(cumple,no cumple)
   const onChange = (value: any) => {

@@ -19,6 +19,8 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   const { obj, prop } = props;
   const [mostrar, setmostrar] = useState<boolean>(obj === undefined ? true : false);
   const [isHora, setIsHora] = useState<boolean>(true);
+  const [isMensaje, setisMensaje] = useState<boolean>(false);
+  const [Mensaje, setMensaje] = useState<string>('');
   const [time, settime] = useState<any>(undefined);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
 
@@ -37,8 +39,8 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
       setIsHora(false);
     }
 
-
-
+    const Mensaje = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
+    setMensaje(Mensaje.valor);
 
 
     setmostrar(true);
@@ -57,7 +59,10 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
     setIsHora(!check);
   };
 
-  const onChange = (value: any) => { };
+  const onChange = (value: any) => {
+    setisMensaje(!isMensaje);
+
+  };
 
   useEffect(() => {
 
@@ -101,7 +106,6 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
             placeholder='Número de Certificado'
             autoComplete='off'
             maxLength={14}
-            onChange={(e) => onChange(e.target.value)}
             onKeyPress={(event) => {
               if (!/[0-9]/.test(event.key)) {
                 event.preventDefault();
@@ -115,12 +119,19 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
 
         <Divider orientation='center'>Información General</Divider>
 
-        <Form.Item label='Emergencia Sanitaria' name='causaMuerte' initialValue={0} rules={[{ required: true }]}>
-          <Radio.Group>
+        <Form.Item label='Emergencia Sanitaria' name='causaMuerte'
+          initialValue={0} rules={[{ required: true }]}>
+          <Radio.Group onChange={(e) => onChange(e.target.value)} >
             <Radio value={1}>SI</Radio>
             <Radio value={0}>NO</Radio>
           </Radio.Group>
+          {isMensaje && (
+            <>  <label style={{ fontSize: 15, float: 'right', marginRight: 40 }}>{Mensaje} </label>
+            </>
+
+          )}
         </Form.Item>
+
 
         <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
           <DatepickerComponent picker='date' onChange={compararfecha} dateDisabledType='before' dateFormatType='default' value={date} style={{ width: '90%' }} />

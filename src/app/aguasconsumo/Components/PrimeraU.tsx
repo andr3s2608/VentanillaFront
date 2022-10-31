@@ -151,7 +151,7 @@ export const PrimeraU = () => {
               numUsuariosRurales: informacion[index].num2 ?? '',
               poblacionUrbanos: informacion[index].pob1 ?? '',
               poblacionRurales: informacion[index].pob2 ?? '',
-              caudalDiseño: informacion[index].caudaldesign ?? '',
+              caudalDiseno: informacion[index].caudaldesign ?? '',
               caudalTratado: informacion[index].caudaltratado ?? ''
             });
           }
@@ -311,6 +311,7 @@ export const PrimeraU = () => {
 
             const bdrejec = await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
           }
+
           const valor = await api.AddSolicitudConsecion(json);
 
           Swal.fire({

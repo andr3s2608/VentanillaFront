@@ -162,6 +162,7 @@ const InhumacionFetalPage = () => {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         bandera = false;
       } else {
+
         bandera = true;
       }
     } else {

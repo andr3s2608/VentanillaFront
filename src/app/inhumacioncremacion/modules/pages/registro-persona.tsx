@@ -213,7 +213,7 @@ const RegistroPage: React.FC<any> = (props) => {
             numeroIdentificacion: Number(value.instNumIdent),
             telefonoFijo: value.phone ?? '',
             telefonoCelular: value.phonecell,
-            email: value.email,
+            email: value.email.toString().toLowerCase(),
             nacionalidad: value.country, //listado de paises
             departamento: value.stateLive, //listado de departamentos
             ciudadNacimientoOtro: !isColombia ? mun : '',
