@@ -603,7 +603,7 @@ export const Gridview = (props: IDataSource) => {
           sorter: {
             compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
               a.noIdentificacionFallecido - b.noIdentificacionFallecido,
-            multiple: 1,
+            multiple: 2,
           }
         },
         {
