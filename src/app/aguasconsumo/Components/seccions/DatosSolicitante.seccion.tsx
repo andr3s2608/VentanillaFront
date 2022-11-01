@@ -326,9 +326,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                               event.preventDefault();
                             }
                           }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
+
                           onInvalid={() => {
                             Swal.fire({
                               icon: 'error',
@@ -369,9 +367,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                               event.preventDefault();
                             }
                           }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
+
                         />
                       </Form.Item>
                     </div>
@@ -421,9 +417,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                     onInvalid={() => {
                       Swal.fire({
                         icon: 'error',
@@ -460,9 +454,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -482,9 +474,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -507,9 +497,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -530,9 +518,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -555,9 +541,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -578,9 +562,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -604,9 +586,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -696,9 +676,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                     onInvalid={() => {
                       Swal.fire({
                         icon: 'error',
@@ -735,9 +713,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -757,9 +733,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -782,9 +756,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -805,9 +777,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -830,9 +800,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -853,9 +821,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -879,9 +845,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
