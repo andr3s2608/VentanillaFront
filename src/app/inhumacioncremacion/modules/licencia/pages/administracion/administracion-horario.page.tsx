@@ -12,10 +12,10 @@ const { TabPane } = Tabs;
 const PruebaPage = () => {
   return (
     <div className='fadeInTop container-fluid'>
-      <PageHeaderComponent title='Gestion de Constantes' />
+      <PageHeaderComponent title='Gestión de Variables del Sistema' />
 
       <Tabs>
-        <TabPane tab='Gestion de Constantes de Base de Datos' key='1'>
+        <TabPane tab='Gestión de Variables del Sistema' key='1'>
           <div id='accordion' className='mt-3'>
             <div className='card'>
               <div className='card-header' id='heading-2'>
