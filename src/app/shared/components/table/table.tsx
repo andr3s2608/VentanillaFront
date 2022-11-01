@@ -76,7 +76,7 @@ export const Gridview = (props: IDataSource) => {
 
       const datostabla: any = localStorage.getItem('tablainhcrem');
       const datosjson = JSON.parse(datostabla)
-      setdatosUsuario(datosjson);
+
 
 
       setroles(JSON.parse(rolesstorage));
@@ -89,6 +89,8 @@ export const Gridview = (props: IDataSource) => {
 
   useEffect(() => {
     getListas();
+    setdatosUsuario(data);
+
   }, []);
 
   const [Tipo] = roles;

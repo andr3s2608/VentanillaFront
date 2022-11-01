@@ -19,6 +19,7 @@ const { TabPane } = Tabs;
 
 const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
+  const [espera, setespera] = useState<any>();
   const [allData, setAllData] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
 
@@ -61,6 +62,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       const resp: any = await api.GetEstadoSolicitudNuevoCambio();
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
+      setespera(resp);
       setAllData(resp);
 
       setVisibleGrid('contents');
@@ -69,6 +71,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
 
       setGrid(resp);
+      setespera(resp);
       setAllData(resp);
       setVisibleGrid('contents');
     }
@@ -262,7 +265,8 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
               <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
                 <Tabs style={{ border: 'none' }}>
                   <TabPane tab='' key='1'>
-                    <Gridview data={grid} />
+                    {espera != undefined && (<Gridview data={grid} />)}
+
                   </TabPane>
                 </Tabs>
               </div>
