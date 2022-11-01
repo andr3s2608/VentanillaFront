@@ -824,6 +824,22 @@ export const Gridview = (props: IDataSource) => {
 
             }
           }
+        },
+        {
+          title: 'Visualizar PDF',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.solicitud === 'Aprobado validador de documentos') {
+              return (<Form.Item label='' name=''>
+                <FilePdfOutlined
+                  onClick={() => onClickVisualizarPDF(row)}
+                  style={{ fontSize: '30px' }}
+                />
+              </Form.Item>)
+            }
+          }
         }
       ];
     }
