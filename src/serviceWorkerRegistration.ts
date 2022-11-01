@@ -1,6 +1,8 @@
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
+import { useHistory } from 'react-router';
+
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
 // will only see deployed updates on subsequent visits to a page, after all the
@@ -18,6 +20,7 @@ const isLocalhost = Boolean(
     window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
 );
 
+const history = useHistory();
 type Config = {
   onSuccess?: (registration: ServiceWorkerRegistration) => void;
   onUpdate?: (registration: ServiceWorkerRegistration) => void;
@@ -73,6 +76,7 @@ function registerValidSW(swUrl: string, config?: Config) {
                 'New content is available and will be used when all tabs for this page are closed. See https://cra.link/PWA.'
               );
 
+              history.push('/');
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
@@ -82,7 +86,7 @@ function registerValidSW(swUrl: string, config?: Config) {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.');
-
+              history.push('/');
               // Execute callback
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
