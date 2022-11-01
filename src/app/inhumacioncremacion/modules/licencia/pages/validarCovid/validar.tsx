@@ -237,6 +237,8 @@ const App = () => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        }).then((result) => {
+          history.push('/');
         });
 
       }
@@ -255,6 +257,8 @@ const App = () => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        }).then((result) => {
+          history.push('/');
         });
 
       }
