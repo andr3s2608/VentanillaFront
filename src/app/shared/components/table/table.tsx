@@ -641,7 +641,7 @@ export const Gridview = (props: IDataSource) => {
           key: 'fechaSolicitud'
         },
         {
-          title: 'Estado Tramite',
+          title: 'Prueba',
           dataIndex: '',
           key: 'estado',
           width: 230,
