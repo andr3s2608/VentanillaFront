@@ -632,7 +632,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
               case 'Cremación Individual':
                 contenedor = 'cremacionindividual';
                 break;
-              case 'Cremación Fetal ':
+              case 'Cremación Fetal':
                 contenedor = 'cremacionfetal';
                 break;
             }
@@ -1870,7 +1870,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         break;
       case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
         //Inhumacion fetal
-        htmlInhumacionFetal(false);
+        await htmlInhumacionFetal(false);
         break;
       case 'e69bda86-2572-45db-90dc-b40be14fe020':
         //Cremacion individual

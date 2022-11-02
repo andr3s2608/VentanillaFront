@@ -92,6 +92,7 @@ export const Gridview = (props: IDataSource) => {
   useEffect(() => {
     getListas();
     setdatosUsuario(data);
+    console.log(data);
 
   }, []);
 
