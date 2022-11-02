@@ -1,4 +1,4 @@
-import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -28,6 +28,8 @@ export const Gridview = (props: IDataSource) => {
   const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
   const Paginas: number = 10;
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
 
 
   const [datosUsuario, setdatosUsuario] = useState<any>([]);
@@ -591,6 +593,22 @@ export const Gridview = (props: IDataSource) => {
               </Form.Item>)
             }
           }
+        },
+        {
+          title: 'Visualizar PDF',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.estadoString === 'Aprobado validador de documentos') {
+              return (<Form.Item label='' name=''>
+                <FilePdfOutlined
+                  onClick={() => onClickVisualizarPDF(row)}
+                  style={{ fontSize: '30px' }}
+                />
+              </Form.Item>)
+            }
+          }
         }
       ];
     } else {
@@ -819,12 +837,86 @@ export const Gridview = (props: IDataSource) => {
 
             }
           }
+        },
+        {
+          title: 'Visualizar PDF',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.solicitud === 'Aprobado validador de documentos') {
+              return (<Form.Item label='' name=''>
+                <FilePdfOutlined
+                  onClick={() => onClickVisualizarPDF(row)}
+                  style={{ fontSize: '30px' }}
+                />
+              </Form.Item>)
+            }
+          }
         }
       ];
     }
   }
 
   let tramite = 'En tramite';
+
+  async function onClickVisualizarPDF(row: any): Promise<void> {
+
+    const solicitud = await api.getLicencia(row.idSolicitud);
+    const resumenSolicitud = await api.GetResumenSolicitud(row.idSolicitud);
+
+    const idContenedor = solicitud[0]['idTramite'];
+
+    let contenedor: string = '';
+
+    let valor: string = '';
+
+    switch (valor) {
+      case 'Inhumación Individual':
+        contenedor = 'inhumacionindividual';
+        break;
+      case 'Inhumación Fetal':
+        contenedor = 'inhumacionfetal';
+        break;
+      case 'Cremación Individual':
+        contenedor = 'cremacionindividual';
+        break;
+      case 'Cremación Fetal ':
+        contenedor = 'cremacionfetal';
+        break;
+    }
+
+    switch (idContenedor) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        contenedor = 'inhumacionindividual';
+        valor = 'Inhumación Individual';
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        contenedor = 'inhumacionfetal';
+        valor = 'Inhumación Fetal';
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        contenedor = 'cremacionindividual';
+        valor = 'Cremación Individual';
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        contenedor = 'cremacionfetal';
+        valor = 'Cremación Fetal';
+        break;
+    }
+
+    const oid = solicitud[0]['idUsuarioSeguridad'];
+
+    const nameBlob = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
+
+    const path = contenedor + "/" + oid + "/" + nameBlob;
+
+    const urlPDF = await api.GetUrlPdf(path);
+
+    setUrlPdfLicence(urlPDF);
+
+    setIsModalVisiblePdf(true);
+  }
 
   const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
@@ -1086,6 +1178,21 @@ export const Gridview = (props: IDataSource) => {
           <div className='row'>
             <div className='col-lg-12 col-sm-12 col-md-12'>
 
+              <Modal
+                title={
+                  <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                    Visualización de la licencia
+                  </p>
+                }
+                visible={isModalVisiblePdf}
+                onCancel={() => setIsModalVisiblePdf(false)}
+                width={1000}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+              </Modal>
+
               <Table
                 id='tableGen'
                 dataSource={datosUsuario}
@@ -1163,3 +1270,4 @@ interface DataComponentUpdate {
 interface IDataSource {
   data: Array<any>;
 }
+
