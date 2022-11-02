@@ -92,7 +92,7 @@ export const Gridview = (props: IDataSource) => {
   useEffect(() => {
     getListas();
     setdatosUsuario(data);
-    console.log(data);
+
 
   }, []);
 
@@ -113,8 +113,8 @@ export const Gridview = (props: IDataSource) => {
           dateFormatType='default'
           className='form-control'
           onChange={(e) => {
-            console.log(e, '/ fecha');
-            console.log(data)
+
+
             setfechafiltro(e);
             if (e != null) {
               let fecha: any = '';
@@ -130,7 +130,7 @@ export const Gridview = (props: IDataSource) => {
               if (idtramite === '') {
                 const filteredDataUsuario: any = data.filter((datos: any) => {
                   const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
-                  console.log(datos.iD_Control_Tramite)
+
                   return (
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&

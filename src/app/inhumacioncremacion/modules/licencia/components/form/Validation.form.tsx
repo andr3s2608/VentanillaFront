@@ -56,6 +56,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const [isModalValidarCertificado, setIsModalValidarCertificado] = useState<boolean>(false);
   const [isvalidcertificado, setisvalidcertificado] = useState<boolean>(false);
+  const [guardehtml, setiguardehtml] = useState<any>();
   const [isDisabledElement, setIsDisabledElement] = useState<boolean>(false);
 
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
@@ -203,6 +204,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     store.dispatch(SetResetViewLicence());
   }, []);
 
+  if (guardehtml != undefined) {
+
+  }
+
+
   //#endregion
 
   const arrayinhind: any = [
@@ -318,6 +324,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         return array;
     }
   };
+
+
+
+
+
 
   function getDescripcionTramite(idTramite: string): string {
     let idInhumacionIndividual = 'A289C362-E576-4962-962B-1C208AFA0273';
@@ -544,7 +555,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
               break;
             case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
               //Inhumacion fetal
-              htmlInhumacionFetal(true);
+              await htmlInhumacionFetal(true);
               break;
             case 'e69bda86-2572-45db-90dc-b40be14fe020':
               //Cremacion individual
@@ -558,7 +569,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
               break;
           }
 
-          const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+          const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
           const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
 
           const licencia: any = await api.ObtenerPDFShared({
@@ -1853,7 +1864,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
       html: HTML
     });
-
+    return result;
   }
 
   const onPrevPDF = async () => {
@@ -1862,30 +1873,31 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const tipotramite: string = objJosn.idTramite;
 
     //-----------------------------------------
-
+    let respuesta = undefined;
     switch (tipotramite) {
       case 'a289c362-e576-4962-962b-1c208afa0273':
         //Inhumación Individual;
-        await htmlInhumacionIndividual(false);
+        respuesta = await htmlInhumacionIndividual(false);
         break;
       case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
         //Inhumacion fetal
-        await htmlInhumacionFetal(false);
+        console.log('inh fetal');
+        respuesta = await htmlInhumacionFetal(false);
+
         break;
       case 'e69bda86-2572-45db-90dc-b40be14fe020':
         //Cremacion individual
-        await htmlCremacionIndividual(false);
+        respuesta = await htmlCremacionIndividual(false);
         break;
       case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
         //Cremacionfetal
-        await htmlCremacionFetal(false);
-        break;
-      default:
+        respuesta = await htmlCremacionFetal(false);
         break;
     }
 
     const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
     const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+
 
     const PDF: any = await api.ObtenerPDFShared({
       html: htmlFinal
