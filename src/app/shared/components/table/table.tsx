@@ -110,7 +110,8 @@ export const Gridview = (props: IDataSource) => {
           dateFormatType='default'
           className='form-control'
           onChange={(e) => {
-
+            console.log(e, '/ fecha');
+            console.log(data)
             setfechafiltro(e);
             if (e != null) {
               let fecha: any = '';
@@ -126,11 +127,12 @@ export const Gridview = (props: IDataSource) => {
               if (idtramite === '') {
                 const filteredDataUsuario: any = data.filter((datos: any) => {
                   const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  console.log(datos.iD_Control_Tramite)
                   return (
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
 
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -142,7 +144,7 @@ export const Gridview = (props: IDataSource) => {
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                     (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -157,7 +159,7 @@ export const Gridview = (props: IDataSource) => {
                   return (
 
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -169,7 +171,7 @@ export const Gridview = (props: IDataSource) => {
 
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                     (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -460,7 +462,7 @@ export const Gridview = (props: IDataSource) => {
               value: 'Aprobado validador de documentos'
             },
             {
-              text: 'Documentos Inconsistentes',
+              text: 'Pendiente',
               value: 'Documentos Inconsistentes'
             },
             {
@@ -476,6 +478,14 @@ export const Gridview = (props: IDataSource) => {
             {
               text: 'Cambio de Licencia',
               value: 'Cambio de Licencia'
+            },
+            {
+              text: 'Actualización de Documentos',
+              value: 'Actualización Documentos'
+            },
+            {
+              text: 'Actualización de Datos',
+              value: 'Actualización Solicitud'
             }
           ],
           filterSearch: true,
@@ -566,7 +576,8 @@ export const Gridview = (props: IDataSource) => {
           width: 200,
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
-            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo') {
+            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo'
+              || row.estadoString === 'Actualización Documentos' || row.estadoString === 'Actualización Solicitud') {
               return (<Form.Item label='' name=''>
                 <Button
                   type='primary'
@@ -592,13 +603,13 @@ export const Gridview = (props: IDataSource) => {
           sorter: {
             compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
               a.consecutivo > b.consecutivo ? 1 : -1,
-            multiple: 3,
+            multiple: 1,
           }
         },
         {
           title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionFallecido',
-          key: 'numeroDocumento',
+          key: 'noIdentificacionFallecido',
           defaultSortOrder: 'descend',
           sorter: {
             compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
@@ -609,11 +620,11 @@ export const Gridview = (props: IDataSource) => {
         {
           title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto',
+          key: 'razonSocialSolicitante',
           sorter: {
             compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
               a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
-            multiple: 1,
+            multiple: 3,
           }
         },
         {
