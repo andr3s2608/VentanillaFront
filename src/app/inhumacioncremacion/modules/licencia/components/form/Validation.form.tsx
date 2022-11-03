@@ -514,6 +514,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           const resp = await api.AddGestion(json, aux + '');
           aux = 1;
         }
+        if (documentos.length == 0) {
+          const resp = await api.updateStateRequest(objJosn?.idSolicitud, values.validFunctionaltype);
+        }
         let observacion = '';
         if (not == 2) {
           if (objJosn.numerolicencia == null) {
