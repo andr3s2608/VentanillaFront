@@ -670,9 +670,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
         if (tipoSeguimiento.toLocaleUpperCase() === 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9') {
           if (objJosn.numerolicencia == null) {
-            observacion = 'anulación';
+            observacion = 'anulación' + (documentos.length === 0 ? '/' + values.observations : '');
           }
-          observacion = 'anulación actualización';
+          observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');;
         }
         if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
           if (objJosn.numerolicencia == null) {
