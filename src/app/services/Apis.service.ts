@@ -251,7 +251,7 @@ export class ApiService {
   getallbyEstado = (solicitud: string) =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
-  getallReports = () => get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequestToGestion`, id: '0' });
+  getallReports = () => get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetAllRequestToGestion`, id: '0' });
 
   getHistorialSolicitudesPDF = (payload: any[]) =>
     post({
