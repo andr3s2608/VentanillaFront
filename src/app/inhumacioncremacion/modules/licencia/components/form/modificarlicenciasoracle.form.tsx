@@ -162,8 +162,8 @@ export const ModificarLicencia = ({ props }: any) => {
       case 'CN' || 'Certificado de Nacido Vivo':
         tipoid = '0d69523b-4676-4e3d-8a3d-c6800a3acf3e'
         setLongitudminima(6);
-        setLongitudmaxima(9);
-        setTipocampo('[0-9]{6,9}');
+        setLongitudmaxima(16);
+        setTipocampo('[0-9]{6,16}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Certificado de nacido vivo ');
@@ -640,8 +640,8 @@ export const ModificarLicencia = ({ props }: any) => {
               } else {
                 if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
                   setLongitudminima(6);
-                  setLongitudmaxima(9);
-                  setTipocampo('[0-9]{6,9}');
+                  setLongitudmaxima(16);
+                  setTipocampo('[0-9]{6,16}');
                   setTipocampovalidacion(/[0-9]/);
                   setCampo('Numéricos');
                   setTipodocumento('Certificado de nacido vivo ');

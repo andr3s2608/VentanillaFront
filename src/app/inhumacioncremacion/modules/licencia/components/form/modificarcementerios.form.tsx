@@ -222,9 +222,7 @@ export const ModificarCementerio = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>

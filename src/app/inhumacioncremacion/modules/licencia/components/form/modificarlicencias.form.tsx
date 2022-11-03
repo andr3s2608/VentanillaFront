@@ -321,9 +321,6 @@ export const ModificarLicencia = ({ props }: any) => {
                       }
 
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
                   />
                 </Form.Item>
               </div>

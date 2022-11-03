@@ -281,9 +281,7 @@ export const ModificarFuneraria = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>

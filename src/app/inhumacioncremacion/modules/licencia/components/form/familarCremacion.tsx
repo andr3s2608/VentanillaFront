@@ -132,8 +132,8 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
               } else {
                 if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
                   setLongitudminima(6);
-                  setLongitudmaxima(9);
-                  setTipocampo('[0-9]{6,9}');
+                  setLongitudmaxima(16);
+                  setTipocampo('[0-9]{6,16}');
                   setTipocampovalidacion(/[0-9]/);
                   setCampo('Numéricos');
                   setTipodocumento('Certificado de nacido vivo ');
