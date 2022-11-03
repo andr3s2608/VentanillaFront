@@ -137,9 +137,33 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
         ]
       };
 
+      console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 141 ~ downloadFileExcel ~ datatable", datatable);
+      //downloadPDF(datatable);
+      //console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 141 ~ downloadFileExcel ~ prueba", prueba);
       var toExcel = new ExportJsonExcel(opciones);
       toExcel.saveExcel()
     }
+  }
+
+  function downloadPDF(datos: any[]) {
+
+    fetch('https://localhost:5001/api/GeneratePDF/GeneratePDFWord',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      }
+    ).then(function (response) {
+      return response.blob();
+    }).then(function (myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      let link = document.createElement('a');
+      link.href = objectURL;
+      link.download = 'Historial Solicitudes.docx';
+      link.click();
+    });
   }
   function downloadTxt() {
     var element = document.createElement('a');

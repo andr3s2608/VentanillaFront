@@ -135,6 +135,11 @@ export const TablaReportes = (props: IDataSource) => {
         key: 'idTramite'
       },
       {
+        title: 'Num. Licencia',
+        dataIndex: 'ResumenSolicitud.NumeroLicencia',
+        key: 'resumenSolicitud.numeroLicencia'
+      },
+      {
         title: 'Documento del Fallecido',
         dataIndex: 'noIdentificacionSolicitante',
         key: 'numeroDocumento'
