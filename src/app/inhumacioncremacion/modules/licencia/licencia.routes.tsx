@@ -20,8 +20,16 @@ const LicenciaPruebaPage = lazy(() => import('./pages/gestion-tramite/gestion-in
 const AdministrationFirmasPage = lazy(() => import('./pages/administracion/administracion-firmas.page'));
 const AdministrationHorarioPage = lazy(() => import('./pages/administracion/administracion-horario.page'));
 const ValidarDocumentPage = lazy(() => import('./pages/validacion/validaciondocumentos.page'));
+//cambiar tipo de licencia usuario ciudadano
+const CambiarTipoLicenciaIndividualPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia-individual.page'));
+const CambiarTipoLicenciaFetalPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia-fetal.page'));
+//modificar solicitud usuario ciudadano
+const ModificarLicenciaIndividualPage = lazy(() => import('./pages/actualizacion/actualizacion-datos-individual.page'));
+const ModificarLicenciaFetalPage = lazy(() => import('./pages/actualizacion/actualizacion-datos-fetal.page'));
+//modificar licencias administrador
 const ModificarLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-licencia.page'));
-const CambiarTipoLicenciaPage = lazy(() => import('./pages/actualizacion/actualizacion-cambiolicencia.page'));
+const ModificarLicenciaOraclePage = lazy(() => import('./pages/actualizacion/actualizacion-licenciaoracle.page'));
+
 const ModificarMedicosPage = lazy(() => import('./pages/actualizacion/actualizacion-medicos.page'));
 const ModificarCementeriosPage = lazy(() => import('./pages/actualizacion/actualizacion-cementerios.page'));
 const ModificarFunerariasPage = lazy(() => import('./pages/actualizacion/actualizacion-funerarias.page'));
@@ -84,7 +92,7 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: AdministrationFirmasPage
   },
   {
-    path: `${tramiteAdmin}/horario`,
+    path: `${tramiteAdmin}/gestion-variables`,
     component: AdministrationHorarioPage
   },
   {
@@ -100,9 +108,28 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: ModificarLicenciaPage
   },
   {
-    path: `${updatepath}/Cambiar-Tipo-Licencia`,
-    component: CambiarTipoLicenciaPage
+    path: `${updatepath}/licencia-Oracle`,
+    component: ModificarLicenciaOraclePage
   },
+  //cambiar tipo de licencias
+  {
+    path: `${updatepath}/Cambiar-Tipo-Licencia-Individual`,
+    component: CambiarTipoLicenciaIndividualPage
+  },
+  {
+    path: `${updatepath}/Cambiar-Tipo-Licencia-Fetal`,
+    component: CambiarTipoLicenciaFetalPage
+  },
+  //actualizar datos de solicitudes
+  {
+    path: `${updatepath}/Actualizar-Datos-Individual`,
+    component: ModificarLicenciaIndividualPage
+  },
+  {
+    path: `${updatepath}/Actualizar-Datos-Fetal`,
+    component: ModificarLicenciaFetalPage
+  },
+  ///////
   {
     path: `${updatepath}/funerarias`,
     component: ModificarFunerariasPage

@@ -48,6 +48,23 @@ export class ApiService {
       url: `v1/ValidacionDocumentos/getIdUnico/${numero}`,
       id: '0'
     });
+
+  ObtenerPDFShared = (payload: any) =>
+    post<any>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v1/PDF/GetPDF`,
+      payload,
+      id: '1'
+    });
+
+  ObtenerEdad = (payload: any) =>
+    post<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `GeneratePDF/GetEdad`,
+      payload,
+      id: '1'
+    });
+
   Obteneridcontroltramite = (numero: string) =>
     get<any>({
       endpoint: REACT_APP_SHARED as string,
@@ -66,7 +83,7 @@ export class ApiService {
     put<string>({
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/ModificarEstadoSolicitud/${estado}/${idsol}`,
-      id: '0'
+      id: '1'
     });
 
   agregarFirma = (payload: any) => {
@@ -74,6 +91,22 @@ export class ApiService {
       endpoint: REACT_APP_INHCREMACION as string,
       url: 'Request/AddFirma',
       payload,
+      id: '1'
+    });
+  };
+
+  obtenerFirma = (idUsuario: string) => {
+    return get<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/GetFirma/${idUsuario}`,
+      id: '1'
+    });
+  };
+
+  GetUpdateDateByIdSolicitud = (idSolicitud: string) => {
+    return get<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Seguimiento/GetUpdateDateByIdSolicitud/${idSolicitud}`,
       id: '1'
     });
   };
@@ -120,6 +153,13 @@ export class ApiService {
       id: '0'
     });
 
+  getDescripcionDominioByGuid = (idDominio: string) =>
+    get<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `GeneratePDF/GetDescripcionDominio/${idDominio}`,
+      id: '0'
+    });
+
   getMedico = (id: string) =>
     get<any>({
       endpoint: REACT_APP_ENDPOINTV1 as string,
@@ -143,9 +183,9 @@ export class ApiService {
     });
 
   postLicencia = (payload: any) =>
-    post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
+    post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
 
-  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
+  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
 
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
@@ -164,8 +204,8 @@ export class ApiService {
   UpdateCementerios = (payload: any, id: string) =>
     put({ endpoint: REACT_APP_SHARED as string, url: `v1/Cementerio/UpdateCementerio/${id}`, payload, id: '0' });
 
-  putLicencia = (payload: any) =>
-    put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: '0' });
+  putLicencia = (payload: any, validacion: string) =>
+    put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: validacion });
 
   ModificarConstante = (constante: string, valor: string, validacion: string) =>
     put({
@@ -196,6 +236,9 @@ export class ApiService {
 
   GetEstadoSolicitudNuevo = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
+
+  GetEstadoSolicitudNuevoCambio = () =>
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllSolicitudByIdUser/${this.oid}`, id: '0' });
 
   updatelicencia = (solicitud: string) =>
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
@@ -292,7 +335,7 @@ export class ApiService {
       endpoint: REACT_APP_INHCREMACION as string,
       url: 'Seguimiento/AddSeguimiento',
       payload,
-      id: '0'
+      id: '1'
     });
   };
 
@@ -363,6 +406,15 @@ export class ApiService {
     });
   };
 
+  UpdateHTML = (payload: any) => {
+    return put<any>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/UpdateHTML`,
+      payload,
+      id: '1'
+    });
+  };
+
   getFormato = (idPlantilla: string) =>
     get<Iformato>({
       endpoint: REACT_APP_FORMATOS as string,
@@ -385,8 +437,20 @@ export class ApiService {
       }
     });
 
+  GetBlobInhumacionCremacion = (contenedor: string, path: string) =>
+    get({
+      endpoint: REACT_APP_BLOB as string,
+      url: `Storage/GetBlob/${contenedor}/${path}`,
+      id: '0',
+      options: {
+        responseType: 'blob'
+      }
+    });
+
+  //
   GeneratePDF = (idTramite: string) => `${REACT_APP_INHCREMACION as string}GeneratePDF/GeneratePDF/${idTramite}`;
 
+  //
   getLinkPDF = (idTramite: string, idTramitador: string, nombreTramitador: string): string => {
     return (
       (REACT_APP_INHCREMACION as string) +
@@ -399,10 +463,10 @@ export class ApiService {
     );
   };
 
-  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string): any => {
+  generarPDF = (idTramite: string, tramitador: string, nombreTramitador: string, codigo: string, control: boolean): any => {
     return get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
-      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}`,
+      url: `GeneratePDF/GeneratePDF/${idTramite}/${tramitador}/${nombreTramitador}/${codigo}/${control}`,
       id: '0'
     });
   };
@@ -460,6 +524,28 @@ export class ApiService {
     get<any>({
       endpoint: REACT_APP_ENDPOINTV1 as string,
       url: `Barrio/GetBarrios`,
+      id: '0'
+    });
+
+  getLicenciaOracle = (numlicen: string, idtype: string) =>
+    get<any>({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v2/Persona/GetPersonFromLicenNumber/${numlicen}/${idtype}`,
+      id: '0'
+    });
+  putLicenciaOracle = (payload: any) =>
+    put({
+      endpoint: REACT_APP_SHARED as string,
+      url: `v2/Persona/UpdatePersonFromLicenNumber`,
+      payload,
+      id: '0'
+    });
+
+  GetConsecutivoVentanilla = (payload: any) =>
+    post({
+      endpoint: REACT_APP_ENDPOINTV1 as string,
+      url: `NumeracionTramites`,
+      payload,
       id: '0'
     });
 
@@ -649,7 +735,7 @@ export class ApiService {
 
   getPoliticaSeguridad = (idUsuario: string) => {
     return get<any>({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: REACT_APP_ENDPOINTV1 as string,
       url: `PoliticaSeguridad/GetPoliticaSeguridad/${idUsuario}`,
       id: '0'
     });
@@ -657,7 +743,7 @@ export class ApiService {
 
   AddPoliticaSeguridad = (payload: any) =>
     post({
-      endpoint: REACT_APP_INHCREMACION as string,
+      endpoint: REACT_APP_ENDPOINTV1 as string,
       url: 'PoliticaSeguridad/AddPoliticaSeguridad',
       payload,
       confirmModal: false,

@@ -48,8 +48,8 @@ export const BasicaInformacion: React.FC<any> = (props) => {
     const valor: string = value;
     if (valor == '1') {
       setLongitudminima(4);
-      setLongitudmaxima(10);
-      setTipocampo('[0-9]{4,10}');
+      setLongitudmaxima(11);
+      setTipocampo('[0-9]{4,11}');
       setTipocampovalidacion(/[0-9]/);
       setCampo('Numéricos');
       setTipodocumento('Cédula de Ciudadanía');

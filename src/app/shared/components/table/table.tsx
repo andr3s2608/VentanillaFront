@@ -1,4 +1,4 @@
-import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -10,6 +10,9 @@ import { Button, Modal, Upload } from 'antd';
 import { useHistory } from 'react-router';
 import Input from 'antd/es/input';
 import Table from 'antd/es/table';
+import { DatepickerComponent } from '../inputs/datepicker.component';
+import moment from 'moment';
+import { errorMessage, infoMessage } from 'app/services/settings/message.service';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
@@ -19,10 +22,43 @@ export const Gridview = (props: IDataSource) => {
   const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
   const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
+  const [fechasolicitud, setfechasolicitud] = useState<any>();
+  const [mostrar, setmostrar] = useState<boolean>(false);
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
   const Paginas: number = 10;
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
+
+
+  const [datosUsuario, setdatosUsuario] = useState<any>([]);
+  const [fechafiltro, setfechafiltro] = useState<any>();
+  const [funerariafiltro, setfunerariafiltro] = useState<any>('');
+  const [idtramite, setidtramite] = useState<any>('');
+  const [documento, setdocumento] = useState<any>('');
+
+
+  const listaprueba: any[] =
+    [{ consecutivo: '2022REINC00000046' },
+    { consecutivo: '2020REINC00000046' },
+    { consecutivo: '2021REINC00000046' },
+    { consecutivo: '2022REINC00000047' },
+    { consecutivo: '2022RECRC00000045' },
+    { consecutivo: '2022RECRC00000046' },
+    { consecutivo: '2022RECRC00000048' },
+    { consecutivo: '2022RECRC00000049' },
+    { consecutivo: '2022RECRC00000040' },
+    { consecutivo: '2022RECRC00000047' },
+    { consecutivo: '2022REINC00000048' },
+    { consecutivo: '2020REINC00000045' },
+    { consecutivo: '2021REINC00000046' },
+    { consecutivo: '2021REINC00000046' },]
+    ;
+
+
+
+
 
   const getListas = useCallback(
 
@@ -30,8 +66,24 @@ export const Gridview = (props: IDataSource) => {
 
       const rolesstorage: any = localStorage.getItem('roles');
 
+      /*
+      let resp: any = [];
+      if (rolesstorage.rol === 'Ciudadano') {
+        resp = await api.GetEstadoSolicitudNuevoCambio();
+      }
+      else {
+        resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      }
+*/
+
+      const datostabla: any = localStorage.getItem('tablainhcrem');
+      const datosjson = JSON.parse(datostabla)
+
+
+
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
+      setmostrar(true);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -39,12 +91,290 @@ export const Gridview = (props: IDataSource) => {
 
   useEffect(() => {
     getListas();
+    setdatosUsuario(data);
+
+
   }, []);
 
   const [Tipo] = roles;
 
 
 
+
+  const FilterByNameInputfecha = () => {
+
+    return (
+      <Form.Item style={{ width: 200, marginTop: 4, marginRight: 4 }} initialValue={fechafiltro}>
+        <DatepickerComponent
+          id='datePicker1'
+          picker='date'
+          placeholder='Fecha de Solicitud'
+          dateDisabledType='default'
+          dateFormatType='default'
+          className='form-control'
+          onChange={(e) => {
+
+
+            setfechafiltro(e);
+            if (e != null) {
+              let fecha: any = '';
+              if (Tipo.rol !== 'Ciudadano') {
+                fecha = moment(e).format('YYYY-MM-DD');
+              }
+              else {
+                fecha = moment(e).format('DD-MM-YYYY');
+              }
+
+              setfechafiltro(fecha);
+
+              if (idtramite === '') {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+
+                  return (
+                    datos.fechaSolicitud.toString().includes(fecha) &&
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+              else {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
+                    datos.fechaSolicitud.toString().includes(fecha) &&
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+
+
+            }
+            else {
+              if (idtramite === '') {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
+
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+              else {
+                const filteredDataUsuario: any = data.filter((datos: any) => {
+                  const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+                  return (
+
+                    funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                  );
+                });
+                setdatosUsuario(filteredDataUsuario);
+              }
+
+            }
+          }}
+        />
+      </Form.Item>
+    );
+
+  }
+  const FilterByNameInputfuneraria = () => {
+
+    return (
+
+      <Input
+        placeholder='Funeraria y/o Nombre'
+        value={funerariafiltro}
+        style={{ width: 200 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setfunerariafiltro(currValue);
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro == null) {
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+
+            }
+            else {
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(currValue.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputid = () => {
+
+    return (
+
+      <Input
+        placeholder='Consecutivo'
+        value={idtramite}
+        style={{ width: 140 }}
+        onKeyPress={(event) => {
+          if (!/[0-9A-Za-z]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setidtramite(currValue.toUpperCase());
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              if (currValue === '') {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+
+
+            }
+            else {
+              if (currValue === '') {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputdocumento = () => {
+    return (
+      <Input
+        placeholder='Documento del Fallecido'
+        value={documento}
+        style={{ width: 200 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setdocumento(currValue);
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
+                );
+              }
+
+            }
+            else {
+              if (idtramite === '') {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
+                );
+              }
+              else {
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionFallecido.toString().includes(currValue.toUpperCase())
+                );
+              }
+
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+    );
+  }
 
 
 
@@ -53,33 +383,67 @@ export const Gridview = (props: IDataSource) => {
 
 
   if (Validacion == '1') {
-    if (Tipo.rol !== 'Ciudadano') {
+    if (Tipo.rol !== 'Ciudadano'
+      //  && Tipo.rol !== 'AdminTI'
+    ) {
       structureColumns = [
         {
-          title: 'Id Tramite',
-          dataIndex: 'iD_Control_Tramite',
-          key: 'idcontrolTramite',
+          title: FilterByNameInputid(),
+          dataIndex: 'consecutivo',
+          key: 'consecutivo',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+              a.consecutivo > b.consecutivo ? 1 : -1,
             multiple: 3,
-          },
+          }
         },
         {
-          title: 'Documento del Fallecido',
-          dataIndex: 'noIdentificacionSolicitante',
-          key: 'numeroDocumento'
+          title: FilterByNameInputdocumento(),
+          dataIndex: 'noIdentificacionFallecido',
+          key: 'numeroDocumento',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
+              a.noIdentificacionFallecido - b.noIdentificacionFallecido,
+            multiple: 2,
+          }
         },
         {
-          title: 'Funeraria y/o Nombre',
+          title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto'
+          key: 'nombreCompleto',
+
+          sorter: {
+            compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
+              a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
+            multiple: 1,
+          }
+        },
+        {
+          title: 'Institución Certifica',
+          dataIndex: 'institucionCertifica',
+          key: 'InstitucionCertifica',
+
+          filters: [
+            {
+              text: 'Medicina Legal ',
+              value: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES'
+            },
+            {
+              text: 'Otros ',
+              value: 'Otros'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { institucionCertifica: string }) => record.institucionCertifica.toString().includes(value),
         },
 
         {
-          title: 'Fecha de Registro',
+          title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
+          with: 600,
           render: (Text: string) => (
             <Form.Item label='' name=''>
               <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
@@ -88,19 +452,68 @@ export const Gridview = (props: IDataSource) => {
         },
         {
           title: 'Estado Tramite',
-          dataIndex: 'estadoSolicitud',
+          dataIndex: 'estadoString',
           key: 'estado',
+          width: 230,
+          filters: [
+            {
+              text: 'Anulado ',
+              value: 'Anulado validador de documentos'
+            },
+            {
+              text: 'Aprobado ',
+              value: 'Aprobado validador de documentos'
+            },
+            {
+              text: 'Pendiente',
+              value: 'Documentos Inconsistentes'
+            },
+            {
+              text: 'Negado ',
+              value: 'Negado validador de documentos'
+            }
+            ,
+            {
+              text: 'En tramite ',
+              value: 'Registro Usuario Externo'
+            }
+            ,
+            {
+              text: 'Cambio de Licencia',
+              value: 'Cambio de Licencia'
+            },
+            {
+              text: 'Actualización de Documentos',
+              value: 'Actualización Documentos'
+            },
+            {
+              text: 'Actualización de Datos',
+              value: 'Actualización Solicitud'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
+
+
           render: (Text: string) => {
 
-            if (Text === '31a45854-bf40-44b6-2645-08da64f23b8e') {
+            if (Text === 'Cambio de Licencia') {
               return (<Form.Item label='' name=''>
                 <text>{'Cambio tipo de licencia'}</text>
               </Form.Item>)
             }
             else {
-              return (<Form.Item label='' name=''>
-                <text>{tramite}</text>
-              </Form.Item>)
+              if (Text === 'Registro Usuario Externo') {
+                return (<Form.Item label='' name=''>
+                  <text>{'En Tramite'}</text>
+                </Form.Item>)
+              }
+              else {
+                return (<Form.Item label='' name=''>
+                  <text>{Text}</text>
+                </Form.Item>)
+              }
+
             }
 
           }
@@ -109,6 +522,27 @@ export const Gridview = (props: IDataSource) => {
           title: 'Tipo Solicitud',
           dataIndex: 'idTramite',
           key: 'tipoSolicitud',
+          width: 300,
+          filters: [
+            {
+              text: 'Inhumación Individual',
+              value: 'a289c362-e576-4962-962b-1c208afa0273'
+            },
+            {
+              text: 'Inhumación Fetal',
+              value: 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060'
+            },
+            {
+              text: 'Cremación Individual',
+              value: 'e69bda86-2572-45db-90dc-b40be14fe020'
+            },
+            {
+              text: 'Cremación Fetal ',
+              value: 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { idTramite: string }) => record.idTramite.toString().includes(value),
           render: (Text: string) => {
             switch (Text) {
               case 'a289c362-e576-4962-962b-1c208afa0273':
@@ -142,12 +576,12 @@ export const Gridview = (props: IDataSource) => {
         {
           title: 'Validar Tramite',
           key: 'Acciones',
-
+          width: 200,
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
-
-            return permiso.rol !== 'Ciudadano' ? (
-              <>
+            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo'
+              || row.estadoString === 'Actualización Documentos' || row.estadoString === 'Actualización Solicitud') {
+              return (<Form.Item label='' name=''>
                 <Button
                   type='primary'
                   key={`vali-${index}`}
@@ -157,62 +591,174 @@ export const Gridview = (props: IDataSource) => {
                 >
                   Validar Información
                 </Button>
-              </>
-            ) : null;
+              </Form.Item>)
+            }
+          }
+        },
+        {
+          title: 'Visualizar PDF',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.estadoString === 'Aprobado validador de documentos') {
+              return (<Form.Item label='' name=''>
+                <FilePdfOutlined
+                  onClick={() => onClickVisualizarPDF(row)}
+                  style={{ fontSize: '30px' }}
+                />
+              </Form.Item>)
+            }
           }
         }
       ];
     } else {
       structureColumns = [
         {
-          title: 'Id Tramite',
-          dataIndex: 'iD_Control_Tramite',
-          key: 'idcontrolTramite',
+          title: FilterByNameInputid(),
+          dataIndex: 'consecutivo',
+          key: 'consecutivo',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { iD_Control_Tramite: number; }, b: { iD_Control_Tramite: number; }) => a.iD_Control_Tramite - b.iD_Control_Tramite,
+            compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+              a.consecutivo > b.consecutivo ? 1 : -1,
+            multiple: 1,
+          }
+        },
+        {
+          title: FilterByNameInputdocumento(),
+          dataIndex: 'noIdentificacionFallecido',
+          key: 'noIdentificacionFallecido',
+          defaultSortOrder: 'descend',
+          sorter: {
+            compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
+              a.noIdentificacionFallecido - b.noIdentificacionFallecido,
             multiple: 2,
-          },
+          }
         },
         {
-          title: 'Documento del Fallecido',
-          dataIndex: 'noIdentificacionSolicitante',
-          key: 'numeroDocumento'
-        },
-        {
-          title: 'Funeraria y/o Nombre',
+          title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto'
+          key: 'razonSocialSolicitante',
+          sorter: {
+            compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
+              a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
+            multiple: 3,
+          }
         },
         {
-          title: 'Fecha de Registro',
+          title: 'Institución Certifica',
+          dataIndex: 'institucionCertifica',
+          key: 'InstitucionCertifica',
+
+          filters: [
+            {
+              text: 'Medicina Legal ',
+              value: 'INSTITUTO NACIONAL DE MEDICINA LEGAL Y CIENCIAS FORENCES'
+            },
+            {
+              text: 'Otros ',
+              value: 'Otros'
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { institucionCertifica: string }) => record.institucionCertifica.toString().includes(value),
+        },
+        {
+          title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
+          with: 600,
           key: 'fechaSolicitud'
         },
         {
           title: 'Estado Tramite',
           dataIndex: '',
           key: 'estado',
+          width: 230,
+          filters: [
+            {
+              text: 'Anulado ',
+              value: 'Anulado validador de documentos'
+            },
+            {
+              text: 'Aprobado ',
+              value: 'Aprobado validador de documentos'
+            },
+            {
+              text: 'Documentos Inconsistentes',
+              value: 'Documentos Inconsistentes'
+            },
+            {
+              text: 'Negado ',
+              value: 'Negado validador de documentos'
+            }
+            ,
+            {
+              text: 'En tramite ',
+              value: 'Registro Usuario Externo'
+            }
+            ,
+            {
+              text: 'En espera de aprobacion ',
+              value: 'Cambio de Licencia'
+            }
+          ],
+          filterSearch: true,
+
+          onFilter: (value: string, record: { solicitud: string }) => record.solicitud.toString().includes(value),
           render: (row: any) => {
-            return row.solicitud == 'Registro Usuario Externo' ? (
-              <Form.Item label='' name=''>
-                <text>{tramite}</text>
-              </Form.Item>
-            ) : (
-              <Form.Item label='' name=''>
-                <text>{row.solicitud}</text>
-              </Form.Item>
-            );
+            if (row.solicitud == 'Registro Usuario Externo' || row.solicitud == 'Actualización Documentos') {
+              return (<Form.Item label='' name=''>
+                <text>{'En Tramite'}</text>
+              </Form.Item>)
+            }
+            else {
+              if (row.solicitud == 'Cambio de Licencia' || row.solicitud == 'Actualización Solicitud') {
+                return (<Form.Item label='' name=''>
+                  <text>{'En espera de aprobacion'}</text>
+                </Form.Item>)
+              }
+              else {
+                return (<Form.Item label='' name=''>
+                  <text>{row.solicitud}</text>
+                </Form.Item>)
+              }
+            }
+
+
+
+
           }
         },
         {
           title: 'Tipo Solicitud',
           dataIndex: 'tramite',
-          key: 'tipoSolicitud'
+          key: 'tipoSolicitud',
+          width: 300,
+          filters: [
+            {
+              text: 'Inhumación Individual',
+              value: 'Inhumación Individual'
+            },
+            {
+              text: 'Inhumación Fetal',
+              value: 'Inhumación Fetal'
+            },
+            {
+              text: 'Cremación Individual',
+              value: 'Cremación Individual'
+            },
+            {
+              text: 'Cremación Fetal ',
+              value: 'Cremación Fetal'
+            }
+          ],
+          filterSearch: true,
 
+          onFilter: (value: string, record: { tramite: string }) => record.tramite.toString().includes(value),
         },
         {
-          title: 'Gestión',
+          title: 'Actualizar',
           key: 'Acciones',
           render: (_: any, row: any, index: any) => {
             if (row.solicitud === 'Documentos Inconsistentes') {
@@ -227,20 +773,85 @@ export const Gridview = (props: IDataSource) => {
                 </Button>
               );
             } else {
-              if (row.solicitud === 'Cambiar Tipo de Licencia') {
+              if (row.solicitud === 'Aprobado validador de documentos' &&
+                (row.tramite === 'Cremación Individual' || row.tramite === 'Inhumación Individual')) {
                 return (
                   <Button
                     type='primary'
-                    style={{ marginLeft: '5px' }}
-                    icon={<CheckOutlined />}
+                    disabled={row.cambiolicencia < 4 ? false : true}
+                    style={{ marginLeft: '5px', height: 60 }}
                     onClick={() => onClickCambiarLicencia(row)}
                   >
-                    Actualizar Información
+                    <text>{`Cambio de licencia a`}
+                    </text>
+                    <br />
+                    <text>{`
+                    ${row.tramite === 'Cremación Individual' ? 'Inhumación Individual' :
+                        'Cremación Individual'} `}</text>
                   </Button>
                 );
               } else {
-                return null;
+                if (row.solicitud === 'Aprobado validador de documentos' &&
+                  (row.tramite === 'Cremación Fetal' || row.tramite === 'Inhumación Fetal')) {
+                  return (
+                    <Button
+                      type='primary'
+                      disabled={row.cambiolicencia < 4 ? false : true}
+                      style={{ marginLeft: '5px', height: 60 }}
+                      onClick={() => onClickCambiarLicencia(row)}
+                    >
+                      <text>{`Cambio de licencia a`}
+                      </text>
+                      <br />
+                      <text>{`
+                    ${row.tramite === 'Cremación Fetal' ? 'Inhumación Fetal' :
+                          'Cremación Fetal'} `}</text>
+                    </Button>
+                  );
+                }
+                else {
+                  return null;
+                }
+
               }
+            }
+          }
+        },
+        {
+          title: 'Recurso de Aclaración',
+          key: 'Recurso',
+          render: (_: any, row: any, index: any) => {
+            if (row.solicitud === 'Aprobado validador de documentos') {
+              return (
+                <Button
+                  type='primary'
+                  disabled={row.modificacion < 4 ? false : true}
+                  style={{ marginLeft: '5px', height: 60 }}
+                  onClick={() => onClickModificarSolicitud(row)}
+                >
+                  <text>{`Actualizar Datos`}
+                  </text>
+                </Button>
+              );
+            } else {
+              return null;
+
+            }
+          }
+        },
+        {
+          title: 'Visualizar PDF',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.solicitud === 'Aprobado validador de documentos') {
+              return (<Form.Item label='' name=''>
+                <FilePdfOutlined
+                  onClick={() => onClickVisualizarPDF(row)}
+                  style={{ fontSize: '30px' }}
+                />
+              </Form.Item>)
             }
           }
         }
@@ -250,6 +861,64 @@ export const Gridview = (props: IDataSource) => {
 
   let tramite = 'En tramite';
 
+  async function onClickVisualizarPDF(row: any): Promise<void> {
+
+    const solicitud = await api.getLicencia(row.idSolicitud);
+    const resumenSolicitud = await api.GetResumenSolicitud(row.idSolicitud);
+
+    const idContenedor = solicitud[0]['idTramite'];
+
+    let contenedor: string = '';
+
+    let valor: string = '';
+
+    switch (valor) {
+      case 'Inhumación Individual':
+        contenedor = 'inhumacionindividual';
+        break;
+      case 'Inhumación Fetal':
+        contenedor = 'inhumacionfetal';
+        break;
+      case 'Cremación Individual':
+        contenedor = 'cremacionindividual';
+        break;
+      case 'Cremación Fetal ':
+        contenedor = 'cremacionfetal';
+        break;
+    }
+
+    switch (idContenedor) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        contenedor = 'inhumacionindividual';
+        valor = 'Inhumación Individual';
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        contenedor = 'inhumacionfetal';
+        valor = 'Inhumación Fetal';
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        contenedor = 'cremacionindividual';
+        valor = 'Cremación Individual';
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        contenedor = 'cremacionfetal';
+        valor = 'Cremación Fetal';
+        break;
+    }
+
+    const oid = solicitud[0]['idUsuarioSeguridad'];
+
+    const nameBlob = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
+
+    const path = contenedor + "/" + oid + "/" + nameBlob;
+
+    const urlPDF = await api.GetUrlPdf(path);
+
+    setUrlPdfLicence(urlPDF);
+
+    setIsModalVisiblePdf(true);
+  }
+
   const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {
     const data = await api.getLicencia(idSolicitud);
 
@@ -258,12 +927,36 @@ export const Gridview = (props: IDataSource) => {
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
 
-  const onClickCambiarLicencia = async ({ idSolicitud }: { [x: string]: string }) => {
-    const data = await api.getLicencia(idSolicitud);
+  const onClickCambiarLicencia = async (fila: any) => {
+    const data = await api.getLicencia(fila.idSolicitud);
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    history.push('/modificar/Cambiar-Tipo-Licencia');
+    if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+      history.push('/modificar/Cambiar-Tipo-Licencia-Individual');
+    }
+    else {
+      history.push('/modificar/Cambiar-Tipo-Licencia-Fetal');
+    }
+
+  };
+
+  const onClickModificarSolicitud = async (fila: any) => {
+    const data = await api.getLicencia(fila.idSolicitud);
+
+    localStorage.setItem('register', JSON.stringify(data));
+    store.dispatch(SetResetViewLicence());
+
+
+    if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+
+      history.push('/modificar/Actualizar-Datos-Individual');
+    }
+    else {
+
+      history.push('/modificar/Actualizar-Datos-Fetal');
+    }
+
   };
 
 
@@ -306,8 +999,12 @@ export const Gridview = (props: IDataSource) => {
 
   /** Evento que se ejecuta cuando se da click en el boton de gestionar */
   const onGestionarDocumento = async (solicitud: Solicitud) => {
+
+
+
     const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
 
+    setfechasolicitud(solicitud.fechaSolicitud);
     setObservacion(resultResponse[0].observaciones);
     setTipoSolicitud(solicitud.tramite);
     setListadoDocumento(resultResponse);
@@ -325,16 +1022,16 @@ export const Gridview = (props: IDataSource) => {
      * al que se debe enviar los archivos
      */
     switch (tipoSolicitud) {
-      case 'Inhumacion Individual':
+      case 'Inhumación Individual':
         container = 'inhumacionindividual';
         break;
-      case 'Cremacion Individual':
+      case 'Cremación Individual':
         container = 'cremacionindividual';
         break;
-      case 'Cremacion Fetal':
+      case 'Cremación Fetal':
         container = 'cremacionfetal';
         break;
-      case 'Inhumacion Fetal':
+      case 'Inhumación Fetal':
         container = 'inhumacionfetal';
         break;
     }
@@ -359,8 +1056,10 @@ export const Gridview = (props: IDataSource) => {
             formData.append('nameFile', nameFile);
 
             supportDocumentsEdit.push({
+              idSolicitud: listDocument[j].idSolicitud,
               idDocumentoSoporte: listDocument[j].idDocumentoSoporte,
-              fechaModificacion: new Date()
+              fechaModificacion: new Date(),
+              esValido: true
             });
           }
         }
@@ -372,9 +1071,28 @@ export const Gridview = (props: IDataSource) => {
       if (supportDocumentsEdit.length) {
         await api.uploadFiles(formData);
         await api.UpdateSupportDocuments(supportDocumentsEdit);
-        await api.updateStateRequest(listDocument[0].idSolicitud, 'FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+        await api.updateStateRequest(listDocument[0].idSolicitud, 'C5F3301A-4DBA-463F-8459-EB32C78E7420');
+
+        const idUsuario = await api.getIdUsuario();
+
+        const seguimiento = {
+          fechaRegistro: fechasolicitud,
+          usuario: idUsuario,
+          estado: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: listDocument[0].idSolicitud,
+          observacion: 'subsanacion documentos inconsistentes'
+
+        }
+        await api.addSeguimiento(seguimiento);
+        await infoMessage({ title: "Actualización de Documentos Inconsistentes", content: "Los documentos fueron actualizados correctamente" });
         window.location.reload();
+      } else {
+        console.error("No se cargaron correctamente los archivos a actualizar");
+        errorMessage({ title: "Actualización de Documentos Inconsistentes", content: "No se pudo actualizar los archivos. Por favor contactar a soporte técnico" });
       }
+    } else {
+      console.error("No se encontró un contenedor donde subir los archivos");
+      errorMessage({ title: "Actualización de Documentos Inconsistentes", content: "No se pudo actualizar los archivos. Por favor contactar a soporte técnico" });
     }
   };
 
@@ -460,11 +1178,27 @@ export const Gridview = (props: IDataSource) => {
         <div className='card-body'>
           <div className='row'>
             <div className='col-lg-12 col-sm-12 col-md-12'>
+
+              <Modal
+                title={
+                  <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                    Visualización de la licencia
+                  </p>
+                }
+                visible={isModalVisiblePdf}
+                onCancel={() => setIsModalVisiblePdf(false)}
+                width={1000}
+                okButtonProps={{ hidden: true }}
+                cancelText='Cerrar'
+              >
+                <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+              </Modal>
+
               <Table
                 id='tableGen'
-                dataSource={data}
+                dataSource={datosUsuario}
                 columns={structureColumns}
-
+                scroll={{ x: 1200 }}
                 pagination={{ pageSize: Paginas }}
               />
             </div>
@@ -493,6 +1227,9 @@ export const Gridview = (props: IDataSource) => {
             </Modal>
           </div>
         </div>
+
+
+
       </div>
     </div>
   );
@@ -534,3 +1271,4 @@ interface DataComponentUpdate {
 interface IDataSource {
   data: Array<any>;
 }
+

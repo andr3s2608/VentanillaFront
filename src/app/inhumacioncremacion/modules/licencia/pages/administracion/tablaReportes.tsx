@@ -22,10 +22,7 @@ import moment from 'moment';
 export const TablaReportes = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
-  const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
-  const [tipoSolicitud, setTipoSolicitud] = useState<string>('default-tiposolicitud');
-  const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
-  const [observacion, setObservacion] = useState<string>('default');
+
   const { accountIdentifier } = authProvider.getAccount();
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
@@ -47,7 +44,6 @@ export const TablaReportes = (props: IDataSource) => {
     getListas();
   }, []);
 
-  const [Tipo] = roles;
 
   var identify: string;
   var tipotramite: any;
@@ -86,53 +82,13 @@ export const TablaReportes = (props: IDataSource) => {
 
   var structureColumns;
 
-  const fecharecortada = () => {
-    if (Tipo.rol !== 'Ciudadano') {
-      const posicioninicial = 0;
-      const fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
-      const fechamodificada = fec.substring(posicioninicial, fecha.indexOf('T'));
-      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
-
-      return fechamodificada;
-    }
-  };
-
-  const tiposolicitud = () => {
-    const posicioninicial = 0;
-    var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
-    tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
-    var valor = '';
-
-    switch (idTramite) {
-      case 'a289c362-e576-4962-962b-1c208afa0273':
-        valor = 'Inhumación Indivual';
-
-        break;
-      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-        //inhumacion fetal
-        valor = 'Inhumación Fetal';
-
-        break;
-      case 'e69bda86-2572-45db-90dc-b40be14fe020':
-        //cremacion individual
-        valor = 'Cremación Individual';
-
-        break;
-      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-        //cremacionfetal
-        valor = 'Cremación Fetal ';
-
-        break;
-    }
-    return valor;
-  };
 
   if (Validacion == '1') {
     structureColumns = [
       {
-        title: 'Id Tramite',
-        dataIndex: 'iD_Control_Tramite',
-        key: 'idTramite'
+        title: 'Consecutivo',
+        dataIndex: 'consecutivo',
+        key: 'consecutivo'
       },
       {
         title: 'Num. Licencia',

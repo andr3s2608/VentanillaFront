@@ -18,6 +18,7 @@ import Button from 'antd/es/button/button';
 import Swal from 'sweetalert2';
 import { formatTimeStr } from 'antd/lib/statistic/utils';
 import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { layoutWrapper } from 'app/shared/utils/form-layout.util';
 const { TabPane } = Tabs;
 
 const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
@@ -44,7 +45,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     async () => {
       const resp = await api.getallReports();
 
-      console.log(resp);
+
       setGrid(resp);
       setAllData(resp);
       setVisibleGrid('none');
@@ -113,7 +114,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'consecutivo': datos[i].consecutivo,
           'Documento del fallecido': datos[i].noIdentificacionSolicitante,
           'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
           'Fecha de registro': datos[i].fechaSolicitud,
@@ -129,9 +130,9 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           {
             sheetData: datatable,
             sheetName: 'Historial solicitudes',
-            sheetFilter: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+            sheetFilter: ['consecutivo', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
               , 'Fecha de registro', 'Estado', 'Tipo Solicitud'],
-            sheetHeader: ['Identificador Tramite', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
+            sheetHeader: ['consecutivo', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
               , 'Fecha de registro', 'Estado', 'Tipo Solicitud']
           }
         ]
@@ -192,7 +193,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'Identificador Tramite': datos[i].iD_Control_Tramite,
+          'consecutivo': datos[i].consecutivo,
           'Documento del fallecido': datos[i].noIdentificacionSolicitante,
           'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
           'Fecha de registro': datos[i].fechaSolicitud,
@@ -204,7 +205,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     }
     let textoPlano = 'IDENTIFICADOR  |  DOCUMENTO DEL FALLECIDO  |  SOLICITANTE  |  REGISTRO  |  ESTADO  |  ESTADO  |  TIPO SOLICITUD \n';
     for (let inf in datatable) {
-      textoPlano += datatable[inf]['Identificador Tramite'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
+      textoPlano += datatable[inf]['consecutivo'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
         + datatable[inf]['Solicitante (funeraria o nombre)'] + '  |  ' + datatable[inf]['Fecha de registro'] +
         '  |  ' + datatable[inf].Estado + '  |  ' + datatable[inf]['Tipo Solicitud'] + ' \n';
 
@@ -271,7 +272,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     }
     if (input == true && FilterTextID != undefined && FilterTextID != '') {
       filtroFecha = filtroFecha?.filter(function (f) {
-        return f.iD_Control_Tramite == FilterTextID;
+        return f.consecutivo == FilterTextID;
       });
     }
 
@@ -495,19 +496,24 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 </div>
               </div>
             </div>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 mt-5'>
-                <Button
-                  type='primary'
-                  htmlType='submit'
-                  onClick={busquedaFun}
-                  className='d-flex text-center'
-                  style={{ marginLeft: '0px' }}
-                >
-                  Buscar
-                </Button>
+            <section>
+              <div className='container-fluid'>
+                <div className='row'>
+                  <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                      <div className='d-flex center-block' style={{ margin: '0 auto' }}>
+                        <Button type='primary'
+                          htmlType='submit'
+                          onClick={busquedaFun}
+                          style={{ marginLeft: '10px' }}>
+                          Buscar
+                        </Button>
+                      </div>
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
           </div>
 
           <div className='row mt-3'>
@@ -515,21 +521,31 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
               <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
 
                 <Tabs style={{ border: 'none' }} className='mt-3'>
-                  <TabPane tab='Resultados' key='1'>
-                    <TablaReportes data={grid} />
-                  </TabPane>
+                  <TablaReportes data={grid} />
                 </Tabs>
 
-                <Button
-                  type='ghost'
-                  htmlType='submit'
-                  className='d-flex text-center'
-                  onClick={downloadFileExportar}
-                  style={{ marginLeft: '5px' }}
-                >
-                  Exportar
-                </Button>
+                <section>
+                  <div className='container-fluid'>
+                    <div className='row'>
+                      <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
+                        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                          <div className='d-flex center-block' style={{ margin: '0 auto' }}>
+                            <Button type='primary'
+                              htmlType='submit'
+                              onClick={downloadFileExportar}
+                            >
+                              Exportar
+                            </Button>
+                          </div>
+                        </Form.Item>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </section>
               </div>
+
 
             </div>
           </div>

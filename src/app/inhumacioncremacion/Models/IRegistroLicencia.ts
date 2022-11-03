@@ -4,6 +4,7 @@ export interface IRegistroLicencia<T> {
 
 export interface Solicitud<T> {
   idSolicitud?: string;
+  consecutivo: string;
   numeroCertificado: string;
   fechaDefuncion: string;
   sinEstablecer: boolean;
@@ -143,4 +144,5 @@ export interface UbicacionPersona {
   idLocalidadResidencia: string;
   idAreaResidencia: string;
   idBarrioResidencia: string;
+  ciudad: string;
 }

@@ -114,6 +114,7 @@ const formatObjJson = (obj: any, id: String) => {
       idLocalidadResidencia: ubicacionPersona.idLocalidadResidencia,
       idAreaResidencia: ubicacionPersona.idAreaResidencia,
       idBarrioResidencia: ubicacionPersona.idBarrioResidencia,
+      ciudadfuera: ubicacionPersona.ciudad,
 
       cementerioLugar: datosCementerio.cementerio,
       cementerioBogota: datosCementerio.cementerio,
@@ -122,9 +123,10 @@ const formatObjJson = (obj: any, id: String) => {
       cementerioPais: datosCementerio.idPais,
       cementerioCiudad: datosCementerio.ciudad,
       otro: datosCementerio.otroSitio,
-      correocementerio: obj.resumenSolicitud.correoCementerio,
-      correofuneraria: obj.resumenSolicitud.correoFuneraria,
-      correosolicitante: obj.resumenSolicitud.correoSolicitante,
+      numerolicencia: obj.resumenSolicitud.numeroLicencia,
+      correocementerio: obj.resumenSolicitud.correoCementerio.toString().toLowerCase(),
+      correofuneraria: obj.resumenSolicitud.correoFuneraria.toString().toLowerCase(),
+      correosolicitante: obj.resumenSolicitud.correoSolicitante.toString().toLowerCase(),
 
 
       isLugar: () => {
@@ -145,6 +147,7 @@ const formatObjJson = (obj: any, id: String) => {
   } else {
 
     jsonDt = {
+      consecutivo: obj.consecutivo,
       idTramite: obj.idTramite,
       idControlTramite: obj.iD_Control_Tramite,
       certificado: obj.numeroCertificado,
@@ -218,6 +221,7 @@ const formatObjJson = (obj: any, id: String) => {
       idLocalidadResidencia: ubicacionPersona.idLocalidadResidencia,
       idAreaResidencia: ubicacionPersona.idAreaResidencia,
       idBarrioResidencia: ubicacionPersona.idBarrioResidencia,
+      ciudadfuera: ubicacionPersona.ciudad,
 
 
       funeraria: datosFuneraria.funeraria,
@@ -231,14 +235,15 @@ const formatObjJson = (obj: any, id: String) => {
       otro: datosCementerio.otroSitio,
 
 
+      numerolicencia: obj.resumenSolicitud.numeroLicencia,
       idresumensolicitud: obj.resumenSolicitud.idSolicitud,
       nombresolicitante: obj.resumenSolicitud.nombreSolicitante,
       apellidosolicitante: obj.resumenSolicitud.apellidoSolicitante,
       tipodocsolicitante: obj.resumenSolicitud.tipoDocumentoSolicitante,
       nrosolicitante: obj.resumenSolicitud.numeroDocumentoSolicitante,
-      correocementerio: obj.resumenSolicitud.correoCementerio,
-      correofuneraria: obj.resumenSolicitud.correoFuneraria,
-      correosolicitante: obj.resumenSolicitud.correoSolicitante,
+      correocementerio: obj.resumenSolicitud.correoCementerio.toString().toLowerCase(),
+      correofuneraria: obj.resumenSolicitud.correoFuneraria.toString().toLowerCase(),
+      correosolicitante: obj.resumenSolicitud.correoSolicitante.toString().toLowerCase(),
 
       idmedico: certificador.idTipoPersona,
       medicalSignatureIDType: certificador.tipoIdentificacion,
@@ -269,4 +274,5 @@ const formatObjJson = (obj: any, id: String) => {
 
   return jsonDt;
 };
-const isPerson = (personas: any[], key: string) => personas.filter((m) => m.idTipoPersona === key);
+const isPerson = (personas: any[], key: string) => personas.filter((m) => m.idTipoPersona === key
+  && m.estado === true);

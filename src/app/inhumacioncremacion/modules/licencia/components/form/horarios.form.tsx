@@ -3,12 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 // Antd
 import Form, { FormInstance } from 'antd/es/form';
 
-import Divider from 'antd/es/divider';
+
 
 // Componentes
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
+
 import { ApiService } from 'app/services/Apis.service';
-import { dominioService, ETipoDominio, IDepartamento, IMunicipio, IDominio, ICementerio } from 'app/services/dominio.service';
+import { ICementerio } from 'app/services/dominio.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
@@ -18,36 +18,34 @@ import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLic
 
 //Redux
 import { store } from 'app/redux/app.reducers';
-import { UploadOutlined } from '@ant-design/icons';
-import { Input, Radio } from 'antd';
+
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import moment from 'moment';
+import { Input } from 'antd';
 
 export const HorariosGestion = ({ props }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
-  const [l_cementerios, setl_cementerios] = useState<ICementerio[]>([]);
   const [selecciono, setselecciono] = useState<boolean>(false);
-  const [RazonC, setRazonC] = useState<String>('');
-  const [valores, setvalores] = useState<String>('Name');
   const [iniciosem, setiniciosem] = useState<any>();
   const [finsem, setfinsem] = useState<any>();
   const [iniciofinde, setiniciofinde] = useState<any>();
   const [finfinde, setfinfinde] = useState<any>();
+  const [MensajeHorario, setMensajeHorario] = useState<string>('');
 
-  const [[DireccionC, TelefonoC, NombreRepC, TipoRepC, NroIdenC], setCementerioDatos] = useState<
-    [string, string, string, string, string]
-  >(['', '', '', '', '']);
 
-  const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
+
+  const { setStatus } = useStepperForm<any>(form);
 
   const getListas = useCallback(async () => {
     let HoraInicioAtencion_LV = await api.getCostante('5DF03735-503B-4D22-8169-E4FCDD19DA26');
     let HoraFinAtencion_LV = await api.getCostante('818AA32D-C90D-45D0-975F-486D069F7CB1');
     let HoraInicioAtencion_SD = await api.getCostante('CE62162E-5E79-4E05-AEDE-276B6C89D886');
     let HoraFinAtencion_SD = await api.getCostante('A196007F-BCCB-4160-B345-1F8605949E46');
+    const Mensaje = await api.getCostante('39CFA0CE-7DD0-4B0C-D7EF-08DAA1635794');
 
+    setMensajeHorario(Mensaje.valor);
     setiniciosem(ObtenerHora(HoraInicioAtencion_LV.valor + ''));
     setfinsem(ObtenerHora(HoraFinAtencion_LV.valor + ''));
     setiniciofinde(ObtenerHora(HoraInicioAtencion_SD.valor + ''));
@@ -89,15 +87,18 @@ export const HorariosGestion = ({ props }: any) => {
     const iniciosd = AsignarCero(moment(values.iniciofinsemana).format('LT'));
     const finsd = AsignarCero(moment(values.findesemana).format('LT'));
 
+    const Mensaje = values.mensajehorario;
+
+
     await api.ModificarConstante('5DF03735-503B-4D22-8169-E4FCDD19DA26', iniciolv, '0');
     await api.ModificarConstante('818AA32D-C90D-45D0-975F-486D069F7CB1', finlv, '1');
     await api.ModificarConstante('CE62162E-5E79-4E05-AEDE-276B6C89D886', iniciosd, '1');
     await api.ModificarConstante('A196007F-BCCB-4160-B345-1F8605949E46', finsd, '1');
+    await api.ModificarConstante('39CFA0CE-7DD0-4B0C-D7EF-08DAA1635794', Mensaje, '1');
     Swal.fire({
       icon: 'success',
-
       title: 'Horario Modificado',
-      text: 'Se han modificado los horarios de atención exitosamente'
+      text: 'Se han modificado los horarios de atención y el mensaje exitosamente'
     });
   };
 
@@ -195,6 +196,17 @@ export const HorariosGestion = ({ props }: any) => {
                       />
                     </Form.Item>
                   </div>
+                </div>
+
+                <div className='col-lg-6 col-md-6 col-sm-12'>
+                  <Form.Item
+                    label='Mensaje Actual de Horario de Atencion'
+                    name='mensajehorario'
+                    initialValue={MensajeHorario}
+                    rules={[{ required: true }]}
+                  >
+                    <Input.TextArea rows={5} maxLength={200} style={{ width: '360px' }} className='textarea' />
+                  </Form.Item>
                 </div>
                 <div>
                   <Actions />

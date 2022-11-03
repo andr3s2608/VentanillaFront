@@ -125,6 +125,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
+    form.resetFields(['numero']);
   };
 
   const onSubmit = async (values: any) => {
@@ -191,7 +192,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
       const array = { solicitud: obj };
 
-      await api.putLicencia(array);
+      await api.putLicencia(array, '0');
 
       if (nn) {
         let container = '';
@@ -293,7 +294,7 @@ export const ModificarLicencia = ({ props }: any) => {
               <div className='col-lg-12 col-sm-12 col-md-12'>
                 <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
                 <Radio.Group onChange={changeRadioButton} defaultValue={'tramite'}>
-                  <Radio value='tramite'>Número de tramite</Radio>
+                  <Radio value='tramite'>Consecutivo de tramite</Radio>
                   <Radio value='certificado'>Número de Certificado</Radio>
                   <Radio value='fallecido'>Número de Identificación</Radio>
                 </Radio.Group>
@@ -308,12 +309,17 @@ export const ModificarLicencia = ({ props }: any) => {
                     placeholder='Número'
                     autoComplete='off'
                     onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
+                      if (valores === 'tramite') {
+                        if (!/[0-9A-Za-z]/.test(event.key)) {
+                          event.preventDefault();
+                        }
                       }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
+                      else {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }
+
                     }}
                   />
                 </Form.Item>
@@ -368,8 +374,8 @@ export const ModificarLicencia = ({ props }: any) => {
                 )}
                 <Form.Item label='Sexo' name='sex' initialValue={sexo} rules={[{ required: true }]}>
                   <Radio.Group>
-                    <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>MASCULINO</Radio>
-                    <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>FEMENINO</Radio>
+                    <Radio value='11c463f3-8135-4545-b58f-3fc748edde94'>MASCULINO</Radio>
+                    <Radio value='259cf2da-6175-4dba-bd55-62723adf0dfa'>FEMENINO</Radio>
                     <Radio value='0347ea5e-691e-44a0-87a5-b22d39f1ff94'>INDETERMINADO</Radio>
                   </Radio.Group>
                 </Form.Item>

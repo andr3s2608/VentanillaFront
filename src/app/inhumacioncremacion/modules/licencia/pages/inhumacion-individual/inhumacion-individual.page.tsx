@@ -162,8 +162,10 @@ const InhumacionIndividualPage = () => {
     if ((ahora.getDay() != 0 || ahora.getDay() != 6) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         bandera = false;
+
       } else {
         bandera = true;
+
       }
     } else {
       if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
@@ -183,16 +185,6 @@ const InhumacionIndividualPage = () => {
       />
       <p id='ancla-1'></p>
       <Tabs>
-        {/* <TabPane tab='Certificados' key='1'>
-          <div className='card card-body py-5 mb-4 fadeInTop'>
-            Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table
-            craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl
-            cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr,
-            vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts
-            beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui
-            sapiente accusamus tattooed echo park.
-          </div>
-        </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Inhumación' tramite='a289c362-e576-4962-962b-1c208afa0273' />
           {mostrarPopUp() && <App></App>}

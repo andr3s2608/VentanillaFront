@@ -8,12 +8,14 @@ import { ModalComponent } from 'app/shared/components/modal.component';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
 import { ApiService } from 'app/services/Apis.service';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+
 
 import { dominioService, ETipoDominio } from 'app/services/dominio.service';
 import Swal from 'sweetalert2';
 import { ResetApplication } from 'app/redux/application/application.actions';
+import { ChangeTheme } from 'app/Theme';
 
 const ModulePage = () => {
   const history = useHistory();
@@ -24,6 +26,10 @@ const ModulePage = () => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(false);
+
+
+  //Cambiar de tema oscuro y claro
+  const [isDarkTheme, setIsSetDarkTheme] = useState(false);
 
   const onPersonNatural = () => history.push('/registro/Natural');
   const onPersonJuridica = () => history.push('/registro/Juridico');
@@ -80,10 +86,13 @@ const ModulePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onCancel = (): void => {};
+  //Funcion que permite aumentar o disminuir el tamaño de la
+  const onCancel = (): void => { };
+
 
   return (
-    <div className='fadeInTop container-fluid'>
+
+    <div className='fadeInTop container-fluid ' style={{ position: 'relative' }}>
       {roles?.length === 0 ? (
         <ModalComponent
           visible={true}
@@ -96,8 +105,8 @@ const ModulePage = () => {
           <PageHeaderComponent
             title={''}
             subTitle={`Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el
-          REGISTRO DEL CIUDADANO (persona natural o jurídica),
-          el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
+            REGISTRO DEL CIUDADANO (persona natural o jurídica),
+            el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
             backIcon={null}
           />
           <div className='d-flex justify-content-between'>
@@ -117,25 +126,36 @@ const ModulePage = () => {
         backIcon={null}
       />
 
-      <div className='card card-body'>
-        <h4 className='app-subtitle mt-3'>Tramites y Servicios</h4>
+
+
+
+      <div className='card card-body' >
+        <span ><h4 className='app-subtitle mt-3'><span>Tramites y Servicios</span></h4></span>
+
+
+        <p className="mt-2">
+          <span >
+            La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
+            la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
+            con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez
+            y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los
+            principios de seguridad de la información.
+          </span>
+        </p>
 
         <p>
-          La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
-          la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
-          con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez
-          y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los
-          principios de seguridad de la información.
-        </p>
-        <p>
-          Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
-          <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
-          ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
-          sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;
-          <a href='mailto:contactenos@saludcapital.gov.co'>contactenos@saludcapital.gov.co</a>.
+          <span >
+            Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
+            <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
+            ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
+            sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;<br />
+            <a className="enlace_inicio" href='mailto:contactenos@saludcapital.gov.co'><span >contactenos@saludcapital.gov.co</span></a>.
+          </span>
         </p>
       </div>
+
     </div>
+
   );
 };
 

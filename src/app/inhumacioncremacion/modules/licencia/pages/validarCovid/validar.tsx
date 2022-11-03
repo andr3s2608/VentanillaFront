@@ -1,5 +1,5 @@
 import { Modal } from 'antd';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import swal from 'sweetalert2';
 import { ApiService } from 'app/services/Apis.service';
@@ -10,6 +10,20 @@ const App = () => {
   const api = new ApiService(accountIdentifier);
   const [visible, setVisible] = React.useState(true);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+
+  const getListas = useCallback(
+    async () => {
+      isNotCovid();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  useEffect(() => {
+
+    getListas();
+  }, []);
+
+
   const festivos = [
     {
       fecha: {
@@ -140,14 +154,82 @@ const App = () => {
       Number.parseInt(HFA_SD[2])
     );
 
+    const Mensajebd = await api.getCostante('39CFA0CE-7DD0-4B0C-D7EF-08DAA1635794');
+    const Mensaje = Mensajebd.valor;
+
+
+
+
+    /*
+    'Las solicitudes de licencia que están ' +
+                'asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 1:00 PM' +
+                ' sábados, domingos y festivos en el horario de: 08: 00 AM a 11: 00 AM.Por favor vuelva a intentarlo en estos horarios.'
+    */
+
+    let MensajeFinal = '';
+
+    let arrayposicion: number[] = [];
+    let arraymensaje: string[] = [];
+    let posicion = 1;
+    for (let index = 0; index < Mensaje.length; index++) {
+      if (Mensaje.substring(index, index + 1) === '@') {
+        arrayposicion.push(index);
+
+      }
+
+    }
+    for (let index = 0; index < Mensaje.length; index++) {
+
+      if (index == arrayposicion[posicion]) {
+        arraymensaje.push(Mensaje.substring(arrayposicion[posicion] + 1, arrayposicion[posicion + 1]))
+        posicion = posicion + 2;
+        if (posicion >= arrayposicion.length && arrayposicion[posicion] + 1 < Mensaje.length) {
+          arraymensaje.push(Mensaje.substring(arrayposicion[posicion] + 1, Mensaje.length));
+        }
+        else {
+          if (posicion >= arrayposicion.length) {
+            break;
+          }
+        }
+      }
+
+    }
+    posicion = 0;
+
+
+    MensajeFinal = Mensaje.substring(0, arrayposicion[0])
+
+    for (let index = 0; index < (arrayposicion.length % 2 == 0 ? arrayposicion.length : arrayposicion.length - 1); index = index + 2) {
+
+      if (Mensaje.substring(arrayposicion[index] + 1, arrayposicion[index + 1]) == 'hilv') {
+        MensajeFinal = MensajeFinal + HoraInicioAtencion_LV.valor;
+      }
+      if (Mensaje.substring(arrayposicion[index] + 1, arrayposicion[index + 1]) == 'hflv') {
+        MensajeFinal = MensajeFinal + HoraFinAtencion_LV.valor;
+      }
+      if (Mensaje.substring(arrayposicion[index] + 1, arrayposicion[index + 1]) == 'hisd') {
+        MensajeFinal = MensajeFinal + HoraInicioAtencion_SD.valor;
+      }
+      if (Mensaje.substring(arrayposicion[index] + 1, arrayposicion[index + 1]) == 'hfsd') {
+        MensajeFinal = MensajeFinal + HoraFinAtencion_SD.valor;
+      }
+      MensajeFinal = MensajeFinal + ' ' + arraymensaje[posicion] + ' ';
+      posicion++;
+
+
+    }
+
+
+
+
     if ((ahora.getDay() != 0 || ahora.getDay() != 6) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {
-        setVisible(false);
+        setVisible(true);
         swal.fire({
           title: 'Horario de atención',
-          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 13:00 PM; sábados, domingos y festivos en el horario de: 08:00 AM a 11:00 AM. Por favor vuelva a intentarlo en estos horarios.',
+          text: MensajeFinal,
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -155,17 +237,19 @@ const App = () => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        }).then((result) => {
+          history.push('/');
         });
-        history.push('/');
+
       }
     } else {
       if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
         setVisible(false);
       } else {
-        setVisible(false);
+        setVisible(true);
         swal.fire({
           title: 'Horario de atención',
-          text: 'Las solicitudes de licencia que están asociadas a un caso no COVID son atendidas de lunes a viernes en el horario de: 7:00 AM a 13:00 PM; sábados, domingos y festivos en el horario de: 08:00 AM a 11:00 AM. Por favor vuelva a intentarlo en estos horarios.',
+          text: MensajeFinal,
           showClass: {
             popup: 'animate__animated animate__fadeInDown'
           },
@@ -173,14 +257,19 @@ const App = () => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        }).then((result) => {
+          history.push('/');
         });
-        history.push('/');
+
       }
     }
   };
 
+
   return (
-    <></>
+    <>
+
+    </>
     /*
     <Modal
       title='VALIDACIÓN DE SOLICITUD'

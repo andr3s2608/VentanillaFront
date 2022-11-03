@@ -32,7 +32,7 @@ export const ModificarMedico = ({ props }: any) => {
 
   const { setStatus } = useStepperForm<any>(form);
 
-  const getListas = useCallback(async () => {}, []);
+  const getListas = useCallback(async () => { }, []);
 
   useEffect(() => {
     getListas();
@@ -138,9 +138,7 @@ export const ModificarMedico = ({ props }: any) => {
                       event.preventDefault();
                     }
                   }}
-                  onPaste={(event) => {
-                    event.preventDefault();
-                  }}
+
                 />
               </Form.Item>
             </div>
