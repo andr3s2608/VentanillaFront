@@ -35,7 +35,9 @@ export const TablaReportes = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
+
       setroles(JSON.parse(rolesstorage));
+      setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -47,15 +49,86 @@ export const TablaReportes = (props: IDataSource) => {
 
   const [Tipo] = roles;
 
+  var identify: string;
+  var tipotramite: any;
+  var fecha: any;
 
+  const Renovar = (datos: any) => {
+    if (data.length == 0) {
+    } else {
+      if (datos == undefined) {
+        datos = data;
+      }
 
+      identify = '';
 
+      for (let index = 0; index < datos.length; index++) {
+        identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
+      }
 
+      // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
+      // return `${result}${item['persona']['numeroIdentificacion']}|`;
+      // }, '');
+
+      tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
+        return `${result}${item.idTramite}|`;
+      }, '');
+
+      fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
+        return `${result}${item.fechaSolicitud}|`;
+      }, '');
+    }
+  };
+
+  if (Validacion == '1') {
+    Renovar(undefined);
+  }
 
   var structureColumns;
 
+  const fecharecortada = () => {
+    if (Tipo.rol !== 'Ciudadano') {
+      const posicioninicial = 0;
+      const fec: string = fecha.substring(posicioninicial, fecha.indexOf('|'));
+      const fechamodificada = fec.substring(posicioninicial, fecha.indexOf('T'));
+      fecha = fecha.substring(fecha.indexOf('|') + 1, fecha.length);
+
+      return fechamodificada;
+    }
+  };
+
+  const tiposolicitud = () => {
+    const posicioninicial = 0;
+    var idTramite = tipotramite.substring(posicioninicial, tipotramite.indexOf('|'));
+    tipotramite = tipotramite.substring(tipotramite.indexOf('|') + 1, tipotramite.length);
+    var valor = '';
+
+    switch (idTramite) {
+      case 'a289c362-e576-4962-962b-1c208afa0273':
+        valor = 'Inhumación Indivual';
+
+        break;
+      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+        //inhumacion fetal
+        valor = 'Inhumación Fetal';
+
+        break;
+      case 'e69bda86-2572-45db-90dc-b40be14fe020':
+        //cremacion individual
+        valor = 'Cremación Individual';
+
+        break;
+      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+        //cremacionfetal
+        valor = 'Cremación Fetal ';
+
+        break;
+    }
+    return valor;
+  };
 
   if (Validacion == '1') {
+    console.log('DATA RECIBIDA \n' + JSON.stringify(data));
     structureColumns = [
       {
         title: 'Consecutivo',
@@ -68,45 +141,9 @@ export const TablaReportes = (props: IDataSource) => {
         key: 'numerolicenciainfo'
       },
       {
-        title: 'Documento del Fallecido',
-        dataIndex: 'noIdentificacionSolicitante',
-        key: 'numeroDocumento'
-      },
-      {
-        title: 'Funeraria y/o Nombre',
-        dataIndex: 'razonSocialSolicitante',
-        key: 'nombreCompleto'
-      },
-
-      {
-        title: 'Fecha de Registro',
-        dataIndex: 'fechaSolicitud',
-        key: 'fechaSolicitud',
-        render: (Text: string) => (
-          <Form.Item label='' name=''>
-            <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
-          </Form.Item>
-        )
-      },
-      {
-        title: 'Estado Tramite',
-        dataIndex: 'estadoString',
-        key: 'estado',
-        render: (Text: string) => {
-          if (Text === 'Registro Usuario Externo') {
-            return (<Form.Item label='' name=''>
-              <text>{'En Tramite'}</text>
-            </Form.Item>)
-          }
-          else {
-            return (<Form.Item label='' name=''>
-              <text>{Text}</text>
-            </Form.Item>)
-          }
-
-
-
-        }
+        title: 'Fecha de Licencia',
+        dataIndex: 'fechaLicencia',
+        key: 'fechaLicencia'
       },
       {
         title: 'Tipo Solicitud',
@@ -136,13 +173,134 @@ export const TablaReportes = (props: IDataSource) => {
               return <Form.Item label='' name=''>
                 <text>{'Cremación Fetal '}</text>
               </Form.Item>
+
+
           }
         }
+      },
+      {
+        title: 'Número de Certificado',
+        dataIndex: 'numeroCertificado',
+        key: 'numeroCertificado'
+      },
+      {
+        title: 'Tipo de Documento',
+        dataIndex: 'idTipoDocumento',
+        key: 'idTipoDocumento'
+      },
+      {
+        title: 'Número de documento',
+        dataIndex: 'noIdentificacionSolicitante',
+        key: 'noIdentificacionSolicitante'
+      },
+      {
+        title: 'Primer Apellido',
+        dataIndex: 'primerApellidoRep',
+        key: 'primerApellidoRep'
+      },
+      {
+        title: 'Segundo Apellido',
+        dataIndex: 'segundoApellidoRep',
+        key: 'segundoApellidoRep'
+      },
+      {
+        title: 'Primer Nombre',
+        dataIndex: 'primerNombreRep',
+        key: 'primerNombreRep'
+      },
+      {
+        title: 'Segundo Nombre',
+        dataIndex: 'segundoNombreRep',
+        key: 'segundoNombreRep'
+      },
+      {
+        title: 'Fecha de Nacimiento',
+        dataIndex: 'fechaNacimientoRep',
+        key: 'fechaNacimientoRep'
+      },
+      {
+        title: 'Sexo',
+        dataIndex: 'nombreSexo',
+        key: 'nombreSexo'
+      },
+      {
+        title: 'Fecha de Fallecimiento',
+        dataIndex: 'fechaDefuncion',
+        key: 'fechaDefuncion'
+      },
+      {
+        title: 'Tipo de Muerte',
+        dataIndex: 'tipoMuerteRep',
+        key: 'tipoMuerteRep'
+      },
+      {
+        title: 'Cementerio',
+        dataIndex: 'cementerio',
+        key: 'cementerio'
+      },
+      {
+        title: 'Pais',
+        dataIndex: 'paisRep',
+        key: 'paisRep'
+      },
+      {
+        title: 'Departamento',
+        dataIndex: 'departamentoRep',
+        key: 'departamentoRep'
+      },
+      {
+        title: 'Municipio',
+        dataIndex: 'municipioRep',
+        key: 'municipioRep'
+      },
+      {
+        title: 'Area',
+        dataIndex: 'areaDefuncionRep',
+        key: 'areaDefuncionRep'
+      },
+      {
+        title: 'Sitio',
+        dataIndex: 'sitioDefuncionRep',
+        key: 'sitioDefuncionRep'
+      },
+      {
+        title: 'Ins. que expidio Certificado Def.',
+        dataIndex: 'razonSocialInstitucionRep',
+        key: 'razonSocialInstitucionRep'
+      },
+      {
+        title: 'NIT',
+        dataIndex: 'numeroIdentificacionInstitucionRep',
+        key: 'numeroIdentificacionInstitucionRep'
+      },
+      {
+        title: 'Num. Acta levantamiento',
+        dataIndex: 'numeroActaLevantamientoInstitucionRep',
+        key: 'numeroActaLevantamientoInstitucionRep'
+      },
+      {
+        title: 'Fecha de Acta Levantamiento',
+        dataIndex: 'fechaActaInstitucionRep',
+        key: 'fechaActaInstitucionRep'
+      },
+      {
+        title: 'Fiscal Número',
+        dataIndex: 'noFiscalInstitucionRep',
+        key: 'noFiscalInstitucionRep'
+      },
+      {
+        title: 'Seccional de Fiscalia',
+        dataIndex: 'seccionalFiscaliaInstitucionRep',
+        key: 'seccionalFiscaliaInstitucionRep'
+      },
+      {
+        title: 'Num. Protocolo',
+        dataIndex: 'numeroProtocoloInstitucionRep',
+        key: 'numeroProtocoloInstitucionRep'
       }
     ];
   }
 
-  /*
   const onPageChange = (pagination: any, filters: any) => {
 
 
@@ -155,9 +313,9 @@ export const TablaReportes = (props: IDataSource) => {
       }
     }
 
-
+    Renovar(array);
   };
-*/
+
   return (
     <div className='container-fluid'>
       <div className='card'>
@@ -169,6 +327,8 @@ export const TablaReportes = (props: IDataSource) => {
                 id='tableGen'
                 dataSource={data}
                 columns={structureColumns}
+                onChange={onPageChange}
+                scroll={{ x: true }}
                 pagination={{ pageSize: Paginas }}
               />
             </div>
