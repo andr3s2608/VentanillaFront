@@ -22,7 +22,10 @@ import moment from 'moment';
 export const TablaReportes = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
-
+  const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
+  const [tipoSolicitud, setTipoSolicitud] = useState<string>('default-tiposolicitud');
+  const [listadoDocumento, setListadoDocumento] = useState<Array<Document>>([]);
+  const [observacion, setObservacion] = useState<string>('default');
   const { accountIdentifier } = authProvider.getAccount();
   const [Validacion, setValidacion] = useState<string>('0');
   const [roles, setroles] = useState<IRoles[]>([]);
@@ -42,6 +45,7 @@ export const TablaReportes = (props: IDataSource) => {
     getListas();
   }, []);
 
+  const [Tipo] = roles;
 
 
 
@@ -57,6 +61,11 @@ export const TablaReportes = (props: IDataSource) => {
         title: 'Consecutivo',
         dataIndex: 'consecutivo',
         key: 'consecutivo'
+      },
+      {
+        title: 'Num. Licencia',
+        dataIndex: 'numerolicenciainfo',
+        key: 'numerolicenciainfo'
       },
       {
         title: 'Documento del Fallecido',
