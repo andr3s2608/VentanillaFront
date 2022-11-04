@@ -74,7 +74,7 @@ export class ApiService {
 
   ModificarCementerio = (payload: any) =>
     post<string>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       payload,
       url: `Request/ModificarCementerio`,
       id: '1'
@@ -260,7 +260,7 @@ export class ApiService {
 
   getHistorialSolicitudesPDF = (payload: any[]) =>
     post({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_INHCREMACION as string,
       url: `GeneratePDF/GeneratePDFHistorial`,
       payload,
       id: '0'
