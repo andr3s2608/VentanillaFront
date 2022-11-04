@@ -43,7 +43,9 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
   const getListas = useCallback(
     async () => {
+      console.log("ENTRO");
       const resp = await api.getallReports();
+      console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 47 ~ resp \n"+ JSON.stringify(resp));
 
 
       setGrid(resp);

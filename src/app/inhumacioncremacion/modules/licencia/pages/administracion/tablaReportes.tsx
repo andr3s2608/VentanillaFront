@@ -128,6 +128,7 @@ export const TablaReportes = (props: IDataSource) => {
   };
 
   if (Validacion == '1') {
+    console.log('DATA RECIBIDA \n' + JSON.stringify(data));
     structureColumns = [
       {
         title: 'Consecutivo',
@@ -140,30 +141,9 @@ export const TablaReportes = (props: IDataSource) => {
         key: 'numerolicenciainfo'
       },
       {
-        title: 'Documento del Fallecido',
-        dataIndex: 'noIdentificacionSolicitante',
-        key: 'numeroDocumento'
-      },
-      {
-        title: 'Funeraria y/o Nombre',
-        dataIndex: 'razonSocialSolicitante',
-        key: 'nombreCompleto'
-      },
-
-      {
-        title: 'Fecha de Registro',
-        dataIndex: 'fechaSolicitud',
-        key: 'fechaSolicitud',
-        render: (Text: string) => (
-          <Form.Item label='' name=''>
-            <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
-          </Form.Item>
-        )
-      },
-      {
-        title: 'Estado Tramite',
-        dataIndex: 'estadoString',
-        key: 'estado'
+        title: 'Fecha de Licencia',
+        dataIndex: 'fechaLicencia',
+        key: 'fechaLicencia'
       },
       {
         title: 'Tipo Solicitud',
@@ -197,6 +177,126 @@ export const TablaReportes = (props: IDataSource) => {
 
           }
         }
+      },
+      {
+        title: 'Número de Certificado',
+        dataIndex: 'numeroCertificado',
+        key: 'numeroCertificado'
+      },
+      {
+        title: 'Tipo de Documento',
+        dataIndex: 'idTipoDocumento',
+        key: 'idTipoDocumento'
+      },
+      {
+        title: 'Número de documento',
+        dataIndex: 'noIdentificacionSolicitante',
+        key: 'noIdentificacionSolicitante'
+      },
+      {
+        title: 'Primer Apellido',
+        dataIndex: 'primerApellidoRep',
+        key: 'primerApellidoRep'
+      },
+      {
+        title: 'Segundo Apellido',
+        dataIndex: 'segundoApellidoRep',
+        key: 'segundoApellidoRep'
+      },
+      {
+        title: 'Primer Nombre',
+        dataIndex: 'primerNombreRep',
+        key: 'primerNombreRep'
+      },
+      {
+        title: 'Segundo Nombre',
+        dataIndex: 'segundoNombreRep',
+        key: 'segundoNombreRep'
+      },
+      {
+        title: 'Fecha de Nacimiento',
+        dataIndex: 'fechaNacimientoRep',
+        key: 'fechaNacimientoRep'
+      },
+      {
+        title: 'Sexo',
+        dataIndex: 'nombreSexo',
+        key: 'nombreSexo'
+      },
+      {
+        title: 'Fecha de Fallecimiento',
+        dataIndex: 'fechaDefuncion',
+        key: 'fechaDefuncion'
+      },
+      {
+        title: 'Tipo de Muerte',
+        dataIndex: 'tipoMuerteRep',
+        key: 'tipoMuerteRep'
+      },
+      {
+        title: 'Cementerio',
+        dataIndex: 'cementerio',
+        key: 'cementerio'
+      },
+      {
+        title: 'Pais',
+        dataIndex: 'paisRep',
+        key: 'paisRep'
+      },
+      {
+        title: 'Departamento',
+        dataIndex: 'departamentoRep',
+        key: 'departamentoRep'
+      },
+      {
+        title: 'Municipio',
+        dataIndex: 'municipioRep',
+        key: 'municipioRep'
+      },
+      {
+        title: 'Area',
+        dataIndex: 'areaDefuncionRep',
+        key: 'areaDefuncionRep'
+      },
+      {
+        title: 'Sitio',
+        dataIndex: 'sitioDefuncionRep',
+        key: 'sitioDefuncionRep'
+      },
+      {
+        title: 'Ins. que expidio Certificado Def.',
+        dataIndex: 'razonSocialInstitucionRep',
+        key: 'razonSocialInstitucionRep'
+      },
+      {
+        title: 'NIT',
+        dataIndex: 'numeroIdentificacionInstitucionRep',
+        key: 'numeroIdentificacionInstitucionRep'
+      },
+      {
+        title: 'Num. Acta levantamiento',
+        dataIndex: 'numeroActaLevantamientoInstitucionRep',
+        key: 'numeroActaLevantamientoInstitucionRep'
+      },
+      {
+        title: 'Fecha de Acta Levantamiento',
+        dataIndex: 'fechaActaInstitucionRep',
+        key: 'fechaActaInstitucionRep'
+      },
+      {
+        title: 'Fiscal Número',
+        dataIndex: 'noFiscalInstitucionRep',
+        key: 'noFiscalInstitucionRep'
+      },
+      {
+        title: 'Seccional de Fiscalia',
+        dataIndex: 'seccionalFiscaliaInstitucionRep',
+        key: 'seccionalFiscaliaInstitucionRep'
+      },
+      {
+        title: 'Num. Protocolo',
+        dataIndex: 'numeroProtocoloInstitucionRep',
+        key: 'numeroProtocoloInstitucionRep'
       }
     ];
   }
@@ -228,6 +328,7 @@ export const TablaReportes = (props: IDataSource) => {
                 dataSource={data}
                 columns={structureColumns}
                 onChange={onPageChange}
+                scroll={{ x: true }}
                 pagination={{ pageSize: Paginas }}
               />
             </div>
