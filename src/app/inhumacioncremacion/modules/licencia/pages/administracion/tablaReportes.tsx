@@ -84,7 +84,7 @@ export const TablaReportes = (props: IDataSource) => {
     Renovar(undefined);
   }
 
-  var structureColumns;
+  let structureColumns: any = [];
 
   const fecharecortada = () => {
     if (Tipo.rol !== 'Ciudadano') {
@@ -176,6 +176,74 @@ export const TablaReportes = (props: IDataSource) => {
 
 
           }
+        }
+      },
+      {
+        title: 'Estado Tramite',
+        dataIndex: 'estadoString',
+        key: 'estado',
+        width: 230,
+        filters: [
+          {
+            text: 'Anulado ',
+            value: 'Anulado validador de documentos'
+          },
+          {
+            text: 'Aprobado ',
+            value: 'Aprobado validador de documentos'
+          },
+          {
+            text: 'Pendiente',
+            value: 'Documentos Inconsistentes'
+          },
+          {
+            text: 'Negado ',
+            value: 'Negado validador de documentos'
+          }
+          ,
+          {
+            text: 'En tramite ',
+            value: 'Registro Usuario Externo'
+          }
+          ,
+          {
+            text: 'Cambio de Licencia',
+            value: 'Cambio de Licencia'
+          },
+          {
+            text: 'Actualización de Documentos',
+            value: 'Actualización Documentos'
+          },
+          {
+            text: 'Actualización de Datos',
+            value: 'Actualización Solicitud'
+          }
+        ],
+        filterSearch: true,
+        onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
+
+
+        render: (Text: string) => {
+
+          if (Text === 'Cambio de Licencia') {
+            return (<Form.Item label='' name=''>
+              <text>{'Cambio tipo de licencia'}</text>
+            </Form.Item>)
+          }
+          else {
+            if (Text === 'Registro Usuario Externo') {
+              return (<Form.Item label='' name=''>
+                <text>{'En Tramite'}</text>
+              </Form.Item>)
+            }
+            else {
+              return (<Form.Item label='' name=''>
+                <text>{Text}</text>
+              </Form.Item>)
+            }
+
+          }
+
         }
       },
       {
