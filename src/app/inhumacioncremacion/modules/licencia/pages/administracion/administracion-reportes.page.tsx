@@ -592,9 +592,9 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                       id='filterEstadoTra'
                       onChange={selectChangeEstado}
                       options={[
-                        { key: 'registroExt', value: 'Registro Usuario Externo' },
-                        { key: 'aprobado', value: 'Aprobado validador de documentos' },
-                        { key: 'buscar', value: 'por investigar' }
+                        { key: 'registroExt', value: 'Pendiente Validación Funcionario' },
+                        { key: 'aprobado', value: 'Aprobado Validador de Documentos' },
+                        { key: 'buscar', value: 'Mostrar Todos' }
                       ]}
                       optionPropkey='key'
                       optionPropLabel='value'

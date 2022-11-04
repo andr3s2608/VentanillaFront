@@ -67,7 +67,8 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
       setVisibleGrid('contents');
     } else {
-      const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      // const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      const resp = await api.getallrequesttovalidate();
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
 
       setGrid(resp);

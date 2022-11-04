@@ -523,7 +523,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             const update = await api.updatelicencia(objJosn?.idSolicitud);
             observacion = 'generación licencia';
           }
-          observacion = 'aprobación actualización';
+          else { observacion = 'aprobación actualización'; }
+
+
 
         }
         /////////////////////////Enviar Notificacion//////////////////////////
@@ -672,19 +674,29 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           if (objJosn.numerolicencia == null) {
             observacion = 'anulación' + (documentos.length === 0 ? '/' + values.observations : '');
           }
-          observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');;
+          else {
+            observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');;
+          }
+
         }
         if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
           if (objJosn.numerolicencia == null) {
             observacion = 'negación';
           }
-          observacion = 'negación actualización';
+          else {
+            observacion = 'negación actualización';
+          }
+
         }
         if (tipoSeguimiento.toLocaleUpperCase() === 'FE691637-BE8A-425F-A309-E2032221553F') {
           if (objJosn.numerolicencia == null) {
             observacion = 'documentos inconsistentes';
           }
-          observacion = 'documentos inconsistentes actualización';
+          else {
+            observacion = 'documentos inconsistentes actualización';
+
+          }
+
         }
         const idUsuario = await api.getIdUsuario();
         const seguimiento = {
@@ -1884,7 +1896,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         break;
       case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
         //Inhumacion fetal
-        console.log('inh fetal');
+
         respuesta = await htmlInhumacionFetal(false);
 
         break;
