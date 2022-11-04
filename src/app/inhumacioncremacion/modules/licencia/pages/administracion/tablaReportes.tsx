@@ -32,9 +32,7 @@ export const TablaReportes = (props: IDataSource) => {
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
-
       setroles(JSON.parse(rolesstorage));
-      setValidacion('1');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -45,40 +43,10 @@ export const TablaReportes = (props: IDataSource) => {
   }, []);
 
 
-  var identify: string;
-  var tipotramite: any;
-  var fecha: any;
 
-  const Renovar = (datos: any) => {
-    if (data.length == 0) {
-    } else {
-      if (datos == undefined) {
-        datos = data;
-      }
 
-      identify = '';
 
-      for (let index = 0; index < datos.length; index++) {
-        identify = identify + datos[index].persona[0].numeroIdentificacion + '|';
-      }
 
-      // identify = datos.reduce((result: any, item: { persona: { numeroIdentificacion: any }[] }) => {
-      // return `${result}${item['persona']['numeroIdentificacion']}|`;
-      // }, '');
-
-      tipotramite = datos.reduce((result: any, item: { idTramite: any }) => {
-        return `${result}${item.idTramite}|`;
-      }, '');
-
-      fecha = datos.reduce((result: any, item: { fechaSolicitud: any }) => {
-        return `${result}${item.fechaSolicitud}|`;
-      }, '');
-    }
-  };
-
-  if (Validacion == '1') {
-    Renovar(undefined);
-  }
 
   var structureColumns;
 
@@ -114,7 +82,22 @@ export const TablaReportes = (props: IDataSource) => {
       {
         title: 'Estado Tramite',
         dataIndex: 'estadoString',
-        key: 'estado'
+        key: 'estado',
+        render: (Text: string) => {
+          if (Text === 'Registro Usuario Externo') {
+            return (<Form.Item label='' name=''>
+              <text>{'En Tramite'}</text>
+            </Form.Item>)
+          }
+          else {
+            return (<Form.Item label='' name=''>
+              <text>{Text}</text>
+            </Form.Item>)
+          }
+
+
+
+        }
       },
       {
         title: 'Tipo Solicitud',
@@ -144,14 +127,13 @@ export const TablaReportes = (props: IDataSource) => {
               return <Form.Item label='' name=''>
                 <text>{'Cremación Fetal '}</text>
               </Form.Item>
-
-
           }
         }
       }
     ];
   }
 
+  /*
   const onPageChange = (pagination: any, filters: any) => {
 
 
@@ -164,9 +146,9 @@ export const TablaReportes = (props: IDataSource) => {
       }
     }
 
-    Renovar(array);
-  };
 
+  };
+*/
   return (
     <div className='container-fluid'>
       <div className='card'>
@@ -178,7 +160,6 @@ export const TablaReportes = (props: IDataSource) => {
                 id='tableGen'
                 dataSource={data}
                 columns={structureColumns}
-                onChange={onPageChange}
                 pagination={{ pageSize: Paginas }}
               />
             </div>

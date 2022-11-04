@@ -72,11 +72,12 @@ export class ApiService {
       id: '0'
     });
 
-  ModificarCementerio = (numero: string, tipo: string, nombre: string) =>
+  ModificarCementerio = (payload: any) =>
     post<string>({
-      endpoint: REACT_APP_INHCREMACION as string,
-      url: `Request/ModificarCementerio/${numero}/${tipo}/${nombre}`,
-      id: '0'
+      endpoint: REACT_APP_LOCAL as string,
+      payload,
+      url: `Request/ModificarCementerio`,
+      id: '1'
     });
 
   ModificarEstadoSolicitudInh = (estado: string, idsol: string) =>
@@ -250,6 +251,10 @@ export class ApiService {
 
   getallbyEstado = (solicitud: string) =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
+
+
+      getallrequesttovalidate = () =>
+    get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetAllRequesttoValidate`, id: '0' });
 
   getallReports = () => get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequestToGestion`, id: '0' });
 

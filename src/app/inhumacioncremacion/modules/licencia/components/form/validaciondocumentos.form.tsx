@@ -68,7 +68,8 @@ export const ValidarDocumentos = ({ props }: any) => {
           text: 'No se encontró el código de verificación, por favor verifíquelo '
         });
       } else {
-        const getidsol = await api.ObtenerSolicitud(getidtramite.idControlTramite, 'tramite');
+
+        const getidsol = await api.ObtenerSolicitud(getidtramite.idControlTramite, 'idcontrol');
 
         const solicitud = await api.getLicencia(getidsol);
         let valor = '';
