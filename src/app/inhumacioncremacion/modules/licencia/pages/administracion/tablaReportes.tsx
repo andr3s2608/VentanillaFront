@@ -328,7 +328,7 @@ export const TablaReportes = (props: IDataSource) => {
       },
       {
         title: 'Sitio',
-        dataIndex: 'sitioDefuncionRep',
+        dataIndex: 'Sitio',
         key: 'sitioDefuncionRep'
       },
       {
