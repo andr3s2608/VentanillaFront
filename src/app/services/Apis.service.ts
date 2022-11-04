@@ -254,6 +254,7 @@ export class ApiService {
 
   getallReports = () => get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequestToGestion`, id: '0' });
 
+  //correccion
   getallrequesttovalidate = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequesttoValidate`, id: '0' });
 
