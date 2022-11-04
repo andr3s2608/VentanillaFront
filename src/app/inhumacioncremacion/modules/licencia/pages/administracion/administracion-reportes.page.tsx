@@ -43,10 +43,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
   const getListas = useCallback(
     async () => {
-      console.log("ENTRO");
       const resp = await api.getallReports();
-      console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 47 ~ resp \n"+ JSON.stringify(resp));
-
 
       setGrid(resp);
       setAllData(resp);
@@ -90,6 +87,10 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   }
 
   function downloadFileExcel() {
+
+
+    // FALTA AGREGAR LOS NUEVOS CAMPOS DE LA GRILLA AL DOCUMENTO QUE SE VA A DESCARGAR
+
     const ExportJsonExcel = require('js-export-excel');
     var datos = grid;
     let datatable = [];
@@ -116,13 +117,34 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'consecutivo': datos[i].consecutivo,
+          'Consecutivo': datos[i].consecutivo,
           'Numero Licencia': datos[i].numerolicenciainfo,
-          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
-          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
-          'Fecha de registro': datos[i].fechaSolicitud,
-          'Estado': datos[i].estadoString,
-          'Tipo Solicitud': tipo
+          'Fecha de Licencia': datos[i].fechaLicencia,
+          'Tipo Solicitud': tipo,
+          'Número de Certificado': datos[i].numeroCertificado,
+          'Tipo de Documento': datos[i].idTipoDocumento,
+          'Número de documento': datos[i].noIdentificacionSolicitante,
+          'Primer Apellido': datos[i].primerApellidoRep,
+          'Segundo Apellido': datos[i].segundoApellidoRep,
+          'Primer Nombre': datos[i].primerNombreRep,
+          'Segundo Nombre': datos[i].segundoNombreRep,
+          'Fecha de Nacimiento': datos[i].fechaNacimientoRep,
+          'Sexo': datos[i].nombreSexo,
+          'Fecha de Fallecimiento': datos[i].fechaDefuncion,
+          'Tipo de Muerte': datos[i].tipoMuerteRep,
+          'Cementerio': datos[i].cementerio,
+          'Pais': datos[i].paisRep,
+          'Departamento': datos[i].departamentoRep,
+          'Municipio': datos[i].municipioRep,
+          'Area': datos[i].areaDefuncionRep,
+          'Sitio': datos[i].Sitio,
+          'Ins. que expidio Certificado Def.': datos[i].razonSocialInstitucionRep,
+          'NIT': datos[i].numeroIdentificacionInstitucionRep,
+          'Num. Acta levantamiento': datos[i].numeroActaLevantamientoInstitucionRep,
+          'Fecha de Acta Levantamiento': datos[i].fechaActaInstitucionRep,
+          'Fiscal Número': datos[i].noFiscalInstitucionRep,
+          'Seccional de Fiscalia': datos[i].seccionalFiscaliaInstitucionRep,
+          'Num. Protocolo': datos[i].numeroProtocoloInstitucionRep
         }
         datatable.push(ob);
       }
@@ -133,15 +155,66 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           {
             sheetData: datatable,
             sheetName: 'Historial solicitudes',
-            sheetFilter: ['consecutivo', 'Numero Licencia', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
-              , 'Fecha de registro', 'Estado', 'Tipo Solicitud'],
-            sheetHeader: ['consecutivo', 'Numero Licencia', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
-              , 'Fecha de registro', 'Estado', 'Tipo Solicitud']
+            sheetFilter: ['Consecutivo',
+              'Numero Licencia',
+              'Fecha de Licencia',
+              'Tipo Solicitud',
+              'Número de Certificado',
+              'Tipo de Documento',
+              'Número de documento',
+              'Primer Apellido',
+              'Segundo Apellido',
+              'Primer Nombre',
+              'Segundo Nombre',
+              'Fecha de Nacimiento',
+              'Sexo',
+              'Fecha de Fallecimiento',
+              'Tipo de Muerte',
+              'Cementerio',
+              'Pais',
+              'Departamento',
+              'Municipio',
+              'Area',
+              'Sitio',
+              'Ins. que expidio Certificado Def.',
+              'NIT',
+              'Num. Acta levantamiento',
+              'Fecha de Acta Levantamiento',
+              'Fiscal Número',
+              'Seccional de Fiscalia',
+              'Num. Protocolo'],
+            sheetHeader: ['Consecutivo',
+              'Numero Licencia',
+              'Fecha de Licencia',
+              'Tipo Solicitud',
+              'Número de Certificado',
+              'Tipo de Documento',
+              'Número de documento',
+              'Primer Apellido',
+              'Segundo Apellido',
+              'Primer Nombre',
+              'Segundo Nombre',
+              'Fecha de Nacimiento',
+              'Sexo',
+              'Fecha de Fallecimiento',
+              'Tipo de Muerte',
+              'Cementerio',
+              'Pais',
+              'Departamento',
+              'Municipio',
+              'Area',
+              'Sitio',
+              'Ins. que expidio Certificado Def.',
+              'NIT',
+              'Num. Acta levantamiento',
+              'Fecha de Acta Levantamiento',
+              'Fiscal Número',
+              'Seccional de Fiscalia',
+              'Num. Protocolo']
           }
         ]
       };
 
-      console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 141 ~ downloadFileExcel ~ datatable", datatable);
       //downloadPDF(datatable);
       //console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 141 ~ downloadFileExcel ~ prueba", prueba);
       var toExcel = new ExportJsonExcel(opciones);
@@ -196,22 +269,52 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'consecutivo': datos[i].consecutivo,
+          'Consecutivo': datos[i].consecutivo,
           'Numero Licencia': datos[i].numerolicenciainfo,
-          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
-          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
-          'Fecha de registro': datos[i].fechaSolicitud,
-          'Estado': datos[i].estadoString,
-          'Tipo Solicitud': tipo
+          'Fecha de Licencia': datos[i].fechaLicencia,
+          'Tipo Solicitud': tipo,
+          'Número de Certificado': datos[i].numeroCertificado,
+          'Tipo de Documento': datos[i].idTipoDocumento,
+          'Número de documento': datos[i].noIdentificacionSolicitante,
+          'Primer Apellido': datos[i].primerApellidoRep,
+          'Segundo Apellido': datos[i].segundoApellidoRep,
+          'Primer Nombre': datos[i].primerNombreRep,
+          'Segundo Nombre': datos[i].segundoNombreRep,
+          'Fecha de Nacimiento': datos[i].fechaNacimientoRep,
+          'Sexo': datos[i].nombreSexo,
+          'Fecha de Fallecimiento': datos[i].fechaDefuncion,
+          'Tipo de Muerte': datos[i].tipoMuerteRep,
+          'Cementerio': datos[i].cementerio,
+          'Pais': datos[i].paisRep,
+          'Departamento': datos[i].departamentoRep,
+          'Municipio': datos[i].municipioRep,
+          'Area': datos[i].areaDefuncionRep,
+          'Sitio': datos[i].Sitio,
+          'Ins. que expidio Certificado Def.': datos[i].razonSocialInstitucionRep,
+          'NIT': datos[i].numeroIdentificacionInstitucionRep,
+          'Num. Acta levantamiento': datos[i].numeroActaLevantamientoInstitucionRep,
+          'Fecha de Acta Levantamiento': datos[i].fechaActaInstitucionRep,
+          'Fiscal Número': datos[i].noFiscalInstitucionRep,
+          'Seccional de Fiscalia': datos[i].seccionalFiscaliaInstitucionRep,
+          'Num. Protocolo': datos[i].numeroProtocoloInstitucionRep
         }
         datatable.push(ob);
       }
     }
-    let textoPlano = 'IDENTIFICADOR  | NUMERO LIC. | DOCUMENTO DEL FALLECIDO  |  SOLICITANTE  |  REGISTRO  |  ESTADO  |  ESTADO  |  TIPO SOLICITUD \n';
+    let textoPlano = 'Consecutivo  | Numero Licencia | Fecha de Licencia  |  Tipo Solicitud  |  Tipo Solicitud  |  Número de Certificado  |  Tipo de Documento  |  Número de documento | ' +
+      'Primer Apellido  | Segundo Apellido | Primer Nombre  |  Segundo Nombre  |  Fecha de Nacimiento  |  Sexo  |  Fecha de Fallecimiento  |  Tipo de Muerte | ' +
+      'Cementerio  | Pais | Departamento  |  Municipio  |  Area  |  Sitio  |  Ins. que expidio Certificado Def.  |  NIT | ' +
+      'Num. Acta levantamiento  | Fecha de Acta Levantamiento | Fiscal Número  |  Seccional de Fiscalia  |  Num. Protocolo  \n';
     for (let inf in datatable) {
-      textoPlano += datatable[inf]['consecutivo'] + '  |  ' + datatable[inf]['Numero Licencia'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
-        + datatable[inf]['Solicitante (funeraria o nombre)'] + '  |  ' + datatable[inf]['Fecha de registro'] +
-        '  |  ' + datatable[inf].Estado + '  |  ' + datatable[inf]['Tipo Solicitud'] + ' \n';
+      textoPlano += datatable[inf]['Consecutivo'] + '  |  ' + datatable[inf]['Numero Licencia'] + '  |  ' + datatable[inf]['Fecha de Licencia'] + '  |  '
+        + datatable[inf]['Tipo Solicitud'] + '  |  ' + datatable[inf]['Número de Certificado'] +
+        '  |  ' + datatable[inf]['Tipo de Documento'] + '  |  ' + datatable[inf]['Número de documento'] + datatable[inf]['Primer Apellido'] + '  |  ' + datatable[inf]['Segundo Apellido'] + '  |  ' + datatable[inf]['Primer Nombre'] + '  |  '
+        + datatable[inf]['Segundo Nombre'] + '  |  ' + datatable[inf]['Fecha de Nacimiento'] +
+        '  |  ' + datatable[inf]['Sexo'] + '  |  ' + datatable[inf]['Fecha de Fallecimiento'] + datatable[inf]['Tipo de Muerte'] + '  |  ' + datatable[inf]['Cementerio'] + '  |  ' + datatable[inf]['Pais'] + '  |  '
+        + datatable[inf]['Departamento'] + '  |  ' + datatable[inf]['Municipio'] +
+        '  |  ' + datatable[inf]['Area'] + '  |  ' + datatable[inf]['Sitio'] + datatable[inf]['Ins. que expidio Certificado Def.'] + '  |  ' + datatable[inf]['NIT'] + '  |  ' + datatable[inf]['Num. Acta levantamiento'] + '  |  '
+        + datatable[inf]['Fecha de Acta Levantamiento'] + '  |  ' + datatable[inf]['Fiscal Número'] +
+        '  |  ' + datatable[inf]['Seccional de Fiscalia'] + '  |  ' + datatable[inf]['Num. Protocolo'] + ' \n';
 
     }
 
