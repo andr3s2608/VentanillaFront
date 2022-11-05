@@ -265,9 +265,9 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
                             prop(4, 'solicitante');
                           }
                           else {
-                            setLongitudminima(6);
-                            setLongitudmaxima(10);
-                            setTipocampo('[a-zA-Z0-9]{6,10}');
+                            setLongitudminima(4);
+                            setLongitudmaxima(16);
+                            setTipocampo('[a-zA-Z0-9]{4,16}');
                             setTipocampovalidacion(/[a-zA-Z0-9]/);
                             setCampo('AlfaNuméricos(Numéros y letras)');
                             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
