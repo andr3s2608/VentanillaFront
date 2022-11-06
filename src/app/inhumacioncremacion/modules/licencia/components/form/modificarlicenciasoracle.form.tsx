@@ -347,7 +347,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const onSubmit = async (values: any) => {
     let bandera = false;
-    let continuar = false;
+
 
     if (values.numerocert == obj.NUM_CERTIFICADO_DEFUNCION) {
       bandera = true;
@@ -377,187 +377,215 @@ export const ModificarLicencia = ({ props }: any) => {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          continuar = true
+
+          Modificar(values);
 
         } else if (result.isDenied) {
         }
       });
     }
     else {
-      continuar = true;
+
+      Modificar(values);
     }
 
-    if (continuar) {
 
-      obj.NUM_CERTIFICADO_DEFUNCION = values.numerocert;
-      obj.PRIMER_NOMBRE = values.name;
-      obj.SEGUNDO_NOMBRE = values.secondName;
-      obj.PRIMER_APELLIDO = values.surname;
-      obj.SEGUNDO_APELLIDO = values.secondSurname;
+  };
 
 
-
-      let tipoid = '';
-      switch (values.IDType) {
-        case '97f5657d-d8ec-48ef-bbe3-1babefecb1a4' || 'Carné Diplomático':
-          tipoid = 'CD'
-          break;
-        case '7c96a4d3-a0cb-484e-a01b-93bc39c2552e' || 'Cédula de Ciudadanía':
-          tipoid = 'CC'
-          break;
-
-        case 'a4ee4462-f837-4dff-a800-5495c33ac3ce' || 'Cédula de extranjería':
-          tipoid = 'CE'
-          break;
-        case '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' || 'Certificado de Nacido Vivo':
-          tipoid = 'CN'
-          break;
-
-        case '60518653-70b7-42ab-8622-caa27b496184' || 'Documento Extranjero':
-          tipoid = 'DE'
-          break;
-
-        case '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || 'Número de Protocolo':
-          tipoid = 'NP'
-          break;
-        case 'ffe88939-06d5-486c-887c-e52d50b7f35d' || 'Numero único de identificacíon personal':
-          tipoid = 'NUIP'
-          break;
-
-        case 'f1b570ee-f628-4438-a47f-6d7bff1f06d7' || 'Pasaporte':
-          tipoid = 'PA'
-          break;
-
-        case '2491bc4b-8a60-408f-9fd1-136213f1e4fb' || 'Permiso Especial de Permanencia':
-          tipoid = 'PEP'
-          break;
-
-        case '71f659be-9d6b-4169-9ee2-e70bf0d65f92' || 'Registro Civil de Nacimiento':
-          tipoid = 'RC'
-          break;
-
-        case 'c532c358-56ae-4f93-8b9b-344ddf1256b7' || 'Salvoconducto':
-          tipoid = 'SC'
-          break;
-
-        case '0676c046-d93a-4551-a37e-72e3a653bd1b' || 'Tarjeta de Extranjería':
-          tipoid = 'TE'
-          break;
+  const Modificar = async (values: any) => {
 
 
-        case 'ac3629d8-5c87-46ce-a8e2-530b0495cbf6' || 'Tarjeta de Identidad':
-          tipoid = 'TI'
-          break;
+    Swal.fire({
+      title: 'Modificacion de Licencia',
+      text: 'Esta a punto de realizar un cambio a la licencia, ¿Está seguro de continuar?',
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'Modificar',
+      denyButtonText: `Cancelar`,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      icon: 'info'
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
 
-        case '6ae7e477-2de5-4149-8c93-12aca6668ff0' || 'Adulto Sin Identificar':
-          tipoid = 'AS'
-          break;
-
-        case '5fa5bf3f-b342-4596-933f-0956ae4b9109' || 'Menor Sin Identificar':
-          tipoid = 'MS'
-          break;
-
-        case 'e927b566-7b8e-4b4d-ae26-14454705cb5e' || 'Permiso de Protección Temporal':
-          tipoid = 'PEP'
-          break;
-
-        case 'c087d833-3cfb-460f-aa78-e5cf2fe83f25' || 'Sin identificación':
-          tipoid = 'SI'
-          break;
-
-      }
-
-      let tipom = '';
-      switch (values.deathType) {
-        case '475c280d-67af-47b0-a8bc-de420f6ac740' || 'Natural':
-          tipom = 'N'
-          break;
-
-        case '253eaa61-81be-4bc0-9003-2eb1c9e37606' || 'Violenta':
-          tipom = 'V'
-          break;
-
-        case '3df924db-7307-4be1-9fe8-1cce8cfb9584' || 'En estudio':
-          tipom = 'EE'
-          break;
-        default:
-          break;
-      }
-
-      obj.TIPO_MUERTE = tipom;
-      obj.TIPO_IDENT = tipoid;
-      obj.NROIDENT = values.IDNumber;
-      obj.CEMENTERIO = values.cementerio;
-      obj.COD_INST = values.codinst;
-      obj.RAZON_INST = values.razoninst;
-      obj.RADICADO = values.radicado;
+        obj.NUM_CERTIFICADO_DEFUNCION = values.numerocert;
+        obj.PRIMER_NOMBRE = values.name;
+        obj.SEGUNDO_NOMBRE = values.secondName;
+        obj.PRIMER_APELLIDO = values.surname;
+        obj.SEGUNDO_APELLIDO = values.secondSurname;
 
 
 
-      await api.putLicenciaOracle(obj)
-
-      //    await api.putLicencia();
-
-      if (nn) {
-        let container = '';
-        switch (obj.FETAL_Y_NO_FETAL) {
-          case 'a289c362-e576-4962-962b-1c208afa0273':
-            container = 'inhumacionindividual';
-
+        let tipoid = '';
+        switch (values.IDType) {
+          case '97f5657d-d8ec-48ef-bbe3-1babefecb1a4' || 'Carné Diplomático':
+            tipoid = 'CD'
             break;
-          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-            //inhumacion fetal
-            container = 'inhumacionfetal';
-
+          case '7c96a4d3-a0cb-484e-a01b-93bc39c2552e' || 'Cédula de Ciudadanía':
+            tipoid = 'CC'
             break;
-          case 'e69bda86-2572-45db-90dc-b40be14fe020':
-            //cremacion individual
-            container = 'cremacionindividual';
 
+          case 'a4ee4462-f837-4dff-a800-5495c33ac3ce' || 'Cédula de extranjería':
+            tipoid = 'CE'
             break;
-          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-            //cremacionfetal
-            container = 'cremacionfetal';
+          case '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' || 'Certificado de Nacido Vivo':
+            tipoid = 'CN'
+            break;
 
+          case '60518653-70b7-42ab-8622-caa27b496184' || 'Documento Extranjero':
+            tipoid = 'DE'
+            break;
+
+          case '7c96a4d3-a0cb-484e-a01b-93bc39c7902e' || 'Número de Protocolo':
+            tipoid = 'NP'
+            break;
+          case 'ffe88939-06d5-486c-887c-e52d50b7f35d' || 'Numero único de identificacíon personal':
+            tipoid = 'NUIP'
+            break;
+
+          case 'f1b570ee-f628-4438-a47f-6d7bff1f06d7' || 'Pasaporte':
+            tipoid = 'PA'
+            break;
+
+          case '2491bc4b-8a60-408f-9fd1-136213f1e4fb' || 'Permiso Especial de Permanencia':
+            tipoid = 'PEP'
+            break;
+
+          case '71f659be-9d6b-4169-9ee2-e70bf0d65f92' || 'Registro Civil de Nacimiento':
+            tipoid = 'RC'
+            break;
+
+          case 'c532c358-56ae-4f93-8b9b-344ddf1256b7' || 'Salvoconducto':
+            tipoid = 'SC'
+            break;
+
+          case '0676c046-d93a-4551-a37e-72e3a653bd1b' || 'Tarjeta de Extranjería':
+            tipoid = 'TE'
+            break;
+
+
+          case 'ac3629d8-5c87-46ce-a8e2-530b0495cbf6' || 'Tarjeta de Identidad':
+            tipoid = 'TI'
+            break;
+
+          case '6ae7e477-2de5-4149-8c93-12aca6668ff0' || 'Adulto Sin Identificar':
+            tipoid = 'AS'
+            break;
+
+          case '5fa5bf3f-b342-4596-933f-0956ae4b9109' || 'Menor Sin Identificar':
+            tipoid = 'MS'
+            break;
+
+          case 'e927b566-7b8e-4b4d-ae26-14454705cb5e' || 'Permiso de Protección Temporal':
+            tipoid = 'PEP'
+            break;
+
+          case 'c087d833-3cfb-460f-aa78-e5cf2fe83f25' || 'Sin identificación':
+            tipoid = 'SI'
+            break;
+
+        }
+
+        let tipom = '';
+        switch (values.deathType) {
+          case '475c280d-67af-47b0-a8bc-de420f6ac740' || 'Natural':
+            tipom = 'N'
+            break;
+
+          case '253eaa61-81be-4bc0-9003-2eb1c9e37606' || 'Violenta':
+            tipom = 'V'
+            break;
+
+          case '3df924db-7307-4be1-9fe8-1cce8cfb9584' || 'En estudio':
+            tipom = 'EE'
+            break;
+          default:
             break;
         }
-        const support = await api.getSupportDocuments(obj.idSolicitud);
 
-        const [doc] = support.filter((p: any) => p.path.includes('Otros_Documentos'));
+        obj.TIPO_MUERTE = tipom;
+        obj.TIPO_IDENT = tipoid;
+        obj.NROIDENT = values.IDNumber;
+        obj.CEMENTERIO = values.cementerio;
+        obj.COD_INST = values.codinst;
+        obj.RAZON_INST = values.razoninst;
+        obj.RADICADO = values.radicado;
 
-        const supportDocumentsEdit: any[] = [];
-        const formData = new FormData();
 
-        const archivo = values.fileOtrosDocumentos.file;
 
-        formData.append('file', archivo);
-        formData.append('nameFile', 'Otros_Documentos' + '_' + obj.idSolicitud);
+        await api.putLicenciaOracle(obj)
 
-        supportDocumentsEdit.push({
-          idDocumentoSoporte: doc.idDocumentoSoporte,
-          idSolicitud: obj.idSolicitud,
-          idTipoDocumentoSoporte: 'abe33c1d-9370-4189-9e81-597e5b643481',
-          path: `${obj.idUsuarioSeguridad}/Otros_Documentos_${obj.idSolicitud}`,
-          idUsuario: obj.idUsuarioSeguridad,
-          fechaModificacion: new Date()
+        //    await api.putLicencia();
+
+        if (nn) {
+          let container = '';
+          switch (obj.FETAL_Y_NO_FETAL) {
+            case 'a289c362-e576-4962-962b-1c208afa0273':
+              container = 'inhumacionindividual';
+
+              break;
+            case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+              //inhumacion fetal
+              container = 'inhumacionfetal';
+
+              break;
+            case 'e69bda86-2572-45db-90dc-b40be14fe020':
+              //cremacion individual
+              container = 'cremacionindividual';
+
+              break;
+            case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+              //cremacionfetal
+              container = 'cremacionfetal';
+
+              break;
+          }
+          const support = await api.getSupportDocuments(obj.idSolicitud);
+
+          const [doc] = support.filter((p: any) => p.path.includes('Otros_Documentos'));
+
+          const supportDocumentsEdit: any[] = [];
+          const formData = new FormData();
+
+          const archivo = values.fileOtrosDocumentos.file;
+
+          formData.append('file', archivo);
+          formData.append('nameFile', 'Otros_Documentos' + '_' + obj.idSolicitud);
+
+          supportDocumentsEdit.push({
+            idDocumentoSoporte: doc.idDocumentoSoporte,
+            idSolicitud: obj.idSolicitud,
+            idTipoDocumentoSoporte: 'abe33c1d-9370-4189-9e81-597e5b643481',
+            path: `${obj.idUsuarioSeguridad}/Otros_Documentos_${obj.idSolicitud}`,
+            idUsuario: obj.idUsuarioSeguridad,
+            fechaModificacion: new Date()
+          });
+
+          formData.append('containerName', container);
+          formData.append('oid', obj.idUsuarioSeguridad);
+
+          if (supportDocumentsEdit.length) {
+            await api.uploadFiles(formData);
+            await api.UpdateSupportDocuments(supportDocumentsEdit);
+          }
+        }
+        setLicenciaseleccionada(false);
+        Swal.fire({
+          icon: 'success',
+
+          title: 'Solicitud Modificada',
+          text: 'Se ha modificado la Solicitud exitosamente'
         });
-
-        formData.append('containerName', container);
-        formData.append('oid', obj.idUsuarioSeguridad);
-
-        if (supportDocumentsEdit.length) {
-          await api.uploadFiles(formData);
-          await api.UpdateSupportDocuments(supportDocumentsEdit);
-        }
       }
-      setLicenciaseleccionada(false);
-      Swal.fire({
-        icon: 'success',
 
-        title: 'Solicitud Modificada',
-        text: 'Se ha modificado la Solicitud exitosamente'
-      });
-    }
+    });
+
   };
 
   const onSubmitFailed = () => {
@@ -857,9 +885,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -913,9 +939,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
 
@@ -934,9 +958,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
 
@@ -951,9 +973,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -972,9 +992,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -993,9 +1011,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -1014,9 +1030,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
 
@@ -1050,9 +1064,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                     onInvalid={() => {
                       Swal.fire({
                         icon: 'error',
@@ -1120,9 +1132,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -1141,9 +1151,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -1162,9 +1170,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
 

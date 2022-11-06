@@ -79,6 +79,11 @@ export const TablaReportes = (props: IDataSource) => {
         key: 'fechaLicencia'
       },
       {
+        title: 'Fecha de Solicitud',
+        dataIndex: 'fechaSolicitud',
+        key: 'fechaSolicitud'
+      },
+      {
         title: 'Tipo Solicitud',
         dataIndex: 'idTramite',
         key: 'tipoSolicitud', width: 300,

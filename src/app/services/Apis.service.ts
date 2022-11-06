@@ -543,7 +543,7 @@ export class ApiService {
       endpoint: REACT_APP_SHARED as string,
       url: `v2/Persona/UpdatePersonFromLicenNumber`,
       payload,
-      id: '0'
+      id: '1'
     });
 
   GetConsecutivoVentanilla = (payload: any) =>

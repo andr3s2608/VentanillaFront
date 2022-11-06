@@ -1,5 +1,5 @@
 // Antd
-import { Form, Grid } from 'antd';
+import { Form, Grid, Radio } from 'antd';
 import Tabs from 'antd/es/tabs';
 
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -31,7 +31,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [selectedOptionEstado, setSelectedOptionEstado] = useState<String>();
   const [visibleGrid, setVisibleGrid] = useState<String>();
   const [visiblePicker, setVisiblePicker] = useState<String>();
-  const [dateSelectedPicker, setDate] = useState<String>();
+  const [busquedaseleccionada, setbusquedaseleccionada] = useState<String>('solicitud');
   const [dateSelectedInicial, setDateIni] = useState<Date>();
   const [dateSelectedFinal, setDateFin] = useState<Date>();
   const [FilterText, setFilterText] = useState<String>();
@@ -73,8 +73,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     setSelectedOptionEstado(value);
   };
 
-  function onChangeFilter(event: any) {
-    setFilterText(event.target.value);
+  function onChangefecha(values: any) {
+    setbusquedaseleccionada(values.target.value)
   }
   function onChangeFilterID(event: any) {
     setFilterTextID(event.target.value);
@@ -120,6 +120,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           'Consecutivo': datos[i].consecutivo,
           'Numero Licencia': datos[i].numerolicenciainfo,
           'Fecha de Licencia': datos[i].fechaLicencia,
+          'Fecha de Solicitud': datos[i].fechaSolicitud,
           'Tipo Solicitud': tipo,
           'Número de Certificado': datos[i].numeroCertificado,
           'Tipo de Documento': datos[i].idTipoDocumento,
@@ -158,6 +159,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
             sheetFilter: ['Consecutivo',
               'Numero Licencia',
               'Fecha de Licencia',
+              'Fecha de Solicitud',
               'Tipo Solicitud',
               'Número de Certificado',
               'Tipo de Documento',
@@ -186,6 +188,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
             sheetHeader: ['Consecutivo',
               'Numero Licencia',
               'Fecha de Licencia',
+              'Fecha de Solicitud',
               'Tipo Solicitud',
               'Número de Certificado',
               'Tipo de Documento',
@@ -272,6 +275,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           'Consecutivo': datos[i].consecutivo,
           'Numero Licencia': datos[i].numerolicenciainfo,
           'Fecha de Licencia': datos[i].fechaLicencia,
+          'Fecha de Solicitud': datos[i].fechaSolicitud,
           'Tipo Solicitud': tipo,
           'Número de Certificado': datos[i].numeroCertificado,
           'Tipo de Documento': datos[i].idTipoDocumento,
@@ -301,13 +305,13 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
         datatable.push(ob);
       }
     }
-    let textoPlano = 'Consecutivo  | Numero Licencia | Fecha de Licencia  |  Tipo Solicitud  |  Tipo Solicitud  |  Número de Certificado  |  Tipo de Documento  |  Número de documento | ' +
+    let textoPlano = 'Consecutivo  | Numero Licencia | Fecha de Licencia  | Fecha de Solicitud  | Tipo Solicitud  |  Tipo Solicitud  |  Número de Certificado  |  Tipo de Documento  |  Número de documento | ' +
       'Primer Apellido  | Segundo Apellido | Primer Nombre  |  Segundo Nombre  |  Fecha de Nacimiento  |  Sexo  |  Fecha de Fallecimiento  |  Tipo de Muerte | ' +
       'Cementerio  | Pais | Departamento  |  Municipio  |  Area  |  Sitio  |  Ins. que expidio Certificado Def.  |  NIT | ' +
       'Num. Acta levantamiento  | Fecha de Acta Levantamiento | Fiscal Número  |  Seccional de Fiscalia  |  Num. Protocolo  \n';
     for (let inf in datatable) {
       textoPlano += datatable[inf]['Consecutivo'] + '  |  ' + datatable[inf]['Numero Licencia'] + '  |  ' + datatable[inf]['Fecha de Licencia'] + '  |  '
-        + datatable[inf]['Tipo Solicitud'] + '  |  ' + datatable[inf]['Número de Certificado'] +
+        + datatable[inf]['Fecha de Solicitud'] + '  |  ' + datatable[inf]['Tipo Solicitud'] + '  |  ' + datatable[inf]['Número de Certificado'] +
         '  |  ' + datatable[inf]['Tipo de Documento'] + '  |  ' + datatable[inf]['Número de documento'] + datatable[inf]['Primer Apellido'] + '  |  ' + datatable[inf]['Segundo Apellido'] + '  |  ' + datatable[inf]['Primer Nombre'] + '  |  '
         + datatable[inf]['Segundo Nombre'] + '  |  ' + datatable[inf]['Fecha de Nacimiento'] +
         '  |  ' + datatable[inf]['Sexo'] + '  |  ' + datatable[inf]['Fecha de Fallecimiento'] + datatable[inf]['Tipo de Muerte'] + '  |  ' + datatable[inf]['Cementerio'] + '  |  ' + datatable[inf]['Pais'] + '  |  '
@@ -363,8 +367,14 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
       filtroFecha = allData.filter(function (f) {
         // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
+        if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return new Date(f.fechaLicencia) >= dateSelectedInicial && new Date(f.fechaLicencia) < dateSelectedFinal;
 
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+
       });
       input = true;
     } else {
@@ -512,6 +522,17 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
               />
             </div>
           </div>
+          <div className='row mt-3 justify-content-center text-center'>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
+              <Radio.Group onChange={onChangefecha} defaultValue={'solicitud'}>
+                <Radio value='solicitud'>Fecha de Solicitud</Radio>
+                <Radio value='aprobada'>Fecha de Aprobacion</Radio>
+                <Radio value='todos'>Todos</Radio>
+              </Radio.Group>
+            </div>
+          </div>
+
           <div className='row mt-5' style={{ marginLeft: '2px' }}>
             <div className='col-md-12 col-lg-12 col-sm-12 mt-3'>
               <label>Ingrese los valores que desea buscar</label>
