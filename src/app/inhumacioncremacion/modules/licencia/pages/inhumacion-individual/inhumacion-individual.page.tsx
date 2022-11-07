@@ -190,7 +190,7 @@ const InhumacionIndividualPage = () => {
       <Tabs>
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Inhumación' tramite='a289c362-e576-4962-962b-1c208afa0273' />
-          {mostrarPopUp() && <App></App>}
+          {mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>}
         </TabPane>
       </Tabs>
     </div>

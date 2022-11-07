@@ -5,7 +5,8 @@ import swal from 'sweetalert2';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
-const App = () => {
+const App: React.FC<valores> = (props) => {
+  const { origen, metodo } = props;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [visible, setVisible] = React.useState(true);
@@ -240,7 +241,14 @@ const App = () => {
           },
           icon: 'info'
         }).then((result) => {
-          history.push('/');
+
+          if (origen === 'solicitud') {
+            history.push('/');
+          }
+          else {
+            metodo(false);
+          }
+
         });
 
       }
@@ -260,7 +268,12 @@ const App = () => {
           },
           icon: 'info'
         }).then((result) => {
-          history.push('/');
+          if (origen === 'solicitud') {
+            history.push('/');
+          }
+          else {
+            metodo(false);
+          }
         });
 
       }
@@ -288,5 +301,10 @@ const App = () => {
     */
   );
 };
+interface valores {
+  metodo: any;
+  origen: string;
+
+}
 
 export default App;

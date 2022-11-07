@@ -199,7 +199,7 @@ export const ModificarLicencia = ({ props }: any) => {
         obj.persona[posicion].primerApellido = values.surname;
         obj.persona[posicion].segundoApellido = values.secondSurname;
 
-        console.log(values.time);
+
         if (values.time === undefined) {
           obj.hora = 'Sin información';
         }

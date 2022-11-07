@@ -196,7 +196,7 @@ const InhumacionFetalPage = () => {
         </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <FetalForm tipoLicencia='Inhumación' tramite='ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' />
-          {mostrarPopUp() && <App></App>}
+          {mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>}
         </TabPane>
       </Tabs>
     </div>
