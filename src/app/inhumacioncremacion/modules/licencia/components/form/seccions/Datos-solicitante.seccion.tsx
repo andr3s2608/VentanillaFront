@@ -291,7 +291,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       const json = {
         numero: obj.idDatosfuneraria,
         tipo: 'funeraria',
-        nombre: nuevafuneraria !== undefined ? nuevafuneraria + '""' : 'Fuera de Bogotá',
+        nombre: nuevafuneraria !== undefined ? nuevafuneraria + '' : cementerio,
         correo: nuevocorreo !== 'sin cambio' ? nuevocorreo : emailcementerio,
         idsolicitud: obj.idSolicitud,
         pais: nuevopais !== 'sin cambio' ? nuevopais : PaisCementerio,
@@ -348,7 +348,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       const json = {
         numero: obj.idDatosCementerio,
         tipo: 'cementerio',
-        nombre: nuevocementerio !== undefined ? nuevocementerio + '""' : 'Fuera de Bogotá',
+        nombre: nuevocementerio !== undefined ? nuevocementerio + '' : cementerio,
         correo: nuevocorreo !== 'sin cambio' ? nuevocorreo : emailcementerio,
         idsolicitud: obj.idSolicitud,
         pais: nuevopais !== 'sin cambio' ? nuevopais : PaisCementerio,
