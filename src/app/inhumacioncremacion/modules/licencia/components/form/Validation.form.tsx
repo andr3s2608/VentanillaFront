@@ -1129,13 +1129,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
-
-
-    if (fechaActualizacionSeguimiento != null) {
-      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
-    }
-
     if (resumenSolicitud[0]['fechaLicencia'] != null) {
       const format = "MM-DD-YYYY HH:mm:ss";
       fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
@@ -1374,13 +1367,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
-
-    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
-
-
-    if (fechaActualizacionSeguimiento != null) {
-      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
-    }
 
     if (resumenSolicitud[0]['fechaLicencia'] != null) {
       const format = "MM-DD-YYYY HH:mm:ss";
@@ -1635,13 +1621,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
-
-
-    if (fechaActualizacionSeguimiento != null) {
-      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
-    }
-
     if (resumenSolicitud[0]['fechaLicencia'] != null) {
       const format = "MM-DD-YYYY HH:mm:ss";
       fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
@@ -1853,13 +1832,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
-
-    const fechaActualizacionSeguimiento: any = await api.GetUpdateDateByIdSolicitud(objJosn?.idSolicitud);
-
-
-    if (fechaActualizacionSeguimiento != null) {
-      fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
-    }
 
     if (resumenSolicitud[0]['fechaLicencia'] != null) {
       const format = "MM-DD-YYYY HH:mm:ss";
