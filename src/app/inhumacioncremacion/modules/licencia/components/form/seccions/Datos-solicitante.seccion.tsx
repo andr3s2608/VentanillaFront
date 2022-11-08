@@ -345,6 +345,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       });
     }
     else {
+      //x
       const json = {
         numero: obj.idDatosCementerio,
         tipo: 'cementerio',
