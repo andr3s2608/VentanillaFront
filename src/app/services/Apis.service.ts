@@ -72,11 +72,12 @@ export class ApiService {
       id: '0'
     });
 
-  ModificarCementerio = (numero: string, tipo: string, nombre: string) =>
+  ModificarCementerio = (payload: any) =>
     post<string>({
       endpoint: REACT_APP_INHCREMACION as string,
-      url: `Request/ModificarCementerio/${numero}/${tipo}/${nombre}`,
-      id: '0'
+      payload,
+      url: `Request/ModificarCementerio`,
+      id: '1'
     });
 
   ModificarEstadoSolicitudInh = (estado: string, idsol: string) =>
@@ -252,6 +253,18 @@ export class ApiService {
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
   getallReports = () => get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequestToGestion`, id: '0' });
+
+  //correccion
+  getallrequesttovalidate = () =>
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequesttoValidate`, id: '0' });
+
+  getHistorialSolicitudesPDF = (payload: any[]) =>
+    post({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `GeneratePDF/GeneratePDFHistorial`,
+      payload,
+      id: '0'
+    });
 
   AddSupportDocuments = (payload: any[]) =>
     post({
@@ -530,7 +543,7 @@ export class ApiService {
       endpoint: REACT_APP_SHARED as string,
       url: `v2/Persona/UpdatePersonFromLicenNumber`,
       payload,
-      id: '0'
+      id: '1'
     });
 
   GetConsecutivoVentanilla = (payload: any) =>

@@ -5,7 +5,8 @@ import swal from 'sweetalert2';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 
-const App = () => {
+const App: React.FC<valores> = (props) => {
+  const { origen, metodo } = props;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [visible, setVisible] = React.useState(true);
@@ -71,7 +72,9 @@ const App = () => {
   const history = useHistory();
 
   function obtenerHora(hora: string): string[] {
+
     let aux = hora[0];
+
 
     let horario: string[] = ['', '', ''];
 
@@ -125,33 +128,33 @@ const App = () => {
       mes,
       dia,
       Number.parseInt(HIA_LV[0]),
-      Number.parseInt(HIA_LV[1]),
-      Number.parseInt(HIA_LV[2])
+      Number.parseInt(HIA_LV[1] + HIA_LV[2]),
+      Number.parseInt('0')
     );
     const horaFinalSemana = new Date(
       año,
       mes,
       dia,
       Number.parseInt(HFA_LV[0]),
-      Number.parseInt(HFA_LV[1]),
-      Number.parseInt(HFA_LV[2])
+      Number.parseInt(HFA_LV[1] + HFA_LV[2]),
+      Number.parseInt('0')
     );
-
     const horaInicialFinSemana = new Date(
       año,
       mes,
       dia,
       Number.parseInt(HIA_SD[0]),
-      Number.parseInt(HIA_SD[1]),
-      Number.parseInt(HIA_SD[2])
+      Number.parseInt(HIA_SD[1] + HIA_SD[2]),
+      Number.parseInt('0')
     );
+
     const horaFinalFinSemana = new Date(
       año,
       mes,
       dia,
       Number.parseInt(HFA_SD[0]),
-      Number.parseInt(HFA_SD[1]),
-      Number.parseInt(HFA_SD[2])
+      Number.parseInt(HFA_SD[1] + HFA_SD[2]),
+      Number.parseInt('0')
     );
 
     const Mensajebd = await api.getCostante('39CFA0CE-7DD0-4B0C-D7EF-08DAA1635794');
@@ -222,7 +225,7 @@ const App = () => {
 
 
 
-    if ((ahora.getDay() != 0 || ahora.getDay() != 6) && !isHoliday()) {
+    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {
@@ -237,6 +240,15 @@ const App = () => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        }).then((result) => {
+
+          if (origen === 'solicitud') {
+            history.push('/');
+          }
+          else {
+            metodo(false);
+          }
+
         });
 
       }
@@ -255,6 +267,13 @@ const App = () => {
             popup: 'animate__animated animate__fadeOutUp'
           },
           icon: 'info'
+        }).then((result) => {
+          if (origen === 'solicitud') {
+            history.push('/');
+          }
+          else {
+            metodo(false);
+          }
         });
 
       }
@@ -282,5 +301,10 @@ const App = () => {
     */
   );
 };
+interface valores {
+  metodo: any;
+  origen: string;
+
+}
 
 export default App;

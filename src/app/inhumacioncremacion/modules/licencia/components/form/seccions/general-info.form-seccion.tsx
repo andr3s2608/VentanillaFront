@@ -60,7 +60,13 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   };
 
   const onChange = (value: any) => {
-    setisMensaje(!isMensaje);
+    if (value === 0) {
+      setisMensaje(false);
+    }
+    else {
+      setisMensaje(true);
+    }
+
 
   };
 

@@ -1,5 +1,5 @@
 // Antd
-import { Form, Grid } from 'antd';
+import { Form, Grid, Radio } from 'antd';
 import Tabs from 'antd/es/tabs';
 
 import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
@@ -31,7 +31,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [selectedOptionEstado, setSelectedOptionEstado] = useState<String>();
   const [visibleGrid, setVisibleGrid] = useState<String>();
   const [visiblePicker, setVisiblePicker] = useState<String>();
-  const [dateSelectedPicker, setDate] = useState<String>();
+  const [busquedaseleccionada, setbusquedaseleccionada] = useState<String>('solicitud');
   const [dateSelectedInicial, setDateIni] = useState<Date>();
   const [dateSelectedFinal, setDateFin] = useState<Date>();
   const [FilterText, setFilterText] = useState<String>();
@@ -44,7 +44,6 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const getListas = useCallback(
     async () => {
       const resp = await api.getallReports();
-
 
       setGrid(resp);
       setAllData(resp);
@@ -74,8 +73,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     setSelectedOptionEstado(value);
   };
 
-  function onChangeFilter(event: any) {
-    setFilterText(event.target.value);
+  function onChangefecha(values: any) {
+    setbusquedaseleccionada(values.target.value)
   }
   function onChangeFilterID(event: any) {
     setFilterTextID(event.target.value);
@@ -88,6 +87,10 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   }
 
   function downloadFileExcel() {
+
+
+    // FALTA AGREGAR LOS NUEVOS CAMPOS DE LA GRILLA AL DOCUMENTO QUE SE VA A DESCARGAR
+
     const ExportJsonExcel = require('js-export-excel');
     var datos = grid;
     let datatable = [];
@@ -114,12 +117,35 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'consecutivo': datos[i].consecutivo,
-          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
-          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
-          'Fecha de registro': datos[i].fechaSolicitud,
-          'Estado': datos[i].estadoString,
-          'Tipo Solicitud': tipo
+          'Consecutivo': datos[i].consecutivo,
+          'Numero Licencia': datos[i].numerolicenciainfo,
+          'Fecha de Licencia': datos[i].fechaLicencia,
+          'Fecha de Solicitud': datos[i].fechaSolicitud,
+          'Tipo Solicitud': tipo,
+          'Número de Certificado': datos[i].numeroCertificado,
+          'Tipo de Documento': datos[i].idTipoDocumento,
+          'Número de documento': datos[i].noIdentificacionSolicitante,
+          'Primer Apellido': datos[i].primerApellidoRep,
+          'Segundo Apellido': datos[i].segundoApellidoRep,
+          'Primer Nombre': datos[i].primerNombreRep,
+          'Segundo Nombre': datos[i].segundoNombreRep,
+          'Fecha de Nacimiento': datos[i].fechaNacimientoRep,
+          'Sexo': datos[i].nombreSexo,
+          'Fecha de Fallecimiento': datos[i].fechaDefuncion,
+          'Tipo de Muerte': datos[i].tipoMuerteRep,
+          'Cementerio': datos[i].cementerio,
+          'Pais': datos[i].paisRep,
+          'Departamento': datos[i].departamentoRep,
+          'Municipio': datos[i].municipioRep,
+          'Area': datos[i].areaDefuncionRep,
+          'Sitio': datos[i].Sitio,
+          'Ins. que expidio Certificado Def.': datos[i].razonSocialInstitucionRep,
+          'NIT': datos[i].numeroIdentificacionInstitucionRep,
+          'Num. Acta levantamiento': datos[i].numeroActaLevantamientoInstitucionRep,
+          'Fecha de Acta Levantamiento': datos[i].fechaActaInstitucionRep,
+          'Fiscal Número': datos[i].noFiscalInstitucionRep,
+          'Seccional de Fiscalia': datos[i].seccionalFiscaliaInstitucionRep,
+          'Num. Protocolo': datos[i].numeroProtocoloInstitucionRep
         }
         datatable.push(ob);
       }
@@ -130,17 +156,94 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
           {
             sheetData: datatable,
             sheetName: 'Historial solicitudes',
-            sheetFilter: ['consecutivo', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
-              , 'Fecha de registro', 'Estado', 'Tipo Solicitud'],
-            sheetHeader: ['consecutivo', 'Documento del fallecido', 'Solicitante (funeraria o nombre)'
-              , 'Fecha de registro', 'Estado', 'Tipo Solicitud']
+            sheetFilter: ['Consecutivo',
+              'Numero Licencia',
+              'Fecha de Licencia',
+              'Fecha de Solicitud',
+              'Tipo Solicitud',
+              'Número de Certificado',
+              'Tipo de Documento',
+              'Número de documento',
+              'Primer Apellido',
+              'Segundo Apellido',
+              'Primer Nombre',
+              'Segundo Nombre',
+              'Fecha de Nacimiento',
+              'Sexo',
+              'Fecha de Fallecimiento',
+              'Tipo de Muerte',
+              'Cementerio',
+              'Pais',
+              'Departamento',
+              'Municipio',
+              'Area',
+              'Sitio',
+              'Ins. que expidio Certificado Def.',
+              'NIT',
+              'Num. Acta levantamiento',
+              'Fecha de Acta Levantamiento',
+              'Fiscal Número',
+              'Seccional de Fiscalia',
+              'Num. Protocolo'],
+            sheetHeader: ['Consecutivo',
+              'Numero Licencia',
+              'Fecha de Licencia',
+              'Fecha de Solicitud',
+              'Tipo Solicitud',
+              'Número de Certificado',
+              'Tipo de Documento',
+              'Número de documento',
+              'Primer Apellido',
+              'Segundo Apellido',
+              'Primer Nombre',
+              'Segundo Nombre',
+              'Fecha de Nacimiento',
+              'Sexo',
+              'Fecha de Fallecimiento',
+              'Tipo de Muerte',
+              'Cementerio',
+              'Pais',
+              'Departamento',
+              'Municipio',
+              'Area',
+              'Sitio',
+              'Ins. que expidio Certificado Def.',
+              'NIT',
+              'Num. Acta levantamiento',
+              'Fecha de Acta Levantamiento',
+              'Fiscal Número',
+              'Seccional de Fiscalia',
+              'Num. Protocolo']
           }
         ]
       };
 
+      //downloadPDF(datatable);
+      //console.log("🚀 ~ file: administracion-reportes.page.tsx ~ line 141 ~ downloadFileExcel ~ prueba", prueba);
       var toExcel = new ExportJsonExcel(opciones);
       toExcel.saveExcel()
     }
+  }
+
+  function downloadPDF(datos: any[]) {
+
+    fetch('https://localhost:5001/api/GeneratePDF/GeneratePDFWord',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      }
+    ).then(function (response) {
+      return response.blob();
+    }).then(function (myBlob) {
+      var objectURL = URL.createObjectURL(myBlob);
+      let link = document.createElement('a');
+      link.href = objectURL;
+      link.download = 'Historial Solicitudes.docx';
+      link.click();
+    });
   }
   function downloadTxt() {
     var element = document.createElement('a');
@@ -169,21 +272,53 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
         }
         let ob = {
-          'consecutivo': datos[i].consecutivo,
-          'Documento del fallecido': datos[i].noIdentificacionSolicitante,
-          'Solicitante (funeraria o nombre)': datos[i].razonSocialSolicitante,
-          'Fecha de registro': datos[i].fechaSolicitud,
-          'Estado': datos[i].estadoString,
-          'Tipo Solicitud': tipo
+          'Consecutivo': datos[i].consecutivo,
+          'Numero Licencia': datos[i].numerolicenciainfo,
+          'Fecha de Licencia': datos[i].fechaLicencia,
+          'Fecha de Solicitud': datos[i].fechaSolicitud,
+          'Tipo Solicitud': tipo,
+          'Número de Certificado': datos[i].numeroCertificado,
+          'Tipo de Documento': datos[i].idTipoDocumento,
+          'Número de documento': datos[i].noIdentificacionSolicitante,
+          'Primer Apellido': datos[i].primerApellidoRep,
+          'Segundo Apellido': datos[i].segundoApellidoRep,
+          'Primer Nombre': datos[i].primerNombreRep,
+          'Segundo Nombre': datos[i].segundoNombreRep,
+          'Fecha de Nacimiento': datos[i].fechaNacimientoRep,
+          'Sexo': datos[i].nombreSexo,
+          'Fecha de Fallecimiento': datos[i].fechaDefuncion,
+          'Tipo de Muerte': datos[i].tipoMuerteRep,
+          'Cementerio': datos[i].cementerio,
+          'Pais': datos[i].paisRep,
+          'Departamento': datos[i].departamentoRep,
+          'Municipio': datos[i].municipioRep,
+          'Area': datos[i].areaDefuncionRep,
+          'Sitio': datos[i].Sitio,
+          'Ins. que expidio Certificado Def.': datos[i].razonSocialInstitucionRep,
+          'NIT': datos[i].numeroIdentificacionInstitucionRep,
+          'Num. Acta levantamiento': datos[i].numeroActaLevantamientoInstitucionRep,
+          'Fecha de Acta Levantamiento': datos[i].fechaActaInstitucionRep,
+          'Fiscal Número': datos[i].noFiscalInstitucionRep,
+          'Seccional de Fiscalia': datos[i].seccionalFiscaliaInstitucionRep,
+          'Num. Protocolo': datos[i].numeroProtocoloInstitucionRep
         }
         datatable.push(ob);
       }
     }
-    let textoPlano = 'IDENTIFICADOR  |  DOCUMENTO DEL FALLECIDO  |  SOLICITANTE  |  REGISTRO  |  ESTADO  |  ESTADO  |  TIPO SOLICITUD \n';
+    let textoPlano = 'Consecutivo  | Numero Licencia | Fecha de Licencia  | Fecha de Solicitud  | Tipo Solicitud  |  Tipo Solicitud  |  Número de Certificado  |  Tipo de Documento  |  Número de documento | ' +
+      'Primer Apellido  | Segundo Apellido | Primer Nombre  |  Segundo Nombre  |  Fecha de Nacimiento  |  Sexo  |  Fecha de Fallecimiento  |  Tipo de Muerte | ' +
+      'Cementerio  | Pais | Departamento  |  Municipio  |  Area  |  Sitio  |  Ins. que expidio Certificado Def.  |  NIT | ' +
+      'Num. Acta levantamiento  | Fecha de Acta Levantamiento | Fiscal Número  |  Seccional de Fiscalia  |  Num. Protocolo  \n';
     for (let inf in datatable) {
-      textoPlano += datatable[inf]['consecutivo'] + '  |  ' + datatable[inf]['Documento del fallecido'] + '  |  '
-        + datatable[inf]['Solicitante (funeraria o nombre)'] + '  |  ' + datatable[inf]['Fecha de registro'] +
-        '  |  ' + datatable[inf].Estado + '  |  ' + datatable[inf]['Tipo Solicitud'] + ' \n';
+      textoPlano += datatable[inf]['Consecutivo'] + '  |  ' + datatable[inf]['Numero Licencia'] + '  |  ' + datatable[inf]['Fecha de Licencia'] + '  |  '
+        + datatable[inf]['Fecha de Solicitud'] + '  |  ' + datatable[inf]['Tipo Solicitud'] + '  |  ' + datatable[inf]['Número de Certificado'] +
+        '  |  ' + datatable[inf]['Tipo de Documento'] + '  |  ' + datatable[inf]['Número de documento'] + datatable[inf]['Primer Apellido'] + '  |  ' + datatable[inf]['Segundo Apellido'] + '  |  ' + datatable[inf]['Primer Nombre'] + '  |  '
+        + datatable[inf]['Segundo Nombre'] + '  |  ' + datatable[inf]['Fecha de Nacimiento'] +
+        '  |  ' + datatable[inf]['Sexo'] + '  |  ' + datatable[inf]['Fecha de Fallecimiento'] + datatable[inf]['Tipo de Muerte'] + '  |  ' + datatable[inf]['Cementerio'] + '  |  ' + datatable[inf]['Pais'] + '  |  '
+        + datatable[inf]['Departamento'] + '  |  ' + datatable[inf]['Municipio'] +
+        '  |  ' + datatable[inf]['Area'] + '  |  ' + datatable[inf]['Sitio'] + datatable[inf]['Ins. que expidio Certificado Def.'] + '  |  ' + datatable[inf]['NIT'] + '  |  ' + datatable[inf]['Num. Acta levantamiento'] + '  |  '
+        + datatable[inf]['Fecha de Acta Levantamiento'] + '  |  ' + datatable[inf]['Fiscal Número'] +
+        '  |  ' + datatable[inf]['Seccional de Fiscalia'] + '  |  ' + datatable[inf]['Num. Protocolo'] + ' \n';
 
     }
 
@@ -232,8 +367,14 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
       filtroFecha = allData.filter(function (f) {
         // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
+        if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
+          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+        else {
+          return new Date(f.fechaLicencia) >= dateSelectedInicial && new Date(f.fechaLicencia) < dateSelectedFinal;
 
-        return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        }
+
       });
       input = true;
     } else {
@@ -381,6 +522,17 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
               />
             </div>
           </div>
+          <div className='row mt-3 justify-content-center text-center'>
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
+              <Radio.Group onChange={onChangefecha} defaultValue={'solicitud'}>
+                <Radio value='solicitud'>Fecha de Solicitud</Radio>
+                <Radio value='aprobada'>Fecha de Aprobacion</Radio>
+                <Radio value='todos'>Todos</Radio>
+              </Radio.Group>
+            </div>
+          </div>
+
           <div className='row mt-5' style={{ marginLeft: '2px' }}>
             <div className='col-md-12 col-lg-12 col-sm-12 mt-3'>
               <label>Ingrese los valores que desea buscar</label>
@@ -461,9 +613,9 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                       id='filterEstadoTra'
                       onChange={selectChangeEstado}
                       options={[
-                        { key: 'registroExt', value: 'Registro Usuario Externo' },
-                        { key: 'aprobado', value: 'Aprobado validador de documentos' },
-                        { key: 'buscar', value: 'por investigar' }
+                        { key: 'registroExt', value: 'Pendiente Validación Funcionario' },
+                        { key: 'aprobado', value: 'Aprobado Validador de Documentos' },
+                        { key: 'buscar', value: 'Mostrar Todos' }
                       ]}
                       optionPropkey='key'
                       optionPropLabel='value'

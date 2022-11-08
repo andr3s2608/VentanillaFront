@@ -10,6 +10,8 @@ import { Button, Modal, Upload } from 'antd';
 import { useHistory } from 'react-router';
 import Input from 'antd/es/input';
 import Table from 'antd/es/table';
+import App from 'app/inhumacioncremacion/modules/licencia/pages/validarCovid/validar';
+
 import { DatepickerComponent } from '../inputs/datepicker.component';
 import moment from 'moment';
 import { errorMessage, infoMessage } from 'app/services/settings/message.service';
@@ -38,24 +40,10 @@ export const Gridview = (props: IDataSource) => {
   const [idtramite, setidtramite] = useState<any>('');
   const [documento, setdocumento] = useState<any>('');
 
-
-  const listaprueba: any[] =
-    [{ consecutivo: '2022REINC00000046' },
-    { consecutivo: '2020REINC00000046' },
-    { consecutivo: '2021REINC00000046' },
-    { consecutivo: '2022REINC00000047' },
-    { consecutivo: '2022RECRC00000045' },
-    { consecutivo: '2022RECRC00000046' },
-    { consecutivo: '2022RECRC00000048' },
-    { consecutivo: '2022RECRC00000049' },
-    { consecutivo: '2022RECRC00000040' },
-    { consecutivo: '2022RECRC00000047' },
-    { consecutivo: '2022REINC00000048' },
-    { consecutivo: '2020REINC00000045' },
-    { consecutivo: '2021REINC00000046' },
-    { consecutivo: '2021REINC00000046' },]
-    ;
-
+  const [HIA_LV, setHIA_LV] = useState<string[]>(['0', '0', '0']);
+  const [HFA_LV, setHFA_LV] = useState<string[]>(['23', '5', '9']);
+  const [HIA_SD, setHIA_SD] = useState<string[]>(['0', '0', '0']);
+  const [HFA_SD, setHFA_SD] = useState<string[]>(['23', '5', '9']);
 
 
 
@@ -66,6 +54,18 @@ export const Gridview = (props: IDataSource) => {
 
       const rolesstorage: any = localStorage.getItem('roles');
 
+      let HoraInicioAtencion_LV = await api.getCostante('5DF03735-503B-4D22-8169-E4FCDD19DA26');
+      let HoraFinAtencion_LV = await api.getCostante('818AA32D-C90D-45D0-975F-486D069F7CB1');
+      let HoraInicioAtencion_SD = await api.getCostante('CE62162E-5E79-4E05-AEDE-276B6C89D886');
+      let HoraFinAtencion_SD = await api.getCostante('A196007F-BCCB-4160-B345-1F8605949E46');
+      var aux1 = obtenerHora(HoraInicioAtencion_LV.valor);
+      var aux2 = obtenerHora(HoraFinAtencion_LV.valor);
+      var aux3 = obtenerHora(HoraInicioAtencion_SD.valor);
+      var aux4 = obtenerHora(HoraFinAtencion_SD.valor);
+      setHIA_LV(aux1);
+      setHFA_LV(aux2);
+      setHIA_SD(aux3);
+      setHFA_SD(aux4);
       /*
       let resp: any = [];
       if (rolesstorage.rol === 'Ciudadano') {
@@ -78,12 +78,12 @@ export const Gridview = (props: IDataSource) => {
 
       const datostabla: any = localStorage.getItem('tablainhcrem');
       const datosjson = JSON.parse(datostabla)
-      setdatosUsuario(datosjson);
+
 
 
       setroles(JSON.parse(rolesstorage));
       setValidacion('1');
-      setmostrar(true);
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -91,8 +91,28 @@ export const Gridview = (props: IDataSource) => {
 
   useEffect(() => {
     getListas();
+    setdatosUsuario(data);
+
+
   }, []);
 
+  function obtenerHora(hora: string): string[] {
+    let aux = hora[0];
+
+    let horario: string[] = ['', '', ''];
+
+    if (aux == '0') {
+      horario[0] = hora[1];
+      horario[1] = hora[3];
+      horario[2] = hora[4];
+    } else {
+      horario[0] = hora[0] + hora[1];
+      horario[1] = hora[3];
+      horario[2] = hora[4];
+    }
+
+    return horario;
+  }
   const [Tipo] = roles;
 
 
@@ -111,6 +131,7 @@ export const Gridview = (props: IDataSource) => {
           className='form-control'
           onChange={(e) => {
 
+
             setfechafiltro(e);
             if (e != null) {
               let fecha: any = '';
@@ -126,11 +147,12 @@ export const Gridview = (props: IDataSource) => {
               if (idtramite === '') {
                 const filteredDataUsuario: any = data.filter((datos: any) => {
                   const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+
                   return (
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
 
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -142,7 +164,7 @@ export const Gridview = (props: IDataSource) => {
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                     (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -157,7 +179,7 @@ export const Gridview = (props: IDataSource) => {
                   return (
 
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -169,7 +191,7 @@ export const Gridview = (props: IDataSource) => {
 
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
                     (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
-                    datos.noIdentificacionSolicitante.toString().includes(documento.toUpperCase())
+                    datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
                 setdatosUsuario(filteredDataUsuario);
@@ -460,7 +482,7 @@ export const Gridview = (props: IDataSource) => {
               value: 'Aprobado validador de documentos'
             },
             {
-              text: 'Documentos Inconsistentes',
+              text: 'Pendiente',
               value: 'Documentos Inconsistentes'
             },
             {
@@ -476,6 +498,14 @@ export const Gridview = (props: IDataSource) => {
             {
               text: 'Cambio de Licencia',
               value: 'Cambio de Licencia'
+            },
+            {
+              text: 'Actualización de Documentos',
+              value: 'Actualización Documentos'
+            },
+            {
+              text: 'Actualización de Datos',
+              value: 'Actualización Solicitud'
             }
           ],
           filterSearch: true,
@@ -566,7 +596,8 @@ export const Gridview = (props: IDataSource) => {
           width: 200,
           render: (_: any, row: any, index: any) => {
             const [permiso] = roles;
-            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo') {
+            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo'
+              || row.estadoString === 'Actualización Documentos' || row.estadoString === 'Actualización Solicitud') {
               return (<Form.Item label='' name=''>
                 <Button
                   type='primary'
@@ -608,28 +639,28 @@ export const Gridview = (props: IDataSource) => {
           sorter: {
             compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
               a.consecutivo > b.consecutivo ? 1 : -1,
-            multiple: 3,
+            multiple: 1,
           }
         },
         {
           title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionFallecido',
-          key: 'numeroDocumento',
+          key: 'noIdentificacionFallecido',
           defaultSortOrder: 'descend',
           sorter: {
             compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
               a.noIdentificacionFallecido - b.noIdentificacionFallecido,
-            multiple: 1,
+            multiple: 2,
           }
         },
         {
           title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
-          key: 'nombreCompleto',
+          key: 'razonSocialSolicitante',
           sorter: {
             compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
               a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
-            multiple: 1,
+            multiple: 3,
           }
         },
         {
@@ -914,34 +945,66 @@ export const Gridview = (props: IDataSource) => {
   };
 
   const onClickCambiarLicencia = async (fila: any) => {
-    const data = await api.getLicencia(fila.idSolicitud);
 
-    localStorage.setItem('register', JSON.stringify(data));
-    store.dispatch(SetResetViewLicence());
-    if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
-      history.push('/modificar/Cambiar-Tipo-Licencia-Individual');
+
+    const horario = mostrarPopUp()
+    if (horario) {
+
+      setmostrar(true)
     }
     else {
-      history.push('/modificar/Cambiar-Tipo-Licencia-Fetal');
+
+      setmostrar(false)
+      const data = await api.getLicencia(fila.idSolicitud);
+
+      localStorage.setItem('register', JSON.stringify(data));
+      store.dispatch(SetResetViewLicence());
+      if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+        history.push('/modificar/Cambiar-Tipo-Licencia-Individual');
+      }
+      else {
+        history.push('/modificar/Cambiar-Tipo-Licencia-Fetal');
+      }
     }
+
+    //setmostrar(false)
+
 
   };
+  const llamadadevueltahorario = (estado: boolean) => {
+
+    setmostrar(estado);
+
+  }
+
 
   const onClickModificarSolicitud = async (fila: any) => {
-    const data = await api.getLicencia(fila.idSolicitud);
 
-    localStorage.setItem('register', JSON.stringify(data));
-    store.dispatch(SetResetViewLicence());
+    const horario = mostrarPopUp()
+    if (horario) {
 
-
-    if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
-
-      history.push('/modificar/Actualizar-Datos-Individual');
+      setmostrar(true)
     }
     else {
 
-      history.push('/modificar/Actualizar-Datos-Fetal');
+      setmostrar(false)
+      const data = await api.getLicencia(fila.idSolicitud);
+
+      localStorage.setItem('register', JSON.stringify(data));
+      store.dispatch(SetResetViewLicence());
+
+
+      if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+
+        history.push('/modificar/Actualizar-Datos-Individual');
+      }
+      else {
+
+        history.push('/modificar/Actualizar-Datos-Fetal');
+      }
+
     }
+
 
   };
 
@@ -990,11 +1053,22 @@ export const Gridview = (props: IDataSource) => {
 
     const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
 
-    setfechasolicitud(solicitud.fechaSolicitud);
-    setObservacion(resultResponse[0].observaciones);
-    setTipoSolicitud(solicitud.tramite);
-    setListadoDocumento(resultResponse);
-    setVisibleDocumentoGestion(true);
+    const horario = mostrarPopUp();
+    if (horario) {
+
+      setmostrar(true);
+    }
+    else {
+
+      setmostrar(false);
+      setfechasolicitud(solicitud.fechaSolicitud);
+      setObservacion(resultResponse[0].observaciones);
+      setTipoSolicitud(solicitud.tramite);
+      setListadoDocumento(resultResponse);
+      setVisibleDocumentoGestion(true);
+    }
+
+
   };
 
   /** Evento que se ejecuta cuando se da click en guardar los cambios */
@@ -1156,6 +1230,123 @@ export const Gridview = (props: IDataSource) => {
     );
   }
 
+  function mostrarPopUp(): boolean {
+    let bandera = true;
+
+    const festivos = [
+      {
+        fecha: {
+          mes: 1,
+          dia: 1
+        },
+        nombre: 'Año nuevo'
+      },
+      {
+        fecha: {
+          mes: 5,
+          dia: 1
+        },
+        nombre: 'Día del Trabajo'
+      },
+      {
+        fecha: {
+          mes: 7,
+          dia: 20
+        },
+        nombre: 'Día de la Independencia de Colombia'
+      },
+      {
+        fecha: {
+          mes: 8,
+          dia: 7
+        },
+        nombre: 'Batalla de Boyacá'
+      },
+      {
+        fecha: {
+          mes: 12,
+          dia: 8
+        },
+        nombre: 'Día de la Inmaculada Concepción'
+      },
+      {
+        fecha: {
+          mes: 12,
+          dia: 25
+        },
+        nombre: 'Navidad'
+      }
+    ];
+
+    function isHoliday(): boolean {
+      let bandera = false;
+      let hoy = new Date();
+
+      for (let index = 0; index < festivos.length; index++) {
+        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
+          bandera = true;
+        }
+      }
+      return bandera;
+    }
+
+    let ahora = new Date();
+    let dia = ahora.getDate();
+    let mes = ahora.getMonth();
+    let año = ahora.getFullYear();
+    const horaInicialSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HIA_LV[0]),
+      Number.parseInt(HIA_LV[1] + HIA_LV[2]),
+      Number.parseInt('0')
+    );
+    const horaFinalSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HFA_LV[0]),
+      Number.parseInt(HFA_LV[1] + HFA_LV[2]),
+      Number.parseInt('0')
+    );
+    const horaInicialFinSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HIA_SD[0]),
+      Number.parseInt(HIA_SD[1] + HIA_SD[2]),
+      Number.parseInt('0')
+    );
+
+    const horaFinalFinSemana = new Date(
+      año,
+      mes,
+      dia,
+      Number.parseInt(HFA_SD[0]),
+      Number.parseInt(HFA_SD[1] + HFA_SD[2]),
+      Number.parseInt('0')
+    );
+
+
+    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday()) {
+      if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
+        bandera = false;
+      } else {
+
+        bandera = true;
+      }
+    } else {
+      if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
+        bandera = false;
+      } else {
+        bandera = true;
+      }
+    }
+
+    return bandera;
+  }
+
 
 
   return (
@@ -1212,6 +1403,8 @@ export const Gridview = (props: IDataSource) => {
               </div>
             </Modal>
           </div>
+          {mostrar && <App origen={'bandeja'} metodo={llamadadevueltahorario}></App>}
+
         </div>
 
 

@@ -92,7 +92,7 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: AdministrationFirmasPage
   },
   {
-    path: `${tramiteAdmin}/horario`,
+    path: `${tramiteAdmin}/gestion-variables`,
     component: AdministrationHorarioPage
   },
   {

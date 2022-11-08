@@ -167,9 +167,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                                 event.preventDefault();
                               }
                             }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
+
                           />
                         </Form.Item>
                       </div>
@@ -235,9 +233,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -253,9 +249,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -272,9 +266,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -290,9 +282,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -366,9 +356,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                                 event.preventDefault();
                               }
                             }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
+
                           />
                         </Form.Item>
                       </div>
@@ -438,9 +426,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -457,9 +443,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -477,9 +461,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>
@@ -496,9 +478,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                             event.preventDefault();
                           }
                         }}
-                        onPaste={(event) => {
-                          event.preventDefault();
-                        }}
+
                       />
                     </Form.Item>
                   </div>

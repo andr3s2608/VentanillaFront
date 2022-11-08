@@ -78,9 +78,9 @@ export const BasicaInformacion: React.FC<any> = (props) => {
             setCampo('Numéricos');
             setTipodocumento('Permiso Especial de Permanencia');
           } else {
-            setLongitudminima(6);
-            setLongitudmaxima(10);
-            setTipocampo('[a-zA-Z0-9]{6,10}');
+            setLongitudminima(4);
+            setLongitudmaxima(16);
+            setTipocampo('[a-zA-Z0-9]{4,16}');
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Pasaporte y Cédula de Extranjería ');

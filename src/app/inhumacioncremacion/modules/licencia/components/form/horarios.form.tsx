@@ -45,7 +45,7 @@ export const HorariosGestion = ({ props }: any) => {
     let HoraFinAtencion_SD = await api.getCostante('A196007F-BCCB-4160-B345-1F8605949E46');
     const Mensaje = await api.getCostante('39CFA0CE-7DD0-4B0C-D7EF-08DAA1635794');
 
-    setMensajeHorario(Mensaje);
+    setMensajeHorario(Mensaje.valor);
     setiniciosem(ObtenerHora(HoraInicioAtencion_LV.valor + ''));
     setfinsem(ObtenerHora(HoraFinAtencion_LV.valor + ''));
     setiniciofinde(ObtenerHora(HoraInicioAtencion_SD.valor + ''));

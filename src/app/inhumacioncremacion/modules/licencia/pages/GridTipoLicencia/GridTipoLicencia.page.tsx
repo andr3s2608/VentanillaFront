@@ -19,6 +19,7 @@ const { TabPane } = Tabs;
 
 const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
+  const [espera, setespera] = useState<any>();
   const [allData, setAllData] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
 
@@ -61,14 +62,17 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       const resp: any = await api.GetEstadoSolicitudNuevoCambio();
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
+      setespera(resp);
       setAllData(resp);
 
       setVisibleGrid('contents');
     } else {
-      const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      // const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+      const resp = await api.getallrequesttovalidate();
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
 
       setGrid(resp);
+      setespera(resp);
       setAllData(resp);
       setVisibleGrid('contents');
     }
@@ -201,68 +205,12 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       />
       <div className='card'>
         <div className='card-body'>
-          <div className='row h-100 justify-content-center align-items-center'>
-            <div className='col-gl-6 col-md-6 col-sm-12'>
-              <div style={{ margin: '0 auto', display: 'block' }}>
-                <Form.Item label='' name='' initialValue={'Todos'} rules={[{ required: true }]}>
-                  <SelectComponent
-                    className='ml-3'
-                    id='filter'
-                    onChange={selectChange}
-                    defaultValue={'todos'}
-                    options={[
-                      { key: 'idSol', value: 'Id Tramite' },
-                      { key: 'docFallec', value: 'Documento del fallecido' },
-                      { key: 'funOnombre', value: 'Funeraria o Nombre' },
-                      { key: 'fechaReg', value: 'Fecha de registro' },
-                      { key: 'inhuIndi', value: 'Inhumación Individual' },
-                      { key: 'inhuFetal', value: 'Inhumación Fetal' },
-                      { key: 'cremInd', value: 'Cremación Individual' },
-                      { key: 'cremFetal', value: 'Cremación Fetal' },
-                      { key: 'todos', value: 'Todos' }
-                    ]}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                  />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='col-lg-3 col-md-3 col-sm-12'>
-              <Form.Item label='' name='' rules={[{ required: true }]}>
-                <Input
-                  id='busqueda'
-                  placeholder='Filtro de busqueda en la tabla'
-                  className='form-control ml-5'
-                  onChange={onChangeFilter}
-                  style={{ display: visiblePicker != 'none' ? 'none' : 'block' }}
-                  disabled={disableFilter == true ? true : false}
-                />
-                <DatepickerComponent
-                  id='datePicker'
-                  picker='date'
-                  dateDisabledType='default'
-                  dateFormatType='default'
-                  style={{ display: visiblePicker == 'none' ? 'none' : 'block' }}
-                  className='form-control'
-                  onChange={(date) => {
-                    setVisibleAlert(false);
-                    setDate(new Date(moment(date).format('MM/DD/YYYY')));
-                  }}
-                />
-              </Form.Item>
-            </div>
-            <div className='col-lg-2 col-sm-12 col-md-2 text-center mb-2 ml-5'>
-              <Button type='primary' htmlType='submit' onClick={busquedaFun}>
-                Buscar
-              </Button>
-            </div>
-          </div>
           <div className='row' style={{ marginTop: '-8px' }}>
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
                 <Tabs style={{ border: 'none' }}>
                   <TabPane tab='' key='1'>
-                    <Gridview data={grid} />
+                    {espera != undefined && (<Gridview data={grid} />)}
                   </TabPane>
                 </Tabs>
               </div>

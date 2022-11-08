@@ -324,7 +324,7 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
               } else {
                 if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
                   setLongitudminima(6);
-                  setLongitudmaxima(9);
+                  setLongitudmaxima(16);
                   setTipocampo('[0-9]{6,9}');
                   setTipocampovalidacion(/[0-9]/);
                   setCampo('Numéricos');
@@ -383,9 +383,9 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
 
                           }
                           else {
-                            setLongitudminima(6);
-                            setLongitudmaxima(10);
-                            setTipocampo('[a-zA-Z0-9]{6,10}');
+                            setLongitudminima(4);
+                            setLongitudmaxima(16);
+                            setTipocampo('[a-zA-Z0-9]{4,16}');
                             setTipocampovalidacion(/[a-zA-Z0-9]/);
                             setCampo('AlfaNuméricos(Numéros y letras)');
                             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');

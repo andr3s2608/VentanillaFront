@@ -130,36 +130,39 @@ const InhumacionIndividualPage = () => {
       mes,
       dia,
       Number.parseInt(HIA_LV[0]),
-      Number.parseInt(HIA_LV[1]),
-      Number.parseInt(HIA_LV[2])
+      Number.parseInt(HIA_LV[1] + HIA_LV[2]),
+      Number.parseInt('0')
     );
     const horaFinalSemana = new Date(
       año,
       mes,
       dia,
       Number.parseInt(HFA_LV[0]),
-      Number.parseInt(HFA_LV[1]),
-      Number.parseInt(HFA_LV[2])
+      Number.parseInt(HFA_LV[1] + HFA_LV[2]),
+      Number.parseInt('0')
     );
-
     const horaInicialFinSemana = new Date(
       año,
       mes,
       dia,
       Number.parseInt(HIA_SD[0]),
-      Number.parseInt(HIA_SD[1]),
-      Number.parseInt(HIA_SD[2])
+      Number.parseInt(HIA_SD[1] + HIA_SD[2]),
+      Number.parseInt('0')
     );
+
     const horaFinalFinSemana = new Date(
       año,
       mes,
       dia,
       Number.parseInt(HFA_SD[0]),
-      Number.parseInt(HFA_SD[1]),
-      Number.parseInt(HFA_SD[2])
+      Number.parseInt(HFA_SD[1] + HFA_SD[2]),
+      Number.parseInt('0')
     );
 
-    if ((ahora.getDay() != 0 || ahora.getDay() != 6) && !isHoliday()) {
+
+
+
+    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday()) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         bandera = false;
 
@@ -187,7 +190,7 @@ const InhumacionIndividualPage = () => {
       <Tabs>
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Inhumación' tramite='a289c362-e576-4962-962b-1c208afa0273' />
-          {mostrarPopUp() && <App></App>}
+          {mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>}
         </TabPane>
       </Tabs>
     </div>

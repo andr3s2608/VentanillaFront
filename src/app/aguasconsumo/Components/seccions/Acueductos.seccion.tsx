@@ -359,9 +359,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -381,9 +379,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -448,9 +444,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -555,9 +549,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -578,9 +570,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
@@ -620,9 +610,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>

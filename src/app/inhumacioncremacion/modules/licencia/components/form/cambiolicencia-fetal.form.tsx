@@ -1239,8 +1239,8 @@ export const CambioLicencia = ({ props }: any) => {
               } else {
                 if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
                   setLongitudminima(6);
-                  setLongitudmaxima(9);
-                  setTipocampo('[0-9]{6,9}');
+                  setLongitudmaxima(16);
+                  setTipocampo('[0-9]{6,16}');
                   setTipocampovalidacion(/[0-9]/);
                   setCampo('Numéricos');
                   setTipodocumento('Certificado de nacido vivo ');
@@ -1298,9 +1298,9 @@ export const CambioLicencia = ({ props }: any) => {
 
                           }
                           else {
-                            setLongitudminima(6);
-                            setLongitudmaxima(10);
-                            setTipocampo('[a-zA-Z0-9]{6,10}');
+                            setLongitudminima(4);
+                            setLongitudmaxima(16);
+                            setTipocampo('[a-zA-Z0-9]{4,16}');
                             setTipocampovalidacion(/[a-zA-Z0-9]/);
                             setCampo('AlfaNuméricos(Numéros y letras)');
                             setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
@@ -1389,8 +1389,8 @@ export const CambioLicencia = ({ props }: any) => {
               } else {
                 if (valorupper === '0D69523B-4676-4E3D-8A3D-C6800A3ACF3E') {
                   setLongitudminimaautoriza(6);
-                  setLongitudmaximaautoriza(9);
-                  setTipocampoautoriza('[0-9]{6,9}');
+                  setLongitudmaximaautoriza(16);
+                  setTipocampoautoriza('[0-9]{6,16}');
                   setTipocampovalidacionautoriza(/[0-9]/);
                   setCampoautoriza('Numéricos');
                   setTipodocumentoautoriza('Certificado de nacido vivo ');
@@ -1448,9 +1448,9 @@ export const CambioLicencia = ({ props }: any) => {
 
                           }
                           else {
-                            setLongitudminimaautoriza(6);
-                            setLongitudmaximaautoriza(10);
-                            setTipocampoautoriza('[a-zA-Z0-9]{6,10}');
+                            setLongitudminimaautoriza(4);
+                            setLongitudmaximaautoriza(16);
+                            setTipocampoautoriza('[a-zA-Z0-9]{4,16}');
                             setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
                             setCampoautoriza('AlfaNuméricos(Numéros y letras)');
                             setTipodocumentoautoriza('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');

@@ -130,7 +130,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const onSubmit = async (values: any) => {
     let bandera = false;
-    let continuar = false;
+
 
     if (values.numerocert == obj.numeroCertificado) {
       bandera = true;
@@ -160,101 +160,136 @@ export const ModificarLicencia = ({ props }: any) => {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          continuar = true
 
-        } else if (result.isDenied) {
+          Modificar(values);
         }
       });
     }
     else {
-      continuar = true;
+
+      Modificar(values);
     }
 
-    if (continuar) {
+  };
+
+  const Modificar = async (values: any) => {
+
+    Swal.fire({
+      title: 'Modificacion de Solicitud',
+      text: 'Esta a punto de realizar un cambio a la solicitud, ¿Está seguro de continuar?',
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'Modificar',
+      denyButtonText: `Cancelar`,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      icon: 'info'
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
 
 
-      const formatDate = 'MM-DD-YYYY';
-      obj.persona[posicion].primerNombre = values.name;
-      obj.persona[posicion].segundoNombre = values.secondName;
-      obj.persona[posicion].primerApellido = values.surname;
-      obj.persona[posicion].segundoApellido = values.secondSurname;
+        const formatDate = 'MM-DD-YYYY';
+        obj.persona[posicion].primerNombre = values.name;
+        obj.persona[posicion].segundoNombre = values.secondName;
+        obj.persona[posicion].primerApellido = values.surname;
+        obj.persona[posicion].segundoApellido = values.secondSurname;
 
-      if (values.time._i == 'Fecha invalida') {
-        obj.hora = 'Sin información';
-      } else {
-        obj.hora = values.check === true ? 'Sin información' : moment(values.time).format('LT');
-      }
-      obj.numeroCertificado = values.numerocert;
-      obj.fechaDefuncion = moment(values.date).format(formatDate);
-      obj.sinEstablecer = values.check;
 
-      obj.idSexo = values.sex;
-
-      const array = { solicitud: obj };
-
-      await api.putLicencia(array, '0');
-
-      if (nn) {
-        let container = '';
-        switch (obj.idTramite) {
-          case 'a289c362-e576-4962-962b-1c208afa0273':
-            container = 'inhumacionindividual';
-
-            break;
-          case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-            //inhumacion fetal
-            container = 'inhumacionfetal';
-
-            break;
-          case 'e69bda86-2572-45db-90dc-b40be14fe020':
-            //cremacion individual
-            container = 'cremacionindividual';
-
-            break;
-          case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-            //cremacionfetal
-            container = 'cremacionfetal';
-
-            break;
+        if (values.time === undefined) {
+          obj.hora = 'Sin información';
         }
-        const support = await api.getSupportDocuments(obj.idSolicitud);
+        else {
 
-        const [doc] = support.filter((p: any) => p.path.includes('Otros_Documentos'));
+          if (values.time._i == 'Fecha invalida') {
 
-        const supportDocumentsEdit: any[] = [];
-        const formData = new FormData();
+          } else {
+            obj.hora = values.check === true ? 'Sin información' : moment(values.time).format('LT');
+          }
+        }
+        obj.numeroCertificado = values.numerocert;
+        obj.fechaDefuncion = moment(values.date).format(formatDate);
+        obj.sinEstablecer = values.check;
 
-        const archivo = values.fileOtrosDocumentos.file;
+        obj.idSexo = values.sex;
 
-        formData.append('file', archivo);
-        formData.append('nameFile', 'Otros_Documentos' + '_' + obj.idSolicitud);
+        const array = { solicitud: obj };
 
-        supportDocumentsEdit.push({
-          idDocumentoSoporte: doc.idDocumentoSoporte,
-          idSolicitud: obj.idSolicitud,
-          idTipoDocumentoSoporte: 'abe33c1d-9370-4189-9e81-597e5b643481',
-          path: `${obj.idUsuarioSeguridad}/Otros_Documentos_${obj.idSolicitud}`,
-          idUsuario: obj.idUsuarioSeguridad,
-          fechaModificacion: new Date()
+        await api.putLicencia(array, '1');
+
+        if (nn) {
+          let container = '';
+          switch (obj.idTramite) {
+            case 'a289c362-e576-4962-962b-1c208afa0273':
+              container = 'inhumacionindividual';
+
+              break;
+            case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+              //inhumacion fetal
+              container = 'inhumacionfetal';
+
+              break;
+            case 'e69bda86-2572-45db-90dc-b40be14fe020':
+              //cremacion individual
+              container = 'cremacionindividual';
+
+              break;
+            case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+              //cremacionfetal
+              container = 'cremacionfetal';
+
+              break;
+          }
+          const support = await api.getSupportDocuments(obj.idSolicitud);
+
+          const [doc] = support.filter((p: any) => p.path.includes('Otros_Documentos'));
+
+          const supportDocumentsEdit: any[] = [];
+          const formData = new FormData();
+
+          const archivo = values.fileOtrosDocumentos.file;
+
+          formData.append('file', archivo);
+          formData.append('nameFile', 'Otros_Documentos' + '_' + obj.idSolicitud);
+
+          supportDocumentsEdit.push({
+            idDocumentoSoporte: doc.idDocumentoSoporte,
+            idSolicitud: obj.idSolicitud,
+            idTipoDocumentoSoporte: 'abe33c1d-9370-4189-9e81-597e5b643481',
+            path: `${obj.idUsuarioSeguridad}/Otros_Documentos_${obj.idSolicitud}`,
+            idUsuario: obj.idUsuarioSeguridad,
+            fechaModificacion: new Date()
+          });
+
+          formData.append('containerName', container);
+          formData.append('oid', obj.idUsuarioSeguridad);
+
+          if (supportDocumentsEdit.length) {
+            await api.uploadFiles(formData);
+            await api.UpdateSupportDocuments(supportDocumentsEdit);
+          }
+        }
+        setLicencia(false);
+        Swal.fire({
+          icon: 'success',
+
+          title: 'Solicitud Modificada',
+          text: 'Se ha modificado la Solicitud exitosamente'
         });
 
-        formData.append('containerName', container);
-        formData.append('oid', obj.idUsuarioSeguridad);
-
-        if (supportDocumentsEdit.length) {
-          await api.uploadFiles(formData);
-          await api.UpdateSupportDocuments(supportDocumentsEdit);
-        }
       }
-      setLicencia(false);
-      Swal.fire({
-        icon: 'success',
+    });
 
-        title: 'Solicitud Modificada',
-        text: 'Se ha modificado la Solicitud exitosamente'
-      });
-    }
+
   };
+
+
+
+
 
   const onSubmitFailed = () => {
     setStatus('error');
@@ -321,9 +356,6 @@ export const ModificarLicencia = ({ props }: any) => {
                       }
 
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
                   />
                 </Form.Item>
               </div>
@@ -353,9 +385,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item label='Fecha Defunción' name='date' rules={[{ required: true }]} initialValue={date}>
@@ -393,9 +423,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -414,9 +442,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -435,9 +461,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 <Form.Item
@@ -456,9 +480,7 @@ export const ModificarLicencia = ({ props }: any) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
                 {nn && (

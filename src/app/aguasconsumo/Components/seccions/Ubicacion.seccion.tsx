@@ -101,9 +101,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                         event.preventDefault();
                       }
                     }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
+
                   />
                 </Form.Item>
               </div>
