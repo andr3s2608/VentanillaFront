@@ -20,6 +20,7 @@ const { TabPane } = Tabs;
 const GridTipoLicencia: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
   const [espera, setespera] = useState<any>();
+  const [mostrar, setmostrar] = useState<boolean>(false);
   const [allData, setAllData] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
 
@@ -64,13 +65,13 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       setGrid(resp);
       setespera(resp);
       setAllData(resp);
-
+      setmostrar(true);
       setVisibleGrid('contents');
     } else {
       // const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
       const resp = await api.getallrequesttovalidate();
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
-
+      setmostrar(true);
       setGrid(resp);
       setespera(resp);
       setAllData(resp);
@@ -190,13 +191,17 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
   }
 
-  function ComponentUploadDocument() {
-    return (
-      <>
-        <p>algo que va aqui</p>
-      </>
-    );
-  }
+  const RefrescarBandeja = async () => {
+    setespera(undefined);
+
+    await GetValidateRol(roles);
+
+    // window.location.reload();
+
+    //history.push('/tramites-servicios');
+  };
+
+
   return (
     <div className='container-fluid mt-5  fadeInTop '>
       <PageHeaderComponent
@@ -210,6 +215,10 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
               <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
                 <Tabs style={{ border: 'none' }}>
                   <TabPane tab='' key='1'>
+                    {mostrar && (<Button type='primary' style={{ width: 150 }} onClick={RefrescarBandeja}>
+                      Refrescar Bandeja
+                    </Button>)}
+
                     {espera != undefined && (<Gridview data={grid} />)}
                   </TabPane>
                 </Tabs>

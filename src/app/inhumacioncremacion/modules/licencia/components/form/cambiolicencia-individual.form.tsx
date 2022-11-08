@@ -679,7 +679,7 @@ export const CambioLicencia = ({ props }: any) => {
             const seguimiento = {
               fechaRegistro: obj.fechasol,
               usuario: idUsuario,
-              estado: '00000000-0000-0000-0000-000000000000',
+              estado: observacion,
               idSolicitud: obj.idSolicitud,
               observacion: observacion
 

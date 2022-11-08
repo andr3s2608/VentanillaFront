@@ -702,9 +702,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         const seguimiento = {
           fechaRegistro: objJosn.fechasol,
           usuario: idUsuario,
-          estado: '00000000-0000-0000-0000-000000000000',
+          estado: observacion,
           idSolicitud: objJosn.idSolicitud,
-          observacion: observacion
+          observacion: values.observations
 
         }
 
@@ -1952,6 +1952,21 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     //history.push('/tramites-servicios');
   };
 
+
+
+  const Refrescarsolicitud = async () => {
+    const data = await api.getLicencia(objJosn.idSolicitud);
+
+    localStorage.setItem('register', JSON.stringify(data));
+    store.dispatch(SetResetViewLicence());
+    window.location.reload();
+
+    //history.push('/tramites-servicios');
+  };
+
+
+
+
   const separacion = '                      ';
 
   const onnull = () => {
@@ -2082,7 +2097,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                           <Divider style={{ borderColor: '#7cb305', color: '#7cb305' }} dashed className='tipo'>
                             TIPO DE SOLICITUD:{valor}
                           </Divider>
-
+                          <Button type='primary' style={{ width: 150 }} onClick={Refrescarsolicitud}>
+                            Refrescar Solicitud
+                          </Button>
                         </div>
                         <div className='fadeInLeft'>
                           <InformacionFallecidoSeccion obj={objJosn} licencia={false} props={form}

@@ -1138,7 +1138,7 @@ export const Gridview = (props: IDataSource) => {
         const seguimiento = {
           fechaRegistro: fechasolicitud,
           usuario: idUsuario,
-          estado: '00000000-0000-0000-0000-000000000000',
+          estado: 'subsanacion documentos inconsistentes',
           idSolicitud: listDocument[0].idSolicitud,
           observacion: 'subsanacion documentos inconsistentes'
 
@@ -1346,7 +1346,12 @@ export const Gridview = (props: IDataSource) => {
 
     return bandera;
   }
+  const RefrescarBandeja = async () => {
 
+    window.location.reload();
+
+    //history.push('/tramites-servicios');
+  };
 
 
   return (

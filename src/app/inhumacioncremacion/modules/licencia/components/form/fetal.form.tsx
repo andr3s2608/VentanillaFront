@@ -501,7 +501,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           enBogota: values.cementerioLugar === 'Dentro de Bogotá',
           fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
           fueraPais: values.cementerioLugar === 'Fuera del País',
-          cementerio: values.cementerioBogota ?? 'Sin Información',
+          cementerio: values.cementerioBogota ?? values.cementerioLugar,
           otroSitio: values.otro,
           ciudad: values.cementerioCiudad,
           idPais: values.cementerioPais,
@@ -660,7 +660,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         const seguimiento = {
           fechaRegistro: new Date(),
           usuario: idUsuario,
-          estado: '00000000-0000-0000-0000-000000000000',
+          estado: 'radicación solicitud',
           idSolicitud: idsol,
           observacion: 'radicación solicitud'
 
