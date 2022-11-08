@@ -981,7 +981,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      * Variables
      */
 
-    const fechaActual = new Date();
+    let fechaActual = new Date();
     let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreMedico1: string = "";
@@ -1136,6 +1136,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
     }
 
+    if (resumenSolicitud[0]['fechaLicencia'] != null) {
+      const format = "MM-DD-YYYY HH:mm:ss";
+      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
     const keys = [
@@ -1177,7 +1182,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      * Variables
      */
 
-    const fechaActual = new Date();
+    let fechaActual = new Date();
     let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreAutorizadorCremacion: string = "";
@@ -1377,6 +1382,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
     }
 
+    if (resumenSolicitud[0]['fechaLicencia'] != null) {
+      const format = "MM-DD-YYYY HH:mm:ss";
+      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
     const keys = [
@@ -1428,7 +1438,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      * Variables
      */
 
-    const fechaActual = new Date();
+    let fechaActual = new Date();
     let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
@@ -1632,6 +1642,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
     }
 
+    if (resumenSolicitud[0]['fechaLicencia'] != null) {
+      const format = "MM-DD-YYYY HH:mm:ss";
+      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+    }
+
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
 
@@ -1685,7 +1700,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
      * Variables
      */
 
-    const fechaActual = new Date();
+    let fechaActual = new Date();
     let fechaActualizacion = fechaActual;
     let nombreSolicitante: string = "";
     let nombreFallecido: string = "";
@@ -1844,6 +1859,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (fechaActualizacionSeguimiento != null) {
       fechaActualizacion = new Date(fechaActualizacionSeguimiento['fechaActualizacion']);
+    }
+
+    if (resumenSolicitud[0]['fechaLicencia'] != null) {
+      const format = "MM-DD-YYYY HH:mm:ss";
+      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
