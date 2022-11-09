@@ -1949,7 +1949,7 @@ export const CambioLicencia = ({ props }: any) => {
                                 <div className='fadeInRight d-block'>
 
                                   <InformacionDocumentosGestion prop={getDataDocumentos} obj={obj} id={cambioacremacion ? 'Cremación'
-                                    : (cambioainhumacion ? 'Inhumación' : 'No Aplica')} escambio={(cambioacremacion || cambioainhumacion)}
+                                    : (cambioainhumacion ? 'Inhumación' : 'No Aplica')} escambio={(cambioacremacion || cambioainhumacion) ? 'cambio' : 'actualizacion'}
                                     instType={insttype} />
 
                                 </div>
