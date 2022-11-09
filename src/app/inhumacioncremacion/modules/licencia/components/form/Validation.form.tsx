@@ -553,32 +553,33 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
           //-----------------------------------------
 
+          let respuesta: any = '';
           switch (tipotramite) {
             case 'a289c362-e576-4962-962b-1c208afa0273':
               //Inhumación Individual;
-              await htmlInhumacionIndividual(true);
+              respuesta = await htmlInhumacionIndividual(true);
               break;
             case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
               //Inhumacion fetal
-              await htmlInhumacionFetal(true);
+              respuesta = await htmlInhumacionFetal(true);
               break;
             case 'e69bda86-2572-45db-90dc-b40be14fe020':
               //Cremacion individual
-              await htmlCremacionIndividual(true);
+              respuesta = await htmlCremacionIndividual(true);
               break;
             case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
               //Cremacionfetal
-              await htmlCremacionFetal(true);
+              respuesta = await htmlCremacionFetal(true);
               break;
             default:
               break;
           }
 
-          const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-          const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+          //const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+          //const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
 
           const licencia: any = await api.ObtenerPDFShared({
-            html: htmlFinal
+            html: respuesta.plantillaLicenciaGen
           });
 
 
@@ -704,7 +705,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           usuario: idUsuario,
           estado: observacion,
           idSolicitud: objJosn.idSolicitud,
-          observacion: values.observations
+          observacion: values.observations ?? ''
 
         }
 
@@ -796,19 +797,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     showModal();
   };
 
-  const validar = async (idSolicitud: string) => {
-    const all = await api.getLicencia(idSolicitud);
-
-    const alldata = all.map((item: any) => {
-      item.fechaRegistro = moment(item.fechaRegistro).format(formatDate);
-      return item;
-    });
-
-    const stringInfo: string = alldata.reduce((result: any, item: any) => {
-      return `${result}${item.persona[0].primerNombre}|${result}${item.persona[0].segundoNombre}`;
-    }, '');
-    return stringInfo;
-  };
 
   const [isCremacion, setIsCremacion] = useState(false);
   useEffect(() => {
@@ -1166,7 +1154,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
       html: HTML
     });
-
+    return result;
   }
 
   async function htmlCremacionIndividual(bandera: boolean) {
@@ -1414,7 +1402,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       idSolicitud: Solicitud[0]["idSolicitud"].toString().toLocaleUpperCase(),
       html: HTML
     });
-
+    return result;
 
   }
 
@@ -1670,6 +1658,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       html: HTML
     });
 
+    return result;
+
   }
 
 
@@ -1902,12 +1892,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         break;
     }
 
-    const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-    const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+    //const resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+    //const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
 
 
     const PDF: any = await api.ObtenerPDFShared({
-      html: htmlFinal
+      html: respuesta.plantillaLicenciaGen
     });
 
     //-----------------------------------------
@@ -1919,8 +1909,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       const info: any = JSON.parse(infouser);
       const idSolicitud = objJosn?.idSolicitud;
       const all = await api.GetSolicitud(idSolicitud);
-      const solicitante = await api.GetResumenSolicitud(idSolicitud);
-      setsolicitante(solicitante[0]['nombreSolicitante']);
+      //const solicitante = await api.GetResumenSolicitud(idSolicitud);
+      setsolicitante(respuesta.nombreSolicitante);
       setUrlPdfLicence("data:application/pdf;base64," + PDF);
 
       setIsModalVisiblePdf(true);
