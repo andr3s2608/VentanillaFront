@@ -403,7 +403,47 @@ export const Gridview = (props: IDataSource) => {
     if (Tipo.rol !== 'Ciudadano'
       //  && Tipo.rol !== 'AdminTI'
     ) {
+
       structureColumns = [
+
+        {
+          title: 'Validar Tramite',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo'
+              || row.estadoString === 'Actualización Documentos' || row.estadoString === 'Actualización Solicitud') {
+              return (<Form.Item label='' name=''>
+                <Button
+                  type='primary'
+                  key={`vali-${index}`}
+                  onClick={() => onClickValidarInformacion(row)}
+                  style={{ marginLeft: '5px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Validar Información
+                </Button>
+              </Form.Item>)
+            }
+          }
+        },
+        {
+          title: 'Visualizar PDF',
+          key: 'Acciones',
+          width: 200,
+          render: (_: any, row: any, index: any) => {
+            const [permiso] = roles;
+            if (row.estadoString === 'Aprobado validador de documentos') {
+              return (<Form.Item label='' name=''>
+                <FilePdfOutlined
+                  onClick={() => onClickVisualizarPDF(row)}
+                  style={{ fontSize: '30px' }}
+                />
+              </Form.Item>)
+            }
+          }
+        },
         {
           title: FilterByNameInputid(),
           dataIndex: 'consecutivo',
@@ -588,46 +628,8 @@ export const Gridview = (props: IDataSource) => {
 
             }
           }
-        },
-
-        {
-          title: 'Validar Tramite',
-          key: 'Acciones',
-          width: 200,
-          render: (_: any, row: any, index: any) => {
-            const [permiso] = roles;
-            if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo'
-              || row.estadoString === 'Actualización Documentos' || row.estadoString === 'Actualización Solicitud') {
-              return (<Form.Item label='' name=''>
-                <Button
-                  type='primary'
-                  key={`vali-${index}`}
-                  onClick={() => onClickValidarInformacion(row)}
-                  style={{ marginLeft: '5px' }}
-                  icon={<CheckOutlined />}
-                >
-                  Validar Información
-                </Button>
-              </Form.Item>)
-            }
-          }
-        },
-        {
-          title: 'Visualizar PDF',
-          key: 'Acciones',
-          width: 200,
-          render: (_: any, row: any, index: any) => {
-            const [permiso] = roles;
-            if (row.estadoString === 'Aprobado validador de documentos') {
-              return (<Form.Item label='' name=''>
-                <FilePdfOutlined
-                  onClick={() => onClickVisualizarPDF(row)}
-                  style={{ fontSize: '30px' }}
-                />
-              </Form.Item>)
-            }
-          }
         }
+
       ];
     } else {
       structureColumns = [

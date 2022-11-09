@@ -213,8 +213,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
         }
       }
     }
-
-
   };
   return (
     <>
@@ -386,7 +384,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               />
             </Form.Item>
 
-            <Form.Item label='Fecha de Acta' initialValue={moment(obj?.instFechaActa)} required={false} name='DateAct'>
+            <Form.Item label='Fecha de Acta' initialValue={obj?.instFechaActa === null ? null : moment(obj?.instFechaActa)} required={false} name='DateAct'>
               <DatepickerComponent
                 picker='date'
                 dateDisabledType='before'

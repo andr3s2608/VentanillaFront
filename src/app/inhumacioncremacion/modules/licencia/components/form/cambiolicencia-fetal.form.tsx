@@ -1552,7 +1552,7 @@ export const CambioLicencia = ({ props }: any) => {
 
                                     required={true}
                                     cambio={getDataCambioInstituto}
-                                    tipoLicencia={obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ? 'Cremación' : 'Inhumación'}
+                                    tipoLicencia={(cambioainhumacion || actualizacioninhumacion) ? 'Inhumación' : 'Cremación'}
                                   />
 
                                 </div>
@@ -2128,7 +2128,7 @@ export const CambioLicencia = ({ props }: any) => {
                                 <div className='fadeInRight d-block'>
 
                                   <InformacionDocumentosGestion prop={getDataDocumentos} obj={obj} id={cambioacremacion ? 'Cremación'
-                                    : (cambioainhumacion ? 'Inhumación' : 'No Aplica')} escambio={(cambioacremacion || cambioainhumacion)}
+                                    : (cambioainhumacion ? 'Inhumación' : 'No Aplica')} escambio={(cambioacremacion || cambioainhumacion) ? 'cambio' : 'actualizacion'}
                                     instType={insttype} />
 
                                 </div>

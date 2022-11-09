@@ -270,7 +270,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
 
   let structureColumns: any = [];
 
-  if (escambio) {
+  if (escambio === 'cambio' || escambio === 'actualizacion') {
     structureColumns = [
       {
         title: 'Descripción',
@@ -343,7 +343,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
         </div>
       </div>
 
-      {escambio && (<>
+      {escambio === 'cambio' && (<>
 
         {(instTypebd === 'Otros' && instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
 
@@ -459,6 +459,6 @@ interface documentosgestion {
   prop: any;
   id: string;
   obj: any;
-  escambio: boolean;
+  escambio: string;
   instType: string;
 }
