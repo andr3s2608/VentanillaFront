@@ -1443,7 +1443,7 @@ export const CambioLicencia = ({ props }: any) => {
 
                                     required={true}
                                     cambio={getDataCambioInstituto}
-                                    tipoLicencia={obj.idTramite === 'a289c362-e576-4962-962b-1c208afa0273' ? 'Cremación' : 'Inhumación'}
+                                    tipoLicencia={(cambioainhumacion || actualizacioninhumacion) ? 'Inhumación' : 'Cremación'}
                                   />
 
                                 </div>
