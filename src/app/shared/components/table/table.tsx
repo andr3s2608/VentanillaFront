@@ -1061,7 +1061,7 @@ export const Gridview = (props: IDataSource) => {
       setmostrar(true);
     }
     else {
-      console.log(solicitud)
+
       setmostrar(false);
       setfechasolicitud(solicitud.fechaSolicitud);
       setObservacion(resultResponse[0].observaciones);
@@ -1079,7 +1079,9 @@ export const Gridview = (props: IDataSource) => {
 
     const idUsuario = await api.getIdUsuario();
 
-
+    // console.log(fechasolicitud)
+    // const fecha = new Date(fechasolicitud);
+    // console.log(fecha)
     const dia: number = fechasolicitud.substring(0, 2);
     const mes: number = fechasolicitud.substring(3, 5);
     const Year: number = fechasolicitud.substring(6, fechasolicitud.length);
