@@ -23,8 +23,8 @@ import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 
 export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
   const [[tipo_identificacion, edad, fechaNacimiento, horaFallecido, genero], setFallecido] = useState<
-    [string, string, string, string, string]
-  >(['', '', '', '', '']);
+    [string, string, any, string, string]
+  >(['', '', , '', '']);
 
   const [[primernombre, segundonombre, primerapellido, segundoapellido], setNombres] = useState<[string, string, string, string]>(
     ['', '', '', '']
@@ -152,7 +152,7 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
     setFallecido([
       inf_fallecido['tipoIdentificacion'] + '',
       inf_fallecido['edadFallecido'] + '',
-      fecharecortada.substring(0, 10) + '',
+      moment(fecharecortada),
       inf_fallecido['hora'] + '',
       inf_fallecido['idSexo'] + ''
     ]);
@@ -639,7 +639,7 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
       },
       {
         title: 'Fecha de nacimiento',
-        describe: fechaNacimiento
+        describe: < DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={fechaNacimiento} disabled />
       },
       {
         title: 'Hora de fallecimiento',

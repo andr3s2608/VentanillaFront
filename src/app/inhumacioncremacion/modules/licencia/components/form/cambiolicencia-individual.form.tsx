@@ -681,7 +681,7 @@ export const CambioLicencia = ({ props }: any) => {
               usuario: idUsuario,
               estado: observacion,
               idSolicitud: obj.idSolicitud,
-              observacion: observacion
+              observacion: values.observations
 
             }
             await api.addSeguimiento(seguimiento);
@@ -1954,9 +1954,18 @@ export const CambioLicencia = ({ props }: any) => {
 
                                 </div>
                               </div>
-
                             </div>
                           </div>
+                          <div className='row mt-2 prueba'>
+                            <div className='col-lg-12 col-sm-12 col-md-12' style={{ marginLeft: '-10px' }}>
+                              <label htmlFor=''>Observaciones</label>
+                              <Form.Item label='' name='observations' rules={[{ required: true }]}>
+                                <Input.TextArea rows={5} maxLength={500} style={{ width: '360px' }} className='textarea' />
+                              </Form.Item>
+                            </div>
+                          </div>
+
+
                           <Actions />
                         </div>
                       </div>

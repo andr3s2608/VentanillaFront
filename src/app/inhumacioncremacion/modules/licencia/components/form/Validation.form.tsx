@@ -65,7 +65,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [viewLicenceState, setViewLicenceState] = useState<any>();
   const { Step } = Steps;
   const [dataTable, setDataTable] = useState<[]>();
-  const [solicitante, setsolicitante] = useState<[]>();
+
   const history = useHistory();
   const [valor, setvalor] = useState<string>('');
   const [htmlFinal, sethtmlFinal] = useState<string>('');
@@ -75,10 +75,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const [isnull, setisnull] = useState<boolean>(false);
   const [gestionada, setgestionada] = useState<boolean>(false);
   const [gestionada2, setgestionada2] = useState<boolean>(false);
-  const [apellido, setapellido] = useState<string | undefined>();
-  const [fecha, setfecha] = useState<string | undefined>();
+
+  const [solicitante, setsolicitante] = useState<[]>();
   const [idUsuario, setidUsuario] = useState<string>('');
-  const [estado, setestado] = useState<string>('');
+
   const { tipoLicencia, tramite } = props;
   const [form] = Form.useForm<any>();
   const { setStatus } = useStepperForm<any>(form);
@@ -95,6 +95,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     '1',
     '1'
   ]);
+
+
+
+
+
+
 
   const [supports, setSupports] = useState<any[]>([]);
   const [type, setType] = useState<any[]>([]);
@@ -788,16 +794,18 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     return opciones;
   };
-
+  //acaaaaaaa
   const onClickView = async (idSolicitud: string) => {
-    const solicitante = await api.GetResumenSolicitud(idSolicitud);
+    //const solicitante = await api.GetResumenSolicitud(idSolicitud);
 
-    setsolicitante(solicitante[0]['nombreSolicitante']);
-    setapellido(solicitante[0]['apellidoSolicitante']);
-    setestado('En trámite');
-    setfecha(objJosn.fechasol);
+    const seguimiento: any = await api.getSeguimientoporSolicitud(idSolicitud);
 
-    setDataTable(solicitante);
+
+    const strAscending: any = [...seguimiento].sort((a, b) =>
+      a.fechaActualizacion > b.fechaActualizacion ? 1 : -1,
+    )
+
+    setDataTable(strAscending);
     showModal();
   };
 
@@ -857,95 +865,58 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   //#endregion
 
-  const Lista = [
-    {
-      title: 'Seleccione Licencia',
-      describe: <SelectComponent options={type} optionPropkey='license' optionPropLabel='Licencia' />
-    },
-    {
-      title: '',
-      describe: <Button type='primary'>Consultar</Button>
-    }
-  ];
 
-  const colorEstado = (estado: string) => {
-    switch (estado) {
-      case 'En Trámite':
-        return (
-          <p className={'estado'} style={{ color: 'green' }}>
-            {estado}
-          </p>
-        );
-      case 'Aprobado validador de documentos':
-        return (
-          <p className={'estado'} style={{ color: 'green' }}>
-            {estado}
-          </p>
-        );
-      case 'Registro de Tramite Usuario Externo':
-        return (
-          <p className={'estado'} style={{ color: 'green' }}>
-            {estado}
-          </p>
-        );
-        break;
-      case 'Negado validador de documentos':
-        return (
-          <p className={'estado'} style={{ color: 'red' }}>
-            {estado}
-          </p>
-        );
-        break;
-      case 'Documentos Inconsistentes':
-        return (
-          <p className={'estado'} style={{ color: 'red' }}>
-            {estado}
-          </p>
-        );
-        break;
-    }
-  };
   const columnFake = [
-    {
-      title: 'Nombres',
-      dataIndex: 'nombreSolicitante',
-      key: 'nombreSolicitante'
-    },
 
-    {
-      title: 'Apellidos',
-      dataIndex: 'apellidoSolicitante',
-      key: 'apellidoSolicitante'
-    },
     {
       title: 'Fecha de Solicitud',
-      dataIndex: '',
-      key: 'apellidoSolicitante',
-      render: (Text: string) => (
-        <Form.Item label='' name=''>
-          <text>{fecha}</text>
-        </Form.Item>
-      )
+      dataIndex: 'fechaRegistro',
+      key: 'fechaRegistro',
+      render: (Text: any) => {
+        const fecha: Date = new Date(Text)
+        const horas: number = fecha.getHours() - 5;
+        fecha.setHours(horas)
+        const fechaparseada = moment(fecha).format('DD-MM-YYYY HH:mm');
+        return (<Form.Item label='' name=''>
+          <text>{fechaparseada.toString()}</text>
+        </Form.Item>)
+      }
+
     },
     {
       title: 'Estado',
-      dataIndex: '',
-      key: 'estadoNuevo',
-      render: (estadon: string) => (
-        <>
-          <Form.Item label='' name=''>
-            <text>{estado}</text>
-          </Form.Item>{' '}
-        </>
-      )
+      dataIndex: 'estado',
+      key: 'estado'
     },
-
     {
       title: 'Observación',
-      dataIndex: '',
-      key: ''
+      dataIndex: 'observacion',
+      key: 'Observacion'
+    },
+    {
+      title: 'Fecha de Actualización',
+      dataIndex: 'fechaActualizacion',
+      key: 'FechaActualizacion',
+      render: (Text: any) => {
+        const fecha: Date = new Date(Text)
+        const horas: number = fecha.getHours() - 5;
+        fecha.setHours(horas)
+        const fechaparseada = moment(fecha).format('DD-MM-YYYY HH:mm');
+        return (<Form.Item label='' name=''>
+          <text>{fechaparseada.toString()}</text>
+        </Form.Item>)
+      }
+
     }
   ];
+
+  /*,
+  {
+    title: 'Nombre Completo',
+      dataIndex: 'usuarioName',
+        key: 'usuarioName'
+  }
+*/
 
   function padTo2Digits(num: number) {
     return num.toString().padStart(2, '0');
@@ -2149,14 +2120,15 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                               }
                               visible={isModalVisible}
                               onCancel={handleCancel}
-                              width={1000}
+                              width={1500}
                               okButtonProps={{ hidden: true }}
                               cancelText='Cerrar'
                             >
                               <Table
-                                className='text-center table'
+                                // className='text-center table'
                                 dataSource={dataTable}
                                 columns={columnFake}
+                                scroll={{ x: 1200 }}
                                 pagination={{ hideOnSinglePage: true }}
                               />
                             </Modal>

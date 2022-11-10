@@ -151,7 +151,7 @@ const formatObjJson = (obj: any) => {
       if (fueraBogota) {
         value = 'Fuera de Bogotá';
       }
-      if (fueraPais) {
+      if ((!enBogota && !fueraBogota) ?? fueraPais) {
         value = 'Fuera del País';
       }
       return value;

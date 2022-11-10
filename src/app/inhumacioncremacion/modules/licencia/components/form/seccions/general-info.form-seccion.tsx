@@ -20,6 +20,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   const [mostrar, setmostrar] = useState<boolean>(obj === undefined ? true : false);
   const [isHora, setIsHora] = useState<boolean>(true);
   const [isMensaje, setisMensaje] = useState<boolean>(false);
+  const [Emergencia, setEmergencia] = useState<boolean>(false);
   const [Mensaje, setMensaje] = useState<string>('');
   const [time, settime] = useState<any>(undefined);
   const date = obj?.date !== undefined ? moment(obj?.date) : null;
@@ -32,8 +33,11 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   const getListas = useCallback(async () => {
 
     if (obj?.time != undefined) {
+      const causamuerte = await api.GetResumenSolicitud(obj?.idSolicitud)
 
+      setEmergencia(causamuerte[0].cumpleCausa);
       settime(ObtenerHora(obj?.time + ''));
+      setisMensaje(causamuerte[0].cumpleCausa);
     }
     if (check) {
       setIsHora(false);
@@ -60,7 +64,8 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
   };
 
   const onChange = (value: any) => {
-    if (value === 0) {
+    if (value === 'No') {
+
       setisMensaje(false);
     }
     else {
@@ -126,10 +131,11 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
         <Divider orientation='center'>Información General</Divider>
 
         <Form.Item label='Emergencia Sanitaria' name='causaMuerte'
-          initialValue={0} rules={[{ required: true }]}>
-          <Radio.Group onChange={(e) => onChange(e.target.value)} >
-            <Radio value={1}>SI</Radio>
-            <Radio value={0}>NO</Radio>
+          initialValue={Emergencia ? 'Si' : 'No'} rules={[{ required: true }]}>
+          <Radio.Group onChange={(e) => onChange(e.target.value)}
+            defaultValue={Emergencia ? 'Si' : 'No'}>
+            <Radio value={'Si'}>SI</Radio>
+            <Radio value={'No'}>NO</Radio>
           </Radio.Group>
           {isMensaje && (
             <>  <label style={{ fontSize: 15, float: 'right', marginRight: 40 }}>{Mensaje} </label>

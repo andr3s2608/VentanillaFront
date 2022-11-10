@@ -344,10 +344,10 @@ export class ApiService {
     });
   };
 
-  getUserTramite = (idTramite: string) =>
+  getSeguimientoporSolicitud = (idSolicitud: string) =>
     get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
-      url: `Seguimiento/GetSeguimientoBySolicitud/${idTramite}`,
+      url: `Seguimiento/GetSeguimientoBySolicitud/${idSolicitud}`,
       id: '0'
     });
 
