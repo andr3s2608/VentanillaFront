@@ -262,7 +262,7 @@ export const RevisarSg = () => {
             formData.append('file', file);
             formData.append(
               'nameFile',
-              'RESOLUCION_' + 'N°' + objJson.numeroradicado + "(numero de radicado temporal)"
+              'RESOLUCION_' + 'N°' + objJson.numeroradicado + objJson.idSolicitud
             );
             formData.append('containerName', "aguahumanos");
             formData.append('oid', objJson.idusuario);

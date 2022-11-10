@@ -12,9 +12,12 @@ import Input from 'antd/es/input';
 import Table from 'antd/es/table';
 import App from 'app/inhumacioncremacion/modules/licencia/pages/validarCovid/validar';
 
+import documentoNoEncontrado from '../../../../assets/images/inhumacioncremacion/documentoNoEncontrado.jpg';
+
 import { DatepickerComponent } from '../inputs/datepicker.component';
 import moment, { months } from 'moment';
 import { errorMessage, infoMessage } from 'app/services/settings/message.service';
+import Swal from 'sweetalert2';
 
 export const Gridview = (props: IDataSource) => {
   const history = useHistory();
@@ -881,61 +884,86 @@ export const Gridview = (props: IDataSource) => {
   let tramite = 'En tramite';
 
   async function onClickVisualizarPDF(row: any): Promise<void> {
+    try {
+      const solicitud = await api.getLicencia(row.idSolicitud);
+      const resumenSolicitud = await api.GetResumenSolicitud(row.idSolicitud);
 
-    const solicitud = await api.getLicencia(row.idSolicitud);
-    const resumenSolicitud = await api.GetResumenSolicitud(row.idSolicitud);
+      const idContenedor = solicitud[0]['idTramite'];
 
-    const idContenedor = solicitud[0]['idTramite'];
+      let contenedor: string = '';
 
-    let contenedor: string = '';
+      let valor: string = '';
 
-    let valor: string = '';
+      switch (valor) {
+        case 'Inhumación Individual':
+          contenedor = 'inhumacionindividual';
+          break;
+        case 'Inhumación Fetal':
+          contenedor = 'inhumacionfetal';
+          break;
+        case 'Cremación Individual':
+          contenedor = 'cremacionindividual';
+          break;
+        case 'Cremación Fetal ':
+          contenedor = 'cremacionfetal';
+          break;
+      }
 
-    switch (valor) {
-      case 'Inhumación Individual':
-        contenedor = 'inhumacionindividual';
-        break;
-      case 'Inhumación Fetal':
-        contenedor = 'inhumacionfetal';
-        break;
-      case 'Cremación Individual':
-        contenedor = 'cremacionindividual';
-        break;
-      case 'Cremación Fetal ':
-        contenedor = 'cremacionfetal';
-        break;
+      switch (idContenedor) {
+        case 'a289c362-e576-4962-962b-1c208afa0273':
+          contenedor = 'inhumacionindividual';
+          valor = 'Inhumación Individual';
+          break;
+        case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+          contenedor = 'inhumacionfetal';
+          valor = 'Inhumación Fetal';
+          break;
+        case 'e69bda86-2572-45db-90dc-b40be14fe020':
+          contenedor = 'cremacionindividual';
+          valor = 'Cremación Individual';
+          break;
+        case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+          contenedor = 'cremacionfetal';
+          valor = 'Cremación Fetal';
+          break;
+      }
+
+      const oid = solicitud[0]['idUsuarioSeguridad'];
+
+      const nameBlob = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
+
+      const path = contenedor + "/" + oid + "/" + nameBlob;
+      var respuesta = await api.GetBlobAzureV2(path);
+      if (respuesta != null) {
+
+        const urlPDF = await api.GetUrlPdf(path);
+
+        setUrlPdfLicence(urlPDF);
+
+        setIsModalVisiblePdf(true);
+
+      } else {
+        Swal.fire({
+          imageUrl: documentoNoEncontrado,
+          imageHeight: 150,
+          title: 'DOCUMENTO NO ENCONTRADO',
+          confirmButtonColor: '#b6e5ef',
+          text:
+            'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+        });
+      }
+
+    } catch (error) {
+      Swal.fire({
+        imageUrl: documentoNoEncontrado,
+        imageHeight: 150,
+        title: 'DOCUMENTO NO ENCONTRADO',
+        confirmButtonColor: '#b6e5ef',
+        text:
+          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+      });
     }
 
-    switch (idContenedor) {
-      case 'a289c362-e576-4962-962b-1c208afa0273':
-        contenedor = 'inhumacionindividual';
-        valor = 'Inhumación Individual';
-        break;
-      case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-        contenedor = 'inhumacionfetal';
-        valor = 'Inhumación Fetal';
-        break;
-      case 'e69bda86-2572-45db-90dc-b40be14fe020':
-        contenedor = 'cremacionindividual';
-        valor = 'Cremación Individual';
-        break;
-      case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-        contenedor = 'cremacionfetal';
-        valor = 'Cremación Fetal';
-        break;
-    }
-
-    const oid = solicitud[0]['idUsuarioSeguridad'];
-
-    const nameBlob = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
-
-    const path = contenedor + "/" + oid + "/" + nameBlob;
-
-    const urlPDF = await api.GetUrlPdf(path);
-
-    setUrlPdfLicence(urlPDF);
-
-    setIsModalVisiblePdf(true);
   }
 
   const onClickValidarInformacion = async ({ idSolicitud }: { [x: string]: string }) => {

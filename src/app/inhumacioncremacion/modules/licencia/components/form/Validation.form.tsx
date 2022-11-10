@@ -46,6 +46,8 @@ import { useHistory } from 'react-router';
 import { EditInhumacion } from './edit/Inhumacion';
 import { EditFetal } from './edit/fetal';
 
+import firmaNoEncontrada from '../../../../../../assets/images/inhumacioncremacion/firmaNoEncontrada.png';
+
 import 'app/shared/components/table/estilos.css';
 import { EyeOutlined } from '@ant-design/icons';
 import '../../../../../.././scss/antd/index.css';
@@ -727,11 +729,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
     } else {
       Swal.fire({
-        icon: 'error',
+        imageUrl: firmaNoEncontrada,
+        imageHeight: 150,
         title: 'FIRMA NO REGISTRADA',
+        confirmButtonColor: '#04bbd3',
         text:
-          'Su firma no se encuentra registrada ' +
-          'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
+          'Su firma no se encuentra registrada. Por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
       });
     }
   };
@@ -1881,12 +1884,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
       setIsModalVisiblePdf(true);
     } else {
+
       Swal.fire({
-        icon: 'error',
+        imageUrl: firmaNoEncontrada,
+        imageHeight: 150,
         title: 'FIRMA NO REGISTRADA',
+        confirmButtonColor: '#04bbd3',
         text:
-          'Su firma no se encuentra registrada ' +
-          'por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
+          'Su firma no se encuentra registrada. Por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
       });
     }
   };

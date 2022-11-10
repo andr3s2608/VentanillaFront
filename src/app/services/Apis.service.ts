@@ -442,6 +442,16 @@ export class ApiService {
       }
     });
 
+  GetBlobAzureV2 = (path: string) =>
+    get({
+      endpoint: REACT_APP_BLOB as string,
+      url: `Storage/GetBlob/${path}`,
+      id: '0',
+      options: {
+        responseType: 'blob'
+      }
+    });
+
   GetBlobInhumacionCremacion = (contenedor: string, path: string) =>
     get({
       endpoint: REACT_APP_BLOB as string,
