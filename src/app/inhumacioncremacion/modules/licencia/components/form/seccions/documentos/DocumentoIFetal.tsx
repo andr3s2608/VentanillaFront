@@ -184,7 +184,7 @@ export const DocumentosFetal: React.FC<IDocumentForm<any>> = (props) => {
             name='fileActaNotarialFiscal'
             valuePropName='fileList'
             getValueFromEvent={normFile}
-            rules={[{ required: false }]}
+            rules={[{ required: true }]}
           >
             <Upload
               name='fileActaNotarialFiscal'

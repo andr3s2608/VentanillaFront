@@ -93,7 +93,7 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
   var dataParcial = [
     {
       title: 'Numero de identificación',
-      describe: instNumIdent?.toLowerCase()
+      describe: instTipoIdent?.toLowerCase()
     },
     {
       title: 'Razon social',
@@ -123,34 +123,181 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
     }
   ];
 
+  const datosinstitucion = [
+    {
+      title: 'Tipo de identificación',
+      describe: (
+        <SelectComponent
+          options={[]}
+          optionPropkey='id'
+          optionPropLabel='descripcion'
+          value={'NIT'}
+          disabled
+        />
+      )
+    },
+    {
+      title: 'Numero de identificación',
+      describe: instNumIdent?.toLowerCase()
+    },
+    {
+      title: 'Numero de identificación',
+      describe: instNumIdent?.toLowerCase()
+    },
+    {
+      title: 'Razon social',
+      describe: instRazonSocial?.toLowerCase()
+    },
+    {
+      title: 'Numero de protocolo',
+      describe: instNumProtocolo?.toLowerCase()
+    }
+  ]
+
+  const datosacta =
+    [
+      {
+        title: 'Numero de acta de levantamiento',
+        describe: instNumActaLevantamiento?.toLowerCase()
+      },
+      {
+        title: 'Fecha de acta',
+        describe: (
+          <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={instFechaActa} disabled />
+        )
+      },
+      {
+        title: 'Seccional fiscalia',
+        describe: instSeccionalFiscalia?.toLowerCase()
+      },
+      {
+        title: 'Número de fiscalia',
+        describe: instNoFiscal?.toLowerCase()
+      }
+    ]
+
+  const datoscrem =
+    [
+      {
+        title: 'Nombre del fiscal',
+        describe: instNombreFiscal?.toLowerCase()
+      },
+      {
+        title: 'Apellido del fiscal',
+        describe: instApellidoFiscal?.toLowerCase()
+      },
+      {
+        title: 'Número de oficio',
+        describe: instNumeroOficio?.toLowerCase()
+      },
+      {
+        title: 'Fecha de oficio',
+        describe: (
+          <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={instFechaOficio} disabled />
+        )
+      },
+      {
+        title: 'Número de fiscalia de medicina legal',
+        describe: instNoFiscalMedicinaLegal?.toLowerCase()
+      }
+    ]
+
+
   return (
     <>
       <div className='ant-container d-flex justify-content-center w-100'>
         <div className='ant-row text-center'>
           <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
             <Divider orientation='left'>
-              <div className='contenedor'>datos de la institución que certifica el fallecimiento</div>
+              <div className='contenedor'>Institución que Certifica el Fallecimiento</div>
+            </Divider>
+
+
+
+          </div>
+        </div>
+      </div>
+      <div>
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3
+          }}
+          dataSource={datosinstitucion}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta title={item.title} description={item.describe} />
+            </List.Item>
+          )}
+        />
+      </div>
+      <div className='ant-container d-flex justify-content-center w-100'>
+        <div className='ant-row text-center'>
+          <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+            <Divider orientation='left'>
+              <div className='contenedor'>Datos del Acta Notarial</div>
             </Divider>
           </div>
         </div>
       </div>
-      <List
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 1,
-          md: 3,
-          lg: 3,
-          xl: 3,
-          xxl: 3
-        }}
-        dataSource={obj.instNombreFiscal != '' ? dataCompleta : dataParcial}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta title={item.title} description={item.describe} />
-          </List.Item>
-        )}
-      />
+      <div>
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3
+          }}
+          dataSource={datosacta}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta title={item.title} description={item.describe} />
+            </List.Item>
+          )}
+        />
+      </div>
+      {obj.instNombreFiscal !== '' && (<>
+
+        <div className='ant-container d-flex justify-content-center w-100'>
+          <div className='ant-row text-center'>
+            <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+              <Divider orientation='left'>
+                <div className='contenedor'>Datos de Cremación del Fiscal y Medicina Legal</div>
+              </Divider>
+            </div>
+          </div>
+        </div>
+        <div><List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3
+          }}
+          dataSource={datoscrem}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta title={item.title} description={item.describe} />
+            </List.Item>
+          )}
+        /></div>
+      </>
+
+      )}
+
+
+
     </>
   );
 };
