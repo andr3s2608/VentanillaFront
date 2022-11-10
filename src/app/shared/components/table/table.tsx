@@ -13,7 +13,7 @@ import Table from 'antd/es/table';
 import App from 'app/inhumacioncremacion/modules/licencia/pages/validarCovid/validar';
 
 import { DatepickerComponent } from '../inputs/datepicker.component';
-import moment from 'moment';
+import moment, { months } from 'moment';
 import { errorMessage, infoMessage } from 'app/services/settings/message.service';
 
 export const Gridview = (props: IDataSource) => {
@@ -1061,7 +1061,7 @@ export const Gridview = (props: IDataSource) => {
       setmostrar(true);
     }
     else {
-
+      console.log(solicitud)
       setmostrar(false);
       setfechasolicitud(solicitud.fechaSolicitud);
       setObservacion(resultResponse[0].observaciones);
@@ -1075,6 +1075,20 @@ export const Gridview = (props: IDataSource) => {
 
   /** Evento que se ejecuta cuando se da click en guardar los cambios */
   const SubmitDocuments = async (form: any, dataComponentUpdate: DataComponentUpdate) => {
+
+
+    const idUsuario = await api.getIdUsuario();
+
+
+    const dia: number = fechasolicitud.substring(0, 2);
+    const mes: number = fechasolicitud.substring(3, 5);
+    const Year: number = fechasolicitud.substring(6, fechasolicitud.length);
+
+    const fechaparseada: any = new Date(Year, mes - 1, dia);
+
+
+
+
     const { tipoSolicitud, listDocument } = dataComponentUpdate;
     const [accountIdentifierSession] = listDocument[0].path.split('/');
     const formData = new FormData();
@@ -1135,10 +1149,9 @@ export const Gridview = (props: IDataSource) => {
         await api.UpdateSupportDocuments(supportDocumentsEdit);
         await api.updateStateRequest(listDocument[0].idSolicitud, 'C5F3301A-4DBA-463F-8459-EB32C78E7420');
 
-        const idUsuario = await api.getIdUsuario();
 
         const seguimiento = {
-          fechaRegistro: fechasolicitud,
+          fechaRegistro: fechaparseada,
           usuario: idUsuario,
           estado: 'subsanacion documentos inconsistentes',
           idSolicitud: listDocument[0].idSolicitud,
