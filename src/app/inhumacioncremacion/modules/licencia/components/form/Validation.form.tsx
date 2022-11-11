@@ -943,9 +943,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     /**
      * Variables
      */
-
-    let fechaActual = new Date();
-    let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreMedico1: string = "";
     let nombreMedico2: string = "";
@@ -1092,9 +1089,33 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    if (resumenSolicitud[0]['fechaLicencia'] != null) {
-      const format = "MM-DD-YYYY HH:mm:ss";
+    let fechaActualizacion = null;
+    let fechaActual = null;
+    const format = "MM-DD-YYYY HH:mm:ss";
+
+    if (bandera) {
+
+      //Generacion de licencia
+
       fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActualizacion = fechaActual;
+
+      if (objJosn.numerolicencia != null) {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActualizacion = new Date();
+      }
+
+    } else {
+      //Previsualizacion
+      if (objJosn.numerolicencia === null) {
+
+        //Se comprueba que sea primera vez
+        fechaActual = new Date();
+      } else {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      }
+      fechaActualizacion = new Date();
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
@@ -1137,9 +1158,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     /**
      * Variables
      */
-
-    let fechaActual = new Date();
-    let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreAutorizadorCremacion: string = "";
     let nombreMedico1: string = "";
@@ -1297,10 +1315,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
     }
 
-
-
-
-
     //Se obtienen descripciones por id Guid
 
     const idNacionalidad: string = fallecido['nacionalidad'];
@@ -1331,9 +1345,34 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    if (resumenSolicitud[0]['fechaLicencia'] != null) {
-      const format = "MM-DD-YYYY HH:mm:ss";
+
+    let fechaActualizacion = null;
+    let fechaActual = null;
+    const format = "MM-DD-YYYY HH:mm:ss";
+
+    if (bandera) {
+
+      //Generacion de licencia
+
       fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActualizacion = fechaActual;
+
+      if (objJosn.numerolicencia != null) {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActualizacion = new Date();
+      }
+
+    } else {
+      //Previsualizacion
+      if (objJosn.numerolicencia === null) {
+
+        //Se comprueba que sea primera vez
+        fechaActual = new Date();
+      } else {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      }
+      fechaActualizacion = new Date();
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
@@ -1386,9 +1425,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     /**
      * Variables
      */
-
-    let fechaActual = new Date();
-    let fechaActualizacion = fechaActual;
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
     let nombreSolicitante: string = "";
@@ -1584,9 +1620,33 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    if (resumenSolicitud[0]['fechaLicencia'] != null) {
-      const format = "MM-DD-YYYY HH:mm:ss";
+    let fechaActualizacion = null;
+    let fechaActual = null;
+    const format = "MM-DD-YYYY HH:mm:ss";
+
+    if (bandera) {
+
+      //Generacion de licencia
+
       fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActualizacion = fechaActual;
+
+      if (objJosn.numerolicencia != null) {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActualizacion = new Date();
+      }
+
+    } else {
+      //Previsualizacion
+      if (objJosn.numerolicencia === null) {
+
+        //Se comprueba que sea primera vez
+        fechaActual = new Date();
+      } else {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      }
+      fechaActualizacion = new Date();
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
@@ -1643,9 +1703,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     /**
      * Variables
      */
-
-    let fechaActual = new Date();
-    let fechaActualizacion = fechaActual;
     let nombreSolicitante: string = "";
     let nombreFallecido: string = "";
     let nombreMadre: string = "";
@@ -1798,9 +1855,34 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
-    if (resumenSolicitud[0]['fechaLicencia'] != null) {
-      const format = "MM-DD-YYYY HH:mm:ss";
+
+    let fechaActualizacion = null;
+    let fechaActual = null;
+    const format = "MM-DD-YYYY HH:mm:ss";
+
+    if (bandera) {
+
+      //Generacion de licencia
+
       fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActualizacion = fechaActual;
+
+      if (objJosn.numerolicencia != null) {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActualizacion = new Date();
+      }
+
+    } else {
+      //Previsualizacion
+      if (objJosn.numerolicencia === null) {
+
+        //Se comprueba que sea primera vez
+        fechaActual = new Date();
+      } else {
+        //Se comprueba que sea para segunda vez o mas
+        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      }
+      fechaActualizacion = new Date();
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
