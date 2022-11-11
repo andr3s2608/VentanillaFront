@@ -62,7 +62,7 @@ const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Soli
 export const LicenciaRoutes: IRouteProps[] = [
 
   {
-    path: `/Auditoria`,
+    path: `${tramiteAdmin}/auditoria`,
     component: SeguimientoPage
   },
   {
