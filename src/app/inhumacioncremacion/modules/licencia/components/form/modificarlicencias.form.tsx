@@ -28,7 +28,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const [licencia, setLicencia] = useState<boolean>(false);
   const [nn, setnn] = useState<boolean>(false);
-  const [valores, setvalores] = useState<string>('tramite');
+  const [valores, setvalores] = useState<string>('consecutivo');
   const [date, setDate] = useState<any>();
   const [time, setTime] = useState<any>();
   const [sexo, setsexo] = useState<any>();
@@ -67,7 +67,7 @@ export const ModificarLicencia = ({ props }: any) => {
   };
   const BuscarSolicitud = async () => {
     const numero: string = form.getFieldValue('numero');
-    const id = await api.ObtenerSolicitud(numero, valores);
+    const id = await api.ObtenerSolicitudnuevaApi(numero, valores);
 
     if (id == null) {
       Swal.fire({
@@ -328,8 +328,8 @@ export const ModificarLicencia = ({ props }: any) => {
             <div className='row mt-3 justify-content-center text-center'>
               <div className='col-lg-12 col-sm-12 col-md-12'>
                 <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
-                <Radio.Group onChange={changeRadioButton} defaultValue={'tramite'}>
-                  <Radio value='tramite'>Consecutivo de tramite</Radio>
+                <Radio.Group onChange={changeRadioButton} defaultValue={'consecutivo'}>
+                  <Radio value='consecutivo'>Consecutivo de tramite</Radio>
                   <Radio value='certificado'>Número de Certificado</Radio>
                   <Radio value='fallecido'>Número de Identificación</Radio>
                 </Radio.Group>
@@ -344,7 +344,7 @@ export const ModificarLicencia = ({ props }: any) => {
                     placeholder='Número'
                     autoComplete='off'
                     onKeyPress={(event) => {
-                      if (valores === 'tramite') {
+                      if (valores === 'consecutivo') {
                         if (!/[0-9A-Za-z]/.test(event.key)) {
                           event.preventDefault();
                         }

@@ -41,6 +41,12 @@ export class ApiService {
       url: `Request/ConsultarLicencia/${numero}/${tipo}`,
       id: '0'
     });
+  ObtenerSolicitudnuevaApi = (numero: string, tipo: string) =>
+    get<string>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/ConsultarLicenciaMod/${numero}/${tipo}`,
+      id: '0'
+    });
 
   ObtenerCodigoVerificacion = (numero: string) =>
     get<string>({

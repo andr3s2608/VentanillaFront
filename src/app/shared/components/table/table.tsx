@@ -15,7 +15,7 @@ import App from 'app/inhumacioncremacion/modules/licencia/pages/validarCovid/val
 import documentoNoEncontrado from '../../../../assets/images/inhumacioncremacion/documentoNoEncontrado.jpg';
 
 import { DatepickerComponent } from '../inputs/datepicker.component';
-import moment from 'moment';
+import moment, { months } from 'moment';
 import { errorMessage, infoMessage } from 'app/services/settings/message.service';
 import Swal from 'sweetalert2';
 
@@ -690,7 +690,12 @@ export const Gridview = (props: IDataSource) => {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           with: 600,
-          key: 'fechaSolicitud'
+          key: 'fechaSolicitud',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{Text.toString().substring(0, Text.toString().indexOf(' '))}</text>
+            </Form.Item>
+          )
         },
         {
           title: 'Estado Tramite',
@@ -1103,6 +1108,22 @@ export const Gridview = (props: IDataSource) => {
 
   /** Evento que se ejecuta cuando se da click en guardar los cambios */
   const SubmitDocuments = async (form: any, dataComponentUpdate: DataComponentUpdate) => {
+
+
+    const idUsuario = await api.getIdUsuario();
+
+    // console.log(fechasolicitud)
+    // const fecha = new Date(fechasolicitud);
+    // console.log(fecha)
+    //const dia: number = fechasolicitud.substring(0, 2);
+    //const mes: number = fechasolicitud.substring(3, 5);
+    //const Year: number = fechasolicitud.substring(6, fechasolicitud.length);
+
+    //const fechaparseada: any = new Date(Year, mes - 1, dia);
+
+
+
+
     const { tipoSolicitud, listDocument } = dataComponentUpdate;
     const [accountIdentifierSession] = listDocument[0].path.split('/');
     const formData = new FormData();
@@ -1163,7 +1184,6 @@ export const Gridview = (props: IDataSource) => {
         await api.UpdateSupportDocuments(supportDocumentsEdit);
         await api.updateStateRequest(listDocument[0].idSolicitud, 'C5F3301A-4DBA-463F-8459-EB32C78E7420');
 
-        const idUsuario = await api.getIdUsuario();
 
         const seguimiento = {
           fechaRegistro: fechasolicitud,
