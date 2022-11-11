@@ -589,7 +589,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                       id='filterTipoSol'
                       onChange={selectChange}
                       options={[
-                        { key: 'inhuIndi', value: 'Inhumación Indivual' },
+                        { key: 'inhuIndi', value: 'Inhumación Individual' },
                         { key: 'inhuFetal', value: 'Inhumación Fetal' },
                         { key: 'cremInd', value: 'Cremación Individual' },
                         { key: 'cremFetal', value: 'Cremación Fetal' },
