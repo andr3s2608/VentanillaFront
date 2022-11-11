@@ -914,13 +914,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }
   ];
 
-  /*,
-  {
-    title: 'Nombre Completo',
-      dataIndex: 'usuarioName',
-        key: 'usuarioName'
-  }
-*/
 
   function padTo2Digits(num: number) {
     return num.toString().padStart(2, '0');

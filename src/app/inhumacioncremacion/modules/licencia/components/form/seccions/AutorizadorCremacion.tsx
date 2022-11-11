@@ -4,6 +4,7 @@ import '../../../../../../../css/estilos.css';
 import Divider from 'antd/es/divider';
 import { List } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
+import { SelectComponent } from 'app/shared/components/inputs/select.component';
 
 export const AutorizadorCremacion: React.FC<any> = (props) => {
   const { obj } = props;
@@ -13,8 +14,12 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
   >(['', '', '', '', '']);
   const [mostrar, setmostrar] = useState<boolean>(false);
 
+  const [l_tipo_identificacion, setl_tipo_identificacion] = useState<any>([]);
   const getListas = useCallback(
     async () => {
+      const tipos: any = localStorage.getItem('tipoid');
+      const tiposjson: any = JSON.parse(tipos);
+      setl_tipo_identificacion(tiposjson);
       if (obj != undefined) {
         setobj(obj.autorizadorcremacion[0]);
         setNombres([
@@ -126,6 +131,8 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
 
     return tipoIdentificacion;
   };
+
+
   let data: any[] = [];
 
   data = [
@@ -151,7 +158,16 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
     },
     {
       title: 'Tipo de identificación',
-      describe: getTipoIdentificacion(objJson)
+      describe: (
+        <SelectComponent
+          options={l_tipo_identificacion}
+          optionPropkey='id'
+          style={{ width: '360px', marginLeft: '11px' }}
+          optionPropLabel='descripcion'
+          value={objJson.tipoid}
+          disabled
+        />
+      )
     },
     {
       title: 'Parentesco',

@@ -141,10 +141,6 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
       describe: instNumIdent?.toLowerCase()
     },
     {
-      title: 'Numero de identificación',
-      describe: instNumIdent?.toLowerCase()
-    },
-    {
       title: 'Razon social',
       describe: instRazonSocial?.toLowerCase()
     },

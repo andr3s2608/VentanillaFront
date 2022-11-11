@@ -76,12 +76,26 @@ export const TablaReportes = (props: IDataSource) => {
       {
         title: 'Fecha de Licencia',
         dataIndex: 'fechaLicencia',
-        key: 'fechaLicencia'
+        key: 'fechaLicencia',
+        render: (Text: any) => {
+          const fecha = moment(Text + "").format('DD-MM-YYYY HH:mm')
+          return <Form.Item label='' name=''>
+            <text>{fecha}</text>
+          </Form.Item>
+
+        }
       },
       {
         title: 'Fecha de Solicitud',
         dataIndex: 'fechaSolicitud',
-        key: 'fechaSolicitud'
+        key: 'fechaSolicitud',
+        render: (Text: any) => {
+          const fecha = moment(Text + "").format('DD-MM-YYYY HH:mm')
+          return <Form.Item label='' name=''>
+            <text>{fecha}</text>
+          </Form.Item>
+
+        }
       },
       {
         title: 'Tipo Solicitud',
@@ -268,7 +282,14 @@ export const TablaReportes = (props: IDataSource) => {
       {
         title: 'Fecha de Nacimiento',
         dataIndex: 'fechaNacimientoRep',
-        key: 'fechaNacimientoRep'
+        key: 'fechaNacimientoRep',
+        render: (Text: any) => {
+          const fecha = moment(Text + "").format('DD-MM-YYYY')
+          return <Form.Item label='' name=''>
+            <text>{fecha}</text>
+          </Form.Item>
+
+        }
       },
       {
         title: 'Sexo',
@@ -320,7 +341,14 @@ export const TablaReportes = (props: IDataSource) => {
       {
         title: 'Fecha de Fallecimiento',
         dataIndex: 'fechaDefuncion',
-        key: 'fechaDefuncion'
+        key: 'fechaDefuncion',
+        render: (Text: any) => {
+          const fecha = moment(Text + "").format('DD-MM-YYYY')
+          return <Form.Item label='' name=''>
+            <text>{fecha}</text>
+          </Form.Item>
+
+        }
       },
       {
         title: 'Tipo de Muerte',
@@ -454,7 +482,14 @@ export const TablaReportes = (props: IDataSource) => {
       {
         title: 'Fecha de Acta Levantamiento',
         dataIndex: 'fechaActaInstitucionRep',
-        key: 'fechaActaInstitucionRep'
+        key: 'fechaActaInstitucionRep',
+        render: (Text: any) => {
+          const fecha = moment(Text + "").format('DD-MM-YYYY')
+          return <Form.Item label='' name=''>
+            <text>{fecha}</text>
+          </Form.Item>
+
+        }
       },
       {
         title: 'Fiscal Número',

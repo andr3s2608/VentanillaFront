@@ -899,20 +899,6 @@ export const Gridview = (props: IDataSource) => {
 
       let valor: string = '';
 
-      switch (valor) {
-        case 'Inhumación Individual':
-          contenedor = 'inhumacionindividual';
-          break;
-        case 'Inhumación Fetal':
-          contenedor = 'inhumacionfetal';
-          break;
-        case 'Cremación Individual':
-          contenedor = 'cremacionindividual';
-          break;
-        case 'Cremación Fetal ':
-          contenedor = 'cremacionfetal';
-          break;
-      }
 
       switch (idContenedor) {
         case 'a289c362-e576-4962-962b-1c208afa0273':
