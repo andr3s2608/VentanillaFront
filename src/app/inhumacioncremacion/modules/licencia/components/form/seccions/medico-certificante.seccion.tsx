@@ -6,6 +6,8 @@ import Form, { FormInstance } from 'antd/es/form';
 import Divider from 'antd/es/divider';
 import { List, Card, Layout, Button, Modal } from 'antd';
 
+import medicoActualizado from '../../../../../../../assets/images/inhumacioncremacion/medicoActualizado.jpg';
+
 // Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import '../../../../../../../scss/antd/index.css';
@@ -13,6 +15,7 @@ import '../../../../../../../scss/antd/index.css';
 import { dominioService, ETipoDominio, IDominio } from 'app/services/dominio.service';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import Swal from 'sweetalert2';
 
 export const InformacionMedicoCertificante = (props: any) => {
   const { obj } = props;
@@ -208,22 +211,33 @@ export const InformacionMedicoCertificante = (props: any) => {
 
   const actualizarMedico = async () => {
     if (primernombre != '') {
-      const result1 = await api.actualizarMedico(numeroIdentificacionAux, 'primerNombre', primernombre);
+      const result1 = await api.actualizarMedico(obj.idSolicitud, 'primerNombre', primernombre);
     }
     if (segundonombre != '') {
-      const result2 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoNombre', segundonombre);
+      const result2 = await api.actualizarMedico(obj.idSolicitud, 'segundoNombre', segundonombre);
     }
     if (primerapellido != '') {
-      const result3 = await api.actualizarMedico(numeroIdentificacionAux, 'primerApellido', primerapellido);
+      const result3 = await api.actualizarMedico(obj.idSolicitud, 'primerApellido', primerapellido);
     }
     if (segundoapellido != '') {
-      const result4 = await api.actualizarMedico(numeroIdentificacionAux, 'segundoApellido', segundoapellido);
+      const result4 = await api.actualizarMedico(obj.idSolicitud, 'segundoApellido', segundoapellido);
     }
-    if (primernombre != '') {
-      const result5 = await api.actualizarMedico(numeroIdentificacionAux, 'numeroIdentificacion', numeroIdentificacion);
+    if (numeroIdentificacion != '') {
+      const result5 = await api.actualizarMedico(obj.idSolicitud, 'numeroIdentificacion', numeroIdentificacion);
     }
-    setMedico(true);
-    setNumeroIdentificacionAux(numeroIdentificacion);
+    setMedico(false);
+    //setNumeroIdentificacionAux(numeroIdentificacion);
+
+    Swal.fire({
+      imageUrl: medicoActualizado,
+      imageHeight: 150,
+      title: 'MEDICO ACTUALIZADO ',
+      confirmButtonColor: ' #abc3db ',
+      text:
+        'Su proceso de actualización ha sido exitoso.'
+    });
+
+
   };
 
   const showModal = () => {

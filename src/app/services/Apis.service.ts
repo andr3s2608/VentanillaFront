@@ -416,10 +416,10 @@ export class ApiService {
     });
   };
 
-  actualizarMedico = (idMedico: string, campo: string, cambio: string) => {
+  actualizarMedico = (idSolicitud: string, campo: string, cambio: string) => {
     return put<any>({
       endpoint: REACT_APP_INHCREMACION as string,
-      url: `Request/UpdateMedico/${idMedico}/${campo}/${cambio}`,
+      url: `Request/UpdateMedico/${idSolicitud}/${campo}/${cambio}`,
       id: '1'
     });
   };
