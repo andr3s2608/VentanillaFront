@@ -670,7 +670,7 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
   const tabla2 = [
     {
       title: 'Nro tramite. ',
-      dataIndex: 'iD_Control_Tramite',
+      dataIndex: 'consecutivo',
       key: 'tramite'
     },
     {

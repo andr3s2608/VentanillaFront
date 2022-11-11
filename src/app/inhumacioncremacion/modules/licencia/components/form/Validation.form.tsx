@@ -906,7 +906,11 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           <text>{fechaparseada.toString()}</text>
         </Form.Item>)
       }
-
+    },
+    {
+      title: 'Nombre Completo',
+      dataIndex: 'usuarioName',
+      key: 'usuarioName'
     }
   ];
 

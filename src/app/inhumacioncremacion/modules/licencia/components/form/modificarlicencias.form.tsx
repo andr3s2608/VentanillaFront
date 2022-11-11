@@ -67,7 +67,7 @@ export const ModificarLicencia = ({ props }: any) => {
   };
   const BuscarSolicitud = async () => {
     const numero: string = form.getFieldValue('numero');
-    const id = await api.ObtenerSolicitud(numero, valores);
+    const id = await api.ObtenerSolicitudnuevaApi(numero, valores);
 
     if (id == null) {
       Swal.fire({

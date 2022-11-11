@@ -690,7 +690,12 @@ export const Gridview = (props: IDataSource) => {
           title: FilterByNameInputfecha(),
           dataIndex: 'fechaSolicitud',
           with: 600,
-          key: 'fechaSolicitud'
+          key: 'fechaSolicitud',
+          render: (Text: string) => (
+            <Form.Item label='' name=''>
+              <text>{Text.toString().substring(0, Text.toString().indexOf(' '))}</text>
+            </Form.Item>
+          )
         },
         {
           title: 'Estado Tramite',
@@ -1110,11 +1115,11 @@ export const Gridview = (props: IDataSource) => {
     // console.log(fechasolicitud)
     // const fecha = new Date(fechasolicitud);
     // console.log(fecha)
-    const dia: number = fechasolicitud.substring(0, 2);
-    const mes: number = fechasolicitud.substring(3, 5);
-    const Year: number = fechasolicitud.substring(6, fechasolicitud.length);
+    //const dia: number = fechasolicitud.substring(0, 2);
+    //const mes: number = fechasolicitud.substring(3, 5);
+    //const Year: number = fechasolicitud.substring(6, fechasolicitud.length);
 
-    const fechaparseada: any = new Date(Year, mes - 1, dia);
+    //const fechaparseada: any = new Date(Year, mes - 1, dia);
 
 
 
@@ -1181,7 +1186,7 @@ export const Gridview = (props: IDataSource) => {
 
 
         const seguimiento = {
-          fechaRegistro: fechaparseada,
+          fechaRegistro: fechasolicitud,
           usuario: idUsuario,
           estado: 'subsanacion documentos inconsistentes',
           idSolicitud: listDocument[0].idSolicitud,

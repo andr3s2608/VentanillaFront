@@ -69,7 +69,7 @@ export const ValidarDocumentos = ({ props }: any) => {
         });
       } else {
 
-        const getidsol = await api.ObtenerSolicitud(getidtramite.idControlTramite, 'idcontrol');
+        const getidsol = await api.ObtenerSolicitudnuevaApi(getidtramite.idControlTramite, 'idcontrol');
 
         const solicitud = await api.getLicencia(getidsol);
         let valor = '';
