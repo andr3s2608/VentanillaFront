@@ -13,10 +13,14 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
     [string, string, string, string, string]
   >(['', '', '', '', '']);
   const [mostrar, setmostrar] = useState<boolean>(false);
+  const [otro, setotro] = useState<boolean>(false);
+  const [parentesco, setparentesco] = useState<any>();
 
   const [l_tipo_identificacion, setl_tipo_identificacion] = useState<any>([]);
   const getListas = useCallback(
+
     async () => {
+
       const tipos: any = localStorage.getItem('tipoid');
       const tiposjson: any = JSON.parse(tipos);
       setl_tipo_identificacion(tiposjson);
@@ -24,13 +28,12 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
         setobj(obj.autorizadorcremacion[0]);
         setNombres([
           obj.autorizadorcremacion[0].name,
-
           obj.autorizadorcremacion[0].secondName,
           obj.autorizadorcremacion[0].surname,
           obj.autorizadorcremacion[0].secondSurname,
           obj.autorizadorcremacion[0].numeroid
         ]);
-
+        setparentesco(getTipoParentesco(obj.autorizadorcremacion[0]));
         setmostrar(true);
       }
     },
@@ -63,6 +66,7 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
         break;
       case 'e819b729-799c-4644-b62c-74bff07bf622':
         parentesco = 'Otro';
+        setotro(true);
         break;
       case '6880824b-39c2-4105-8195-c190885796d8':
         parentesco = 'Tío/a';
@@ -135,45 +139,58 @@ export const AutorizadorCremacion: React.FC<any> = (props) => {
 
   let data: any[] = [];
 
-  data = [
-    {
-      title: 'Primer Nombre',
-      describe: primernombre
-    },
-    {
-      title: 'Segundo Nombre',
-      describe: segundonombre
-    },
-    {
-      title: 'Primer Apellido',
-      describe: primerapellido
-    },
-    {
-      title: 'Segundo Apellido',
-      describe: segundoapellido
-    },
-    {
-      title: 'No. Identificacion.',
-      describe: nroiden
-    },
-    {
-      title: 'Tipo de identificación',
-      describe: (
-        <SelectComponent
-          options={l_tipo_identificacion}
-          optionPropkey='id'
-          style={{ width: '360px', marginLeft: '11px' }}
-          optionPropLabel='descripcion'
-          value={objJson.tipoid}
-          disabled
-        />
-      )
-    },
-    {
-      title: 'Parentesco',
-      describe: getTipoParentesco(objJson)
+  let otroparentesco: any = [];
+
+
+  if (mostrar) {
+    if (otro) {
+      otroparentesco = {
+        title: 'Otro Parentesco',
+        describe: obj?.autorizadorcremacion[0].otroparentesco
+      };
     }
-  ];
+    data = [
+      {
+        title: 'Primer Nombre',
+        describe: primernombre
+      },
+      {
+        title: 'Segundo Nombre',
+        describe: segundonombre
+      },
+      {
+        title: 'Primer Apellido',
+        describe: primerapellido
+      },
+      {
+        title: 'Segundo Apellido',
+        describe: segundoapellido
+      },
+      {
+        title: 'No. Identificacion.',
+        describe: nroiden
+      },
+      {
+        title: 'Tipo de identificación',
+        describe: (
+          <SelectComponent
+            options={l_tipo_identificacion}
+            optionPropkey='id'
+            style={{ width: '360px', marginLeft: '11px' }}
+            optionPropLabel='descripcion'
+            value={objJson.tipoid}
+            disabled
+          />
+        )
+      },
+      {
+        title: 'Parentesco',
+        describe: parentesco
+      },
+      otroparentesco
+    ];
+  }
+
 
   return (
     <>
