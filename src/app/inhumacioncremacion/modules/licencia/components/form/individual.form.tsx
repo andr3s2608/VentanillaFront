@@ -222,7 +222,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     let banderaCausa = true;
     //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
     let observacionCausaMuerte = Mensaje.valor;
-    if (causa == 0) {
+    if (causa == 'No') {
       banderaCausa = false;
       observacionCausaMuerte = '';
     }
