@@ -43,7 +43,8 @@ const formatObjJson = (obj: any, id: String) => {
       tipoid: cremador.tipoIdentificacion,
       numeroid: cremador.numeroIdentificacion,
       tipopersona: cremador.idTipoPersona,
-      parentesco: cremador.otroParentesco
+      parentesco: cremador.idParentesco,
+      otroparentesco: cremador.otroParentesco
     });
   }
 

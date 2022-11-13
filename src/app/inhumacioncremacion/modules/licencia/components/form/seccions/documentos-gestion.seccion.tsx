@@ -275,6 +275,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
       {
         title: 'Descripción',
         dataIndex: '',
+        with: 250,
         key: 'descripcionpath',
         render: (Text: string) => (
           <Form.Item label='' name=''>
@@ -298,6 +299,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
         title: 'Descripción',
         dataIndex: '',
         key: 'descripcionpath',
+        with: 250,
         render: (Text: string) => (
           <Form.Item label='' name=''>
             <text>{validar()}</text>

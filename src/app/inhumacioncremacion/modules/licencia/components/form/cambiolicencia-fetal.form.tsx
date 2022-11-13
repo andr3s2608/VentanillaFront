@@ -473,7 +473,7 @@ export const CambioLicencia = ({ props }: any) => {
                       hora: '',
                       nacionalidad: '00000000-0000-0000-0000-000000000000',
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                      otroParentesco: parentesco, //lista parentesco
+                      otroParentesco: values?.authOtherParentesco, //lista parentesco
                       idEstadoCivil: '00000000-0000-0000-0000-000000000000',
                       idNivelEducativo: '00000000-0000-0000-0000-000000000000',
                       idEtnia: '00000000-0000-0000-0000-000000000000',
@@ -524,7 +524,7 @@ export const CambioLicencia = ({ props }: any) => {
                       hora: '',
                       nacionalidad: '00000000-0000-0000-0000-000000000000',
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                      otroParentesco: parentesco, //lista parentesco
+                      otroParentesco: values?.authOtherParentesco, //lista parentesco
                       idEstadoCivil: '00000000-0000-0000-0000-000000000000',
                       idNivelEducativo: '00000000-0000-0000-0000-000000000000',
                       idEtnia: '00000000-0000-0000-0000-000000000000',
@@ -576,7 +576,7 @@ export const CambioLicencia = ({ props }: any) => {
                     hora: '',
                     nacionalidad: '00000000-0000-0000-0000-000000000000',
                     segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: parentesco, //lista parentesco
+                    otroParentesco: obj.autorizadorcremacion[0].otroparentesco, //lista parentesco
                     idEstadoCivil: '00000000-0000-0000-0000-000000000000',
                     idNivelEducativo: '00000000-0000-0000-0000-000000000000',
                     idEtnia: '00000000-0000-0000-0000-000000000000',
@@ -656,7 +656,7 @@ export const CambioLicencia = ({ props }: any) => {
                     hora: '',
                     nacionalidad: '00000000-0000-0000-0000-000000000000',
                     segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: parentesco, //lista parentesco
+                    otroParentesco: values?.authOtherParentesco, //lista parentesco
                     idEstadoCivil: '00000000-0000-0000-0000-000000000000',
                     idNivelEducativo: '00000000-0000-0000-0000-000000000000',
                     idEtnia: '00000000-0000-0000-0000-000000000000',

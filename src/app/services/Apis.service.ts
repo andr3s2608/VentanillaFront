@@ -35,6 +35,13 @@ export class ApiService {
   GetDocumentoFallecido = (numero: string, persona: string) =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/ConsultarFallecido/${numero}/${persona}`, id: '0' });
 
+  Auditoria = (numero: string, tipo: string) =>
+    get<string>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/ConsultarAuditoria/${numero}/${tipo}`,
+      id: '0'
+    });
+
   ObtenerSolicitud = (numero: string, tipo: string) =>
     get<string>({
       endpoint: REACT_APP_INHCREMACION as string,

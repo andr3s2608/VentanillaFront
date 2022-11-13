@@ -45,6 +45,7 @@ const extract_data = <T>(response: AxiosResponse): T => {
     }
   }
 
+  /*
   if (!_response.data && response.status === 204) {
     successMessage({
       content: 'El registro fue eliminado exitosamente.'
@@ -52,7 +53,7 @@ const extract_data = <T>(response: AxiosResponse): T => {
 
     return true as any;
   }
-
+*/
   if (responseType === 'blob') {
     showLoading(false);
     return _response;

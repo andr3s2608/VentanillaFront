@@ -41,6 +41,7 @@ const LicenciaCremacionFetalPage = lazy(() => import('./pages/cremacion-fetal/cr
 const LicenciaInhumacionFetalPage = lazy(() => import('./pages/inhumacion-fetal/inhumacion-fetal.page'));
 const MaestroPage = lazy(() => import('./pages/GridTipoLicencia/GridTipoLicencia.page'));
 const ReportPage = lazy(() => import('./pages/report/report.page'));
+const SeguimientoPage = lazy(() => import('./pages/seguimiento/seguimiento.page'));
 //////Aguas////
 const BandejaAguas = lazy(() => import('../../../aguasconsumo/pages/bandejas/RedireccionarBandeja.page'));
 //-gestion
@@ -59,6 +60,11 @@ const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Soli
 const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionSegunda.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
+
+  {
+    path: `${tramiteAdmin}/auditoria`,
+    component: SeguimientoPage
+  },
   {
     path: `${licenciaPath}/cremacion-individual`,
     component: LicenciaCremacionIndividualPage
