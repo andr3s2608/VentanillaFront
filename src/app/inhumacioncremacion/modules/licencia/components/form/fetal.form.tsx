@@ -231,10 +231,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
     let observacionCausaMuerte = Mensaje.valor;
 
-    if (causa == 0) {
+    if (causa === 'No' || causa === undefined) {
       banderaCausa = false;
-      observacionCausaMuerte = ' ';
+      observacionCausaMuerte = '';
     }
+
 
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);

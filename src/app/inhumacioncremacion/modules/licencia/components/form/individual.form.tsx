@@ -222,10 +222,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     let banderaCausa = true;
     //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
     let observacionCausaMuerte = Mensaje.valor;
-    if (causa == 'No') {
+    if (causa === 'No' || causa === undefined) {
       banderaCausa = false;
       observacionCausaMuerte = '';
     }
+
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
     const formatDate = 'MM-DD-YYYY';

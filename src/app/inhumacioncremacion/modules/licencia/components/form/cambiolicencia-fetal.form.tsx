@@ -354,7 +354,7 @@ export const CambioLicencia = ({ props }: any) => {
             let banderaCausa = true;
             let observacionCausaMuerte = causaMuerte;
 
-            if (causa == 0) {
+            if (causa === 'No' || causa === undefined) {
               banderaCausa = false;
               observacionCausaMuerte = '';
             }
