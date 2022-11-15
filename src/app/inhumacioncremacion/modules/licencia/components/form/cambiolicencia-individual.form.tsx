@@ -609,7 +609,7 @@ export const CambioLicencia = ({ props }: any) => {
                   fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
                   fueraPais: values.cementerioLugar === 'Fuera del País',
                   cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
-                  otroSitio: values.otro,
+                  otroSitio: values.otrositio,
                   ciudad: values.cementerioCiudad,
                   idPais: values.cementerioPais,
                   idDepartamento: values.cementerioDepartamento,

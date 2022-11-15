@@ -85,6 +85,15 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     const fun = await api.GetFunerarias();
     const cem = await dominioService.get_cementerios_bogota();
 
+
+    const cementeriosfiltro = cementerios.filter(function (f: { RAZON_S: string }) {
+      return (
+        f.RAZON_S != 'CEMENTERIO FUERA DEL PAIS (EXTERIOR)' &&
+        f.RAZON_S != 'FUERA DE BOGOTA (INTERIOR)'
+      );
+    });
+
+
     //Relacionado con el solicitante
     //Se guarda toda la informacion del Solicitante
     const resumensolicitud = await api.GetResumenSolicitud(obj?.idSolicitud);
@@ -130,7 +139,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
       return `${result}${item.funeraria}`;
     }, '');
 
-    setl_cementerio(cem);
+    setl_cementerio(cementeriosfiltro);
     setl_funeraria(fun);
 
     const dep: any = localStorage.getItem('departamentos');

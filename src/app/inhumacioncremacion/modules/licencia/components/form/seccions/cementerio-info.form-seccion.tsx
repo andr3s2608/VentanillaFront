@@ -36,15 +36,31 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
   });
 
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [[l_departamentos_colombia, l_cementerios, l_paises], setListas] = useState<[IDepartamento[], ICementerio[], IDominio[]]>(
-    [[], [], []]
+  const [l_departamentos_colombia, setl_departamentos] = useState<IDepartamento[]>(
+    []
+  );
+
+  const [l_cementerios, setl_cementerios] = useState<ICementerio[]>(
+    []
+  );
+
+  const [l_paises, setl_paises] = useState<IDominio[]>(
+    []
   );
 
   const getListas = useCallback(
     async () => {
       const paises: any = localStorage.getItem('paises');
       const departamento: any = localStorage.getItem('departamentos');
-      const resp = await Promise.all([JSON.parse(departamento), dominioService.get_cementerios_bogota(), JSON.parse(paises)]);
+      const cementerios = await dominioService.get_cementerios_bogota();
+
+      const cementeriosfiltro = cementerios.filter(function (f: { RAZON_S: string }) {
+        return (
+          f.RAZON_S != 'CEMENTERIO FUERA DEL PAIS (EXTERIOR)' &&
+          f.RAZON_S != 'FUERA DE BOGOTA (INTERIOR)'
+        );
+      });
+      console.log('Cementerios')
 
       if (obj != undefined) {
         if (obj?.cementerioDepartamento != null) {
@@ -58,8 +74,10 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
 
       }
 
+      setl_departamentos(JSON.parse(departamento));
+      setl_paises(JSON.parse(paises));
+      setl_cementerios(cementeriosfiltro);
 
-      setListas(resp);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -165,7 +183,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
               />
             </Form.Item>
             {isMunicipio.departament === cundinamarca && (isMunicipio.municipio === cota || isMunicipio.municipio === soacha) && (
-              <Form.Item label='Otro sitio' name='otro' rules={[{ required: true }]} initialValue={obj?.otro}>
+              <Form.Item label='Otro sitio' name='otrositio' rules={[{ required: true }]} initialValue={obj?.otro}>
                 <Input allowClear placeholder='Otro Sitio' autoComplete='off' />
               </Form.Item>
             )}
@@ -264,7 +282,8 @@ export const KeysForm = [
   'cementerioPais',
   'cementerioCiudad',
   'emailcementerio',
-  'emailfuneraria'
+  'emailfuneraria',
+  'otrositio'
 ];
 
 interface ICementerioInfoProps<T> extends ITipoLicencia {
