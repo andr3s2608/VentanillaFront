@@ -86,7 +86,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     const cem = await dominioService.get_cementerios_bogota();
 
 
-    const cementeriosfiltro = cementerios.filter(function (f: { RAZON_S: string }) {
+    const cementeriosfiltro = cem.filter(function (f: { RAZON_S: string }) {
       return (
         f.RAZON_S != 'CEMENTERIO FUERA DEL PAIS (EXTERIOR)' &&
         f.RAZON_S != 'FUERA DE BOGOTA (INTERIOR)'
