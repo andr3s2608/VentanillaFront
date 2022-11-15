@@ -250,10 +250,11 @@ export const CambioLicencia = ({ props }: any) => {
             let banderaCausa = true;
             let observacionCausaMuerte = causaMuerte;
 
-            if (causa == 0) {
+            if (causa === 'No' || causa === undefined) {
               banderaCausa = false;
               observacionCausaMuerte = '';
             }
+
 
             const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
             const formatDate = 'MM-DD-YYYY';
@@ -608,7 +609,7 @@ export const CambioLicencia = ({ props }: any) => {
                   fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
                   fueraPais: values.cementerioLugar === 'Fuera del País',
                   cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
-                  otroSitio: values.otro,
+                  otroSitio: values.otrositio,
                   ciudad: values.cementerioCiudad,
                   idPais: values.cementerioPais,
                   idDepartamento: values.cementerioDepartamento,

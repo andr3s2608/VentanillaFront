@@ -354,7 +354,7 @@ export const CambioLicencia = ({ props }: any) => {
             let banderaCausa = true;
             let observacionCausaMuerte = causaMuerte;
 
-            if (causa == 0) {
+            if (causa === 'No' || causa === undefined) {
               banderaCausa = false;
               observacionCausaMuerte = '';
             }
@@ -716,7 +716,7 @@ export const CambioLicencia = ({ props }: any) => {
                   fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
                   fueraPais: values.cementerioLugar === 'Fuera del País',
                   cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
-                  otroSitio: values.otro,
+                  otroSitio: values.otrositio,
                   ciudad: values.cementerioCiudad,
                   idPais: values.cementerioPais,
                   idDepartamento: values.cementerioDepartamento,

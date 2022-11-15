@@ -231,10 +231,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     //let observacionCausaMuerte = causaMuerte + ',' + Mensaje.valor;
     let observacionCausaMuerte = Mensaje.valor;
 
-    if (causa == 0) {
+    if (causa === 'No' || causa === undefined) {
       banderaCausa = false;
-      observacionCausaMuerte = ' ';
+      observacionCausaMuerte = '';
     }
+
 
 
     const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
@@ -502,7 +503,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
           fueraPais: values.cementerioLugar === 'Fuera del País',
           cementerio: values.cementerioBogota ?? values.cementerioLugar,
-          otroSitio: values.otro,
+          otroSitio: values.otrositio,
           ciudad: values.cementerioCiudad,
           idPais: values.cementerioPais,
           idDepartamento: values.cementerioDepartamento,
