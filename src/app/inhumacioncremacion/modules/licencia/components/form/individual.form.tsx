@@ -973,7 +973,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
+      setLongitudminima(0);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
@@ -1121,7 +1121,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminimaautoriza(5);
+      setLongitudminimaautoriza(0);
       setLongitudmaximaautoriza(15);
       setTipocampoautoriza('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);

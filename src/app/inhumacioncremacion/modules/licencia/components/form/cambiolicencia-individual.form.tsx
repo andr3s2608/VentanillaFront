@@ -1077,7 +1077,7 @@ export const CambioLicencia = ({ props }: any) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
+      setLongitudminima(0);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
