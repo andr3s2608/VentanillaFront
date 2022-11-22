@@ -72,7 +72,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       //setrechazados(documentosrechazados);
 
-      const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+      const documentos = await api.getSupportDocumentsAguas("1139247D-1EF7-42A7-AD93-E11A002C4144");
 
 
       const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {

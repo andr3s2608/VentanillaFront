@@ -176,7 +176,7 @@ export const LicenciaRoutes: IRouteProps[] = [
   },
   {
     path: `${RevisionPath}/solicitar-revision`,
-    component: SolicitarRevision
+    component: PrimeraVez
   },
   {
     path: `${RevisionPath}/visita-revision`,

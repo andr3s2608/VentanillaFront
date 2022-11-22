@@ -56,6 +56,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const getListas = useCallback(async () => {
     const array: any[] = [];
 
+    /*
     for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
 
       if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
@@ -89,6 +90,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
         pob2: obj.sistematratamientojson[index].poblacionRurales
       });
     }
+    */
     setsistema(array);
     if (prop != null) {
       prop(array);

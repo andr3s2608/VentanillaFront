@@ -57,7 +57,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
       const array: any[] = [];
       const arraytabla: any[] = [];
-      for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
+      /*for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
         array.push({
           posicion: index + 1,
           departamento: obj.acueductosfuentejson[index].idDepartamento,
@@ -79,7 +79,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           munver: 'Bogotá D.C. / ' + localidad[0].descripcion,
           usofuente: usofuente[0].nombre
         });
-      }
+      }*/
       setacueductos(array);
       if (prop != null) {
         prop(array);

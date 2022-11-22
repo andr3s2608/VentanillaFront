@@ -173,30 +173,7 @@ export const Servicios = () => {
                     </div>
                   </div>
                 </div>
-                <section className='panel-menu'>
-                  <div className='container'>
-                    <div className='row'>
-                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
-                        <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                          <nav className='nav panel'>
-                            <a className='nav-link active' href='#'>
-                              1. Solicitar revisión
-                            </a>
-                            <a className='nav-link' href='#'>
-                              2. Crear Solicitud
-                            </a>
-                            <a className='nav-link' href='#'>
-                              3. En gestión
-                            </a>
-                            <a className='nav-link disabled' href='#'>
-                              4. Respuesta
-                            </a>
-                          </nav>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
+
                 <div className='row mt-5'>
                   <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
                     <div className='info-tramite mt-3 ml-5'>

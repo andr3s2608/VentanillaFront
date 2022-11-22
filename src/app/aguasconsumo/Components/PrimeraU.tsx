@@ -20,16 +20,18 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import { IConsesion } from './Models/IConsecion';
 import moment from 'moment';
+import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 
 export const PrimeraU = () => {
   const history = useHistory();
   const [form] = Form.useForm<any>();
   const objJson: any = EditAguas();
+  const [l_tramites, setLtramites] = useState<any[]>([]);
   //const objJson: any = undefined;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
-  const [l_tramites, setl_tramites] = useState<any[]>([]);
   const [validaciondocumento, setvalidacion] = useState<boolean>(false);
   const [acueducto, setacueducto] = useState<any[]>([]);
   const [informacion, setinformacion] = useState<any[]>([]);
@@ -37,8 +39,10 @@ export const PrimeraU = () => {
 
   const getListas = useCallback(
     async () => {
-      const tipos = await api.getTipoTramites();
-      setl_tramites(tipos);
+      const tramites = await api.getTipoTramites();
+      setLtramites(tramites);
+      //const tipos = await api.getTipoTramites();
+      //setl_tramites(tipos);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -398,26 +402,6 @@ export const PrimeraU = () => {
 
             <section className='panel-menu'>
               <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-                    <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                      <nav className='nav panel'>
-                        <a className='nav-link active' href='#'>
-                          1. Solicitar revisión
-                        </a>
-                        <a className='nav-link' href='#'>
-                          2. Crear Solicitud
-                        </a>
-                        <a className='nav-link' href='#'>
-                          3. En gestión
-                        </a>
-                        <a className='nav-link disabled' href='#'>
-                          4. Respuesta
-                        </a>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
                 <div className='row mt-5 ml-3'>
                   <div className='col-lg-12 col-md-12'>
                     <div className='info-tramite mt-3 ml-2'>
@@ -433,47 +417,70 @@ export const PrimeraU = () => {
                       </p>
                     </div>
                   </div>
-                  <div className='col-lg-4 col-sm-4 col-md-4 mt-2 ml-2'>
-                    <div className='panel-search'>
-                      <p className='text'>Número de radicado</p>
-                      <div className='form-group gov-co-form-group'>
-                        <Form.Item name='nroradicado' initialValue={objJson?.numeroradicado} rules={[{ required: false }]}>
-                          <input
-                            type='text'
-                            className='form-control gov-co-form-control'
-                            disabled={true}
-                            onKeyPress={(event) => {
-                              if (!/[0-9]/.test(event.key)) {
-                                event.preventDefault();
-                              }
-                            }}
-                            onPaste={(event) => {
-                              event.preventDefault();
-                            }}
-                          />
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
+
                   <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
                     <div className='panel-search'>
-                      <p>Tipo trámite</p>
                       <div className='form-group gov-co-form-group'>
-                        <Form.Item name='tipotramite' initialValue={objJson?.idtipodeTramite} rules={[{ required: false }]}>
+                        <p className='text'>
+                          <span className='required'>*</span> Tipo de tramite
+                        </p>
+                        <Form.Item
+                          name='tipotramite'
+                          initialValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
+                          rules={[{ required: true }]}
+                        >
                           <SelectComponent
                             options={l_tramites}
-                            defaultValue={objJson?.idtipodeTramite}
+                            defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
                             optionPropkey='idTipoTramite'
                             optionPropLabel='descripcion'
-                            disabled={true}
+                            className='mr-5 option'
                           />
                         </Form.Item>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <>
                   <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+                    <div className='row mt-5 primeros_campos'>
+                      <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
+                    </div>
+                    <div className='row mt-5 ml-2 '>
+                      <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
+                    </div>
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                      <div className='row mt-4'>
+                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+
+                          <Button
+                            className='ml-3 float-right button btn btn-default'
+                            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                            type='primary'
+                            htmlType='button'
+                            onClick={() => onNextStep()}
+                          >
+                            Siguiente
+                          </Button>
+                          <Button
+                            className='mr-5 float-right button btn btn-default'
+                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                            onClick={() => {
+                              history.push('/tramites-servicios-aguas');
+                            }}
+                          >
+                            Cancelar
+                          </Button>
+                        </div>
+                      </div>
+                    </Form.Item>
+                  </div>
+                </>
+
+
+                <>
+                  <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
                         Datos de la fuente de abastecimiento. <br />{' '}
@@ -491,7 +498,9 @@ export const PrimeraU = () => {
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>
                         <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-
+                          <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                            Volver atrás
+                          </Button>
                           <Button
                             className='ml-3 float-right button btn btn-default'
                             style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
@@ -516,7 +525,7 @@ export const PrimeraU = () => {
                   </div>
                 </>
                 <>
-                  <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
+                  <div className={` ${current != 2 && 'd-none'} fadeInRight ${current == 2 && 'd-block'}`}>
                     <div className='row mt-5 ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
                         Información adicional de la fuente de abastecimiento. <br />{' '}
