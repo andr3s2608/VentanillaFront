@@ -6,6 +6,7 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import '../../../../css/estilos.css';
+
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const { obj, form, tipo, habilitar } = props;
 
@@ -863,3 +864,20 @@ interface DatosSolicitante<T> {
   tipo: any;
   habilitar: boolean;
 }
+
+export const KeysForm = [
+  'persona',
+  'IDTypeRazon',
+  'IDNumberRazon',
+  'nombreEntidad',
+  'IDType',
+  'IDNumber',
+  'name',
+  'secondname',
+  'surname',
+  'secondsurname',
+  'telefono',
+  'telefono2',
+  'email',
+];
+

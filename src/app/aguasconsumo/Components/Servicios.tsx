@@ -3,9 +3,9 @@ import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
 import Button from 'antd/es/button';
 import { useHistory } from 'react-router';
-import { Form, Input } from 'antd';
+import { Alert, Form, Input } from 'antd';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
-import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import { DatosSolicitante, KeysForm } from './seccions/DatosSolicitante.seccion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { IRegistroSolicitudPrimeraVez } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudPrimeraVez';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
@@ -27,6 +27,8 @@ import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import Swal from 'sweetalert2';
 
 export const Servicios = () => {
+  const [servicio, setservicio] = useState<any[]>([]);
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
@@ -147,6 +149,35 @@ export const Servicios = () => {
 
   const onSubmitFailed = () => setStatus('error');
 
+  const validacionservicio = () => {
+    if (servicio.length > 0) {
+      onNextStep([...KeysForm]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'datos incompletos, por favor verifique su información'
+      });
+    }
+  };
+
+  const ser: any[] = [];
+
+  for (let index = 0; index < servicio.length; index++) {
+    ser.push({
+      idPersona: '00000000-0000-0000-0000-000000000000',
+      tipoIdentificacion: servicio[index].IDType,
+      numeroIdentificacion: servicio[index].IDNumber,
+      primerNombre: servicio[index].name,
+      segundoNombre: servicio[index].secondname,
+      primerApellido: servicio[index].surname,
+      segundoApellido: servicio[index].secondsurname,
+      telefonoContacto: servicio[index].telefono,
+      celularContacto: servicio[index].telefono2,
+      correoElectronico: servicio[index].email.toString().toLowerCase(),
+      idTipoPersona: servicio[index].persona,
+    })
+  }
+
   return (
     <div className='container-fluid'>
       <div className='card'>
@@ -238,36 +269,43 @@ export const Servicios = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row mt-5 primeros_campos'>
-                  <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
-                </div>
-                <div className='row mt-5 ml-2 '>
-                  <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
-                </div>
-                <div className='row mt-3 acciones'>
-                  <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
-                    <div className='accion ml-4 botnoes'>
-                      <Button
-                        className='ml-4 float-right button btn btn-default'
-                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                        type='primary'
-                        htmlType='submit'
-                      >
-                        Enviar
-                      </Button>
-
-                      <Button
-                        className='mr-3 float-right button btn btn-default cancelar'
-                        style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                        onClick={() => {
-                          history.push('/tramites-servicios-aguas');
-                        }}
-                      >
-                        Cancelar
-                      </Button>
+                <>
+                  <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+                    <div className='row mt-5 ml-2'>
+                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                        Datos de la fuente de abastecimiento. <br />{' '}
+                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                      </p>
+                      <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                     </div>
+
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                      <div className='row mt-4'>
+                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+
+                          <Button
+                            className='ml-3 float-right button btn btn-default'
+                            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                            type='primary'
+                            htmlType='button'
+                            onClick={() => validacionservicio()}
+                          >
+                            Siguiente
+                          </Button>
+                          <Button
+                            className='mr-5 float-right button btn btn-default'
+                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                            onClick={() => {
+                              history.push('/tramites-servicios-aguas');
+                            }}
+                          >
+                            Cancelar
+                          </Button>
+                        </div>
+                      </div>
+                    </Form.Item>
                   </div>
-                </div>
+                </>
               </div>
             </section>
           </Form>
