@@ -257,7 +257,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         <section style={{ width: '100%' }}>
           <div className='container-fluid'>
             <div className='form-row' style={{ marginLeft: '-25px' }}>
-              <div className='col-lg-12'>
+              <div className='col-lg-6'>
                 <p className='text'>
                   {' '}
                   <span className='required'>*</span> Tipo de Solicitantes
@@ -279,6 +279,23 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   />
                 </Form.Item>
               </div>
+
+              {tipoSolicitante && (<div className='col-lg-6'>
+                <p className='text'> RUT </p>
+                <Form.Item name='rut' >
+                  <Input
+                    placeholder='NÚMERO DE RUT'
+                    type='text'
+                    className='form-control gov-co-form-control'
+                    maxLength={50}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                  />
+                </Form.Item>
+              </div>)}
             </div>
             {!tipoSolicitante ? (
               <>

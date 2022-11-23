@@ -1,34 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../css/estilos.css';
-import profile from '../../../../src/assets/images/aguas/profile.png';
-import Button from 'antd/es/button';
 import { DatosFuente, KeysForm as KeyFormFuenteAbastecimiento } from './seccions/Fuente_Abastecimiento.seccion';
-
-import { DatosAcueducto } from './seccions/Acueductos.seccion';
-import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
-import { DatosDocumentos } from './seccions/Documentos.seccion';
-import { useHistory } from 'react-router';
-import { Alert, Form, Input, Steps } from 'antd';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import form from 'antd/es/form';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
-import { EditAguas } from './edit/Aguas';
-import { useStepperForm } from 'app/shared/hooks/stepper.hook';
-import { ApiService } from 'app/services/Apis.service';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import Swal from 'sweetalert2';
-import { IConsesion } from './Models/IConsecion';
-import moment from 'moment';
+import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
+import { authProvider } from 'app/shared/utils/authprovider.util';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
+import { DatosDocumentos } from './seccions/Documentos.seccion';
+import { DatosAcueducto } from './seccions/Acueductos.seccion';
+import { useStepperForm } from 'app/shared/hooks/stepper.hook';
+import { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import { Alert, Form, Input, Steps } from 'antd';
+import { IConsesion } from './Models/IConsecion';
+import { useHistory } from 'react-router';
+import { EditAguas } from './edit/Aguas';
+import '../../../css/estilos.css';
+import Button from 'antd/es/button';
+import form from 'antd/es/form';
+import Swal from 'sweetalert2';
+import moment from 'moment';
+
 
 export const PrimeraU = () => {
   const history = useHistory();
   const [form] = Form.useForm<any>();
   const objJson: any = EditAguas();
   const [l_tramites, setLtramites] = useState<any[]>([]);
-  //const objJson: any = undefined;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
@@ -41,16 +38,12 @@ export const PrimeraU = () => {
     async () => {
       const tramites = await api.getTipoTramites();
       setLtramites(tramites);
-      //const tipos = await api.getTipoTramites();
-      //setl_tramites(tipos);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   useEffect(() => {
     getListas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = async (values: any) => {
@@ -337,14 +330,17 @@ export const PrimeraU = () => {
       }
     }
   };
+
   const onSubmitFailed = () => setStatus('error');
 
   const addacueducto = (value: any) => {
     setacueducto(value);
   };
+
   const addinfo = (value: any) => {
     setinformacion(value);
   };
+
   const adddocumento = (value: any) => {
 
     let va = 0;
@@ -386,11 +382,8 @@ export const PrimeraU = () => {
                           <li className='breadcrumb-item'>
                             <a href='#'>Inicio</a>
                           </li>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Bandeja de entrada</a>
-                          </li>
                           <li className='breadcrumb-item active' aria-current='page'>
-                            Revisar solicitud
+                            Crear Solicitud
                           </li>
                         </ol>
                       </nav>
@@ -442,139 +435,144 @@ export const PrimeraU = () => {
                   </div>
                 </div>
 
-                <>
-                  <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-                    <div className='row mt-5 primeros_campos'>
-                      <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
-                    </div>
-                    <div className='row mt-5 ml-2 '>
-                      <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
-                    </div>
-                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                      <div className='row mt-4'>
-                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-
-                          <Button
-                            className='ml-3 float-right button btn btn-default'
-                            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                            type='primary'
-                            htmlType='button'
-                            onClick={() => onNextStep()}
-                          >
-                            Siguiente
-                          </Button>
-                          <Button
-                            className='mr-5 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
-                          </Button>
-                        </div>
-                      </div>
-                    </Form.Item>
+                {/** ==================================================================== */}
+                {/** Sección para pestaña de formulario de cargue de datos del soliciante */}
+                {/** ==================================================================== */}
+                <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+                  <div className='row mt-5 primeros_campos'>
+                    <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                   </div>
-                </>
-
-
-                <>
-                  <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
-                    <div className='row mt-5 ml-2'>
-                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        Datos de la fuente de abastecimiento. <br />{' '}
-                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                      </p>
-                      <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={true} />
-                    </div>
-                    <div className='row mt-5 ml-2'>
-                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        Información de acueductos que captan la misma fuente. . <br />{' '}
-                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                      </p>
-                      <DatosAcueducto form={form} obj={objJson} prop={addacueducto} habilitar={true} />
-                    </div>
-                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                      <div className='row mt-4'>
-                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-                          <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                            Volver atrás
-                          </Button>
-                          <Button
-                            className='ml-3 float-right button btn btn-default'
-                            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                            type='primary'
-                            htmlType='button'
-                            onClick={() => validacionacueducto()}
-                          >
-                            Siguiente
-                          </Button>
-                          <Button
-                            className='mr-5 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
-                          </Button>
-                        </div>
-                      </div>
-                    </Form.Item>
+                  <div className='row mt-5 ml-2 '>
+                    <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
                   </div>
-                </>
-                <>
-                  <div className={` ${current != 2 && 'd-none'} fadeInRight ${current == 2 && 'd-block'}`}>
-                    <div className='row mt-5 ml-2'>
-                      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        Información adicional de la fuente de abastecimiento. <br />{' '}
-                        <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                      </p>
-                      <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} habilitar={true} />
-                    </div>
+                  <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                    <div className='row mt-4'>
+                      <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
 
-                    <Alert
-                      message='Información!'
-                      description='Por favor registre los documentos pertienentes a la fuente de abastecimientos,entre ellos los relacionados
-                      a: 1.Agua Cruda(La caracterización del agua cruda,Resultados previos de agua cruda (no mayor a 12 meses)) ,
-                      2.Descripción del sistema de tratamiento(Planos, memorias y cálculo de diseño de la planta de tratamiento de agua para consumo humano,
-                        Manual de operación y mantenimiento,Plan de de cumplimiento o el plan de acción) y 3.Análisis de riesgos
-                        (Plan de contingencia de los sistemas de suministro,Documento de la identificación del riesgos).
-                      '
-                      type='info'
-                    />
-                    <div className='row mt-5 ml-2'>
-                      <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={undefined} />
-                    </div>
-                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                      <div className='row mt-4'>
-                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-                          <Button type='dashed' htmlType='button' onClick={onPrevStep}>
-                            Volver atrás
-                          </Button>
-                          <Button
-                            className='ml-4 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            type='primary'
-                            htmlType='submit'
-                          >
-                            Enviar
-                          </Button>
-                          <Button
-                            className='mr-3 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
-                          </Button>
-                        </div>
+                        <Button
+                          className='ml-3 float-right button btn btn-default'
+                          style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                          type='primary'
+                          htmlType='button'
+                          onClick={() => onNextStep()}
+                        >
+                          Siguiente
+                        </Button>
+                        <Button
+                          className='mr-5 float-right button btn btn-default'
+                          style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                          onClick={() => {
+                            history.push('/tramites-servicios-aguas');
+                          }}
+                        >
+                          Cancelar
+                        </Button>
                       </div>
-                    </Form.Item>
+                    </div>
+                  </Form.Item>
+                </div>
+
+
+                {/** ==================================================================== */}
+                {/**    Sección para pestaña de cargar informacion de fuentes estudiada   */}
+                {/** ==================================================================== */}
+                <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
+                  <div className='row mt-5 ml-2'>
+                    <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                      Datos de la fuente de abastecimiento. <br />{' '}
+                      <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                    </p>
+                    <DatosFuente form={form} obj={objJson} tipo={'usuario'} habilitar={true} />
                   </div>
-                </>
+                  <div className='row mt-5 ml-2'>
+                    <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                      Información de acueductos que captan la misma fuente. . <br />{' '}
+                      <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                    </p>
+                    <DatosAcueducto form={form} obj={objJson} prop={addacueducto} habilitar={true} />
+                  </div>
+                  <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                    <div className='row mt-4'>
+                      <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+                        <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                          Volver atrás
+                        </Button>
+                        <Button
+                          className='ml-3 float-right button btn btn-default'
+                          style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                          type='primary'
+                          htmlType='button'
+                          onClick={() => validacionacueducto()}
+                        >
+                          Siguiente
+                        </Button>
+                        <Button
+                          className='mr-5 float-right button btn btn-default'
+                          style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                          onClick={() => {
+                            history.push('/tramites-servicios-aguas');
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      </div>
+                    </div>
+                  </Form.Item>
+                </div>
+
+                {/** ============================================================= */}
+                {/**            Sección para pestaña de cargue de archivos        **/}
+                {/** ============================================================= */}
+                <div className={` ${current != 2 && 'd-none'} fadeInRight ${current == 2 && 'd-block'}`}>
+                  <div className='row mt-5 ml-2'>
+                    <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                      Información adicional de la fuente de abastecimiento. <br />{' '}
+                      <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                    </p>
+                    <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} habilitar={true} />
+                  </div>
+
+                  <Alert
+                    message='Información!'
+                    description='Por favor registre los documentos pertienentes a la fuente de abastecimientos,entre ellos los relacionados
+                    a: 1.Agua Cruda(La caracterización del agua cruda,Resultados previos de agua cruda (no mayor a 12 meses)) ,
+                    2.Descripción del sistema de tratamiento(Planos, memorias y cálculo de diseño de la planta de tratamiento de agua para consumo humano,
+                      Manual de operación y mantenimiento,Plan de de cumplimiento o el plan de acción) y 3.Análisis de riesgos
+                      (Plan de contingencia de los sistemas de suministro,Documento de la identificación del riesgos).
+                    '
+                    type='info'
+                  />
+                  <div className='row mt-5 ml-2'>
+                    <DatosDocumentos form={form} obj={objJson} prop={adddocumento} tipo={undefined} />
+                  </div>
+                  <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+                    <div className='row mt-4'>
+                      <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+                        <Button type='dashed' htmlType='button' onClick={onPrevStep}>
+                          Volver atrás
+                        </Button>
+                        <Button
+                          className='ml-4 float-right button btn btn-default'
+                          style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                          type='primary'
+                          htmlType='submit'
+                        >
+                          Enviar
+                        </Button>
+                        <Button
+                          className='mr-3 float-right button btn btn-default'
+                          style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                          onClick={() => {
+                            history.push('/tramites-servicios-aguas');
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      </div>
+                    </div>
+                  </Form.Item>
+                </div>
+
               </div>
             </section>
           </Form>

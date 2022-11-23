@@ -96,21 +96,20 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-    // const algo = api.geocoding(XML);
+    const algo = api.geocoding(XML);
 
     let idZona = 4;
     let idLocalidad = 10;
     let idUPZ = 74;
     let idBarrio = '10119BD';
 
-    let list_zona: Array<any> = await api.getListSubRedes();
+    const list_zona: Array<any> = await api.getListSubRedes();
     const list_barrios: Array<any> = await api.getListBarrios();
     const list_upz: Array<any> = await api.getListUPZ();
     const list_localidades: Array<any> = await api.getListLocalidades();
 
-    list_zona = [];
 
-    if (list_zona !== [] && listOfBarrio !== [] && list_upz !== [] && list_localidades !== []) {
+    if ((list_zona.length > 0) && (listOfBarrio.length > 0) && (list_upz.length > 0) && (list_localidades.length > 0)) {
       setListOfZona(list_zona);
       setListOfLocalidad(list_localidades);
       setListOfUPZ(list_upz);
@@ -122,7 +121,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       setInitialValueUPZ(idUPZ);
       setInitialValueBarrio(idBarrio);
     } else {
-      errorMessage({ content: 'No se pudo obtener la lista de zona, localidades, barrios ni Upz' });
+      errorMessage({ content: 'Hubo un problema al obtener la lista de Zona, Localidades, Barrios y Upz' });
     }
 
   };
