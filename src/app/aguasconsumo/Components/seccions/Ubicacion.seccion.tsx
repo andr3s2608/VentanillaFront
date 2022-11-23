@@ -106,7 +106,6 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-            //////
 
           </div>
           <div className='row ml-2'>

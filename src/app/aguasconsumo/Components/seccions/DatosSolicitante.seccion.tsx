@@ -10,6 +10,8 @@ import '../../../../css/estilos.css';
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const { obj, form, tipo, habilitar } = props;
 
+
+
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -18,6 +20,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const [l_tipos_documentoRazon, setListaTipoDocumentoRazon] = useState<IDominio[]>([]);
 
   const [tipoSolicitante, settipoSolicitante] = useState<boolean>(true);
+
 
   //validacion campos
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
@@ -252,6 +255,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       }
     }
   };
+
+
+
+
+
+
   if (habilitar) {
     return (
       <>
@@ -263,7 +272,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   {' '}
                   <span className='required'>*</span> Tipo de Solicitantes
                 </p>
-                <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
+                <Form.Item
+                  name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
 
                     options={[
@@ -865,19 +875,5 @@ interface DatosSolicitante<T> {
   habilitar: boolean;
 }
 
-export const KeysForm = [
-  'persona',
-  'IDTypeRazon',
-  'IDNumberRazon',
-  'nombreEntidad',
-  'IDType',
-  'IDNumber',
-  'name',
-  'secondname',
-  'surname',
-  'secondsurname',
-  'telefono',
-  'telefono2',
-  'email',
-];
+export const KeysFormService = ['persona', 'IDTypeRazon', 'name', 'telefono', 'email'];
 
