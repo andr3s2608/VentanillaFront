@@ -91,7 +91,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
         <soap12:Body>
           <obtenerCodDireccion xmlns="http://200.75.49.126/WsDireccion">
-            <Direccion>${via_principal} ${numero} ${letra} ${bis} ${card} ${numero_b} ${letra_b} ${placa} ${card_b}</Direccion>
+           <Direccion>${via_principal} ${numero} ${letra} ${bis} ${card} ${numero_b} ${letra_b} ${placa} ${card_b}</Direccion>
           </obtenerCodDireccion>
         </soap12:Body>
       </soap12:Envelope>`;
