@@ -584,7 +584,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <span className='required'>* </span>
                   Correo Electrónico
                 </p>
-                <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
                   <input
                     placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '365px' }}
@@ -843,7 +843,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <span className='required'>* </span>
                   Correo Electrónico
                 </p>
-                <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
                   <input
                     placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '296px' }}
@@ -875,5 +875,5 @@ interface DatosSolicitante<T> {
   habilitar: boolean;
 }
 
-export const KeysFormService = ['persona', 'IDTypeRazon', 'name', 'telefono', 'email'];
+export const KeysFormService = ['persona', 'IDTypeRazon', 'name', 'telefono', 'email',];
 
