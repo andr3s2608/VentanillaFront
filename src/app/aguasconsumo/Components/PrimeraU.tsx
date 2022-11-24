@@ -91,6 +91,7 @@ export const PrimeraU = () => {
       planta = false;
       validacion = true;
     }
+
     if (validacion) {
       if (!validaciondocumento) {
         Swal.fire({

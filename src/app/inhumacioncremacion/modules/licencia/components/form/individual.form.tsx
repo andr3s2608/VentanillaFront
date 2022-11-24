@@ -59,15 +59,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
-  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
+  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(4);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
-  const [longitudmedico, setlongitudmedico] = useState<number>(6);
+  const [longitudmedico, setlongitudmedico] = useState<number>(4);
   const [supports, setSupports] = useState<any[]>([]);
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(5);
+  const [longitudminima, setLongitudminima] = useState<number>(4);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
@@ -76,7 +76,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
-  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
+  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(4);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
@@ -294,10 +294,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var nroid = info.numeroIdentificacion + '';
     if (info.razonSocial != null) {
       tipo = 'Juridica';
-      razon = info.razonSocial;
+      razon = info.razonSocial.toString().toUpperCase();
     } else {
       tipo = 'Natural';
-      razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+      razon = (values.namesolicitudadd + ' ' + values.lastnamesolicitudadd).toString().toUpperCase();
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
@@ -973,7 +973,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
+      setLongitudminima(0);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
@@ -1121,7 +1121,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminimaautoriza(5);
+      setLongitudminimaautoriza(0);
       setLongitudmaximaautoriza(15);
       setTipocampoautoriza('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
@@ -1528,67 +1528,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               {/* TODO: [2021-06-12] Definir los roles del usuario, es solo visible para funcionarios. */}
               {false && (
                 <>
-                  <Divider orientation='right'>Reconocido como...</Divider>
 
-                  <Form.Item label='Tipo Identificación' name='knownIDType'>
-                    <SelectComponent
-                      options={l_tipos_documento}
-                      onChange={cambiodocumento}
-                      optionPropkey='id'
-                      optionPropLabel='descripcion'
-                    />
-                  </Form.Item>
-
-                  <Form.Item label='Número de Identificación' name='knownIDNumber'>
-                    <Input
-                      allowClear
-                      type='text'
-                      placeholder='Número Identificación'
-                      autoComplete='off'
-                      pattern={tipocampo}
-                      maxLength={longitudmaxima}
-                      onKeyPress={(event) => {
-                        if (!tipocampovalidacion.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                      onInvalid={() => {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Datos inválidos',
-                          text:
-                            'Sección:Reconocido como \n recuerde que para el tipo de documento:' +
-                            tipodocumento +
-                            ' solo se admiten valores ' +
-                            campo +
-                            ' de longitud entre ' +
-                            longitudminima +
-                            ' y ' +
-                            longitudmaxima
-                        });
-                      }}
-                    />
-                  </Form.Item>
-
-                  <Form.Item label='Nombre' name='knownName'>
-                    <Input
-                      allowClear
-                      placeholder='Nombres y Apellidos completos'
-                      autoComplete='off'
-                      type='text'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
                 </>
               )}
 
@@ -1759,7 +1699,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         />
                       </Form.Item>
 
-                      <AutorizacionCremacion form={form} tipoLicencia={tipoLicencia} />
 
                       <Form.Item
                         label='Parentesco'
@@ -1805,8 +1744,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               )}
 
               <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-              <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} />
-              <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+              <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} modificacion={false} />
+              <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} modificacion={false} />
 
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                 <div className='d-flex justify-content-between'>

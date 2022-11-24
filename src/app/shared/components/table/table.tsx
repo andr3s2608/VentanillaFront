@@ -404,6 +404,7 @@ export const Gridview = (props: IDataSource) => {
 
   if (Validacion == '1') {
     if (Tipo.rol !== 'Ciudadano'
+      && Tipo.rol !== 'MedicinaLegal'
       //  && Tipo.rol !== 'AdminTI'
     ) {
 
@@ -517,20 +518,8 @@ export const Gridview = (props: IDataSource) => {
           width: 230,
           filters: [
             {
-              text: 'Anulado ',
-              value: 'Anulado validador de documentos'
-            },
-            {
               text: 'Aprobado ',
               value: 'Aprobado validador de documentos'
-            },
-            {
-              text: 'Pendiente',
-              value: 'Documentos Inconsistentes'
-            },
-            {
-              text: 'Negado ',
-              value: 'Negado validador de documentos'
             }
             ,
             {
@@ -882,7 +871,32 @@ export const Gridview = (props: IDataSource) => {
             }
           }
         }
-      ];
+      ]
+
+
+      if (Tipo.rol === 'MedicinaLegal') {
+        structureColumns.push({
+          title: 'Reconocido',
+          dataIndex: 'reconocido',
+          key: 'reconocido',
+
+          filters: [
+            {
+              text: 'Si',
+              value: 'Si'
+            },
+            {
+              text: 'No',
+              value: ''
+            }
+          ],
+          filterSearch: true,
+          onFilter: (value: string, record: { reconocido: string }) => record.reconocido.toString().includes(value),
+        });
+      }
+
+
+      ;
     }
   }
 

@@ -2168,7 +2168,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                             registrado={isvalidcertificado}
                           />
                           <hr />
-                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={'No Aplica'} escambio={'no'} instType={'80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'} />
+                          <InformacionDocumentosGestion prop={getData} obj={objJosn} id={'No Aplica'} escambio={'no'} instType={'80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'}
+                            reconocido={false} tramite={'No Aplica'} />
 
                           <div className='fadeInLeft'>
                             <div className='container-fluid'>

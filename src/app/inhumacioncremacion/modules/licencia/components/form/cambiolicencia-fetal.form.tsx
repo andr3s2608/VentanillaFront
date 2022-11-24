@@ -31,6 +31,8 @@ import { useHistory } from 'react-router';
 import { type } from 'os';
 import { dominioService, IBarrio, IDepartamento, ILocalidad, IMunicipio, IUpz } from 'app/services/dominio.service';
 import { EditFetal } from './edit/fetal';
+import { InhumacionSeccion } from './seccions/inhumacion.form.seccion';
+import { FamilarFetalCremacion } from './familarCremacion';
 
 export const CambioLicencia = ({ props }: any) => {
   const { accountIdentifier } = authProvider.getAccount();
@@ -44,13 +46,14 @@ export const CambioLicencia = ({ props }: any) => {
   const obj: any = EditFetal();
 
 
-  const date = moment(obj.dateOfBirth);
+
 
 
 
   //validaciones tipos de documentos
+  const [longitudreconocido, setLongitudreconocido] = useState<number>(-1);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(5);
+  const [longitudminima, setLongitudminima] = useState<number>(4);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
@@ -59,7 +62,7 @@ export const CambioLicencia = ({ props }: any) => {
   const [campo, setCampo] = useState<string>('Numéricos');
   //validaciones tipos de documentos autorizador
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
-  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
+  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(-1);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
@@ -72,31 +75,17 @@ export const CambioLicencia = ({ props }: any) => {
 
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
   const [causaMuerte, setCausaMuerte] = useState<string>('');
+
   const [parentescocremacion, setparentescocremacion] = useState<any>();
 
 
-  const [l_paises, setpaises] = useState<any>([]);
-  const [l_tipos_documento, settipos] = useState<any>([]);
-  const [l_tipo_muerte, settipomuerte] = useState<any>([]);
   const [insttype, setinsttype] = useState<string>(obj?.instType);
 
 
 
-  const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
-  const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
-  const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [l_areas, setLAreas] = useState<IUpz[]>([]);
-  const [l_barrios, setLBarrios] = useState<IBarrio[]>([]);
-
-  const [isColombia, setIsColombia] = useState(true);
-  const [isBogota, setIsBogota] = useState(true);
   const { setStatus } = useStepperForm<any>(form);
 
 
-  const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
-  const [idBogotac, setIdBogota] = useState<string>('Bogotá D.C.');
-  const [idupz, setidupz] = useState<string>('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-  const [idbarrio, setidbarrio] = useState<string>('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
   const idlocalidad = '0e2105fb-08f8-4faf-9a79-de5effa8d198';
 
 
@@ -110,6 +99,8 @@ export const CambioLicencia = ({ props }: any) => {
 
     const paises: any = localStorage.getItem('paises');
     const paisesjson: any = JSON.parse(paises);
+
+
 
 
     const tipos: any = localStorage.getItem('tipoid');
@@ -131,11 +122,7 @@ export const CambioLicencia = ({ props }: any) => {
 
     ]);
 
-    setLDepartamentos(departamentos);
-    setLLocalidades(localidades);
-    setLMunicipios(listMunicipio);
-    setLAreas(upzLocalidad);
-    onChangeArea(idupz);
+
 
 
     const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
@@ -143,11 +130,11 @@ export const CambioLicencia = ({ props }: any) => {
 
     settiposautoriza(nuevalista);
 
-    settipomuerte(JSON.parse(tipomuerte));
-    settipos(tiposjson);
-    setpaises(paisesjson);
 
     if (props === 0) {
+
+
+
       if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
         setactualizacioninhumacion(true);
       }
@@ -190,6 +177,7 @@ export const CambioLicencia = ({ props }: any) => {
     else {
       if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
         setcambioacremacion(true);
+
       }
       else {
         setcambioainhumacion(true);
@@ -205,75 +193,8 @@ export const CambioLicencia = ({ props }: any) => {
 
 
   const idColombia = '1e05f64f-5e41-4252-862c-5505dbc3931c';
-  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
-  const onChangePais = async (value: string) => {
-    setIsColombia(value === idColombia);
-    setLMunicipios([]);
-    setIsBogota(false);
-    const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
-    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-    setLBarrios(respBarrios);
-    setLAreas(respArea);
-    setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
-    form.resetFields(['departamento', 'ciudad', 'localidad', 'area', 'barrio']);
-  };
 
-  const onChangeDepartamento = async (value: string) => {
-    form.setFieldsValue({ ciudad: undefined });
 
-    let departamento = l_departamentos.filter((i) => i.idDepartamento == value);
-    const { idDepartamento } = departamento[0];
-
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIdBogota('Bogotá D.C.');
-      setIsBogota(true);
-    } else {
-      setIsBogota(false);
-      setIdBogota('');
-    }
-    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
-    setLMunicipios(resp);
-    const respArea = await dominioService.get_upz_by_localidad(idlocalidad);
-    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-    setLBarrios(respBarrios);
-    setLAreas(respArea);
-    setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
-    form.resetFields(['localidad', 'area', 'barrio']);
-  };
-
-  const onChangeMunicipio = (value: string) => {
-    form.resetFields(['localidad', 'area', 'barrio']);
-    setIsBogota(value === idBogota);
-  };
-
-  const onChangeLocalidad = async (value: string) => {
-    const resp = await dominioService.get_upz_by_localidad(value);
-    const respBarrios = await dominioService.get_barrio_by_upz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-    if (value == idlocalidad) {
-      setidupz('d869bc18-4fca-422a-9a09-a88d3911dc8c');
-    } else {
-      setidupz('');
-    }
-
-    setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
-    setLAreas(resp);
-    setLBarrios(respBarrios);
-    form.resetFields(['area', 'barrio']);
-  };
-
-  const onChangeArea = async (value: string) => {
-    if (value == 'd869bc18-4fca-422a-9a09-a88d3911dc8c') {
-      setidbarrio('4674c6b9-1e5f-4446-8b2a-1a986a10ca2e');
-    } else {
-      setidbarrio('');
-    }
-
-    const resp = await dominioService.get_barrio_by_upz(value);
-    setLBarrios(resp);
-    form.resetFields(['barrio']);
-  };
 
 
 
@@ -327,114 +248,315 @@ export const CambioLicencia = ({ props }: any) => {
 
       if (datecorrect) {
 
-        Swal.fire({
-          title: cambioacremacion || cambioainhumacion ? 'Cambio de Licencia' : 'Actualización de Datos',
-          text: cambioacremacion || cambioainhumacion ? `Esta a punto de solicitar cambio de
+        let cambiodatos = false;
+
+        if (longitudreconocido != -1 && values.namemother.toString().toUpperCase() != 'N' && values.surnamemother.toString().toUpperCase() != 'N') {
+          cambiodatos = true;
+        }
+        if (longitudreconocido === -1) {
+          cambiodatos = true;
+        }
+
+        if (cambiodatos) {
+
+
+
+
+          Swal.fire({
+            title: cambioacremacion || cambioainhumacion ? 'Cambio de Licencia' : 'Actualización de Datos',
+            text: cambioacremacion || cambioainhumacion ? `Esta a punto de solicitar cambio de
           ${obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ? 'inhumación' : 'cremación'}
            a
             ${obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ? 'cremación' : 'inhumación'}
            , ¿Está seguro de continuar?`: 'Esta a punto de realizar una actualización de datos, ¿Está seguro de continuar?',
-          showConfirmButton: true,
-          showDenyButton: true,
-          confirmButtonText: 'Modificar',
-          denyButtonText: `Cancelar`,
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-          },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          },
-          icon: 'info'
-        }).then(async (result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
+            showConfirmButton: true,
+            showDenyButton: true,
+            confirmButtonText: 'Modificar',
+            denyButtonText: `Cancelar`,
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            icon: 'info'
+          }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
 
 
-            let causa = values.causaMuerte;
-            let banderaCausa = true;
-            let observacionCausaMuerte = causaMuerte;
+              let causa = values.causaMuerte;
+              let banderaCausa = true;
+              let observacionCausaMuerte = causaMuerte;
 
-            if (causa === 'No' || causa === undefined) {
-              banderaCausa = false;
-              observacionCausaMuerte = '';
-            }
+              if (causa === 'No' || causa === undefined) {
+                banderaCausa = false;
+                observacionCausaMuerte = '';
+              }
 
-            const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
-            const formatDate = 'MM-DD-YYYY';
-            let idnum = values.IDNumber;
-            let idnumaut = values.mauthIDNumber;
+              const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf';
+              const formatDate = 'MM-DD-YYYY';
+              let idnum = values.IDNumber;
+              let idnumaut = values.mauthIDNumber;
 
-            if (sininformacion && idnum == undefined) {
-              idnum = ' ';
-            }
-            if (sininformacionaut && idnumaut == undefined) {
-              idnumaut = ' ';
-            }
-
-
-            const tipoinst = values.instTipoIdent;
-            var tipoidinst = values.instTipoIdent;
-            var numeroins = values.instNumIdent;
-            var razonSocialins = values.instRazonSocial;
-            var numeroProtocoloins = values.instNumProtocolo;
-            if (tipoinst == undefined) {
-              tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
-              numeroins = '0';
-              razonSocialins = 'Otros';
-              numeroProtocoloins = '452022';
-            } else {
-              tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
-            }
-            const par = values.authParentesco;
-            var parentesco = '';
-            switch (par) {
-              case 'Padre / Madre':
-                parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
-                break;
-              case 'Hermano/a':
-                parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
-                break;
-              case 'Hijo/a':
-                parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
-                break;
-              case 'Cónyuge (Compañero/a Permanente)':
-                parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
-                break;
-              case 'Tío/a':
-                parentesco = '6880824b-39c2-4105-8195-c190885796d8';
-                break;
-              case 'Sobrino/a':
-                parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
-                break;
-              case 'Abuelo/a':
-                parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
-                break;
-              case 'Nieto/a':
-                parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
-                break;
-              case 'Otro':
-                parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
-                break;
-            }
-
-            let persona: any[] = [];
+              if (sininformacion && idnum == undefined) {
+                idnum = ' ';
+              }
+              if (sininformacionaut && idnumaut == undefined) {
+                idnumaut = ' ';
+              }
 
 
+              const tipoinst = values.instTipoIdent;
+              var tipoidinst = values.instTipoIdent;
+              var numeroins = values.instNumIdent;
+              var razonSocialins = values.instRazonSocial;
+              var numeroProtocoloins = values.instNumProtocolo;
+              if (tipoinst == undefined) {
+                tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+                numeroins = '0';
+                razonSocialins = 'Otros';
+                numeroProtocoloins = '452022';
+              } else {
+                tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+              }
+              const par = values.authParentesco;
+              var parentesco = '';
+              switch (par) {
+                case 'Padre / Madre':
+                  parentesco = 'ed389a26-68cb-4b43-acc7-3eb23e997bf9';
+                  break;
+                case 'Hermano/a':
+                  parentesco = '313e2b1d-33f0-455b-9178-f23579f01414';
+                  break;
+                case 'Hijo/a':
+                  parentesco = 'f8841271-f6b7-4d11-b55f-41da3faccdfe';
+                  break;
+                case 'Cónyuge (Compañero/a Permanente)':
+                  parentesco = '4c00cd98-9a25-400a-9c31-1f6fca7de562';
+                  break;
+                case 'Tío/a':
+                  parentesco = '6880824b-39c2-4105-8195-c190885796d8';
+                  break;
+                case 'Sobrino/a':
+                  parentesco = '5fa418af-62d9-498f-94e4-370c195e8fc8';
+                  break;
+                case 'Abuelo/a':
+                  parentesco = 'ad65eb1c-10bd-4882-8645-d12001cd57b2';
+                  break;
+                case 'Nieto/a':
+                  parentesco = '84286cb9-2499-4348-aeb8-285fc9dcf60f';
+                  break;
+                case 'Otro':
+                  parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+                  break;
+              }
 
-            const depres = values.departamento;
-            var munres = values.ciudad;
-            switch (depres) {
-              case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-                munres = '31211657-3386-420a-8620-f9C07a8ca491';
-                break;
-            }
+              let persona: any[] = [];
 
 
-            if (cambioacremacion || cambioainhumacion) {
-              if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
 
-                if (obj?.autorizadorcremacion.length > 0) {
+              const depres = values.departamento;
+              var munres = values.ciudad;
+              switch (depres) {
+                case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
+                  munres = '31211657-3386-420a-8620-f9C07a8ca491';
+                  break;
+              }
 
+
+
+
+              if (cambioacremacion || cambioainhumacion) {
+                if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
+
+                  if (obj?.autorizadorcremacion.length > 0) {
+
+                    persona = [
+                      //madre
+                      {
+                        idPersona: obj.idMadre,
+                        tipoIdentificacion: values.IDType,
+                        numeroIdentificacion: 'FT_' + idnum,
+                        primerNombre: values.namemother,
+                        segundoNombre: values.secondNamemother ?? '',
+                        primerApellido: values.surnamemother,
+                        segundoApellido: values.secondSurnamemother ?? '',
+                        fechaNacimiento: values.dateOfBirth,
+                        hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                        nacionalidad: values.nationalidadmother[0],
+                        estado: true,
+                        segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                        otroParentesco: null,
+                        idEstadoCivil: obj.civilStatus,
+                        idNivelEducativo: obj.educationLevel,
+                        idEtnia: obj.etnia,
+                        idRegimen: obj.regime,
+                        idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+                        idParentesco: parentesco,
+                        idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                      },
+                      //authorizador cremacion
+                      {
+                        idPersona: obj.autorizadorcremacion[0].id,
+                        tipoIdentificacion: values.authIDType,
+                        numeroIdentificacion: idnumaut,
+                        primerNombre: values.authName,
+                        segundoNombre: values.authSecondName ?? '',
+                        primerApellido: values.authSurname,
+                        segundoApellido: values.authSecondSurname ?? '',
+                        fechaNacimiento: null,
+                        estado: true,
+                        hora: '',
+                        nacionalidad: '00000000-0000-0000-0000-000000000000',
+                        segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                        otroParentesco: values?.authOtherParentesco, //lista parentesco
+                        idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                        idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                        idEtnia: '00000000-0000-0000-0000-000000000000',
+                        idRegimen: '00000000-0000-0000-0000-000000000000',
+                        idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                        idParentesco: parentesco,
+                        idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                      }
+
+                    ];
+
+                  }
+                  else {
+                    persona = [
+                      //madre
+                      {
+                        idPersona: obj.idMadre,
+                        tipoIdentificacion: values.IDType,
+                        numeroIdentificacion: 'FT_' + idnum,
+                        primerNombre: values.namemother,
+                        segundoNombre: values.secondNamemother ?? '',
+                        primerApellido: values.surnamemother,
+                        segundoApellido: values.secondSurnamemother ?? '',
+                        fechaNacimiento: obj.dateOfBirth,
+                        hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                        nacionalidad: values.nationalidadmother[0],
+                        estado: true,
+                        segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                        otroParentesco: null,
+                        idEstadoCivil: obj.civilStatus,
+                        idNivelEducativo: obj.educationLevel,
+                        idEtnia: obj.etnia,
+                        idRegimen: obj.regime,
+                        idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+                        idParentesco: parentesco,
+                        idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                      },
+                      //authorizador cremacion
+                      {
+                        //idPersona: '',
+                        tipoIdentificacion: values.authIDType,
+                        numeroIdentificacion: idnumaut,
+                        primerNombre: values.authName,
+                        segundoNombre: values.authSecondName ?? '',
+                        primerApellido: values.authSurname,
+                        segundoApellido: values.authSecondSurname ?? '',
+                        fechaNacimiento: null,
+                        estado: true,
+                        hora: '',
+                        nacionalidad: '00000000-0000-0000-0000-000000000000',
+                        segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                        otroParentesco: values?.authOtherParentesco, //lista parentesco
+                        idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                        idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                        idEtnia: '00000000-0000-0000-0000-000000000000',
+                        idRegimen: '00000000-0000-0000-0000-000000000000',
+                        idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                        idParentesco: parentesco,
+                        idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                      }
+                    ];
+
+                  }
+                }
+                else {
+                  persona = [
+                    //fallecido
+                    {
+                      idPersona: obj.idpersona,
+                      tipoIdentificacion: values.IDType,
+                      numeroIdentificacion: 'FT_' + idnum,
+                      primerNombre: values.namemother,
+                      segundoNombre: values.secondNamemother ?? '',
+                      primerApellido: values.surnamemother,
+                      segundoApellido: values.secondSurnamemother ?? '',
+                      fechaNacimiento: obj.dateOfBirth,
+                      hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                      nacionalidad: values.nationalidadmother[0],
+                      segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                      otroParentesco: null,
+                      estado: true,
+                      idEstadoCivil: obj.civilStatus,
+                      idNivelEducativo: obj.educationLevel,
+                      idEtnia: obj.etnia,
+                      idRegimen: obj.regime,
+                      idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+                      idParentesco: parentesco,
+                      idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                    },
+                    {
+                      //authorizador cremacion
+                      idPersona: obj.autorizadorcremacion[0].id,
+                      tipoIdentificacion: obj.autorizadorcremacion[0].tipoid,
+                      numeroIdentificacion: obj.autorizadorcremacion[0].numeroid,
+                      primerNombre: obj.autorizadorcremacion[0].name,
+                      segundoNombre: obj.autorizadorcremacion[0].secondName,
+                      primerApellido: obj.autorizadorcremacion[0].surname,
+                      segundoApellido: obj.autorizadorcremacion[0].secondSurname,
+                      fechaNacimiento: null,
+                      estado: false,
+                      hora: '',
+                      nacionalidad: '00000000-0000-0000-0000-000000000000',
+                      segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                      otroParentesco: obj.autorizadorcremacion[0].otroparentesco, //lista parentesco
+                      idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                      idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                      idEtnia: '00000000-0000-0000-0000-000000000000',
+                      idRegimen: '00000000-0000-0000-0000-000000000000',
+                      idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
+                      idParentesco: obj.autorizadorcremacion[0].parentesco,
+                      idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                    }
+                  ];
+
+                }
+              }
+              else {
+                if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
+                  persona = [
+                    //fallecido
+                    {
+
+                      idPersona: obj.idMadre,
+                      tipoIdentificacion: values.IDType,
+                      numeroIdentificacion: 'FT_' + idnum,
+                      primerNombre: values.namemother,
+                      segundoNombre: values.secondNamemother ?? '',
+                      primerApellido: values.surnamemother,
+                      segundoApellido: values.secondSurnamemother ?? '',
+                      fechaNacimiento: obj.dateOfBirth,
+                      hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
+                      nacionalidad: values.nationalidadmother[0],
+                      segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                      otroParentesco: null,
+                      estado: true,
+                      idEstadoCivil: obj.civilStatus,
+                      idNivelEducativo: obj.educationLevel,
+                      idEtnia: obj.etnia,
+                      idRegimen: obj.regime,
+                      idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
+                      idParentesco: parentesco,
+                      idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
+                    }
+                  ];
+                }
+                else {
                   persona = [
                     //madre
                     {
@@ -445,9 +567,9 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoNombre: values.secondName ?? '',
                       primerApellido: values.surname,
                       segundoApellido: values.secondSurname ?? '',
-                      fechaNacimiento: values.dateOfBirth,
+                      fechaNacimiento: obj.dateOfBirth,
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                      nacionalidad: values.nationalidad[0],
+                      nacionalidad: values.nationalidadmother[0],
                       estado: true,
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
                       otroParentesco: null,
@@ -483,450 +605,462 @@ export const CambioLicencia = ({ props }: any) => {
                       idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
                     }
                   ];
-
                 }
-                else {
-                  persona = [
-                    //madre
-                    {
-                      idPersona: obj.idMadre,
-                      tipoIdentificacion: values.IDType,
-                      numeroIdentificacion: 'FT_' + idnum,
-                      primerNombre: values.name,
-                      segundoNombre: values.secondName ?? '',
-                      primerApellido: values.surname,
-                      segundoApellido: values.secondSurname ?? '',
-                      fechaNacimiento: obj.dateOfBirth,
-                      hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                      nacionalidad: values.nationalidad[0],
-                      estado: true,
-                      segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                      otroParentesco: null,
-                      idEstadoCivil: obj.civilStatus,
-                      idNivelEducativo: obj.educationLevel,
-                      idEtnia: obj.etnia,
-                      idRegimen: obj.regime,
-                      idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-                      idParentesco: parentesco,
-                      idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                    },
-                    //authorizador cremacion
-                    {
-                      //idPersona: '',
-                      tipoIdentificacion: values.authIDType,
-                      numeroIdentificacion: idnumaut,
-                      primerNombre: values.authName,
-                      segundoNombre: values.authSecondName ?? '',
-                      primerApellido: values.authSurname,
-                      segundoApellido: values.authSecondSurname ?? '',
-                      fechaNacimiento: null,
-                      estado: true,
-                      hora: '',
-                      nacionalidad: '00000000-0000-0000-0000-000000000000',
-                      segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                      otroParentesco: values?.authOtherParentesco, //lista parentesco
-                      idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-                      idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-                      idEtnia: '00000000-0000-0000-0000-000000000000',
-                      idRegimen: '00000000-0000-0000-0000-000000000000',
-                      idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-                      idParentesco: parentesco,
-                      idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                    }
-                  ];
 
+              }
+
+
+              let personareconocida: any = {};
+              if (longitudreconocido !== -1) {
+                personareconocida =
+                {
+                  tipoIdentificacion: values.knownIDType,
+                  numeroIdentificacion: values.knownIDNumber,
+                  primerNombre: values.knownName,
+                  segundoNombre: values.knownsecondName ?? '',
+                  primerApellido: values.knownsurName,
+                  segundoApellido: values.knownsecondsurName ?? '',
+                  fechaNacimiento: null,
+                  estado: true,
+                  hora: '',
+                  nacionalidad: '00000000-0000-0000-0000-000000000000',
+                  segundanacionalidad: '00000000-0000-0000-0000-000000000000',
+                  otroParentesco: null, //lista parentesco
+                  idEstadoCivil: '00000000-0000-0000-0000-000000000000',
+                  idNivelEducativo: '00000000-0000-0000-0000-000000000000',
+                  idEtnia: '00000000-0000-0000-0000-000000000000',
+                  idRegimen: '00000000-0000-0000-0000-000000000000',
+                  idTipoPersona: '87cf579b-b873-43c1-b4a7-004dba2cc68e',
+                  idParentesco: '00000000-0000-0000-0000-000000000000',
+                  idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
                 }
-              }
-              else {
-                persona = [
-                  //fallecido
-                  {
-                    idPersona: obj.idpersona,
-                    tipoIdentificacion: values.IDType,
-                    numeroIdentificacion: idnum,
-                    primerNombre: values.name,
-                    segundoNombre: values.secondName ?? '',
-                    primerApellido: values.surname,
-                    segundoApellido: values.secondSurname ?? '',
-                    fechaNacimiento: obj.dateOfBirth,
-                    hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                    nacionalidad: values.nationalidad[0],
-                    segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: null,
-                    estado: true,
-                    idEstadoCivil: obj.civilStatus,
-                    idNivelEducativo: obj.educationLevel,
-                    idEtnia: obj.etnia,
-                    idRegimen: obj.regime,
-                    idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-                    idParentesco: parentesco,
-                    idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                  },
-                  {
-                    //authorizador cremacion
-                    idPersona: obj.autorizadorcremacion[0].id,
-                    tipoIdentificacion: obj.autorizadorcremacion[0].tipoid,
-                    numeroIdentificacion: obj.autorizadorcremacion[0].numeroid,
-                    primerNombre: obj.autorizadorcremacion[0].name,
-                    segundoNombre: obj.autorizadorcremacion[0].secondName,
-                    primerApellido: obj.autorizadorcremacion[0].surname,
-                    segundoApellido: obj.autorizadorcremacion[0].secondSurname,
-                    fechaNacimiento: null,
-                    estado: false,
-                    hora: '',
-                    nacionalidad: '00000000-0000-0000-0000-000000000000',
-                    segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: obj.autorizadorcremacion[0].otroparentesco, //lista parentesco
-                    idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-                    idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-                    idEtnia: '00000000-0000-0000-0000-000000000000',
-                    idRegimen: '00000000-0000-0000-0000-000000000000',
-                    idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-                    idParentesco: obj.autorizadorcremacion[0].parentesco,
-                    idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                  }
-                ];
+                persona.push(personareconocida);
 
               }
-            }
-            else {
-              if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
-                persona = [
-                  //fallecido
-                  {
-                    idPersona: obj.idpersona,
-                    tipoIdentificacion: values.IDType,
-                    numeroIdentificacion: idnum,
-                    primerNombre: values.name,
-                    segundoNombre: values.secondName ?? '',
-                    primerApellido: values.surname,
-                    segundoApellido: values.secondSurname ?? '',
-                    fechaNacimiento: obj.dateOfBirth,
-                    hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                    nacionalidad: values.nationalidad[0],
-                    segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: null,
-                    estado: true,
-                    idEstadoCivil: obj.civilStatus,
-                    idNivelEducativo: obj.educationLevel,
-                    idEtnia: obj.etnia,
-                    idRegimen: obj.regime,
-                    idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-                    idParentesco: parentesco,
-                    idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                  }
-                ];
-              }
-              else {
-                persona = [
-                  //madre
-                  {
-                    idPersona: obj.idMadre,
-                    tipoIdentificacion: values.IDType,
-                    numeroIdentificacion: 'FT_' + idnum,
-                    primerNombre: values.name,
-                    segundoNombre: values.secondName ?? '',
-                    primerApellido: values.surname,
-                    segundoApellido: values.secondSurname ?? '',
-                    fechaNacimiento: obj.dateOfBirth,
-                    hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                    nacionalidad: values.nationalidad[0],
-                    estado: true,
-                    segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: null,
-                    idEstadoCivil: obj.civilStatus,
-                    idNivelEducativo: obj.educationLevel,
-                    idEtnia: obj.etnia,
-                    idRegimen: obj.regime,
-                    idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
-                    idParentesco: parentesco,
-                    idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                  },
-                  //authorizador cremacion
-                  {
-                    idPersona: obj.autorizadorcremacion[0].id,
-                    tipoIdentificacion: values.authIDType,
-                    numeroIdentificacion: idnumaut,
-                    primerNombre: values.authName,
-                    segundoNombre: values.authSecondName ?? '',
-                    primerApellido: values.authSurname,
-                    segundoApellido: values.authSecondSurname ?? '',
-                    fechaNacimiento: null,
-                    estado: true,
-                    hora: '',
-                    nacionalidad: '00000000-0000-0000-0000-000000000000',
-                    segundanacionalidad: '00000000-0000-0000-0000-000000000000',
-                    otroParentesco: values?.authOtherParentesco, //lista parentesco
-                    idEstadoCivil: '00000000-0000-0000-0000-000000000000',
-                    idNivelEducativo: '00000000-0000-0000-0000-000000000000',
-                    idEtnia: '00000000-0000-0000-0000-000000000000',
-                    idRegimen: '00000000-0000-0000-0000-000000000000',
-                    idTipoPersona: 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06',
-                    idParentesco: parentesco,
-                    idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
-                  }
-                ];
-              }
 
-            }
+              let checkhora = values?.check ?? obj.check;
 
-
-
-            let checkhora = values?.check ?? obj.check;
-
-            const json: IRegistroLicencia<any> = {
-              solicitud: {
-                idSolicitud: obj.idSolicitud,
-                consecutivo: obj.consecutivo,
-                numeroCertificado: values.certificado,
-                fechaDefuncion: moment(values.date).format(formatDate),
-                sinEstablecer: checkhora,
-                hora: checkhora === true ? 'Sin información' : moment(values.time).format('LT'),
-                idSexo: values.sex,
-                estadoSolicitud: (cambioainhumacion || cambioacremacion) ? '31A45854-BF40-44B6-2645-08DA64F23B8E' : '40A8AC96-6513-42AE-9E44-A5C0E47AC6D8',
-                idPersonaVentanilla: obj.idpersonaventanilla, //numero de usuario registrado
-                idUsuarioSeguridad: obj.idusuarioseg,
-                idTramite: (cambioainhumacion || actualizacioninhumacion) ? 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' : 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e',
-                idTipoMuerte: values.deathType,
-                tipoPersona: obj.tipopersonasolicitantesolicitud,
-                tipoIdentificacionSolicitante: obj.tiposolicitantesolicitud,
-                noIdentificacionSolicitante: obj.nrosolicitantesolicitud,
-                razonSocialSolicitante: obj.razonsocialsolicitantesolicitud,
-                persona,
-                lugarDefuncion: {
-                  idPais: obj.country,
-                  idDepartamento: obj.state,
-                  idMunicipio: obj.city,
-                  idAreaDefuncion: obj.areaDef,
-                  idSitioDefuncion: obj.sitDef
-                },
-                ubicacionPersona: {
-                  idUbicacionPersona: obj?.idUbicacionPersona,
-                  idPaisResidencia: values.pais,
-                  idDepartamentoResidencia: values.departamento,
-                  idCiudadResidencia: munres,
-                  idLocalidadResidencia: values.localidad,
-                  idAreaResidencia: values.area,
-                  idBarrioResidencia: values.barrio,
-                  ciudad: values?.ciudadfuera
-                },
-                datosCementerio: {
-                  idDatosCementerio: obj?.idDatosCementerio,
-                  enBogota: values.cementerioLugar === 'Dentro de Bogotá',
-                  fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
-                  fueraPais: values.cementerioLugar === 'Fuera del País',
-                  cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
-                  otroSitio: values.otrositio,
-                  ciudad: values.cementerioCiudad,
-                  idPais: values.cementerioPais,
-                  idDepartamento: values.cementerioDepartamento,
-                  idMunicipio: values.cementerioMunicipio
-                },
-
-                datosFuneraria: {
-                  idDatosFuneraria: obj?.idDatosfuneraria,
-                  enBogota: true,
-                  fueraBogota: false,
-                  fueraPais: false,
-                  funeraria: values.funerariaBogota,
-                  otroSitio: values.otrofuneraria,
-                  ciudad: values.funerariaCiudad,
-                  idPais: values.funerariaPais,
-                  idDepartamento: values.funerariaDepartamento,
-                  idMunicipio: values.funerariaMunicipio
-                },
-
-                resumenSolicitud: {
-                  idSolicitud: obj.idresumensolicitud,
-                  correoCementerio: obj.correocementerio.toString().toLowerCase(),
-                  correoFuneraria: obj.correofuneraria.toString().toLowerCase(),
-                  tipoDocumentoSolicitante: obj.tipodocsolicitante,
-                  numeroDocumentoSolicitante: obj.nrosolicitante,
-                  nombreSolicitante: obj.nombresolicitante,
-                  apellidoSolicitante: obj.apellidosolicitante,
-                  correoSolicitante: obj.correosolicitante.toString().toLowerCase(),
-                  correoMedico: '',
-                  cumpleCausa: banderaCausa,
-                  observacionCausa: observacionCausaMuerte
-                },
-
-                institucionCertificaFallecimiento: {
-                  idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
-                  tipoIdentificacion: tipoidinst,
-                  numeroIdentificacion: numeroins,
-                  razonSocial: razonSocialins,
-                  numeroProtocolo: numeroProtocoloins,
-                  numeroActaLevantamiento: values?.numeroActLeva ?? '',
-                  fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
-                  seccionalFiscalia: values?.SecFiscalAct ?? '',
-                  noFiscal: values?.NoFiscAct ?? '',
-                  idTipoInstitucion: values?.instType ?? '',
-                  NombreFiscal: values?.fiscalianombreDC ?? '',
-                  ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
-                  NumeroOficio: values?.fiscalianumeroDC ?? '',
-                  NoFiscalMedicinaLegal: values?.NoFiscalDC ?? '',
-                  FechaOficio: values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null
-                }
-                // documentosSoporte: generateFormFiel(values.instType)
-              }
-            };
-
-
-
-
-            await api.putLicencia(json, '1');
-
-            let observacion = '';
-
-            if (cambioacremacion || cambioainhumacion) {
-              observacion = 'cambio de licencia';
-            }
-            else {
-              observacion = 'modificación datos';
-            }
-            const idUsuario = await api.getIdUsuario();
-            const seguimiento = {
-              fechaRegistro: obj.fechasol,
-              usuario: idUsuario,
-              estado: observacion,
-              idSolicitud: obj.idSolicitud,
-              observacion: values.observations
-
-            }
-            await api.addSeguimiento(seguimiento);
-            if (cambioacremacion || cambioainhumacion) {
-
-              //general
-              const acta = form.getFieldValue('fileActaNotarialFiscal');
-              //de inhumacion a cremacion
-              const autcrem = form.getFieldValue('fileAuthCCFamiliar');
-              const docfam = form.getFieldValue('fileDocCremacion');
-              const fiscautcrem = form.getFieldValue('fileAuthFiscalCremacion');
-              const ofmedleg = form.getFieldValue('fileOrdenAuthFiscal');
-              const justificcrem = form.getFieldValue('filejustcambio');
-              //de cremacion a inhumacion
-              const justificinh = form.getFieldValue('filejustFamiliar');
-              const docauth = form.getFieldValue('fileDocaut');
-
-              const supportDocumentsEdit: any[] = [];
-              const formData = new FormData();
-
-
-
-
-
-              const resp = await api.getSupportDocuments(obj.idSolicitud);
-
-
-              const filter = resp.filter(function (f: { esValido: boolean }) {
-                return (
-                  f.esValido != false
-                );
-              });
-
-              formData.append('containerName', obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
-                'cremacionfetal' : 'inhumacionfetal'
-              );
-              formData.append('oid', accountIdentifier);
-              const blobcertificado: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
-                'inhumacionfetal' : 'cremacionfetal', obj.idusuarioseg + '/Certificado_Defuncion_' + obj.idSolicitud + '.pdf')
-
-              const blobdocumento: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
-                'inhumacionfetal' : 'cremacionfetal', obj.idusuarioseg + '/Documento_de_la_Madre_' + obj.idSolicitud + '.pdf')
-
-
-
-              /*
-              var reader = new FileReader();
-              reader.readAsDataURL(blob);
-              reader.onloadend = function () {
-                var base64data = reader.result;
-
-              }
-              */
-              const type: any = { type: 'application/pdf' };
-              const uid: any = { uid: 'rc-upload-1665609235853-5' }
-              var filecertificado = new File([blobcertificado as Blob], "Certificado_defuncion.pdf", type);
-              var filedocumento = new File([blobdocumento as Blob], "Documento_de_la_Madre.pdf", type);
-
-
-
-              formData.append('file', filecertificado);
-              formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
-
-
-              formData.append('file', filedocumento);
-              formData.append('nameFile', 'Documento_de_la_Madre' + '_' + obj.idSolicitud);
-
-
-
-
-              let actavalida = 0;
-
-              if (acta != undefined) {
-                formData.append('file', values.fileActaNotarialFiscal.file);
-                formData.append('nameFile', 'Acta_Notarial_del_Fiscal' + '_' + obj.idSolicitud);
-
-                supportDocumentsEdit.push({
+              const json: IRegistroLicencia<any> = {
+                solicitud: {
                   idSolicitud: obj.idSolicitud,
-                  idTipoDocumentoSoporte: '79320af6-943c-43bf-87d1-847b625f6203',
-                  path: `${obj.idusuarioseg}/Acta_Notarial_del_Fiscal_${obj.idSolicitud}`,
-                  idUsuario: obj.idusuarioseg,
-                  esValido: true
-                });
-                actavalida = 1;
+                  consecutivo: obj.consecutivo,
+                  numeroCertificado: values.certificado,
+                  fechaDefuncion: moment(values.date).format(formatDate),
+                  sinEstablecer: checkhora,
+                  hora: checkhora === true ? 'Sin información' : moment(values.time).format('LT'),
+                  idSexo: values.sex,
+                  estadoSolicitud: (cambioainhumacion || cambioacremacion) ? '31A45854-BF40-44B6-2645-08DA64F23B8E' : '40A8AC96-6513-42AE-9E44-A5C0E47AC6D8',
+                  idPersonaVentanilla: obj.idpersonaventanilla, //numero de usuario registrado
+                  idUsuarioSeguridad: obj.idusuarioseg,
+                  idTramite: (cambioainhumacion || actualizacioninhumacion) ? 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' : 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e',
+                  idTipoMuerte: values.deathType,
+                  tipoPersona: obj.tipopersonasolicitantesolicitud,
+                  tipoIdentificacionSolicitante: obj.tiposolicitantesolicitud,
+                  noIdentificacionSolicitante: obj.nrosolicitantesolicitud,
+                  razonSocialSolicitante: obj.razonsocialsolicitantesolicitud,
+                  persona,
+                  lugarDefuncion: {
+                    idPais: obj.country,
+                    idDepartamento: obj.state,
+                    idMunicipio: obj.city,
+                    idAreaDefuncion: obj.areaDef,
+                    idSitioDefuncion: obj.sitDef
+                  },
+                  ubicacionPersona: {
+                    idUbicacionPersona: obj?.idUbicacionPersona,
+                    idPaisResidencia: values.pais,
+                    idDepartamentoResidencia: values.departamento,
+                    idCiudadResidencia: munres,
+                    idLocalidadResidencia: values.localidad,
+                    idAreaResidencia: values.area,
+                    idBarrioResidencia: values.barrio,
+                    ciudad: values?.ciudadfuera
+                  },
+                  datosCementerio: {
+                    idDatosCementerio: obj?.idDatosCementerio,
+                    enBogota: values.cementerioLugar === 'Dentro de Bogotá',
+                    fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
+                    fueraPais: values.cementerioLugar === 'Fuera del País',
+                    cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
+                    otroSitio: values.otrositio,
+                    ciudad: values.cementerioCiudad,
+                    idPais: values.cementerioPais,
+                    idDepartamento: values.cementerioDepartamento,
+                    idMunicipio: values.cementerioMunicipio
+                  },
 
+                  datosFuneraria: {
+                    idDatosFuneraria: obj?.idDatosfuneraria,
+                    enBogota: true,
+                    fueraBogota: false,
+                    fueraPais: false,
+                    funeraria: values.funerariaBogota,
+                    otroSitio: values.otrofuneraria,
+                    ciudad: values.funerariaCiudad,
+                    idPais: values.funerariaPais,
+                    idDepartamento: values.funerariaDepartamento,
+                    idMunicipio: values.funerariaMunicipio
+                  },
+
+                  resumenSolicitud: {
+                    idSolicitud: obj.idresumensolicitud,
+                    correoCementerio: obj.correocementerio.toString().toLowerCase(),
+                    correoFuneraria: obj.correofuneraria.toString().toLowerCase(),
+                    tipoDocumentoSolicitante: obj.tipodocsolicitante,
+                    numeroDocumentoSolicitante: obj.nrosolicitante,
+                    nombreSolicitante: obj.nombresolicitante,
+                    apellidoSolicitante: obj.apellidosolicitante,
+                    correoSolicitante: obj.correosolicitante.toString().toLowerCase(),
+                    correoMedico: '',
+                    cumpleCausa: banderaCausa,
+                    observacionCausa: observacionCausaMuerte
+                  },
+
+                  institucionCertificaFallecimiento: {
+                    idInstitucionCertificaFallecimiento: obj?.idInstitucionCertificaFallecimiento,
+                    tipoIdentificacion: tipoidinst,
+                    numeroIdentificacion: numeroins,
+                    razonSocial: razonSocialins,
+                    numeroProtocolo: numeroProtocoloins,
+                    numeroActaLevantamiento: razonSocialins !== 'Otros' ? values?.numeroActLeva : '',
+                    fechaActa: razonSocialins !== 'Otros' ? (values?.DateAct ? moment(values?.DateAct).format(formatDate) : null) : null,
+                    seccionalFiscalia: razonSocialins !== 'Otros' ? values?.SecFiscalAct : '',
+                    noFiscal: razonSocialins !== 'Otros' ? values?.NoFiscAct : '',
+                    idTipoInstitucion: values?.instType,
+                    NombreFiscal: razonSocialins !== 'Otros' ? values?.fiscalianombreDC : '',
+                    ApellidoFiscal: razonSocialins !== 'Otros' ? values?.fiscaliaapellidoDC : '',
+                    NumeroOficio: razonSocialins !== 'Otros' ? values?.fiscalianumeroDC : '',
+                    NoFiscalMedicinaLegal: razonSocialins !== 'Otros' ? values?.NoFiscalDC : '',
+                    FechaOficio: razonSocialins !== 'Otros' ? (values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null) : null
+                  }
+                  // documentosSoporte: generateFormFiel(values.instType)
+                }
+              };
+
+
+
+              console.log(json);
+              await api.putLicencia(json, '1');
+
+              let observacion = '';
+
+              if (cambioacremacion || cambioainhumacion) {
+                observacion = 'cambio de licencia';
               }
               else {
-                if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
-                  actavalida = 1;
-                }
+                observacion = 'modificación datos';
               }
+              const idUsuario = await api.getIdUsuario();
+              const seguimiento = {
+                fechaRegistro: obj.fechasol,
+                usuario: idUsuario,
+                estado: observacion,
+                idSolicitud: obj.idSolicitud,
+                observacion: values.observations
 
-              for (let index = 0; index < filter.length; index++) {
-                if (filter[index].idTipoDocumentoSoporte === '19a11490-261c-4114-9152-23c2b991cb36' || //Certificado de defuncion
-                  filter[index].idTipoDocumentoSoporte === 'd2d3aba7-3b92-446a-aa8c-80a75de246a7') {  //documento de la madre
+              }
+              await api.addSeguimiento(seguimiento);
+              if (cambioacremacion || cambioainhumacion) {
+
+                //general
+                const acta = form.getFieldValue('fileActaNotarialFiscal');
+                //de inhumacion a cremacion
+                const autcrem = form.getFieldValue('fileAuthCCFamiliar');
+                const docfam = form.getFieldValue('fileDocCremacion');
+                const fiscautcrem = form.getFieldValue('fileAuthFiscalCremacion');
+                const ofmedleg = form.getFieldValue('fileOrdenAuthFiscal');
+                const justificcrem = form.getFieldValue('filejustcambio');
+                //de cremacion a inhumacion
+                const justificinh = form.getFieldValue('filejustFamiliar');
+                const docauth = form.getFieldValue('fileDocaut');
+
+                const supportDocumentsEdit: any[] = [];
+                const formData = new FormData();
+
+
+
+
+
+                const resp = await api.getSupportDocuments(obj.idSolicitud);
+
+
+                const filter = resp.filter(function (f: { esValido: boolean }) {
+                  return (
+                    f.esValido != false
+                  );
+                });
+
+                formData.append('containerName', obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
+                  'cremacionfetal' : 'inhumacionfetal'
+                );
+                formData.append('oid', accountIdentifier);
+                const blobcertificado: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
+                  'inhumacionfetal' : 'cremacionfetal', obj.idusuarioseg + '/Certificado_Defuncion_' + obj.idSolicitud + '.pdf')
+
+                const blobdocumento: any = await api.GetBlobInhumacionCremacion(obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
+                  'inhumacionfetal' : 'cremacionfetal', obj.idusuarioseg + '/Documento_de_la_Madre_' + obj.idSolicitud + '.pdf')
+
+
+
+                /*
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                  var base64data = reader.result;
+
+                }
+                */
+                const type: any = { type: 'application/pdf' };
+                const uid: any = { uid: 'rc-upload-1665609235853-5' }
+                var filecertificado = new File([blobcertificado as Blob], "Certificado_defuncion.pdf", type);
+                var filedocumento = new File([blobdocumento as Blob], "Documento_de_la_Madre.pdf", type);
+
+
+
+                formData.append('file', filecertificado);
+                formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
+
+
+                formData.append('file', filedocumento);
+                formData.append('nameFile', 'Documento_de_la_Madre' + '_' + obj.idSolicitud);
+
+
+
+
+                let actavalida = 0;
+
+                if (acta != undefined) {
+                  formData.append('file', values.fileActaNotarialFiscal.file);
+                  formData.append('nameFile', 'Acta_Notarial_del_Fiscal' + '_' + obj.idSolicitud);
+
+                  supportDocumentsEdit.push({
+                    idSolicitud: obj.idSolicitud,
+                    idTipoDocumentoSoporte: '79320af6-943c-43bf-87d1-847b625f6203',
+                    path: `${obj.idusuarioseg}/Acta_Notarial_del_Fiscal_${obj.idSolicitud}`,
+                    idUsuario: obj.idusuarioseg,
+                    esValido: true
+                  });
+                  actavalida = 1;
 
                 }
                 else {
-                  if (actavalida == 1 &&
-                    filter[index].idTipoDocumentoSoporte === '79320af6-943c-43bf-87d1-847b625f6203') {
+                  if (obj?.instRazonSocial !== 'Otros' && insttype === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+                    actavalida = 0;
+                  }
+                  else {
+                    if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+                      actavalida = 1;
+                    }
+                  }
+                }
+
+                for (let index = 0; index < filter.length; index++) {
+                  if (filter[index].idTipoDocumentoSoporte === '19a11490-261c-4114-9152-23c2b991cb36' || //Certificado de defuncion
+                    filter[index].idTipoDocumentoSoporte === 'd2d3aba7-3b92-446a-aa8c-80a75de246a7') {  //documento de la madre
 
                   }
                   else {
-                    filter[index].esValido = false;
+                    if (actavalida == 1 &&
+                      filter[index].idTipoDocumentoSoporte === '79320af6-943c-43bf-87d1-847b625f6203') {
+
+                    }
+                    else {
+                      filter[index].esValido = false;
+                    }
+
+                  }
+                }
+                await api.UpdateSupportDocuments(filter);
+
+                //de inhumacion a cremacion
+                if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
+                  if (autcrem != undefined) {
+                    formData.append('file', values.fileAuthCCFamiliar.file);
+                    formData.append('nameFile', 'Autorizacion_de_cremacion_del_familiar' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: 'f67f1c4e-a6a5-4257-a995-17a926801f7c',
+                      path: `${obj.idusuarioseg}/Autorizacion_de_cremacion_del_familiar_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
+                  }
+                  if (docfam != undefined) {
+                    formData.append('file', values.fileDocCremacion.file);
+                    formData.append('nameFile', 'Documento_del_familiar' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: 'd6524742-e32d-4548-ab21-7a9cbb367926',
+                      path: `${obj.idusuarioseg}/Documento_del_familiar_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
+                  }
+                  if (fiscautcrem != undefined) {
+                    formData.append('file', values.fileAuthFiscalCremacion.file);
+                    formData.append('nameFile', 'Autorizacion_del_fiscal_para_cremar' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+                      path: `${obj.idusuarioseg}/Autorizacion_del_fiscal_para_cremar_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
+                  }
+                  if (ofmedleg != undefined) {
+                    formData.append('file', values.fileOrdenAuthFiscal.file);
+                    formData.append('nameFile', 'Oficio_de_medicina_legal_al_fiscal_para_cremar' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: '1266f06c-0bc1-4cf8-ba51-5e889d5e8178',
+                      path: `${obj.idusuarioseg}/Oficio_de_medicina_legal_al_fiscal_para_cremar_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
+                  }
+
+                  if (justificcrem != undefined) {
+                    formData.append('file', values.filejustcambio.file);
+                    formData.append('nameFile', 'Justificación_del_cambio_de_licencia' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: '242A2E58-46B5-4C45-97BA-881A383F2CBB',
+                      path: `${obj.idusuarioseg}/Justificación_del_cambio_de_licencia_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
+                  }
+
+
+
+
+
+                }
+                else {
+                  if (justificinh != undefined) {
+                    formData.append('file', values.filejustFamiliar.file);
+                    formData.append('nameFile', 'Justificación_de_inhumación' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+                      path: `${obj.idusuarioseg}/Justificación_de_inhumación_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
+                  }
+                  if (docauth != undefined) {
+                    formData.append('file', values.fileDocaut.file);
+                    formData.append('nameFile', 'Documento_de_quien_autoriza' + '_' + obj.idSolicitud);
+
+                    supportDocumentsEdit.push({
+                      idSolicitud: obj.idSolicitud,
+                      idTipoDocumentoSoporte: '6E57212B-2266-4854-9C13-F805BB4BBCF8',
+                      path: `${obj.idusuarioseg}/Documento_de_quien_autoriza_${obj.idSolicitud}`,
+                      idUsuario: obj.idusuarioseg,
+                      esValido: true
+                    });
                   }
 
                 }
+                if (longitudreconocido !== -1) {
+                  formData.append('file', values.fileCertificadoDefuncion.file);
+                  formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
+
+
+                  formData.append('file', values.fileDocumentoMadre.file);
+                  formData.append('nameFile', 'Documento_de_la_Madre' + '_' + obj.idSolicitud);
+                }
+
+                formData.append('containerName', obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
+                  'cremacionfetal' : 'inhumacionfetal'
+                );
+                formData.append('oid', accountIdentifier);
+                await api.uploadFiles(formData);
+                await api.UpdateSupportDocuments(supportDocumentsEdit);
+
               }
-              await api.UpdateSupportDocuments(filter);
+              else {
 
-              //de inhumacion a cremacion
-              if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
-                if (autcrem != undefined) {
-                  formData.append('file', values.fileAuthCCFamiliar.file);
-                  formData.append('nameFile', 'Autorizacion_de_cremacion_del_familiar' + '_' + obj.idSolicitud);
+                const acta = form.getFieldValue('fileActaNotarialFiscal');
+                //en caso de ser cremacion y se cambie a medicina legal
+                const fiscautcrem = form.getFieldValue('fileAuthFiscalCremacion');
+                const ofmedleg = form.getFieldValue('fileOrdenAuthFiscal');
+
+                const resp = await api.getSupportDocuments(obj.idSolicitud);
+
+
+                const filter = resp.filter(function (f: { esValido: boolean }) {
+                  return (
+                    f.esValido != false
+                  );
+                });
+
+                let actavalida = 0;
+
+                const supportDocumentsEdit: any[] = [];
+                const formData = new FormData();
+
+
+
+                if (acta != undefined) {
+                  formData.append('file', values.fileActaNotarialFiscal.file);
+                  formData.append('nameFile', 'Acta_Notarial_del_Fiscal' + '_' + obj.idSolicitud);
 
                   supportDocumentsEdit.push({
                     idSolicitud: obj.idSolicitud,
-                    idTipoDocumentoSoporte: 'f67f1c4e-a6a5-4257-a995-17a926801f7c',
-                    path: `${obj.idusuarioseg}/Autorizacion_de_cremacion_del_familiar_${obj.idSolicitud}`,
+                    idTipoDocumentoSoporte: '79320af6-943c-43bf-87d1-847b625f6203',
+                    path: `${obj.idusuarioseg}/Acta_Notarial_del_Fiscal_${obj.idSolicitud}`,
                     idUsuario: obj.idusuarioseg,
                     esValido: true
                   });
-                }
-                if (docfam != undefined) {
-                  formData.append('file', values.fileDocCremacion.file);
-                  formData.append('nameFile', 'Documento_del_familiar' + '_' + obj.idSolicitud);
+                  actavalida = 1;
 
-                  supportDocumentsEdit.push({
-                    idSolicitud: obj.idSolicitud,
-                    idTipoDocumentoSoporte: 'd6524742-e32d-4548-ab21-7a9cbb367926',
-                    path: `${obj.idusuarioseg}/Documento_del_familiar_${obj.idSolicitud}`,
-                    idUsuario: obj.idusuarioseg,
-                    esValido: true
-                  });
                 }
+                else {
+                  if (tipoinst != undefined && insttype != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+                    actavalida = 1;
+                  }
+                }
+
+
+                for (let index = 0; index < filter.length; index++) {
+                  if (filter[index].idTipoDocumentoSoporte !== 'fa808621-d345-43c7-88b0-e0b9ff56a24d' || //Autorizacion del fiscal
+                    filter[index].idTipoDocumentoSoporte !== '1266f06c-0bc1-4cf8-ba51-5e889d5e8178') { //oficio medicina legal
+                    if (actavalida == 0 &&
+                      filter[index].idTipoDocumentoSoporte === '79320af6-943c-43bf-87d1-847b625f6203') {
+                      filter[index].esValido = false;
+
+                    }
+                  }
+                  else {
+                    if (fiscautcrem === undefined && filter[index].idTipoDocumentoSoporte !== 'fa808621-d345-43c7-88b0-e0b9ff56a24d') {
+
+                    }
+                    else {
+                      if (fiscautcrem === undefined && filter[index].idTipoDocumentoSoporte !== '1266f06c-0bc1-4cf8-ba51-5e889d5e8178') {
+
+                      }
+                      else {
+
+                        filter[index].esValido = false;
+                      }
+                    }
+
+
+
+                  }
+                }
+                await api.UpdateSupportDocuments(filter);
+
+
+
+
                 if (fiscautcrem != undefined) {
                   formData.append('file', values.fileAuthFiscalCremacion.file);
                   formData.append('nameFile', 'Autorizacion_del_fiscal_para_cremar' + '_' + obj.idSolicitud);
@@ -952,76 +1086,47 @@ export const CambioLicencia = ({ props }: any) => {
                   });
                 }
 
-                if (justificcrem != undefined) {
-                  formData.append('file', values.filejustcambio.file);
-                  formData.append('nameFile', 'Justificación_del_cambio_de_licencia' + '_' + obj.idSolicitud);
+                if (longitudreconocido !== -1) {
+                  formData.append('file', values.fileCertificadoDefuncion.file);
+                  formData.append('nameFile', 'Certificado_Defuncion' + '_' + obj.idSolicitud);
 
-                  supportDocumentsEdit.push({
-                    idSolicitud: obj.idSolicitud,
-                    idTipoDocumentoSoporte: '242A2E58-46B5-4C45-97BA-881A383F2CBB',
-                    path: `${obj.idusuarioseg}/Justificación_del_cambio_de_licencia_${obj.idSolicitud}`,
-                    idUsuario: obj.idusuarioseg,
-                    esValido: true
-                  });
+
+                  formData.append('file', values.fileDocumentoMadre.file);
+                  formData.append('nameFile', 'Documento_de_la_Madre' + '_' + obj.idSolicitud);
                 }
 
-
-
-
-
-              }
-              else {
-                if (justificinh != undefined) {
-                  formData.append('file', values.filejustFamiliar.file);
-                  formData.append('nameFile', 'Justificación_de_inhumación' + '_' + obj.idSolicitud);
-
-                  supportDocumentsEdit.push({
-                    idSolicitud: obj.idSolicitud,
-                    idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
-                    path: `${obj.idusuarioseg}/Justificación_de_inhumación_${obj.idSolicitud}`,
-                    idUsuario: obj.idusuarioseg,
-                    esValido: true
-                  });
-                }
-                if (docauth != undefined) {
-                  formData.append('file', values.fileDocaut.file);
-                  formData.append('nameFile', 'Documento_de_quien_autoriza' + '_' + obj.idSolicitud);
-
-                  supportDocumentsEdit.push({
-                    idSolicitud: obj.idSolicitud,
-                    idTipoDocumentoSoporte: '6E57212B-2266-4854-9C13-F805BB4BBCF8',
-                    path: `${obj.idusuarioseg}/Documento_de_quien_autoriza_${obj.idSolicitud}`,
-                    idUsuario: obj.idusuarioseg,
-                    esValido: true
-                  });
-                }
-
+                formData.append('containerName', obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
+                  'inhumacionfetal' : 'cremacionfetal'
+                );
+                formData.append('oid', accountIdentifier);
+                await api.uploadFiles(formData);
+                await api.UpdateSupportDocuments(supportDocumentsEdit);
               }
 
-              formData.append('containerName', obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' ?
-                'cremacionfetal' : 'inhumacionfetal'
-              );
-              formData.append('oid', accountIdentifier);
-              await api.uploadFiles(formData);
-              await api.UpdateSupportDocuments(supportDocumentsEdit);
+              Swal.fire({
+                icon: 'success',
+                title: 'Solicitud Modificada',
+                text: 'Se ha modificado la Solicitud exitosamente'
+              });
+
+              history.push('/tramites-servicios');
+
+
+
+            } else if (result.isDenied) {
 
             }
+          });
 
-            Swal.fire({
-              icon: 'success',
-              title: 'Solicitud Modificada',
-              text: 'Se ha modificado la Solicitud exitosamente'
-            });
+        }
 
-            history.push('/tramites-servicios');
-
-
-
-          } else if (result.isDenied) {
-
-          }
-        });
-
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos Invalidos',
+            text: `Debe de actualizar los nombres de la Madre`
+          });
+        }
 
       }
 
@@ -1067,6 +1172,16 @@ export const CambioLicencia = ({ props }: any) => {
   );
 
   const getData = (longitud: number, procedencia: any) => {
+    console.log(procedencia, longitud)
+    if (procedencia === 'datosfallecido') {
+      setLongitudminima(longitud);
+    }
+    if (procedencia === 'reconocido') {
+      setLongitudreconocido(longitud);
+    }
+    if (procedencia === 'familiarautoriza') {
+      setLongitudminimaautoriza(longitud);
+    }
     /*
     if (procedencia === 'solicitante') {
       setlongitudsolicitante(longitud);
@@ -1085,6 +1200,9 @@ export const CambioLicencia = ({ props }: any) => {
     setinsttype(form.getFieldValue('instType'));
   };
 
+  const settipo = (tipo: string) => {
+    settipodocumentohoranacimiento(tipo);
+  };
 
   //validacion fecha de nacimiento
   const FechaNacimiento = () => {
@@ -1578,275 +1696,16 @@ export const CambioLicencia = ({ props }: any) => {
                               </div>
                               <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block mt-3'>
-                                  <Form.Item label='Primer Nombre' name='name' rules={[{ required: true, max: 50 }]} initialValue={obj.namemother}>
-                                    <Input
+                                  <InhumacionSeccion
 
-                                      style={{ width: '90%' }}
-                                      allowClear
-                                      placeholder='Primer Nombre'
-                                      autoComplete='off'
-                                      type='text'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <Form.Item
-                                    label='Segundo Nombre'
-                                    name='secondName'
-                                    rules={[{ required: false, max: 50 }]}
-                                    initialValue={obj.secondNamemother}
-                                  >
-                                    <Input
-                                      style={{ width: '90%' }}
-                                      allowClear
-                                      placeholder='Segundo Nombre'
-                                      autoComplete='off'
-                                      type='text'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <Form.Item
-                                    label='Primer Apellido'
-                                    name='surname'
-                                    rules={[{ required: true, max: 50 }]}
-                                    initialValue={obj.surnamemother}
-                                  >
-                                    <Input
-                                      style={{ width: '90%' }}
-                                      allowClear
-                                      placeholder='Primer Apellido'
-                                      autoComplete='off'
-                                      type='text'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-                                  <Form.Item
-                                    label='Segundo Apellido'
-                                    name='secondSurname'
-                                    rules={[{ required: false, max: 50 }]}
-                                    initialValue={obj.secondSurnamemother}
-                                  >
-                                    <Input
-                                      style={{ width: '90%' }}
-                                      allowClear
-                                      placeholder='Segundo Apellido'
-                                      autoComplete='off'
-                                      type='text'
-                                      onKeyPress={(event) => {
-                                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                    />
-                                  </Form.Item>
-
-
-                                  <Form.Item
-                                    label='Tipo Identificación'
-                                    name='IDType'
-                                    initialValue={obj.IDType}
-                                    rules={[{ required: true }]}
-                                  >
-                                    <SelectComponent
-                                      style={{ width: '90%' }}
-                                      options={l_tipos_documento}
-                                      onChange={cambiodocumento}
-                                      optionPropkey='id'
-                                      optionPropLabel='descripcion'
-                                    />
-                                  </Form.Item>
-                                  <Form.Item label='Número de Identificación'
-                                    /// se hace substring ya que en bd se guarda con el ft_
-                                    initialValue={obj.IDNumber.toString().substring(3, obj.IDNumber.length)}
-                                    name='IDNumber' rules={[{ required: !sininformacion }]}>
-                                    <Input
-                                      style={{ width: '90%' }}
-                                      allowClear
-                                      type='text'
-                                      placeholder='Número Identificación'
-                                      autoComplete='off'
-                                      pattern={tipocampo}
-                                      maxLength={longitudmaxima}
-                                      onKeyPress={(event) => {
-                                        if (!tipocampovalidacion.test(event.key)) {
-                                          event.preventDefault();
-                                        }
-                                      }}
-                                      onPaste={(event) => {
-                                        event.preventDefault();
-                                      }}
-                                      onInvalid={() => {
-                                        Swal.fire({
-                                          icon: 'error',
-                                          title: 'Datos inválidos',
-                                          text:
-                                            'Sección:INFORMACIÓN DE LA MADRE \n recuerde que para el tipo de documento: ' +
-                                            tipodocumento +
-                                            ' solo se admiten valores ' +
-                                            campo +
-                                            ' de longitud entre ' +
-                                            longitudminima +
-                                            ' y ' +
-                                            longitudmaxima
-                                        });
-                                      }}
-                                    />
-                                  </Form.Item>
-
-                                  <Form.Item
-                                    label='Nacionalidad de la Madre'
-                                    name='nationalidad'
-                                    initialValue={obj.nationalidadmother}
-                                    rules={[{ required: true }]}
-                                  >
-                                    <SelectComponent
-                                      style={{ width: '90%' }}
-                                      options={l_paises}
-                                      placeholder='-- Elija una nacionalidad --'
-                                      optionPropkey='id'
-                                      optionPropLabel='descripcion'
-                                    />
-                                  </Form.Item>
-
-
-                                  <Form.Item
-                                    label='Tipo de Muerte'
-                                    name='deathType'
-                                    initialValue={obj.deathType}
-                                    rules={[{ required: true }]}
-                                  >
-                                    <SelectComponent style={{ width: '90%' }} options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' />
-                                  </Form.Item>
-
-
-                                  <Divider orientation='right'> RESIDENCIA HABITUAL DE LA MADRE</Divider>
-                                  <Form.Item
-                                    label='País de Residencia'
-                                    name='pais'
-                                    initialValue={obj?.residencia ?? idColombia}
-                                    rules={[{ required: true }]}
-                                  >
-                                    <SelectComponent options={l_paises} optionPropkey='id' optionPropLabel='descripcion'
-                                      disabled={obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                      onChange={onChangePais} />
-                                  </Form.Item>
-
-                                  <Form.Item
-                                    label='Departamento de Residencia'
-                                    initialValue={obj?.idDepartamentoResidencia ?? idDepartamentoBogota}
-                                    name='departamento'
-                                    rules={[{ required: isColombia }]}
-                                  >
-                                    <SelectComponent
-                                      options={l_departamentos}
-                                      optionPropkey='idDepartamento'
-                                      optionPropLabel='descripcion'
-                                      disabled={!isColombia || obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                      onChange={onChangeDepartamento}
-                                    />
-                                  </Form.Item>
-
-                                  {isColombia ? (
-                                    <Form.Item label='Ciudad de Residencia' initialValue={obj?.idCiudadResidencia ?? idBogotac} name='ciudad' rules={[{ required: true }]}>
-                                      <SelectComponent
-                                        options={l_municipios}
-                                        optionPropkey='idMunicipio'
-                                        optionPropLabel='descripcion'
-                                        disabled={obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                        onChange={onChangeMunicipio}
-                                        value={idBogotac}
-                                        searchValue={idBogotac}
-                                      />
-                                    </Form.Item>
-                                  ) : (
-                                    <Form.Item
-                                      label='Ciudad de Residencia'
-                                      name='ciudadfuera'
-                                      initialValue={obj?.ciudadfuera}
-                                      rules={[{ required: true }]}
-                                    >
-                                      <Input
-                                        allowClear
-                                        placeholder='Ciudad'
-                                        disabled={obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                        autoComplete='off'
-                                        onKeyPress={(event) => {
-                                          if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
-                                            event.preventDefault();
-                                          }
-                                        }}
-                                      />
-                                    </Form.Item>
-                                  )}
-
-                                  <Form.Item
-                                    label='Localidad de Residencia'
-                                    initialValue={obj?.idLocalidadResidencia ?? idlocalidad}
-                                    name='localidad'
-                                    rules={[{ required: isBogota }]}
-                                  >
-                                    <SelectComponent
-                                      options={l_localidades}
-                                      optionPropkey='idLocalidad'
-                                      optionPropLabel='descripcion'
-                                      disabled={!isBogota || obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                      onChange={onChangeLocalidad}
-                                    />
-                                  </Form.Item>
-
-                                  <Form.Item
-                                    label='Área de Residencia'
-                                    initialValue={obj?.idAreaResidencia ?? idupz}
-                                    name='area'
-                                    rules={[{ required: isBogota }]}
-                                  >
-                                    <SelectComponent
-                                      options={l_areas}
-                                      defaultValue={idupz}
-                                      optionPropkey='idUpz'
-                                      optionPropLabel='descripcion'
-                                      disabled={!isBogota || obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                      onChange={onChangeArea}
-                                    />
-                                  </Form.Item>
-
-                                  <Form.Item
-                                    label='Barrio de Residencia'
-                                    initialValue={obj?.idBarrioResidencia ?? idbarrio}
-                                    name='barrio'
-                                    rules={[{ required: isBogota }]}
-                                  >
-                                    <SelectComponent
-                                      options={l_barrios}
-                                      defaultValue={idbarrio}
-                                      optionPropkey='idBarrio'
-                                      optionPropLabel='descripcion'
-                                      disabled={!isBogota || obj?.idDepartamentoResidencia === '31b870aa-6cd0-4128-96db-1f08afad7cdd'}
-                                    />
-                                  </Form.Item>
+                                    form={form}
+                                    obj={obj}
+                                    tipo={'fetal'}
+                                    prop={getData}
+                                    fechanacimiento={FechaNacimiento}
+                                    tipodocumentoseleccionado={settipo}
+                                    origen={'modificacion'}
+                                  />
 
                                 </div>
                               </div>
@@ -1873,206 +1732,7 @@ export const CambioLicencia = ({ props }: any) => {
                                   <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                     <div className='fadeInRight d-block mt-3'>
                                       <div className='fadeInRight'>
-                                        <Form.Item {...layoutWrapper}>
-                                          <Alert
-                                            style={{ width: '90%' }}
-                                            message='Diligencie la información del familiar o persona que autoriza la cremación.'
-                                            type='warning'
-                                            showIcon
-                                          />
-                                        </Form.Item>
-
-                                        <Form.Item
-                                          className='mt-4'
-                                          label='Tipo Documento'
-                                          name='authIDType'
-                                          initialValue={obj?.autorizadorcremacion.length > 0 ?
-                                            obj?.autorizadorcremacion[0].tipoid
-                                            : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                                          rules={[{ required: true }]}
-                                        >
-                                          <SelectComponent
-                                            style={{ width: '90%' }}
-                                            options={l_tipos_documento_autoriza}
-                                            onChange={cambiodocumentoautoriza}
-                                            optionPropkey='id'
-                                            optionPropLabel='descripcion'
-                                          />
-                                        </Form.Item>
-
-                                        <Form.Item
-                                          label='Número de Identificación'
-                                          name='mauthIDNumber'
-                                          initialValue={obj?.autorizadorcremacion.length > 0 ?
-                                            obj?.autorizadorcremacion[0].numeroid : null}
-                                          rules={[{ required: !sininformacionaut }]}
-
-                                        >
-                                          <Input
-                                            style={{ width: '90%' }}
-                                            allowClear
-                                            type='text'
-                                            placeholder='Número Identificación'
-                                            autoComplete='off'
-                                            pattern={tipocampoautoriza}
-                                            maxLength={longitudmaximaautoriza}
-                                            onKeyPress={(event) => {
-                                              if (!tipocampovalidacionautoriza.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
-                                            onPaste={(event) => {
-                                              event.preventDefault();
-                                            }}
-                                            onInvalid={() => {
-                                              Swal.fire({
-                                                icon: 'error',
-                                                title: 'Datos inválidos',
-                                                text:
-                                                  'Sección:Datos Del Familiar Que Autoriza Cremación \n recuerde que para el tipo de documento: ' +
-                                                  tipodocumentoautoriza +
-                                                  ' solo se admiten valores ' +
-                                                  campoautoriza +
-                                                  ' de longitud entre ' +
-                                                  longitudminimaautoriza +
-                                                  ' y ' +
-                                                  longitudmaximaautoriza
-                                              });
-                                            }}
-                                          />
-                                        </Form.Item>
-
-                                        <Form.Item
-                                          label='Primer Nombre'
-                                          name='authName'
-                                          initialValue={obj?.autorizadorcremacion.length > 0 ?
-                                            obj?.autorizadorcremacion[0].name : null}
-                                          rules={[{ required: true, max: 50 }]}
-                                        >
-                                          <Input
-                                            style={{ width: '90%' }}
-                                            allowClear
-                                            placeholder='Primer Nombre'
-                                            autoComplete='off'
-                                            type='text'
-                                            onKeyPress={(event) => {
-                                              if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
-                                            onPaste={(event) => {
-                                              event.preventDefault();
-                                            }}
-                                          />
-                                        </Form.Item>
-                                        <Form.Item
-                                          label='Segundo Nombre'
-                                          initialValue={obj?.autorizadorcremacion.length > 0 ?
-                                            obj?.autorizadorcremacion[0].secondName : null}
-                                          rules={[{ max: 50 }]}
-                                          name='authSecondName'
-                                        >
-                                          <Input
-                                            style={{ width: '90%' }}
-                                            allowClear
-                                            placeholder='Segundo Nombre'
-                                            autoComplete='off'
-                                            type='text'
-                                            onKeyPress={(event) => {
-                                              if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ  ]/.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
-                                            onPaste={(event) => {
-                                              event.preventDefault();
-                                            }}
-                                          />
-                                        </Form.Item>
-                                        <Form.Item
-                                          label='Primer Apellido'
-                                          initialValue={obj?.autorizadorcremacion.length > 0 ?
-                                            obj?.autorizadorcremacion[0].surname : null}
-                                          name='authSurname'
-                                          rules={[{ required: true, max: 50 }]}
-                                        >
-                                          <Input
-                                            style={{ width: '90%' }}
-                                            allowClear
-                                            placeholder='Primer Apellido'
-                                            autoComplete='off'
-                                            type='text'
-                                            onKeyPress={(event) => {
-                                              if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
-                                            onPaste={(event) => {
-                                              event.preventDefault();
-                                            }}
-                                          />
-                                        </Form.Item>
-                                        <Form.Item
-                                          label='Segundo Apellido'
-                                          initialValue={obj?.autorizadorcremacion.length > 0 ?
-                                            obj?.autorizadorcremacion[0].secondSurname : null}
-                                          name='authSecondSurname'
-                                          rules={[{ max: 50 }]}
-                                        >
-                                          <Input
-                                            style={{ width: '90%' }}
-                                            allowClear
-                                            placeholder='Segundo Apellido'
-                                            autoComplete='off'
-                                            type='text'
-                                            onKeyPress={(event) => {
-                                              if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                                                event.preventDefault();
-                                              }
-                                            }}
-                                            onPaste={(event) => {
-                                              event.preventDefault();
-                                            }}
-                                          />
-                                        </Form.Item>
-
-
-                                        <Form.Item
-                                          label='Parentesco'
-                                          initialValue={parentescocremacion ?? 'Cónyuge (Compañero/a Permanente)'}
-                                          name='authParentesco'
-                                          rules={[{ required: true }]}
-                                        >
-                                          <Radio.Group onChange={onChangeParentesco}>
-                                            <Radio value='Padre / Madre'>Padre / Madre</Radio>
-                                            <br />
-                                            <Radio value='Hermano/a'>Hermano/a</Radio>
-                                            <br />
-                                            <Radio value='Hijo/a'>Hijo/a</Radio>
-                                            <br />
-                                            <Radio value='Cónyuge (Compañero/a Permanente)'>Cónyuge (Compañero/a Permanente)</Radio>
-                                            <br />
-                                            <Radio value='Tío/a'>Tío/a</Radio>
-                                            <br />
-                                            <Radio value='Sobrino/a'>Sobrino/a</Radio>
-                                            <br />
-                                            <Radio value='Abuelo/a'>Abuelo/a</Radio>
-                                            <br />
-                                            <Radio value='Nieto/a'>Nieto/a</Radio>
-                                            <br />
-                                            <Radio value='Otro'>Otro</Radio>
-                                          </Radio.Group>
-                                        </Form.Item>
-
-                                        {isOtherParentesco && (
-                                          <Form.Item
-                                            className='fadeInRight'
-                                            label='Otro... ¿Cúal?'
-                                            name='authOtherParentesco'
-                                            rules={[{ required: true }]}
-                                          >
-                                            <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
-                                          </Form.Item>
-                                        )}
+                                        <FamilarFetalCremacion prop={getData} tipoLicencia={''} obj={obj} parentesco={parentescocremacion} />
                                       </div>
 
                                     </div>
@@ -2099,9 +1759,10 @@ export const CambioLicencia = ({ props }: any) => {
                               </div>
                               <div id='collapse-5' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block'>
-                                  <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
+                                  <DatoSolicitanteAdd prop={getData} form={form} obj={obj} modificacion={false} />
                                   <CementerioInfoFormSeccion obj={obj} form={form}
-                                    tipoLicencia={(cambioacremacion || actualizacioncremacion) ? 'Cremación' : 'Inhumación'} />
+                                    tipoLicencia={(cambioacremacion || actualizacioncremacion) ? 'Cremación' : 'Inhumación'}
+                                    modificacion={false} />
 
                                 </div>
                               </div>
@@ -2127,9 +1788,9 @@ export const CambioLicencia = ({ props }: any) => {
                               <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block'>
 
-                                  <InformacionDocumentosGestion prop={getDataDocumentos} obj={obj} id={cambioacremacion ? 'Cremación'
-                                    : (cambioainhumacion ? 'Inhumación' : 'No Aplica')} escambio={(cambioacremacion || cambioainhumacion) ? 'cambio' : 'actualizacion'}
-                                    instType={insttype} />
+                                  <InformacionDocumentosGestion prop={getDataDocumentos} obj={obj} id={(cambioacremacion || actualizacioncremacion)
+                                    ? 'Cremación' : 'Inhumación'} escambio={(cambioacremacion || cambioainhumacion) ? 'cambio' : 'actualizacion'}
+                                    instType={insttype} reconocido={longitudreconocido !== -1} tramite={'fetal'} />
 
                                 </div>
                               </div>

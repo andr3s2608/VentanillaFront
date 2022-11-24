@@ -42,6 +42,13 @@ export class ApiService {
       id: '0'
     });
 
+  ConsultarLicenciasAdministrador = (numero: string, tipo: string) =>
+    get<string>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/ConsultarLicenciasAdministrador/${numero}/${tipo}`,
+      id: '0'
+    });
+
   ObtenerSolicitud = (numero: string, tipo: string) =>
     get<string>({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -221,6 +228,9 @@ export class ApiService {
   putLicencia = (payload: any, validacion: string) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: validacion });
 
+  UpdateLicenciaAdmin = (payload: any, validacion: string) =>
+    put({ endpoint: REACT_APP_LOCAL as string, url: 'Request/UpdateRequestAdministrador', payload, id: validacion });
+
   ModificarConstante = (constante: string, valor: string, validacion: string) =>
     put({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -252,7 +262,7 @@ export class ApiService {
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetByIdUser/${this.oid}`, id: '0' });
 
   GetEstadoSolicitudNuevoCambio = () =>
-    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllSolicitudByIdUser/${this.oid}`, id: '0' });
+    get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetAllSolicitudByIdUser/${this.oid}`, id: '0' });
 
   updatelicencia = (solicitud: string) =>
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });

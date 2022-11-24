@@ -54,7 +54,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
   const [inputVal, setInputVal] = useState('');
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(5);
+  const [longitudminima, setLongitudminima] = useState<number>(4);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
@@ -70,10 +70,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
-  const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(6);
-  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
+  const [longitudfamiliaraut, setlongitudfamiliaraut] = useState<number>(4);
+  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(4);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
-  const [longitudmedico, setlongitudmedico] = useState<number>(6);
+  const [longitudmedico, setlongitudmedico] = useState<number>(4);
   const [supports, setSupports] = useState<any[]>([]);
   const [user, setUser] = useState<any>();
   const idBogota = '31211657-3386-420a-8620-f9c07a8ca491';
@@ -435,10 +435,10 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     var nroid = info.numeroIdentificacion + '';
     if (info.razonSocial != null) {
       tipo = 'Juridica';
-      razon = info.razonSocial;
+      razon = info.razonSocial.toString().toUpperCase();
     } else {
       tipo = 'Natural';
-      razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+      razon = (values.namesolicitudadd + ' ' + values.lastnamesolicitudadd).toString().toUpperCase();
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
@@ -1535,11 +1535,11 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
             </Form.Item>
           </div>
           <div className={`${current != 2 && 'd-none'} fadeInRight ${current === 2 && 'd-block'}`}>
-            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} objJosn={obj} />}
+            {tipoLicencia === 'Cremación' && <FamilarFetalCremacion prop={getData} tipoLicencia={tipoLicencia} obj={obj} parentesco={undefined} />}
 
             <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={obj} />
-            <DatoSolicitanteAdd prop={getData} form={form} obj={obj} />
-            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} />
+            <DatoSolicitanteAdd prop={getData} form={form} obj={obj} modificacion={false} />
+            <CementerioInfoFormSeccion obj={obj} form={form} tipoLicencia={tipoLicencia} modificacion={false} />
 
             <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
               <div className='d-flex justify-content-between'>
