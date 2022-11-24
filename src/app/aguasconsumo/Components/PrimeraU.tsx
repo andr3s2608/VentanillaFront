@@ -336,9 +336,7 @@ export const PrimeraU = () => {
   };
   const onSubmitFailed = () => setStatus('error');
 
-  const addacueducto = (value: any) => {
-    setacueducto(value);
-  };
+
   const addinfo = (value: any) => {
     setinformacion(value);
   };
@@ -487,7 +485,7 @@ export const PrimeraU = () => {
                         Información de acueductos que captan la misma fuente. . <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                       </p>
-                      <DatosAcueducto form={form} obj={objJson} prop={addacueducto} habilitar={true} />
+                      <DatosAcueducto form={form} obj={objJson} prop={addinfo} habilitar={true} />
                     </div>
                     <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='row mt-4'>

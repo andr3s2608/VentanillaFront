@@ -6,8 +6,11 @@ import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import Swal from 'sweetalert2';
 import '../../../../css/estilos.css';
+
 export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const { obj, form, tipo, habilitar } = props;
+
+
 
   /** la variable tipoSolicitante se termina de ajustar cuando se consumar el end-point */
 
@@ -17,6 +20,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   const [l_tipos_documentoRazon, setListaTipoDocumentoRazon] = useState<IDominio[]>([]);
 
   const [tipoSolicitante, settipoSolicitante] = useState<boolean>(true);
+
 
   //validacion campos
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
@@ -251,6 +255,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       }
     }
   };
+
+
+
+
+
+
   if (habilitar) {
     return (
       <>
@@ -262,7 +272,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   {' '}
                   <span className='required'>*</span> Tipo de Solicitantes
                 </p>
-                <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
+                <Form.Item
+                  name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
 
                     options={[
@@ -573,7 +584,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <span className='required'>* </span>
                   Correo Electrónico
                 </p>
-                <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
                   <input
                     placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '365px' }}
@@ -832,7 +843,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <span className='required'>* </span>
                   Correo Electrónico
                 </p>
-                <Form.Item initialValue={obj?.correoElectronico} name='email' required={false}>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
                   <input
                     placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '296px' }}
@@ -863,3 +874,6 @@ interface DatosSolicitante<T> {
   tipo: any;
   habilitar: boolean;
 }
+
+export const KeysFormService = ['persona', 'IDTypeRazon', 'name', 'telefono', 'email',];
+
