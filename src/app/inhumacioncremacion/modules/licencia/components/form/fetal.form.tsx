@@ -1045,7 +1045,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     setsininformacion(false);
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
+      setLongitudminima(0);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
@@ -1218,7 +1218,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           onFinishFailed={onSubmitFailed}
         >
           <div className={`${current != 0 && 'd-none'} fadeInRight ${current === 0 && 'd-block'}`}>
-            <GeneralInfoFormSeccion obj={obj} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} prop={null} />
+            <GeneralInfoFormSeccion obj={obj} causaMuerte={causaMuerte} form={form} tipoLicencia={'Cremación'} prop={null} />
             <LugarDefuncionFormSeccion form={form} obj={obj} />
             <DeathInstituteFormSeccion
               prop={getData}

@@ -5,6 +5,7 @@ import Tabs from 'antd/es/tabs';
 import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 import { HorariosGestion } from 'app/inhumacioncremacion/modules/licencia/components/form/horarios.form';
 import { EmergenciaSanitaria } from 'app/inhumacioncremacion/modules/licencia/components/form/emergenciasanitaria.form';
+import { HorariosFestivos } from 'app/inhumacioncremacion/modules/licencia/components/form/horariosFestivos.form';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -64,6 +65,7 @@ const PruebaPage = () => {
               </div>
             </div>
           </div>
+
         </TabPane>
       </Tabs>
     </div>

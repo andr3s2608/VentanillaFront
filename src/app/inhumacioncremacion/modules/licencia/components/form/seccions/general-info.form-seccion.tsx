@@ -1,5 +1,5 @@
 // Antd
-import Form from 'antd/es/form';
+import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Radio from 'antd/es/radio';
 import Divider from 'antd/es/divider';
@@ -16,7 +16,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
 
 export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) => {
-  const { obj, prop } = props;
+  const { obj, prop, form } = props;
   const [mostrar, setmostrar] = useState<boolean>(obj === undefined ? true : false);
   const [isHora, setIsHora] = useState<boolean>(true);
   const [isMensaje, setisMensaje] = useState<boolean>(false);
@@ -72,6 +72,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
       setisMensaje(true);
     }
 
+    form.setFieldsValue({ causaMuerte: value });
 
   };
 
@@ -200,5 +201,6 @@ interface IGeneralInfoProps<T> extends ITipoLicencia {
   obj: any;
   causaMuerte?: string;
   prop: any;
+  form: FormInstance<T>;
 }
 export const KeysForm = ['certificado', 'date', 'time', 'sex'];

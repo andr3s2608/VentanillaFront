@@ -208,6 +208,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
 
   const onSubmit = async (values: any) => {
+
     setStatus(undefined);
 
 
@@ -1290,7 +1291,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} tipoLicencia={'Cremación'} prop={null} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} form={form} tipoLicencia={'Cremación'} prop={null} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}
