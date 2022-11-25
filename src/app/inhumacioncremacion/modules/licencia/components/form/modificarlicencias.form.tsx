@@ -291,7 +291,7 @@ export const ModificarLicencia = ({ props }: any) => {
         <DatepickerComponent
           id='datePicker1'
           picker='date'
-          placeholder='Fecha de Licencia'
+          placeholder='Fecha de Solicitud'
           dateDisabledType='default'
           dateFormatType='default'
           className='form-control'

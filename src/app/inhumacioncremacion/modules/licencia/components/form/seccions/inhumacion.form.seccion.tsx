@@ -650,7 +650,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   placeholder='Primer Nombre'
                   autoComplete='off'
                   type='text'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -670,7 +670,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   placeholder='Segundo Nombre'
                   autoComplete='off'
                   type='text'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -694,7 +694,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   placeholder='Primer Apellido'
                   autoComplete='off'
                   type='text'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -717,7 +717,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   allowClear
                   placeholder='Segundo Apellido'
                   autoComplete='off'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -736,7 +736,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                 : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                 rules={[{ required: true }]} name='knownIDType'>
                 <SelectComponent
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   options={l_tipos_documento}
                   onChange={cambiodocumentoreconocido}
                   optionPropkey='id'
@@ -753,7 +753,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   type='text'
                   placeholder='Número Identificación'
                   autoComplete='off'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   pattern={tipocamporeconocido}
                   maxLength={longitudmaximareconocido}
                   onKeyPress={(event) => {
@@ -1025,7 +1025,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   placeholder='Primer Nombre'
                   autoComplete='off'
                   type='text'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -1045,7 +1045,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   placeholder='Segundo Nombre'
                   autoComplete='off'
                   type='text'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -1069,7 +1069,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   placeholder='Primer Apellido'
                   autoComplete='off'
                   type='text'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -1092,7 +1092,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   allowClear
                   placeholder='Segundo Apellido'
                   autoComplete='off'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   onKeyPress={(event) => {
                     if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                       event.preventDefault();
@@ -1114,7 +1114,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   options={l_tipos_documento}
                   onChange={cambiodocumentoreconocido}
                   optionPropkey='id'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   optionPropLabel='descripcion'
                 />
               </Form.Item>
@@ -1128,7 +1128,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   type='text'
                   placeholder='Número Identificación'
                   autoComplete='off'
-                  disabled={origen === 'modificacion' || origen === 'ciudadano'}
+                  disabled={(origen === 'modificacion' && obj?.reconocidocomo.length > 0) || origen === 'ciudadano'}
                   pattern={tipocamporeconocido}
                   maxLength={longitudmaximareconocido}
                   onKeyPress={(event) => {
