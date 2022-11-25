@@ -585,7 +585,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   Correo Electrónico
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
-                  <input
+                  <Input
                     placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '365px' }}
                     maxLength={50}
@@ -638,10 +638,10 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               <>
                 <div className='form-row'>
                   <div className='col'>
-                    <input type='text' className='form-control' placeholder='First name'></input>
+                    <Input type='text' className='form-control' placeholder='First name'></Input>
                   </div>
                   <div className='col'>
-                    <input type='text' className='form-control' placeholder='Last name'></input>
+                    <Input type='text' className='form-control' placeholder='Last name'></Input>
                   </div>
                 </div>
               </>
@@ -844,7 +844,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   Correo Electrónico
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
-                  <input
+                  <Input
                     placeholder='CORREO ELECTRÓNICO'
                     style={{ width: '296px' }}
                     maxLength={50}

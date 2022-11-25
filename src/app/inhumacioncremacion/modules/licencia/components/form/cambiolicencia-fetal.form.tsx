@@ -739,7 +739,7 @@ export const CambioLicencia = ({ props }: any) => {
 
 
 
-              console.log(json);
+
               await api.putLicencia(json, '1');
 
               let observacion = '';
@@ -1172,7 +1172,7 @@ export const CambioLicencia = ({ props }: any) => {
   );
 
   const getData = (longitud: number, procedencia: any) => {
-    console.log(procedencia, longitud)
+
     if (procedencia === 'datosfallecido') {
       setLongitudminima(longitud);
     }

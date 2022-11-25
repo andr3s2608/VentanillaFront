@@ -1747,7 +1747,7 @@ export const ModificarLicencia = ({ props }: any) => {
                               </div>
                               <div id='collapse-1' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                                 <div className='fadeInRight d-block'>
-                                  <GeneralInfoFormSeccion obj={obj} causaMuerte={''} tipoLicencia={'Cremación'} prop={FechaNacimiento} />
+                                  <GeneralInfoFormSeccion obj={obj} form={form} causaMuerte={''} tipoLicencia={'Cremación'} prop={FechaNacimiento} />
 
                                 </div>
                                 <div className='row ml-5'>

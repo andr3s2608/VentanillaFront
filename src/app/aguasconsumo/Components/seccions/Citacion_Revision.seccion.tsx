@@ -8,7 +8,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import '../../../../css/estilos.css';
 export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
-  const { obj, tipo } = props;
+  const { obj, tipo, prop } = props;
 
   const [modificar, setmodificar] = useState<boolean>();
   const [mostrar, setmostrar] = useState<boolean>(false);
@@ -77,9 +77,9 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               <div className='form-group gov-co-form-group mr-4'>
                 <div className='gov-co-dropdown'>
                   <p className='text'>
-                    <span className='required'>*</span> Subred
+                    <span className='required'></span> Subred
                   </p>
-                  <Form.Item initialValue={funcionario} name='funcionario' rules={[{ required: !modificar }]}>
+                  <Form.Item initialValue={funcionario} name='funcionario' rules={[{ required: false }]}>
                     <SelectComponent
                       options={l_usuarios}
                       defaultValue={funcionario}
@@ -90,6 +90,22 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
                   </Form.Item>
                 </div>
               </div>
+              {tipo == 'Funcionario' && (
+                <>
+                  <div className='col-md-6 col-lg-6 col-sm-12 ml-3'>
+                    <Button
+                      className='mr-3 float-right button btn btn-default'
+                      type='primary'
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      onClick={() => {
+                        prop()
+                      }}
+                    >
+                      Reasignar
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className='col-lg-11 col-sm-12 col-md-11 mt-3 ml-3'>
@@ -112,26 +128,30 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
           </div>
         </>
       )}
-      {tipo == 'Funcionario' && (
-        <>
-          <div className='col-md-6 col-lg-6 col-sm-12 ml-3'>
-            <p className='text'>
-              <span></span> Cargar archivo
-            </p>
-            <Form.Item label='' name='cargarArchivo' rules={[{ required: false }]}>
-              <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
-                <Button icon={<UploadOutlined />}>Cargar archivo</Button>
-              </Upload>
-            </Form.Item>
-          </div>
-        </>
-      )}
+
+
     </>
   );
 };
-
+/*
+    {tipo == 'Funcionario' && (
+      <>
+        <div className='col-md-6 col-lg-6 col-sm-12 ml-3'>
+          <p className='text'>
+            <span></span> Cargar archivo
+          </p>
+          <Form.Item label='' name='cargarArchivo' rules={[{ required: false }]}>
+            <Upload name='cargarArchivo' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+              <Button icon={<UploadOutlined />}>Cargar archivo</Button>
+            </Upload>
+          </Form.Item>
+        </div>
+      </>
+    )}
+    */
 interface DatosCitacion<T> {
   form: FormInstance<T>;
   obj: any;
   tipo: string;
+  prop: any;
 }
