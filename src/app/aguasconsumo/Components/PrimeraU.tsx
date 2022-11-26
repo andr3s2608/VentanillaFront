@@ -1,4 +1,5 @@
 import { DatosFuente, KeysForm as KeyFormFuenteAbastecimiento } from './seccions/Fuente_Abastecimiento.seccion';
+import { RequestSolicitudDTO, ResponseSolicitudDTO } from './Models/RequestSolicitudDTO';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
 import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
@@ -21,11 +22,12 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 
 
+
 export const PrimeraU = () => {
   const history = useHistory();
   const [form] = Form.useForm<any>();
   const objJson: any = EditAguas();
-  const [l_tramites, setLtramites] = useState<any[]>([]);
+
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
@@ -36,8 +38,7 @@ export const PrimeraU = () => {
 
   const getListas = useCallback(
     async () => {
-      const tramites = await api.getTipoTramites();
-      setLtramites(tramites);
+
     },
     []
   );
@@ -47,6 +48,9 @@ export const PrimeraU = () => {
   }, []);
 
   const onSubmit = async (values: any) => {
+    console.log(values);
+    const idUsuario = api.getIdUsuario();
+    console.log(idUsuario);
     const archivo = values.cargarresolucion;
     let validacion = false;
     let planta = false;
@@ -156,52 +160,84 @@ export const PrimeraU = () => {
           acueductojson = ac;
           const formatDate = 'MM-DD-YYYY';
 
+          /** Código nuevo */
+          const dataSolicitud: RequestSolicitudDTO = {
+            idTipoTramite: values.tipotramite,
+            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+            idUsuario: idUsuario,
+            temporal: false,
+            persona: {
+              tipoIdentificacion: values.IDType,
+              numeroIdentificacion: values.IDNumber,
+              primerNombre: values.name,
+              segundoNombre: values.secondname,
+              primerApellido: values.surname,
+              segundoApellido: values.secondsurname,
+              telefonoContacto: values.telefono,
+              celularContacto: values.telefono2,
+              correoElectronico: values.email.toString().toLowerCase(),
+              idTipoPersona: values.persona,
+              tipoDocumentoRazon: values?.IDTypeRazon ?? '',
+              nit: values?.IDNumberRazon ?? '',
+              razonSocial: values?.nombreEntidad ?? ''
+            },
+            ubicacion: {
+              direccion: '',
+              departamento: '00000000-0000-0000-0000-000000000000',
+              municipio: '00000000-0000-0000-0000-000000000000',
+              localidad: '00000000-0000-0000-0000-000000000000',
+              vereda: '',
+              sector: '',
+              upz: '00000000-0000-0000-0000-000000000000',
+              barrio: '00000000-0000-0000-0000-000000000000',
+              observacion: ''
+            }
+          };
+
+          const responseSolicitudDTO: ResponseSolicitudDTO = await api.AddSolicitudPrimera(dataSolicitud) as ResponseSolicitudDTO;
+
+          console.log("resultado de guardado");
+          console.log(responseSolicitudDTO);
+
           const json: IConsesion<any> = {
-            idSolicitud: objJson.idsolicitud,
-            idPersona: objJson.idPersona,
-            idTipodeSolicitud: objJson.idtipodeSolicitud,
-            tipodeSolicitud: objJson.tipodeSolicitud,
-            numeroRadicado: objJson.numeroradicado,
-            fechaSolicitud: objJson.fechaSolicitud,
-            idEstado: objJson.idestado,
-            estado: objJson.estado,
+            idSolicitud: responseSolicitudDTO.idSolicitud,
+            idPersona: idUsuario,
+            idTipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+            tipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+            numeroRadicado: responseSolicitudDTO.numeroRadicado,
+            fechaSolicitud: moment(Date()).format(formatDate),
+            idEstado: '96D00032-4B60-4027-AFEA-0CC7115220B4',
+            estado: '96D00032-4B60-4027-AFEA-0CC7115220B4',
             idFuente: '00000000-0000-0000-0000-000000000000',
             idUbicacion: '00000000-0000-0000-0000-000000000000',
             idSubred: '00000000-0000-0000-0000-000000000000',
-
-            idActividadActualSolicitud: objJson.idactividadActualSolicitud,
-            actividadActualSolicitud: objJson.actividadActualSolicitud,
-
-            actividadSiguienteSolicitud: objJson.actividadSiguienteSolicitud,
-
+            idActividadActualSolicitud: '2CA42F7E-8D8B-4550-B3EB-974A302CB449',
+            actividadActualSolicitud: '00000000-0000-0000-0000-000000000000',
+            actividadSiguienteSolicitud: '00000000-0000-0000-0000-000000000000',
             idTipodeTramite: '00000000-0000-0000-0000-000000000000',
-            tipodeTramite: objJson.tipodeTramite,
-
+            tipodeTramite: values.tipotramite,
             idUsuario: '00000000-0000-0000-0000-000000000000',
             idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
-
             idCitacionRevision: '00000000-0000-0000-0000-000000000000',
-
-            idFuenteAbastecimiento: objJson?.idFuente ?? '00000000-0000-0000-0000-000000000000',
+            idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
             temporal: true,
-
             persona: {
-              idPersona: objJson.idPersona,
+              idPersona: '00000000-0000-0000-0000-000000000000',
               numeroResolucion: values.nroresolucion,
               fechaResolucion: moment(values.dateresolucion).format(formatDate),
-              tipoIdentificacion: objJson.tipoIdentificacion,
-              numeroIdentificacion: objJson.numeroIdentificacion,
-              primerNombre: objJson.primerNombre,
-              segundoNombre: objJson.segundoNombre,
-              primerApellido: objJson.primerApellido,
-              segundoApellido: objJson.segundoApellido,
-              telefonoContacto: objJson.telefonoContacto,
-              celularContacto: objJson.celularContacto,
-              correoElectronico: objJson.correoElectronico,
-              idTipoPersona: objJson.idTipoPersona,
-              tipoDocumentoRazon: objJson.tipoDocumentoRazon,
-              nit: objJson.nit,
-              razonSocial: objJson.razonSocial
+              tipoIdentificacion: values.IDType,
+              numeroIdentificacion: values.IDNumber,
+              primerNombre: values.name,
+              segundoNombre: values.secondname,
+              primerApellido: values.surname,
+              segundoApellido: values.secondsurname,
+              telefonoContacto: values.telefono,
+              celularContacto: values.telefono2,
+              correoElectronico: values.email,
+              idTipoPersona: values.persona,
+              tipoDocumentoRazon: values.IDTypeRazon,
+              nit: values.IDNumberRazon,
+              razonSocial: values.nombreEntidad
             },
             FuenteAbastecimiento: {
               idFuente: '00000000-0000-0000-0000-000000000000',
@@ -214,7 +250,6 @@ export const PrimeraU = () => {
               descripcionFuente: values.descripcionfuente,
               descripcionOtraFuente: values.descripcionotra,
               tienePlanta: planta,
-
               acueductosFuente: acueductojson,
               sistemaTratamiento: sistemajson
             }
@@ -250,10 +285,10 @@ export const PrimeraU = () => {
               if (cargo == false) {
 
                 supportDocumentsRejected.push({
-                  idSolicitud: objJson.idsolicitud,
+                  idSolicitud: responseSolicitudDTO.idSolicitud,
                   idTipoDocumentoAdjunto: documentosjson[index].id,
-                  path: `${objJson.idusuario}/${documentosjson[index].valor}_${objJson.idsolicitud}`,
-                  idUsuario: objJson.idusuario,
+                  path: `${idUsuario}/${documentosjson[index].valor}_${responseSolicitudDTO.idSolicitud}`,
+                  idUsuario: idUsuario,
                   idDocumentoAdjunto: documentosjson[index].iddocumento,
                   esValido: false
                 });
@@ -270,13 +305,13 @@ export const PrimeraU = () => {
               const archivo = documento[i];
               if (archivo.subida == 'local') {
                 formData.append('file', archivo.archivo.file);
-                formData.append('nameFile', archivo.valor + '_' + objJson.idsolicitud);
+                formData.append('nameFile', archivo.valor + '_' + responseSolicitudDTO.idSolicitud);
 
                 supportDocumentsEdit.push({
-                  idSolicitud: objJson.idsolicitud,
+                  idSolicitud: responseSolicitudDTO.idSolicitud,
                   idTipoDocumentoAdjunto: archivo.id,
-                  path: `${objJson.idusuario}/${archivo.valor}_${objJson.idsolicitud}`,
-                  idUsuario: objJson.idusuario,
+                  path: `${idUsuario}/${archivo.valor}_${responseSolicitudDTO.idSolicitud}`,
+                  idUsuario: idUsuario,
                   idDocumentoAdjunto: archivo.iddocumento != null ? archivo.iddocumento : '00000000-0000-0000-0000-000000000000',
                   esValido: true
                 });
@@ -285,20 +320,20 @@ export const PrimeraU = () => {
           });
           if (values?.cargarresolucion) {
             formData.append('file', values.cargarresolucion.file);
-            formData.append('nameFile', 'Resolucion_renovacion' + '_' + objJson.idsolicitud);
+            formData.append('nameFile', 'Resolucion_renovacion' + '_' + responseSolicitudDTO.idSolicitud);
 
             supportDocumentsEdit.push({
-              idSolicitud: objJson.idsolicitud,
+              idSolicitud: responseSolicitudDTO.idSolicitud,
               idTipoDocumentoAdjunto: '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0',
-              path: `${objJson.idusuario}/Resolucion_renovacion_${objJson.idsolicitud}`,
-              idUsuario: objJson.idusuario,
+              path: `${idUsuario}/Resolucion_renovacion_${responseSolicitudDTO.idSolicitud}`,
+              idUsuario: idUsuario,
               idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
               esValido: true
             });
           }
 
           formData.append('containerName', 'aguahumanos');
-          formData.append('oid', objJson.idusuario);
+          formData.append('oid', idUsuario);
 
           const nube = await api.uploadFiles(formData);
           const bd = await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
@@ -313,10 +348,10 @@ export const PrimeraU = () => {
 
           Swal.fire({
             icon: 'success',
-
-            title: 'Solicitud Actualizada',
-            text: `Se ha actualizado la Solicitud exitosamente `
+            title: 'Solicitud Creada',
+            text: `Se ha creado la Solicitud exitosamente con número de radicado ${responseSolicitudDTO.numeroRadicado}`
           });
+
           history.push('/tramites-servicios-aguas');
 
           localStorage.removeItem('register');
@@ -395,10 +430,10 @@ export const PrimeraU = () => {
 
             <section className='panel-menu'>
               <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-                <div className='row mt-5 ml-3'>
+                <div className='row mt-3'>
                   <div className='col-lg-12 col-md-12'>
-                    <div className='info-tramite mt-3 ml-2'>
-                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
+                    <div className='info-tramite'>
+                      <p>Trámite: Autorización Sanitaria Para La Concesión De Aguas Para El Consumo Humano</p>
                     </div>
                   </div>
                 </div>
@@ -406,31 +441,8 @@ export const PrimeraU = () => {
                   <div className='col-lg-12 col-sm-12 col-md-12'>
                     <div className='info-tramite mt-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                        Datos de la solicitud. <br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                        Datos de la solicitud<br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                       </p>
-                    </div>
-                  </div>
-
-                  <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                    <div className='panel-search'>
-                      <div className='form-group gov-co-form-group'>
-                        <p className='text'>
-                          <span className='required'>*</span> Tipo de tramite
-                        </p>
-                        <Form.Item
-                          name='tipotramite'
-                          initialValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
-                          rules={[{ required: true }]}
-                        >
-                          <SelectComponent
-                            options={l_tramites}
-                            defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'}
-                            optionPropkey='idTipoTramite'
-                            optionPropLabel='descripcion'
-                            className='mr-5 option'
-                          />
-                        </Form.Item>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -439,22 +451,27 @@ export const PrimeraU = () => {
                 {/** Sección para pestaña de formulario de cargue de datos del soliciante */}
                 {/** ==================================================================== */}
                 <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+                  <div className='row mt-5'>
+                    <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
+                      <div className='panel-search'>
+                        <div className='form-group gov-co-form-group'>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className='row mt-5 primeros_campos'>
                     <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                   </div>
                   <div className='row mt-5 ml-2 '>
                     <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
                   </div>
-                  <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                    <div className='row mt-4'>
+                  <div className='row mt-5'>
+                    <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                       <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-
-                        <Button
-                          className='ml-3 float-right button btn btn-default'
+                        <Button className='ml-3 float-right button btn btn-default'
                           style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                          type='primary'
-                          htmlType='button'
-                          onClick={() => onNextStep()}
+                          type='primary' htmlType='button' onClick={() => onNextStep()}
                         >
                           Siguiente
                         </Button>
@@ -468,10 +485,9 @@ export const PrimeraU = () => {
                           Cancelar
                         </Button>
                       </div>
-                    </div>
-                  </Form.Item>
+                    </Form.Item>
+                  </div>
                 </div>
-
 
                 {/** ==================================================================== */}
                 {/**    Sección para pestaña de cargar informacion de fuentes estudiada   */}
@@ -489,7 +505,7 @@ export const PrimeraU = () => {
                       Información de acueductos que captan la misma fuente. . <br />{' '}
                       <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                     </p>
-                    <DatosAcueducto form={form} obj={objJson} prop={addacueducto} habilitar={true} />
+                    <DatosAcueducto form={form} tipoSolicitud="primera-vez" obj={objJson} prop={addacueducto} habilitar={true} />
                   </div>
                   <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                     <div className='row mt-4'>
@@ -529,7 +545,7 @@ export const PrimeraU = () => {
                       Información adicional de la fuente de abastecimiento. <br />{' '}
                       <small style={{ color: '#000' }}>* Campos Obligatorios</small>
                     </p>
-                    <DatosAdicionales form={form} obj={objJson} tipo={'validador'} prop={addinfo} habilitar={true} />
+                    <DatosAdicionales form={form} tipoSolicitud='primera-vez' obj={objJson} tipo={'validador'} prop={addinfo} habilitar={true} />
                   </div>
 
                   <Alert

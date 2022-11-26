@@ -1,12 +1,9 @@
 import { PrimeraU } from 'app/aguasconsumo/Components/PrimeraU';
-
+import React, { useCallback, useEffect, useState } from 'react';
 import Tabs from 'antd/es/tabs';
 
-import React, { useCallback, useEffect, useState } from 'react';
 
-// Otros componentes
-
-const PrimeraVez: React.FC<any> = (props: any) => {
+const CrearSolicitud: React.FC<any> = (props: any) => {
   const { TabPane } = Tabs;
 
   return (
@@ -16,4 +13,4 @@ const PrimeraVez: React.FC<any> = (props: any) => {
   );
 };
 
-export default PrimeraVez;
+export default CrearSolicitud;

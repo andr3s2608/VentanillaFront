@@ -28,7 +28,7 @@ import { CheckOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 
 export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
-  const { obj, tipo, prop, habilitar } = props;
+  const { obj, tipo, prop, habilitar, tipoSolicitud } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -308,7 +308,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
+        if (tipoSolicitud !== 'primera-vez') {
           return (
             <Button
               type='primary'
@@ -402,7 +402,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-12 col-md-12 col-sm-12'>
                     <a href='' style={{ textDecoration: 'none' }}>
@@ -697,7 +697,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-12 col-md-12 col-sm-12'>
                     <a href='' style={{ textDecoration: 'none' }}>
@@ -938,6 +938,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 interface DatosAdicionales<T> {
   form: FormInstance<T>;
   obj: any;
+  tipoSolicitud: string;
   tipo: string;
   prop: any;
   habilitar: boolean;

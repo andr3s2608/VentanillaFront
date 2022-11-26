@@ -28,7 +28,7 @@ import { CheckOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
-  const { obj, prop, habilitar } = props;
+  const { obj, prop, habilitar, tipoSolicitud } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -276,7 +276,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
+        if (tipoSolicitud !== 'primera-vez') {
           return (
             <Button
               type='primary'
@@ -450,7 +450,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-10 col-md-10 col-sm-12'>
 
@@ -616,7 +616,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-8 col-md-8 col-sm-12'>
                     <a href='' style={{ textDecoration: 'none' }}>
@@ -658,6 +658,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 interface DatosAcueducto<T> {
   form: FormInstance<T>;
   obj: any;
+  tipoSolicitud: string;
   prop: any;
   habilitar: boolean;
 }
