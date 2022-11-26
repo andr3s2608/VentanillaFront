@@ -5,7 +5,7 @@ import { Menu } from 'app/inhumacioncremacion/Models/IMenu';
 import { IinformatioUser } from 'app/inhumacioncremacion/Models/IInformatioUser';
 import { Iformato } from 'app/inhumacioncremacion/Models/IFormato';
 import { pathToFileURL } from 'url';
-import { ResponseSolicitudDTO } from 'app/aguasconsumo/Components/Models/RequestSolicitudDTO';
+import { ResponseSolicitudDTO } from 'app/aguasconsumo/Models/RequestSolicitudDTO';
 
 const {
   REACT_APP_SECURITY,

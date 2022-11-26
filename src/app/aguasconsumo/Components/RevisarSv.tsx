@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { CitacionRevision } from './seccions/Citacion_Revision.seccion';
-import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Models/IRegistroSolicitudCitacion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
 import moment from 'moment';
