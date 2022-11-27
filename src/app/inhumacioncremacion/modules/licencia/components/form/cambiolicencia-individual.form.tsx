@@ -1194,37 +1194,49 @@ export const CambioLicencia = ({ props }: any) => {
     }
 
     let tiempo = '';
-    if (timedef2 != undefined) {
-      if (tipodocumentohoranacimiento == '71f659be-9d6b-4169-9ee2-e70bf0d65f92') {
-        if (time2 != undefined) {
-          const posicion1 = time2.indexOf(':');
-          const posicion2 = timedef2.indexOf(':');
-
-          const horanac1 = time2.substring(0, posicion1);
-          const horanac2 = time2.substring(posicion1 + 1, time2.length);
-
-          const horadef1 = timedef2.substring(0, posicion2);
-          const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
-
-          if (parseInt(horanac1) < parseInt(horadef1)) {
-            tiempo = 'es valida';
-          } else {
-            if (parseInt(horanac1) == parseInt(horadef1)) {
-              if (parseInt(horanac2) <= parseInt(horadef2)) {
-                tiempo = 'es valida';
-              } else {
-                tiempo = 'es invalida';
-              }
-            } else {
-              tiempo = 'es invalida';
-            }
-          }
-        }
-      }
-    }
 
     let valor = form.getFieldValue('date');
     let fechadef = moment(valor);
+
+    if (timedef2 != undefined) {
+
+      if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
+        if (time2 != undefined) {
+          if (fecha.day() === fechadef.day()) {
+
+            console.log(time2)
+            console.log(timedef2)
+            const posicion1 = time2.indexOf(':');
+            const posicion2 = timedef2.indexOf(':');
+
+            const horanac1 = time2.substring(0, posicion1);
+            const horanac2 = time2.substring(posicion1 + 1, time2.length);
+
+            const horadef1 = timedef2.substring(0, posicion2);
+            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+
+            if (parseInt(horanac1) < parseInt(horadef1)) {
+
+              tiempo = 'es valida';
+            } else {
+              if (parseInt(horanac1) == parseInt(horadef1)) {
+                if (parseInt(horanac2) <= parseInt(horadef2)) {
+
+                  tiempo = 'es valida';
+                } else {
+
+                  tiempo = 'es invalida';
+                }
+              } else {
+
+                tiempo = 'es invalida';
+              }
+            }
+          }
+
+        }
+      }
+    }
 
     if (!fecha.isBefore(fechadef)) {
       if (tiempo == 'es valida') {
@@ -1243,9 +1255,10 @@ export const CambioLicencia = ({ props }: any) => {
             text: `La fecha de fallecimiento debe ser mayor a: ${fecha.calendar()}`
           });
         }
+        setdatecorrect(false);
       }
 
-      setdatecorrect(false);
+
     } else {
       setdatecorrect(true);
     }

@@ -540,37 +540,48 @@ export const ModificarLicencia = ({ props }: any) => {
 
 
       let tiempo = '';
+
+
+
       if (timedef2 != undefined) {
+
         if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
-
           if (time2 != undefined) {
+            if (fecha.day() === fechadef.day()) {
 
-            const posicion1 = time2.indexOf(':');
-            const posicion2 = timedef2.indexOf(':');
+              console.log(time2)
+              console.log(timedef2)
+              const posicion1 = time2.indexOf(':');
+              const posicion2 = timedef2.indexOf(':');
 
-            const horanac1 = time2.substring(0, posicion1);
-            const horanac2 = time2.substring(posicion1 + 1, time2.length);
+              const horanac1 = time2.substring(0, posicion1);
+              const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-            const horadef1 = timedef2.substring(0, posicion2);
-            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+              const horadef1 = timedef2.substring(0, posicion2);
+              const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
 
-            if (parseInt(horanac1) < parseInt(horadef1)) {
-              tiempo = 'es valida';
-            } else {
-              if (parseInt(horanac1) == parseInt(horadef1)) {
-                if (parseInt(horanac2) <= parseInt(horadef2)) {
-                  tiempo = 'es valida';
+              if (parseInt(horanac1) < parseInt(horadef1)) {
+
+                tiempo = 'es valida';
+              } else {
+                if (parseInt(horanac1) == parseInt(horadef1)) {
+                  if (parseInt(horanac2) <= parseInt(horadef2)) {
+
+                    tiempo = 'es valida';
+                  } else {
+
+                    tiempo = 'es invalida';
+                  }
                 } else {
+
                   tiempo = 'es invalida';
                 }
-              } else {
-                tiempo = 'es invalida';
               }
             }
+
           }
         }
       }
-
 
 
 
@@ -592,9 +603,10 @@ export const ModificarLicencia = ({ props }: any) => {
               text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
             });
           }
+          setdatecorrect(false);
         }
 
-        setdatecorrect(false);
+
       } else {
         setdatecorrect(true);
       }

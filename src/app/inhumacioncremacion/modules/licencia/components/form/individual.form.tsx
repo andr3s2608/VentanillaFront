@@ -905,37 +905,50 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       }
 
       let tiempo = '';
+
+      let valor = form.getFieldValue('date');
+      let fechadef = moment(valor);
+
       if (timedef2 != undefined) {
+
         if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
           if (time2 != undefined) {
-            const posicion1 = time2.indexOf(':');
-            const posicion2 = timedef2.indexOf(':');
+            if (fecha.day() === fechadef.day()) {
 
-            const horanac1 = time2.substring(0, posicion1);
-            const horanac2 = time2.substring(posicion1 + 1, time2.length);
+              console.log(time2)
+              console.log(timedef2)
+              const posicion1 = time2.indexOf(':');
+              const posicion2 = timedef2.indexOf(':');
 
-            const horadef1 = timedef2.substring(0, posicion2);
-            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+              const horanac1 = time2.substring(0, posicion1);
+              const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-            if (parseInt(horanac1) < parseInt(horadef1)) {
-              tiempo = 'es valida';
-            } else {
-              if (parseInt(horanac1) == parseInt(horadef1)) {
-                if (parseInt(horanac2) <= parseInt(horadef2)) {
-                  tiempo = 'es valida';
+              const horadef1 = timedef2.substring(0, posicion2);
+              const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+
+              if (parseInt(horanac1) < parseInt(horadef1)) {
+
+                tiempo = 'es valida';
+              } else {
+                if (parseInt(horanac1) == parseInt(horadef1)) {
+                  if (parseInt(horanac2) <= parseInt(horadef2)) {
+
+                    tiempo = 'es valida';
+                  } else {
+
+                    tiempo = 'es invalida';
+                  }
                 } else {
+
                   tiempo = 'es invalida';
                 }
-              } else {
-                tiempo = 'es invalida';
               }
             }
+
           }
         }
       }
 
-      let valor = form.getFieldValue('date');
-      let fechadef = moment(valor);
 
       if (!fecha.isBefore(fechadef)) {
         if (tiempo == 'es valida') {
@@ -954,9 +967,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
             });
           }
+          setdatecorrect(false);
         }
-
-        setdatecorrect(false);
       } else {
         setdatecorrect(true);
       }
@@ -1291,7 +1303,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} form={form} tipoLicencia={'Cremación'} prop={null} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} form={form} tipoLicencia={'Cremación'} prop={FechaNacimiento} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}
