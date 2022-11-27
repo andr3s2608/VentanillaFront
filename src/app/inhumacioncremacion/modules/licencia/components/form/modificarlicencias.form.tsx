@@ -911,7 +911,7 @@ export const ModificarLicencia = ({ props }: any) => {
               segundoApellido: values.secondSurname ?? '',
               fechaNacimiento: values.dateOfBirth,
               hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-              nacionalidad: values.nationalidad[0],
+              nacionalidad: values.nationalidad,
               estado: true,
               segundanacionalidad: '00000000-0000-0000-0000-000000000000',
               otroParentesco: null,
@@ -961,7 +961,7 @@ export const ModificarLicencia = ({ props }: any) => {
               segundoApellido: values.secondSurname ?? '',
               fechaNacimiento: values.dateOfBirth,
               hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-              nacionalidad: values.nationalidad[0],
+              nacionalidad: values.nationalidad,
               estado: true,
               segundanacionalidad: '00000000-0000-0000-0000-000000000000',
               otroParentesco: null,
@@ -1034,7 +1034,7 @@ export const ModificarLicencia = ({ props }: any) => {
               segundoApellido: values.secondSurnamemother ?? '',
               fechaNacimiento: obj.dateOfBirth,
               hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-              nacionalidad: values.nationalidadmother[0],
+              nacionalidad: values.nationalidadmother,
               segundanacionalidad: '00000000-0000-0000-0000-000000000000',
               otroParentesco: null,
               estado: true,
@@ -1085,7 +1085,7 @@ export const ModificarLicencia = ({ props }: any) => {
               segundoApellido: values.secondSurnamemother ?? '',
               fechaNacimiento: obj.dateOfBirth,
               hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-              nacionalidad: values.nationalidadmother[0],
+              nacionalidad: values.nationalidadmother,
               estado: true,
               segundanacionalidad: '00000000-0000-0000-0000-000000000000',
               otroParentesco: null,
@@ -1193,6 +1193,7 @@ export const ModificarLicencia = ({ props }: any) => {
             munres = '31211657-3386-420a-8620-f9C07a8ca491';
             break;
         }
+        console.log(values);
         let checkhora = values?.check ?? obj.check;
         const json: IRegistroLicencia<any> = {
           solicitud: {
@@ -1259,7 +1260,7 @@ export const ModificarLicencia = ({ props }: any) => {
             },
 
             resumenSolicitud: {
-              correoCementerio: values.emailcementerio.toString().toLowerCase(),
+              correoCementerio: values.emailcementerio ? values.emailcementerio.toString().toLowerCase() : values.emailcementerio,
               correoFuneraria: values.emailfuneraria.toString().toLowerCase(),
               tipoDocumentoSolicitante: values.fiscalia,
               numeroDocumentoSolicitante: values.ndoc,
@@ -1293,7 +1294,7 @@ export const ModificarLicencia = ({ props }: any) => {
         }
 
 
-        const insercion: any = await api.UpdateLicenciaAdmin(json, '0');
+        const insercion: any = await api.UpdateLicenciaAdmin(json, '1');
 
 
 
@@ -1435,7 +1436,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
   const Guardar = async (values: any) => {
     if (generales) {
-      const values: any = '';
+
       let bandera = false;
 
 
@@ -1677,7 +1678,7 @@ export const ModificarLicencia = ({ props }: any) => {
                 <Radio.Group onChange={changeRadioButton} defaultValue={'consecutivo'}>
                   <Radio value='consecutivo'>Consecutivo de tramite</Radio>
                   <Radio value='certificado'>Número de Certificado</Radio>
-                  <Radio value='fallecido'>Número de Identificación</Radio>
+                  <Radio value='id'>Número de Identificación</Radio>
                 </Radio.Group>
               </div>
             </div>
