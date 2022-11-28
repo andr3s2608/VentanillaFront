@@ -16,6 +16,7 @@ export interface ResponseSolicitudDTO {
 
 interface Persona {
   tipoIdentificacion: string;
+  rut: string;
   numeroIdentificacion: string;
   primerNombre: string;
   segundoNombre: string;

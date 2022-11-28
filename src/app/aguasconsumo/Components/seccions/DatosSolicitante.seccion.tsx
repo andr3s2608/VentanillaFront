@@ -549,7 +549,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <span className='required'>* </span>
                   Correo Electrónico
                 </p>
-                <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
+                <Form.Item initialValue={obj?.correoElectronico} name='email' rules={[{ required: true }]}>
                   <Input
                     placeholder='CORREO ELECTRÓNICO' style={{ width: '365px' }}
                     maxLength={50} disabled={modificar} type='text'

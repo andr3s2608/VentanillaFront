@@ -156,6 +156,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             temporal: false,
             persona: {
               tipoIdentificacion: values.IDType,
+              rut: '',
               numeroIdentificacion: values.IDNumber,
               primerNombre: values.name,
               segundoNombre: values.secondname,
@@ -390,6 +391,19 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
     }
   };
 
+  const validarDatosSocilitante = async (form: any) => {
+    try {
+      await form.validateFields(['tipotramite', 'persona', 'name', 'IDType', 'IDNumber', 'surname', 'telefono', 'email']);
+      onNextStep();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos Incompletos',
+        text: 'Debe completar los campos obligatorios para continuar'
+      });
+    }
+  }
+
   return (
     <div className='fadeInTop container-fluid'>
       <div className='container-fluid'>
@@ -440,41 +454,32 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                   {/** Sección para pestaña de formulario de cargue de datos del soliciante */}
                   {/** ==================================================================== */}
                   <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-                    <div className='row mt-5'>
-                      <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                        <div className='panel-search'>
-                          <div className='form-group gov-co-form-group'>
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='row mt-5 primeros_campos'>
+                    <div className='row primeros_campos'>
                       <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                     </div>
                     <div className='row mt-5 ml-2 '>
                       <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
                     </div>
-                    <div className='row mt-5'>
-                      <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
-                        <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
-                          <Button className='ml-3 float-right button btn btn-default'
-                            style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                            type='primary' htmlType='button' onClick={() => onNextStep()}
-                          >
-                            Siguiente
-                          </Button>
-                          <Button
-                            className='mr-5 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
-                          </Button>
-                        </div>
-                      </Form.Item>
+                    <div className='row mt-5 justify-content-md-center'>
+                      <div className='col-4'>
+                        <Button className='button btn btn-default'
+                          style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
+                          onClick={() => {
+                            history.push('/tramites-servicios-aguas');
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      </div>
+                      <div className="col-4">
+                        <Button className='button btn btn-default'
+                          style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                          type='primary' htmlType='button'
+                          onClick={() => validarDatosSocilitante(form)}
+                        >
+                          Siguiente
+                        </Button>
+                      </div>
                     </div>
                   </div>
 
