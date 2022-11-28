@@ -29,6 +29,7 @@ import { Button, Radio, Table, Upload } from 'antd';
 import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { arch } from 'os';
 import { stringify } from 'querystring';
+import { SeguimientoDocumentosReducer } from 'app/redux/seguimientoDocumentos/seguimientoDocumentos.reducer';
 
 export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const { obj, prop, tipo } = props;
@@ -452,6 +453,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           }
         }
       });
+
     } else {
       console.error('No se pudo cargar correctamente el estado de aprobación de los documentos');
     }

@@ -156,7 +156,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             temporal: false,
             persona: {
               tipoIdentificacion: values.IDType,
-              rut: '',
+              rut: values.rut,
               numeroIdentificacion: values.IDNumber,
               primerNombre: values.name,
               segundoNombre: values.secondname,
@@ -440,25 +440,27 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                       </div>
                     </div>
                   </div>
-                  <div className='row mt-3'>
-                    <div className='col-lg-12 col-sm-12 col-md-12'>
-                      <div className='info-tramite mt-2'>
-                        <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-                          Datos de la solicitud<br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
 
                   {/** ==================================================================== */}
                   {/** Sección para pestaña de formulario de cargue de datos del soliciante */}
                   {/** ==================================================================== */}
                   <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
+                    <div className='row mt-3'>
+                      <div className='col-lg-12 col-sm-12 col-md-12'>
+                        <div className='info-tramite mt-2'>
+                          <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                            Datos de la solicitud<br /> <small style={{ color: '#000' }}>* Campos Obligatorios</small>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                     <div className='row primeros_campos'>
                       <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
                     </div>
                     <div className='row mt-5 ml-2 '>
-                      <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
+                      <div className='col-lg-12 col-sm-12 col-md-12 contenedor_ubi'>
+                        <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
+                      </div>
                     </div>
                     <div className='row mt-5 justify-content-md-center'>
                       <div className='col-4'>
