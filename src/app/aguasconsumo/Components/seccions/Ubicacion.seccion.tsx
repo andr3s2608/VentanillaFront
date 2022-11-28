@@ -332,7 +332,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </div>
         </div>
         <div className='form-group col-md-6 col-lg-6 tex'>
-          <div className='form-inline text-center'>
+          <div className='form-inline mt-3 text-center'>
             <Button
               type='primary'
               style={{ marginLeft: '20px', display: stateDisplayButton }}
