@@ -134,8 +134,8 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   return (
     <div className='row info-tramite mt-5'>
-      <div className='form-row text-center'>
-        <div className='form-group col'>
+      <div className='form-row'>
+        <div className='form-group col-md-10 col-lg-10'>
           <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
             Información del lugar de la localización del sistema de abastecimiento<br />
             <small style={{ color: ' #000' }}>
@@ -144,8 +144,8 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </p>
         </div>
       </div>
-      <div className='form-row text-center'>
-        <div className='form-group col'>
+      <div className='form-row'>
+        <div className='form-group col-md-10 col-lg-10'>
           <Alert
             message='Información!'
             description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
@@ -171,7 +171,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <span className='ml-2' style={{ color: '#FF6341' }}> (*) </span>
           <Form.Item className='' label='' name='Num1' rules={[{ required: avenida, max: 3 }]}>
             <Input
-              style={{ width: '127px' }} id='23' allowClear
+              id='23' allowClear
               type='text' placeholder='' autoComplete='off'
               maxLength={3}
               onKeyPress={(event) => {
