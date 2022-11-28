@@ -3,6 +3,8 @@ import form from 'antd/es/form';
 import { RangePickerProps } from 'antd/lib/date-picker';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { layoutItems, layoutWrapper } from 'app/shared/utils/form-layout.util';
+import DatePicker from "react-multi-date-picker";
+import DatePanel from "react-multi-date-picker/plugins/date_panel"
 import moment from 'moment';
 import React, { useState } from 'react'
 
@@ -11,13 +13,32 @@ export const HorariosFestivos = ({ props }: any) => {
   const [form] = Form.useForm<any>();
   const [festivos, setFestivos] = useState<string>('');
   const format = "DD-MM-YYYY";
+  const [value, setValue] = useState<any>(null);
+  const [fechas, setfechas] = useState<any>([]);
+
+  const guardarfecha = (values: any) => {
+    const fecha: any[] = [];
+    for (let index = 0; index < values.length; index++) {
+      const setearfecha = new Date(values[index]);
+      console.log(setearfecha);
+
+      console.log(moment(setearfecha).format('DD-MM-YYYY'));
+      fecha.push(moment(setearfecha).format('DD-MM-YYYY'))
+
+    }
+    setfechas(fecha);
+
+
+  };
+
 
 
   const onSubmit = async (values: any) => {
 
-    console.log(values.festivos.format(format));
+
 
   };
+
 
   const onSubmitFailed = () => {
 
@@ -59,17 +80,16 @@ export const HorariosFestivos = ({ props }: any) => {
                   Gestionar Festivos
                 </p>
               </div>
-              <div style={{ display: 'inline-block', width: '50%' }}>
+
+              <div className='col-lg-6 col-md-6 col-sm-12 '>
                 <Form.Item
                   label='Festivos: '
                   name='festivos'
                   rules={[{ required: true }]}
                 >
-                  <DatepickerComponent
-                    picker='date'
-                    format="DD-MM-YYYY"
-                    dateDisabledType='after'
-                  />
+                  <DatePicker multiple value={value} onChange={guardarfecha} format="MM DD YYYY" plugins={[
+                    <DatePanel />
+                  ]} />;
                 </Form.Item>
 
                 <Form.Item
@@ -87,10 +107,19 @@ export const HorariosFestivos = ({ props }: any) => {
                   />
                 </Form.Item>
               </div>
+
               <div style={{ display: 'inline-block', width: '50%', paddingLeft: '60px' }}>
                 <Button style={{ marginLeft: '10px', marginRight: '10px' }} type='primary' htmlType='button' className='add' onClick={() => {
                   //setFestivos(festivos + moment(form.getFieldsValue(['festivos'])).format(format) + ';');
-                  console.log(moment(form.getFieldsValue(['festivos'])).format(format));
+                  console.log(fechas);
+                  let textarea = "";
+                  for (let index = 0; index < fechas.length; index++) {
+                    textarea = textarea + fechas[index];
+                    // console.log(moment(value[index]).format('MM-DD-YYYY'));
+
+                  }
+                  form.setFieldsValue({ festivosAgregados: textarea })
+
                   //console.log(festivos);
                 }}>
                   Agregar
