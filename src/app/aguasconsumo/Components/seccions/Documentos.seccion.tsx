@@ -69,7 +69,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
-      const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
+      const documentosrechazados: any = undefined;
+      //const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
 
       setrechazados(documentosrechazados);
 

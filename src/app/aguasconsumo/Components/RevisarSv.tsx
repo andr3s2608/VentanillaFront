@@ -440,7 +440,7 @@ export const RevisarSv = () => {
                     </div>
                     <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                       <div className='card-body'>
-                        <DatosAcueducto form={form} obj={objJson} prop={null} habilitar={false} />
+                        <DatosAcueducto tipoSolicitud='revision' form={form} obj={objJson} prop={null} habilitar={false} />
                       </div>
                     </div>
                   </div>
@@ -464,7 +464,7 @@ export const RevisarSv = () => {
                     </div>
                     <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                       <div className='card-body'>
-                        <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
+                        <DatosAdicionales tipoSolicitud='revision' form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
                       </div>
                     </div>
                   </div>
