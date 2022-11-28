@@ -203,12 +203,15 @@ const RegistroPage: React.FC<any> = (props) => {
 
         if (fechavalidacion >= '1900') {
           const { ppla, Num1, letra1, Bis, card1, Num2, letra2, placa, card2 } = value;
-          const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
+          //const direcion = `${ppla} ${Num1} ${letra1} ${Bis} ${card1} ${Num2} ${letra2} ${placa} ${card2}`;
+          const direcion = ppla + ' ' + Num1 + ' ' + (letra1 != undefined ? letra1 : '')
+            + ' ' + (Bis != undefined ? Bis : '') + ' ' + (card1 != undefined ? card1 : '') + ' ' + Num2
+            + ' ' + (letra2 != undefined ? letra2 : '') + ' ' + placa + ' ' + (card2 != undefined ? card2 : '')
           const data = {
-            primerNombre: value.name,
-            segundoNombre: value.secondName ?? '',
-            primerApellido: value.surname,
-            segundoApellido: value.secondSurname ?? '',
+            primerNombre: value.name.toString().toUpperCase(),
+            segundoNombre: value?.secondName ? value?.secondName.toString().toUpperCase() : '',
+            primerApellido: value.surname.toString().toUpperCase(),
+            segundoApellido: value?.secondSurname ? value?.secondSurname.toString().toUpperCase() : '',
             tipoDocumento: value.instTipoIdent, //listado tipos de documentos
             numeroIdentificacion: Number(value.instNumIdent),
             telefonoFijo: value.phone ?? '',
@@ -236,14 +239,15 @@ const RegistroPage: React.FC<any> = (props) => {
             api.sendEmail({
               to: value.email,
               subject: 'Registro de persona natural ',
-              body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario creado exitosamente'
+              body: 'Señor (a) ' + value.name + '  ' + value.surname + ' su usuario ha sido creado exitosamente en el portal de la Secretaria Distrital de Salud'
             });
             const segundo = value.secondName ?? ' ';
             const segundoape = value.secondSurname ?? '';
             await api.putUser({
               oid: accountIdentifier,
               idPersonaVentanilla: resApi,
-              NombreCompleto: value.name + ' ' + segundo + ' ' + value.surname + ' ' + segundoape
+              NombreCompleto: value.name.toString().toUpperCase() + ' ' + segundo?.toString().toUpperCase()
+                + ' ' + value.surname.toString().toUpperCase() + ' ' + segundoape?.toString().toUpperCase()
             });
             await api.PostRolesUser({
               idUser: accountIdentifier,
@@ -481,7 +485,7 @@ const RegistroPage: React.FC<any> = (props) => {
                   (*)
                 </span>
               </label>
-              <Form.Item label='' name='' rules={[{ required: true }]}>
+              <Form.Item label='' name='ppla' rules={[{ required: true }]}>
                 <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
               </Form.Item>
             </div>

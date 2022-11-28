@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> = (props) => {
   const [[l_tipo_profesional, l_tipo_documento], setLTipoDocumento] = useState<IDominio[][]>([[], []]);
   const { obj, prop } = props;
-
+  const [l_paises, setl_paises] = useState<any>([]);
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
   const [longitudminima, setLongitudminima] = useState<number>(5);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
@@ -29,7 +29,19 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       const tipos: any = localStorage.getItem('tipoid');
       const tiposjson: any = JSON.parse(tipos);
       const resp = await Promise.all([dominioService.get_type(ETipoDominio['Tipo de Profesional']), tiposjson]);
+
+
+      const paises: any = localStorage.getItem('paises');
+      const paisesjson: any = JSON.parse(paises);
+      setl_paises(paisesjson);
+
       setLTipoDocumento(resp);
+      if (obj !== undefined) {
+
+        cambiodocumento(obj.medicalSignatureIDType)
+        props.form.setFieldsValue({ medicalSignatureIDNumber: obj?.medicalSignatureIDNumber });
+      }
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -128,9 +140,16 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         label='Lugar de Expedición'
         name='medicalSignatureIDExpedition'
         rules={[{ required: true }]}
-        initialValue={obj?.medicalSignatureIDExpedition ?? 'COLOMBIA'}
+        initialValue={obj?.medicalSignatureIDExpedition ?? '1e05f64f-5e41-4252-862c-5505dbc3931c'}
       >
-        <Input allowClear placeholder='Lugar de Expedición' autoComplete='off' />
+        <SelectComponent
+          style={{ width: '90%' }}
+          options={l_paises}
+          placeholder='-- Elija una nacionalidad --'
+          optionPropkey='id'
+          optionPropLabel='descripcion'
+        />
+
       </Form.Item>
       <Form.Item
         label='Primer Nombre'

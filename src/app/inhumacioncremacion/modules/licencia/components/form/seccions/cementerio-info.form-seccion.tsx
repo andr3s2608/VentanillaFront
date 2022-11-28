@@ -23,7 +23,7 @@ interface municiopioDepartament {
 }
 
 export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (props) => {
-  const { form, tipoLicencia } = props;
+  const { form, tipoLicencia, modificacion } = props;
   const { obj } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -60,7 +60,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
           f.RAZON_S != 'FUERA DE BOGOTA (INTERIOR)'
         );
       });
-      console.log('Cementerios')
+
 
       if (obj != undefined) {
         if (obj?.cementerioDepartamento != null) {
@@ -254,7 +254,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         </Form.Item>
         {renderForm(lugar)}
       </div>
-      {obj === undefined && (<>
+      {(obj === undefined || modificacion === true) && (<>
         <Form.Item label='Email Cementerio' name='emailcementerio' initialValue={obj?.correocementerio} rules={[{ required: true, type: 'email', max: 50 }]}>
           <Input
             allowClear
@@ -289,6 +289,8 @@ export const KeysForm = [
 interface ICementerioInfoProps<T> extends ITipoLicencia {
   form: FormInstance<T>;
   obj: any;
+  modificacion: boolean;
+
 }
 
 type TypeLugarCementerio = 'Dentro de Bogotá' | 'Fuera de Bogotá' | 'Fuera del País';

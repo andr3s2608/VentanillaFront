@@ -25,6 +25,7 @@ const formatObjJson = (obj: any, id: String) => {
   var [fallecido] = isPerson(persona, '01f64f02-373b-49d4-8cb1-cb677f74292c');
   const [certificador] = isPerson(persona, 'd8b0250b-2991-42a0-a672-8e3e45985500');
   const [cremador] = isPerson(persona, 'cc4c8c4d-b557-4a5a-a2b3-520d757c5d06');
+  const [reconocido] = isPerson(persona, '87cf579b-b873-43c1-b4a7-004dba2cc68e');
 
   //en caso de que no exista un fallecido, se tomara el de la madre
   if (id == '1') {
@@ -45,6 +46,21 @@ const formatObjJson = (obj: any, id: String) => {
       tipopersona: cremador.idTipoPersona,
       parentesco: cremador.idParentesco,
       otroparentesco: cremador.otroParentesco
+    });
+  }
+  const reconocidocomo: any = [];
+  if (reconocido != undefined) {
+    reconocidocomo.push({
+      id: reconocido.idPersona,
+      name: reconocido.primerNombre,
+      secondName: reconocido.segundoNombre,
+      surname: reconocido.primerApellido,
+      secondSurname: reconocido.segundoApellido,
+      tipoid: reconocido.tipoIdentificacion,
+      numeroid: reconocido.numeroIdentificacion,
+      tipopersona: reconocido.idTipoPersona,
+      parentesco: reconocido.idParentesco,
+      otroparentesco: reconocido.otroParentesco
     });
   }
 
@@ -108,6 +124,7 @@ const formatObjJson = (obj: any, id: String) => {
       regime: fallecido.idRegimen, //falta
       deathType: obj.idTipoMuerte,
       tipopersona: fallecido.idTipoPersona,
+
 
       residencia: ubicacionPersona.idPaisResidencia,
       idDepartamentoResidencia: ubicacionPersona.idDepartamentoResidencia,
@@ -175,6 +192,7 @@ const formatObjJson = (obj: any, id: String) => {
       sitDef: lugarDefuncion.idSitioDefuncion,
 
       autorizadorcremacion,
+      reconocidocomo,
 
       idDatosfuneraria: datosFuneraria.idDatosFuneraria,
 
@@ -247,6 +265,7 @@ const formatObjJson = (obj: any, id: String) => {
       correosolicitante: obj.resumenSolicitud.correoSolicitante.toString().toLowerCase(),
 
       idmedico: certificador.idTipoPersona,
+      idpersonamedico: certificador.idPersona,
       medicalSignatureIDType: certificador.tipoIdentificacion,
       medicalSignatureIDNumber: certificador.numeroIdentificacion,
       medicalSignatureIDExpedition: certificador.idLugarExpedicion,

@@ -65,7 +65,7 @@ export const Auditoria = () => {
   const BuscarSolicitud = async () => {
     const numero: string = form.getFieldValue('numero');
     const listaauditoria: any = await api.Auditoria(numero, valores);
-    console.log(listaauditoria);
+
     setdata(listaauditoria);
     setdatosUsuario(listaauditoria);
     setLicencia(true);
@@ -508,7 +508,7 @@ export const Auditoria = () => {
                 <Radio.Group onChange={changeRadioButton} defaultValue={'consecutivo'}>
                   <Radio value='consecutivo'>Consecutivo de tramite</Radio>
                   <Radio value='licencia'>Número de Licencia</Radio>
-                  <Radio value='fallecido'>Número de Identificación</Radio>
+                  <Radio value='id'>Número de Identificación</Radio>
                 </Radio.Group>
               </div>
             </div>
@@ -599,7 +599,7 @@ export const Auditoria = () => {
                   cancelText='Cerrar'
                 >
                   <InformacionDocumentosGestion prop={getDataDocumentos} obj={objdocumento} id={'No Aplica'} escambio={'actualizacion'}
-                    instType={'otros'} />
+                    instType={'otros'} reconocido={false} tramite={'No Aplica'} />
 
                 </Modal>
                 <Modal

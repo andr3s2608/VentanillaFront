@@ -34,6 +34,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const api = new ApiService(accountIdentifier);
 
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
+  const [input, setInput] = useState('');
 
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
@@ -349,17 +350,39 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: false }]}>
+                <Form.Item name='latituduso' rules={[{ required: true }]}>
                   <Input
+                    value={input}
+                    onChange={(event) => {
+                      setInput(event.target.value);
+                      //if (event.target.value.length === 5 && event.target.value.includes('°')) {
+                      //setInput(event.target.value.replace('°', ''));
+                      //}
+                      if (event.target.value.length === 2) {
+                        setInput(event.target.value + '°');
+                      }
+                      if (event.target.value.length === 5) {
+                        setInput(event.target.value + "'");
+                      }
+                      if (event.target.value.length === 8) {
+                        setInput(event.target.value + '.');
+                      }
+                      if (event.target.value.length === 11) {
+                        setInput(event.target.value + '"');
+                      }
+                    }}
+                    title='El formato no es valido, ingrese 8 digitos y una letra'
+                    pattern='[0-9]{8,}[N-S]{1,}'
                     type='text'
-                    maxLength={9}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
+                      if (!/[0-9'"° ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
-
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
                   />
                 </Form.Item>
               </div>
@@ -369,17 +392,39 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación  Longitud
                 </label>
-                <Form.Item name='longituduso' rules={[{ required: false }]}>
+                <Form.Item name='latituduso' rules={[{ required: true }]}>
                   <Input
+                    value={input}
+                    onChange={(event) => {
+                      setInput(event.target.value);
+                      //if (event.target.value.length === 5 && event.target.value.includes('°')) {
+                      //setInput(event.target.value.replace('°', ''));
+                      //}
+                      if (event.target.value.length === 2) {
+                        setInput(event.target.value + '°');
+                      }
+                      if (event.target.value.length === 5) {
+                        setInput(event.target.value + "'");
+                      }
+                      if (event.target.value.length === 8) {
+                        setInput(event.target.value + '.');
+                      }
+                      if (event.target.value.length === 11) {
+                        setInput(event.target.value + '"');
+                      }
+                    }}
+                    title='El formato no es valido, ingrese 8 digitos y una letra'
+                    pattern='[0-9]{8,}[N-S]{1,}'
                     type='text'
-                    maxLength={9}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
+                      if (!/[0-9'"° ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
-
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
                   />
                 </Form.Item>
               </div>
@@ -398,7 +443,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Descripción de otro uso
                 </label>
                 <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
-                  <input
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                   />
@@ -414,6 +459,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     className='form-control gov-co-form-control'
                     maxLength={4}
                     onKeyPress={(event) => {
+
+                      const caudalprueba = props.form.getFieldValue('caudal');
 
                       let caudal: string = ValorCaudal(event.key);
                       let count = 0;
@@ -492,7 +539,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <div className='container-fluid'>
             <div className='form-row' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-md-6'>
-                <label className='text'>
+                <label className='text'>vereda
                   <span className='required'>* </span> Departamento
                 </label>
                 <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
@@ -589,7 +636,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Descripción de otro uso
                 </label>
                 <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
-                  <input
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}

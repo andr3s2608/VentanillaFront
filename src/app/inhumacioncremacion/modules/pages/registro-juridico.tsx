@@ -101,7 +101,7 @@ const RegistroPage: React.FC<any> = (props) => {
           email: value.email.toString().toLowerCase(),
           tipoDocumentoRepresentanteLegal: value.instTipoIdent, //listado tipos de documentos
           numeroDocumentoRepresentanteLegal: Number(value.instNumIdent),
-          nombreRazonSocial: value.razonsocial
+          nombreRazonSocial: value.razonsocial.toString().toUpperCase()
         };
 
         const resApi = await api.personaJuridica(json);
@@ -110,14 +110,14 @@ const RegistroPage: React.FC<any> = (props) => {
           await api.sendEmail({
             to: value.email,
             subject: 'Registro de persona jurídica ',
-            body: 'Señores ' + value.razonsocial + ' su usuario creado exitosamente'
+            body: 'Señores ' + value.razonsocial + ' su usuario ha sido creado exitosamente en el portal de la Secretaria Distrital de Salud'
           });
           const segundo = value.secondName ?? ' ';
           const segundoape = value.secondSurname ?? '';
           await api.putUser({
             oid: accountIdentifier,
             idPersonaVentanilla: resApi,
-            NombreCompleto: value.razonsocial
+            NombreCompleto: value?.razonsocial.toString().toUpperCase()
           });
 
           await api.PostRolesUser({

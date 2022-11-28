@@ -57,6 +57,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
 
     if (permiso?.rol === 'Ciudadano'
+      || permiso?.rol === 'MedicinaLegal'
       //|| permiso?.rol === 'AdminTI'
     ) {
 

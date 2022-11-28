@@ -15,7 +15,7 @@ export const HorariosFestivos = ({ props }: any) => {
 
   const onSubmit = async (values: any) => {
 
-    console.log(values.festivos.format(format));
+
 
   };
 
@@ -90,7 +90,7 @@ export const HorariosFestivos = ({ props }: any) => {
               <div style={{ display: 'inline-block', width: '50%', paddingLeft: '60px' }}>
                 <Button style={{ marginLeft: '10px', marginRight: '10px' }} type='primary' htmlType='button' className='add' onClick={() => {
                   //setFestivos(festivos + moment(form.getFieldsValue(['festivos'])).format(format) + ';');
-                  console.log(moment(form.getFieldsValue(['festivos'])).format(format));
+
                   //console.log(festivos);
                 }}>
                   Agregar

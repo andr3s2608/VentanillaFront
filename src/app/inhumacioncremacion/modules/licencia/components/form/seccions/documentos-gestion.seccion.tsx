@@ -28,7 +28,7 @@ import { FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import '../../../../../../../css/estilos.css';
 // Services
 export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props) => {
-  const { prop, obj, id, escambio, instType } = props;
+  const { prop, obj, id, escambio, instType, reconocido, tramite } = props;
   const [grid, setGrid] = useState<any[]>([]);
   const [urlPdf, setUrlPdf] = useState<any>('');
 
@@ -345,7 +345,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
         </div>
       </div>
 
-      {escambio === 'cambio' && (<>
+      {(escambio === 'cambio' || escambio === 'actualizacion') && (<>
 
         {(instTypebd === 'Otros' && instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
 
@@ -363,30 +363,91 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
 
 
         </>)}
-        {id === 'Cremación' ? (<>
-          <Form.Item label='Autorización de cremación del familiar' name='fileAuthCCFamiliar' rules={[{ required: true }]}>
-            <Upload
-              name='fileAuthCCFamiliar'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
+        {reconocido && (<>
+
+          <Form.Item
+            label='Certificado Defunción'
+            name='fileCertificadoDefuncion'
+            rules={[{ required: true }]}
+          >
+            <Upload name='fileCertificadoDefuncion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
               <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
             </Upload>
           </Form.Item>
 
-          <Form.Item label='Documento del familiar' name='fileDocCremacion' rules={[{ required: true }]}>
-            <Upload
-              name='fileDocCremacion'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
+          {tramite === 'individual' ? <>
+
+            <Form.Item
+              label='Documento del fallecido'
+              name='fileDocumentoFallecido'
+
+              rules={[{ required: true }]}
+
             >
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
+              <Upload name='fileDocumentoFallecido' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+
+
+          </> : <>
+
+            <Form.Item
+              label='Documento del la madre'
+              name='fileDocumentoMadre'
+
+              rules={[{ required: true }]}
+            >
+              <Upload name='fileDocumentoMadre' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+
+
+          </>}
+
+
+        </>)}
+        {id === 'Cremación' ? (<>
+
+          {escambio === 'cambio' && (<>
+            <Form.Item label='Autorización de cremación del familiar' name='fileAuthCCFamiliar' rules={[{ required: true }]}>
+              <Upload
+                name='fileAuthCCFamiliar'
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+              >
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+
+            <Form.Item label='Documento del familiar' name='fileDocCremacion' rules={[{ required: true }]}>
+              <Upload
+                name='fileDocCremacion'
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+              >
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+
+            <Form.Item label='Justificación del cambio de licencia' name='filejustcambio' rules={[{ required: true }]}>
+              <Upload
+                name='filejustcambio'
+                maxCount={1}
+                beforeUpload={() => false}
+                listType='text'
+                accept='application/pdf'
+              >
+                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+              </Upload>
+            </Form.Item>
+          </>)}
+
           {(instTypebd === 'Otros' && instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
             <Form.Item label='Autorización de cremacion del fiscal' name='fileAuthFiscalCremacion' rules={[{ required: true }]}>
               <Upload
@@ -412,44 +473,37 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
               </Upload>
             </Form.Item>
           </>)}
-          <Form.Item label='Justificación del cambio de licencia' name='filejustcambio' rules={[{ required: true }]}>
-            <Upload
-              name='filejustcambio'
-              maxCount={1}
-              beforeUpload={() => false}
-              listType='text'
-              accept='application/pdf'
-            >
-              <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-            </Upload>
-          </Form.Item>
+
 
 
         </>) :
           <>
-            <Form.Item label='Justificación de inhumación' name='filejustFamiliar' rules={[{ required: true }]}>
-              <Upload
-                name='filejustFamiliar'
-                maxCount={1}
-                beforeUpload={() => false}
-                listType='text'
-                accept='application/pdf'
-              >
-                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-              </Upload>
-            </Form.Item>
+            {escambio === 'cambio' && (<>
+              <Form.Item label='Justificación de inhumación' name='filejustFamiliar' rules={[{ required: true }]}>
+                <Upload
+                  name='filejustFamiliar'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
 
-            <Form.Item label='Documento de quien autoriza' name='fileDocaut' rules={[{ required: true }]}>
-              <Upload
-                name='fileDocaut'
-                maxCount={1}
-                beforeUpload={() => false}
-                listType='text'
-                accept='application/pdf'
-              >
-                <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
-              </Upload>
-            </Form.Item>
+              <Form.Item label='Documento de quien autoriza' name='fileDocaut' rules={[{ required: true }]}>
+                <Upload
+                  name='fileDocaut'
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  listType='text'
+                  accept='application/pdf'
+                >
+                  <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+                </Upload>
+              </Form.Item>
+            </>)}
+
           </>
         }
       </>)}
@@ -457,10 +511,18 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
   );
 };
 
+export const KeysForm = [
+  'fileAuthFiscalCremacion',
+  'fileOrdenAuthFiscal',
+  'fileActaNotarialFiscal'
+];
+
 interface documentosgestion {
   prop: any;
   id: string;
   obj: any;
   escambio: string;
   instType: string;
+  reconocido: boolean;
+  tramite: string;
 }

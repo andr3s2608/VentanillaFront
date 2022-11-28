@@ -134,21 +134,29 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   return (
     <div className='row info-tramite mt-5'>
-      <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
-        Información del lugar de la localización del sistema de abastecimiento<br />
-        <small style={{ color: ' #000' }}>
-          <span className='required'>* </span> Campos Obligatorios
-        </small>
-      </p>
-      <Alert
-        message='Información!'
-        description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
+      <div className='form-row text-center'>
+        <div className='form-group col'>
+          <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+            Información del lugar de la localización del sistema de abastecimiento<br />
+            <small style={{ color: ' #000' }}>
+              <span className='required'>* </span> Campos Obligatorios
+            </small>
+          </p>
+        </div>
+      </div>
+      <div className='form-row text-center'>
+        <div className='form-group col'>
+          <Alert
+            message='Información!'
+            description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
                           en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón azul Confirmar Dirección.
                           Esta funcionalidad permitirá autocompletar datos de UPZ, Localidad y Barrio para las direcciones de Bogotá D.C. y
                           estandarizar la dirección para el resto de ciudades.'
-        type='info'
-      />
-      <div className='form-row mt-5 text-center'>
+            type='info'
+          />
+        </div>
+      </div>
+      <div className='form-row  text-center'>
         <div className='form-group col-md-8 col-lg-8 text-center'>
           <label htmlFor=''>
             Via Principal

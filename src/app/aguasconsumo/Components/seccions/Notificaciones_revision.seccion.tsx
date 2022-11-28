@@ -82,8 +82,7 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
 
   const notificar = async () => {
     let date: Date = new Date();
-    setnotificado(true);
-    prop();
+
     if (idPlantilla == '') {
       Swal.fire({
         icon: 'error',
@@ -91,6 +90,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
         text: `Debe seleccionar un tipo de notificación`
       });
     } else {
+      setnotificado(true);
+      prop();
       const formato = await api.getFormatoAguas(idPlantilla);
       const control: string = formato['asuntoNotificacion'];
       switch (control) {

@@ -54,6 +54,9 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
     if (obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       setIsMedicinaLegal(false);
     }
+    else {
+      setIsMedicinaLegal(false);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -228,7 +231,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
           <Radio value='80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'>OTROS</Radio>
         </Radio.Group>
       </Form.Item>
-      {/* TODO: [2021-06-11] Hacer la validación solicitada por el usuario en el archivo de work. */}
+
       {isMedicinaLegal && (
         <div className='fadeInLeft'>
           <Form.Item
@@ -397,7 +400,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               <SelectComponent options={l_seccionales} optionPropkey='DESCRIP' optionPropLabel='DESCRIP' />
             </Form.Item>
 
-            <Form.Item label='No. Fiscal' initialValue={obj?.instNoFiscalMedicinaLegal} name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
+            <Form.Item label='No. Fiscal' initialValue={obj?.instNoFiscal} name='NoFiscAct' rules={[{ required: false, max: 5 }]}>
               <Input
                 allowClear
                 placeholder='No. Fiscal'
@@ -469,7 +472,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                 </Form.Item>
 
-                <Form.Item label='No. Fiscal' rules={[{ required: true }]} name='NoFiscalDC'>
+                <Form.Item label='No. Fiscal' initialValue={obj?.instNoFiscalMedicinaLegal}
+                  rules={[{ required: true }]} name='NoFiscalDC'>
                   <Input
                     allowClear
                     placeholder='numberFiscal'
