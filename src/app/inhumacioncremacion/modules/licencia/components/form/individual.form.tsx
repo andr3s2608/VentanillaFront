@@ -59,15 +59,15 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const [datecorrect, setdatecorrect] = useState<boolean>(true);
 
-  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(6);
+  const [longitudsolicitante, setlongitudsolicitante] = useState<number>(4);
   const [longituddeathinst, setlongituddeathinst] = useState<number>(6);
-  const [longitudmedico, setlongitudmedico] = useState<number>(6);
+  const [longitudmedico, setlongitudmedico] = useState<number>(4);
   const [supports, setSupports] = useState<any[]>([]);
 
   const llavesAReemplazarRadicado = ['~:~ciudadano~:~', '~:~tipo_de_solicitud~:~', '~:~numero_de_tramite~:~'];
 
   const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(5);
+  const [longitudminima, setLongitudminima] = useState<number>(4);
   const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
   const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
@@ -76,7 +76,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   const [campo, setCampo] = useState<string>('Numéricos');
   //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
-  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(5);
+  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(4);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
   const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
   const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
@@ -295,10 +295,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var nroid = info.numeroIdentificacion + '';
     if (info.razonSocial != null) {
       tipo = 'Juridica';
-      razon = info.razonSocial;
+      razon = info.razonSocial.toString().toUpperCase();
     } else {
       tipo = 'Natural';
-      razon = values.namesolicitudadd + ' ' + values.lastnamesolicitudadd;
+      razon = (values.namesolicitudadd + ' ' + values.lastnamesolicitudadd).toString().toUpperCase();
       tipoid = values.fiscalia;
       nroid = values.ndoc;
     }
@@ -905,37 +905,50 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
       }
 
       let tiempo = '';
+
+      let valor = form.getFieldValue('date');
+      let fechadef = moment(valor);
+
       if (timedef2 != undefined) {
+
         if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
           if (time2 != undefined) {
-            const posicion1 = time2.indexOf(':');
-            const posicion2 = timedef2.indexOf(':');
+            if (fecha.day() === fechadef.day()) {
 
-            const horanac1 = time2.substring(0, posicion1);
-            const horanac2 = time2.substring(posicion1 + 1, time2.length);
+              console.log(time2)
+              console.log(timedef2)
+              const posicion1 = time2.indexOf(':');
+              const posicion2 = timedef2.indexOf(':');
 
-            const horadef1 = timedef2.substring(0, posicion2);
-            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+              const horanac1 = time2.substring(0, posicion1);
+              const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-            if (parseInt(horanac1) < parseInt(horadef1)) {
-              tiempo = 'es valida';
-            } else {
-              if (parseInt(horanac1) == parseInt(horadef1)) {
-                if (parseInt(horanac2) <= parseInt(horadef2)) {
-                  tiempo = 'es valida';
+              const horadef1 = timedef2.substring(0, posicion2);
+              const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+
+              if (parseInt(horanac1) < parseInt(horadef1)) {
+
+                tiempo = 'es valida';
+              } else {
+                if (parseInt(horanac1) == parseInt(horadef1)) {
+                  if (parseInt(horanac2) <= parseInt(horadef2)) {
+
+                    tiempo = 'es valida';
+                  } else {
+
+                    tiempo = 'es invalida';
+                  }
                 } else {
+
                   tiempo = 'es invalida';
                 }
-              } else {
-                tiempo = 'es invalida';
               }
             }
+
           }
         }
       }
 
-      let valor = form.getFieldValue('date');
-      let fechadef = moment(valor);
 
       if (!fecha.isBefore(fechadef)) {
         if (tiempo == 'es valida') {
@@ -954,9 +967,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               text: `La fecha de nacimiento debe ser menor a: ${fechadef.calendar()}`
             });
           }
+          setdatecorrect(false);
         }
-
-        setdatecorrect(false);
       } else {
         setdatecorrect(true);
       }
@@ -1291,7 +1303,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         >
           <>
             <div className={` ${current != 0 && 'd-none'} fadeInRight ${current == 0 && 'd-block'}`}>
-              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} form={form} tipoLicencia={'Cremación'} prop={null} />
+              <GeneralInfoFormSeccion obj={objJosn} causaMuerte={causaMuerte} form={form} tipoLicencia={'Cremación'} prop={FechaNacimiento} />
               <LugarDefuncionFormSeccion form={form} obj={objJosn} />
               <DeathInstituteFormSeccion
                 prop={getData}
@@ -1529,67 +1541,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               {/* TODO: [2021-06-12] Definir los roles del usuario, es solo visible para funcionarios. */}
               {false && (
                 <>
-                  <Divider orientation='right'>Reconocido como...</Divider>
 
-                  <Form.Item label='Tipo Identificación' name='knownIDType'>
-                    <SelectComponent
-                      options={l_tipos_documento}
-                      onChange={cambiodocumento}
-                      optionPropkey='id'
-                      optionPropLabel='descripcion'
-                    />
-                  </Form.Item>
-
-                  <Form.Item label='Número de Identificación' name='knownIDNumber'>
-                    <Input
-                      allowClear
-                      type='text'
-                      placeholder='Número Identificación'
-                      autoComplete='off'
-                      pattern={tipocampo}
-                      maxLength={longitudmaxima}
-                      onKeyPress={(event) => {
-                        if (!tipocampovalidacion.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                      onInvalid={() => {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Datos inválidos',
-                          text:
-                            'Sección:Reconocido como \n recuerde que para el tipo de documento:' +
-                            tipodocumento +
-                            ' solo se admiten valores ' +
-                            campo +
-                            ' de longitud entre ' +
-                            longitudminima +
-                            ' y ' +
-                            longitudmaxima
-                        });
-                      }}
-                    />
-                  </Form.Item>
-
-                  <Form.Item label='Nombre' name='knownName'>
-                    <Input
-                      allowClear
-                      placeholder='Nombres y Apellidos completos'
-                      autoComplete='off'
-                      type='text'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
                 </>
               )}
 
@@ -1760,7 +1712,6 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                         />
                       </Form.Item>
 
-                      <AutorizacionCremacion form={form} tipoLicencia={tipoLicencia} />
 
                       <Form.Item
                         label='Parentesco'
@@ -1806,8 +1757,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
               )}
 
               <SolicitudInfoFormSeccion prop={getDataSolicitante} form={form} obj={objJosn} />
-              <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} />
-              <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} />
+              <DatoSolicitanteAdd prop={getData} form={form} obj={objJosn} modificacion={false} />
+              <CementerioInfoFormSeccion obj={objJosn} form={form} tipoLicencia={tipoLicencia} modificacion={false} />
 
               <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
                 <div className='d-flex justify-content-between'>

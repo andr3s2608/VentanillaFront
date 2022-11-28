@@ -33,6 +33,43 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
   const instFechaOficio = obj.instFechaOficio !== undefined ? moment(obj.instFechaOficio) : null;
   const instNoFiscalMedicinaLegal = obj.instNoFiscalMedicinaLegal;
 
+  const [l_tipos_documento, setl_tipos_documento] = useState<any>([]);
+
+  const [[primernombre, segundonombre, primerapellido, segundoapellido, nroiden, tipoid], setNombres] = useState<
+    [string, string, string, string, string, string]
+  >(['', '', '', '', '', '']);
+
+
+  const getListas = useCallback(async () => {
+
+    const tipos: any = localStorage.getItem('tipoid');
+    const tiposjson: any = JSON.parse(tipos);
+
+    setl_tipos_documento(tiposjson);
+    if (obj != undefined) {
+
+      setNombres([
+        obj.reconocidocomo[0].name,
+        obj.reconocidocomo[0].secondName,
+        obj.reconocidocomo[0].surname,
+        obj.reconocidocomo[0].secondSurname,
+        obj.reconocidocomo[0].numeroid,
+        obj.reconocidocomo[0].tipoid
+      ]);
+
+
+    }
+  }, []);
+
+
+  useEffect(() => {
+
+    getListas();
+
+  }, []);
+
+
+
   //Institución que certifica el fallecimiento
 
   var dataCompleta = [
@@ -150,6 +187,42 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
     }
   ]
 
+  const datosreconocido = [
+    {
+      title: 'Tipo de identificación',
+      describe: (
+        <SelectComponent
+          options={l_tipos_documento}
+          optionPropkey='id'
+          optionPropLabel='descripcion'
+          value={tipoid}
+          disabled
+        />
+      )
+    },
+    {
+      title: 'Numero de identificación',
+      describe: nroiden?.toLowerCase()
+    },
+    {
+      title: 'Primer Nombre',
+      describe: primernombre?.toLowerCase()
+    },
+    {
+      title: 'Segundo Nombre',
+      describe: segundonombre?.toLowerCase()
+    }
+    ,
+    {
+      title: 'Primer Apellido',
+      describe: primerapellido?.toLowerCase()
+    },
+    {
+      title: 'Segundo Apellido',
+      describe: segundoapellido?.toLowerCase()
+    }
+  ]
+
   const datosacta =
     [
       {
@@ -201,6 +274,37 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
 
   return (
     <>
+      {obj?.reconocidocomo.length > 0 && (<>
+
+        <div className='ant-container d-flex justify-content-center w-100'>
+          <div className='ant-row text-center'>
+            <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>
+              <Divider orientation='left'>
+                <div className='contenedor'>Reconocido Como</div>
+              </Divider>
+            </div>
+          </div>
+        </div>
+        <div><List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 1,
+            md: 3,
+            lg: 3,
+            xl: 3,
+            xxl: 3
+          }}
+          dataSource={datosreconocido}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta title={item.title} description={item.describe} />
+            </List.Item>
+          )}
+        /></div>
+      </>
+
+      )}
       <div className='ant-container d-flex justify-content-center w-100'>
         <div className='ant-row text-center'>
           <div className='ant-col-12 ant-col-md-12 ant-col-lg-12 ant-col-ant-col-sm-12'>

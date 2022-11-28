@@ -17,6 +17,7 @@ export const AutorizacionCremacion: React.FC<AutorizacionCremacionProps<any>> = 
   //#endregion
   const { tipoLicencia } = props;
 
+
   return (
     <>
       {tipoLicencia !== 'Cremación' && (

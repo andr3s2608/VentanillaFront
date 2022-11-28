@@ -398,7 +398,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Descripción de otro uso
                 </label>
                 <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
-                  <input
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                   />
@@ -414,6 +414,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     className='form-control gov-co-form-control'
                     maxLength={4}
                     onKeyPress={(event) => {
+
+                      const caudalprueba = props.form.getFieldValue('caudal');
 
                       let caudal: string = ValorCaudal(event.key);
                       let count = 0;
@@ -492,7 +494,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <div className='container-fluid'>
             <div className='form-row' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-md-6'>
-                <label className='text'>
+                <label className='text'>vereda
                   <span className='required'>* </span> Departamento
                 </label>
                 <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
@@ -589,7 +591,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Descripción de otro uso
                 </label>
                 <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
-                  <input
+                  <Input
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}

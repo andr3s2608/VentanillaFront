@@ -42,6 +42,13 @@ export class ApiService {
       id: '0'
     });
 
+  ConsultarLicenciasAdministrador = (numero: string, tipo: string) =>
+    get<string>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/ConsultarLicenciasAdministrador/${numero}/${tipo}`,
+      id: '0'
+    });
+
   ObtenerSolicitud = (numero: string, tipo: string) =>
     get<string>({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -220,6 +227,9 @@ export class ApiService {
 
   putLicencia = (payload: any, validacion: string) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequest', payload, id: validacion });
+
+  UpdateLicenciaAdmin = (payload: any, validacion: string) =>
+    put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequestAdministrador', payload, id: validacion });
 
   ModificarConstante = (constante: string, valor: string, validacion: string) =>
     put({
@@ -597,8 +607,8 @@ export class ApiService {
       id: '0'
     });
 
-  AsignarUsuario = (idusuario: string, idsolicitud: string) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idusuario}/${idsolicitud}`, id: '0' });
+  AsignarSubred = (idsubred: string, idsolicitud: string) =>
+    post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idsubred}/${idsolicitud}`, id: '0' });
 
   CambiarEstadoSolicitudAguas = (idsolicitud: string, idestado: string, idtipo: string) =>
     put({

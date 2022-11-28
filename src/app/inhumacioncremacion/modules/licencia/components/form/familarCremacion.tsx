@@ -23,7 +23,7 @@ import Radio, { RadioChangeEvent } from 'antd/es/radio';
 import Swal from 'sweetalert2';
 
 export const FamilarFetalCremacion: React.FC<any> = (props) => {
-  const { tipoLicencia, objJosn, prop } = props;
+  const { tipoLicencia, obj, prop, parentesco } = props;
   const [form] = Form.useForm<any>();
 
   const [sininformacion, setsininformacion] = useState<boolean>(false);
@@ -43,6 +43,11 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
       const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
 
       settipos(nuevalista);
+
+      if (obj !== undefined) {
+        cambiodocumento(obj?.autorizadorcremacion[0].tipoid)
+        form.setFieldsValue({ mauthIDNumber: obj?.autorizadorcremacion[0].numeroid });
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -73,8 +78,8 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
 
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
-      form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(0);
+      form.setFieldsValue({ mauthIDNumber: undefined });
+      setLongitudminima(5);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
@@ -89,9 +94,9 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Número de Protocolo');
-        form.setFieldsValue({ IDNumber: '8001508610' });
+        form.setFieldsValue({ mauthIDNumber: '8001508610' });
       } else {
-        form.setFieldsValue({ IDNumber: undefined });
+        form.setFieldsValue({ mauthIDNumber: undefined });
         if (valorupper === '7C96A4D3-A0CB-484E-A01B-93BC39C2552E') {
           setLongitudminima(4);
           setLongitudmaxima(10);
@@ -234,9 +239,11 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
       </Form.Item>
 
       <Form.Item
-        label='Tipo Documento'
+        label='Tipo de Identificación'
         name='authIDType'
-        initialValue='7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+        initialValue={obj?.autorizadorcremacion.length > 0 ?
+          obj?.autorizadorcremacion[0].tipoid
+          : '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
         rules={[{ required: true }]}
       >
         <SelectComponent
@@ -247,7 +254,10 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
         />
       </Form.Item>
 
-      <Form.Item label='Número de Identificación' name='mauthIDNumber' rules={[{ required: !sininformacion, max: 20 }]}>
+      <Form.Item label='Número de Identificación' name='mauthIDNumber'
+        initialValue={obj?.autorizadorcremacion.length > 0 ?
+          obj?.autorizadorcremacion[0].numeroid : null}
+        rules={[{ required: !sininformacion, max: 20 }]}>
         <Input
           allowClear
           type='text'
@@ -281,7 +291,10 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
         />
       </Form.Item>
 
-      <Form.Item label='Primer Nombre' name='authName' rules={[{ required: true, max: 50 }]}>
+      <Form.Item label='Primer Nombre' name='authName'
+        initialValue={obj?.autorizadorcremacion.length > 0 ?
+          obj?.autorizadorcremacion[0].name : null}
+        rules={[{ required: true, max: 50 }]}>
         <Input
           allowClear
           placeholder='Primer Nombre'
@@ -297,7 +310,10 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Segundo Nombre' name='authSecondName'>
+      <Form.Item label='Segundo Nombre' name='authSecondName'
+        initialValue={obj?.autorizadorcremacion.length > 0 ?
+          obj?.autorizadorcremacion[0].secondName : null}
+        rules={[{ max: 50 }]}>
         <Input
           allowClear
           placeholder='Segundo Nombre'
@@ -313,7 +329,10 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Primer Apellido' name='authSurname' rules={[{ required: true, max: 50 }]}>
+      <Form.Item label='Primer Apellido' name='authSurname'
+        initialValue={obj?.autorizadorcremacion.length > 0 ?
+          obj?.autorizadorcremacion[0].surname : null}
+        rules={[{ required: true, max: 50 }]}>
         <Input
           allowClear
           placeholder='Primer Apellido'
@@ -329,7 +348,11 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
           }}
         />
       </Form.Item>
-      <Form.Item label='Segundo Apellido' name='authSecondSurname'>
+      <Form.Item label='Segundo Apellido' name='authSecondSurname'
+        initialValue={obj?.autorizadorcremacion.length > 0 ?
+          obj?.autorizadorcremacion[0].secondSurname : null}
+        rules={[{ max: 50 }]}
+      >
         <Input
           allowClear
           placeholder='Segundo Apellido'
@@ -349,7 +372,7 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
       <Form.Item
         label='Parentesco'
         name='authParentesco'
-        initialValue='Cónyuge (Compañero/a Permanente)'
+        initialValue={parentesco ?? 'Cónyuge (Compañero/a Permanente)'}
         rules={[{ required: true }]}
       >
         <Radio.Group onChange={onChangeParentesco}>
@@ -373,24 +396,39 @@ export const FamilarFetalCremacion: React.FC<any> = (props) => {
         </Radio.Group>
       </Form.Item>
 
-      {isOtherParentesco && (
-        <Form.Item
-          className='fadeInRight'
-          label='Otro... ¿Cúal?'
-          name='authOtherParentesco'
-          initialValue={objJosn?.authOtherParentesco ? objJosn?.authOtherParentesco : null}
-          rules={[{ required: true }]}
-        >
-          <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
-        </Form.Item>
-      )}
+      {
+        isOtherParentesco && (
+          <Form.Item
+            className='fadeInRight'
+            label='Otro... ¿Cúal?'
+            name='authOtherParentesco'
+            initialValue={obj?.autorizadorcremacion.length > 0 ?
+              obj?.autorizadorcremacion[0].otroparentesco : null}
+            rules={[{ required: true }]}
+          >
+            <Input allowClear placeholder='Especifique el Parentesco' autoComplete='off' />
+          </Form.Item>
+        )
+      }
 
-      <AutorizacionCremacion tipoLicencia={tipoLicencia} />
-    </div>
+
+    </div >
   );
 };
+
+export const KeysForm = [
+  'authIDType',
+  'mauthIDNumber',
+  'authName',
+  'authSecondName',
+  'authSurname',
+  'authSecondSurname',
+  'authParentesco',
+  'authOtherParentesco'
+];
 interface IAutorizaInfoProps<T> {
-  objJosn: any;
+  obj: any;
   prop: any;
   tipoLicencia: any;
+  parentesco: string;
 }

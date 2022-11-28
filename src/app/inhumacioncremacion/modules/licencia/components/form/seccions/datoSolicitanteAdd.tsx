@@ -26,7 +26,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
   const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
   const [campo, setCampo] = useState<string>('Numéricos');
   const [sininformacion, setsininformacion] = useState<boolean>(false);
-  const { obj, prop, form } = props;
+  const { obj, prop, form, modificacion } = props;
   const [l_tipo_documento, settipos] = useState<any>();
   const lugarFuneraria = obj?.isLugar();
   const [lugarfuneraria, setLugarFuneraria] = useState<TypeLugarFuneraria>(lugarFuneraria);
@@ -81,10 +81,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         setvalidacion('1');
       }
 
-      if (obj != undefined) {
+      if (obj !== undefined) {
         setcorreofun(obj?.correofuneraria);
         setcorreosol(obj?.correosolicitante);
+        cambiodocumento(obj.tipodocsolicitante)
+        props.form.setFieldsValue({ ndoc: obj?.nrosolicitante });
       }
+
+
 
       const funeraria = await api.GetFunerarias();
 
@@ -328,16 +332,17 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
     );
   };
 
+
   return (
     <>
-      {obj !== undefined ? (<>
+      {(obj !== undefined && modificacion === false) ? (<>
         <div>{renderFormFuneria(lugarfuneraria)}</div>
       </>) :
         <>
 
           <Form.Item
             label='Tipo documento'
-            initialValue={obj?.tiposolicitante ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+            initialValue={obj?.tipodocsolicitante ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
             rules={[{ required: true }]}
             name='fiscalia'
           >
@@ -380,7 +385,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             />
           </Form.Item>
 
-          <Form.Item label='Nombres' initialValue={obj?.razonsocialsolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
+          <Form.Item label='Nombres' initialValue={obj?.nombresolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
             <Input
               allowClear
               placeholder='Nombres'
@@ -398,7 +403,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             />
           </Form.Item>
 
-          <Form.Item label='Apellidos' initialValue={null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
+          <Form.Item label='Apellidos' initialValue={obj?.apellidosolicitante ?? null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
             <Input
               allowClear
               placeholder='Apellidos'
@@ -419,15 +424,15 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             <>
               <Form.Item
                 label='Correo familiar contratante'
-                initialValue={correosol}
+                initialValue={obj?.correosolicitante ?? correosol}
                 rules={[{ required: true, type: 'email', max: 50 }]}
                 name='emailsolicitudadd'
               >
                 <Input
                   allowClear
                   placeholder='Email Familiar'
-                  value={correosol}
-                  defaultValue={correosol}
+                  value={obj?.correosolicitante ?? correosol}
+                  defaultValue={obj?.correosolicitante ?? correosol}
                   type='email'
                   onKeyPress={(event) => {
                     if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
@@ -448,14 +453,14 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
               <Form.Item
                 label='Email Funeraria y/o solicitante'
                 name='emailfuneraria'
-                initialValue={correofun}
+                initialValue={obj?.correofuneraria ?? correofun}
                 rules={[{ required: true, type: 'email', max: 50 }]}
               >
                 <Input
                   allowClear
                   placeholder='Email Funeraria'
-                  value={correofun}
-                  defaultValue={correofun}
+                  value={obj?.correofuneraria ?? correofun}
+                  defaultValue={obj?.correofuneraria ?? correofun}
                   type='email'
                   onKeyPress={(event) => {
                     if (!/[a-zA-Z0-9ZñÑ@._-]/.test(event.key)) {
@@ -486,5 +491,6 @@ interface ISolicitudInfoProps<T> {
   obj: any;
   prop: any;
   form: any;
+  modificacion: boolean;
 }
 type TypeLugarFuneraria = 'Dentro de Bogotá';

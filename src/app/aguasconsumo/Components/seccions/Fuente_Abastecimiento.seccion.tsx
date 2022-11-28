@@ -225,7 +225,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-lg-6 col-md-6 col-sm-12'>
                     <span className='required'>*</span>Nombre de la fuente*
                     <Form.Item name='nombrefuente' initialValue={nombre} rules={[{ required: true }]}>
-                      <input
+                      <Input
                         type='text'
                         className='form-control gov-co-form-control'
                         onKeyPress={(event) => {
@@ -240,7 +240,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Descripción de otra fuente
                     <Form.Item name='descripcionotra' initialValue={descripcionotra}>
-                      <input
+                      <Input
                         type='text'
                         maxLength={500}
                         className='form-control gov-co-form-control'
@@ -258,7 +258,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Localización de la bocatoma
                     <Form.Item name='latitud' initialValue={latitud} rules={[{ required: true }]}>
-                      <input
+                      <Input
                         type='text'
                         className='form-control gov-co-form-control'
                         onKeyPress={(event) => {
@@ -274,7 +274,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Longitud de la bocatoma
                     <Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
-                      <input
+                      <Input
                         type='text'
                         className='form-control gov-co-form-control'
                         onKeyPress={(event) => {
@@ -433,7 +433,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Descripción de otra fuente
                     <Form.Item name='descripcionotra' initialValue={descripcionotra}>
-                      <input
+                      <Input
                         type='text'
                         maxLength={500}
                         disabled={true}
@@ -452,7 +452,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Localización de la bocatoma
                     <Form.Item name='latitud' initialValue={latitud} rules={[{ required: true }]}>
-                      <input
+                      <Input
                         type='text'
                         className='form-control gov-co-form-control'
                         disabled={true}
@@ -469,7 +469,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Longitud de la bocatoma
                     <Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
-                      <input
+                      <Input
                         type='text'
                         className='form-control gov-co-form-control'
                         disabled={true}

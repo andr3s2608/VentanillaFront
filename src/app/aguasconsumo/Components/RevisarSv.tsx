@@ -20,6 +20,13 @@ import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
 import moment from 'moment';
 import '../../../css/estilos.css';
+import { DatosFuente } from './seccions/Fuente_Abastecimiento.seccion';
+import { TipoNotificacion } from './seccions/Notificaciones_revision.seccion';
+import { DatosDocumentos } from './seccions/Documentos.seccion';
+import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
+import { DatosAcueducto } from './seccions/Acueductos.seccion';
+import { DocumentacionAsociada } from './seccions/Documentacion_Asociada';
+import { store } from 'app/redux/app.reducers';
 
 export const RevisarSv = () => {
   const objJson: any = EditAguas();
@@ -34,6 +41,9 @@ export const RevisarSv = () => {
   //validacion campos
 
   const [rol, setrol] = useState<any>();
+  const [documentos, setdocumentos] = useState<any[]>([]);
+  const [usuarionotificado, setusuarionotificado] = useState<boolean>(false);
+
 
   const getListas = useCallback(
     async () => {
@@ -60,8 +70,21 @@ export const RevisarSv = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const adddocumentos = (value: any) => {
+    setdocumentos(value);
+  };
+  const notificado = () => {
+    setusuarionotificado(true);
+  };
+
+
   const onSubmit = async (values: any) => {
     setStatus(undefined);
+
+
+    const { seguimientoDocumentos } = store.getState();
+
+
     const formatDate = 'MM-DD-YYYY';
     const dep = values.departamento;
     var mun = values.municipio;
@@ -139,10 +162,64 @@ export const RevisarSv = () => {
     };
 
     await api.AddSolicitudCitacion(json);
+    let subsanacion = false;
+    if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
+      const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
+
+      seguimientoDocumentos.forEach((item: any) => {
+        documentToSend.push({
+          idSolicitud: item.idSolicitud,
+          idDocumentoSoporte: item.idDocumentoSoporte,
+          path: item.path,
+          observaciones: values.observacionesSubsanacion,
+          estado_Documento: item.estadoDocumento,
+          tipoSeguimiento: item.tipoSeguimiento
+        });
+        if (item.estadoDocumento === 'No Cumple') {
+          subsanacion = true;
+
+        }
+      });
+
+      if (subsanacion) {
+        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4', '9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
+      }
+
+      await api.AddEstadoDocumentoSoporte(documentToSend);
+    }
 
     const supportDocumentsEdit: any[] = [];
     const formData = new FormData();
 
+    if (documentos.length > 0) {
+      documentos.forEach((item: any, i: number) => {
+        if (documentos[i] != undefined) {
+          const archivo = documentos[i];
+
+          formData.append('file', archivo.archivo.file);
+          formData.append('nameFile', 'Documentos_Asociados' + '_' + objJson.idsolicitud);
+
+          supportDocumentsEdit.push({
+            idSolicitud: objJson.idsolicitud,
+            idTipoDocumentoAdjunto: '96D00032-4B60-4027-AFEA-0CC7115220B4',
+            path: `${objJson.idusuario}/Documentos_Asociados_${objJson.idsolicitud}`,
+            idUsuario: objJson.idusuario,
+            idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+            esValido: true
+          });
+        }
+      });
+
+      formData.append('containerName', 'aguahumanos');
+      formData.append('oid', objJson.idusuario);
+
+      await api.uploadFiles(formData);
+      await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+    }
+
+
+
+    /*
     const archivovacio = values.cargarArchivo;
 
     if (archivovacio != undefined) {
@@ -165,7 +242,7 @@ export const RevisarSv = () => {
       await api.uploadFiles(formData);
       await api.AddSupportDocumentsAguas(supportDocumentsEdit);
     }
-
+*/
     const formato = await api.getFormatoAguas('3DB34F22-4A32-431D-B136-31A8D60CA604');
 
     await api.sendEmail({
@@ -184,6 +261,56 @@ export const RevisarSv = () => {
 
     history.push('/tramites-servicios-aguas');
   };
+
+
+
+  const AsinarSubred = async () => {
+
+    const subrednueva = form.getFieldValue('funcionario')
+    if (subrednueva === undefined) {
+      Swal.fire({
+        icon: 'error',
+
+        title: 'Datos Invalidos',
+        text: `Debe seleccionar una subred para realizar la reasignación`
+      });
+    }
+    else {
+      Swal.fire({
+        title: 'Reasignación de Solicitud',
+        text: 'Esta a punto de realizar una Reasignación a la solicitud, ¿Está seguro de continuar?',
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Reasignar',
+        denyButtonText: `Cancelar`,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+
+
+          await api.AsignarSubred(subrednueva, objJson.idsolicitud)
+
+          Swal.fire({
+            icon: 'success',
+
+            title: 'Solicitud Reasignada',
+            text: `Se ha reasignado la solicitud Exitosamente`
+          });
+        }
+
+
+      });
+    }
+
+
+  }
+
 
   const onSubmitFailed = () => setStatus('error');
 
@@ -217,30 +344,6 @@ export const RevisarSv = () => {
                     </div>
                   </div>
                 </div>
-                <section className='panel-menu'>
-                  <div className='container'>
-                    <div className='row'>
-                      <div className='col-lg-12 col-md-12 ml-4 col-sm-12 '>
-                        <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                          <nav className='nav panel'>
-                            <a className='nav-link active' href='#'>
-                              1. Solicitar revisión
-                            </a>
-                            <a className='nav-link' href='#'>
-                              2. Crear Solicitud
-                            </a>
-                            <a className='nav-link' href='#'>
-                              3. En gestión
-                            </a>
-                            <a className='nav-link disabled' href='#'>
-                              4. Respuesta
-                            </a>
-                          </nav>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
                 <div className='row mt-5'>
                   <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
                     <div className='info-tramite mt-3 ml-5'>
@@ -248,17 +351,206 @@ export const RevisarSv = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row mt-5 ml-2'>
-                  <DatosSolicitud form={form} obj={objJson} tipo={'validador'} habilitar={false} />
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-1'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Datos de la Solicitud
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-1' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='row mt-5 datos_validador'>
+                        <DatosSolicitud form={form} obj={objJson} tipo={'validador'} habilitar={false} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className='row mt-5 ml-2'>
-                  <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} habilitar={false} />
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-2'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Datos del solicitante
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='row mt-5 datos_validador'>
+                        <DatosSolicitante form={form} obj={objJson} tipo={'validador'} habilitar={false} />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-3'
+                          aria-expanded='false'
+                          aria-controls='collapse-3'
+                        >
+                          Datos de la fuente de abastacemiento
+                        </a>
+                      </h5>
+                    </div>
+
+                    <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='row mt-5 ml-2'>
+                        <DatosFuente form={form} obj={objJson} tipo={''} habilitar={false} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-4'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Información de acueductos que captan la misma fuente
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='card-body'>
+                        <DatosAcueducto form={form} obj={objJson} prop={null} habilitar={false} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-7'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Información adicional de la fuente de abastecimiento
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='card-body'>
+                        <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-8'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Documentación requisito
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-8' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='card-body'>
+                        <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'gestion'} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-9'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Notificaciones generales de revisión
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-9' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='card-body'>
+                        <div className='card-body'>
+                          <div className='row mt-5 ml-2'>
+                            <TipoNotificacion form={form} obj={objJson} prop={notificado} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id='accordion' className='mt-3'>
+                  <div className='card'>
+                    <div className='card-header' id='heading-2'>
+                      <h5 className='mb-0'>
+                        <a
+                          className='collapsed'
+                          role='button'
+                          data-toggle='collapse'
+                          href='#collapse-8'
+                          aria-expanded='false'
+                          aria-controls='collapse-2'
+                        >
+                          Documentación asociada a la revisión
+                        </a>
+                      </h5>
+                    </div>
+                    <div id='collapse-8' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                      <div className='row mt-5 ml-2'>
+                        <DocumentacionAsociada form={form} obj={objJson} tipo={''} prop={adddocumentos} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />
                 </div>
                 <div className='row mt-5 ml-2'>
-                  <CitacionRevision form={form} obj={objJson} tipo={'Funcionario'} />
+                  <CitacionRevision form={form} obj={objJson} tipo={'Funcionario'} prop={AsinarSubred} />
                 </div>
                 <div className='row mt-3 '>
                   <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
@@ -293,3 +585,19 @@ export const RevisarSv = () => {
     </div>
   );
 };
+
+interface IEstadoDocumentoSoporteDTO {
+  idSolicitud: string;
+  idDocumentoSoporte: string;
+  path: string;
+  observaciones: string;
+  estado_Documento: string;
+  tipoSeguimiento: string;
+}
+
+interface IAutoridadAmbientalDTO {
+  idAutoridadAmbiental: string;
+  nombre: string;
+  estado: boolean;
+  correo: string;
+}
