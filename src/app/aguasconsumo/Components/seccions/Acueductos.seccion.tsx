@@ -26,6 +26,8 @@ import { Button, InputNumber, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2';
+import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
+import Icon from '@ant-design/icons/lib/components/AntdIcon';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { obj, prop, habilitar, tipoSolicitud } = props;
@@ -308,6 +310,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   ];
 
+
+
   if (habilitar) {
     return (
       <>
@@ -352,36 +356,42 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </label>
                 <Form.Item name='latituduso' rules={[{ required: true }]}>
                   <Input
+                    className='form-control gov-co-form-control'
+                    maxLength={10}
                     value={input}
                     onChange={(event) => {
+
+                      ////////////////grados/////////////////////////
                       setInput(event.target.value);
-                      //if (event.target.value.length === 5 && event.target.value.includes('°')) {
-                      //setInput(event.target.value.replace('°', ''));
-                      //}
+                      if (
+                        event.target.value.length === 2 &&
+                        event.target.value.includes("°")
+                      ) {
+                        setInput(event.target.value.replace("°", ""));
+                      }
                       if (event.target.value.length === 2) {
-                        setInput(event.target.value + '°');
+                        setInput(event.target.value + "°");
+                      }
+                      //////////////////minutos//////////////////////////
+                      if (
+                        event.target.value.length === 5 &&
+                        event.target.value.includes("'.")
+                      ) {
+                        setInput(event.target.value.replace("'.", ""));
                       }
                       if (event.target.value.length === 5) {
-                        setInput(event.target.value + "'");
+                        setInput(event.target.value + "'.");
                       }
-                      if (event.target.value.length === 8) {
-                        setInput(event.target.value + '.');
+                      ///////////////segundos///////////////////////////
+                      if (
+                        event.target.value.length === 9 &&
+                        event.target.value.includes('"')
+                      ) {
+                        setInput(event.target.value.replace('"', ""));
                       }
-                      if (event.target.value.length === 11) {
+                      if (event.target.value.length === 9) {
                         setInput(event.target.value + '"');
                       }
-                    }}
-                    title='El formato no es valido, ingrese 8 digitos y una letra'
-                    pattern='[0-9]{8,}[N-S]{1,}'
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9'"° ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
                     }}
                   />
                 </Form.Item>
@@ -394,25 +404,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </label>
                 <Form.Item name='latituduso' rules={[{ required: true }]}>
                   <Input
-                    value={input}
-                    onChange={(event) => {
-                      setInput(event.target.value);
-                      //if (event.target.value.length === 5 && event.target.value.includes('°')) {
-                      //setInput(event.target.value.replace('°', ''));
-                      //}
-                      if (event.target.value.length === 2) {
-                        setInput(event.target.value + '°');
-                      }
-                      if (event.target.value.length === 5) {
-                        setInput(event.target.value + "'");
-                      }
-                      if (event.target.value.length === 8) {
-                        setInput(event.target.value + '.');
-                      }
-                      if (event.target.value.length === 11) {
-                        setInput(event.target.value + '"');
-                      }
-                    }}
                     title='El formato no es valido, ingrese 8 digitos y una letra'
                     pattern='[0-9]{8,}[N-S]{1,}'
                     type='text'
@@ -585,18 +576,44 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: false }]}>
+                <Form.Item name='latituduso' rules={[{ required: true }]}>
                   <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    disabled={true}
-                    maxLength={9}
-                    onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
-                        event.preventDefault();
+                    maxLength={10}
+                    value={input}
+                    onChange={(event) => {
+
+                      ////////////////grados/////////////////////////
+                      setInput(event.target.value);
+                      if (
+                        event.target.value.length === 2 &&
+                        event.target.value.includes("°")
+                      ) {
+                        setInput(event.target.value.replace("°", ""));
+                      }
+                      if (event.target.value.length === 2) {
+                        setInput(event.target.value + "°");
+                      }
+                      //////////////////minutos//////////////////////////
+                      if (
+                        event.target.value.length === 5 &&
+                        event.target.value.includes("'.")
+                      ) {
+                        setInput(event.target.value.replace("'.", ""));
+                      }
+                      if (event.target.value.length === 5) {
+                        setInput(event.target.value + "'.");
+                      }
+                      ///////////////segundos///////////////////////////
+                      if (
+                        event.target.value.length === 9 &&
+                        event.target.value.includes('"')
+                      ) {
+                        setInput(event.target.value.replace('"', ""));
+                      }
+                      if (event.target.value.length === 9) {
+                        setInput(event.target.value + '"');
                       }
                     }}
-
                   />
                 </Form.Item>
               </div>
