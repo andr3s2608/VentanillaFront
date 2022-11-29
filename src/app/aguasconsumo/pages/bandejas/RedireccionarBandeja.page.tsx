@@ -1,5 +1,5 @@
 import { Bandeja } from 'app/aguasconsumo/Components/Bandeja';
-import { BandejaU } from 'app/aguasconsumo/Components/BandejaU';
+import { BandejaCiudadanos } from 'app/aguasconsumo/Components/BandejaCiudadanos';
 //import { PageHeaderComponent } from 'app/shared/components/page-header.component';
 //import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
 import { ApiService } from 'app/services/Apis.service';
@@ -150,7 +150,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
             historico={historiconotificaciones}
           />
         ) : (
-          <BandejaU data={grid} datossolucionados={datossolucionadosusuario} />
+          <BandejaCiudadanos data={grid} datossolucionados={datossolucionadosusuario} />
         )}
       </Tabs>
     </div>

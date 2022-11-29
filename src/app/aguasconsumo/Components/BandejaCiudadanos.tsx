@@ -1,70 +1,53 @@
-import React from 'react';
-import logo from '../../../../src/assets/images/aguas/alcadia.png';
-import '../../../css/estilos.css';
-import profile from '../../../../src/assets/images/aguas/profile.png';
-import { Form, Input } from 'antd';
-import Table from 'antd/es/table';
-import { Alert, Button, Modal, Upload } from 'antd';
 import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
+import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
+import { layoutItems } from 'app/shared/utils/form-layout.util';
 import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
-import { useHistory } from 'react-router';
-import { store } from 'app/redux/app.reducers';
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { CheckOutlined } from '@ant-design/icons';
-import { AnyIfEmpty } from 'react-redux';
+import { store } from 'app/redux/app.reducers';
+import { Button, Modal, Upload } from 'antd';
+import { useHistory } from 'react-router';
+import '../../../css/estilos.css';
+import { Form, Input } from 'antd';
+import Table from 'antd/es/table';
 import moment from 'moment';
-import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import Swal from 'sweetalert2';
-import { layoutItems } from 'app/shared/utils/form-layout.util';
-export const BandejaU = (props: IDataSource) => {
+
+
+export const BandejaCiudadanos = (props: IDataSource) => {
   const history = useHistory();
   const { data, datossolucionados } = props;
   const [mostrar, setmostrar] = useState<Boolean>(false);
-
-  const [roles, setroles] = useState<IRoles[]>([]);
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
-
-
   const [dataInter, setDataInter] = useState<any[]>([]);
   const [dataSolucionado, setDataSolucionado] = useState<any[]>([]);
-
   const [dateSelectedInicial, setDateIni] = useState<Date>();
   const [dateSelectedFinal, setDateFin] = useState<Date>();
-
   const [value, setValue] = useState('');
 
 
   const getListas = useCallback(
     async () => {
-      const rolesstorage: any = localStorage.getItem('roles');
       const subredes = await api.getSubredes();
       localStorage.setItem('subredes', JSON.stringify(subredes));
-      setroles(JSON.parse(rolesstorage));
       setDataInter(data);
       setDataSolucionado(datossolucionados);
       setmostrar(true);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   useEffect(() => {
-
     getListas();
   }, []);
 
   function onClickFiltrar(datos: String) {
 
     let datossinfiltrar = false;
-
-
-    ///datos
 
     if (value === '') {
       datossinfiltrar = true;
@@ -118,13 +101,7 @@ export const BandejaU = (props: IDataSource) => {
         icon: 'error'
       });
     }
-
-
-
   }
-
-
-
 
   const onClickValidarInformacion = async (datos: any, tipo: any) => {
     const data = datos;
@@ -154,9 +131,6 @@ export const BandejaU = (props: IDataSource) => {
     let fechain = new Date();
     let fechafin = new Date();
 
-
-
-
     if (
       dateSelectedInicial != undefined &&
       dateSelectedFinal != undefined &&
@@ -167,8 +141,6 @@ export const BandejaU = (props: IDataSource) => {
       fechafin = dateSelectedFinal;
       fecha = true;
     }
-
-
 
     return (
       <Input
@@ -354,6 +326,8 @@ export const BandejaU = (props: IDataSource) => {
       }
     ];
   }
+
+
   return (
     <div className='container-fluid'>
       <div className='card'>
@@ -363,7 +337,7 @@ export const BandejaU = (props: IDataSource) => {
               <>
                 <section className='info-panel'>
                   <div className='container'>
-                    <div className='row mt-2'>
+                    <div className='row'>
                       <div className='col-lg-6 col-sm-12 col-md-6'>
                         <div className='info-secciones'>
                           <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
@@ -384,17 +358,7 @@ export const BandejaU = (props: IDataSource) => {
                     </div>
                   </div>
                 </section>
-                <section className='panel-menu'>
-                  <div className='container'>
-                    <div className='row'>
-                      <div className='col-lg-12 col-md-12'>
-                        <div className='info-tramite mt-3 ml-2'>
-                          <p className='mr-2'>Bandeja de entrada y gestión</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
+
                 <section className='inbox'>
                   <div className='container'>
                     <div className='row'>
