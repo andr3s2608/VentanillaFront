@@ -175,7 +175,7 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: NotificacionBandeja
   },
   {
-    path: `${RevisionPath}/solicitar-revision`,
+    path: `${RevisionPath}/Crear-Solicitud`,
     component: CrearSolicitud
   },
   {
