@@ -1,24 +1,20 @@
-import { SetResetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
 import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
 import { CheckOutlined } from '@ant-design/icons';
-import { store } from 'app/redux/app.reducers';
-import { Button, Modal, Upload } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { useHistory } from 'react-router';
 import '../../../css/estilos.css';
-import { Form, Input } from 'antd';
 import Table from 'antd/es/table';
-import moment from 'moment';
 import Swal from 'sweetalert2';
+import moment from 'moment';
 
 
 export const BandejaCiudadanos = (props: IDataSource) => {
   const history = useHistory();
   const { data, datossolucionados } = props;
-  const [mostrar, setmostrar] = useState<Boolean>(false);
   const Paginas: number = 5;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -36,7 +32,6 @@ export const BandejaCiudadanos = (props: IDataSource) => {
       localStorage.setItem('subredes', JSON.stringify(subredes));
       setDataInter(data);
       setDataSolucionado(datossolucionados);
-      setmostrar(true);
     },
     []
   );
@@ -107,7 +102,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
     const data = datos;
 
     localStorage.setItem('register', JSON.stringify(data));
-    store.dispatch(SetResetViewLicence());
+
     if (tipo == 'tramite') {
       history.push('/tramites-servicios-aguas/Revision/primera-vez');
     } else {
@@ -188,144 +183,143 @@ export const BandejaCiudadanos = (props: IDataSource) => {
 
 
   let structureColumns: any[] = [];
-  if (mostrar) {
-    structureColumns = [
-      {
-        title: FilterByNameInput(),
-        dataIndex: 'numeroRadicado',
-        key: 'nroradicado',
-        width: 200,
-        sorter: {
-          compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
-          multiple: 1,
+
+  structureColumns = [
+    {
+      title: FilterByNameInput(),
+      dataIndex: 'numeroRadicado',
+      key: 'nroradicado',
+      width: 200,
+      sorter: {
+        compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
+        multiple: 1,
+      },
+    },
+    {
+      title: 'Tipo de trámite',
+      dataIndex: 'tipodeTramite',
+      key: 'idTramite',
+      width: 230,
+      sorter: {
+        compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
+          a.tipodeTramite > b.tipodeTramite ? 1 : -1,
+        multiple: 1,
+      }
+    },
+    {
+      title: 'Fecha de Registro',
+      dataIndex: 'fechaSolicitud',
+      key: 'fechaSolicitud',
+      width: 230,
+    },
+    {
+      title: 'Estado ',
+      dataIndex: 'estado',
+      key: 'estado',
+      width: 230,
+      filters: [
+        {
+          text: 'Abierta',
+          value: 'Abierta'
         },
-      },
-      {
-        title: 'Tipo de trámite',
-        dataIndex: 'tipodeTramite',
-        key: 'idTramite',
-        width: 230,
-        sorter: {
-          compare: (a: { tipodeTramite: string; }, b: { tipodeTramite: string; }) =>
-            a.tipodeTramite > b.tipodeTramite ? 1 : -1,
-          multiple: 1,
+        {
+          text: 'Anulada',
+          value: 'Anulada'
+        },
+        {
+          text: 'Cerrada',
+          value: 'Cerrada'
+        },
+        {
+          text: 'Aprobada',
+          value: 'Aprobada'
+        },
+        {
+          text: 'En Gestion',
+          value: 'gesti'
         }
-      },
-      {
-        title: 'Fecha de Registro',
-        dataIndex: 'fechaSolicitud',
-        key: 'fechaSolicitud',
-        width: 230,
-      },
-      {
-        title: 'Estado ',
-        dataIndex: 'estado',
-        key: 'estado',
-        width: 230,
-        filters: [
-          {
-            text: 'Abierta',
-            value: 'Abierta'
-          },
-          {
-            text: 'Anulada',
-            value: 'Anulada'
-          },
-          {
-            text: 'Cerrada',
-            value: 'Cerrada'
-          },
-          {
-            text: 'Aprobada',
-            value: 'Aprobada'
-          },
-          {
-            text: 'En Gestion',
-            value: 'gesti'
-          }
-        ],
-        filterSearch: true,
-        onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value)
-      },
-      {
-        title: 'Actividad en curso',
-        dataIndex: 'actividadActualSolicitud',
-        key: 'actividad',
-        width: 260,
-        filters: [
-          {
-            text: 'Aprobación de solicitud',
-            value: 'Aprobación de solicitud'
-          },
-          {
-            text: 'Desistimiento',
-            value: 'Desistimiento'
-          },
-          {
-            text: 'En visita de revisión',
-            value: 'En visita de revisión'
-          },
-          {
-            text: 'Radicación de solicitud',
-            value: 'Radicación de solicitud'
-          },
-          {
-            text: 'Subsanación de requisitos',
-            value: 'Subsanación de requisitos'
-          }
-        ],
-        filterSearch: true,
+      ],
+      filterSearch: true,
+      onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value)
+    },
+    {
+      title: 'Actividad en curso',
+      dataIndex: 'actividadActualSolicitud',
+      key: 'actividad',
+      width: 260,
+      filters: [
+        {
+          text: 'Aprobación de solicitud',
+          value: 'Aprobación de solicitud'
+        },
+        {
+          text: 'Desistimiento',
+          value: 'Desistimiento'
+        },
+        {
+          text: 'En visita de revisión',
+          value: 'En visita de revisión'
+        },
+        {
+          text: 'Radicación de solicitud',
+          value: 'Radicación de solicitud'
+        },
+        {
+          text: 'Subsanación de requisitos',
+          value: 'Subsanación de requisitos'
+        }
+      ],
+      filterSearch: true,
 
-        onFilter: (value: string, record: { actividadActualSolicitud: string }) =>
-          record.actividadActualSolicitud.toString().includes(value),
-      },
-      {
-        title: 'Validar Tramite',
-        key: 'Acciones',
+      onFilter: (value: string, record: { actividadActualSolicitud: string }) =>
+        record.actividadActualSolicitud.toString().includes(value),
+    },
+    {
+      title: 'Validar Tramite',
+      key: 'Acciones',
 
-        render: (_: any, row: any, index: any) => {
-          if (
-            row.estado != 'Aprobada' &&
-            row.estado != 'Cerrada' &&
-            row.estado != 'Anulada' &&
-            row.tipodeSolicitud != 'Primer Registro' &&
-            row.tipodeSolicitud != 'Proceso de Citacion' &&
-            row.tipodeSolicitud != 'Gestion Validador' &&
-            row.tipodeSolicitud != 'Gestion Coordinador' &&
-            row.tipodeSolicitud != 'Gestion Subdirector'
-          ) {
-            return (
-              <>
+      render: (_: any, row: any, index: any) => {
+        if (
+          row.estado != 'Aprobada' &&
+          row.estado != 'Cerrada' &&
+          row.estado != 'Anulada' &&
+          row.tipodeSolicitud != 'Primer Registro' &&
+          row.tipodeSolicitud != 'Proceso de Citacion' &&
+          row.tipodeSolicitud != 'Gestion Validador' &&
+          row.tipodeSolicitud != 'Gestion Coordinador' &&
+          row.tipodeSolicitud != 'Gestion Subdirector'
+        ) {
+          return (
+            <>
+              <Button
+                type='primary'
+                key={`vali`}
+                onClick={() => onClickValidarInformacion(row, 'tramite')}
+                style={{ marginRight: '8px' }}
+                icon={<CheckOutlined />}
+              >
+                Validar Información
+              </Button>
+              <br></br>
+              {row.actividadActualSolicitud == 'En visita de revisión' && (
                 <Button
                   type='primary'
                   key={`vali`}
-                  onClick={() => onClickValidarInformacion(row, 'tramite')}
+                  onClick={() => onClickValidarInformacion(row, 'visita')}
                   style={{ marginRight: '8px' }}
                   icon={<CheckOutlined />}
                 >
-                  Validar Información
+                  Visualizar Revision
                 </Button>
-                <br></br>
-                {row.actividadActualSolicitud == 'En visita de revisión' && (
-                  <Button
-                    type='primary'
-                    key={`vali`}
-                    onClick={() => onClickValidarInformacion(row, 'visita')}
-                    style={{ marginRight: '8px' }}
-                    icon={<CheckOutlined />}
-                  >
-                    Visualizar Revision
-                  </Button>
-                )}
-              </>
-            );
-          } else {
-            return null;
-          }
+              )}
+            </>
+          );
+        } else {
+          return null;
         }
       }
-    ];
-  }
+    }
+  ];
 
 
   return (
@@ -333,223 +327,219 @@ export const BandejaCiudadanos = (props: IDataSource) => {
       <div className='card'>
         <div className='card-body tarjeta h-100 card_tarjeta'>
           <Form form={form} {...layoutItems} layout='horizontal'>
-            {mostrar && (
-              <>
-                <section className='info-panel'>
-                  <div className='container'>
-                    <div className='row'>
-                      <div className='col-lg-6 col-sm-12 col-md-6'>
-                        <div className='info-secciones'>
-                          <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
-                            <ol className='breadcrumb'>
-                              <li className='breadcrumb-item'>
-                                <a href='#'>Inicio</a>
-                              </li>
-                              <li className='breadcrumb-item'>
-                                <a href='#'>Bandeja de entrada</a>
-                              </li>
-                              <li className='breadcrumb-item active' aria-current='page'>
-                                Revisar solicitud
-                              </li>
-                            </ol>
-                          </nav>
+            <section className='info-panel'>
+              <div className='container'>
+                <div className='row'>
+                  <div className='col-lg-6 col-sm-12 col-md-6'>
+                    <div className='info-secciones'>
+                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
+                        <ol className='breadcrumb'>
+                          <li className='breadcrumb-item'>
+                            <a href='#'>Inicio</a>
+                          </li>
+                          <li className='breadcrumb-item'>
+                            <a href='#'>Bandeja de entrada</a>
+                          </li>
+                          <li className='breadcrumb-item active' aria-current='page'>
+                            Revisar solicitud
+                          </li>
+                        </ol>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className='inbox'>
+              <div className='container'>
+                <div className='row'>
+                  <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
+                    <div id='accordion' className='mt-3'>
+                      <div className='card'>
+                        <div className='card-header' id='heading-2'>
+                          <h5 className='mb-0'>
+                            <a
+                              className='bandeja '
+                              role='button'
+                              data-toggle='collapse'
+                              href='#collapse-2'
+                              aria-expanded='false'
+                              aria-controls='collapse-2'
+                            >
+                              Bandeja de entrada
+                            </a>
+                          </h5>
                         </div>
                       </div>
                     </div>
                   </div>
-                </section>
-
-                <section className='inbox'>
-                  <div className='container'>
-                    <div className='row'>
-                      <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
-                        <div id='accordion' className='mt-3'>
-                          <div className='card'>
-                            <div className='card-header' id='heading-2'>
-                              <h5 className='mb-0'>
-                                <a
-                                  className='bandeja '
-                                  role='button'
-                                  data-toggle='collapse'
-                                  href='#collapse-2'
-                                  aria-expanded='false'
-                                  aria-controls='collapse-2'
-                                >
-                                  Bandeja de entrada
-                                </a>
-                              </h5>
+                  <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
+                    <div
+                      id='collapse-2'
+                    >
+                      <ul className='nav nav-tabs' role='tablist'>
+                        <li className='nav-item encabezados'>
+                          <a
+                            className='nav-link active'
+                            data-toggle='tab'
+                            onClick={() => resetdata()}
+                            href='#tabs-1'
+                            role='tab'
+                            style={{ borderTop: '3px solid orange' }}
+                          >
+                            Recientes
+                          </a>
+                        </li>
+                        <li className='nav-item encabezados'>
+                          <a className='nav-link' data-toggle='tab' onClick={() => resetdata()}
+                            href='#tabs-2' role='tab' style={{ borderTop: '3px solid orange' }}>
+                            Solucionados
+                          </a>
+                        </li>
+                      </ul>
+                      <div className='tab-content'>
+                        <div className='tab-pane active' id='tabs-1' role='tabpanel'>
+                          <div className='row'>
+                            <div className='col-lg-12 col-sm-12 col-md-12 '>
+                              <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                              <div className="row " style={{ marginLeft: '2px' }}>
+                                <div className="col-lg-5">
+                                  <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                    <DatepickerComponent
+                                      id='datePicker1'
+                                      picker='date'
+                                      placeholder='Fecha Inicial'
+                                      dateDisabledType='default'
+                                      dateFormatType='default'
+                                      style={{ width: 300 }}
+                                      className='form-control'
+                                      onChange={(date) => {
+                                        setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="col-lg-5">
+                                  <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                    <DatepickerComponent
+                                      id='datePicker2'
+                                      picker='date'
+                                      placeholder='Fecha Final'
+                                      dateDisabledType='default'
+                                      dateFormatType='default'
+                                      style={{ width: 300 }}
+                                      className='form-control'
+                                      onChange={(date) => {
+                                        setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="col-lg-2">
+                                  <Form.Item style={{ width: 400 }}>
+                                    <Button
+                                      type='primary'
+                                      key={`filtrarReciente`}
+                                      onClick={() => onClickFiltrar('reciente')}
+                                      style={{ marginRight: '8px' }}
+                                      icon={<CheckOutlined />}
+                                    >
+                                      Filtrar
+                                    </Button>
+                                  </Form.Item>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className='col-lg-9 col-md-9 col-sm-12 mt-3 bandeja_panel'>
-                        <div
-                          id='collapse-2'
-                        >
-                          <ul className='nav nav-tabs' role='tablist'>
-                            <li className='nav-item encabezados'>
-                              <a
-                                className='nav-link active'
-                                data-toggle='tab'
-                                onClick={() => resetdata()}
-                                href='#tabs-1'
-                                role='tab'
-                                style={{ borderTop: '3px solid orange' }}
-                              >
-                                Recientes
-                              </a>
-                            </li>
-                            <li className='nav-item encabezados'>
-                              <a className='nav-link' data-toggle='tab' onClick={() => resetdata()}
-                                href='#tabs-2' role='tab' style={{ borderTop: '3px solid orange' }}>
-                                Solucionados
-                              </a>
-                            </li>
-                          </ul>
-                          <div className='tab-content'>
-                            <div className='tab-pane active' id='tabs-1' role='tabpanel'>
-                              <div className='row'>
-                                <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                  <div className="row " style={{ marginLeft: '2px' }}>
-                                    <div className="col-lg-5">
-                                      <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                        <DatepickerComponent
-                                          id='datePicker1'
-                                          picker='date'
-                                          placeholder='Fecha Inicial'
-                                          dateDisabledType='default'
-                                          dateFormatType='default'
-                                          style={{ width: 300 }}
-                                          className='form-control'
-                                          onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                          }}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="col-lg-5">
-                                      <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                        <DatepickerComponent
-                                          id='datePicker2'
-                                          picker='date'
-                                          placeholder='Fecha Final'
-                                          dateDisabledType='default'
-                                          dateFormatType='default'
-                                          style={{ width: 300 }}
-                                          className='form-control'
-                                          onChange={(date) => {
-                                            setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
-                                          }}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="col-lg-2">
-                                      <Form.Item style={{ width: 400 }}>
-                                        <Button
-                                          type='primary'
-                                          key={`filtrarReciente`}
-                                          onClick={() => onClickFiltrar('reciente')}
-                                          style={{ marginRight: '8px' }}
-                                          icon={<CheckOutlined />}
-                                        >
-                                          Filtrar
-                                        </Button>
-                                      </Form.Item>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
 
-                              <div className='row'>
-                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                  <Table
-                                    scroll={{ x: 500 }}
-                                    id='tableGen'
-                                    dataSource={dataInter.length > 0 ? dataInter : data}
-                                    columns={structureColumns}
-                                    pagination={{ pageSize: Paginas }}
-                                    className='table_info'
-                                  />
-                                </div>
-                              </div>
-
+                          <div className='row'>
+                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                              <Table
+                                scroll={{ x: 500 }}
+                                id='tableGen'
+                                dataSource={dataInter.length > 0 ? dataInter : data}
+                                columns={structureColumns}
+                                pagination={{ pageSize: Paginas }}
+                                className='table_info'
+                              />
                             </div>
-                            <div className='tab-pane' id='tabs-2' role='tabpanel'>
-                              <div className='row'>
-                                <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                  <div className="row " style={{ marginLeft: '2px' }}>
-                                    <div className="col-lg-5">
-                                      <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                        <DatepickerComponent
-                                          id='datePicker1'
-                                          picker='date'
-                                          placeholder='Fecha Inicial'
-                                          dateDisabledType='default'
-                                          dateFormatType='default'
-                                          style={{ width: 300 }}
-                                          className='form-control'
-                                          onChange={(date) => {
-                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                          }}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="col-lg-5">
-                                      <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                        <DatepickerComponent
-                                          id='datePicker2'
-                                          picker='date'
-                                          placeholder='Fecha Final'
-                                          dateDisabledType='default'
-                                          dateFormatType='default'
-                                          style={{ width: 300 }}
-                                          className='form-control'
-                                          onChange={(date) => {
-                                            setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
-                                          }}
-                                        />
-                                      </Form.Item>
-                                    </div>
-                                    <div className="col-lg-2">
-                                      <Form.Item style={{ width: 400 }}>
-                                        <Button
-                                          type='primary'
-                                          key={`filtrarReciente`}
-                                          onClick={() => onClickFiltrar('reciente')}
-                                          style={{ marginRight: '8px' }}
-                                          icon={<CheckOutlined />}
-                                        >
-                                          Filtrar
-                                        </Button>
-                                      </Form.Item>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className='row'>
-                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                  <Table
-                                    scroll={{ x: 500 }}
-                                    id='tableGen'
-                                    dataSource={dataSolucionado}
-                                    columns={structureColumns}
-                                    pagination={{ pageSize: Paginas }}
-                                    className='table_info'
+                          </div>
 
-                                  />
+                        </div>
+                        <div className='tab-pane' id='tabs-2' role='tabpanel'>
+                          <div className='row'>
+                            <div className='col-lg-12 col-sm-12 col-md-12 '>
+                              <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                              <div className="row " style={{ marginLeft: '2px' }}>
+                                <div className="col-lg-5">
+                                  <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                    <DatepickerComponent
+                                      id='datePicker1'
+                                      picker='date'
+                                      placeholder='Fecha Inicial'
+                                      dateDisabledType='default'
+                                      dateFormatType='default'
+                                      style={{ width: 300 }}
+                                      className='form-control'
+                                      onChange={(date) => {
+                                        setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="col-lg-5">
+                                  <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                    <DatepickerComponent
+                                      id='datePicker2'
+                                      picker='date'
+                                      placeholder='Fecha Final'
+                                      dateDisabledType='default'
+                                      dateFormatType='default'
+                                      style={{ width: 300 }}
+                                      className='form-control'
+                                      onChange={(date) => {
+                                        setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="col-lg-2">
+                                  <Form.Item style={{ width: 400 }}>
+                                    <Button
+                                      type='primary'
+                                      key={`filtrarReciente`}
+                                      onClick={() => onClickFiltrar('reciente')}
+                                      style={{ marginRight: '8px' }}
+                                      icon={<CheckOutlined />}
+                                    >
+                                      Filtrar
+                                    </Button>
+                                  </Form.Item>
                                 </div>
                               </div>
+                            </div>
+                          </div>
+                          <div className='row'>
+                            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                              <Table
+                                scroll={{ x: 500 }}
+                                id='tableGen'
+                                dataSource={dataSolucionado}
+                                columns={structureColumns}
+                                pagination={{ pageSize: Paginas }}
+                                className='table_info'
+
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </section>
-              </>
-            )}
+                </div>
+              </div>
+            </section>
           </Form>
         </div>
       </div>
