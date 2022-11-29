@@ -1,14 +1,10 @@
-import { Bandeja } from 'app/aguasconsumo/Components/Bandeja';
-import { BandejaU } from 'app/aguasconsumo/Components/BandejaU';
-//import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-//import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
-import { ApiService } from 'app/services/Apis.service';
-import Tabs from 'antd/es/tabs';
+import { BandejaFuncionarios } from 'app/aguasconsumo/Components/BandejaFuncionarios';
+import { BandejaCiudadanos } from 'app/aguasconsumo/Components/BandejaCiudadanos';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import React, { useCallback, useEffect, useState } from 'react';
-import { setgid } from 'process';
+import { ApiService } from 'app/services/Apis.service';
+import Tabs from 'antd/es/tabs';
 
-// Otros componentes
 
 const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const [roles, setroles] = useState<any[]>([]);
@@ -142,7 +138,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     <div className='fadeInTop container-fluid'>
       <Tabs>
         {bandeja ? (
-          <Bandeja
+          <BandejaFuncionarios
             data={grid}
             datosusuario={datosusuario}
             datossolucionados={datossolucionadosusuario}
@@ -150,7 +146,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
             historico={historiconotificaciones}
           />
         ) : (
-          <BandejaU data={grid} datossolucionados={datossolucionadosusuario} />
+          <BandejaCiudadanos data={grid} datossolucionados={datossolucionadosusuario} />
         )}
       </Tabs>
     </div>
