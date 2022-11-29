@@ -8,6 +8,7 @@ export const licenciaPath = '/tramites-servicios/licencia';
 export const RevisionPath = '/tramites-servicios-aguas/Revision';
 export const tramiteServicePath = '/tramites-servicios';
 export const tramiteServiceAguasPath = '/tramites-servicios-aguas';
+export const tramiteServiceSSTPath = '/tramites-servicios-sst';
 export const tramiteAdmin = '/tramites-administrador';
 export const notificacion = '/notificacion';
 export const updatepath = '/modificar';
@@ -58,6 +59,9 @@ const PrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/pr
 const SegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/segundaVez.page'));
 const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionPrimera.page'));
 const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionSegunda.page'));
+
+//SST
+const TramiteSST = lazy(() => import('../../../tramite_15/pages/tramite.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
 
@@ -197,5 +201,10 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${RevisionPath}/renovacion-segunda-vez`,
     component: RenovacionSegundaVez
-  }
+  },
+  // SST
+  {
+    path: `${tramiteServiceSSTPath}`,
+    component: TramiteSST
+  },
 ];
