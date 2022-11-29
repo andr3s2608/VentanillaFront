@@ -354,14 +354,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: true }]}>
+                <Form.Item>
                   <Input
                     className='form-control gov-co-form-control'
                     maxLength={10}
                     value={input}
                     onChange={(event) => {
-
-                      ////////////////grados/////////////////////////
                       setInput(event.target.value);
                       if (
                         event.target.value.length === 2 &&
@@ -372,7 +370,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       if (event.target.value.length === 2) {
                         setInput(event.target.value + "°");
                       }
-                      //////////////////minutos//////////////////////////
+
                       if (
                         event.target.value.length === 5 &&
                         event.target.value.includes("'.")
@@ -382,19 +380,21 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       if (event.target.value.length === 5) {
                         setInput(event.target.value + "'.");
                       }
-                      ///////////////segundos///////////////////////////
+
                       if (
-                        event.target.value.length === 9 &&
+                        event.target.value.length === 8 &&
                         event.target.value.includes('"')
                       ) {
                         setInput(event.target.value.replace('"', ""));
                       }
-                      if (event.target.value.length === 9) {
+                      if (event.target.value.length === 8) {
                         setInput(event.target.value + '"');
                       }
+
                     }}
                   />
                 </Form.Item>
+
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
@@ -576,13 +576,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: true }]}>
+                <Form.Item>
                   <Input
+                    className='form-control'
                     maxLength={10}
                     value={input}
                     onChange={(event) => {
-
-                      ////////////////grados/////////////////////////
                       setInput(event.target.value);
                       if (
                         event.target.value.length === 2 &&
@@ -593,7 +592,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       if (event.target.value.length === 2) {
                         setInput(event.target.value + "°");
                       }
-                      //////////////////minutos//////////////////////////
+
                       if (
                         event.target.value.length === 5 &&
                         event.target.value.includes("'.")
@@ -603,16 +602,17 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       if (event.target.value.length === 5) {
                         setInput(event.target.value + "'.");
                       }
-                      ///////////////segundos///////////////////////////
+
                       if (
-                        event.target.value.length === 9 &&
+                        event.target.value.length === 8 &&
                         event.target.value.includes('"')
                       ) {
                         setInput(event.target.value.replace('"', ""));
                       }
-                      if (event.target.value.length === 9) {
+                      if (event.target.value.length === 8) {
                         setInput(event.target.value + '"');
                       }
+
                     }}
                   />
                 </Form.Item>
