@@ -19,7 +19,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
 
-export const Bandeja = (props: IDataSource) => {
+export const BandejaFuncionarios = (props: IDataSource) => {
   const history = useHistory();
   const { data, datosusuario, datossolucionados, notificaciones, historico } = props;
 
