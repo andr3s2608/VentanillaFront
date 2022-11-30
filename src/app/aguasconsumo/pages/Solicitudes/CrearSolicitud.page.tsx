@@ -25,7 +25,8 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
 
   const history = useHistory();
   const [form] = Form.useForm<any>();
-  const objJson: any = EditAguas();
+  //const objJson: any = EditAguas();
+  const objJson: any = [];
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);

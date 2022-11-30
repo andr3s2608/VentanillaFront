@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../../../../css/estilos.css';
-// Antd
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
@@ -60,7 +59,9 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
       const array: any[] = [];
       const arraytabla: any[] = [];
-      /*for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
+
+      /*
+      for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
         array.push({
           posicion: index + 1,
           departamento: obj.acueductosfuentejson[index].idDepartamento,
@@ -83,6 +84,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           usofuente: usofuente[0].nombre
         });
       }*/
+
       setacueductos(array);
       if (prop != null) {
         prop(array);
@@ -118,6 +120,13 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
       mun = '31211657-3386-420a-8620-f9c07a8ca491';
     }
+    console.log("============");
+    console.log("valores: ", dep);
+    console.log("lat", lat);
+    console.log("long: ", long);
+    console.log("uso: ", uso);
+    console.log("desc: ", desc);
+
     if (loc == undefined || uso == undefined || lat == undefined || long == undefined) {
       Swal.fire({
         icon: 'error',
@@ -166,6 +175,9 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
             const { descripcion } = municipios[0];
             //localidad
+            console.log("=== ahora ==");
+            console.log(loc);
+            console.log(l_localidades);
             const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
             const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
 
@@ -354,7 +366,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item>
+                <Form.Item name='latituduso'>
                   <Input
                     className='form-control gov-co-form-control'
                     maxLength={10}
@@ -402,7 +414,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación  Longitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: true }]}>
+                <Form.Item name='longituduso' rules={[{ required: true }]}>
                   <Input
                     title='El formato no es valido, ingrese 8 digitos y una letra'
                     pattern='[0-9]{8,}[N-S]{1,}'
@@ -424,7 +436,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Uso de la fuente
                 </label>
                 <Form.Item name='usofuente' rules={[{ required: false }]}>
-                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
+                  <SelectComponent onChange={(value) => console.log(value)} options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
                 </Form.Item>
               </div>
             </div>
