@@ -37,7 +37,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
   const [input, setInput] = useState('');
-
+  const [Longitud_input, setLongitud_input] = useState('');
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
@@ -356,8 +356,10 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </label>
                 <Form.Item>
                   <Input
+                    pattern='[0-9]{8,}[N-S]{1,}'
+                    title='El formato no es el adecuado'
                     className='form-control gov-co-form-control'
-                    maxLength={10}
+                    maxLength={13}
                     value={input}
                     onChange={(event) => {
                       setInput(event.target.value);
@@ -373,21 +375,31 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
                       if (
                         event.target.value.length === 5 &&
-                        event.target.value.includes("'.")
+                        event.target.value.includes("'")
                       ) {
-                        setInput(event.target.value.replace("'.", ""));
+                        setInput(event.target.value.replace("'", ""));
                       }
                       if (event.target.value.length === 5) {
-                        setInput(event.target.value + "'.");
+                        setInput(event.target.value + "'");
                       }
 
                       if (
                         event.target.value.length === 8 &&
+                        event.target.value.includes('.')
+                      ) {
+                        setInput(event.target.value.replace('.', ""));
+                      }
+                      if (event.target.value.length === 8) {
+                        setInput(event.target.value + '.');
+                      }
+
+                      if (
+                        event.target.value.length === 11 &&
                         event.target.value.includes('"')
                       ) {
                         setInput(event.target.value.replace('"', ""));
                       }
-                      if (event.target.value.length === 8) {
+                      if (event.target.value.length === 11) {
                         setInput(event.target.value + '"');
                       }
 
@@ -578,8 +590,10 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </label>
                 <Form.Item>
                   <Input
+
+                    title='El formato no es el adecuado'
                     className='form-control'
-                    maxLength={10}
+                    maxLength={13}
                     value={input}
                     onChange={(event) => {
                       setInput(event.target.value);
@@ -595,21 +609,31 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
                       if (
                         event.target.value.length === 5 &&
-                        event.target.value.includes("'.")
+                        event.target.value.includes("'")
                       ) {
-                        setInput(event.target.value.replace("'.", ""));
+                        setInput(event.target.value.replace("'", ""));
                       }
                       if (event.target.value.length === 5) {
-                        setInput(event.target.value + "'.");
+                        setInput(event.target.value + "'");
                       }
 
                       if (
                         event.target.value.length === 8 &&
+                        event.target.value.includes('.')
+                      ) {
+                        setInput(event.target.value.replace('.', ""));
+                      }
+                      if (event.target.value.length === 8) {
+                        setInput(event.target.value + '.');
+                      }
+
+                      if (
+                        event.target.value.length === 11 &&
                         event.target.value.includes('"')
                       ) {
                         setInput(event.target.value.replace('"', ""));
                       }
-                      if (event.target.value.length === 8) {
+                      if (event.target.value.length === 11) {
                         setInput(event.target.value + '"');
                       }
 
