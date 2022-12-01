@@ -38,7 +38,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [dataTable, setDataTable] = useState<[]>();
   const [ocultarbandeja, setocultarbandeja] = useState<boolean>(false);
   const [ocultarnotificacion, setocultarnotificacion] = useState<boolean>(true);
   const [dias, setdias] = useState<any>([]);
@@ -990,6 +990,8 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
 
   const Openmodal = async (solicitud: any) => {
+    const seguimiento: any = await api.getObservacionesList(solicitud.idSolicitud);
+    setDataTable(seguimiento);
     showModal();
   };
 
@@ -1001,6 +1003,13 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     setIsModalVisible(false);
   };
 
+  const columnFake = [
+    {
+      title: 'Observación',
+      dataIndex: 'observacion',
+      key: 'Observacion'
+    },
+  ];
   return (
 
     <div className='container-fluid'>
@@ -1587,7 +1596,13 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         okButtonProps={{ hidden: true }}
         cancelText='Cerrar'
       >
-
+        <Table
+          // className='text-center table'
+          dataSource={dataTable}
+          columns={columnFake}
+          scroll={{ x: 1200 }}
+          pagination={{ hideOnSinglePage: true }}
+        />
       </Modal>
     </div>
   );
