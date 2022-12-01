@@ -483,6 +483,49 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   }
 
+  const onChangeFormat = (event: any) => {
+    setInput(event.target.value);
+    if (
+      event.target.value.length === 2 &&
+      event.target.value.includes("°")
+    ) {
+      setInput(event.target.value.replace("°", ""));
+    }
+    if (event.target.value.length === 2) {
+      setInput(event.target.value + "°");
+    }
+
+    if (
+      event.target.value.length === 5 &&
+      event.target.value.includes("'")
+    ) {
+      setInput(event.target.value.replace("'", ""));
+    }
+    if (event.target.value.length === 5) {
+      setInput(event.target.value + "'");
+    }
+
+    if (
+      event.target.value.length === 8 &&
+      event.target.value.includes('.')
+    ) {
+      setInput(event.target.value.replace('.', ""));
+    }
+    if (event.target.value.length === 8) {
+      setInput(event.target.value + '.');
+    }
+
+    if (
+      event.target.value.length === 11 &&
+      event.target.value.includes('"')
+    ) {
+      setInput(event.target.value.replace('"', ""));
+    }
+    if (event.target.value.length === 11) {
+      setInput(event.target.value + '"');
+    }
+
+  };
 
   if (habilitar) {
     return (
@@ -535,13 +578,14 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </Form.Item>
 
                 {latituddec ?
-                  (<Form.Item name='latituduso'>
+                  (<Form.Item>
                     <Input
-                      pattern='[0-9]{8,}[N-S]{1,}'
-                      title='El formato no es el adecuado'
+                      name='latituduso'
+
                       className='form-control gov-co-form-control'
                       maxLength={13}
                       value={input}
+                      onChange={onChangeFormat}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -549,56 +593,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       }}
                     />
                   </Form.Item>) :
-                  <Form.Item name='latituduso'>
+                  <Form.Item >
                     <Input
-                      pattern='[0-9]{8,}[N-S]{1,}'
-                      title='El formato no es el adecuado'
+                      name='latituduso'
                       className='form-control gov-co-form-control'
                       maxLength={13}
                       value={input}
-                      onChange={(event) => {
-                        setInput(event.target.value);
-                        if (
-                          event.target.value.length === 2 &&
-                          event.target.value.includes("°")
-                        ) {
-                          setInput(event.target.value.replace("°", ""));
-                        }
-                        if (event.target.value.length === 2) {
-                          setInput(event.target.value + "°");
-                        }
-
-                        if (
-                          event.target.value.length === 5 &&
-                          event.target.value.includes("'")
-                        ) {
-                          setInput(event.target.value.replace("'", ""));
-                        }
-                        if (event.target.value.length === 5) {
-                          setInput(event.target.value + "'");
-                        }
-
-                        if (
-                          event.target.value.length === 8 &&
-                          event.target.value.includes('.')
-                        ) {
-                          setInput(event.target.value.replace('.', ""));
-                        }
-                        if (event.target.value.length === 8) {
-                          setInput(event.target.value + '.');
-                        }
-
-                        if (
-                          event.target.value.length === 11 &&
-                          event.target.value.includes('"')
-                        ) {
-                          setInput(event.target.value.replace('"', ""));
-                        }
-                        if (event.target.value.length === 11) {
-                          setInput(event.target.value + '"');
-                        }
-
-                      }}
                     />
                   </Form.Item>}
 
@@ -617,10 +617,11 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Radio value='sexagesimal'>Sexagesimal</Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item name='longituduso' rules={[{ required: true }]}>
+                <Form.Item rules={[{ required: true }]}>
                   <Input
-                    title='El formato no es valido, ingrese 8 digitos y una letra'
-                    pattern='[0-9]{8,}[N-S]{1,}'
+                    name='longituduso'
+                    onChange={onChangeFormat}
+                    value={input}
                     type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -797,56 +798,15 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Radio value='sexagesimal'>Sexagesimal</Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item name='latituduso' rules={[{ required: false }]}>
+                <Form.Item rules={[{ required: false }]}>
                   <Input
+                    name='latituduso'
                     title='El formato no es el adecuado'
                     className='form-control'
                     maxLength={13}
                     disabled={true}
                     value={input}
-                    onChange={(event) => {
-                      setInput(event.target.value);
-                      if (
-                        event.target.value.length === 2 &&
-                        event.target.value.includes("°")
-                      ) {
-                        setInput(event.target.value.replace("°", ""));
-                      }
-                      if (event.target.value.length === 2) {
-                        setInput(event.target.value + "°");
-                      }
-
-                      if (
-                        event.target.value.length === 5 &&
-                        event.target.value.includes("'")
-                      ) {
-                        setInput(event.target.value.replace("'", ""));
-                      }
-                      if (event.target.value.length === 5) {
-                        setInput(event.target.value + "'");
-                      }
-
-                      if (
-                        event.target.value.length === 8 &&
-                        event.target.value.includes('.')
-                      ) {
-                        setInput(event.target.value.replace('.', ""));
-                      }
-                      if (event.target.value.length === 8) {
-                        setInput(event.target.value + '.');
-                      }
-
-                      if (
-                        event.target.value.length === 11 &&
-                        event.target.value.includes('"')
-                      ) {
-                        setInput(event.target.value.replace('"', ""));
-                      }
-                      if (event.target.value.length === 11) {
-                        setInput(event.target.value + '"');
-                      }
-
-                    }}
+                    onChange={onChangeFormat}
                   />
                 </Form.Item>
               </div>

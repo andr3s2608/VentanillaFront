@@ -69,106 +69,58 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
-      const documentosrechazados: any = undefined;
-      //const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
 
-      setrechazados(documentosrechazados);
+      let documentosrechazados: any = [];
 
-      const documentos = await api.getSupportDocumentsAguas("1139247D-1EF7-42A7-AD93-E11A002C4144");
-
-
-      const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
-        return (
-          f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
-          f.idTipoDocumentoAdjunto != '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' &&
-          f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4' &&
-          f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'
-        );
-      });
-
-      const ordenadotabla: any[] = [];
-      const ordenadocompleto: any[] = [];
-      let inserto = false;
-      for (let index = 0; index < orden.length; index++) {
-        for (let index2 = 0; index2 < filter.length; index2++) {
-          if (filter[index2].idTipoDocumentoAdjunto.toLocaleUpperCase() === orden[index]) {
-            const documento = filter[index2];
-            ordenadotabla.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
-            ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
-            inserto = true;
-            break;
-          }
-        }
-        if (!inserto) {
-          ordenadocompleto.push(undefined);
-        }
-        inserto = false;
-      }
+      if ((obj.length > 0) && (obj != undefined)) {
+        documentosrechazados = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
+        setrechazados(documentosrechazados);
+        let documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
 
 
-      setconsultararchivos(ordenadotabla);
+        const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
+          return (
+            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
+            f.idTipoDocumentoAdjunto != '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' &&
+            f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4' &&
+            f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'
+          );
+        });
 
-      const stateDocumentSupportList: IStateDocumentSupport[] = [];
-      const arraytabla: any[] = [];
-      //para llenar el array de los documentos que se mostrara en la tabla de abajo
-      for (let index = 0; index < ordenadotabla.length; index++) {
-        if (ordenadotabla[index].esValido) {
-
-
-          let posicion_ = 0;
-
-          const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
-          const path = ordenadotabla[index].documento.path;
-          const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
-
-          for (let index2 = 0; index2 < path.length; index2++) {
-            if (path.substring(index2, index2 + 1) == '_') {
-              posicion_ = index2;
+        const ordenadotabla: any[] = [];
+        const ordenadocompleto: any[] = [];
+        let inserto = false;
+        for (let index = 0; index < orden.length; index++) {
+          for (let index2 = 0; index2 < filter.length; index2++) {
+            if (filter[index2].idTipoDocumentoAdjunto.toLocaleUpperCase() === orden[index]) {
+              const documento = filter[index2];
+              ordenadotabla.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
+              ordenadocompleto.push({ documento, posicion: index + 1, path: documento.path, esValido: documento.esValido });
+              inserto = true;
+              break;
             }
           }
-
-          var cadena = path.substring(posicioninicial + 1, posicion_);
-
-          arraytabla.push({
-            posicion: ordenadotabla[index].posicion,
-            nombre: cadena,
-            valor: cadena,
-            id: idtipo,
-            subida: 'nube',
-            path: path
-          });
-
-          stateDocumentSupportList.push({
-            posicion: ordenadotabla[index].posicion,
-            idSolicitud: obj.idsolicitud,
-            idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
-            path: path,
-            observaciones: 'default',
-            estadoDocumento: CUMPLE_DOCUMENT,
-            tipoSeguimiento: '6A5913B7-5790-4E11-BF32-D327B98C2E0F'
-          });
+          if (!inserto) {
+            ordenadocompleto.push(undefined);
+          }
+          inserto = false;
         }
-      }
-
-      store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
-
-      //para llenar el array de los documentos
-      const array: any[] = [];
-      for (let index = 0; index < ordenadocompleto.length; index++) {
 
 
+        setconsultararchivos(ordenadotabla);
 
-        if (ordenadocompleto[index] === undefined) {
-          array.push(undefined);
-        } else {
+        const stateDocumentSupportList: IStateDocumentSupport[] = [];
+        const arraytabla: any[] = [];
+        //para llenar el array de los documentos que se mostrara en la tabla de abajo
+        for (let index = 0; index < ordenadotabla.length; index++) {
+          if (ordenadotabla[index].esValido) {
 
-          if (ordenadocompleto[index].esValido) {
+
             let posicion_ = 0;
 
-            const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
-            const path = ordenadocompleto[index].documento.path;
-            const iddocumento = ordenadocompleto[index].documento.idDocumentoAdjunto;
-            const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+            const posicioninicial = ordenadotabla[index].documento.path.indexOf('/');
+            const path = ordenadotabla[index].documento.path;
+            const idtipo = ordenadotabla[index].documento.idTipoDocumentoAdjunto;
 
             for (let index2 = 0; index2 < path.length; index2++) {
               if (path.substring(index2, index2 + 1) == '_') {
@@ -178,30 +130,89 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
             var cadena = path.substring(posicioninicial + 1, posicion_);
 
-            array.push({
-              posicion: ordenadocompleto[index].posicion,
+            arraytabla.push({
+              posicion: ordenadotabla[index].posicion,
               nombre: cadena,
               valor: cadena,
               id: idtipo,
-              esValido: true,
               subida: 'nube',
+              path: path
+            });
+
+            stateDocumentSupportList.push({
+              posicion: ordenadotabla[index].posicion,
+              idSolicitud: obj.idsolicitud,
+              idDocumentoSoporte: ordenadotabla[index].documento.idDocumentoAdjunto,
               path: path,
-              iddocumento: iddocumento
+              observaciones: 'default',
+              estadoDocumento: CUMPLE_DOCUMENT,
+              tipoSeguimiento: '6A5913B7-5790-4E11-BF32-D327B98C2E0F'
             });
           }
         }
 
+        store.dispatch(SetSeguimientoDocumentos(stateDocumentSupportList));
+
+        //para llenar el array de los documentos
+        const array: any[] = [];
+        for (let index = 0; index < ordenadocompleto.length; index++) {
+
+
+
+          if (ordenadocompleto[index] === undefined) {
+            array.push(undefined);
+          } else {
+
+            if (ordenadocompleto[index].esValido) {
+              let posicion_ = 0;
+
+              const posicioninicial = ordenadocompleto[index].documento.path.indexOf('/');
+              const path = ordenadocompleto[index].documento.path;
+              const iddocumento = ordenadocompleto[index].documento.idDocumentoAdjunto;
+              const idtipo = ordenadocompleto[index].documento.idTipoDocumentoAdjunto;
+
+              for (let index2 = 0; index2 < path.length; index2++) {
+                if (path.substring(index2, index2 + 1) == '_') {
+                  posicion_ = index2;
+                }
+              }
+
+              var cadena = path.substring(posicioninicial + 1, posicion_);
+
+              array.push({
+                posicion: ordenadocompleto[index].posicion,
+                nombre: cadena,
+                valor: cadena,
+                id: idtipo,
+                esValido: true,
+                subida: 'nube',
+                path: path,
+                iddocumento: iddocumento
+              });
+            }
+          }
+
+        }
+        localStorage.setItem('documentosiniciales', JSON.stringify(array));
+        setguardararchivos(array);
+        if (prop != null) {
+
+          prop(array);
+        }
+        setguardararchivostabla(arraytabla);
+
+
+        cargardatos();
+
+
       }
-      localStorage.setItem('documentosiniciales', JSON.stringify(array));
-      setguardararchivos(array);
-      if (prop != null) {
-
-        prop(array);
-      }
-      setguardararchivostabla(arraytabla);
 
 
-      cargardatos();
+
+
+
+
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
