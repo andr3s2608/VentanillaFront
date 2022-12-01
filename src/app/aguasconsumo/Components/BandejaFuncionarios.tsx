@@ -37,6 +37,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [ocultarbandeja, setocultarbandeja] = useState<boolean>(false);
   const [ocultarnotificacion, setocultarnotificacion] = useState<boolean>(true);
@@ -888,13 +889,17 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         dataIndex: '',
         width: 200,
         key: '',
-        render(text: any, record: any) {
-          return {
-            props: {
-              style: { background: color }
-            },
-            children: <div>{ }</div>
-          };
+        render: (_: any, row: any, index: any) => {
+          return (
+            <Button
+              onClick={() => Openmodal(row)}
+              type='primary'
+              style={{ marginRight: '8px' }}
+              icon={<CheckOutlined />}
+            >
+              Notificaciones
+            </Button>
+          )
         }
       }
     ];
@@ -983,7 +988,21 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     ];
   }
 
+
+  const Openmodal = async (solicitud: any) => {
+    showModal();
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
+
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body tarjeta h-100 card_tarjeta' >
@@ -1556,6 +1575,20 @@ export const BandejaFuncionarios = (props: IDataSource) => {
           </Form>
         </div>
       </div>
+      <Modal
+        title={
+          <p className='text-center text-dark text-uppercase mb-0 titulo'>
+            Ventana de seguimiento y auditoria
+          </p>
+        }
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={1500}
+        okButtonProps={{ hidden: true }}
+        cancelText='Cerrar'
+      >
+
+      </Modal>
     </div>
   );
 };

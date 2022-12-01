@@ -375,6 +375,8 @@ export class ApiService {
       id: '0'
     });
 
+
+
   getCostante = (idConstante: string) =>
     get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
