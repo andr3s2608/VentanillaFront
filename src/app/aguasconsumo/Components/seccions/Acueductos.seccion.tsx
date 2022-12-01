@@ -62,30 +62,33 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       const array: any[] = [];
       const arraytabla: any[] = [];
 
-      /*
-      for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
-        array.push({
-          posicion: index + 1,
-          departamento: obj.acueductosfuentejson[index].idDepartamento,
-          localidad: obj.acueductosfuentejson[index].idLocalidad,
-          municipio: obj.acueductosfuentejson[index].idMunicipio,
-          latitud: obj.acueductosfuentejson[index].coo_lat_cy,
-          longitud: obj.acueductosfuentejson[index].coo_long_cx,
-          usofuente: obj.acueductosfuentejson[index].idUsoFuente,
-          descripcion: obj.acueductosfuentejson[index].descripcionOtroUso,
-          caudal: obj.acueductosfuentejson[index].caudalTotal
-        });
 
-        const localidad = localidades.filter(
-          (i: { idLocalidad: any }) => i.idLocalidad == obj.acueductosfuentejson[index].idLocalidad
-        );
-        const usofuente = uso.filter((i: { idUsoFuente: any }) => i.idUsoFuente == obj.acueductosfuentejson[index].idUsoFuente);
-        arraytabla.push({
-          posicion: index + 1,
-          munver: 'Bogotá D.C. / ' + localidad[0].descripcion,
-          usofuente: usofuente[0].nombre
-        });
-      }*/
+      if (obj?.acueductosfuentejson !== undefined) {
+        for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
+          array.push({
+            posicion: index + 1,
+            departamento: obj.acueductosfuentejson[index].idDepartamento,
+            localidad: obj.acueductosfuentejson[index].idLocalidad,
+            municipio: obj.acueductosfuentejson[index].idMunicipio,
+            latitud: obj.acueductosfuentejson[index].coo_lat_cy,
+            longitud: obj.acueductosfuentejson[index].coo_long_cx,
+            usofuente: obj.acueductosfuentejson[index].idUsoFuente,
+            descripcion: obj.acueductosfuentejson[index].descripcionOtroUso,
+            caudal: obj.acueductosfuentejson[index].caudalTotal
+          });
+
+          const localidad = localidades.filter(
+            (i: { idLocalidad: any }) => i.idLocalidad == obj.acueductosfuentejson[index].idLocalidad
+          );
+          const usofuente = uso.filter((i: { idUsoFuente: any }) => i.idUsoFuente == obj.acueductosfuentejson[index].idUsoFuente);
+          arraytabla.push({
+            posicion: index + 1,
+            munver: 'Bogotá D.C. / ' + localidad[0].descripcion,
+            usofuente: usofuente[0].nombre
+          });
+        }
+      }
+
 
       setacueductos(array);
       if (prop != null) {

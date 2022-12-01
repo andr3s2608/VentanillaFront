@@ -62,44 +62,49 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
       let sub;
 
-      /*if (obj?.fuenteabastecimientojson[0]) {
-        sub = await api.getSubcategoriasFuente(
-          obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
-        );
-        if (obj?.renovafuentejson[0]) {
-          const date = obj.renovafuentejson[0].fechaResolucion;
-          setdatos([
-            obj.fuenteabastecimientojson[0].idtipofuente,
-            obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
-            obj.fuenteabastecimientojson[0].descripcionOtraFuente,
-            obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-            obj.fuenteabastecimientojson[0].bocatoma_lat,
-            obj.fuenteabastecimientojson[0].bocatoma_long,
-            obj.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
-            obj.fuenteabastecimientojson[0].idAutoridadAmbiental,
-            obj.renovafuentejson[0].numeroResolucion,
-            moment(date),
-            'renovacion'
-          ]);
-          setseleccionar(true);
+      if (obj?.fuenteabastecimientojson !== undefined) {
+        console.log(obj)
+        if (obj?.fuenteabastecimientojson[0]) {
+          console.log('entro')
+          sub = await api.getSubcategoriasFuente(
+            obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
+          );
+          if (obj?.renovafuentejson[0]) {
+            const date = obj.renovafuentejson[0].fechaResolucion;
+            setdatos([
+              obj.fuenteabastecimientojson[0].idtipofuente,
+              obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
+              obj.fuenteabastecimientojson[0].descripcionOtraFuente,
+              obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+              obj.fuenteabastecimientojson[0].bocatoma_lat,
+              obj.fuenteabastecimientojson[0].bocatoma_long,
+              obj.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
+              obj.fuenteabastecimientojson[0].idAutoridadAmbiental,
+              obj.renovafuentejson[0].numeroResolucion,
+              moment(date),
+              'renovacion'
+            ]);
+            setseleccionar(true);
+          } else {
+            setdatos([
+              obj.fuenteabastecimientojson[0].idtipofuente,
+              obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
+              obj.fuenteabastecimientojson[0].descripcionOtraFuente,
+              obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+              obj?.fuenteabastecimientojson[0].bocatoma_lat,
+              obj?.fuenteabastecimientojson[0].bocatoma_long,
+              obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
+              obj?.fuenteabastecimientojson[0].idAutoridadAmbiental,
+              '',
+              '',
+              'primera'
+            ]);
+          }
         } else {
-          setdatos([
-            obj.fuenteabastecimientojson[0].idtipofuente,
-            obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
-            obj.fuenteabastecimientojson[0].descripcionOtraFuente,
-            obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-            obj?.fuenteabastecimientojson[0].bocatoma_lat,
-            obj?.fuenteabastecimientojson[0].bocatoma_long,
-            obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
-            obj?.fuenteabastecimientojson[0].idAutoridadAmbiental,
-            '',
-            '',
-            'primera'
-          ]);
+          sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
         }
-      } else {
-        sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
-      }*/
+      }
+
       setmostrar(true);
       //setl_subcategorias(sub);
     },

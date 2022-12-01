@@ -217,16 +217,19 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     resetdata();
   };
 
+  const onClickSubirArchivo = async (datos: any) => {
+
+  };
+
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Proceso de Citacion') {
+    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Gestion Validador') {
       history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
     }
     if (
-      data.tipodeSolicitud == 'Gestion Validador' ||
       data.tipodeSolicitud == 'Gestion Coordinador' ||
       data.tipodeSolicitud == 'Gestion Subdirector'
     ) {
@@ -695,6 +698,19 @@ export const BandejaFuncionarios = (props: IDataSource) => {
               </Button>
             );
           } else {
+            if (row.TipodeSolicitud === 'Visita de Revision') {
+              return (
+                <Button
+                  type='primary'
+                  key={`vali-${index}`}
+                  onClick={() => onClickValidarInformacion(row)}
+                  style={{ marginRight: '8px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Cargar Archivo
+                </Button>
+              );
+            }
             return null;
           }
         }

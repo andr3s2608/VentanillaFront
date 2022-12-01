@@ -376,6 +376,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   };
 
   let editable = false;
+
   if (obj.idtipodeSolicitud != "d33fbb9c-9f47-4015-bbe6-96ff43f0dde4") {
     editable = true;
   }

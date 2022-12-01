@@ -56,41 +56,44 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
   const getListas = useCallback(async () => {
     const array: any[] = [];
 
-    /*
-    for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
+    if (obj?.sistematratamientojson !== undefined) {
+      for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
 
-      if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
+        if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
 
-        settienefuente(1)
+          settienefuente(1)
+        }
+        else {
+
+          settienefuente(2)
+        }
+        array.push({
+          posicion: index + 1,
+          caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
+          caudaltratado: obj.sistematratamientojson[index].caudalTratado,
+          sed: obj.sistematratamientojson[index].sedimentador,
+          mezr: obj.sistematratamientojson[index].mezclaRapido,
+          alma: obj.sistematratamientojson[index].almacenamiento,
+          torre: obj.sistematratamientojson[index].torreAireacion,
+          desin: obj.sistematratamientojson[index].desinfeccion,
+          preclo: obj.sistematratamientojson[index].precloracion,
+          filt: obj.sistematratamientojson[index].filtracion,
+          mezl: obj.sistematratamientojson[index].mezclaLento,
+          oxi: obj.sistematratamientojson[index].oxidacion,
+          flocula: obj.sistematratamientojson[index].floculador,
+          desarenador: obj.sistematratamientojson[index].desarenador,
+          otra: obj.sistematratamientojson[index].otra,
+          descrip: obj.sistematratamientojson[index].descripcionOtro,
+          num1: obj.sistematratamientojson[index].numUsuarioUrbanos,
+          num2: obj.sistematratamientojson[index].numUsuariosRurales,
+          pob1: obj.sistematratamientojson[index].poblacionUrbanos,
+          pob2: obj.sistematratamientojson[index].poblacionRurales
+        });
       }
-      else {
-
-        settienefuente(2)
-      }
-      array.push({
-        posicion: index + 1,
-        caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
-        caudaltratado: obj.sistematratamientojson[index].caudalTratado,
-        sed: obj.sistematratamientojson[index].sedimentador,
-        mezr: obj.sistematratamientojson[index].mezclaRapido,
-        alma: obj.sistematratamientojson[index].almacenamiento,
-        torre: obj.sistematratamientojson[index].torreAireacion,
-        desin: obj.sistematratamientojson[index].desinfeccion,
-        preclo: obj.sistematratamientojson[index].precloracion,
-        filt: obj.sistematratamientojson[index].filtracion,
-        mezl: obj.sistematratamientojson[index].mezclaLento,
-        oxi: obj.sistematratamientojson[index].oxidacion,
-        flocula: obj.sistematratamientojson[index].floculador,
-        desarenador: obj.sistematratamientojson[index].desarenador,
-        otra: obj.sistematratamientojson[index].otra,
-        descrip: obj.sistematratamientojson[index].descripcionOtro,
-        num1: obj.sistematratamientojson[index].numUsuarioUrbanos,
-        num2: obj.sistematratamientojson[index].numUsuariosRurales,
-        pob1: obj.sistematratamientojson[index].poblacionUrbanos,
-        pob2: obj.sistematratamientojson[index].poblacionRurales
-      });
     }
-    */
+
+
+
     setsistema(array);
     if (prop != null) {
       prop(array);
