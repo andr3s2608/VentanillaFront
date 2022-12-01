@@ -29,6 +29,7 @@ import { Button, Radio, Table, Upload } from 'antd';
 import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import { arch } from 'os';
 import { stringify } from 'querystring';
+import { SeguimientoDocumentosReducer } from 'app/redux/seguimientoDocumentos/seguimientoDocumentos.reducer';
 
 export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const { obj, prop, tipo } = props;
@@ -68,11 +69,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const Paginas: number = 10;
   const getListas = useCallback(
     async () => {
-      const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
+      const documentosrechazados: any = undefined;
+      //const documentosrechazados: any = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
 
       setrechazados(documentosrechazados);
 
-      const documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+      const documentos = await api.getSupportDocumentsAguas("1139247D-1EF7-42A7-AD93-E11A002C4144");
 
 
       const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
@@ -452,6 +454,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           }
         }
       });
+
     } else {
       console.error('No se pudo cargar correctamente el estado de aprobación de los documentos');
     }

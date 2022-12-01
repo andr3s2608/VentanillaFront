@@ -54,7 +54,7 @@ const NotificacionBandeja = lazy(() => import('../../../aguasconsumo/pages/Notif
 //Solicitudes
 const SolicitarRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/solicitarRevision.page'));
 const VisitaRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/visitaRevision.page'));
-const PrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/primeraVez.page'));
+const CrearSolicitud = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/CrearSolicitud.page'));
 const SegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/segundaVez.page'));
 const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionPrimera.page'));
 const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionSegunda.page'));
@@ -175,8 +175,8 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: NotificacionBandeja
   },
   {
-    path: `${RevisionPath}/solicitar-revision`,
-    component: SolicitarRevision
+    path: `${RevisionPath}/Crear-Solicitud`,
+    component: CrearSolicitud
   },
   {
     path: `${RevisionPath}/visita-revision`,
@@ -184,7 +184,7 @@ export const LicenciaRoutes: IRouteProps[] = [
   },
   {
     path: `${RevisionPath}/primera-vez`,
-    component: PrimeraVez
+    component: CrearSolicitud
   },
   {
     path: `${RevisionPath}/segunda-vez`,

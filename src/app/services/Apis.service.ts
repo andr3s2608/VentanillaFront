@@ -5,6 +5,7 @@ import { Menu } from 'app/inhumacioncremacion/Models/IMenu';
 import { IinformatioUser } from 'app/inhumacioncremacion/Models/IInformatioUser';
 import { Iformato } from 'app/inhumacioncremacion/Models/IFormato';
 import { pathToFileURL } from 'url';
+import { ResponseSolicitudDTO } from 'app/aguasconsumo/Models/RequestSolicitudDTO';
 
 const {
   REACT_APP_SECURITY,
@@ -592,7 +593,7 @@ export class ApiService {
   /////////////////////////
 
   AddSolicitudPrimera = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
+    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
 
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });

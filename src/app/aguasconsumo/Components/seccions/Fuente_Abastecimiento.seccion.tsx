@@ -62,7 +62,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
       let sub;
 
-      if (obj?.fuenteabastecimientojson[0]) {
+      /*if (obj?.fuenteabastecimientojson[0]) {
         sub = await api.getSubcategoriasFuente(
           obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
         );
@@ -99,9 +99,9 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
         }
       } else {
         sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
-      }
+      }*/
       setmostrar(true);
-      setl_subcategorias(sub);
+      //setl_subcategorias(sub);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

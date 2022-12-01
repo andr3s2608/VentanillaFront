@@ -8,7 +8,7 @@ import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
-import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Models/IRegistroSolicitudCitacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,

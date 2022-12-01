@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../../../../css/estilos.css';
-// Antd
 import Form, { FormInstance } from 'antd/es/form';
 import Input from 'antd/es/input';
 import Divider from 'antd/es/divider';
@@ -22,19 +21,22 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 
 //Redux
 
-import { Button, InputNumber, Table } from 'antd';
+import { Button, InputNumber, Radio, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2';
+import { SetDireccion } from 'app/redux/dirrecion/direccion.action';
+import Icon from '@ant-design/icons/lib/components/AntdIcon';
 
 export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
-  const { obj, prop, habilitar } = props;
+  const { obj, prop, habilitar, tipoSolicitud } = props;
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
-
+  const [input, setInput] = useState('');
+  const [Longitud_input, setLongitud_input] = useState('');
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
   const [l_localidades, setLLocalidades] = useState<ILocalidad[]>([]);
@@ -57,6 +59,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
       const array: any[] = [];
       const arraytabla: any[] = [];
+
+      /*
       for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
         array.push({
           posicion: index + 1,
@@ -79,7 +83,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           munver: 'Bogotá D.C. / ' + localidad[0].descripcion,
           usofuente: usofuente[0].nombre
         });
-      }
+      }*/
+
       setacueductos(array);
       if (prop != null) {
         prop(array);
@@ -115,6 +120,13 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
       mun = '31211657-3386-420a-8620-f9c07a8ca491';
     }
+    console.log("============");
+    console.log("valores: ", dep);
+    console.log("lat", lat);
+    console.log("long: ", long);
+    console.log("uso: ", uso);
+    console.log("desc: ", desc);
+
     if (loc == undefined || uso == undefined || lat == undefined || long == undefined) {
       Swal.fire({
         icon: 'error',
@@ -163,6 +175,9 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
             const { descripcion } = municipios[0];
             //localidad
+            console.log("=== ahora ==");
+            console.log(loc);
+            console.log(l_localidades);
             const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
             const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
 
@@ -276,7 +291,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
+        if (tipoSolicitud !== 'primera-vez') {
           return (
             <Button
               type='primary'
@@ -306,6 +321,65 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
       }
     }
   ];
+
+  const onChangeTipoCoordenadaLatitud = (event: any) => {
+
+    console.log("Valor depues del onchange: ", event.target.value);
+    if (event.target.value == 'decimal') {
+
+      let valor = props.form.getFieldValue('latituduso');
+      let numerico1 = '';
+      let numerico2 = '';
+
+      if (valor != "" && valor != undefined) {
+        let valornuevo = valor.substring(0, 2);
+        const orientacion = valor.substring(valor.length - 1, valor.length) === 'N' ? '' : '-';
+        for (let index = 2; index < 11; index++) {
+          if (index < 6) {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'" &&
+              valor.substring(index, index + 1) != '.') {
+              numerico1 = numerico1 + valor.substring(index, index + 1);
+
+            }
+          }
+          else {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'" &&
+              valor.substring(index, index + 1) != '.') {
+              numerico2 = numerico2 + valor.substring(index, index + 1);
+
+            }
+          }
+
+
+        }
+        console.log(numerico1);
+        console.log(numerico2);
+
+        valornuevo = orientacion + valornuevo + (Number.parseInt(numerico1 + (Number.parseInt(numerico2) / 60)) / 60);
+
+        console.log(valornuevo)
+      }
+
+
+
+    } else if (event.target.value == 'sexagesimal') {
+
+    }
+  }
+
+  const onChangeTipoCoordenadaLongitud = (event: any) => {
+    console.log("Valor depues del onchange: ", event.target.value);
+    if (event.target.value == 'decimal') {
+
+    } else if (event.target.value == 'sexagesimal') {
+
+    }
+  }
+
 
   if (habilitar) {
     return (
@@ -346,22 +420,70 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
+
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: false }]}>
-                  <Input
-                    type='text'
-                    maxLength={9}
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
+                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
+                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
+                    <Radio value='decimal'>Decimal</Radio>
+                    <Radio value='sexagesimal'>Sexagesimal</Radio>
+                  </Radio.Group>
+                </Form.Item>
 
+                <Form.Item name='latituduso'>
+                  <Input
+                    pattern='[0-9]{8,}[N-S]{1,}'
+                    title='El formato no es el adecuado'
+                    className='form-control gov-co-form-control'
+                    maxLength={13}
+                    value={input}
+                    onChange={(event) => {
+                      setInput(event.target.value);
+                      if (
+                        event.target.value.length === 2 &&
+                        event.target.value.includes("°")
+                      ) {
+                        setInput(event.target.value.replace("°", ""));
+                      }
+                      if (event.target.value.length === 2) {
+                        setInput(event.target.value + "°");
+                      }
+
+                      if (
+                        event.target.value.length === 5 &&
+                        event.target.value.includes("'")
+                      ) {
+                        setInput(event.target.value.replace("'", ""));
+                      }
+                      if (event.target.value.length === 5) {
+                        setInput(event.target.value + "'");
+                      }
+
+                      if (
+                        event.target.value.length === 8 &&
+                        event.target.value.includes('.')
+                      ) {
+                        setInput(event.target.value.replace('.', ""));
+                      }
+                      if (event.target.value.length === 8) {
+                        setInput(event.target.value + '.');
+                      }
+
+                      if (
+                        event.target.value.length === 11 &&
+                        event.target.value.includes('"')
+                      ) {
+                        setInput(event.target.value.replace('"', ""));
+                      }
+                      if (event.target.value.length === 11) {
+                        setInput(event.target.value + '"');
+                      }
+
+                    }}
                   />
                 </Form.Item>
+
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
@@ -369,17 +491,26 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación  Longitud
                 </label>
-                <Form.Item name='longituduso' rules={[{ required: false }]}>
+                <Form.Item label='' name='tipoCoordenadaLongitud' rules={[{ required: true }]}>
+                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
+                    <Radio value='decimal'>Decimal</Radio>
+                    <Radio value='sexagesimal'>Sexagesimal</Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item name='longituduso' rules={[{ required: true }]}>
                   <Input
+                    title='El formato no es valido, ingrese 8 digitos y una letra'
+                    pattern='[0-9]{8,}[N-S]{1,}'
                     type='text'
-                    maxLength={9}
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
+                      if (!/[0-9'"° ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
-
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
                   />
                 </Form.Item>
               </div>
@@ -388,7 +519,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Uso de la fuente
                 </label>
                 <Form.Item name='usofuente' rules={[{ required: false }]}>
-                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
+                  <SelectComponent onChange={(value) => console.log(value)} options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
                 </Form.Item>
               </div>
             </div>
@@ -452,7 +583,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-10 col-md-10 col-sm-12'>
 
@@ -540,18 +671,56 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item name='latituduso' rules={[{ required: false }]}>
+                <Form.Item>
                   <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    disabled={true}
-                    maxLength={9}
-                    onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
 
+                    title='El formato no es el adecuado'
+                    className='form-control'
+                    maxLength={13}
+                    value={input}
+                    onChange={(event) => {
+                      setInput(event.target.value);
+                      if (
+                        event.target.value.length === 2 &&
+                        event.target.value.includes("°")
+                      ) {
+                        setInput(event.target.value.replace("°", ""));
+                      }
+                      if (event.target.value.length === 2) {
+                        setInput(event.target.value + "°");
+                      }
+
+                      if (
+                        event.target.value.length === 5 &&
+                        event.target.value.includes("'")
+                      ) {
+                        setInput(event.target.value.replace("'", ""));
+                      }
+                      if (event.target.value.length === 5) {
+                        setInput(event.target.value + "'");
+                      }
+
+                      if (
+                        event.target.value.length === 8 &&
+                        event.target.value.includes('.')
+                      ) {
+                        setInput(event.target.value.replace('.', ""));
+                      }
+                      if (event.target.value.length === 8) {
+                        setInput(event.target.value + '.');
+                      }
+
+                      if (
+                        event.target.value.length === 11 &&
+                        event.target.value.includes('"')
+                      ) {
+                        setInput(event.target.value.replace('"', ""));
+                      }
+                      if (event.target.value.length === 11) {
+                        setInput(event.target.value + '"');
+                      }
+
+                    }}
                   />
                 </Form.Item>
               </div>
@@ -618,7 +787,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-8 col-md-8 col-sm-12'>
                     <a href='' style={{ textDecoration: 'none' }}>
@@ -660,6 +829,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 interface DatosAcueducto<T> {
   form: FormInstance<T>;
   obj: any;
+  tipoSolicitud: string;
   prop: any;
   habilitar: boolean;
 }

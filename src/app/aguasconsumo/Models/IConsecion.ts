@@ -3,7 +3,7 @@ export interface IConsesion<T> {
   idPersona?: string;
   idTipodeSolicitud?: string;
   tipodeSolicitud: string;
-  numeroRadicado: number;
+  numeroRadicado: Number;
   fechaSolicitud: string;
   idEstado?: string;
   estado: string;
