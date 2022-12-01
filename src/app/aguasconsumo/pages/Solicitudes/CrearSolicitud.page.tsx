@@ -184,6 +184,8 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             }
           };
 
+          console.log('lo que se va a guardar: ');
+          console.log(dataSolicitud);
           const responseSolicitudDTO: ResponseSolicitudDTO = await api.AddSolicitudPrimera(dataSolicitud) as ResponseSolicitudDTO;
 
           console.log("resultado de guardado");

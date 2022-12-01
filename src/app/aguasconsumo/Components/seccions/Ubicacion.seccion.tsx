@@ -316,6 +316,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             className='my-0 py-0'
             type='primary'
             style={{ width: '395px', display: stateDisplayButton }}
+            disabled={true}
             onClick={onGeocoding}
           >
             Confirmar Dirección
