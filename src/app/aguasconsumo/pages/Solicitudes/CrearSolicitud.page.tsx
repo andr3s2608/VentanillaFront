@@ -157,7 +157,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             temporal: false,
             persona: {
               tipoIdentificacion: values.IDType,
-              rut: values.rut,
+              rut: values?.rut ?? '',
               numeroIdentificacion: values.IDNumber,
               primerNombre: values.name,
               segundoNombre: values.secondname,
@@ -172,14 +172,14 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
               razonSocial: values?.nombreEntidad ?? ''
             },
             ubicacion: {
-              direccion: '',
+              direccion: values?.direccionCompletaUbicacion ?? '',
               departamento: '00000000-0000-0000-0000-000000000000',
               municipio: '00000000-0000-0000-0000-000000000000',
-              localidad: '00000000-0000-0000-0000-000000000000',
+              localidad: values?.localidadUbicacion ?? '',
               vereda: '',
-              sector: '',
-              upz: '00000000-0000-0000-0000-000000000000',
-              barrio: '00000000-0000-0000-0000-000000000000',
+              sector: values?.zonaUbicacion ?? '',
+              upz: values?.upzUbicacion ?? '',
+              barrio: values?.barrioUbicacion ?? '',
               observacion: ''
             }
           };
@@ -394,7 +394,10 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
 
   const validarDatosSocilitante = async (form: any) => {
     try {
-      await form.validateFields(['tipotramite', 'persona', 'name', 'IDType', 'IDNumber', 'surname', 'telefono', 'email']);
+      await form.validateFields([
+        'tipotramite', 'persona', 'name', 'IDType', 'IDNumber', 'surname', 'telefono',
+        'email', 'zonaUbicacion', 'barrioUbicacion', 'upzUbicacion', 'localidadUbicacion'
+      ]);
       onNextStep();
     } catch (error) {
       Swal.fire({
