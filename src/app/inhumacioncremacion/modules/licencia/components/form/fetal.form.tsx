@@ -248,7 +248,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
     var numeroins = values.instNumIdent;
     var razonSocialins = values.instRazonSocial;
     var numeroProtocoloins = values.instNumProtocolo;
-    if (tipoinst == undefined) {
+    if (tipoinst == undefined || values?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
       numeroins = '0';
       razonSocialins = 'Otros';

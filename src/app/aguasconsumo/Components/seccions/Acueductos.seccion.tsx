@@ -34,6 +34,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
 
+
+  const [latituddec, setlatituddec] = useState<boolean>(true);
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
   const [input, setInput] = useState('');
   const [Longitud_input, setLongitud_input] = useState('');
@@ -120,12 +122,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     if (dep == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
       mun = '31211657-3386-420a-8620-f9c07a8ca491';
     }
-    console.log("============");
-    console.log("valores: ", dep);
-    console.log("lat", lat);
-    console.log("long: ", long);
-    console.log("uso: ", uso);
-    console.log("desc: ", desc);
+
 
     if (loc == undefined || uso == undefined || lat == undefined || long == undefined) {
       Swal.fire({
@@ -175,9 +172,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
             const { descripcion } = municipios[0];
             //localidad
-            console.log("=== ahora ==");
-            console.log(loc);
-            console.log(l_localidades);
+
             const localidad = l_localidades.filter((i) => i.idLocalidad == loc);
             const usofuente = l_usofuente.filter((i) => i.idUsoFuente == uso);
 
@@ -325,21 +320,22 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   const onChangeTipoCoordenadaLatitud = (event: any) => {
 
     console.log("Valor depues del onchange: ", event.target.value);
+
+    let valor = props.form.getFieldValue('latituduso');
+    let numerico1 = '';
+    let numerico2 = '';
     if (event.target.value == 'decimal') {
 
-      let valor = props.form.getFieldValue('latituduso');
-      let numerico1 = '';
-      let numerico2 = '';
+      setlatituddec(true)
 
-      if (valor != "" && valor != undefined) {
+      if (valor != "" && valor != undefined && valor.length === 13) {
         let valornuevo = valor.substring(0, 2);
         const orientacion = valor.substring(valor.length - 1, valor.length) === 'N' ? '' : '-';
         for (let index = 2; index < 11; index++) {
           if (index < 6) {
             if (valor.substring(index, index + 1) != '°' &&
               valor.substring(index, index + 1) != '"' &&
-              valor.substring(index, index + 1) != "'" &&
-              valor.substring(index, index + 1) != '.') {
+              valor.substring(index, index + 1) != "'") {
               numerico1 = numerico1 + valor.substring(index, index + 1);
 
             }
@@ -347,8 +343,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           else {
             if (valor.substring(index, index + 1) != '°' &&
               valor.substring(index, index + 1) != '"' &&
-              valor.substring(index, index + 1) != "'" &&
-              valor.substring(index, index + 1) != '.') {
+              valor.substring(index, index + 1) != "'") {
               numerico2 = numerico2 + valor.substring(index, index + 1);
 
             }
@@ -356,26 +351,131 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
 
         }
-        console.log(numerico1);
-        console.log(numerico2);
 
-        valornuevo = orientacion + valornuevo + (Number.parseInt(numerico1 + (Number.parseInt(numerico2) / 60)) / 60);
 
-        console.log(valornuevo)
+        const segundos = (Number.parseInt(numerico2) / 60);
+        const minutos = (Number.parseInt(numerico1) + segundos)
+        const horas = minutos / 60;
+
+
+        valornuevo = Number.parseInt(valornuevo) + horas;
+        while (valornuevo > 99) {
+          valornuevo = valornuevo / 10;
+        }
+        valornuevo = orientacion + Number.parseFloat(valornuevo);
+
+        props.form.setFieldsValue({ latituduso: valornuevo })
+
       }
 
-
-
     } else if (event.target.value == 'sexagesimal') {
+
+      setlatituddec(false)
+      if (valor != "" && valor != undefined && valor.length > 3) {
+
+        const orientacion = valor.substring(0, 1) === '-' ? 'S' : 'N';
+        let inicial = orientacion === 'S' ? 1 : 0;
+        let valornuevo = valor.substring(inicial, inicial + 2);
+        let valordecimal = '';
+
+        for (let index = inicial + 2; index < valor.length; index++) {
+
+          if (valor.substring(index, index + 1) != '.') {
+            valordecimal = valordecimal + valor.substring(index, index + 1)
+          }
+        }
+
+        numerico1 = (Number.parseInt(valordecimal) * 60) + '';
+        numerico2 = (Number.parseFloat(numerico1.substring(2, numerico1.length) != '' ? numerico1.substring(2, numerico1.length) : '0') * 60) + '';
+
+
+        valornuevo = valornuevo + '°' + numerico1.substring(0, 2) + "'" + numerico2.substring(0, 2) + '.' + numerico2.substring(2, 4) + '"' + orientacion;
+
+        props.form.setFieldsValue({ latituduso: valornuevo })
+
+      }
+
 
     }
   }
 
   const onChangeTipoCoordenadaLongitud = (event: any) => {
     console.log("Valor depues del onchange: ", event.target.value);
+
+    let valor = props.form.getFieldValue('longituduso');
+    let numerico1 = '';
+    let numerico2 = '';
     if (event.target.value == 'decimal') {
 
+      setlatituddec(true)
+
+      if (valor != "" && valor != undefined && valor.length === 13) {
+        let valornuevo = valor.substring(0, 2);
+        const orientacion = valor.substring(valor.length - 1, valor.length) === 'E' ? '' : '-';
+        for (let index = 2; index < 11; index++) {
+          if (index < 6) {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'") {
+              numerico1 = numerico1 + valor.substring(index, index + 1);
+
+            }
+          }
+          else {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'") {
+              numerico2 = numerico2 + valor.substring(index, index + 1);
+
+            }
+          }
+
+
+        }
+
+
+        const segundos = (Number.parseInt(numerico2) / 60);
+        const minutos = (Number.parseInt(numerico1) + segundos)
+        const horas = minutos / 60;
+
+
+        valornuevo = Number.parseInt(valornuevo) + horas;
+        while (valornuevo > 180) {
+          valornuevo = valornuevo / 10;
+        }
+        valornuevo = orientacion + Number.parseFloat(valornuevo);
+
+        props.form.setFieldsValue({ latituduso: valornuevo })
+
+      }
+
     } else if (event.target.value == 'sexagesimal') {
+
+      setlatituddec(false)
+      if (valor != "" && valor != undefined && valor.length > 3) {
+
+        const orientacion = valor.substring(0, 1) === '-' ? 'O' : 'E';
+        let inicial = orientacion === 'O' ? 1 : 0;
+        let valornuevo = valor.substring(inicial, inicial + 2);
+        let valordecimal = '';
+
+        for (let index = inicial + 2; index < valor.length; index++) {
+
+          if (valor.substring(index, index + 1) != '.') {
+            valordecimal = valordecimal + valor.substring(index, index + 1)
+          }
+        }
+
+        numerico1 = (Number.parseInt(valordecimal) * 60) + '';
+        numerico2 = (Number.parseFloat(numerico1.substring(2, numerico1.length) != '' ? numerico1.substring(2, numerico1.length) : '0') * 60) + '';
+
+
+        valornuevo = valornuevo + '°' + numerico1.substring(0, 2) + "'" + numerico2.substring(0, 2) + '.' + numerico2.substring(2, 4) + '"' + orientacion;
+
+        props.form.setFieldsValue({ latituduso: valornuevo })
+
+      }
+
 
     }
   }
@@ -431,58 +531,75 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   </Radio.Group>
                 </Form.Item>
 
-                <Form.Item name='latituduso'>
-                  <Input
-                    pattern='[0-9]{8,}[N-S]{1,}'
-                    title='El formato no es el adecuado'
-                    className='form-control gov-co-form-control'
-                    maxLength={13}
-                    value={input}
-                    onChange={(event) => {
-                      setInput(event.target.value);
-                      if (
-                        event.target.value.length === 2 &&
-                        event.target.value.includes("°")
-                      ) {
-                        setInput(event.target.value.replace("°", ""));
-                      }
-                      if (event.target.value.length === 2) {
-                        setInput(event.target.value + "°");
-                      }
+                {latituddec ?
+                  (<Form.Item name='latituduso'>
+                    <Input
+                      pattern='[0-9]{8,}[N-S]{1,}'
+                      title='El formato no es el adecuado'
+                      className='form-control gov-co-form-control'
+                      maxLength={13}
+                      value={input}
+                      onKeyPress={(event) => {
+                        if (!/[0-9-.]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    />
+                  </Form.Item>) :
+                  <Form.Item name='latituduso'>
+                    <Input
+                      pattern='[0-9]{8,}[N-S]{1,}'
+                      title='El formato no es el adecuado'
+                      className='form-control gov-co-form-control'
+                      maxLength={13}
+                      value={input}
+                      onChange={(event) => {
+                        setInput(event.target.value);
+                        if (
+                          event.target.value.length === 2 &&
+                          event.target.value.includes("°")
+                        ) {
+                          setInput(event.target.value.replace("°", ""));
+                        }
+                        if (event.target.value.length === 2) {
+                          setInput(event.target.value + "°");
+                        }
 
-                      if (
-                        event.target.value.length === 5 &&
-                        event.target.value.includes("'")
-                      ) {
-                        setInput(event.target.value.replace("'", ""));
-                      }
-                      if (event.target.value.length === 5) {
-                        setInput(event.target.value + "'");
-                      }
+                        if (
+                          event.target.value.length === 5 &&
+                          event.target.value.includes("'")
+                        ) {
+                          setInput(event.target.value.replace("'", ""));
+                        }
+                        if (event.target.value.length === 5) {
+                          setInput(event.target.value + "'");
+                        }
 
-                      if (
-                        event.target.value.length === 8 &&
-                        event.target.value.includes('.')
-                      ) {
-                        setInput(event.target.value.replace('.', ""));
-                      }
-                      if (event.target.value.length === 8) {
-                        setInput(event.target.value + '.');
-                      }
+                        if (
+                          event.target.value.length === 8 &&
+                          event.target.value.includes('.')
+                        ) {
+                          setInput(event.target.value.replace('.', ""));
+                        }
+                        if (event.target.value.length === 8) {
+                          setInput(event.target.value + '.');
+                        }
 
-                      if (
-                        event.target.value.length === 11 &&
-                        event.target.value.includes('"')
-                      ) {
-                        setInput(event.target.value.replace('"', ""));
-                      }
-                      if (event.target.value.length === 11) {
-                        setInput(event.target.value + '"');
-                      }
+                        if (
+                          event.target.value.length === 11 &&
+                          event.target.value.includes('"')
+                        ) {
+                          setInput(event.target.value.replace('"', ""));
+                        }
+                        if (event.target.value.length === 11) {
+                          setInput(event.target.value + '"');
+                        }
 
-                    }}
-                  />
-                </Form.Item>
+                      }}
+                    />
+                  </Form.Item>}
+
+
 
               </div>
             </div>
@@ -519,7 +636,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <span className='required'>* </span> Uso de la fuente
                 </label>
                 <Form.Item name='usofuente' rules={[{ required: false }]}>
-                  <SelectComponent onChange={(value) => console.log(value)} options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
+                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
                 </Form.Item>
               </div>
             </div>
@@ -671,12 +788,18 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item>
+                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
+                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
+                    <Radio value='decimal'>Decimal</Radio>
+                    <Radio value='sexagesimal'>Sexagesimal</Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item name='latituduso' rules={[{ required: false }]}>
                   <Input
-
                     title='El formato no es el adecuado'
                     className='form-control'
                     maxLength={13}
+                    disabled={true}
                     value={input}
                     onChange={(event) => {
                       setInput(event.target.value);
@@ -730,6 +853,14 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Longitud
                 </label>
+
+                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
+                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
+                    <Radio value='decimal'>Decimal</Radio>
+                    <Radio value='sexagesimal'>Sexagesimal</Radio>
+                  </Radio.Group>
+                </Form.Item>
+
                 <Form.Item name='longituduso' rules={[{ required: false }]}>
                   <Input
                     type='text'
