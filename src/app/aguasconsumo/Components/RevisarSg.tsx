@@ -21,6 +21,7 @@ import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { store } from 'app/redux/app.reducers';
 import Swal from 'sweetalert2';
+import { IObservaciones } from './Models/IObservaciones';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
@@ -85,6 +86,42 @@ export const RevisarSg = () => {
   const onSubmit = async (values: any) => {
 
     const { seguimientoDocumentos } = store.getState();
+    let observaciones: any = [];
+    if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
+      let subsanacion = false;
+      const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
+
+      seguimientoDocumentos.forEach((item: any) => {
+        documentToSend.push({
+          idSolicitud: item.idSolicitud,
+          idDocumentoSoporte: item.idDocumentoSoporte,
+          path: item.path,
+          observaciones: values.observacionesSubsanacion,
+          estado_Documento: item.estadoDocumento,
+          tipoSeguimiento: item.tipoSeguimiento
+        });
+        if (item.estadoDocumento === 'No Cumple') {
+          subsanacion = true;
+
+        }
+      });
+
+      if (subsanacion) {
+        console.log('subsana');
+        observaciones.push(
+          {
+            idObservacion: '00000000-0000-0000-0000-000000000000',
+            idSolicitud: objJson.idsolicitud,
+            idSubred: objJson.idSubred,
+            observacion: values.observacionesSubsanacion,
+            fechaObservacion: null
+          }
+        )
+
+
+      }
+      await api.AddEstadoDocumentoSoporte(documentToSend);
+    }
 
     let tiposolicitud: string = values.notificacion;
     let notificacion = '';
@@ -106,18 +143,45 @@ export const RevisarSg = () => {
       notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
     }
 
+    if (values.descripcionNotificacion !== '') {
+      console.log('notificaciones');
+      observaciones.push(
+        {
+          idObservacion: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJson.idsolicitud,
+          idSubred: objJson.idSubred,
+          observacion: values.descripcionNotificacion,
+          fechaObservacion: null
+        }
+      )
+
+    }
+
     if (rol === 'Coordinador') {
       if (tiposolicitud === '') {
         tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
         estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
       }
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
-    }
-    if (rol === 'Funcionario' || rol === 'AdminTI') {
-      if (tiposolicitud === '') {
-        tiposolicitud = '8CA363C0-66AA-4273-8E63-CE3EAC234857';
-        estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
-      }
+
+
+      const json: IObservaciones<any> = {
+
+        idSolicitud: objJson.idsolicitud,
+        idTipoSolicitud: tiposolicitud,
+        observaciones: observaciones,
+
+        citacion: {
+          idCitacion: '00000000-0000-0000-0000-000000000000',
+          fechaCitacion: '',
+          observacion: 'No_aplica',
+          fechaRegistro: '',
+          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idUsuario: '00000000-0000-0000-0000-000000000000'
+        }
+
+      };
+
+      await api.AddObservaciones(json);
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
     if (rol === 'Subdirector') {
@@ -130,25 +194,41 @@ export const RevisarSg = () => {
 
         notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
       }
+
+      observaciones.push(
+        {
+          idObservacion: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJson.idsolicitud,
+          idSubred: objJson.idSubred,
+          observacion: 'autorización tramite',
+          fechaObservacion: null
+        }
+      )
+
+
+      const json: IObservaciones<any> = {
+
+        idSolicitud: objJson.idsolicitud,
+        idTipoSolicitud: tiposolicitud,
+        observaciones: observaciones,
+
+        citacion: {
+          idCitacion: '00000000-0000-0000-0000-000000000000',
+          fechaCitacion: '',
+          observacion: 'No_aplica',
+          fechaRegistro: '',
+          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idUsuario: '00000000-0000-0000-0000-000000000000'
+        }
+
+      };
+
+      await api.AddObservaciones(json);
+
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estado, '2ED2F440-E976-4D92-B315-03276D9812F0');
     }
 
-    if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
-      const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
 
-      seguimientoDocumentos.forEach((item: any) => {
-        documentToSend.push({
-          idSolicitud: item.idSolicitud,
-          idDocumentoSoporte: item.idDocumentoSoporte,
-          path: item.path,
-          observaciones: values.observacionesSubsanacion,
-          estado_Documento: item.estadoDocumento,
-          tipoSeguimiento: item.tipoSeguimiento
-        });
-      });
-
-      await api.AddEstadoDocumentoSoporte(documentToSend);
-    }
 
     const supportDocumentsEdit: any[] = [];
     const formData = new FormData();

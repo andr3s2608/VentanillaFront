@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import profile from '../../../../src/assets/images/aguas/profile.png';
+import revision from '../../../../src/assets/images/aguas/profile.png';
 import { Form, Input } from 'antd';
 import '../../../css/estilos.css';
 
@@ -14,7 +15,7 @@ import { useHistory } from 'react-router';
 import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
@@ -34,6 +35,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   const [dateSelectedFinal, setDateFin] = useState<Date>();
 
   const [filtroactual, setfiltroactual] = useState<String>('');
+
+  const [solicitudaguardar, setsolicitudaguardar] = useState<any>();
+  const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
+
 
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
@@ -217,7 +222,44 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     resetdata();
   };
 
-  const onClickSubirArchivo = async (datos: any) => {
+  const onClickValidarArchivo = (datos: any) => {
+
+    console.log(datos)
+    setsolicitudaguardar(datos);
+    setVisibleDocumentoGestion(true);
+  };
+
+
+  const onClickSubirArchivo = async () => {
+
+    const archivo = form.getFieldValue('cargarvisita')
+
+
+    const supportDocumentsEdit: any[] = [];
+    const formData = new FormData();
+
+    formData.append('file', archivo.file);
+    formData.append('nameFile', 'Documento_revision' + '_' + solicitudaguardar.idSolicitud);
+
+    supportDocumentsEdit.push({
+      idSolicitud: solicitudaguardar.idSolicitud,
+      idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+      path: `${solicitudaguardar.idUsuario}/Documento_revision_${solicitudaguardar.idSolicitud}`,
+      idUsuario: solicitudaguardar.idUsuario,
+      idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+      esValido: true
+    });
+
+    formData.append('containerName', 'aguahumanos');
+    formData.append('oid', solicitudaguardar.idUsuario);
+
+    await api.uploadFiles(formData);
+    await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+
+    setVisibleDocumentoGestion(false);
+
+    await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4',
+      '8CA363C0-66AA-4273-8E63-CE3EAC234857');
 
   };
 
@@ -703,7 +745,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                 <Button
                   type='primary'
                   key={`vali-${index}`}
-                  onClick={() => onClickValidarInformacion(row)}
+                  onClick={() => onClickValidarArchivo(row)}
                   style={{ marginRight: '8px' }}
                   icon={<CheckOutlined />}
                 >
@@ -1568,6 +1610,42 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                 </div>
               </div>
             </section>
+            <div className='row'>
+              {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+              <Modal
+                title={<p className='text-center'>Gestión de Documentos</p>}
+                visible={isVisibleDocumentoGestion}
+                width={800}
+                onCancel={() => setVisibleDocumentoGestion(false)}
+                footer={[]}
+              >
+                <div className='row'>
+                  <img src={revision} alt='logo' className='img-fluid float-end ml-2' />
+                  <div className='col-gl-12 col-sm-12 col-md-12'>
+                    <Form.Item label='Cargar Archivo de Visita Tecnica' name='cargarvisita' rules={[{ required: true }]}>
+                      <Upload
+                        name='cargarvisita'
+                        maxCount={1}
+                        beforeUpload={() => false}
+                        listType='text'
+                        accept='application/pdf'
+                      >
+                        <Button icon={<UploadOutlined />}>Adjuntar archivo</Button>
+                      </Upload>
+                    </Form.Item>
+
+
+                  </div>
+                </div>
+                <div className='row ml-5'>
+                  <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+                    <Button style={{ margin: 10 }} type='primary' htmlType='button' onClick={() => onClickSubirArchivo()}>
+                      Guardar
+                    </Button>
+                  </div>
+                </div>
+              </Modal>
+            </div>
             <br /><br /><br /><br /><br /><br />
           </Form>
         </div>
