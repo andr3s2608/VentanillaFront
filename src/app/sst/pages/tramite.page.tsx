@@ -4,6 +4,7 @@ import {IndividualForm} from '../../inhumacioncremacion/modules/licencia/compone
 import {TramiteForm} from '../component/form/tramite.form';
 import App from '../../inhumacioncremacion/modules/licencia/pages/validarCovid/validar';
 import Swal from 'sweetalert2';
+import {useEffect} from 'react';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -17,8 +18,13 @@ const popInicial = () => {
 };
 
 const TramitePage = () => {
+
+  useEffect(() => {
+    popInicial();
+  }, []);
+
   return (
-    <div className='fadeInTop container-fluid' onLoad={popInicial}>
+    <div className='fadeInTop container-fluid'>
       <PageHeaderComponent
         title='Licencia para prestación de servicios en Seguridad y Salud en el Trabajo'
         subTitle='Consulte el trámite de los certificados o registre una nueva solicitud.'

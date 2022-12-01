@@ -61,7 +61,7 @@ const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Soli
 const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionSegunda.page'));
 
 //SST
-const TramiteSST = lazy(() => import('../../../tramite_15/pages/tramite.page'));
+const TramiteSST = lazy(() => import('../../../sst/pages/tramite.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
 
