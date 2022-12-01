@@ -217,6 +217,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       }
     }
   };
+
+
   return (
     <>
       <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>

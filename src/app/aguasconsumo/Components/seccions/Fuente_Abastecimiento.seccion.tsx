@@ -369,22 +369,6 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         </Form.Item>
                       </div>
                     </div>
-                    <div className='form-row' style={{ marginLeft: '-16px' }}>
-                      <div className='col-lg-6 col-md-6 col-sm-12'>
-                        <Form.Item label='' name='cargarresolucion' rules={[{ required: true }]}>
-                          <Upload
-                            name='cargarresolucion'
-                            maxCount={1}
-                            beforeUpload={() => false}
-                            listType='text'
-                            accept='application/pdf'
-                            disabled={true}
-                          >
-                            <Button icon={<UploadOutlined />}>Adjuntar archivo</Button>
-                          </Upload>
-                        </Form.Item>
-                      </div>
-                    </div>
                   </>
                 )}
 

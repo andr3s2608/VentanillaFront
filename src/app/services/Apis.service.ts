@@ -597,6 +597,9 @@ export class ApiService {
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
+  AddObservaciones = (payload: any) =>
+    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/AddObservaciones', payload, id: '0' });
+
   AddSolicitudConsecion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/RenovarSolicitud', payload, id: '0' });
 
