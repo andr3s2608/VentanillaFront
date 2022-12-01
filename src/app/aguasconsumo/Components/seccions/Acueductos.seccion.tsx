@@ -21,7 +21,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 
 //Redux
 
-import { Button, InputNumber, Table } from 'antd';
+import { Button, InputNumber, Radio, Table } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 import Swal from 'sweetalert2';
@@ -322,6 +322,63 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   ];
 
+  const onChangeTipoCoordenadaLatitud = (event: any) => {
+
+    console.log("Valor depues del onchange: ", event.target.value);
+    if (event.target.value == 'decimal') {
+
+      let valor = props.form.getFieldValue('latituduso');
+      let numerico1 = '';
+      let numerico2 = '';
+
+      if (valor != "" && valor != undefined) {
+        let valornuevo = valor.substring(0, 2);
+        const orientacion = valor.substring(valor.length - 1, valor.length) === 'N' ? '' : '-';
+        for (let index = 2; index < 11; index++) {
+          if (index < 6) {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'" &&
+              valor.substring(index, index + 1) != '.') {
+              numerico1 = numerico1 + valor.substring(index, index + 1);
+
+            }
+          }
+          else {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'" &&
+              valor.substring(index, index + 1) != '.') {
+              numerico2 = numerico2 + valor.substring(index, index + 1);
+
+            }
+          }
+
+
+        }
+        console.log(numerico1);
+        console.log(numerico2);
+
+        valornuevo = orientacion + valornuevo + (Number.parseInt(numerico1 + (Number.parseInt(numerico2) / 60)) / 60);
+
+        console.log(valornuevo)
+      }
+
+
+
+    } else if (event.target.value == 'sexagesimal') {
+
+    }
+  }
+
+  const onChangeTipoCoordenadaLongitud = (event: any) => {
+    console.log("Valor depues del onchange: ", event.target.value);
+    if (event.target.value == 'decimal') {
+
+    } else if (event.target.value == 'sexagesimal') {
+
+    }
+  }
 
 
   if (habilitar) {
@@ -363,9 +420,17 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
+
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
+                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
+                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
+                    <Radio value='decimal'>Decimal</Radio>
+                    <Radio value='sexagesimal'>Sexagesimal</Radio>
+                  </Radio.Group>
+                </Form.Item>
+
                 <Form.Item name='latituduso'>
                   <Input
                     pattern='[0-9]{8,}[N-S]{1,}'
@@ -426,6 +491,12 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación  Longitud
                 </label>
+                <Form.Item label='' name='tipoCoordenadaLongitud' rules={[{ required: true }]}>
+                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
+                    <Radio value='decimal'>Decimal</Radio>
+                    <Radio value='sexagesimal'>Sexagesimal</Radio>
+                  </Radio.Group>
+                </Form.Item>
                 <Form.Item name='longituduso' rules={[{ required: true }]}>
                   <Input
                     title='El formato no es valido, ingrese 8 digitos y una letra'
