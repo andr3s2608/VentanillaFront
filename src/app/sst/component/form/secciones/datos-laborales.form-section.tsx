@@ -4,6 +4,7 @@ import Radio, {RadioChangeEvent} from 'antd/es/radio';
 import Input from 'antd/es/input';
 import {SelectComponent} from '../../../../shared/components/inputs/select.component';
 import {dominioService, ETipoDominio, IDepartamento, IDominio, IMunicipio} from '../../../../services/dominio.service';
+import Divider from 'antd/es/divider';
 
 export const DatosLaboralesFormSeccion: React.FC<IDatosLaboralesProps<any>> = (props) => {
 
@@ -88,6 +89,7 @@ export const DatosLaboralesFormSeccion: React.FC<IDatosLaboralesProps<any>> = (p
 
       {getIsLabora && (
         <>
+          <Divider orientation='right'> Datos de la empresa </Divider>
           <Form.Item
             label='Nombre de la empresa'
             name='nombreEmpresa'
@@ -160,14 +162,14 @@ export const DatosLaboralesFormSeccion: React.FC<IDatosLaboralesProps<any>> = (p
           label='Fax de la empresa'
           name='faxEmpresa'
           rules={[{ required: false}]}
-        >
+          >
           <Input
             allowClear
             placeholder='Fax'
             autoComplete='off'
             type='text'
           />
-        </Form.Item>
+          </Form.Item>
         </>
       )}
     </>

@@ -8,7 +8,7 @@ export const licenciaPath = '/tramites-servicios/licencia';
 export const RevisionPath = '/tramites-servicios-aguas/Revision';
 export const tramiteServicePath = '/tramites-servicios';
 export const tramiteServiceAguasPath = '/tramites-servicios-aguas';
-export const tramiteServiceSSTPath = '/tramites-servicios-sst';
+export const licenciaSSTPath = '/tramites-servicios-sst/licencia/sst';
 export const tramiteAdmin = '/tramites-administrador';
 export const notificacion = '/notificacion';
 export const updatepath = '/modificar';
@@ -204,7 +204,7 @@ export const LicenciaRoutes: IRouteProps[] = [
   },
   // SST
   {
-    path: `${tramiteServiceSSTPath}`,
+    path: `${licenciaSSTPath}`,
     component: TramiteSST
   },
 ];

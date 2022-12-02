@@ -29,16 +29,6 @@ export const TramiteForm = () => {
   const objJosn: any = undefined;
   const { accountIdentifier } = authProvider.getAccount();
 
-  //---
-  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(4);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
-  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
-  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
-  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7c96a4d3-a0cb-484e-a01b-93bc39c2552e');
-  const [campo, setCampo] = useState<string>('Numéricos');
-  //---
   const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
   const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(4);
   const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
@@ -47,7 +37,6 @@ export const TramiteForm = () => {
   const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
   const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
   const [l_tipos_documento_autoriza, settiposautoriza] = useState<any>();
-  const [causaMuerte, setCausaMuerte] = useState<string>('');
   const [[l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte], setListas] =
     useState<IDominio[][]>([]);
   const [user, setUser] = useState<any>();

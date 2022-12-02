@@ -1,10 +1,13 @@
 import React from 'react';
 import Form, {FormInstance} from 'antd/es/form';
 import TextArea from 'antd/es/input/TextArea';
+import Divider from 'antd/es/divider';
 
 export const TipoServicioFormSeccion: React.FC<ITipoServiciProps<any>> = (props) => {
   return(
     <>
+
+      <Divider orientation='right'> Tipos de servicio a prestar </Divider>
       <Form.Item
         label='Servicios'
         name='servicios'

@@ -11,113 +11,125 @@ export const DatosSolicitanteSSTFormSeccion: React.FC<IDatosSolicitanteSSTProps<
 
   const objJosn: any = undefined;
   const [form] = Form.useForm<any>();
-  const [longitudmaxima, setLongitudmaxima] = useState<number>(10);
-  const [longitudminima, setLongitudminima] = useState<number>(4);
-  const [tipocampo, setTipocampo] = useState<string>('[0-9]{4,10}');
-  const [tipocampovalidacion, setTipocampovalidacion] = useState<any>(/[0-9]/);
-  const [tipodocumento, setTipodocumento] = useState<string>('Cédula de Ciudadanía');
-  const [sininformacion, setsininformacion] = useState<boolean>(false);
-  const [tipodocumentohoranacimiento, settipodocumentohoranacimiento] = useState<string>('7c96a4d3-a0cb-484e-a01b-93bc39c2552e');
-  const [campo, setCampo] = useState<string>('Numéricos');
-  //---
-  const [longitudmaximaautoriza, setLongitudmaximaautoriza] = useState<number>(10);
-  const [longitudminimaautoriza, setLongitudminimaautoriza] = useState<number>(4);
-  const [tipocampoautoriza, setTipocampoautoriza] = useState<string>('[0-9]{4,10}');
-  const [sininformacionaut, setsininformacionaut] = useState<boolean>(false);
-  const [tipocampovalidacionautoriza, setTipocampovalidacionautoriza] = useState<any>(/[0-9]/);
-  const [tipodocumentoautoriza, setTipodocumentoautoriza] = useState<string>('Cédula de Ciudadanía');
-  const [campoautoriza, setCampoautoriza] = useState<string>('Numéricos');
-  const [l_tipos_documento_autoriza, settiposautoriza] = useState<any>();
-  const [causaMuerte, setCausaMuerte] = useState<string>('');
+  const [direccionCompleta, setDireccionCompleta] = useState<string>('');
+  const [stateDisplayBox, setStateDisplayBox] = useState<string>('none');
+  const [stateDisplayButton, setStateDisplayButton] = useState<string>('inline');
+  const history = useHistory();
+  const [form] = Form.useForm<any>();
+  const [isColombia, setIsColombia] = useState(true);
+  const [sex, setSex] = useState<[]>([]);
+  const [genero, setGenero] = useState<[]>([]);
+  const [orientacion, setOrientacion] = useState<[]>([]);
+  const [etniastate, setEtnia] = useState<[]>([]);
+  const [nivelEducativo, setNivelEducativo] = useState<[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
-  const [isBogota, setIsBogota] = useState(false);
-  const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
-  //create o edit
-  //const objJosn: any = EditInhumacion('0');
-  const edit = false;
+  const [l_municipiosres, setLMunicipiosres] = useState<IMunicipio[]>([]);
+  const [[l_departamentos_colombia, l_paises], setListas] = useState<[IDepartamento[], []]>([[], []]);
+  const [avenida, setAvenida] = useState<boolean>(true);
+  const [listOfZona, setListOfZona] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfLocalidad, setListOfLocalidad] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfUPZ, setListOfUPZ] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [listOfBarrio, setListOfBarrio] = useState<Array<Object>>([{ descripcion: 'id1', value: 'default' }]);
+  const [initialValueZona, setInitialValueZona] = useState<any>('NORTE');
+  const [initialValueLocalidad, setInitialValueLocalidad] = useState<any>('BOSA');
+  const [initialValueUPZ, setInitialValueUPZ] = useState<any>('AMERICAS');
+  const [initialValueBarrio, setInitialValueBarrio] = useState<any>('ACACIAS USAQUEN');
+  const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-  const [user, setUser] = useState<any>();
-  const [supports, setSupports] = useState<any[]>([]);
+  const [ciudadBogota, setciudadBogota] = useState<string>('Bogotá D.C.');
+  const [ciudadBogota2, setciudadBogota2] = useState<string>('Bogotá D.C.');
 
-  //form.setFieldsValue(objJosn?);
-  //#region Listados
-
-  const [[l_departamentos_colombia, l_tipos_documento, l_paises], setListas] = useState<
-    [IDepartamento[], IDominio[], IDominio[]]
-    >([[], [], []]);
-
+  const idColombia = '170';
+  const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   const getListas = useCallback(
     async () => {
-      const paises: any = localStorage.getItem('paises');
-      const paisesjson: any = JSON.parse(paises);
+      const departamento: any = localStorage.getItem('departamentos');
+      const municipiosbogota: any = localStorage.getItem('municipiosbogota');
+      const [municipios, ...resp] = await Promise.all([JSON.parse(municipiosbogota), JSON.parse(departamento), api.getPaises()]);
 
-      const tipos: any = localStorage.getItem('tipoid');
-      const tiposjson: any = JSON.parse(tipos);
-
-      const estadocivil: any = localStorage.getItem('estadocivil');
-
-      const nivel: any = localStorage.getItem('nivel');
-
-      const etnia: any = localStorage.getItem('etnia');
-
-      const tipomuerte: any = localStorage.getItem('tipomuerte');
-
-      const resp = await Promise.all([
-        paisesjson,
-        tiposjson,
-        JSON.parse(estadocivil),
-        JSON.parse(nivel),
-        JSON.parse(etnia),
-        dominioService.get_type(ETipoDominio.Regimen),
-        JSON.parse(tipomuerte)
-      ]);
-
-      const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
-
-      settiposautoriza(nuevalista);
-
-      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
-      setCausaMuerte(causa['valor']);
-
-      const iduser: any = localStorage.getItem('idUser');
-
-      setUser(JSON.parse(iduser));
+      setLMunicipios(municipios);
+      setLMunicipiosres(municipios);
       setListas(resp);
-
-      if (edit) {
-        const support = await api.getSupportDocuments(objJosn?.idSolicitud);
-        setSupports(support);
-      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  useEffect(() => {
-    getListas();
+  store.subscribe(() => {
+    const { direccion } = store.getState();
+    setDireccionCompleta(direccion.join(' '));
+  });
+
+  const getListas2 = useCallback(
+    async () => {
+      const [etnia, sexo, genero, orientacion, educacion] = await Promise.all([
+        api.GetEtnia(),
+        api.GetSexoazure(),
+        api.GetGeneroonazure(),
+        api.GetOrientacionazure(),
+        api.GetNivelEducativo()
+      ]);
+      setEtnia(etnia);
+      setSex(sexo);
+      setGenero(genero);
+      setOrientacion(orientacion);
+      setNivelEducativo(educacion);
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    return () => {
-      localStorage.removeItem('register');
-    };
-  }, []);
+    []
+  );
 
+  const onChangePais = (value: string) => {
+    setIsColombia(value === idColombia);
+
+    if (isColombia) {
+      form.setFieldsValue({ state: 1, city: 11001000 });
+    }
+
+    form.setFieldsValue({ state: undefined, city: undefined, cityLive: undefined });
+  };
   const onChangeDepartamento = async (value: string) => {
-    props.form.setFieldsValue({ city: undefined });
+    form.setFieldsValue({ cityLive: undefined });
 
-    let departamento = l_departamentos_colombia.filter((i) => i.idDepartamento == value);
-
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepPai == parseInt(value));
     const { idDepartamento } = departamento[0];
 
     const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
     setLMunicipios(resp);
 
-    if (value == '31b870aa-6cd0-4128-96db-1f08afad7cdd') {
-      setIsBogota(false);
+    if (value == '1') {
       setciudadBogota('Bogotá D.C.');
     } else {
-      setIsBogota(true);
       setciudadBogota('');
     }
+  };
+
+  const onChangeDepartamentor = async (value: string) => {
+    form.setFieldsValue({ city: undefined });
+
+    let departamento = l_departamentos_colombia.filter((i) => i.idDepPai == parseInt(value));
+    const { idDepartamento } = departamento[0];
+
+    const resp = await dominioService.get_all_municipios_by_departamento(idDepartamento);
+    setLMunicipiosres(resp);
+    if (value == '1') {
+      setciudadBogota2('Bogotá D.C.');
+      setStateDisplayButton('inline');
+    } else {
+      setciudadBogota2('');
+      setStateDisplayButton('none');
+      setStateDisplayBox('none');
+    }
+  };
+
+  useEffect(() => {
+    getListas();
+    getListas2();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const goBack = () => {
+    history.goBack();
   };
 
 

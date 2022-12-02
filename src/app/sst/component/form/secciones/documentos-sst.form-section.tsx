@@ -1,12 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Form, {FormInstance} from 'antd/es/form';
 import Upload from 'antd/es/upload';
 import Button from 'antd/es/button';
 import {UploadOutlined} from '@ant-design/icons';
 import Input from 'antd/es/input';
 import {SelectComponent} from '../../../../shared/components/inputs/select.component';
+import Divider from 'antd/es/divider';
 
 export const DocumentosSSTFormSeccion: React.FC<IDocumentosSSTProps<any>> = (props) => {
+
+  const isTituloExtranjero = false;
+  const [getIsTituloExtranjero, setIsTituloExtranjero] = useState<boolean>(isTituloExtranjero);
+
+
+  const onChangeTituloExtranjero = async (value: string) => {
+    // value == 'Extranjero' ? setIsTituloExtranjero(true) : setIsTituloExtranjero(false);
+    if (value == 'Extranjero') {
+      setIsTituloExtranjero(true);
+    } else {
+      setIsTituloExtranjero(false);
+    }
+    alert('este codigo sirve' + getIsTituloExtranjero);
+  }
+
 
   const l_tipo_programa = [
     {
@@ -38,6 +54,25 @@ export const DocumentosSSTFormSeccion: React.FC<IDocumentosSSTProps<any>> = (pro
     }
   ]
 
+  const l_tipo_profesional = [
+    {
+      id:1,
+      descripcion: 'Médico'
+    },
+    {
+      id:2,
+      descripcion: 'Profesional psicología'
+    },
+    {
+      id:3,
+      descripcion: 'Ingeniería'
+    },
+    {
+      id:4,
+      descripcion: 'Otros'
+    }
+  ]
+
   const onChangeTipoPrograma = async (value: string) => {
     let textoDocumentoPregrado = document.getElementById('fileTituloPregrado');
     if (value == 'Profesional Universitario con Postgrado') {
@@ -64,6 +99,7 @@ export const DocumentosSSTFormSeccion: React.FC<IDocumentosSSTProps<any>> = (pro
         asi mismo en el campo donde se deben adjuntar los soportes, favor subir un solo PDF con los títulos registrados
         según sea pregrado o postgrado.
       </div>
+      <Divider orientation='right'> Documentos </Divider>
 
       <Form.Item
         label='Tipo de programa'
@@ -82,7 +118,18 @@ export const DocumentosSSTFormSeccion: React.FC<IDocumentosSSTProps<any>> = (pro
         name='tipoTitulo'
         rules={[{ required: true }]}
       >
-        <SelectComponent options={l_tipo_titulo} optionPropkey='id' optionPropLabel='descripcion'  />
+        <SelectComponent options={l_tipo_titulo}
+                         optionPropkey='id'
+                         optionPropLabel='descripcion'
+                         onChange={onChangeTituloExtranjero} />
+      </Form.Item>
+
+      <Form.Item
+        label='Tipo Profesional'
+        name='tipoProfesional'
+        rules={[{ required: false}]}
+      >
+        <SelectComponent options={l_tipo_profesional} optionPropkey='id' optionPropLabel='descripcion'  />
       </Form.Item>
 
       <Form.Item
@@ -92,6 +139,18 @@ export const DocumentosSSTFormSeccion: React.FC<IDocumentosSSTProps<any>> = (pro
         <Input
           allowClear
           placeholder='Título del programa'
+          autoComplete='off'
+          type='text'
+        />
+      </Form.Item>
+
+      <Form.Item
+        label='Ingrese el título de postgrado (Como aparece en el diploma)'
+        name='tituloProgramaPostgrado'
+      >
+        <Input
+          allowClear
+          placeholder='Título de postgrado'
           autoComplete='off'
           type='text'
         />
@@ -157,6 +216,22 @@ export const DocumentosSSTFormSeccion: React.FC<IDocumentosSSTProps<any>> = (pro
           <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
         </Upload>
       </Form.Item>
+
+      {getIsTituloExtranjero && (
+        <>
+        <Form.Item
+          label='Convalidación'
+          name='fileConvalidacion'
+          valuePropName='fileList'
+          // rules={[{ required: isEdit ? false : true }]}
+          getValueFromEvent={normFile}
+        >
+          <Upload name='fileConvalidacion' maxCount={1} beforeUpload={() => false} listType='text' accept='application/pdf'>
+            <Button icon={<UploadOutlined />}>Seleccionar archivo PDF</Button>
+          </Upload>
+        </Form.Item>
+        </>
+      )}
     </>
   );
 }
