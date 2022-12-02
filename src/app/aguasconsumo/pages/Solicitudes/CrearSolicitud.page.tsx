@@ -355,7 +355,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           const jsonobservacion: IObservaciones<any> = {
 
             idSolicitud: responseSolicitudDTO.idSolicitud,
-            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6',
+            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
 
             observaciones: observaciones,
 
