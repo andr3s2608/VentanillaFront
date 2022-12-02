@@ -74,6 +74,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
         const filtradodatos = datos.filter(function (f: { idTipodeSolicitud: string }) {
           return (
+            f.idTipodeSolicitud == 'b1ba9304-c16b-43f0-9afa-e92d7b7f4df6' ||//adjuntar documento visita
             f.idTipodeSolicitud == '492e1c24-b2a4-45fd-8845-d9ac1e569928' || //Citacion
             f.idTipodeSolicitud == 'd33fbb9c-9f47-4015-bbe6-96ff43f0dde4' //Gestion Validador
           );

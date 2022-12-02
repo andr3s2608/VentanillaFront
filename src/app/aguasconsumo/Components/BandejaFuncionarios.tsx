@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import profile from '../../../../src/assets/images/aguas/profile.png';
-import revision from '../../../../src/assets/images/aguas/profile.png';
+import revision from '../../../../src/assets/images/aguas/revisionencampo.jpg';
 import { Form, Input } from 'antd';
 import '../../../css/estilos.css';
 
@@ -224,7 +224,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
   const onClickValidarArchivo = (datos: any) => {
 
-    console.log(datos)
+
     setsolicitudaguardar(datos);
     setVisibleDocumentoGestion(true);
   };
@@ -722,34 +722,36 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
-          if (
-            row.estado != 'Aprobada' &&
-            row.estado != 'Cerrada' &&
-            row.estado != 'Anulada' &&
-            row.actividadActualSolicitud != 'En visita de revisión'
-          ) {
+
+          if (row.tipodeSolicitud === 'Visita de Revision') {
             return (
               <Button
                 type='primary'
                 key={`vali-${index}`}
-                onClick={() => onClickValidarInformacion(row)}
+                onClick={() => onClickValidarArchivo(row)}
                 style={{ marginRight: '8px' }}
                 icon={<CheckOutlined />}
               >
-                Validar Información
+                Cargar Archivo
               </Button>
             );
-          } else {
-            if (row.TipodeSolicitud === 'Visita de Revision') {
+          }
+          else {
+            if (
+              row.estado != 'Aprobada' &&
+              row.estado != 'Cerrada' &&
+              row.estado != 'Anulada' &&
+              row.actividadActualSolicitud != 'En visita de revisión'
+            ) {
               return (
                 <Button
                   type='primary'
                   key={`vali-${index}`}
-                  onClick={() => onClickValidarArchivo(row)}
+                  onClick={() => onClickValidarInformacion(row)}
                   style={{ marginRight: '8px' }}
                   icon={<CheckOutlined />}
                 >
-                  Cargar Archivo
+                  Validar Información
                 </Button>
               );
             }
@@ -1620,7 +1622,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                 footer={[]}
               >
                 <div className='row'>
-                  <img src={revision} alt='logo' className='img-fluid float-end ml-2' />
+                  <img src={revision} width='60%' alt='logo' className='e-block mx-auto img-fluid float-end ml-2' />
                   <div className='col-gl-12 col-sm-12 col-md-12'>
                     <Form.Item label='Cargar Archivo de Visita Tecnica' name='cargarvisita' rules={[{ required: true }]}>
                       <Upload

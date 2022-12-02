@@ -107,7 +107,7 @@ export const RevisarSg = () => {
       });
 
       if (subsanacion) {
-        console.log('subsana');
+
         observaciones.push(
           {
             idObservacion: '00000000-0000-0000-0000-000000000000',
@@ -144,7 +144,7 @@ export const RevisarSg = () => {
     }
 
     if (values.descripcionNotificacion !== '') {
-      console.log('notificaciones');
+
       observaciones.push(
         {
           idObservacion: '00000000-0000-0000-0000-000000000000',

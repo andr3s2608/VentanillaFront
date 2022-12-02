@@ -19,6 +19,7 @@ import Button from 'antd/es/button';
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import Tabs from 'antd/es/tabs';
+import { IObservaciones } from 'app/aguasconsumo/Components/Models/IObservaciones';
 
 const CrearSolicitud: React.FC<any> = (props: any) => {
   const { TabPane } = Tabs;
@@ -37,9 +38,9 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
   const [documento, setdocumento] = useState<any[]>([]);
 
   const onSubmit = async (values: any) => {
-    console.log(values);
+
     const idUsuario = api.getIdUsuario();
-    console.log(idUsuario);
+
     const archivo = values.cargarresolucion;
     let validacion = false;
     let planta = false;
@@ -184,12 +185,10 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             }
           };
 
-          console.log('lo que se va a guardar: ');
-          console.log(dataSolicitud);
+
           const responseSolicitudDTO: ResponseSolicitudDTO = await api.AddSolicitudPrimera(dataSolicitud) as ResponseSolicitudDTO;
 
-          console.log("resultado de guardado");
-          console.log(responseSolicitudDTO);
+
 
           const json: IConsesion<any> = {
             idSolicitud: responseSolicitudDTO.idSolicitud,
@@ -258,36 +257,40 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
 
 
           const supportDocumentsRejected: any[] = [];
-          for (let index = 0; index < documentosjson.length; index++) {
-            if (documentosjson[index] != null) {
-              let cargo = false;
+          if (documentosjson != null) {
 
-              for (let index2 = 0; index2 < documento.length; index2++) {
 
-                if (documento[index2] != undefined) {
+            for (let index = 0; index < documentosjson.length; index++) {
+              if (documentosjson[index] != null) {
+                let cargo = false;
 
-                  if (documento[index2].iddocumento.toUpperCase() === documentosjson[index].iddocumento.toUpperCase()) {
+                for (let index2 = 0; index2 < documento.length; index2++) {
 
-                    cargo = true;
-                    break;
+                  if (documento[index2] != undefined) {
+
+                    if (documento[index2].iddocumento.toUpperCase() === documentosjson[index].iddocumento.toUpperCase()) {
+
+                      cargo = true;
+                      break;
+                    }
                   }
+
                 }
+                if (cargo == false) {
 
+                  supportDocumentsRejected.push({
+                    idSolicitud: responseSolicitudDTO.idSolicitud,
+                    idTipoDocumentoAdjunto: documentosjson[index].id,
+                    path: `${idUsuario}/${documentosjson[index].valor}_${responseSolicitudDTO.idSolicitud}`,
+                    idUsuario: idUsuario,
+                    idDocumentoAdjunto: documentosjson[index].iddocumento,
+                    esValido: false
+                  });
+                }
               }
-              if (cargo == false) {
 
-                supportDocumentsRejected.push({
-                  idSolicitud: responseSolicitudDTO.idSolicitud,
-                  idTipoDocumentoAdjunto: documentosjson[index].id,
-                  path: `${idUsuario}/${documentosjson[index].valor}_${responseSolicitudDTO.idSolicitud}`,
-                  idUsuario: idUsuario,
-                  idDocumentoAdjunto: documentosjson[index].iddocumento,
-                  esValido: false
-                });
-              }
+
             }
-
-
           }
 
 
@@ -337,6 +340,40 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           }
 
           const valor = await api.AddSolicitudConsecion(json);
+
+          let observaciones: any[] = []
+          observaciones.push(
+            {
+              idObservacion: '00000000-0000-0000-0000-000000000000',
+              idSolicitud: objJson.idsolicitud,
+              idSubred: objJson.idSubred,
+              observacion: 'radicación solicitud',
+              fechaObservacion: null
+            }
+          )
+
+          const jsonobservacion: IObservaciones<any> = {
+
+            idSolicitud: objJson.idsolicitud,
+            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6',
+
+            observaciones: observaciones,
+
+            citacion: {
+              idCitacion: '00000000-0000-0000-0000-000000000000',
+              fechaCitacion: '',
+              observacion: 'No_aplica',
+              fechaRegistro: '',
+              idSolicitud: '00000000-0000-0000-0000-000000000000',
+              idUsuario: '00000000-0000-0000-0000-000000000000'
+            }
+
+          };
+
+
+          await api.AddObservaciones(jsonobservacion);
+
+
 
           Swal.fire({
             icon: 'success',

@@ -36,8 +36,10 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
 
   const [latituddec, setlatituddec] = useState<boolean>(true);
+  const [longituddec, setlongituddec] = useState<boolean>(true);
   const [l_usofuente, setlusofuente] = useState<any[]>([]);
   const [input, setInput] = useState('');
+  const [inputlongitud, setInputlongitud] = useState('');
   const [Longitud_input, setLongitud_input] = useState('');
   const [l_departamentos, setLDepartamentos] = useState<IDepartamento[]>([]);
   const [l_municipios, setLMunicipios] = useState<IMunicipio[]>([]);
@@ -65,6 +67,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
       if (obj?.acueductosfuentejson !== undefined) {
         for (let index = 0; index < obj?.acueductosfuentejson.length; index++) {
+
           array.push({
             posicion: index + 1,
             departamento: obj.acueductosfuentejson[index].idDepartamento,
@@ -221,6 +224,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   };
   const onClickLlenarInformacion = async (datos: any) => {
+
     props.form.setFieldsValue({
       localidad: acueducto[datos.posicion - 1].localidad,
       latituduso: acueducto[datos.posicion - 1].latitud + '',
@@ -325,6 +329,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     console.log("Valor depues del onchange: ", event.target.value);
 
     let valor = props.form.getFieldValue('latituduso');
+
     let numerico1 = '';
     let numerico2 = '';
     if (event.target.value == 'decimal') {
@@ -366,6 +371,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           valornuevo = valornuevo / 10;
         }
         valornuevo = orientacion + Number.parseFloat(valornuevo);
+
 
         props.form.setFieldsValue({ latituduso: valornuevo })
 
@@ -410,7 +416,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     let numerico2 = '';
     if (event.target.value == 'decimal') {
 
-      setlatituddec(true)
+      setlongituddec(true)
 
       if (valor != "" && valor != undefined && valor.length === 13) {
         let valornuevo = valor.substring(0, 2);
@@ -448,13 +454,13 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         }
         valornuevo = orientacion + Number.parseFloat(valornuevo);
 
-        props.form.setFieldsValue({ latituduso: valornuevo })
+        props.form.setFieldsValue({ longituduso: valornuevo })
 
       }
 
     } else if (event.target.value == 'sexagesimal') {
 
-      setlatituddec(false)
+      setlongituddec(false)
       if (valor != "" && valor != undefined && valor.length > 3) {
 
         const orientacion = valor.substring(0, 1) === '-' ? 'O' : 'E';
@@ -475,7 +481,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
         valornuevo = valornuevo + '°' + numerico1.substring(0, 2) + "'" + numerico2.substring(0, 2) + '.' + numerico2.substring(2, 4) + '"' + orientacion;
 
-        props.form.setFieldsValue({ latituduso: valornuevo })
+        props.form.setFieldsValue({ longituduso: valornuevo })
 
       }
 
@@ -484,47 +490,59 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   }
 
   const onChangeFormat = (event: any) => {
-    setInput(event.target.value);
-    if (
-      event.target.value.length === 2 &&
-      event.target.value.includes("°")
-    ) {
-      setInput(event.target.value.replace("°", ""));
-    }
+    let valor: string = props.form.getFieldValue('latituduso');
+
+
     if (event.target.value.length === 2) {
+      valor = valor + "°"
+      props.form.setFieldsValue({ latituduso: valor })
       setInput(event.target.value + "°");
     }
 
-    if (
-      event.target.value.length === 5 &&
-      event.target.value.includes("'")
-    ) {
-      setInput(event.target.value.replace("'", ""));
-    }
     if (event.target.value.length === 5) {
+      valor = valor + "'"
+      props.form.setFieldsValue({ latituduso: valor })
       setInput(event.target.value + "'");
     }
 
-    if (
-      event.target.value.length === 8 &&
-      event.target.value.includes('.')
-    ) {
-      setInput(event.target.value.replace('.', ""));
-    }
     if (event.target.value.length === 8) {
+      valor = valor + '.'
+      props.form.setFieldsValue({ latituduso: valor })
       setInput(event.target.value + '.');
     }
 
-    if (
-      event.target.value.length === 11 &&
-      event.target.value.includes('"')
-    ) {
-      setInput(event.target.value.replace('"', ""));
-    }
     if (event.target.value.length === 11) {
+      valor = valor + '"'
+      props.form.setFieldsValue({ latituduso: valor })
       setInput(event.target.value + '"');
     }
 
+  };
+  const onChangeFormatLongitud = (event: any) => {
+    let valor: string = props.form.getFieldValue('longituduso');
+    if (event.target.value.length === 2) {
+      valor = valor + "°"
+      props.form.setFieldsValue({ longituduso: valor })
+      setInput(event.target.value + "°");
+    }
+
+    if (event.target.value.length === 5) {
+      valor = valor + "'"
+      props.form.setFieldsValue({ longituduso: valor })
+      setInput(event.target.value + "'");
+    }
+
+    if (event.target.value.length === 8) {
+      valor = valor + '.'
+      props.form.setFieldsValue({ longituduso: valor })
+      setInput(event.target.value + '.');
+    }
+
+    if (event.target.value.length === 11) {
+      valor = valor + '"'
+      props.form.setFieldsValue({ longituduso: valor })
+      setInput(event.target.value + '"');
+    }
   };
 
   if (habilitar) {
@@ -570,7 +588,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
+                <Form.Item label='' name='tipoCoordenadaLatitud' >
                   <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
                     <Radio value='decimal'>Decimal</Radio>
                     <Radio value='sexagesimal'>Sexagesimal</Radio>
@@ -578,14 +596,11 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 </Form.Item>
 
                 {latituddec ?
-                  (<Form.Item>
+                  (<Form.Item name='latituduso'>
                     <Input
                       name='latituduso'
-
                       className='form-control gov-co-form-control'
-                      maxLength={13}
-                      value={input}
-                      onChange={onChangeFormat}
+                      maxLength={9}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -593,12 +608,17 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       }}
                     />
                   </Form.Item>) :
-                  <Form.Item >
+                  <Form.Item name='latituduso'>
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={13}
-                      value={input}
+                      maxLength={14}
+                      onChange={onChangeFormat}
+                      onKeyPress={(event) => {
+                        if (!/[0-9'"°NS]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                     />
                   </Form.Item>}
 
@@ -611,29 +631,38 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación  Longitud
                 </label>
-                <Form.Item label='' name='tipoCoordenadaLongitud' rules={[{ required: true }]}>
+                <Form.Item label='' name='tipoCoordenadaLongitud' >
                   <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
                     <Radio value='decimal'>Decimal</Radio>
                     <Radio value='sexagesimal'>Sexagesimal</Radio>
                   </Radio.Group>
                 </Form.Item>
-                <Form.Item rules={[{ required: true }]}>
-                  <Input
-                    name='longituduso'
-                    onChange={onChangeFormat}
-                    value={input}
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[0-9'"° ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
+                {longituddec ?
+                  (<Form.Item name='longituduso'>
+                    <Input
+
+                      className='form-control gov-co-form-control'
+                      maxLength={9}
+                      onKeyPress={(event) => {
+                        if (!/[0-9-.]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    />
+                  </Form.Item>) :
+                  <Form.Item name='longituduso'>
+                    <Input
+                      className='form-control gov-co-form-control'
+                      maxLength={14}
+
+                      onChange={onChangeFormatLongitud}
+                      onKeyPress={(event) => {
+                        if (!/[0-9'"°EO]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                    />
+                  </Form.Item>}
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <label className='text'>
@@ -792,20 +821,13 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Latitud
                 </label>
-                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
-                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
-                    <Radio value='decimal'>Decimal</Radio>
-                    <Radio value='sexagesimal'>Sexagesimal</Radio>
-                  </Radio.Group>
-                </Form.Item>
-                <Form.Item rules={[{ required: false }]}>
+                <Form.Item name='latituduso' rules={[{ required: false }]}>
                   <Input
-                    name='latituduso'
+
                     title='El formato no es el adecuado'
                     className='form-control'
                     maxLength={13}
                     disabled={true}
-                    value={input}
                     onChange={onChangeFormat}
                   />
                 </Form.Item>
@@ -816,13 +838,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 <label className='text'>
                   <span className='required'>* </span> Coordenadas de captación Longitud
                 </label>
-
-                <Form.Item label='' name='tipoCoordenadaLatitud' rules={[{ required: true }]}>
-                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
-                    <Radio value='decimal'>Decimal</Radio>
-                    <Radio value='sexagesimal'>Sexagesimal</Radio>
-                  </Radio.Group>
-                </Form.Item>
 
                 <Form.Item name='longituduso' rules={[{ required: false }]}>
                   <Input

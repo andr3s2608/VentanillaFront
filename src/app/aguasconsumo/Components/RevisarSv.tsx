@@ -90,9 +90,9 @@ export const RevisarSv = () => {
 
 
     let observaciones: any = [];
-    console.log(values.descripcionNotificacion)
+
     if (values.descripcionNotificacion !== '') {
-      console.log('notificaciones');
+
       observaciones.push(
         {
           idObservacion: '00000000-0000-0000-0000-000000000000',
@@ -105,6 +105,7 @@ export const RevisarSv = () => {
 
     }
     let subsanacion = false;
+    let tipo = 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6';
     if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
       const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
 
@@ -124,7 +125,7 @@ export const RevisarSv = () => {
       });
 
       if (subsanacion) {
-        console.log('subsana');
+
         observaciones.push(
           {
             idObservacion: '00000000-0000-0000-0000-000000000000',
@@ -135,7 +136,8 @@ export const RevisarSv = () => {
           }
         )
 
-        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4', '9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
+        tipo = '9124A97B-C2BD-46A0-A8B3-1AC702A06C82';
+        //await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4', '9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
       }
 
       await api.AddEstadoDocumentoSoporte(documentToSend);
@@ -146,7 +148,7 @@ export const RevisarSv = () => {
     const json: IObservaciones<any> = {
 
       idSolicitud: objJson.idsolicitud,
-      idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6',
+      idTipoSolicitud: tipo,
 
       observaciones: observaciones,
 
@@ -160,7 +162,7 @@ export const RevisarSv = () => {
       }
 
     };
-    console.log(json);
+
 
     await api.AddObservaciones(json);
 

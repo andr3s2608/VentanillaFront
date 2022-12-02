@@ -915,8 +915,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           if (time2 != undefined) {
             if (fecha.day() === fechadef.day()) {
 
-              console.log(time2)
-              console.log(timedef2)
+
               const posicion1 = time2.indexOf(':');
               const posicion2 = timedef2.indexOf(':');
 
