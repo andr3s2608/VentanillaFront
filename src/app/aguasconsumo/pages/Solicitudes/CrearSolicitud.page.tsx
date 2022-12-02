@@ -345,7 +345,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           observaciones.push(
             {
               idObservacion: '00000000-0000-0000-0000-000000000000',
-              idSolicitud: objJson.idsolicitud,
+              idSolicitud: responseSolicitudDTO.idSolicitud,
               idSubred: objJson.idSubred,
               observacion: 'radicación solicitud',
               fechaObservacion: null
@@ -354,7 +354,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
 
           const jsonobservacion: IObservaciones<any> = {
 
-            idSolicitud: objJson.idsolicitud,
+            idSolicitud: responseSolicitudDTO.idSolicitud,
             idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6',
 
             observaciones: observaciones,

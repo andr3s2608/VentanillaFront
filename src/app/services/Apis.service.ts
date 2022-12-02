@@ -593,16 +593,23 @@ export class ApiService {
   /////////////////////////
 
   AddSolicitudPrimera = (payload: any) =>
-    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
 
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
   AddObservaciones = (payload: any) =>
-    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/AddObservaciones', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddObservaciones', payload, id: '0' });
+
+  getObservacionesList = (idsolicitud: string) =>
+    get<any>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `Request/GetObservaciones/${idsolicitud}`,
+      id: '0'
+    });
 
   AddSolicitudConsecion = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/RenovarSolicitud', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/RenovarSolicitud', payload, id: '1' });
 
   getSolicitudesUsuario = () =>
     get<any>({

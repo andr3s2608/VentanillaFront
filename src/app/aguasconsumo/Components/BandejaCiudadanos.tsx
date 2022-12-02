@@ -3,8 +3,8 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
 import { useCallback, useEffect, useState } from 'react';
 import { ApiService } from 'app/services/Apis.service';
-import { CheckOutlined } from '@ant-design/icons';
-import { Form, Input, Button } from 'antd';
+import { CheckOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Modal } from 'antd';
 import { useHistory } from 'react-router';
 import '../../../css/estilos.css';
 import Table from 'antd/es/table';
@@ -24,6 +24,8 @@ export const BandejaCiudadanos = (props: IDataSource) => {
   const [dateSelectedInicial, setDateIni] = useState<Date>();
   const [dateSelectedFinal, setDateFin] = useState<Date>();
   const [value, setValue] = useState('');
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
 
 
   const getListas = useCallback(
@@ -101,6 +103,25 @@ export const BandejaCiudadanos = (props: IDataSource) => {
   const onClickValidarInformacion = (datos: any) => {
     localStorage.setItem('register', JSON.stringify(datos));
     history.push('/tramites-servicios-aguas/Revision/primera-vez');
+  };
+
+  const onClickVisualizarPDF = async (row: any) => {
+
+    try {
+      let urlForIframe = 'data:application/pdf;base64,';
+      let base64pdfLicencia = await api.getCertificadoAguas(row.idSolicitud);
+
+      setUrlPdfLicence(urlForIframe.concat(base64pdfLicencia));
+      setIsModalVisiblePdf(true);
+    } catch (error) {
+      Swal.fire({
+        imageHeight: 150,
+        title: 'DOCUMENTO NO ENCONTRADO',
+        confirmButtonColor: '#b6e5ef',
+        text:
+          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+      });
+    }
   };
 
   const resetdata = () => {
@@ -187,6 +208,21 @@ export const BandejaCiudadanos = (props: IDataSource) => {
         compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
         multiple: 1,
       },
+    },
+    {
+      title: 'Visualizar PDF',
+      key: 'visualizarPDF',
+      render: (_: any, row: any, index: any) => {
+        if (row.estado == 'Aprobada') {
+          return (
+            <FilePdfOutlined
+              onClick={() => onClickVisualizarPDF(row)}
+              style={{ fontSize: '30px' }}
+            />);
+        } else {
+          return null;
+        }
+      }
     },
     {
       title: 'Tipo de trámite',
@@ -501,6 +537,22 @@ export const BandejaCiudadanos = (props: IDataSource) => {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div className='row'>
+                  <Modal
+                    title={
+                      <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                        Visualización de la licencia
+                      </p>
+                    }
+                    visible={isModalVisiblePdf}
+                    onCancel={() => setIsModalVisiblePdf(false)}
+                    width={1000}
+                    okButtonProps={{ hidden: true }}
+                    cancelText='Cerrar'
+                  >
+                    <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                  </Modal>
                 </div>
               </div>
             </section>

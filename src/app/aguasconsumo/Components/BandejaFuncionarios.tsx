@@ -15,7 +15,7 @@ import { useHistory } from 'react-router';
 import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
-import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
@@ -42,7 +42,8 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataTable, setDataTable] = useState<[]>();
   const [ocultarbandeja, setocultarbandeja] = useState<boolean>(false);
   const [ocultarnotificacion, setocultarnotificacion] = useState<boolean>(true);
   const [dias, setdias] = useState<any>([]);
@@ -55,6 +56,9 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
+
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
 
   //////filtros
 
@@ -495,6 +499,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
 
 
+
     return (
       <Input
         placeholder='Nro. de Radicado'
@@ -577,6 +582,25 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     );
   };
 
+  const onClickVisualizarPDF = async (row: any) => {
+
+    try {
+      let urlForIframe = 'data:application/pdf;base64,';
+      let base64pdfLicencia = await api.getCertificadoAguas(row.idSolicitud);
+
+      setUrlPdfLicence(urlForIframe.concat(base64pdfLicencia));
+      setIsModalVisiblePdf(true);
+    } catch (error) {
+      Swal.fire({
+        imageHeight: 150,
+        title: 'DOCUMENTO NO ENCONTRADO',
+        confirmButtonColor: '#b6e5ef',
+        text:
+          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+      });
+    }
+  };
+
   let structureColumns: any[] = [];
   let structureColumnsnotificacion: any[] = [];
   let structureColumnsnotificacionhistorico: any[] = [];
@@ -599,6 +623,21 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             },
             children: <div>{text}</div>
           };
+        }
+      },
+      {
+        title: 'Visualizar PDF',
+        key: 'visualizarPDF',
+        render: (_: any, row: any, index: any) => {
+          if (row.estado == 'Aprobada') {
+            return (
+              <FilePdfOutlined
+                onClick={() => onClickVisualizarPDF(row)}
+                style={{ fontSize: '30px' }}
+              />);
+          } else {
+            return null;
+          }
         }
       },
       {
@@ -948,13 +987,17 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         dataIndex: '',
         width: 200,
         key: '',
-        render(text: any, record: any) {
-          return {
-            props: {
-              style: { background: color }
-            },
-            children: <div>{ }</div>
-          };
+        render: (_: any, row: any, index: any) => {
+          return (
+            <Button
+              onClick={() => Openmodal(row)}
+              type='primary'
+              style={{ marginRight: '8px' }}
+              icon={<CheckOutlined />}
+            >
+              Notificaciones
+            </Button>
+          )
         }
       }
     ];
@@ -1043,7 +1086,35 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     ];
   }
 
+
+  const Openmodal = async (solicitud: any) => {
+    const seguimiento: any = await api.getObservacionesList(solicitud.idSolicitud);
+    setDataTable(seguimiento);
+    showModal();
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const columnFake = [
+    {
+      title: 'Observación',
+      dataIndex: 'observacion',
+      key: 'Observacion'
+    },
+    {
+      title: 'Fecha de Registro',
+      dataIndex: 'fechaObservacion',
+      key: 'fechaObservacion'
+    }
+  ];
   return (
+
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body tarjeta h-100 card_tarjeta' >
@@ -1083,6 +1154,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                   </div>
                 </div>
               </div>
+
               <div className='container-fluid'>
                 <div className='row' style={{ marginLeft: '18px' }}>
                   <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
@@ -1610,6 +1682,22 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                     )}
                   </div>
                 </div>
+                <div className='row'>
+                  <Modal
+                    title={
+                      <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                        Visualización de la licencia
+                      </p>
+                    }
+                    visible={isModalVisiblePdf}
+                    onCancel={() => setIsModalVisiblePdf(false)}
+                    width={1000}
+                    okButtonProps={{ hidden: true }}
+                    cancelText='Cerrar'
+                  >
+                    <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                  </Modal>
+                </div>
               </div>
             </section>
             <div className='row'>
@@ -1652,6 +1740,26 @@ export const BandejaFuncionarios = (props: IDataSource) => {
           </Form>
         </div>
       </div>
+      <Modal
+        title={
+          <p className='text-center text-dark text-uppercase mb-0 titulo'>
+            Ventana de seguimiento y auditoria
+          </p>
+        }
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={1500}
+        okButtonProps={{ hidden: true }}
+        cancelText='Cerrar'
+      >
+        <Table
+          // className='text-center table'
+          dataSource={dataTable}
+          columns={columnFake}
+          scroll={{ x: 1200 }}
+          pagination={{ hideOnSinglePage: true }}
+        />
+      </Modal>
     </div>
   );
 };
