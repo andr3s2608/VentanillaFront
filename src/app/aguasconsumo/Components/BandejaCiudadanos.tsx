@@ -106,7 +106,6 @@ export const BandejaCiudadanos = (props: IDataSource) => {
   };
 
   const onClickVisualizarPDF = async (row: any) => {
-    console.log("visualizar pdf");
 
     try {
       let urlForIframe = 'data:application/pdf;base64,';
@@ -123,9 +122,6 @@ export const BandejaCiudadanos = (props: IDataSource) => {
           'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
       });
     }
-
-
-    console.log(row);
   };
 
   const resetdata = () => {
@@ -227,8 +223,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
           return null;
         }
       }
-    }
-    ,
+    },
     {
       title: 'Tipo de trámite',
       dataIndex: 'tipodeTramite',
