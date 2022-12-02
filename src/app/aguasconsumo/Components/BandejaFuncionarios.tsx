@@ -990,9 +990,9 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
 
   const Openmodal = async (solicitud: any) => {
-    const seguimiento: any = await api.getObservacionesList(solicitud.idSolicitud);
-    setDataTable(seguimiento);
-    showModal();
+    //const seguimiento: any = await api.getObservacionesList(solicitud.idSolicitud);
+    //setDataTable(seguimiento);
+    //showModal();
   };
 
   const showModal = () => {
