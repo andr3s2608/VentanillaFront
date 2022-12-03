@@ -53,6 +53,7 @@ const NotificacionUsuario = lazy(() => import('../../../aguasconsumo/pages/Notif
 const NotificacionBandeja = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionBandeja.page'));
 //Solicitudes
 const SolicitarRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/solicitarRevision.page'));
+const ReportesAguas = lazy(() => import('../../../aguasconsumo/pages/Reportes/reportesAgua.page'));
 const VisitaRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/visitaRevision.page'));
 const CrearSolicitud = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/CrearSolicitud.page'));
 const SegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/segundaVez.page'));
@@ -153,6 +154,10 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: ValidarDocumentPage
   },
   /////////Aguas//////
+  {
+    path: `/reportes-aguas`,
+    component: ReportesAguas
+  },
   {
     path: `${tramiteServiceAguasPath}`,
     component: BandejaAguas

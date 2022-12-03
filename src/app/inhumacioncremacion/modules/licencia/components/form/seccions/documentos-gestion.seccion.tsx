@@ -77,7 +77,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
     '242A2E58-46B5-4C45-97BA-881A383F2CBB'
   ];
 
-  let arrayarchivos: any[] = ['1', '1', '1', '1', '1', '1', '1', '1'];
+  let arrayarchivos: any[] = ['1', '1', '1', '1', '1', '1', '1', '1', '1'];
   const getListas = useCallback(async () => {
 
 

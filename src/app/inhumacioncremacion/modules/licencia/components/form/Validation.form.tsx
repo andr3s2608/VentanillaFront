@@ -85,7 +85,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [objJosn, setobjJosn] = useState<any>(EditInhumacion('1'));
-  const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String, String, String, String]>([
+  const [DatosDocumento, setDatosDocumento] = useState<[String, String, String, String, String, String, String, String, String]>([
+    '1',
     '1',
     '1',
     '1',
@@ -460,7 +461,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           DatosDocumento.at(4) == '1' &&
           DatosDocumento.at(5) == '1' &&
           DatosDocumento.at(6) == '1' &&
-          DatosDocumento.at(7) == '1'
+          DatosDocumento.at(7) == '1' &&
+          DatosDocumento.at(8) == '1'
         ) {
           not = 2;
         } else {
@@ -477,7 +479,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           DatosDocumento.at(4) == '2' ||
           DatosDocumento.at(5) == '2' ||
           DatosDocumento.at(6) == '2' ||
-          DatosDocumento.at(7) == '2'
+          DatosDocumento.at(7) == '2' ||
+          DatosDocumento.at(8) == '2'
         ) {
         } else {
           alert('Debe indicar almenos un Documento que no Cumpla');
