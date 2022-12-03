@@ -161,11 +161,11 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
               rut: values?.rut ?? '',
               numeroIdentificacion: values.IDNumber,
               primerNombre: values.name,
-              segundoNombre: values.secondname,
+              segundoNombre: values?.secondname ?? '',
               primerApellido: values.surname,
-              segundoApellido: values.secondsurname,
+              segundoApellido: values?.secondsurname ?? '',
               telefonoContacto: values.telefono,
-              celularContacto: values.telefono2,
+              celularContacto: values?.telefono2 ?? '',
               correoElectronico: values.email.toString().toLowerCase(),
               idTipoPersona: values.persona,
               tipoDocumentoRazon: values?.IDTypeRazon ?? '',
@@ -432,12 +432,23 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
   };
 
   const validarDatosSocilitante = async (form: any) => {
+
     try {
       await form.validateFields([
         'tipotramite', 'persona', 'name', 'IDType', 'IDNumber', 'surname', 'telefono',
         'email', 'zonaUbicacion', 'barrioUbicacion', 'upzUbicacion', 'localidadUbicacion'
       ]);
-      onNextStep();
+
+      if (form.getFieldValue('localidadUbicacion') != 'SELECCIONAR' && form.getFieldValue('barrioUbicacion') != 'SELECCIONAR' && form.getFieldValue('upzUbicacion') != 'SELECCIONAR' && form.getFieldValue('zonaUbicacion') != 'SELECCIONAR') {
+        onNextStep();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos Incompletos',
+          text: 'Los campos de Zona, Localidad, Upz y Barrios no debe tener valores predeterminados'
+        });
+      }
+
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -575,11 +586,11 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                     </Form.Item>
                   </div>
 
-                  {/** ============================================================= */}
-                  {/**            Sección para pestaña de cargue de archivos        **/}
-                  {/** ============================================================= */}
+                  {/** ==================================================================================== */}
+                  {/**            Sección para pestaña cargue de información adicional y  cargue de archivos        **/}
+                  {/** ===================================================================================== */}
                   <div className={` ${current != 2 && 'd-none'} fadeInRight ${current == 2 && 'd-block'}`}>
-                    <div className='row mt-5 ml-2'>
+                    <div className='row ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
                         Información adicional de la fuente de abastecimiento. <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>

@@ -12,7 +12,7 @@ import Input from 'antd/es/input';
 
 export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const { accountIdentifier } = authProvider.getAccount();
-  const { form } = props;
+  const { form, obj, vista } = props;
   const api = new ApiService(accountIdentifier);
   const [stateDisplayBox, setStateDisplayBox] = useState<string>('none');
   const [stateDisplayButton, setStateDisplayButton] = useState<string>('inline');
@@ -24,23 +24,41 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const [listUPZs, setListUPZs] = useState<Array<Object>>([]);
   const [listLocalidades, setListLocalidades] = useState<Array<Object>>([]);
 
+  const [enableField, setEnableField] = useState<boolean>(false);
+
   const getListas = useCallback(
     async () => {
       /** Se hace la peticion HTTP para obtener zonas, barrios, upzs y localidades */
-      setListZonas([{ idSubRed: -1, nombre: 'SELECCIONAR' }].concat(await api.getListSubRedes()));
-      setListBarrios([{ id_barrio: '0000', nombre_barrio: 'SELECCIONAR' }].concat(await api.getListBarrios()));
-      setListUPZs([{ id_upz: -1, nom_upz: 'SELECCIONAR' }].concat(await api.getListUPZ()));
-      setListLocalidades([{ idLocalidad: -1, nombre: 'SELECCIONAR' }].concat(await api.getListLocalidades()));
+      setListZonas([{ idSubRed: 'SELECCIONAR', nombre: 'SELECCIONAR' }].concat(await api.getListSubRedes()));
+      setListBarrios([{ id_barrio: 'SELECCIONAR', nombre_barrio: 'SELECCIONAR' }].concat(await api.getListBarrios()));
+      setListUPZs([{ id_upz: 'SELECCIONAR', nom_upz: 'SELECCIONAR' }].concat(await api.getListUPZ()));
+      setListLocalidades([{ idLocalidad: 'SELECCIONAR', nombre: 'SELECCIONAR' }].concat(await api.getListLocalidades()));
 
       /** Configuración para el estado inicial de la dirección */
       const initialDirection = ['', '', '', '', '', '', '', '', ''];
       sessionStorage.setItem('directionToSave', JSON.stringify(initialDirection));
+
+      if (vista == 'revision') {
+        setEnableField(true);
+      }
     }, []
   );
 
   useEffect(() => {
     getListas();
   }, []);
+
+  useEffect(() => {
+    /** efecto que se ejecuta despues de renderizarse el componente, no antes */
+    if ((obj != null) && (obj != undefined)) {
+      form.setFieldsValue({
+        zonaUbicacion: obj.sector,
+        barrioUbicacion: obj.barrio,
+        upzUbicacion: obj.upz,
+        localidadUbicacion: obj.localidad
+      });
+    }
+  });
 
 
   const cambioavenida = (value: any) => {
@@ -153,7 +171,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
           </label>
           <Form.Item label='' name=''>
-            <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' />
+            <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' disabled={enableField} />
           </Form.Item>
         </div>
         <div className='form-group col-md-2 col-lg-2 text-center'>
@@ -161,6 +179,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
           <Form.Item className='' label='' name='Num1' rules={[{ max: 3 }]}>
             <Input
+              disabled={enableField}
               style={{ width: '100px' }} id='23' allowClear
               type='text' placeholder='' autoComplete='off'
               maxLength={3}
@@ -182,6 +201,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor='' style={{ marginLeft: '50px' }}>Letra</label>
           <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '127px', marginLeft: '50px' }}
               options={letras}
               optionPropkey='key'
@@ -198,6 +218,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor=''>BIS</label>
           <Form.Item label='' name='Bis' rules={[{ max: 3 }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '127px' }}
               options={[
                 { key: 'Bis', value: 'Bis' },
@@ -215,6 +236,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor=''>Card</label>
           <Form.Item label='' name='card1' rules={[{ max: 4 }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '127px' }}
               options={direcionOrienta}
               optionPropkey='key'
@@ -229,6 +251,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor=''>Num</label>
           <Form.Item label='' name='Num2' rules={[{ max: 3 }]}>
             <Input
+              disabled={enableField}
               style={{ width: '127px' }}
               allowClear
               type='text'
@@ -253,6 +276,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor=''>Letra</label>
           <Form.Item label='' name='letra2' rules={[{ max: 1 }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '127px' }}
               options={letras}
               optionPropkey='key'
@@ -267,6 +291,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor=''>Placa</label>
           <Form.Item label='' name='placa' rules={[{ max: 2 }]}>
             <Input
+              disabled={enableField}
               style={{ width: '127px' }}
               allowClear
               placeholder=''
@@ -291,6 +316,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <label htmlFor=''>Card</label>
           <Form.Item label='' name='card2'>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '127px' }}
               options={direcionOrienta}
               optionPropkey='key'
@@ -342,9 +368,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
           <Form.Item label='' name='zonaUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '395px' }}
               options={listZonas}
-              optionPropkey='idSubRed'
+              optionPropkey='nombre'
               optionPropLabel='nombre'
             />
           </Form.Item>
@@ -354,9 +381,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
           <Form.Item label='' name='localidadUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '395px' }}
               options={listLocalidades}
-              optionPropkey='idLocalidad'
+              optionPropkey='nombre'
               optionPropLabel='nombre'
             />
           </Form.Item>
@@ -368,9 +396,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
           <Form.Item label='' name='upzUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '395px' }}
               options={listUPZs}
-              optionPropkey='id_upz'
+              optionPropkey='nom_upz'
               optionPropLabel='nom_upz'
             />
           </Form.Item>
@@ -380,9 +409,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
           <Form.Item label='' name='barrioUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
+              disabled={enableField}
               style={{ width: '395px' }}
               options={listBarrios}
-              optionPropkey='id_barrio'
+              optionPropkey='nombre_barrio'
               optionPropLabel='nombre_barrio'
             />
           </Form.Item>

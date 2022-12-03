@@ -1,13 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import '../../../../css/estilos.css';
-// Antd
-import Form, { FormInstance } from 'antd/es/form';
-import Input from 'antd/es/input';
-
-// Componentes
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import Form, { FormInstance } from 'antd/es/form';
+import '../../../../css/estilos.css';
+import Input from 'antd/es/input';
 
 export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
   const { obj, tipo, habilitar } = props;
@@ -58,156 +55,150 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
     return (
       <section className='datos_solicitante'>
         <div className='container-fluid'>
-          <>
-            <div className='row' style={{ marginLeft: '5px' }}>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
-                <div className='info-tramite mt-2 prueba_tramite'>
-                  <p style={{ fontSize: '18px', fontWeight: 'bold', marginLeft: '18px' }}>
-                    Datos de la solicitud. <br />{' '}
-                    <small style={{ color: ' #000' }}>
-                      <span className='required '>*</span> Campos Obligatorios
-                    </small>
-                  </p>
+
+          <div className='row' >
+            <div className='col-lg-12 col-sm-12 col-md-12'>
+              <div className='info-tramite mt-2 prueba_tramite'>
+                <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                  Datos de la solicitud. <br />{' '}
+                  <small style={{ color: ' #000' }}>
+                    <span className='required '>*</span> Campos Obligatorios
+                  </small>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className='row prueba_tramite' >
+            <div className='col-lg-6 col-md-6'>
+              <p className='text'>
+                <span className='required'>*</span>
+                Número de radicado
+              </p>
+              <div className='form-group gov-co-form-group'>
+                <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
+                  <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
+                </Form.Item>
+              </div>
+            </div>
+            <div className='col-lg-6 col-md-6'>
+              <p className='text'>
+                <span className='required'>*</span> Tipo de tramite
+              </p>
+              <div className='form-group gov-co-form-group'>
+                <Form.Item
+                  initialValue={obj?.idtipodeTramite}
+                  name='tipotramite'
+                  rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                >
+                  <SelectComponent
+                    options={l_tramites}
+                    defaultValue={obj?.idtipodeTramite}
+                    optionPropkey='idTipoTramite'
+                    optionPropLabel='descripcion'
+                  />
+                </Form.Item>
+              </div>
+            </div>
+          </div>
+          <div className='row prueba_tramite'>
+            <div className='col-lg-6 col-md-6 col-sm-12' >
+              <div className='form-group gov-co-form-group'>
+                <div className='gov-co-dropdown'>
+                  <div className='form-group gov-co-form-group '>
+                    <div className='gov-co-dropdown'>
+                      <p className='text'>
+                        <span className='required'>*</span> Estados
+                      </p>
+                      <Form.Item
+                        initialValue={obj.idestado}
+                        name='estado'
+                        rules={[{ required: tipousuario == 'validacion' ? false : true }]}
+                      >
+                        <SelectComponent
+                          options={l_estados}
+                          defaultValue={obj?.idestado}
+                          optionPropkey='idEstadoSolicitud'
+                          optionPropLabel='nombre'
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className='row prueba_tramite' >
-              <div className='col-lg-6 col-md-6' style={{ marginLeft: '20px' }}>
-                <p className='text'>
-                  <span className='required'>*</span>
-                  Número de radicado
-                </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
-                    <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
-                  </Form.Item>
-                </div>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12' style={{ marginLeft: '20px' }}>
-                <p className='text'>
-                  <span className='required'>*</span> Tipo de tramite
-                </p>
-                <div className='form-group gov-co-form-group'>
+            <div className='col-lg-6 col-md-6 col-sm-12' >
+              <p className='text'>
+                <span className='required'>*</span> Actividad Actual
+              </p>
+              <div className='form-group gov-co-form-group ml-2'>
+                <div className='gov-co-dropdown'>
                   <Form.Item
-                    initialValue={obj?.idtipodeTramite}
-                    name='tipotramite'
+                    initialValue={obj?.idactividadActualSolicitud}
+                    name='actactual'
                     rules={[{ required: tipousuario == 'validacion' ? false : true }]}
                   >
                     <SelectComponent
-                      options={l_tramites}
-                      defaultValue={obj?.idtipodeTramite}
-                      optionPropkey='idTipoTramite'
+                      options={l_actividades}
+                      defaultValue={obj?.idactividadActualSolicitud}
+                      optionPropkey='idActividad'
                       optionPropLabel='descripcion'
                     />
                   </Form.Item>
                 </div>
               </div>
             </div>
-            <div className='row prueba_tramite'>
-              <div className='col-lg-6 col-md-6 col-sm-12' style={{ marginLeft: '20px' }} >
+          </div>
+
+          <div className='row prueba_tramite'>
+            {tipousuario != 'validacion' && (
+              <div className='col-lg-6 col-md-6 col-sm-12 ' >
+                <p className='text'>
+                  <span className='required'>*</span> Actividad Siguiente
+                </p>
                 <div className='form-group gov-co-form-group'>
-                  <div className='gov-co-dropdown'>
-                    <div className='form-group gov-co-form-group '>
-                      <div className='gov-co-dropdown'>
-                        <p className='text'>
-                          <span className='required'>*</span> Estados
-                        </p>
-                        <Form.Item
-                          initialValue={obj.idestado}
-                          name='estado'
-                          rules={[{ required: tipousuario == 'validacion' ? false : true }]}
-                        >
-                          <SelectComponent
-                            options={l_estados}
-                            defaultValue={obj?.idestado}
-                            optionPropkey='idEstadoSolicitud'
-                            optionPropLabel='nombre'
-                          />
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
+                  <Form.Item
+                    initialValue={obj?.actividadSiguienteSolicitud}
+                    name='actsiguiente'
+                    rules={[{ required: false }]}
+                  >
+                    <Input
+                      type='text'
+                      className='form-control gov-co-form-control'
+                      onKeyPress={(event) => {
+                        if (!/[a-zA-Z ]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
+                      onPaste={(event) => {
+                        event.preventDefault();
+                      }}
+                    />
+                  </Form.Item>
                 </div>
               </div>
-              <div className='col-lg-6 col-md-6 col-sm-12' style={{ marginLeft: '15px' }}>
+            )}
+
+            {tipousuario == 'coordinador' && (
+              <div className='col-lg-6 col-md-6 col-sm-12 '>
                 <p className='text'>
-                  <span className='required'>*</span> Actividad Actual
+                  <span className='required'>*</span>
+                  Subred de jurisdicción
                 </p>
                 <div className='form-group gov-co-form-group ml-2'>
                   <div className='gov-co-dropdown'>
-                    <Form.Item
-                      initialValue={obj?.idactividadActualSolicitud}
-                      name='actactual'
-                      rules={[{ required: tipousuario == 'validacion' ? false : true }]}
-                    >
+                    <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: true }]}>
                       <SelectComponent
-                        options={l_actividades}
-                        defaultValue={obj?.idactividadActualSolicitud}
-                        optionPropkey='idActividad'
-                        optionPropLabel='descripcion'
+                        options={l_subredes}
+                        defaultValue={obj?.idSubred}
+                        optionPropkey='idSubRed'
+                        optionPropLabel='zona'
                       />
                     </Form.Item>
                   </div>
                 </div>
               </div>
-            </div>
-            {tipousuario != 'validacion' && (
-              <>
-                <div className='row'>
-                  <div className='col-lg-6 col-md-6 col-sm-12 ' style={{ marginLeft: '5px' }}>
-                    <p className='text'>
-                      <span className='required'>*</span> Actividad Siguiente
-                    </p>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item
-                        initialValue={obj?.actividadSiguienteSolicitud}
-                        name='actsiguiente'
-                        rules={[{ required: false }]}
-                      >
-                        <Input
-                          type='text'
-                          className='form-control gov-co-form-control'
-                          onKeyPress={(event) => {
-                            if (!/[a-zA-Z ]/.test(event.key)) {
-                              event.preventDefault();
-                            }
-                          }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </>
             )}
-
-            {tipousuario == 'coordinador' && (
-              <>
-                <div className='row'>
-                  <div className='col-lg-6 col-md-6 col-sm-12 '>
-                    <p className='text'>
-                      <span className='required'>*</span>
-                      Subred de jurisdicción
-                    </p>
-                    <div className='form-group gov-co-form-group ml-2'>
-                      <div className='gov-co-dropdown'>
-                        <Form.Item name='subred' initialValue={obj?.idSubred} rules={[{ required: true }]}>
-                          <SelectComponent
-                            options={l_subredes}
-                            defaultValue={obj?.idSubred}
-                            optionPropkey='idSubRed'
-                            optionPropLabel='zona'
-                          />
-                        </Form.Item>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </>
+          </div>
         </div>
       </section>
     );
