@@ -120,12 +120,12 @@ export const RevisarSc = () => {
 
         ubicacion: {
           idUbicacion: objJson.idUbicacion,
-          direccion: values.direccion,
-          departamento: values.departamento,
-          municipio: mun,
-          localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
+          direccion: objJson.direccion,
+          departamento: '00000000-0000-0000-0000-000000000000',
+          municipio: '00000000-0000-0000-0000-000000000000',
+          localidad: objJson.localidad,
           vereda: '',
-          sector: '',
+          sector: objJson.sector,
           upz: objJson.upz,
           barrio: objJson.barrio,
           observacion: ''

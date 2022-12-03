@@ -330,49 +330,17 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           formData.append('containerName', 'aguahumanos');
           formData.append('oid', idUsuario);
 
-          const nube = await api.uploadFiles(formData);
-          const bd = await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
+          await api.uploadFiles(formData);
+          await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
 
 
           if (supportDocumentsRejected.length > 0) {
-
-            const bdrejec = await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
+            await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
           }
 
-          const valor = await api.AddSolicitudConsecion(json);
-
-          let observaciones: any[] = []
-          observaciones.push(
-            {
-              idObservacion: '00000000-0000-0000-0000-000000000000',
-              idSolicitud: responseSolicitudDTO.idSolicitud,
-              idSubred: objJson.idSubred,
-              observacion: 'radicación solicitud',
-              fechaObservacion: null
-            }
-          )
-
-          const jsonobservacion: IObservaciones<any> = {
-
-            idSolicitud: responseSolicitudDTO.idSolicitud,
-            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-
-            observaciones: observaciones,
-
-            citacion: {
-              idCitacion: '00000000-0000-0000-0000-000000000000',
-              fechaCitacion: '',
-              observacion: 'No_aplica',
-              fechaRegistro: '',
-              idSolicitud: '00000000-0000-0000-0000-000000000000',
-              idUsuario: '00000000-0000-0000-0000-000000000000'
-            }
-
-          };
-
-
-          await api.AddObservaciones(jsonobservacion);
-
+          console.log("Datos adicionales, antes de ser mandados al servidor");
+          console.log(json);
+          await api.AddSolicitudConsecion(json);
 
 
           Swal.fire({
@@ -543,7 +511,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                   {/**    Sección para pestaña de cargar informacion de fuentes estudiada   */}
                   {/** ==================================================================== */}
                   <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
-                    <div className='row mt-5 ml-2'>
+                    <div className='row ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
                         Datos de la fuente de abastecimiento. <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>

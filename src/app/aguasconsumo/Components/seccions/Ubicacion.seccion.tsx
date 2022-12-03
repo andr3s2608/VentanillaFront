@@ -51,6 +51,8 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   useEffect(() => {
     /** efecto que se ejecuta despues de renderizarse el componente, no antes */
     if ((obj != null) && (obj != undefined)) {
+      console.log("dentro del componente de ubicación");
+      console.log(obj);
       form.setFieldsValue({
         zonaUbicacion: obj.sector,
         barrioUbicacion: obj.barrio,
