@@ -297,7 +297,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               className='fa-solid fa-circle-xmark'
               key={`validar`}
               onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
+              style={{ fontSize: '30xp', color: 'white' }}
               icon={<CheckOutlined />}
             >
               Eliminar
@@ -382,12 +382,11 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
                     type='primary'
                     htmlType='button'
-                    icon='fa-solid fa-circle-plus'
                     onClick={() => {
                       insertarsistema();
                     }}
                   >
-                    Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
+                    Adicionar Caudal <span><i className="fa-solid fa-plus ml-3"></i></span>
 
                   </Button>
                 </>

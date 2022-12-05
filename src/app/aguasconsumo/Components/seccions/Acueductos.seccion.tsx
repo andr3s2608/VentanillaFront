@@ -313,7 +313,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               className='fa-solid fa-circle-xmark'
               key={`vali-${index}`}
               onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
+              style={{ fontSize: '30xp', color: 'white' }}
               icon={<CheckOutlined />}
             >
               Eliminar
@@ -640,7 +640,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 {longituddec ?
                   (<Form.Item name='longituduso'>
                     <Input
-
                       className='form-control gov-co-form-control'
                       maxLength={9}
                       onKeyPress={(event) => {
@@ -747,7 +746,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       }}
                     >
 
-                      Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
+                      Adicionar
                     </Button>
                   </div>
                 </>
