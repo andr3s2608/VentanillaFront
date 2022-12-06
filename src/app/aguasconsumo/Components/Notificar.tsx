@@ -220,7 +220,7 @@ export const Notificar = () => {
               </div>
               <div className='row'>
                 <div className='col-lg-4 col-md-4 col-sm-12'>
-                  <p>Caudal de diseño (L/s)</p>
+                  <p>Caudal diseño (L/s)</p>
                   <div className='form-group gov-co-form-group'>
                     <Form.Item>
                       <input
@@ -239,7 +239,7 @@ export const Notificar = () => {
                   </div>
                 </div>
                 <div className='col-lg-4 col-md-4 col-sm-12'>
-                  <p>Caudal de tratado (L/s)</p>
+                  <p>Caudal tratado (L/s)</p>
                   <div className='form-group gov-co-form-group'>
                     <Form.Item>
                       <input

@@ -56,7 +56,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const [latituddec, setlatituddec] = useState<boolean>(true);
   const [longituddec, setlongituddec] = useState<boolean>(true);
   const [l_subcategorias, setl_subcategorias] = useState<any[]>([]);
-
+  const [input, setInput] = useState('');
   const getListas = useCallback(
     async () => {
       const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental()]);
@@ -305,53 +305,54 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
     if (event.target.value.length === 2) {
       valor = valor + "°"
-      props.form.setFieldsValue({ latitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "°");
     }
 
     if (event.target.value.length === 5) {
       valor = valor + "'"
-      props.form.setFieldsValue({ latitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "'");
     }
 
     if (event.target.value.length === 8) {
       valor = valor + '.'
-      props.form.setFieldsValue({ latitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '.');
     }
 
     if (event.target.value.length === 11) {
       valor = valor + '"'
-      props.form.setFieldsValue({ latitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '"');
     }
 
   };
   const onChangeFormatLongitud = (event: any) => {
     let valor: string = props.form.getFieldValue('longitud');
+
     if (event.target.value.length === 2) {
       valor = valor + "°"
-      props.form.setFieldsValue({ longitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "°");
     }
 
     if (event.target.value.length === 5) {
       valor = valor + "'"
-      props.form.setFieldsValue({ longitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "'");
     }
 
     if (event.target.value.length === 8) {
       valor = valor + '.'
-      props.form.setFieldsValue({ longitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '.');
     }
 
     if (event.target.value.length === 11) {
       valor = valor + '"'
-      props.form.setFieldsValue({ longitud: valor })
-
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '"');
     }
   };
 
@@ -509,7 +510,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         <Input
                           name='latitud'
                           className='form-control gov-co-form-control'
-                          maxLength={14}
+                          maxLength={13}
                           onChange={onChangeFormat}
                           onKeyPress={(event) => {
                             if (!/[0-9'"°NS]/.test(event.key)) {
@@ -546,7 +547,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                       <Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
                         <Input
                           className='form-control gov-co-form-control'
-                          maxLength={14}
+                          maxLength={13}
                           onChange={onChangeFormatLongitud}
                           onKeyPress={(event) => {
                             if (!/[0-9'"°EO]/.test(event.key)) {

@@ -600,7 +600,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={9}
+                      maxLength={13}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -612,7 +612,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={14}
+                      maxLength={13}
                       onChange={onChangeFormat}
                       onKeyPress={(event) => {
                         if (!/[0-9'"°NS]/.test(event.key)) {
@@ -641,7 +641,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   (<Form.Item name='longituduso'>
                     <Input
                       className='form-control gov-co-form-control'
-                      maxLength={9}
+                      maxLength={13}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -652,7 +652,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <Form.Item name='longituduso'>
                     <Input
                       className='form-control gov-co-form-control'
-                      maxLength={14}
+                      maxLength={13}
 
                       onChange={onChangeFormatLongitud}
                       onKeyPress={(event) => {
@@ -843,7 +843,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
-                    maxLength={9}
+                    maxLength={13}
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();
