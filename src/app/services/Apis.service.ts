@@ -279,7 +279,7 @@ export class ApiService {
 
   //correccion
   getallrequesttovalidate = () =>
-    get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetAllRequesttoValidate`, id: '0' });
+    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequesttoValidate`, id: '0' });
 
   getHistorialSolicitudesPDF = (payload: any[]) =>
     post({

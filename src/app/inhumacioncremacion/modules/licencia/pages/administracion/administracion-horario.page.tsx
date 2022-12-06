@@ -6,6 +6,7 @@ import { PageHeaderComponent } from 'app/shared/components/page-header.component
 import { HorariosGestion } from 'app/inhumacioncremacion/modules/licencia/components/form/horarios.form';
 import { EmergenciaSanitaria } from 'app/inhumacioncremacion/modules/licencia/components/form/emergenciasanitaria.form';
 import { HorariosFestivos } from 'app/inhumacioncremacion/modules/licencia/components/form/horariosFestivos.form';
+import colors from 'react-multi-date-picker/plugins/colors';
 
 // Otros componentes
 const { TabPane } = Tabs;
