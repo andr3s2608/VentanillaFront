@@ -84,6 +84,8 @@ export const RevisarSv = () => {
 
 
     const { seguimientoDocumentos } = store.getState();
+    console.log("el valor de los documentos de seguimiento");
+    console.log(seguimientoDocumentos);
 
 
     const formatDate = 'MM-DD-YYYY';
