@@ -330,7 +330,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de diseño (L/s)
+                <span className='required'>*</span> Caudal diseño (L/s)
                 <Form.Item name='caudaldesign' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -349,7 +349,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de tratado (L/s)
+                <span className='required'>*</span> Caudal tratado (L/s)
                 <Form.Item name='caudaltratado' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -632,7 +632,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de diseño (L/s)
+                <span className='required'>*</span> Caudal diseño (L/s)
                 <Form.Item name='caudaldesign' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -651,7 +651,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de tratado (L/s)
+                <span className='required'>*</span> Caudal tratado (L/s)
                 <Form.Item name='caudaltratado' rules={[{ required: false }]}>
                   <Input
                     type='text'
