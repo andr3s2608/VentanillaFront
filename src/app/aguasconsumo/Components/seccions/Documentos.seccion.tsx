@@ -73,6 +73,8 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       let documentosrechazados: any = [];
 
+      console.log('objecto de donde se cada el idSolcitud');
+      console.log(obj);
 
       if (obj?.fuenteabastecimientojson !== undefined) {
         documentosrechazados = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
