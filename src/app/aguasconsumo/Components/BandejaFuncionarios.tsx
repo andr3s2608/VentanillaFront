@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import profile from '../../../../src/assets/images/aguas/profile.png';
+import revision from '../../../../src/assets/images/aguas/revisionencampo.jpg';
 import { Form, Input } from 'antd';
 import '../../../css/estilos.css';
 
@@ -14,12 +15,12 @@ import { useHistory } from 'react-router';
 import { store } from 'app/redux/app.reducers';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { layoutItems } from 'app/shared/utils/form-layout.util';
 
-export const Bandeja = (props: IDataSource) => {
+export const BandejaFuncionarios = (props: IDataSource) => {
   const history = useHistory();
   const { data, datosusuario, datossolucionados, notificaciones, historico } = props;
 
@@ -35,9 +36,14 @@ export const Bandeja = (props: IDataSource) => {
 
   const [filtroactual, setfiltroactual] = useState<String>('');
 
+  const [solicitudaguardar, setsolicitudaguardar] = useState<any>();
+  const [isVisibleDocumentoGestion, setVisibleDocumentoGestion] = useState<boolean>(false);
+
+
   const [roles, setroles] = useState<String>('');
   const [mostrar, setmostrar] = useState<Boolean>(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataTable, setDataTable] = useState<[]>();
   const [ocultarbandeja, setocultarbandeja] = useState<boolean>(false);
   const [ocultarnotificacion, setocultarnotificacion] = useState<boolean>(true);
   const [dias, setdias] = useState<any>([]);
@@ -50,6 +56,9 @@ export const Bandeja = (props: IDataSource) => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [form] = Form.useForm<any>();
+
+  const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
+  const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
 
   //////filtros
 
@@ -217,16 +226,56 @@ export const Bandeja = (props: IDataSource) => {
     resetdata();
   };
 
+  const onClickValidarArchivo = (datos: any) => {
+
+
+    setsolicitudaguardar(datos);
+    setVisibleDocumentoGestion(true);
+  };
+
+
+  const onClickSubirArchivo = async () => {
+
+    const archivo = form.getFieldValue('cargarvisita')
+
+
+    const supportDocumentsEdit: any[] = [];
+    const formData = new FormData();
+
+    formData.append('file', archivo.file);
+    formData.append('nameFile', 'Documento_revision' + '_' + solicitudaguardar.idSolicitud);
+
+    supportDocumentsEdit.push({
+      idSolicitud: solicitudaguardar.idSolicitud,
+      idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+      path: `${solicitudaguardar.idUsuario}/Documento_revision_${solicitudaguardar.idSolicitud}`,
+      idUsuario: solicitudaguardar.idUsuario,
+      idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+      esValido: true
+    });
+
+    formData.append('containerName', 'aguahumanos');
+    formData.append('oid', solicitudaguardar.idUsuario);
+
+    await api.uploadFiles(formData);
+    await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+
+    setVisibleDocumentoGestion(false);
+
+    await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4',
+      '8CA363C0-66AA-4273-8E63-CE3EAC234857');
+
+  };
+
   const onClickValidarInformacion = async (datos: any) => {
     const data = datos;
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Proceso de Citacion') {
+    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Gestion Validador') {
       history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
     }
     if (
-      data.tipodeSolicitud == 'Gestion Validador' ||
       data.tipodeSolicitud == 'Gestion Coordinador' ||
       data.tipodeSolicitud == 'Gestion Subdirector'
     ) {
@@ -450,6 +499,7 @@ export const Bandeja = (props: IDataSource) => {
 
 
 
+
     return (
       <Input
         placeholder='Nro. de Radicado'
@@ -532,6 +582,25 @@ export const Bandeja = (props: IDataSource) => {
     );
   };
 
+  const onClickVisualizarPDF = async (row: any) => {
+
+    try {
+      let urlForIframe = 'data:application/pdf;base64,';
+      let base64pdfLicencia = await api.getCertificadoAguas(row.idSolicitud);
+
+      setUrlPdfLicence(urlForIframe.concat(base64pdfLicencia));
+      setIsModalVisiblePdf(true);
+    } catch (error) {
+      Swal.fire({
+        imageHeight: 150,
+        title: 'DOCUMENTO NO ENCONTRADO',
+        confirmButtonColor: '#b6e5ef',
+        text:
+          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+      });
+    }
+  };
+
   let structureColumns: any[] = [];
   let structureColumnsnotificacion: any[] = [];
   let structureColumnsnotificacionhistorico: any[] = [];
@@ -554,6 +623,21 @@ export const Bandeja = (props: IDataSource) => {
             },
             children: <div>{text}</div>
           };
+        }
+      },
+      {
+        title: 'Visualizar PDF',
+        key: 'visualizarPDF',
+        render: (_: any, row: any, index: any) => {
+          if (row.estado == 'Aprobada') {
+            return (
+              <FilePdfOutlined
+                onClick={() => onClickVisualizarPDF(row)}
+                style={{ fontSize: '30px' }}
+              />);
+          } else {
+            return null;
+          }
         }
       },
       {
@@ -677,24 +761,39 @@ export const Bandeja = (props: IDataSource) => {
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
-          if (
-            row.estado != 'Aprobada' &&
-            row.estado != 'Cerrada' &&
-            row.estado != 'Anulada' &&
-            row.actividadActualSolicitud != 'En visita de revisión'
-          ) {
+
+          if (row.tipodeSolicitud === 'Visita de Revision') {
             return (
               <Button
                 type='primary'
                 key={`vali-${index}`}
-                onClick={() => onClickValidarInformacion(row)}
+                onClick={() => onClickValidarArchivo(row)}
                 style={{ marginRight: '8px' }}
                 icon={<CheckOutlined />}
               >
-                Validar Información
+                Cargar Archivo
               </Button>
             );
-          } else {
+          }
+          else {
+            if (
+              row.estado != 'Aprobada' &&
+              row.estado != 'Cerrada' &&
+              row.estado != 'Anulada' &&
+              row.actividadActualSolicitud != 'En visita de revisión'
+            ) {
+              return (
+                <Button
+                  type='primary'
+                  key={`vali-${index}`}
+                  onClick={() => onClickValidarInformacion(row)}
+                  style={{ marginRight: '8px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Validar Información
+                </Button>
+              );
+            }
             return null;
           }
         }
@@ -888,13 +987,17 @@ export const Bandeja = (props: IDataSource) => {
         dataIndex: '',
         width: 200,
         key: '',
-        render(text: any, record: any) {
-          return {
-            props: {
-              style: { background: color }
-            },
-            children: <div>{ }</div>
-          };
+        render: (_: any, row: any, index: any) => {
+          return (
+            <Button
+              onClick={() => Openmodal(row)}
+              type='primary'
+              style={{ marginRight: '8px' }}
+              icon={<CheckOutlined />}
+            >
+              Notificaciones
+            </Button>
+          )
         }
       }
     ];
@@ -983,7 +1086,35 @@ export const Bandeja = (props: IDataSource) => {
     ];
   }
 
+
+  const Openmodal = async (solicitud: any) => {
+    const seguimiento: any = await api.getObservacionesList(solicitud.idSolicitud);
+    setDataTable(seguimiento);
+    showModal();
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const columnFake = [
+    {
+      title: 'Observación',
+      dataIndex: 'observacion',
+      key: 'Observacion'
+    },
+    {
+      title: 'Fecha de Registro',
+      dataIndex: 'fechaObservacion',
+      key: 'fechaObservacion'
+    }
+  ];
   return (
+
     <div className='container-fluid'>
       <div className='card'>
         <div className='card-body tarjeta h-100 card_tarjeta' >
@@ -1023,6 +1154,7 @@ export const Bandeja = (props: IDataSource) => {
                   </div>
                 </div>
               </div>
+
               <div className='container-fluid'>
                 <div className='row' style={{ marginLeft: '18px' }}>
                   <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
@@ -1550,12 +1682,84 @@ export const Bandeja = (props: IDataSource) => {
                     )}
                   </div>
                 </div>
+                <div className='row'>
+                  <Modal
+                    title={
+                      <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                        Visualización de la licencia
+                      </p>
+                    }
+                    visible={isModalVisiblePdf}
+                    onCancel={() => setIsModalVisiblePdf(false)}
+                    width={1000}
+                    okButtonProps={{ hidden: true }}
+                    cancelText='Cerrar'
+                  >
+                    <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                  </Modal>
+                </div>
               </div>
             </section>
+            <div className='row'>
+              {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+              <Modal
+                title={<p className='text-center'>Gestión de Documentos</p>}
+                visible={isVisibleDocumentoGestion}
+                width={800}
+                onCancel={() => setVisibleDocumentoGestion(false)}
+                footer={[]}
+              >
+                <div className='row'>
+                  <img src={revision} width='60%' alt='logo' className='e-block mx-auto img-fluid float-end ml-2' />
+                  <div className='col-gl-12 col-sm-12 col-md-12'>
+                    <Form.Item label='Cargar Archivo de Visita Tecnica' name='cargarvisita' rules={[{ required: true }]}>
+                      <Upload
+                        name='cargarvisita'
+                        maxCount={1}
+                        beforeUpload={() => false}
+                        listType='text'
+                        accept='application/pdf'
+                      >
+                        <Button icon={<UploadOutlined />}>Adjuntar archivo</Button>
+                      </Upload>
+                    </Form.Item>
+
+
+                  </div>
+                </div>
+                <div className='row ml-5'>
+                  <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
+                    <Button style={{ margin: 10 }} type='primary' htmlType='button' onClick={() => onClickSubirArchivo()}>
+                      Guardar
+                    </Button>
+                  </div>
+                </div>
+              </Modal>
+            </div>
             <br /><br /><br /><br /><br /><br />
           </Form>
         </div>
       </div>
+      <Modal
+        title={
+          <p className='text-center text-dark text-uppercase mb-0 titulo'>
+            Ventana de seguimiento y auditoria
+          </p>
+        }
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        width={1500}
+        okButtonProps={{ hidden: true }}
+        cancelText='Cerrar'
+      >
+        <Table
+          // className='text-center table'
+          dataSource={dataTable}
+          columns={columnFake}
+          scroll={{ x: 1200 }}
+          pagination={{ hideOnSinglePage: true }}
+        />
+      </Modal>
     </div>
   );
 };

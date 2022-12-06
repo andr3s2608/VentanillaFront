@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
-
 * {
   text-decoration: none !important;
 }
-
 
 .ant-table table {
   font-size: 14px !important;
@@ -28,7 +26,7 @@
 }
 
 .info-tramite {
-  margin-left: -6px !important;
+  margin-left: 1px !important;
 }
 
 .tramite {
@@ -65,12 +63,11 @@
   margin-top: 100px !important;
 }
 
-
 .breadcrumb {
   background-color: #fff !important;
 }
 
-.breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
   font-family: 'fontAwesome';
   font-weight: bold;
   content: '\f105';
@@ -86,7 +83,7 @@
   text-decoration: none;
 }
 
-.breadcrumb>.active {
+.breadcrumb > .active {
   color: #000 !important;
   font-size: 17px !important;
   font-weight: 500;
@@ -103,7 +100,7 @@
   border-bottom: 3px solid rgb(4, 195, 209);
 }
 
-.panel>.active {
+.panel > .active {
   color: #0055ff;
   font-size: 17px !;
   font-weight: 600;
@@ -119,7 +116,7 @@
   margin-top: -25px !important;
 }
 
-.mb-0>a {
+.mb-0 > a {
   display: block;
   position: relative;
   color: #000;
@@ -128,7 +125,7 @@
   text-decoration: none;
 }
 
-.mb-0>a:after {
+.mb-0 > a:after {
   content: '\f105';
   /* fa-chevron-down */
   font-family: 'FontAwesome';
@@ -137,13 +134,13 @@
   color: #000;
 }
 
-.mb-0>a[aria-expanded='true']:after {
+.mb-0 > a[aria-expanded='true']:after {
   content: '\f077';
   color: #000;
   /* fa-chevron-up */
 }
 
-.mb-0>a[aria-expanded='true']:after {
+.mb-0 > a[aria-expanded='true']:after {
   content: '\f105';
   color: #000;
   /* fa-chevron-up */
@@ -194,7 +191,7 @@ a.nav-link.hero_b {
   white-space: nowrap;
 }
 
-.ant-table-tbody>tr>td {
+.ant-table-tbody > tr > td {
   font-family: 'Roboto', sans-serif !important;
   text-align: left !important;
 }
@@ -294,7 +291,6 @@ a.nav-link.hero_b {
 }
 
 .bandeja_panel {
-
   width: 1200px !important;
   height: 420px !important;
   margin-top: -8px !important;
@@ -361,7 +357,6 @@ a.nav-link.hero_b {
   margin-left: 12px !important;
 }
 
-
 .cancelar {
   margin-left: 20px !important;
 }
@@ -411,6 +406,6 @@ a.nav-link.hero_b {
   width: 296px !important;
 }
 
-th>.ant-table-cell {
+th > .ant-table-cell {
   color: red !important;
 }

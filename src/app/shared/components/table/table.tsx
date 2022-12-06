@@ -1435,6 +1435,7 @@ export const Gridview = (props: IDataSource) => {
               />
             </div>
           </div>
+          -
           <div className='row'>
             {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
             <Modal

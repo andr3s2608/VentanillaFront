@@ -94,7 +94,7 @@ export const VisitaRu = () => {
                               3. En gestión
                             </a>
                             <a className='nav-link disabled' href='#'>
-                              4. Respuesta
+                              4. Respuesta  'esto hay que eliminarlo'
                             </a>
                           </nav>
                         </div>

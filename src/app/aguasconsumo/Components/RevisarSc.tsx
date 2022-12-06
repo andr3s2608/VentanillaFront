@@ -8,7 +8,7 @@ import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
-import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Models/IRegistroSolicitudCitacion';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,
@@ -79,7 +79,7 @@ export const RevisarSc = () => {
       solicitud: {
         idSolicitud: objJson.idsolicitud + '',
         idPersona: objJson.idPersona + '',
-        idTipodeSolicitud: '492E1C24-B2A4-45FD-8845-D9AC1E569928',
+        idTipodeSolicitud: 'D33FBB9C-9F47-4015-BBE6-96FF43F0DDE4',
         tipodeSolicitud: objJson.tipodeSolicitud,
         numeroRadicado: objJson.numeroradicado,
         fechaSolicitud: objJson.fechaSolicitud,
@@ -120,12 +120,12 @@ export const RevisarSc = () => {
 
         ubicacion: {
           idUbicacion: objJson.idUbicacion,
-          direccion: values.direccion,
-          departamento: values.departamento,
-          municipio: mun,
-          localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
+          direccion: objJson.direccion,
+          departamento: '00000000-0000-0000-0000-000000000000',
+          municipio: '00000000-0000-0000-0000-000000000000',
+          localidad: objJson.localidad,
           vereda: '',
-          sector: '',
+          sector: objJson.sector,
           upz: objJson.upz,
           barrio: objJson.barrio,
           observacion: ''
@@ -166,8 +166,8 @@ export const RevisarSc = () => {
 
                 <div className='row mt-2'>
                   <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion prueba_seccion'>
-                      <nav aria-label='breadcrumb'>
+                    <div className='info-secion'>
+                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff' }}>
                         <ol className='breadcrumb'>
                           <li className='breadcrumb-item'>
                             <a href='#'>Inicio</a>
@@ -189,34 +189,13 @@ export const RevisarSc = () => {
             <section className='panel-menu'>
               <div className='container'>
                 <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
-                    <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                      <nav className='nav panel'>
-                        <a className='nav-link active' href='#'>
-                          1. Solicitar revisión
-                        </a>
-                        <a className='nav-link' href='#'>
-                          2. Crear Solicitud
-                        </a>
-                        <a className='nav-link' href='#'>
-                          3. En gestión
-                        </a>
-                        <a className='nav-link disabled' href='#'>
-                          4. Respuesta
-                        </a>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
-                <div className='row mt-5'>
-                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
-                    <div className='info-tramite mt-3 ml-5'>
+                  <div className='col-lg-12 col-md-12 mt-3'>
+                    <div className='info-tramite'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
-
-                <div className='row mt-5 ml-2 primeros_campos'>
+                <div className='row mt-2 ml-2 primeros_campos'>
                   <DatosSolicitud form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                 </div>
                 <div className='row mt-5 ml-2'>

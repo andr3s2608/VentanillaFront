@@ -1,94 +1,66 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import '../../../../css/estilos.css';
-// Antd
-import Form, { FormInstance } from 'antd/es/form';
-import Input from 'antd/es/input';
-import Divider from 'antd/es/divider';
-import {
-  dominioService,
-  ETipoDominio,
-  IBarrio,
-  IDepartamento,
-  IDominio,
-  ILocalidad,
-  IMunicipio,
-  IUpz
-} from 'app/services/dominio.service';
-
-// Componentes
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-
-//Redux
-import { store } from 'app/redux/app.reducers';
-import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
-import { Button, Radio, Table } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ApiService } from 'app/services/Apis.service';
+import Form, { FormInstance } from 'antd/es/form';
 import { CheckOutlined } from '@ant-design/icons';
+import { Button, Radio, Table } from 'antd';
+import '../../../../css/estilos.css';
+import Input from 'antd/es/input';
 import Swal from 'sweetalert2';
 
 export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
-  const { obj, tipo, prop, habilitar } = props;
-
+  const { obj, tipo, prop, habilitar, tipoSolicitud } = props;
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
-
   const [campos, setcampos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']);
+  const [sistema, setsistema] = useState<any[]>([]);
+  const Paginas: number = 10;
   const [tienefuente, settienefuente] = useState<number>(0);
   const [otra, setisotra] = useState<boolean>(false);
-  const [lista, setlista] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ]);
-  const [sistema, setsistema] = useState<any[]>([]);
+  const [lista, setlista] = useState<boolean[]>(
+    [false, false, false, false, false, false, false, false, false, false, false, false]
+  );
 
-  const Paginas: number = 10;
+
   const getListas = useCallback(async () => {
     const array: any[] = [];
 
-    for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
+    if (obj?.sistematratamientojson !== undefined) {
+      for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
 
-      if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
+        if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
 
-        settienefuente(1)
+          settienefuente(1)
+        }
+        else {
+
+          settienefuente(2)
+        }
+        array.push({
+          posicion: index + 1,
+          caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
+          caudaltratado: obj.sistematratamientojson[index].caudalTratado,
+          sed: obj.sistematratamientojson[index].sedimentador,
+          mezr: obj.sistematratamientojson[index].mezclaRapido,
+          alma: obj.sistematratamientojson[index].almacenamiento,
+          torre: obj.sistematratamientojson[index].torreAireacion,
+          desin: obj.sistematratamientojson[index].desinfeccion,
+          preclo: obj.sistematratamientojson[index].precloracion,
+          filt: obj.sistematratamientojson[index].filtracion,
+          mezl: obj.sistematratamientojson[index].mezclaLento,
+          oxi: obj.sistematratamientojson[index].oxidacion,
+          flocula: obj.sistematratamientojson[index].floculador,
+          desarenador: obj.sistematratamientojson[index].desarenador,
+          otra: obj.sistematratamientojson[index].otra,
+          descrip: obj.sistematratamientojson[index].descripcionOtro,
+          num1: obj.sistematratamientojson[index].numUsuarioUrbanos,
+          num2: obj.sistematratamientojson[index].numUsuariosRurales,
+          pob1: obj.sistematratamientojson[index].poblacionUrbanos,
+          pob2: obj.sistematratamientojson[index].poblacionRurales
+        });
       }
-      else {
-
-        settienefuente(2)
-      }
-      array.push({
-        posicion: index + 1,
-        caudaldesign: obj.sistematratamientojson[index].caudalDiseno,
-        caudaltratado: obj.sistematratamientojson[index].caudalTratado,
-        sed: obj.sistematratamientojson[index].sedimentador,
-        mezr: obj.sistematratamientojson[index].mezclaRapido,
-        alma: obj.sistematratamientojson[index].almacenamiento,
-        torre: obj.sistematratamientojson[index].torreAireacion,
-        desin: obj.sistematratamientojson[index].desinfeccion,
-        preclo: obj.sistematratamientojson[index].precloracion,
-        filt: obj.sistematratamientojson[index].filtracion,
-        mezl: obj.sistematratamientojson[index].mezclaLento,
-        oxi: obj.sistematratamientojson[index].oxidacion,
-        flocula: obj.sistematratamientojson[index].floculador,
-        desarenador: obj.sistematratamientojson[index].desarenador,
-        otra: obj.sistematratamientojson[index].otra,
-        descrip: obj.sistematratamientojson[index].descripcionOtro,
-        num1: obj.sistematratamientojson[index].numUsuarioUrbanos,
-        num2: obj.sistematratamientojson[index].numUsuariosRurales,
-        pob1: obj.sistematratamientojson[index].poblacionUrbanos,
-        pob2: obj.sistematratamientojson[index].poblacionRurales
-      });
     }
+
     setsistema(array);
     if (prop != null) {
       prop(array);
@@ -97,7 +69,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
   useEffect(() => {
     getListas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const validacionCaudal = (value: any) => {
@@ -306,7 +277,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        if (obj?.tipodeSolicitud != 'Primera vez') {
+        if (tipoSolicitud !== 'primera-vez') {
           return (
             <Button
               type='primary'
@@ -326,7 +297,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               className='fa-solid fa-circle-xmark'
               key={`validar`}
               onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
+              style={{ fontSize: '30xp', color: 'white' }}
               icon={<CheckOutlined />}
             >
               Eliminar
@@ -345,23 +316,21 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
           <div className='container-fluid'>
             <div className='form-row' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-sm-12 col-md-6'>
-                <p>
-                  ¿Tiene planta de tratamiento de agua <br /> para el consumo humano?
-                </p>
+                <p>¿Tiene planta de tratamiento de agua para el consumo humano?</p>
               </div>
-              {tienefuente != 0 && (<><div className='col-lg-6 col-sm-12 col-md-6'>
+              <div className='col-lg-6 col-sm-12 col-md-6'>
                 <Form.Item label='' name={'formradio'} initialValue={tienefuente}>
                   <Radio.Group name={'radiobut'} defaultValue={tienefuente}>
                     <Radio value={1}>Si</Radio>
                     <Radio value={2}>No</Radio>
                   </Radio.Group>
                 </Form.Item>
-              </div></>)}
-
+              </div>
             </div>
+
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de diseño (L/s)
+                <span className='required'>*</span> Caudal diseño (L/s)
                 <Form.Item name='caudaldesign' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -380,7 +349,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de tratado (L/s)
+                <span className='required'>*</span> Caudal tratado (L/s)
                 <Form.Item name='caudaltratado' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -400,7 +369,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-12 col-md-12 col-sm-12'>
                     <a href='' style={{ textDecoration: 'none' }}>
@@ -413,12 +382,11 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
                     type='primary'
                     htmlType='button'
-                    icon='fa-solid fa-circle-plus'
                     onClick={() => {
                       insertarsistema();
                     }}
                   >
-                    Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
+                    Adicionar Caudal <span><i className="fa-solid fa-plus ml-3"></i></span>
 
                   </Button>
                 </>
@@ -547,85 +515,93 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
             </>)}
 
-            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
-              <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
-                <span></span>Número de usuarios
+            <div className='form-row mt-3'>
+              <div className='col-lg-3 col-md-9 col-sm-12 mt-2'>
+                Número de usuarios
               </div>
 
-              <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item label='Rural' name='numero1' rules={[{ required: false }]}>
-                  <Input
-                    style={{ width: '350px', marginLeft: '-46px' }}
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item label='Urbano' name='numero2' rules={[{ required: false }]}>
-                  <Input
-                    style={{ width: '350px', marginLeft: '28px' }}
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
+              <div className='col-lg-9 col-md-9 col-sm-12'>
+                <div className='form-row mt-3'>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
+                    <Form.Item label='Urbano' name='numero2' rules={[{ required: false }]}>
+                      <Input
+                        style={{ width: '200px' }}
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
+                    <Form.Item label='Rural' name='numero1' rules={[{ required: false }]}>
+                      <Input
+                        style={{ width: '200px' }}
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className='form-row mt-3' style={{ marginLeft: '-30px' }}>
-              <div className='col-lg-3 col-md-3 col-sm-12 mt-2'>
-                <span></span>Población beneficiada
+            <div className='form-row'>
+              <div className='col-lg-3 col-md-3 col-sm-12'>
+                Población beneficiada
               </div>
 
-              <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item label='Rural' name='poblacion1' rules={[{ required: false }]}>
-                  <Input
-                    style={{ width: '350px', marginLeft: '-46px' }}
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-4 col-md-4 col-sm-12'>
-                <Form.Item label='Urbano' name='poblacion2' rules={[{ required: false }]}>
-                  <Input
-                    style={{ width: '350px', marginLeft: '28px' }}
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    onKeyPress={(event) => {
-                      if (!/[a-zA-Z0-9 ]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
-                </Form.Item>
+              <div className='col-lg-9 col-md-9 col-sm-12'>
+                <div className='form-row'>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
+                    <Form.Item label='Urbano' name='poblacion2' rules={[{ required: false }]}>
+                      <Input
+                        style={{ width: '200px' }}
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className='col-lg-6 col-md-6 col-sm-12'>
+                    <Form.Item label='Rural' name='poblacion1' rules={[{ required: false }]}>
+                      <Input
+                        style={{ width: '200px' }}
+                        type='text'
+                        className='form-control gov-co-form-control'
+                        onKeyPress={(event) => {
+                          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+                            event.preventDefault();
+                          }
+                        }}
+                        onPaste={(event) => {
+                          event.preventDefault();
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -656,7 +632,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de diseño (L/s)
+                <span className='required'>*</span> Caudal diseño (L/s)
                 <Form.Item name='caudaldesign' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -675,7 +651,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </Form.Item>
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <span className='required'>*</span> Caudal de tratado (L/s)
+                <span className='required'>*</span> Caudal tratado (L/s)
                 <Form.Item name='caudaltratado' rules={[{ required: false }]}>
                   <Input
                     type='text'
@@ -695,7 +671,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              {obj?.tipodeSolicitud == 'Primera vez' && (
+              {tipoSolicitud === 'primera-vez' && (
                 <>
                   <div className='col-lg-12 col-md-12 col-sm-12'>
                     <a href='' style={{ textDecoration: 'none' }}>
@@ -936,6 +912,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 interface DatosAdicionales<T> {
   form: FormInstance<T>;
   obj: any;
+  tipoSolicitud: string;
   tipo: string;
   prop: any;
   habilitar: boolean;

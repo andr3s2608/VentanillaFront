@@ -249,7 +249,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     var numeroins = values.instNumIdent;
     var razonSocialins = values.instRazonSocial;
     var numeroProtocoloins = values.instNumProtocolo;
-    if (tipoinst == undefined) {
+    if (tipoinst == undefined || values?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
       numeroins = '0';
       razonSocialins = 'Otros';
@@ -915,8 +915,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           if (time2 != undefined) {
             if (fecha.day() === fechadef.day()) {
 
-              console.log(time2)
-              console.log(timedef2)
+
               const posicion1 = time2.indexOf(':');
               const posicion2 = timedef2.indexOf(':');
 

@@ -1,14 +1,10 @@
-import { Bandeja } from 'app/aguasconsumo/Components/Bandeja';
-import { BandejaU } from 'app/aguasconsumo/Components/BandejaU';
-//import { PageHeaderComponent } from 'app/shared/components/page-header.component';
-//import { IRoles } from 'app/inhumacioncremacion/Models/IRoles';
-import { ApiService } from 'app/services/Apis.service';
-import Tabs from 'antd/es/tabs';
+import { BandejaFuncionarios } from 'app/aguasconsumo/Components/BandejaFuncionarios';
+import { BandejaCiudadanos } from 'app/aguasconsumo/Components/BandejaCiudadanos';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import React, { useCallback, useEffect, useState } from 'react';
-import { setgid } from 'process';
+import { ApiService } from 'app/services/Apis.service';
+import Tabs from 'antd/es/tabs';
 
-// Otros componentes
 
 const RedireccionarBandeja: React.FC<any> = (props: any) => {
   const [roles, setroles] = useState<any[]>([]);
@@ -78,6 +74,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
 
         const filtradodatos = datos.filter(function (f: { idTipodeSolicitud: string }) {
           return (
+            f.idTipodeSolicitud == 'b1ba9304-c16b-43f0-9afa-e92d7b7f4df6' ||//adjuntar documento visita
             f.idTipodeSolicitud == '492e1c24-b2a4-45fd-8845-d9ac1e569928' || //Citacion
             f.idTipodeSolicitud == 'd33fbb9c-9f47-4015-bbe6-96ff43f0dde4' //Gestion Validador
           );
@@ -142,7 +139,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     <div className='fadeInTop container-fluid'>
       <Tabs>
         {bandeja ? (
-          <Bandeja
+          <BandejaFuncionarios
             data={grid}
             datosusuario={datosusuario}
             datossolucionados={datossolucionadosusuario}
@@ -150,7 +147,7 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
             historico={historiconotificaciones}
           />
         ) : (
-          <BandejaU data={grid} datossolucionados={datossolucionadosusuario} />
+          <BandejaCiudadanos data={grid} datossolucionados={datossolucionadosusuario} />
         )}
       </Tabs>
     </div>

@@ -24,7 +24,7 @@ import { authProvider } from 'app/shared/utils/authprovider.util';
 import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
-import { Button, Upload } from 'antd';
+import { Button, Radio, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -53,8 +53,10 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   const api = new ApiService(accountIdentifier);
   const [seleccionar, setseleccionar] = useState<boolean>(false);
   const [mostrar, setmostrar] = useState<boolean>(false);
+  const [latituddec, setlatituddec] = useState<boolean>(true);
+  const [longituddec, setlongituddec] = useState<boolean>(true);
   const [l_subcategorias, setl_subcategorias] = useState<any[]>([]);
-
+  const [input, setInput] = useState('');
   const getListas = useCallback(
     async () => {
       const resp = await Promise.all([api.getTipoFuente(), api.getAutoridadAmbiental()]);
@@ -62,46 +64,51 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
 
       let sub;
 
-      if (obj?.fuenteabastecimientojson[0]) {
-        sub = await api.getSubcategoriasFuente(
-          obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
-        );
-        if (obj?.renovafuentejson[0]) {
-          const date = obj.renovafuentejson[0].fechaResolucion;
-          setdatos([
-            obj.fuenteabastecimientojson[0].idtipofuente,
-            obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
-            obj.fuenteabastecimientojson[0].descripcionOtraFuente,
-            obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-            obj.fuenteabastecimientojson[0].bocatoma_lat,
-            obj.fuenteabastecimientojson[0].bocatoma_long,
-            obj.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
-            obj.fuenteabastecimientojson[0].idAutoridadAmbiental,
-            obj.renovafuentejson[0].numeroResolucion,
-            moment(date),
-            'renovacion'
-          ]);
-          setseleccionar(true);
+      if (obj?.fuenteabastecimientojson !== undefined) {
+
+        if (obj?.fuenteabastecimientojson[0]) {
+
+          sub = await api.getSubcategoriasFuente(
+            obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
+          );
+          if (obj?.renovafuentejson[0]) {
+            const date = obj.renovafuentejson[0].fechaResolucion;
+            setdatos([
+              obj.fuenteabastecimientojson[0].idtipofuente,
+              obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
+              obj.fuenteabastecimientojson[0].descripcionOtraFuente,
+              obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+              obj.fuenteabastecimientojson[0].bocatoma_lat,
+              obj.fuenteabastecimientojson[0].bocatoma_long,
+              obj.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
+              obj.fuenteabastecimientojson[0].idAutoridadAmbiental,
+              obj.renovafuentejson[0].numeroResolucion,
+              moment(date),
+              'renovacion'
+            ]);
+            setseleccionar(true);
+          } else {
+            setdatos([
+              obj.fuenteabastecimientojson[0].idtipofuente,
+              obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
+              obj.fuenteabastecimientojson[0].descripcionOtraFuente,
+              obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+              obj?.fuenteabastecimientojson[0].bocatoma_lat,
+              obj?.fuenteabastecimientojson[0].bocatoma_long,
+              obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
+              obj?.fuenteabastecimientojson[0].idAutoridadAmbiental,
+              '',
+              '',
+              'primera'
+            ]);
+          }
         } else {
-          setdatos([
-            obj.fuenteabastecimientojson[0].idtipofuente,
-            obj.fuenteabastecimientojson[0].idSubCategoriaFuente,
-            obj.fuenteabastecimientojson[0].descripcionOtraFuente,
-            obj.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-            obj?.fuenteabastecimientojson[0].bocatoma_lat,
-            obj?.fuenteabastecimientojson[0].bocatoma_long,
-            obj?.fuenteabastecimientojson[0].descripcionFuenteAbastecimiento,
-            obj?.fuenteabastecimientojson[0].idAutoridadAmbiental,
-            '',
-            '',
-            'primera'
-          ]);
+          sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
         }
-      } else {
-        sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
       }
+
       setmostrar(true);
-      setl_subcategorias(sub);
+      //setl_subcategorias(sub);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -125,6 +132,228 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
     const sub = await api.getSubcategoriasFuente(value);
 
     setl_subcategorias(sub);
+  };
+
+  const onChangeTipoCoordenadaLatitud = (event: any) => {
+
+    console.log("Valor depues del onchange: ", event.target.value);
+
+    let valor = props.form.getFieldValue('latitud');
+
+    let numerico1 = '';
+    let numerico2 = '';
+    if (event.target.value == 'decimal') {
+
+      setlatituddec(true)
+
+      if (valor != "" && valor != undefined && valor.length === 13) {
+        let valornuevo = valor.substring(0, 2);
+        const orientacion = valor.substring(valor.length - 1, valor.length) === 'N' ? '' : '-';
+        for (let index = 2; index < 11; index++) {
+          if (index < 6) {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'") {
+              numerico1 = numerico1 + valor.substring(index, index + 1);
+
+            }
+          }
+          else {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'") {
+              numerico2 = numerico2 + valor.substring(index, index + 1);
+
+            }
+          }
+
+
+        }
+
+
+        const segundos = (Number.parseInt(numerico2) / 60);
+        const minutos = (Number.parseInt(numerico1) + segundos)
+        const horas = minutos / 60;
+
+
+        valornuevo = Number.parseInt(valornuevo) + horas;
+        while (valornuevo > 99) {
+          valornuevo = valornuevo / 10;
+        }
+        valornuevo = orientacion + Number.parseFloat(valornuevo);
+
+
+        props.form.setFieldsValue({ latitud: valornuevo })
+
+      }
+
+    } else if (event.target.value == 'sexagesimal') {
+
+      setlatituddec(false)
+      if (valor != "" && valor != undefined && valor.length > 3) {
+
+        const orientacion = valor.substring(0, 1) === '-' ? 'S' : 'N';
+        let inicial = orientacion === 'S' ? 1 : 0;
+        let valornuevo = valor.substring(inicial, inicial + 2);
+        let valordecimal = '';
+
+        for (let index = inicial + 2; index < valor.length; index++) {
+
+          if (valor.substring(index, index + 1) != '.') {
+            valordecimal = valordecimal + valor.substring(index, index + 1)
+          }
+        }
+
+        numerico1 = (Number.parseInt(valordecimal) * 60) + '';
+        numerico2 = (Number.parseFloat(numerico1.substring(2, numerico1.length) != '' ? numerico1.substring(2, numerico1.length) : '0') * 60) + '';
+
+
+        valornuevo = valornuevo + '°' + numerico1.substring(0, 2) + "'" + numerico2.substring(0, 2) + '.' + numerico2.substring(2, 4) + '"' + orientacion;
+
+        props.form.setFieldsValue({ latitud: valornuevo })
+
+      }
+
+
+    }
+  }
+
+  const onChangeTipoCoordenadaLongitud = (event: any) => {
+    console.log("Valor depues del onchange: ", event.target.value);
+
+    let valor = props.form.getFieldValue('longitud');
+    let numerico1 = '';
+    let numerico2 = '';
+    if (event.target.value == 'decimal') {
+
+      setlongituddec(true)
+
+      if (valor != "" && valor != undefined && valor.length === 13) {
+        let valornuevo = valor.substring(0, 2);
+        const orientacion = valor.substring(valor.length - 1, valor.length) === 'E' ? '' : '-';
+        for (let index = 2; index < 11; index++) {
+          if (index < 6) {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'") {
+              numerico1 = numerico1 + valor.substring(index, index + 1);
+
+            }
+          }
+          else {
+            if (valor.substring(index, index + 1) != '°' &&
+              valor.substring(index, index + 1) != '"' &&
+              valor.substring(index, index + 1) != "'") {
+              numerico2 = numerico2 + valor.substring(index, index + 1);
+
+            }
+          }
+
+
+        }
+
+
+        const segundos = (Number.parseInt(numerico2) / 60);
+        const minutos = (Number.parseInt(numerico1) + segundos)
+        const horas = minutos / 60;
+
+
+        valornuevo = Number.parseInt(valornuevo) + horas;
+        while (valornuevo > 180) {
+          valornuevo = valornuevo / 10;
+        }
+        valornuevo = orientacion + Number.parseFloat(valornuevo);
+
+        props.form.setFieldsValue({ longitud: valornuevo })
+
+      }
+
+    } else if (event.target.value == 'sexagesimal') {
+
+      setlongituddec(false)
+      if (valor != "" && valor != undefined && valor.length > 3) {
+
+        const orientacion = valor.substring(0, 1) === '-' ? 'O' : 'E';
+        let inicial = orientacion === 'O' ? 1 : 0;
+        let valornuevo = valor.substring(inicial, inicial + 2);
+        let valordecimal = '';
+
+        for (let index = inicial + 2; index < valor.length; index++) {
+
+          if (valor.substring(index, index + 1) != '.') {
+            valordecimal = valordecimal + valor.substring(index, index + 1)
+          }
+        }
+
+        numerico1 = (Number.parseInt(valordecimal) * 60) + '';
+        numerico2 = (Number.parseFloat(numerico1.substring(2, numerico1.length) != '' ? numerico1.substring(2, numerico1.length) : '0') * 60) + '';
+
+
+        valornuevo = valornuevo + '°' + numerico1.substring(0, 2) + "'" + numerico2.substring(0, 2) + '.' + numerico2.substring(2, 4) + '"' + orientacion;
+
+        props.form.setFieldsValue({ longitud: valornuevo })
+
+      }
+
+
+    }
+  }
+
+  const onChangeFormat = (event: any) => {
+    let valor: string = props.form.getFieldValue('latitud');
+
+
+    if (event.target.value.length === 2) {
+      valor = valor + "°"
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "°");
+    }
+
+    if (event.target.value.length === 5) {
+      valor = valor + "'"
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "'");
+    }
+
+    if (event.target.value.length === 8) {
+      valor = valor + '.'
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '.');
+    }
+
+    if (event.target.value.length === 11) {
+      valor = valor + '"'
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '"');
+    }
+
+  };
+  const onChangeFormatLongitud = (event: any) => {
+    let valor: string = props.form.getFieldValue('longitud');
+
+    if (event.target.value.length === 2) {
+      valor = valor + "°"
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "°");
+    }
+
+    if (event.target.value.length === 5) {
+      valor = valor + "'"
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + "'");
+    }
+
+    if (event.target.value.length === 8) {
+      valor = valor + '.'
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '.');
+    }
+
+    if (event.target.value.length === 11) {
+      valor = valor + '"'
+      props.form.setFieldsValue({ latituduso: valor })
+      setInput(event.target.value + '"');
+    }
   };
 
   if (habilitar) {
@@ -256,35 +485,77 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                 </div>
                 <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
                   <div className='col-md-6 col-lg-6 col-sm-12'>
-                    <span className='required'>*</span>Localización de la bocatoma
-                    <Form.Item name='latitud' initialValue={latitud} rules={[{ required: true }]}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[0-9'"° -]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
-
-                      />
+                    <span className='required'>*</span>Localización de la bocatoma latitud
+                    <Form.Item label='' name='tipoCoordenadaLatitud' >
+                      <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
+                        <Radio value='decimal'>Decimal</Radio>
+                        <Radio value='sexagesimal'>Sexagesimal</Radio>
+                      </Radio.Group>
                     </Form.Item>
+
+                    {latituddec ?
+                      (<Form.Item name='latitud' initialValue={latitud} rules={[{ required: true }]} >
+                        <Input
+                          name='latitud'
+                          className='form-control gov-co-form-control'
+                          maxLength={9}
+                          onKeyPress={(event) => {
+                            if (!/[0-9-.]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                        />
+                      </Form.Item>) :
+                      <Form.Item name='latitud' initialValue={latitud} rules={[{ required: true }]} >
+                        <Input
+                          name='latitud'
+                          className='form-control gov-co-form-control'
+                          maxLength={13}
+                          onChange={onChangeFormat}
+                          onKeyPress={(event) => {
+                            if (!/[0-9'"°NS]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                        />
+                      </Form.Item>}
+
                   </div>
 
                   <div className='col-md-6 col-lg-6 col-sm-12'>
-                    <span className='required'>*</span>Longitud de la bocatoma
-                    <Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
-                      <Input
-                        type='text'
-                        className='form-control gov-co-form-control'
-                        onKeyPress={(event) => {
-                          if (!/[0-9'"° -]/.test(event.key)) {
-                            event.preventDefault();
-                          }
-                        }}
+                    <span className='required'>*</span>Longitud de la bocatoma longitud
 
-                      />
+                    <Form.Item label='' name='tipoCoordenadaLongitud' >
+                      <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
+                        <Radio value='decimal'>Decimal</Radio>
+                        <Radio value='sexagesimal'>Sexagesimal</Radio>
+                      </Radio.Group>
                     </Form.Item>
+                    {longituddec ?
+                      (<Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
+                        <Input
+
+                          className='form-control gov-co-form-control'
+                          maxLength={9}
+                          onKeyPress={(event) => {
+                            if (!/[0-9-.]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                        />
+                      </Form.Item>) :
+                      <Form.Item name='longitud' initialValue={longitud} rules={[{ required: true }]}>
+                        <Input
+                          className='form-control gov-co-form-control'
+                          maxLength={13}
+                          onChange={onChangeFormatLongitud}
+                          onKeyPress={(event) => {
+                            if (!/[0-9'"°EO]/.test(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
+                        />
+                      </Form.Item>}
                   </div>
                 </div>
                 <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
@@ -366,22 +637,6 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         <span className='required'>*</span>Fecha de resolución
                         <Form.Item name='dateresolucion' initialValue={fecha} rules={[{ required: true }]}>
                           <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' disabled={true} />
-                        </Form.Item>
-                      </div>
-                    </div>
-                    <div className='form-row' style={{ marginLeft: '-16px' }}>
-                      <div className='col-lg-6 col-md-6 col-sm-12'>
-                        <Form.Item label='' name='cargarresolucion' rules={[{ required: true }]}>
-                          <Upload
-                            name='cargarresolucion'
-                            maxCount={1}
-                            beforeUpload={() => false}
-                            listType='text'
-                            accept='application/pdf'
-                            disabled={true}
-                          >
-                            <Button icon={<UploadOutlined />}>Adjuntar archivo</Button>
-                          </Upload>
                         </Form.Item>
                       </div>
                     </div>

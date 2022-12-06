@@ -7,7 +7,6 @@ import { Form, Input } from 'antd';
 import { useStepperForm } from 'app/shared/hooks/stepper.hook';
 import { DatosSolicitante, KeysFormService } from './seccions/DatosSolicitante.seccion';
 import { KeysForm, UbicacionPersona } from './seccions/Ubicacion.seccion';
-import { IRegistroSolicitudPrimeraVez } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudPrimeraVez';
 import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import {
   dominioService,
@@ -90,7 +89,7 @@ export const Servicios = () => {
       tipo = 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9';
     }
 
-    const json: IRegistroSolicitudPrimeraVez<any> = {
+    const json: any = {
       solicitud: {
         idTipoSolicitud: tipo,
         numeroRadicado: 0,

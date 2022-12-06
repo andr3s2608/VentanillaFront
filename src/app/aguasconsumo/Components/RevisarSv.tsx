@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
 import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
 import { CitacionRevision } from './seccions/Citacion_Revision.seccion';
-import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Components/Models/IRegistroSolicitudCitacion';
+import { IRegistroSolicitudCitacion } from 'app/aguasconsumo/Models/IRegistroSolicitudCitacion';
 import { UbicacionPersona } from './seccions/Ubicacion.seccion';
 import { EditAguas } from './edit/Aguas';
 import moment from 'moment';
@@ -27,6 +27,7 @@ import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
 import { DatosAcueducto } from './seccions/Acueductos.seccion';
 import { DocumentacionAsociada } from './seccions/Documentacion_Asociada';
 import { store } from 'app/redux/app.reducers';
+import { IObservaciones } from './Models/IObservaciones';
 
 export const RevisarSv = () => {
   const objJson: any = EditAguas();
@@ -86,83 +87,25 @@ export const RevisarSv = () => {
 
 
     const formatDate = 'MM-DD-YYYY';
-    const dep = values.departamento;
-    var mun = values.municipio;
-    switch (dep) {
-      case '31b870aa-6cd0-4128-96db-1f08afad7cdd':
-        mun = '31211657-3386-420a-8620-f9C07a8ca491';
-        break;
-    }
 
-    const json: IRegistroSolicitudCitacion<any> = {
-      solicitud: {
-        idSolicitud: objJson.idsolicitud + '',
-        idPersona: objJson.idPersona + '',
-        idTipodeSolicitud: '8F5B3DA8-1CD1-4E6C-874C-501245AE9279',
-        tipodeSolicitud: '8F5B3DA8-1CD1-4E6C-874C-501245AE9279',
-        numeroRadicado: objJson.numeroradicado,
-        fechaSolicitud: objJson.fechaSolicitud,
-        idEstado: values.estado,
-        estado: '',
-        idFuente: '00000000-0000-0000-0000-000000000000',
-        idUbicacion: objJson.idUbicacion,
-        idSubred: objJson.idSubred,
-        idActividadActualSolicitud: '771FA7F5-4C75-4AC3-95A1-7F78C29D2F50',
-        actividadActualSolicitud: '',
-        actividadSiguienteSolicitud: objJson?.idactividadActualSolicitud,
 
-        idTipodeTramite: values.tipotramite,
-        tipodeTramite: '',
-        idUsuario: objJson.idusuario,
-        idUsuarioAsignado: objJson.idusuarioAsignado,
-        idCitacionRevision: '00000000-0000-0000-0000-000000000000',
+    let observaciones: any = [];
 
-        idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
-        temporal: false,
+    if (values.descripcionNotificacion !== '') {
 
-        persona: {
-          idPersona: objJson.idPersona,
-          tipoIdentificacion: values.IDType,
-          numeroIdentificacion: values.IDNumber,
-          primerNombre: values.name,
-          segundoNombre: values.secondname,
-          primerApellido: values.surname,
-          segundoApellido: values.secondsurname,
-          telefonoContacto: values.telefono,
-          celularContacto: values.telefono2,
-          correoElectronico: values.email.toString().toLowerCase(),
-          idTipoPersona: values.persona,
-          tipoDocumentoRazon: values?.IDTypeRazon ?? '',
-          nit: values?.IDNumberRazon ?? '',
-          razonSocial: values?.nombreEntidad ?? ''
-        },
-
-        ubicacion: {
-          idUbicacion: objJson.idUbicacion,
-          direccion: values.direccion,
-          departamento: values.departamento,
-          municipio: mun,
-          localidad: values?.localidad ?? '00000000-0000-0000-0000-000000000000',
-          vereda: '',
-          sector: '',
-          upz: objJson.upz,
-          barrio: objJson.barrio,
-          observacion: ''
-        },
-
-        citacion_Revision: {
-          idCitacion: '00000000-0000-0000-0000-000000000000',
-          fechaCitacion: moment(values.date).format(formatDate),
-          observacion: values.observationsCitacion,
-          fechaRegistro: '',
-          idSolicitud: '00000000-0000-0000-0000-000000000000',
-          idUsuario: values.funcionario
+      observaciones.push(
+        {
+          idObservacion: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJson.idsolicitud,
+          idSubred: objJson.idSubred,
+          observacion: values.descripcionNotificacion,
+          fechaObservacion: null
         }
-      }
-    };
+      )
 
-    await api.AddSolicitudCitacion(json);
+    }
     let subsanacion = false;
+    let tipo = 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6';
     if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
       const documentToSend: IEstadoDocumentoSoporteDTO[] = [];
 
@@ -182,11 +125,48 @@ export const RevisarSv = () => {
       });
 
       if (subsanacion) {
-        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4', '9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
+
+        observaciones.push(
+          {
+            idObservacion: '00000000-0000-0000-0000-000000000000',
+            idSolicitud: objJson.idsolicitud,
+            idSubred: objJson.idSubred,
+            observacion: values.observacionesSubsanacion,
+            fechaObservacion: null
+          }
+        )
+
+        tipo = '9124A97B-C2BD-46A0-A8B3-1AC702A06C82';
+        //await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4', '9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
       }
 
       await api.AddEstadoDocumentoSoporte(documentToSend);
     }
+
+
+
+    const json: IObservaciones<any> = {
+
+      idSolicitud: objJson.idsolicitud,
+      idTipoSolicitud: tipo,
+
+      observaciones: observaciones,
+
+      citacion: {
+        idCitacion: '00000000-0000-0000-0000-000000000000',
+        fechaCitacion: moment(values.date).format(formatDate),
+        observacion: values.observationsCitacion,
+        fechaRegistro: '',
+        idSolicitud: '00000000-0000-0000-0000-000000000000',
+        idUsuario: values.funcionario
+      }
+
+    };
+
+
+    await api.AddObservaciones(json);
+
+
 
     const supportDocumentsEdit: any[] = [];
     const formData = new FormData();
@@ -440,7 +420,7 @@ export const RevisarSv = () => {
                     </div>
                     <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                       <div className='card-body'>
-                        <DatosAcueducto form={form} obj={objJson} prop={null} habilitar={false} />
+                        <DatosAcueducto tipoSolicitud='revision' form={form} obj={objJson} prop={null} habilitar={false} />
                       </div>
                     </div>
                   </div>
@@ -464,7 +444,7 @@ export const RevisarSv = () => {
                     </div>
                     <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
                       <div className='card-body'>
-                        <DatosAdicionales form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
+                        <DatosAdicionales tipoSolicitud='revision' form={form} obj={objJson} tipo={''} prop={null} habilitar={false} />
                       </div>
                     </div>
                   </div>
@@ -522,29 +502,6 @@ export const RevisarSv = () => {
                   </div>
                 </div>
 
-                <div id='accordion' className='mt-3'>
-                  <div className='card'>
-                    <div className='card-header' id='heading-2'>
-                      <h5 className='mb-0'>
-                        <a
-                          className='collapsed'
-                          role='button'
-                          data-toggle='collapse'
-                          href='#collapse-8'
-                          aria-expanded='false'
-                          aria-controls='collapse-2'
-                        >
-                          Documentación asociada a la revisión
-                        </a>
-                      </h5>
-                    </div>
-                    <div id='collapse-8' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                      <div className='row mt-5 ml-2'>
-                        <DocumentacionAsociada form={form} obj={objJson} tipo={''} prop={adddocumentos} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />

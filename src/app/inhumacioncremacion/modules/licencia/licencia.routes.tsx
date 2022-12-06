@@ -8,6 +8,7 @@ export const licenciaPath = '/tramites-servicios/licencia';
 export const RevisionPath = '/tramites-servicios-aguas/Revision';
 export const tramiteServicePath = '/tramites-servicios';
 export const tramiteServiceAguasPath = '/tramites-servicios-aguas';
+export const licenciaSSTPath = '/tramites-servicios-sst/licencia/sst';
 export const tramiteAdmin = '/tramites-administrador';
 export const notificacion = '/notificacion';
 export const updatepath = '/modificar';
@@ -53,11 +54,15 @@ const NotificacionUsuario = lazy(() => import('../../../aguasconsumo/pages/Notif
 const NotificacionBandeja = lazy(() => import('../../../aguasconsumo/pages/Notificaciones/NotificacionBandeja.page'));
 //Solicitudes
 const SolicitarRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/solicitarRevision.page'));
+const ReportesAguas = lazy(() => import('../../../aguasconsumo/pages/Reportes/reportesAgua.page'));
 const VisitaRevision = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/visitaRevision.page'));
-const PrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/primeraVez.page'));
+const CrearSolicitud = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/CrearSolicitud.page'));
 const SegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/segundaVez.page'));
 const RenovacionPrimeraVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionPrimera.page'));
 const RenovacionSegundaVez = lazy(() => import('../../../aguasconsumo/pages/Solicitudes/renovacionSegunda.page'));
+
+//SST
+const TramiteSST = lazy(() => import('../../../sst/pages/tramite.page'));
 
 export const LicenciaRoutes: IRouteProps[] = [
 
@@ -154,6 +159,10 @@ export const LicenciaRoutes: IRouteProps[] = [
   },
   /////////Aguas//////
   {
+    path: `/reportes-aguas`,
+    component: ReportesAguas
+  },
+  {
     path: `${tramiteServiceAguasPath}`,
     component: BandejaAguas
   },
@@ -175,8 +184,8 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: NotificacionBandeja
   },
   {
-    path: `${RevisionPath}/solicitar-revision`,
-    component: SolicitarRevision
+    path: `${RevisionPath}/Crear-Solicitud`,
+    component: CrearSolicitud
   },
   {
     path: `${RevisionPath}/visita-revision`,
@@ -184,7 +193,7 @@ export const LicenciaRoutes: IRouteProps[] = [
   },
   {
     path: `${RevisionPath}/primera-vez`,
-    component: PrimeraVez
+    component: CrearSolicitud
   },
   {
     path: `${RevisionPath}/segunda-vez`,
@@ -197,5 +206,10 @@ export const LicenciaRoutes: IRouteProps[] = [
   {
     path: `${RevisionPath}/renovacion-segunda-vez`,
     component: RenovacionSegundaVez
-  }
+  },
+  // SST
+  {
+    path: `${licenciaSSTPath}`,
+    component: TramiteSST
+  },
 ];
