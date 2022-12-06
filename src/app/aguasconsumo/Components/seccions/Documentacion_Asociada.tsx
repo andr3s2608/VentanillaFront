@@ -130,7 +130,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
             type='primary'
             className='fa-solid fa-circle-xmark'
             onClick={() => onClickValidarInformacion(row)}
-            style={{ fontSize: '30xp', color: 'red' }}
+            style={{ fontSize: '30xp', color: 'white' }}
             icon={<CheckOutlined />}
           >
             Eliminar

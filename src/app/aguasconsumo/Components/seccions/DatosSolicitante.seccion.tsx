@@ -305,7 +305,8 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               {tipoSolicitante && (<div className='col-lg-6'>
                 <p className='text'>RUT</p>
                 <Form.Item name='rut' >
-                  <Input placeholder='NÚMERO DE RUT' type='text' className='form-control gov-co-form-control' maxLength={50}
+                  <Input placeholder='NÚMERO DE RUT' type='text' className='form-control gov-co-form-control' maxLength={8}
+
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
