@@ -600,7 +600,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={13}
+                      maxLength={10}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -641,7 +641,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   (<Form.Item name='longituduso'>
                     <Input
                       className='form-control gov-co-form-control'
-                      maxLength={13}
+                      maxLength={10}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -843,7 +843,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
-                    maxLength={13}
+                    maxLength={10}
+
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();

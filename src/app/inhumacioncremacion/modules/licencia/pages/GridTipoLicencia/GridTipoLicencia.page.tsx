@@ -216,7 +216,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
               <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
                 <Tabs style={{ border: 'none' }}>
                   <TabPane tab='' key='1'>
-                    {mostrar && (<Button type='primary' style={{ width: 150 }} onClick={RefrescarBandeja}>
+                    {mostrar && (<Button type='primary' className='d-block mx-auto' style={{ width: 150, marginBottom: 10 }} onClick={RefrescarBandeja}>
                       Refrescar Bandeja
                     </Button>)}
 
