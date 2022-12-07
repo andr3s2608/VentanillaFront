@@ -116,7 +116,7 @@ export const RevisarSv = () => {
           idSolicitud: item.idSolicitud,
           idDocumentoSoporte: item.idDocumentoSoporte,
           path: item.path,
-          observaciones: values.observacionesSubsanacion,
+          observaciones: 'default',
           estado_Documento: item.estadoDocumento,
           tipoSeguimiento: item.tipoSeguimiento
         });
