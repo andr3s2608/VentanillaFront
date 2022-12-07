@@ -343,7 +343,7 @@ export const RevisarSg = () => {
             formData.append('file', file);
             formData.append(
               'nameFile',
-              'RESOLUCION_' + 'N°' + objJson.numeroradicado + objJson.idSolicitud
+              'RESOLUCION_' + 'N°' + objJson.numeroradicado
             );
             formData.append('containerName', "aguahumanos");
             formData.append('oid', objJson.idusuario);

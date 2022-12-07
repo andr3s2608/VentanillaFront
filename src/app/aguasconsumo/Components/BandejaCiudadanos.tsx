@@ -10,6 +10,7 @@ import '../../../css/estilos.css';
 import Table from 'antd/es/table';
 import Swal from 'sweetalert2';
 import moment from 'moment';
+import documentoNoEncontrado from '../../../assets/images/aguas/documentoNoEncontrado.jpg';
 
 
 export const BandejaCiudadanos = (props: IDataSource) => {
@@ -107,14 +108,39 @@ export const BandejaCiudadanos = (props: IDataSource) => {
 
   const onClickVisualizarPDF = async (row: any) => {
 
-    try {
-      let urlForIframe = 'data:application/pdf;base64,';
-      let base64pdfLicencia = await api.getCertificadoAguas(row.idSolicitud);
 
-      setUrlPdfLicence(urlForIframe.concat(base64pdfLicencia));
-      setIsModalVisiblePdf(true);
+    try {
+
+      const contenedor: string = 'aguahumanos';
+      const oid: string = row.idUsuario;
+      const nameBlob = 'RESOLUCION_' + 'N°' + row.numeroRadicado;
+
+      const path = contenedor + "/" + oid + "/" + nameBlob;
+      var respuesta = await api.GetBlobAzureV2(path);
+
+
+      if (respuesta != null) {
+
+        const urlPDF = await api.GetUrlPdf(path);
+
+        setUrlPdfLicence(urlPDF);
+
+        setIsModalVisiblePdf(true);
+
+      } else {
+        Swal.fire({
+          imageUrl: documentoNoEncontrado,
+          imageHeight: 150,
+          title: 'DOCUMENTO NO ENCONTRADO',
+          confirmButtonColor: '#b6e5ef',
+          text:
+            'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+        });
+      }
+
     } catch (error) {
       Swal.fire({
+        imageUrl: documentoNoEncontrado,
         imageHeight: 150,
         title: 'DOCUMENTO NO ENCONTRADO',
         confirmButtonColor: '#b6e5ef',
