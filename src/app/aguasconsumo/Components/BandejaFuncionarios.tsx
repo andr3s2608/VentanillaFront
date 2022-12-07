@@ -591,6 +591,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
       const oid: string = row.idUsuario;
       const nameBlob = 'RESOLUCION_' + 'N°' + row.numeroRadicado;
 
+
       const path = contenedor + "/" + oid + "/" + nameBlob;
       var respuesta = await api.GetBlobAzureV2(path);
 
