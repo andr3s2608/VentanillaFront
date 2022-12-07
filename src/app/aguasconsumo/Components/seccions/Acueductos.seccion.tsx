@@ -612,7 +612,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={10}
+                      maxLength={13}
                       onChange={onChangeFormat}
                       onKeyPress={(event) => {
                         if (!/[0-9'"°NS]/.test(event.key)) {
@@ -652,7 +652,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <Form.Item name='longituduso'>
                     <Input
                       className='form-control gov-co-form-control'
-                      maxLength={10}
+                      maxLength={13}
 
                       onChange={onChangeFormatLongitud}
                       onKeyPress={(event) => {
@@ -825,7 +825,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
                     title='El formato no es el adecuado'
                     className='form-control'
-                    maxLength={10}
+                    maxLength={13}
                     disabled={true}
                     onChange={onChangeFormat}
                   />
