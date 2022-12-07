@@ -293,9 +293,10 @@ export const RevisarSg = () => {
 
 
           const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
+          const emailCoordinadora = await api.getConstantesAguas('A508580A-1AE8-452E-A9D4-017DB0FDA188');
 
           await api.sendEmailAttachment({
-            to: objJson.correoElectronico,
+            to: objJson.correoElectronico + ',' + emailCoordinadora['valorConstante'],
             subject: 'Notificación Aprobación al Ciudadano',
             body: agregarValoresDinamicos(
               formato['cuerpo'],
@@ -349,7 +350,7 @@ export const RevisarSg = () => {
             formData.append('file', file);
             formData.append(
               'nameFile',
-              'RESOLUCION_' + 'N°' + objJson.numeroradicado + objJson.idSolicitud
+              'RESOLUCION_' + 'N°' + objJson.numeroradicado
             );
             formData.append('containerName', "aguahumanos");
             formData.append('oid', objJson.idusuario);
