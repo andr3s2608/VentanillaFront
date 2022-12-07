@@ -86,6 +86,7 @@ export const RevisarSg = () => {
 
   const onSubmit = async (values: any) => {
 
+    /** tener mucho ojo con este sección de código */
     const { seguimientoDocumentos } = store.getState();
     let observaciones: any = [];
     if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {

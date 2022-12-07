@@ -82,7 +82,7 @@ export const RevisarSv = () => {
   const onSubmit = async (values: any) => {
     setStatus(undefined);
 
-
+    /** tener mucho ojo con este sección de código */
     const { seguimientoDocumentos } = store.getState();
     console.log("el valor de los documentos de seguimiento");
     console.log(seguimientoDocumentos);
