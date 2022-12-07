@@ -52,30 +52,19 @@ export const TablaReportes = (props: IDataSource) => {
 
     structureColumns = [
       {
-        title: 'Consecutivo',
-        dataIndex: 'consecutivo',
-        key: 'consecutivo',
-        defaultSortOrder: 'descend',
-        sorter: {
-          compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
-            a.consecutivo > b.consecutivo ? 1 : -1,
-          multiple: 6,
-        }
-      },
-      {
         title: 'Tipo Identificacion',
-        dataIndex: 'tipoidentificacion',
-        key: 'tipoidentificacion',
+        dataIndex: 'tipoIdentificacion',
+        key: 'tipoIdentificacion',
       },
       {
         title: 'Numero Identificacion',
-        dataIndex: 'numeroidentificacion',
-        key: 'numeroidentificacion',
+        dataIndex: 'numeroIdentificacion',
+        key: 'numeroIdentificacion',
       },
       {
         title: 'Tipo Razon Social',
-        dataIndex: 'tipoidentificacionrazon',
-        key: 'tipoidentificacionrazon',
+        dataIndex: 'tipoDocumentoRazon',
+        key: 'tipoDocumentoRazon',
       },
       {
         title: 'Nombre Persona Natural',

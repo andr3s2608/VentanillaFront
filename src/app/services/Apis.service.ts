@@ -593,7 +593,7 @@ export class ApiService {
   /////////////////////////
 
   getallReportsAguas = (fechainicio: any, fechafin: any) =>
-    get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Report/getReportAgua/${fechainicio}/${fechafin}`, id: '0' });
+    get<[]>({ endpoint: REACT_APP_AGUAS as string, url: `Report/getReportAgua/${fechainicio}/${fechafin}`, id: '0' });
 
   AddSolicitudPrimera = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
