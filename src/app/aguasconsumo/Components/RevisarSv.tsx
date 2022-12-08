@@ -82,8 +82,10 @@ export const RevisarSv = () => {
   const onSubmit = async (values: any) => {
     setStatus(undefined);
 
-
+    /** tener mucho ojo con este sección de código */
     const { seguimientoDocumentos } = store.getState();
+    console.log("el valor de los documentos de seguimiento");
+    console.log(seguimientoDocumentos);
 
 
     const formatDate = 'MM-DD-YYYY';
@@ -114,7 +116,7 @@ export const RevisarSv = () => {
           idSolicitud: item.idSolicitud,
           idDocumentoSoporte: item.idDocumentoSoporte,
           path: item.path,
-          observaciones: values.observacionesSubsanacion,
+          observaciones: 'default',
           estado_Documento: item.estadoDocumento,
           tipoSeguimiento: item.tipoSeguimiento
         });
