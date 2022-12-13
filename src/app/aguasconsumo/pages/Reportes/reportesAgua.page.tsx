@@ -203,16 +203,14 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       const resp: any = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
         moment(dateSelectedFinal).format('YYYY-MM-DD'));
 
-      console.log(resp)
+
 
 
 
 
       filtroFecha = resp.filter(function (f: { fechaSolicitud: string | number | Date; fechaLicencia: string | number | Date; }) {
         var fecha = new Date(moment(f.fechaSolicitud).format('DD-MM-YYYY HH:mm:ssss') + "");
-        console.log(f.fechaSolicitud);
-        console.log(fecha);
-        console.log(moment(f.fechaSolicitud));
+
         if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
           return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
         }
@@ -223,7 +221,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
       });
       filtroFecha = resp
-      console.log(filtroFecha)
+
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
@@ -274,7 +272,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       }
     }
     if (filtroFecha != null) {
-      console.log(filtroFecha);
+
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
         setGrid(dataFIN);

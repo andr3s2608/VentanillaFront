@@ -326,7 +326,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
   const onChangeTipoCoordenadaLatitud = (event: any) => {
 
-    console.log("Valor depues del onchange: ", event.target.value);
+
 
     let valor = props.form.getFieldValue('latituduso');
 
@@ -409,7 +409,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   }
 
   const onChangeTipoCoordenadaLongitud = (event: any) => {
-    console.log("Valor depues del onchange: ", event.target.value);
+
 
     let valor = props.form.getFieldValue('longituduso');
     let numerico1 = '';

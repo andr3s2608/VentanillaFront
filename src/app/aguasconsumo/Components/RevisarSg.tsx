@@ -241,10 +241,7 @@ export const RevisarSg = () => {
 
       };
 
-      console.log('objJson');
-      console.log(objJson);
-      console.log('json que se envia para la observación');
-      console.log(json);
+
       await api.AddObservaciones(json);
 
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, typeNotificationSeleted, '2ED2F440-E976-4D92-B315-03276D9812F0');

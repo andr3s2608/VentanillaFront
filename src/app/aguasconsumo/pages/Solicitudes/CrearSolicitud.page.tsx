@@ -338,8 +338,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
           }
 
-          console.log("Datos adicionales, antes de ser mandados al servidor");
-          console.log(json);
+
           await api.AddSolicitudConsecion(json);
 
 

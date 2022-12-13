@@ -452,6 +452,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
       const segui = values.validFunctionaltype;
 
+
       if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
         if (
           DatosDocumento.at(0) == '1' &&
@@ -489,6 +490,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
 
       if (not >= 1) {
+
         /////////////////////////Guardar status//////////////////////////
         let aux = 0;
         for (let index = 0; index < documentos.length; index++) {
@@ -523,7 +525,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             }
           };
 
-          const resp = await api.AddGestion(json, aux + '');
+          //const resp = await api.AddGestion(json, aux + '');
           aux = 1;
         }
         if (documentos.length == 0) {
@@ -531,8 +533,28 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
         let observacion = '';
         if (not == 2) {
-          if (objJosn.numerolicencia == null) {
-            const update = await api.updatelicencia(objJosn?.idSolicitud);
+
+          if (objJosn.numerolicencia === null) {
+
+            const codigotramite = { codigoTramite: '13' };
+
+            const consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
+
+            const fechalicencia = consecutivolicencia.fecha
+
+
+
+            const actualizacionresumen = {
+              idSolicitud: objJosn?.idSolicitud,
+              numeroLicencia: consecutivolicencia.consecutivo,
+              fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
+              idTramite: objJosn.idTramite,
+              tipoTramite: valor,
+              iD_Control_Tramite: objJosn.idControlTramite
+            }
+
+            const update = await api.updatelicenciaAzure(actualizacionresumen);
+            //const update = await api.updatelicencia(objJosn?.idSolicitud);
             observacion = 'generación licencia';
           }
           else { observacion = 'aprobación actualización'; }
