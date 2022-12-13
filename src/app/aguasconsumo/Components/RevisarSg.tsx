@@ -40,6 +40,7 @@ export const RevisarSg = () => {
 
   const getListas = useCallback(
     async () => {
+      console.log("este elemento solo debe visualizarse para una revisión, algo que no se edita ");
       const rolesstorage: any = localStorage.getItem('roles');
 
       const [permiso] = JSON.parse(rolesstorage);
@@ -85,6 +86,7 @@ export const RevisarSg = () => {
 
   const onSubmit = async (values: any) => {
 
+    /** tener mucho ojo con este sección de código */
     const { seguimientoDocumentos } = store.getState();
     let observaciones: any = [];
     if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
@@ -96,7 +98,7 @@ export const RevisarSg = () => {
           idSolicitud: item.idSolicitud,
           idDocumentoSoporte: item.idDocumentoSoporte,
           path: item.path,
-          observaciones: values.observacionesSubsanacion,
+          observaciones: 'defualt',
           estado_Documento: item.estadoDocumento,
           tipoSeguimiento: item.tipoSeguimiento
         });
