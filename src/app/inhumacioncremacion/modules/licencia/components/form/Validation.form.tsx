@@ -525,7 +525,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             }
           };
 
-          //const resp = await api.AddGestion(json, aux + '');
+          const resp = await api.AddGestion(json, aux + '');
           aux = 1;
         }
         if (documentos.length == 0) {
@@ -554,7 +554,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             }
 
             const update = await api.updatelicenciaAzure(actualizacionresumen);
-            //const update = await api.updatelicencia(objJosn?.idSolicitud);
+
             observacion = 'generación licencia';
           }
           else { observacion = 'aprobación actualización'; }
