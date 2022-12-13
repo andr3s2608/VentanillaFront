@@ -313,7 +313,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
               className='fa-solid fa-circle-xmark'
               key={`vali-${index}`}
               onClick={() => onClickValidarInformacion(row)}
-              style={{ fontSize: '30xp', color: 'red' }}
+              style={{ fontSize: '30xp', color: 'white' }}
               icon={<CheckOutlined />}
             >
               Eliminar
@@ -326,7 +326,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
   const onChangeTipoCoordenadaLatitud = (event: any) => {
 
-    console.log("Valor depues del onchange: ", event.target.value);
+
 
     let valor = props.form.getFieldValue('latituduso');
 
@@ -409,7 +409,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   }
 
   const onChangeTipoCoordenadaLongitud = (event: any) => {
-    console.log("Valor depues del onchange: ", event.target.value);
+
 
     let valor = props.form.getFieldValue('longituduso');
     let numerico1 = '';
@@ -600,7 +600,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={9}
+                      maxLength={10}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -612,7 +612,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     <Input
                       name='latituduso'
                       className='form-control gov-co-form-control'
-                      maxLength={14}
+                      maxLength={13}
                       onChange={onChangeFormat}
                       onKeyPress={(event) => {
                         if (!/[0-9'"°NS]/.test(event.key)) {
@@ -640,9 +640,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                 {longituddec ?
                   (<Form.Item name='longituduso'>
                     <Input
-
                       className='form-control gov-co-form-control'
-                      maxLength={9}
+                      maxLength={10}
                       onKeyPress={(event) => {
                         if (!/[0-9-.]/.test(event.key)) {
                           event.preventDefault();
@@ -653,7 +652,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                   <Form.Item name='longituduso'>
                     <Input
                       className='form-control gov-co-form-control'
-                      maxLength={14}
+                      maxLength={13}
 
                       onChange={onChangeFormatLongitud}
                       onKeyPress={(event) => {
@@ -747,7 +746,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                       }}
                     >
 
-                      Adicionar  <span className='ml-3' ><i className="fa-solid fa-plus font-weight-bold"></i></span>
+                      Adicionar
                     </Button>
                   </div>
                 </>
@@ -844,7 +843,8 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     disabled={true}
-                    maxLength={9}
+                    maxLength={10}
+
                     onKeyPress={(event) => {
                       if (!/[0-9'"° -]/.test(event.key)) {
                         event.preventDefault();

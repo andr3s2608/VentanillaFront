@@ -6,6 +6,7 @@ import { PageHeaderComponent } from 'app/shared/components/page-header.component
 import { HorariosGestion } from 'app/inhumacioncremacion/modules/licencia/components/form/horarios.form';
 import { EmergenciaSanitaria } from 'app/inhumacioncremacion/modules/licencia/components/form/emergenciasanitaria.form';
 import { HorariosFestivos } from 'app/inhumacioncremacion/modules/licencia/components/form/horariosFestivos.form';
+import colors from 'react-multi-date-picker/plugins/colors';
 
 // Otros componentes
 const { TabPane } = Tabs;
@@ -65,31 +66,6 @@ const PruebaPage = () => {
               </div>
             </div>
           </div>
-          <div id='accordion' className='mt-5'>
-            <div className='card'>
-              <div className='card-header' id='heading-2'>
-                <h5 className='mb-0'>
-                  <a
-                    className='collapsed'
-                    role='button'
-                    data-toggle='collapse'
-                    href='#collapse-3'
-                    aria-expanded='false'
-                    aria-controls='collapse-2'
-                  >
-                    Horarios de festivos
-                  </a>
-                </h5>
-              </div>
-              <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                <div className='fadeInRight d-block'>
-                  <HorariosFestivos props={1} />;
-
-                </div>
-              </div>
-            </div>
-          </div>
-
         </TabPane>
       </Tabs>
     </div>

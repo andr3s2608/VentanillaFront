@@ -62,6 +62,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     ) {
 
       const resp: any = await api.GetEstadoSolicitudNuevoCambio();
+      console.log(resp)
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
       setespera(resp);
@@ -71,6 +72,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     } else {
       // const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
       const resp = await api.getallrequesttovalidate();
+      console.log(resp)
       localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setmostrar(true);
       setGrid(resp);
@@ -216,7 +218,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
               <div style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
                 <Tabs style={{ border: 'none' }}>
                   <TabPane tab='' key='1'>
-                    {mostrar && (<Button type='primary' style={{ width: 150 }} onClick={RefrescarBandeja}>
+                    {mostrar && (<Button type='primary' className='d-block mx-auto' style={{ width: 150, marginBottom: 10 }} onClick={RefrescarBandeja}>
                       Refrescar Bandeja
                     </Button>)}
 

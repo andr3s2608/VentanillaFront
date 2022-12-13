@@ -175,7 +175,7 @@ export const RevisarSg = () => {
           fechaCitacion: '',
           observacion: 'No_aplica',
           fechaRegistro: '',
-          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJson.idsolicitud,
           idUsuario: '00000000-0000-0000-0000-000000000000'
         }
 
@@ -184,6 +184,7 @@ export const RevisarSg = () => {
       await api.AddObservaciones(json);
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
+
     if (rol === 'Subdirector') {
 
       const estado = values.seguimiento;
@@ -200,7 +201,7 @@ export const RevisarSg = () => {
           idObservacion: '00000000-0000-0000-0000-000000000000',
           idSolicitud: objJson.idsolicitud,
           idSubred: objJson.idSubred,
-          observacion: 'autorización tramite',
+          observacion: 'radicación solicitud',
           fechaObservacion: null
         }
       )
@@ -209,7 +210,7 @@ export const RevisarSg = () => {
       const json: IObservaciones<any> = {
 
         idSolicitud: objJson.idsolicitud,
-        idTipoSolicitud: tiposolicitud,
+        idTipoSolicitud: '2ED2F440-E976-4D92-B315-03276D9812F0',
         observaciones: observaciones,
 
         citacion: {
@@ -217,11 +218,12 @@ export const RevisarSg = () => {
           fechaCitacion: '',
           observacion: 'No_aplica',
           fechaRegistro: '',
-          idSolicitud: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJson.idsolicitud,
           idUsuario: '00000000-0000-0000-0000-000000000000'
         }
 
       };
+
 
       await api.AddObservaciones(json);
 
@@ -286,9 +288,10 @@ export const RevisarSg = () => {
 
 
           const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
+          const emailCoordinadora = await api.getConstantesAguas('A508580A-1AE8-452E-A9D4-017DB0FDA188');
 
           await api.sendEmailAttachment({
-            to: objJson.correoElectronico,
+            to: objJson.correoElectronico + ',' + emailCoordinadora['valorConstante'],
             subject: 'Notificación Aprobación al Ciudadano',
             body: agregarValoresDinamicos(
               formato['cuerpo'],
@@ -342,7 +345,7 @@ export const RevisarSg = () => {
             formData.append('file', file);
             formData.append(
               'nameFile',
-              'RESOLUCION_' + 'N°' + objJson.numeroradicado + objJson.idSolicitud
+              'RESOLUCION_' + 'N°' + objJson.numeroradicado
             );
             formData.append('containerName', "aguahumanos");
             formData.append('oid', objJson.idusuario);
@@ -467,35 +470,15 @@ export const RevisarSg = () => {
             </section>
             <section className='panel-menu'>
               <div className='container'>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4 col-sm-12 panel_menu'>
-                    <div className='ubi-menu' style={{ marginLeft: '-12px' }}>
-                      <nav className='nav panel'>
-                        <a className='nav-link active' href='#'>
-                          1. Solicitar revisión
-                        </a>
-                        <a className='nav-link' href='#'>
-                          2. Crear Solicitud
-                        </a>
-                        <a className='nav-link' href='#'>
-                          3. En gestión
-                        </a>
-                        <a className='nav-link disabled' href='#'>
-                          4. Respuesta
-                        </a>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
-                <div className='row mt-5'>
+                <div className='row mt'>
                   <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
-                    <div className='info-tramite mt-3 ml-5'>
-                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
+                    <div className='info-tramite mt-3'>
+                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano</p>
                     </div>
                   </div>
                 </div>
 
-                <div className='row mt-5 ml-2 datos_validador '>
+                <div className='row mt-1 datos_validador '>
                   <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} habilitar={false} />
                 </div>
               </div>

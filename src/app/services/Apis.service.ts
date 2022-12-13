@@ -265,6 +265,12 @@ export class ApiService {
   GetEstadoSolicitudNuevoCambio = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllSolicitudByIdUser/${this.oid}`, id: '0' });
 
+  Getconsecutivolicencia = (payload: any) =>
+    post<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `v1/ConsecutivoLicInhCrms`, payload, id: '0' });
+
+  updatelicenciaAzure = (payload: any) =>
+    put<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/UpdateLicenciaResumen`, payload, id: '0' });
+
   updatelicencia = (solicitud: string) =>
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
 
@@ -593,7 +599,7 @@ export class ApiService {
   /////////////////////////
 
   getallReportsAguas = (fechainicio: any, fechafin: any) =>
-    get<[]>({ endpoint: REACT_APP_LOCAL as string, url: `Report/getReportAgua/${fechainicio}/${fechafin}`, id: '0' });
+    get<[]>({ endpoint: REACT_APP_AGUAS as string, url: `Report/getReportAgua/${fechainicio}/${fechafin}`, id: '0' });
 
   AddSolicitudPrimera = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '1' });

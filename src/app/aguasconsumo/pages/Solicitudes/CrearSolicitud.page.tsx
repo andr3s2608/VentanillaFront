@@ -161,11 +161,11 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
               rut: values?.rut ?? '',
               numeroIdentificacion: values.IDNumber,
               primerNombre: values.name,
-              segundoNombre: values.secondname,
+              segundoNombre: values?.secondname ?? '',
               primerApellido: values.surname,
-              segundoApellido: values.secondsurname,
+              segundoApellido: values?.secondsurname ?? '',
               telefonoContacto: values.telefono,
-              celularContacto: values.telefono2,
+              celularContacto: values?.telefono2 ?? '',
               correoElectronico: values.email.toString().toLowerCase(),
               idTipoPersona: values.persona,
               tipoDocumentoRazon: values?.IDTypeRazon ?? '',
@@ -330,49 +330,16 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           formData.append('containerName', 'aguahumanos');
           formData.append('oid', idUsuario);
 
-          const nube = await api.uploadFiles(formData);
-          const bd = await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
+          await api.uploadFiles(formData);
+          await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
 
 
           if (supportDocumentsRejected.length > 0) {
-
-            const bdrejec = await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
+            await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
           }
 
-          const valor = await api.AddSolicitudConsecion(json);
 
-          let observaciones: any[] = []
-          observaciones.push(
-            {
-              idObservacion: '00000000-0000-0000-0000-000000000000',
-              idSolicitud: responseSolicitudDTO.idSolicitud,
-              idSubred: objJson.idSubred,
-              observacion: 'radicación solicitud',
-              fechaObservacion: null
-            }
-          )
-
-          const jsonobservacion: IObservaciones<any> = {
-
-            idSolicitud: responseSolicitudDTO.idSolicitud,
-            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-
-            observaciones: observaciones,
-
-            citacion: {
-              idCitacion: '00000000-0000-0000-0000-000000000000',
-              fechaCitacion: '',
-              observacion: 'No_aplica',
-              fechaRegistro: '',
-              idSolicitud: '00000000-0000-0000-0000-000000000000',
-              idUsuario: '00000000-0000-0000-0000-000000000000'
-            }
-
-          };
-
-
-          await api.AddObservaciones(jsonobservacion);
-
+          await api.AddSolicitudConsecion(json);
 
 
           Swal.fire({
@@ -432,12 +399,23 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
   };
 
   const validarDatosSocilitante = async (form: any) => {
+
     try {
       await form.validateFields([
         'tipotramite', 'persona', 'name', 'IDType', 'IDNumber', 'surname', 'telefono',
         'email', 'zonaUbicacion', 'barrioUbicacion', 'upzUbicacion', 'localidadUbicacion'
       ]);
-      onNextStep();
+
+      if (form.getFieldValue('localidadUbicacion') != 'SELECCIONAR' && form.getFieldValue('barrioUbicacion') != 'SELECCIONAR' && form.getFieldValue('upzUbicacion') != 'SELECCIONAR' && form.getFieldValue('zonaUbicacion') != 'SELECCIONAR') {
+        onNextStep();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Datos Incompletos',
+          text: 'Los campos de Zona, Localidad, Upz y Barrios no debe tener valores predeterminados'
+        });
+      }
+
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -532,7 +510,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                   {/**    Sección para pestaña de cargar informacion de fuentes estudiada   */}
                   {/** ==================================================================== */}
                   <div className={` ${current != 1 && 'd-none'} fadeInRight ${current == 1 && 'd-block'}`}>
-                    <div className='row mt-5 ml-2'>
+                    <div className='row ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
                         Datos de la fuente de abastecimiento. <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>
@@ -575,11 +553,11 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                     </Form.Item>
                   </div>
 
-                  {/** ============================================================= */}
-                  {/**            Sección para pestaña de cargue de archivos        **/}
-                  {/** ============================================================= */}
+                  {/** ==================================================================================== */}
+                  {/**            Sección para pestaña cargue de información adicional y  cargue de archivos        **/}
+                  {/** ===================================================================================== */}
                   <div className={` ${current != 2 && 'd-none'} fadeInRight ${current == 2 && 'd-block'}`}>
-                    <div className='row mt-5 ml-2'>
+                    <div className='row ml-2'>
                       <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
                         Información adicional de la fuente de abastecimiento. <br />{' '}
                         <small style={{ color: '#000' }}>* Campos Obligatorios</small>

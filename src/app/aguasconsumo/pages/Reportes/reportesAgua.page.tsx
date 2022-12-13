@@ -44,10 +44,6 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
   const getListas = useCallback(
     async () => {
-      const resp = await api.getallReports();
-
-      setGrid(resp);
-      setAllData(resp);
       setVisibleGrid('none');
 
       setVisiblePicker('none');
@@ -100,102 +96,47 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       for (let i in datos) {
 
         let ob = {
-          'Consecutivo': datos[i].consecutivo,
-          'Numero Licencia': datos[i].numerolicenciainfo,
-          'Fecha de Licencia': moment(datos[i].fechaLicencia).format('DD-MM-YYYY HH:mm'),
-          'Fecha de Solicitud': moment(datos[i].fechaSolicitud).format('DD-MM-YYYY HH:mm'),
-          'Número de Certificado': datos[i].numeroCertificado,
-          'Tipo de Documento': datos[i].idTipoDocumento,
-          'Número de documento': datos[i].noIdentificacionSolicitante,
-          'Primer Apellido': datos[i].primerApellidoRep,
-          'Segundo Apellido': datos[i].segundoApellidoRep,
-          'Primer Nombre': datos[i].primerNombreRep,
-          'Segundo Nombre': datos[i].segundoNombreRep,
-          'Fecha de Nacimiento': moment(datos[i].fechaNacimientoRep).format('DD-MM-YYYY'),
-          'Sexo': datos[i].nombreSexo,
-          'Fecha de Fallecimiento': moment(datos[i].fechaDefuncion).format('DD-MM-YYYY'),
-          'Tipo de Muerte': datos[i].tipoMuerteRep,
-          'Cementerio': datos[i].cementerio,
-          'Pais': datos[i].paisRep,
-          'Departamento': datos[i].departamentoRep,
-          'Municipio': datos[i].municipioRep,
-          'Area': datos[i].areaDefuncionRep,
-          'Sitio': datos[i].Sitio,
-          'Ins. que expidio Certificado Def.': datos[i].razonSocialInstitucionRep,
-          'NIT': datos[i].numeroIdentificacionInstitucionRep,
-          'Num. Acta levantamiento': datos[i].numeroActaLevantamientoInstitucionRep,
-          'Fecha de Acta Levantamiento': moment(datos[i].fechaActaInstitucionRep).format('DD-MM-YYYY'),
-          'Fiscal Número': datos[i].noFiscalInstitucionRep,
-          'Seccional de Fiscalia': datos[i].seccionalFiscaliaInstitucionRep,
-          'Num. Protocolo': datos[i].numeroProtocoloInstitucionRep
+          'Numero de Radicado': datos[i].numeroRadicado,
+          'Tipo Identificacion': datos[i].tipoIdentificacion,
+          'Nombre persona Natural': datos[i].nombre,
+          'Persona juridica razon social': datos[i].RazonSocial,
+          'Tipo de documento': datos[i].TipoDocumentoRazon,
+          'Numero de documento': datos[i].NumeroIdentificacion,
+          'RUT': datos[i].Rut,
+          'NIT': datos[i].Nit,
+          'Fecha de Autorizacion': datos[i].fechaAutorizacion,
+          'Estado': datos[i].estado
+
         }
         datatable.push(ob);
       }
 
       opciones = {
-        fileName: 'Solicitudes inhumacion - cremacion',
+        fileName: 'Reporte de Aguas',
         datas: [
           {
             sheetData: datatable,
             sheetName: 'Historial solicitudes',
-            sheetFilter: ['Consecutivo',
-              'Numero Licencia',
-              'Fecha de Licencia',
-              'Fecha de Solicitud',
-              'Tipo Solicitud',
-              'Número de Certificado',
-              'Tipo de Documento',
-              'Número de documento',
-              'Primer Apellido',
-              'Segundo Apellido',
-              'Primer Nombre',
-              'Segundo Nombre',
-              'Fecha de Nacimiento',
-              'Sexo',
-              'Fecha de Fallecimiento',
-              'Tipo de Muerte',
-              'Cementerio',
-              'Pais',
-              'Departamento',
-              'Municipio',
-              'Area',
-              'Sitio',
-              'Ins. que expidio Certificado Def.',
+            sheetFilter: ['Numero de Radicado',
+              'Tipo Identificacion',
+              'Nombre persona Natural',
+              'Persona juridica razon social',
+              'Tipo de documento',
+              'Numero de documento',
+              'RUT',
               'NIT',
-              'Num. Acta levantamiento',
-              'Fecha de Acta Levantamiento',
-              'Fiscal Número',
-              'Seccional de Fiscalia',
-              'Num. Protocolo'],
-            sheetHeader: ['Consecutivo',
-              'Numero Licencia',
-              'Fecha de Licencia',
-              'Fecha de Solicitud',
-              'Tipo Solicitud',
-              'Número de Certificado',
-              'Tipo de Documento',
-              'Número de documento',
-              'Primer Apellido',
-              'Segundo Apellido',
-              'Primer Nombre',
-              'Segundo Nombre',
-              'Fecha de Nacimiento',
-              'Sexo',
-              'Fecha de Fallecimiento',
-              'Tipo de Muerte',
-              'Cementerio',
-              'Pais',
-              'Departamento',
-              'Municipio',
-              'Area',
-              'Sitio',
-              'Ins. que expidio Certificado Def.',
+              'Fecha de Autorizacion',
+              'Estado'],
+            sheetHeader: ['Numero de Radicado',
+              'Tipo Identificacion',
+              'Nombre persona Natural',
+              'Persona juridica razon social',
+              'Tipo de documento',
+              'Numero de documento',
+              'RUT',
               'NIT',
-              'Num. Acta levantamiento',
-              'Fecha de Acta Levantamiento',
-              'Fiscal Número',
-              'Seccional de Fiscalia',
-              'Num. Protocolo']
+              'Fecha de Autorizacion',
+              'Estado']
           }
         ]
       };
@@ -262,16 +203,14 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       const resp: any = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
         moment(dateSelectedFinal).format('YYYY-MM-DD'));
 
-      console.log(resp)
+
 
 
 
 
       filtroFecha = resp.filter(function (f: { fechaSolicitud: string | number | Date; fechaLicencia: string | number | Date; }) {
         var fecha = new Date(moment(f.fechaSolicitud).format('DD-MM-YYYY HH:mm:ssss') + "");
-        console.log(f.fechaSolicitud);
-        console.log(fecha);
-        console.log(moment(f.fechaSolicitud));
+
         if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
           return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
         }
@@ -282,7 +221,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
       });
       filtroFecha = resp
-      console.log(filtroFecha)
+
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
@@ -333,7 +272,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       }
     }
     if (filtroFecha != null) {
-      console.log(filtroFecha);
+
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
         setGrid(dataFIN);
@@ -355,7 +294,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   return (
     <div className='container-fluid mt-5  fadeInTop '>
       <PageHeaderComponent
-        title='Reporte de Solicitudes Inhumación-Cremación'
+        title='Reporte de Solicitudes Aguas'
         subTitle='Seleccione el filtro de busqueda para enlistar las solicitudes, el rango de fecha es obligatorio'
       />
       <div className='card'>

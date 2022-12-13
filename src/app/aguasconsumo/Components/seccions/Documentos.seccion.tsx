@@ -74,6 +74,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       let documentosrechazados: any = [];
 
 
+
       if (obj?.fuenteabastecimientojson !== undefined) {
         documentosrechazados = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
         setrechazados(documentosrechazados);
@@ -566,7 +567,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                       className='fa-solid fa-circle-xmark'
                       key={`vali-${index}`}
                       onClick={() => onClickValidarInformacion(row)}
-                      style={{ fontSize: '30xp', color: 'red' }}
+                      style={{ fontSize: '30xp', color: 'white' }}
                       icon={<CheckOutlined />}
                     >
                       Eliminar
@@ -611,7 +612,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 className='fa-solid fa-circle-xmark'
                 key={`vali-${index}`}
                 onClick={() => onClickValidarInformacion(row)}
-                style={{ fontSize: '30xp', color: 'red' }}
+                style={{ fontSize: '30xp', color: 'white' }}
                 icon={<CheckOutlined />}
               >
                 Eliminar
