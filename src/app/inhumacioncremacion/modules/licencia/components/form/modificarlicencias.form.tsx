@@ -355,9 +355,9 @@ export const ModificarLicencia = ({ props }: any) => {
       dataIndex: 'fechaSolicitud',
       width: 200,
       key: 'fechaSolicitud',
-      render: (Text: string) => (
+      render: (Text: any) => (
         <Form.Item label='' name=''>
-          <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
+          <text>{moment(Text.toString().substring(0, Text.toString().indexOf(' '))).format('DD-MM-YYYY')}</text>
         </Form.Item>
       )
     },
