@@ -258,7 +258,7 @@ export const Auditoria = () => {
       width: 200,
       render: (_: any, row: any, index: any) => {
 
-        if (row.numeroLicencia !== null) {
+        if (row.numeroLicencia !== '') {
           return (<Form.Item label='' name=''>
             <FilePdfOutlined
               onClick={() => onClickVisualizarPDF(row)}
