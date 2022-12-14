@@ -536,7 +536,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
           if (objJosn.numerolicencia === null) {
 
-            /*
+
             const codigotramite = { codigoTramite: '13' };
 
             const consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
@@ -544,18 +544,18 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             const fechalicencia = consecutivolicencia.fecha
 
 
-            /*
-                        const actualizacionresumen = {
-                          idSolicitud: objJosn?.idSolicitud,
-                          numeroLicencia: consecutivolicencia.consecutivo,
-                          fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
-                          idTramite: objJosn.idTramite,
-                          tipoTramite: valor,
-                          iD_Control_Tramite: objJosn.idControlTramite
-                        }
-            */
-            //const update = await api.updatelicenciaAzure(actualizacionresumen);
-            const update = await api.updatelicencia(objJosn?.idSolicitud);
+
+            const actualizacionresumen = {
+              idSolicitud: objJosn?.idSolicitud,
+              numeroLicencia: consecutivolicencia.consecutivo,
+              fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
+              idTramite: objJosn.idTramite,
+              tipoTramite: valor,
+              iD_Control_Tramite: objJosn.idControlTramite
+            }
+
+            const update = await api.updatelicenciaAzure(actualizacionresumen);
+            //const update = await api.updatelicencia(objJosn?.idSolicitud);
 
             observacion = 'generación licencia';
           }
