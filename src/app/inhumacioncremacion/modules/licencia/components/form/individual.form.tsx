@@ -209,6 +209,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
 
+    console.log('entro')
     setStatus(undefined);
 
 
@@ -245,17 +246,20 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     const tipoinst = values.instTipoIdent;
+    let instype = values.instType;
     var tipoidinst = values.instTipoIdent;
     var numeroins = values.instNumIdent;
     var razonSocialins = values.instRazonSocial;
     var numeroProtocoloins = values.instNumProtocolo;
-    if (tipoinst == undefined || values?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+    if (tipoinst == undefined || values.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
       numeroins = '0';
       razonSocialins = 'Otros';
       numeroProtocoloins = '452022';
+      instype = '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'
     } else {
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      instype = '04e0913b-5d86-4c48-8904-0f504fedb3fd'
     }
     const par = values.authParentesco;
     var parentesco = '';
@@ -517,7 +521,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
           seccionalFiscalia: values?.SecFiscalAct ?? '',
           noFiscal: values?.NoFiscAct ?? '',
-          idTipoInstitucion: values?.instType ?? '',
+          idTipoInstitucion: instype,
           NombreFiscal: values?.fiscalianombreDC ?? '',
           ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
           NumeroOficio: values?.fiscalianumeroDC ?? '',
@@ -527,6 +531,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+
 
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';

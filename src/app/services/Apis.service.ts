@@ -207,7 +207,7 @@ export class ApiService {
   postLicencia = (payload: any) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
 
-  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
+  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
 
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
@@ -591,7 +591,7 @@ export class ApiService {
       endpoint: REACT_APP_ENDPOINTV1 as string,
       url: `NumeracionTramites`,
       payload,
-      id: '0'
+      id: '1'
     });
 
   //////////////////////////

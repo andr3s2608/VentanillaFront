@@ -44,6 +44,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       const sec = await api.GetSeccionales();
       setlseccionales(sec);
       setListaTipoDocumento(tiposjson);
+      if (obj != undefined && obj?.instType === '04e0913b-5d86-4c48-8904-0f504fedb3fd') {
+        setIsMedicinaLegal(true);
+      }
+      else {
+        setIsMedicinaLegal(false);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -51,12 +57,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   useEffect(() => {
     getListas();
-    if (obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
-      setIsMedicinaLegal(false);
-    }
-    else {
-      setIsMedicinaLegal(false);
-    }
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

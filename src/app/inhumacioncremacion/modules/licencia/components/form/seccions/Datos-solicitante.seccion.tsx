@@ -248,6 +248,14 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   };
   const Onchangemunicipio = (id: string) => {
     if (municipioCementerio != id) {
+      console.log(id)
+      if (id === 'b5c40416-db96-4d1d-a5bd-da0ce61930e7' || id === '2ad1a949-02a7-4e93-88f9-d39b98f2871f') {
+        console.log('entrooo')
+        setotroCementerio('');
+      }
+      else {
+        setotroCementerio(undefined);
+      }
       setiscementerio(true);
       setnuevomunicipio(form.getFieldValue('municipio'));
     }
@@ -259,6 +267,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     const mun = await dominioService.get_all_municipios_by_departamento(id);
     setl_municipios(mun)
     setnuevomunicipio('cambio')
+
     setmunicipioCementerio('')
     form.resetFields(['municipio'])
 
@@ -345,7 +354,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   const onClickModCementerio = async () => {
 
 
-    if (nuevocorreo === '' || nuevaciudad === '' || nuevootro === '' || nuevomunicipio === 'cambio') {
+    if (nuevocorreo === '' || nuevaciudad === '' || nuevootro === '' || nuevomunicipio === 'cambio' || otroCementerio === '') {
       Swal.fire({
         icon: 'error',
 
@@ -368,6 +377,13 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         otrositio: nuevootro !== 'sin cambio' ? nuevootro : otroCementerio
 
       }
+
+      setemailcementerio(nuevocorreo !== 'sin cambio' ? nuevocorreo : emailcementerio)
+      setPaisCementerio(nuevopais !== 'sin cambio' ? nuevopais : PaisCementerio)
+      setmunicipioCementerio(nuevomunicipio !== 'sin cambio' ? nuevomunicipio : municipioCementerio);
+      setdepartamentoCementerio(nuevodepartamento !== 'sin cambio' ? nuevodepartamento : departamentoCementerio);
+      setciudadCementerio(nuevaciudad !== 'sin cambio' ? nuevaciudad : ciudadCementerio);
+      setotroCementerio(nuevootro !== 'sin cambio' ? nuevootro : otroCementerio)
 
       Swal.fire({
         title: 'Actualización de Cementerio',
@@ -531,7 +547,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
                 defaultValue={otroCementerio}
                 style={{ width: '90%' }}
-                type='email'
+                type='text'
                 onKeyPress={(event) => {
                   if (!/[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                     event.preventDefault();
