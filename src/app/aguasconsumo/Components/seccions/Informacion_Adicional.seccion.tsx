@@ -71,7 +71,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     getListas();
   }, []);
 
-  const validacionCaudal = (value: any) => {
+  const validacionCaudal = () => {
     const caudalde = props.form.getFieldValue('caudaldesign');
     const caudaltra = props.form.getFieldValue('caudaltratado');
 
@@ -83,6 +83,9 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
           title: 'Caudal incorrecto',
           text: `El caudal tratado no puede ser menor al caudal diseño`
         });
+      }
+      else {
+        insertarsistema();
       }
     }
   };
@@ -336,7 +339,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     maxLength={100}
-                    onChange={validacionCaudal}
                     onKeyPress={(event) => {
                       if (!/[0-9,.]/.test(event.key)) {
                         event.preventDefault();
@@ -355,7 +357,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     type='text'
                     className='form-control gov-co-form-control'
                     maxLength={100}
-                    onChange={validacionCaudal}
                     onKeyPress={(event) => {
                       if (!/[0-9,.]/.test(event.key)) {
                         event.preventDefault();
@@ -383,7 +384,8 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                     type='primary'
                     htmlType='button'
                     onClick={() => {
-                      insertarsistema();
+                      validacionCaudal();
+
                     }}
                   >
                     Adicionar Caudal <span><i className="fa-solid fa-plus ml-3"></i></span>

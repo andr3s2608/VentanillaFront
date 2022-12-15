@@ -166,7 +166,7 @@ export const RevisarSv = () => {
     };
 
 
-    await api.AddObservaciones(json);
+    await api.AddObservaciones(json, '1');
 
 
 

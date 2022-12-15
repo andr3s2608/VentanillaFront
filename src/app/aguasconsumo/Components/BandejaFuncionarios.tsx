@@ -265,7 +265,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
     await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4',
       '8CA363C0-66AA-4273-8E63-CE3EAC234857');
-
+    history.push('/tramites-servicios-aguas');
   };
 
   const onClickValidarInformacion = async (datos: any) => {
@@ -611,7 +611,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
           title: 'DOCUMENTO NO ENCONTRADO',
           confirmButtonColor: '#b6e5ef',
           text:
-            'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+            'El documento que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
         });
       }
 
@@ -622,7 +622,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         title: 'DOCUMENTO NO ENCONTRADO',
         confirmButtonColor: '#b6e5ef',
         text:
-          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+          'El documento que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
       });
     }
   };

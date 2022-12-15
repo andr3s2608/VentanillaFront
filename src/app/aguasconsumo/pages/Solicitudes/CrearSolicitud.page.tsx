@@ -197,7 +197,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             tipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
             numeroRadicado: responseSolicitudDTO.numeroRadicado,
             fechaSolicitud: moment(Date()).format(formatDate),
-            idEstado: '96D00032-4B60-4027-AFEA-0CC7115220B4',
+            idEstado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
             estado: '96D00032-4B60-4027-AFEA-0CC7115220B4',
             idFuente: '00000000-0000-0000-0000-000000000000',
             idUbicacion: '00000000-0000-0000-0000-000000000000',
@@ -403,7 +403,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
     try {
       await form.validateFields([
         'tipotramite', 'persona', 'name', 'IDType', 'IDNumber', 'surname', 'telefono',
-        'email', 'zonaUbicacion', 'barrioUbicacion', 'upzUbicacion', 'localidadUbicacion'
+        'email', 'zonaUbicacion', 'barrioUbicacion', 'upzUbicacion', 'localidadUbicacion', 'direccionCompletaUbicacion'
       ]);
 
       if (form.getFieldValue('localidadUbicacion') != 'SELECCIONAR' && form.getFieldValue('barrioUbicacion') != 'SELECCIONAR' && form.getFieldValue('upzUbicacion') != 'SELECCIONAR' && form.getFieldValue('zonaUbicacion') != 'SELECCIONAR') {
@@ -539,15 +539,6 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                           >
                             Siguiente
                           </Button>
-                          <Button
-                            className='mr-5 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
-                          </Button>
                         </div>
                       </div>
                     </Form.Item>
@@ -591,15 +582,6 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                             htmlType='submit'
                           >
                             Enviar
-                          </Button>
-                          <Button
-                            className='mr-3 float-right button btn btn-default'
-                            style={{ backgroundColor: '#BABABA', border: '2px solid #BABABA', color: '#000' }}
-                            onClick={() => {
-                              history.push('/tramites-servicios-aguas');
-                            }}
-                          >
-                            Cancelar
                           </Button>
                         </div>
                       </div>

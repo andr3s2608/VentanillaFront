@@ -301,7 +301,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       props.form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminima(5);
+      setLongitudminima(0);
       setLongitudmaxima(15);
       setTipocampo('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacion(/[a-zA-Z0-9]/);
@@ -309,12 +309,12 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
       setCampo('AlfaNuméricos(Numéros y letras)');
       setsininformacion(true);
 
-      prop(5, 'datosfallecido');
+      prop(0, 'datosfallecido');
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
         setLongitudminima(2);
-        setLongitudmaxima(10);
-        setTipocampo('[0-9]{2,10}');
+        setLongitudmaxima(13);
+        setTipocampo('[0-9]{2,13}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Número de Protocolo');
@@ -345,21 +345,21 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
             prop(10, 'datosfallecido');
           } else {
             if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminima(15);
-              setLongitudmaxima(15);
-              setTipocampo('[0-9]{15,15}');
+              setLongitudminima(6);
+              setLongitudmaxima(18);
+              setTipocampo('[0-9]{6,18}');
               setTipocampovalidacion(/[0-9]/);
               setCampo('Numéricos');
               setTipodocumento('Permiso Especial de Permanencia');
 
-              prop(15, 'datosfallecido');
+              prop(6, 'datosfallecido');
             } else {
               if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
                 valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
                 valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminima(10);
-                setLongitudmaxima(11);
-                setTipocampo('[a-zA-Z0-9]{10,11}');
+                setLongitudmaxima(15);
+                setTipocampo('[a-zA-Z0-9]{10,15}');
                 setTipocampovalidacion(/[a-zA-Z0-9]/);
                 setCampo('AlfaNuméricos(Numéros y letras)');
                 setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
@@ -389,20 +389,20 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   }
                   else {
                     if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
-                      setLongitudminima(9);
-                      setLongitudmaxima(9);
-                      setTipocampo('[a-zA-Z0-9]{9,9}');
+                      setLongitudminima(6);
+                      setLongitudmaxima(18);
+                      setTipocampo('[a-zA-Z0-9]{6,18}');
                       setTipocampovalidacion(/[a-zA-Z0-9]/);
                       setCampo('AlfaNumérico(Numéros y letras)');
                       setTipodocumento('Salvoconducto');
 
-                      prop(9, 'datosfallecido');
+                      prop(6, 'datosfallecido');
                     }
                     else {
                       if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
                         setLongitudminima(5);
-                        setLongitudmaxima(11);
-                        setTipocampo('[a-zA-Z0-9]{5,11}');
+                        setLongitudmaxima(15);
+                        setTipocampo('[a-zA-Z0-9]{5,15}');
                         setTipocampovalidacion(/[a-zA-Z0-9]/);
                         setCampo('AlfaNumérico(Numéros y letras)');
                         setTipodocumento('Adulto Sin Identificar');
@@ -413,8 +413,8 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                       else {
                         if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
                           setLongitudminima(5);
-                          setLongitudmaxima(12);
-                          setTipocampo('[a-zA-Z0-9]{5,12}');
+                          setLongitudmaxima(15);
+                          setTipocampo('[a-zA-Z0-9]{5,15}');
                           setTipocampovalidacion(/[a-zA-Z0-9]/);
                           setCampo('AlfaNumérico(Numéros y letras)');
                           setTipodocumento('Menor Sin Identificar');
@@ -470,7 +470,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
 
     if (valorupper == 'C087D833-3CFB-460F-AA78-E5CF2FE83F25') {
       props.form.setFieldsValue({ IDNumber: undefined });
-      setLongitudminimareconocido(5);
+      setLongitudminimareconocido(0);
       setLongitudmaximareconocido(15);
       setTipocamporeconocido('[a-zA-Z0-9]{0,15}');
       setTipocampovalidacionreconocido(/[a-zA-Z0-9]/);
@@ -478,12 +478,12 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
       setCamporeconocido('AlfaNuméricos(Numéros y letras)');
       setsininformacionreconocido(true);
 
-      prop(5, 'reconocido');
+      prop(0, 'reconocido');
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
         setLongitudminimareconocido(2);
-        setLongitudmaximareconocido(10);
-        setTipocamporeconocido('[0-9]{2,10}');
+        setLongitudmaximareconocido(13);
+        setTipocamporeconocido('[0-9]{2,13}');
         setTipocampovalidacionreconocido(/[0-9]/);
         setCamporeconocido('Numéricos');
         setTipodocumentoreconocido('Número de Protocolo');
@@ -514,21 +514,21 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
             prop(10, 'reconocido');
           } else {
             if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminimareconocido(15);
-              setLongitudmaximareconocido(15);
-              setTipocamporeconocido('[0-9]{15,15}');
+              setLongitudminimareconocido(6);
+              setLongitudmaximareconocido(18);
+              setTipocamporeconocido('[0-9]{6,18}');
               setTipocampovalidacionreconocido(/[0-9]/);
               setCamporeconocido('Numéricos');
               setTipodocumentoreconocido('Permiso Especial de Permanencia');
 
-              prop(15, 'reconocido');
+              prop(6, 'reconocido');
             } else {
               if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
                 valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
                 valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminimareconocido(10);
-                setLongitudmaximareconocido(11);
-                setTipocamporeconocido('[a-zA-Z0-9]{10,11}');
+                setLongitudmaximareconocido(15);
+                setTipocamporeconocido('[a-zA-Z0-9]{10,15}');
                 setTipocampovalidacionreconocido(/[a-zA-Z0-9]/);
                 setCamporeconocido('AlfaNuméricos(Numéros y letras)');
                 setTipodocumentoreconocido('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
@@ -558,20 +558,20 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                   }
                   else {
                     if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
-                      setLongitudminimareconocido(9);
-                      setLongitudmaximareconocido(9);
-                      setTipocamporeconocido('[a-zA-Z0-9]{9,9}');
+                      setLongitudminimareconocido(6);
+                      setLongitudmaximareconocido(18);
+                      setTipocamporeconocido('[a-zA-Z0-9]{6,18}');
                       setTipocampovalidacionreconocido(/[a-zA-Z0-9]/);
                       setCamporeconocido('AlfaNumérico(Numéros y letras)');
                       setTipodocumentoreconocido('Salvoconducto');
 
-                      prop(9, 'reconocido');
+                      prop(6, 'reconocido');
                     }
                     else {
                       if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
                         setLongitudminimareconocido(5);
-                        setLongitudmaximareconocido(11);
-                        setTipocamporeconocido('[a-zA-Z0-9]{5,11}');
+                        setLongitudmaximareconocido(15);
+                        setTipocamporeconocido('[a-zA-Z0-9]{5,15}');
                         setTipocampovalidacionreconocido(/[a-zA-Z0-9]/);
                         setCamporeconocido('AlfaNumérico(Numéros y letras)');
                         setTipodocumentoreconocido('Adulto Sin Identificar');
@@ -582,8 +582,8 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                       else {
                         if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
                           setLongitudminimareconocido(5);
-                          setLongitudmaximareconocido(12);
-                          setTipocamporeconocido('[a-zA-Z0-9]{5,12}');
+                          setLongitudmaximareconocido(15);
+                          setTipocamporeconocido('[a-zA-Z0-9]{5,15}');
                           setTipocampovalidacionreconocido(/[a-zA-Z0-9]/);
                           setCamporeconocido('AlfaNumérico(Numéros y letras)');
                           setTipodocumentoreconocido('Menor Sin Identificar');

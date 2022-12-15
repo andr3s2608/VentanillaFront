@@ -607,8 +607,8 @@ export class ApiService {
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
-  AddObservaciones = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddObservaciones', payload, id: '0' });
+  AddObservaciones = (payload: any, id: string) =>
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddObservaciones', payload, id: id });
 
   getObservacionesList = (idsolicitud: string) =>
     get<any>({
@@ -634,7 +634,7 @@ export class ApiService {
     put({
       endpoint: REACT_APP_AGUAS as string,
       url: `Request/CambiarEstadoSolicitud/${idsolicitud}/${idestado}/${idtipo}`,
-      id: '0'
+      id: '1'
     });
 
   GetSolicitudesUsuarioSubred = () =>

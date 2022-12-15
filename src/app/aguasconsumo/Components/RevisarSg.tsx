@@ -183,7 +183,7 @@ export const RevisarSg = () => {
 
       };
 
-      await api.AddObservaciones(json);
+      await api.AddObservaciones(json, '0');
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
     }
 
@@ -242,7 +242,7 @@ export const RevisarSg = () => {
       };
 
 
-      await api.AddObservaciones(json);
+      await api.AddObservaciones(json, '0');
 
       await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, typeNotificationSeleted, '2ED2F440-E976-4D92-B315-03276D9812F0');
     }
