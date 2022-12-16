@@ -68,6 +68,7 @@ export const Auditoria = () => {
 
     setdata(listaauditoria);
     setdatosUsuario(listaauditoria);
+    setUrlPdfLicence('');
     setLicencia(true);
   }
 
@@ -199,7 +200,7 @@ export const Auditoria = () => {
           title: 'DOCUMENTO NO ENCONTRADO',
           confirmButtonColor: '#b6e5ef',
           text:
-            'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+            'El documento que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
         });
       }
 
@@ -210,7 +211,7 @@ export const Auditoria = () => {
         title: 'DOCUMENTO NO ENCONTRADO',
         confirmButtonColor: '#b6e5ef',
         text:
-          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+          'El documento que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
       });
     }
 
