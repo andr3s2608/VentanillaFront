@@ -693,7 +693,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             formData.append('containerName', contenedor);
             formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
             await api.uploadFiles(formData);
-            //console.log(file);
+
           })();
         } else {
           let datosDinamicosGenericos = [
@@ -1120,7 +1120,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const format = "DD-MM-YYYY";
     const formathours = "HH:mm:ss";
 
-    console.log(resumenSolicitud[0]['fechaLicencia']);
 
     if (bandera) {
 
@@ -1156,8 +1155,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
 
       }
-      fechaActualizacion = moment(fechaActualizacion).format(format);
-      HoraActualizacion = moment(fechaActualizacion).format(formathours);
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
 
     }
 
@@ -1402,7 +1402,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const format = "DD-MM-YYYY";
     const formathours = "HH:mm:ss";
 
-    console.log(resumenSolicitud[0]['fechaLicencia']);
+
 
     if (bandera) {
 
@@ -1438,8 +1438,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
 
       }
-      fechaActualizacion = moment(fechaActualizacion).format(format);
-      HoraActualizacion = moment(fechaActualizacion).format(formathours);
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
 
     }
 
@@ -1701,7 +1702,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const format = "DD-MM-YYYY";
     const formathours = "HH:mm:ss";
 
-    console.log(resumenSolicitud[0]['fechaLicencia']);
+
 
     if (bandera) {
 
@@ -1737,8 +1738,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
 
       }
-      fechaActualizacion = moment(fechaActualizacion).format(format);
-      HoraActualizacion = moment(fechaActualizacion).format(formathours);
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
 
     }
 
@@ -1957,7 +1959,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const format = "DD-MM-YYYY";
     const formathours = "HH:mm:ss";
 
-    console.log(resumenSolicitud[0]['fechaLicencia']);
+
 
     if (bandera) {
 
@@ -1993,9 +1995,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
 
       }
-      fechaActualizacion = moment(fechaActualizacion).format(format);
-      HoraActualizacion = moment(fechaActualizacion).format(formathours);
-
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
