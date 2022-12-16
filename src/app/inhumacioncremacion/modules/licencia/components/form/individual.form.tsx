@@ -209,7 +209,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
 
-    console.log('entro')
+
     setStatus(undefined);
 
 

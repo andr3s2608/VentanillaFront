@@ -19,6 +19,9 @@ import Input from 'antd/es/input';
 import Table from 'antd/es/table';
 import moment from 'moment';
 
+
+
+
 export const TablaReportes = (props: IDataSource) => {
   const history = useHistory();
   const { data } = props;
@@ -28,11 +31,19 @@ export const TablaReportes = (props: IDataSource) => {
 
   const api = new ApiService(accountIdentifier);
   const Paginas: number = 10;
+  const [mostrar, setmostrar] = useState<boolean>(false);
+  const [documento, setdocumento] = useState<any>('');
+  const [nombrerazon, setnombrerazon] = useState<any>('');
+  const [nombrepersona, setnombrepersona] = useState<any>('');
+  const [datosUsuario, setdatosUsuario] = useState<any>([]);
 
   const getListas = useCallback(
     async () => {
+      setdatosUsuario(data);
+
 
       setValidacion('1');
+      setmostrar(true)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -42,7 +53,92 @@ export const TablaReportes = (props: IDataSource) => {
     getListas();
   }, []);
 
+  const FilterByNameInputdocumento = () => {
+    return (
+      <Input
+        placeholder='Documento de Identificación'
+        value={documento}
+        style={{ width: 200 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9ñÑ ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setdocumento(currValue);
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const razon: string = datos.razonSocial.toUpperCase();
+            const nombre: string = datos.nombre.toUpperCase();
+            return (
+              nombre.toString().includes(nombrepersona.toUpperCase()) &&
+              razon.toString().includes(nombrerazon.toUpperCase()) &&
+              datos.numeroIdentificacion.toString().includes(currValue.toUpperCase())
+            );
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+    );
+  }
+  const FilterByName = () => {
+    return (
+      <Input
+        placeholder='Nombre Persona Natural'
+        value={nombrepersona}
+        style={{ width: 200 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9ñÑ ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
 
+          const currValue: string = e.target.value;
+          setnombrepersona(currValue);
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const razon: string = datos.razonSocial.toUpperCase();
+            const nombre: string = datos.nombre.toUpperCase();
+            return (
+              nombre.toString().includes(currValue.toUpperCase()) &&
+              razon.toString().includes(nombrerazon.toUpperCase()) &&
+              datos.numeroIdentificacion.toString().includes(documento.toUpperCase())
+            );
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+    );
+  }
+  const FilterByRazonSocial = () => {
+    return (
+      <Input
+        placeholder='Nombre Razon Social'
+        value={nombrerazon}
+        style={{ width: 200 }}
+        onKeyPress={(event) => {
+          if (!/[a-zA-Z0-9ñÑ ]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+        onChange={(e) => {
+
+          const currValue: string = e.target.value;
+          setnombrerazon(currValue);
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const razon: string = datos.razonSocial.toUpperCase();
+            const nombre: string = datos.nombre.toUpperCase();
+            return (
+              nombre.toString().includes(nombrepersona.toUpperCase()) &&
+              razon.toString().includes(currValue.toUpperCase()) &&
+              datos.numeroIdentificacion.toString().includes(documento.toUpperCase())
+            );
+          });
+          setdatosUsuario(filteredDataUsuario);
+        }}
+      />
+    );
+  }
 
 
 
@@ -57,9 +153,15 @@ export const TablaReportes = (props: IDataSource) => {
         key: 'tipoIdentificacion',
       },
       {
-        title: 'Numero Identificacion',
+        title: FilterByNameInputdocumento(),
         dataIndex: 'numeroIdentificacion',
         key: 'numeroIdentificacion',
+        defaultSortOrder: 'descend',
+        sorter: {
+          compare: (a: { numeroIdentificacion: string; }, b: { numeroIdentificacion: string; }) =>
+            a.numeroIdentificacion > b.numeroIdentificacion ? 1 : -1,
+          multiple: 6,
+        }
       },
       {
         title: 'Tipo Razon Social',
@@ -67,14 +169,26 @@ export const TablaReportes = (props: IDataSource) => {
         key: 'tipoDocumentoRazon',
       },
       {
-        title: 'Nombre Persona Natural',
+        title: FilterByName(),
         dataIndex: 'nombre',
         key: 'nombre',
+        defaultSortOrder: 'descend',
+        sorter: {
+          compare: (a: { nombre: string; }, b: { nombre: string; }) =>
+            a.nombre > b.nombre ? 1 : -1,
+          multiple: 5,
+        }
       },
       {
-        title: 'Nombre Razon Social',
+        title: FilterByRazonSocial(),
         dataIndex: 'razonSocial',
         key: 'razonSocial',
+        defaultSortOrder: 'descend',
+        sorter: {
+          compare: (a: { razonSocial: string; }, b: { razonSocial: string; }) =>
+            a.razonSocial > b.razonSocial ? 1 : -1,
+          multiple: 4,
+        }
       },
       {
         title: 'Nit',
@@ -103,6 +217,34 @@ export const TablaReportes = (props: IDataSource) => {
         dataIndex: 'estado',
         key: 'estado',
         width: 230,
+        filters: [
+          {
+            text: 'Aprobada ',
+            value: 'Aprobada'
+          }
+          ,
+          {
+            text: 'En tramite ',
+            value: 'Abierta'
+          }
+          ,
+          {
+            text: 'Subsanación',
+            value: 'Subsanación'
+          },
+          {
+            text: 'Desistimiento',
+            value: 'Desistimiento'
+          },
+          {
+            text: 'No aprobada',
+            value: 'No aprobada'
+          }
+        ],
+        filterSearch: true,
+        onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
+
+
         render: (Text: string) => {
 
           if (Text === 'Cambio de Licencia') {
@@ -146,7 +288,7 @@ export const TablaReportes = (props: IDataSource) => {
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <Table
                 id='tableGen'
-                dataSource={data}
+                dataSource={datosUsuario}
                 columns={structureColumns}
                 onChange={onPageChange}
                 scroll={{ x: true }}

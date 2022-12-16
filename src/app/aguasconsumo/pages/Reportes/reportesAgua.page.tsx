@@ -23,6 +23,7 @@ const { TabPane } = Tabs;
 
 const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
+  const [espera, setespera] = useState<any>();
   const [allData, setAllData] = useState<any[]>([]);
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -197,6 +198,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   async function busquedaFun() {
     var input = false;
     var filtroFecha = null;
+    setVisibleGrid('none');
+    setespera(undefined);
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
 
 
@@ -220,7 +223,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
         }
 
       });
-      filtroFecha = resp
+      //filtroFecha = resp
 
       input = true;
     } else {
@@ -276,6 +279,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
         setGrid(dataFIN);
+        setespera('');
         Swal.fire({
           title: 'Resultados encontrados',
           text: 'Señor usuario con los filtros de busqueda se encontraron ' + dataFIN.length + ' resultados.',
@@ -405,8 +409,10 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
 
+
                 <Tabs style={{ border: 'none' }} className='mt-3'>
-                  <TablaReportes data={grid} />
+                  {espera != undefined && (<TablaReportes data={grid} />)}
+
                 </Tabs>
 
                 <section>

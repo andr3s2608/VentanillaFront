@@ -291,7 +291,13 @@ export const Auditoria = () => {
       title: 'Numero de Licencia',
       dataIndex: 'numeroLicencia',
       width: 200,
-      key: 'numeroLicencia'
+      key: 'numeroLicencia',
+      defaultSortOrder: 'descend',
+      sorter: {
+        compare: (a: { numeroLicencia: string; }, b: { numeroLicencia: string; }) =>
+          a.numeroLicencia > b.numeroLicencia ? 1 : -1,
+        multiple: 1,
+      }
 
     },
     {
@@ -389,7 +395,7 @@ export const Auditoria = () => {
         }
       ],
       filterSearch: true,
-      onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
+      onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
 
 
       render: (Text: string) => {

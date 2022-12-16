@@ -248,9 +248,9 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
   };
   const Onchangemunicipio = (id: string) => {
     if (municipioCementerio != id) {
-      console.log(id)
+
       if (id === 'b5c40416-db96-4d1d-a5bd-da0ce61930e7' || id === '2ad1a949-02a7-4e93-88f9-d39b98f2871f') {
-        console.log('entrooo')
+
         setotroCementerio('');
       }
       else {

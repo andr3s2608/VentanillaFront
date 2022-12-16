@@ -900,7 +900,7 @@ export const Gridview = (props: IDataSource) => {
   async function onClickVisualizarPDF(row: any): Promise<void> {
     try {
       const solicitud = await api.getLicencia(row.idSolicitud);
-      const resumenSolicitud = await api.GetResumenSolicitud(row.idSolicitud);
+      const resumenSolicitud: any = await api.GetResumenSolicitud(row.idSolicitud);
 
       const idContenedor = solicitud[0]['idTramite'];
 

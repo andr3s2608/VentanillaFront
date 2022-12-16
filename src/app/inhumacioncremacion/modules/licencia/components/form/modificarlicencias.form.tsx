@@ -456,7 +456,7 @@ export const ModificarLicencia = ({ props }: any) => {
         }
       ],
       filterSearch: true,
-      onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
+      onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
 
 
       render: (Text: string) => {
