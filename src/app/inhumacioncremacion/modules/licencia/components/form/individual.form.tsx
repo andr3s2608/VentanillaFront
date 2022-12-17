@@ -209,6 +209,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
   const onSubmit = async (values: any) => {
 
+
     setStatus(undefined);
 
 
@@ -245,17 +246,20 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
 
     const tipoinst = values.instTipoIdent;
+    let instype = values.instType;
     var tipoidinst = values.instTipoIdent;
     var numeroins = values.instNumIdent;
     var razonSocialins = values.instRazonSocial;
     var numeroProtocoloins = values.instNumProtocolo;
-    if (tipoinst == undefined || values?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
+    if (tipoinst == undefined || values.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
       numeroins = '0';
       razonSocialins = 'Otros';
       numeroProtocoloins = '452022';
+      instype = '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8'
     } else {
       tipoidinst = 'A7A1B90B-8F29-4509-8220-A95F567E6FCB';
+      instype = '04e0913b-5d86-4c48-8904-0f504fedb3fd'
     }
     const par = values.authParentesco;
     var parentesco = '';
@@ -517,7 +521,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           fechaActa: values?.DateAct ? moment(values?.DateAct).format(formatDate) : null,
           seccionalFiscalia: values?.SecFiscalAct ?? '',
           noFiscal: values?.NoFiscAct ?? '',
-          idTipoInstitucion: values?.instType ?? '',
+          idTipoInstitucion: instype,
           NombreFiscal: values?.fiscalianombreDC ?? '',
           ApellidoFiscal: values?.fiscaliaapellidoDC ?? '',
           NumeroOficio: values?.fiscalianumeroDC ?? '',
@@ -527,6 +531,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
         // documentosSoporte: generateFormFiel(values.instType)
       }
     };
+
 
     //Guarde de documentos
     const container = tipoLicencia === 'Inhumación' ? 'inhumacionindividual' : 'cremacionindividual';
@@ -995,8 +1000,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
         setLongitudminima(2);
-        setLongitudmaxima(10);
-        setTipocampo('[0-9]{2,10}');
+        setLongitudmaxima(13);
+        setTipocampo('[0-9]{2,13}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Número de Protocolo');
@@ -1020,9 +1025,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             setTipodocumento('Tarjeta de Identidad ');
           } else {
             if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminima(15);
-              setLongitudmaxima(15);
-              setTipocampo('[0-9]{15,15}');
+              setLongitudminima(6);
+              setLongitudmaxima(18);
+              setTipocampo('[0-9]{6,18}');
               setTipocampovalidacion(/[0-9]/);
               setCampo('Numéricos');
               setTipodocumento('Permiso Especial de Permanencia');
@@ -1031,8 +1036,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
                 valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminima(10);
-                setLongitudmaxima(11);
-                setTipocampo('[a-zA-Z0-9]{10,11}');
+                setLongitudmaxima(15);
+                setTipocampo('[a-zA-Z0-9]{10,15}');
                 setTipocampovalidacion(/[a-zA-Z0-9]/);
                 setCampo('AlfaNuméricos(Numéros y letras)');
                 setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
@@ -1058,9 +1063,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   }
                   else {
                     if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
-                      setLongitudminima(9);
-                      setLongitudmaxima(9);
-                      setTipocampo('[a-zA-Z0-9]{9,9}');
+                      setLongitudminima(6);
+                      setLongitudmaxima(18);
+                      setTipocampo('[a-zA-Z0-9]{6,18}');
                       setTipocampovalidacion(/[a-zA-Z0-9]/);
                       setCampo('AlfaNumérico(Numéros y letras)');
                       setTipodocumento('Salvoconducto');
@@ -1069,8 +1074,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     else {
                       if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
                         setLongitudminima(5);
-                        setLongitudmaxima(11);
-                        setTipocampo('[a-zA-Z0-9]{5,11}');
+                        setLongitudmaxima(15);
+                        setTipocampo('[a-zA-Z0-9]{5,15}');
                         setTipocampovalidacion(/[a-zA-Z0-9]/);
                         setCampo('AlfaNumérico(Numéros y letras)');
                         setTipodocumento('Adulto Sin Identificar');
@@ -1080,8 +1085,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       else {
                         if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
                           setLongitudminima(5);
-                          setLongitudmaxima(12);
-                          setTipocampo('[a-zA-Z0-9]{5,12}');
+                          setLongitudmaxima(15);
+                          setTipocampo('[a-zA-Z0-9]{5,15}');
                           setTipocampovalidacion(/[a-zA-Z0-9]/);
                           setCampo('AlfaNumérico(Numéros y letras)');
                           setTipodocumento('Menor Sin Identificar');
@@ -1143,8 +1148,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
         setLongitudminimaautoriza(2);
-        setLongitudmaximaautoriza(10);
-        setTipocampoautoriza('[0-9]{2,10}');
+        setLongitudmaximaautoriza(13);
+        setTipocampoautoriza('[0-9]{2,13}');
         setTipocampovalidacionautoriza(/[0-9]/);
         setCampoautoriza('Numéricos');
         setTipodocumentoautoriza('Número de Protocolo');
@@ -1168,9 +1173,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
             setTipodocumentoautoriza('Tarjeta de Identidad ');
           } else {
             if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminimaautoriza(15);
-              setLongitudmaximaautoriza(15);
-              setTipocampoautoriza('[0-9]{15,15}');
+              setLongitudminimaautoriza(6);
+              setLongitudmaximaautoriza(18);
+              setTipocampoautoriza('[0-9]{6,18}');
               setTipocampovalidacionautoriza(/[0-9]/);
               setCampoautoriza('Numéricos');
               setTipodocumentoautoriza('Permiso Especial de Permanencia');
@@ -1179,8 +1184,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                 valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
                 valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminimaautoriza(10);
-                setLongitudmaximaautoriza(11);
-                setTipocampoautoriza('[a-zA-Z0-9]{10,11}');
+                setLongitudmaximaautoriza(15);
+                setTipocampoautoriza('[a-zA-Z0-9]{10,15}');
                 setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
                 setCampoautoriza('AlfaNuméricos(Numéros y letras)');
                 setTipodocumentoautoriza('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
@@ -1206,9 +1211,9 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                   }
                   else {
                     if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
-                      setLongitudminimaautoriza(9);
-                      setLongitudmaximaautoriza(9);
-                      setTipocampoautoriza('[a-zA-Z0-9]{9,9}');
+                      setLongitudminimaautoriza(6);
+                      setLongitudmaximaautoriza(18);
+                      setTipocampoautoriza('[a-zA-Z0-9]{6,18}');
                       setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
                       setCampoautoriza('AlfaNumérico(Numéros y letras)');
                       setTipodocumentoautoriza('Salvoconducto');
@@ -1217,8 +1222,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     else {
                       if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
                         setLongitudminimaautoriza(5);
-                        setLongitudmaximaautoriza(11);
-                        setTipocampoautoriza('[a-zA-Z0-9]{5,11}');
+                        setLongitudmaximaautoriza(15);
+                        setTipocampoautoriza('[a-zA-Z0-9]{5,15}');
                         setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
                         setCampoautoriza('AlfaNumérico(Numéros y letras)');
                         setTipodocumentoautoriza('Adulto Sin Identificar');
@@ -1228,8 +1233,8 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                       else {
                         if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
                           setLongitudminimaautoriza(5);
-                          setLongitudmaximaautoriza(12);
-                          setTipocampoautoriza('[a-zA-Z0-9]{5,12}');
+                          setLongitudmaximaautoriza(15);
+                          setTipocampoautoriza('[a-zA-Z0-9]{5,15}');
                           setTipocampovalidacionautoriza(/[a-zA-Z0-9]/);
                           setCampoautoriza('AlfaNumérico(Numéros y letras)');
                           setTipodocumentoautoriza('Menor Sin Identificar');

@@ -624,8 +624,8 @@ export const ModificarLicencia = ({ props }: any) => {
     } else {
       if (valorupper == '7C96A4D3-A0CB-484E-A01B-93BC39C7902E') {
         setLongitudminima(2);
-        setLongitudmaxima(10);
-        setTipocampo('[0-9]{2,10}');
+        setLongitudmaxima(13);
+        setTipocampo('[0-9]{2,13}');
         setTipocampovalidacion(/[0-9]/);
         setCampo('Numéricos');
         setTipodocumento('Número de Protocolo');
@@ -649,9 +649,9 @@ export const ModificarLicencia = ({ props }: any) => {
             setTipodocumento('Tarjeta de Identidad ');
           } else {
             if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-              setLongitudminima(15);
-              setLongitudmaxima(15);
-              setTipocampo('[0-9]{15,15}');
+              setLongitudminima(6);
+              setLongitudmaxima(18);
+              setTipocampo('[0-9]{6,18}');
               setTipocampovalidacion(/[0-9]/);
               setCampo('Numéricos');
               setTipodocumento('Permiso Especial de Permanencia');
@@ -660,8 +660,8 @@ export const ModificarLicencia = ({ props }: any) => {
                 valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
                 valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
                 setLongitudminima(10);
-                setLongitudmaxima(11);
-                setTipocampo('[a-zA-Z0-9]{10,11}');
+                setLongitudmaxima(15);
+                setTipocampo('[a-zA-Z0-9]{10,15}');
                 setTipocampovalidacion(/[a-zA-Z0-9]/);
                 setCampo('AlfaNuméricos(Numéros y letras)');
                 setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
@@ -687,9 +687,9 @@ export const ModificarLicencia = ({ props }: any) => {
                   }
                   else {
                     if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
-                      setLongitudminima(9);
-                      setLongitudmaxima(9);
-                      setTipocampo('[a-zA-Z0-9]{9,9}');
+                      setLongitudminima(6);
+                      setLongitudmaxima(18);
+                      setTipocampo('[a-zA-Z0-9]{6,18}');
                       setTipocampovalidacion(/[a-zA-Z0-9]/);
                       setCampo('AlfaNumérico(Numéros y letras)');
                       setTipodocumento('Salvoconducto');
@@ -698,8 +698,8 @@ export const ModificarLicencia = ({ props }: any) => {
                     else {
                       if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
                         setLongitudminima(5);
-                        setLongitudmaxima(11);
-                        setTipocampo('[a-zA-Z0-9]{5,11}');
+                        setLongitudmaxima(15);
+                        setTipocampo('[a-zA-Z0-9]{5,15}');
                         setTipocampovalidacion(/[a-zA-Z0-9]/);
                         setCampo('AlfaNumérico(Numéros y letras)');
                         setTipodocumento('Adulto Sin Identificar');
@@ -709,8 +709,8 @@ export const ModificarLicencia = ({ props }: any) => {
                       else {
                         if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
                           setLongitudminima(5);
-                          setLongitudmaxima(12);
-                          setTipocampo('[a-zA-Z0-9]{5,12}');
+                          setLongitudmaxima(15);
+                          setTipocampo('[a-zA-Z0-9]{5,15}');
                           setTipocampovalidacion(/[a-zA-Z0-9]/);
                           setCampo('AlfaNumérico(Numéros y letras)');
                           setTipodocumento('Menor Sin Identificar');

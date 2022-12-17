@@ -51,8 +51,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   useEffect(() => {
     /** efecto que se ejecuta despues de renderizarse el componente, no antes */
     if ((obj != null) && (obj != undefined)) {
-      console.log("dentro del componente de ubicación");
-      console.log(obj);
+
       form.setFieldsValue({
         zonaUbicacion: obj.sector,
         barrioUbicacion: obj.barrio,
@@ -143,10 +142,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
 
   return (
-    <div className='row info-tramite mt-5'>
-      <div className='form-row text'>
-        <div className='form-group col-md-8 col-lg-9'>
-          <p className='ml-2' style={{ fontSize: '18px', fontWeight: 'bold' }}>
+    <div className="container-fluid">
+      <div className="row info-tramite">
+        <div className='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+          <p style={{ fontSize: '18px', fontWeight: 'bold', marginLeft: '-20px' }}>
             Información del lugar de la localización del sistema de abastecimiento<br />
             <small style={{ color: ' #000' }}>
               <span className='required'>* </span> Campos Obligatorios
@@ -154,37 +153,38 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </p>
         </div>
       </div>
-      <div className='form-row'>
-        <div className='form-group col-md-8 col-lg-9'>
+      <div className='row' style={{ marginLeft: '-20px' }}>
+        <div className="col-sm-12 col-md-10 col-lg-10 col-xl-10">
           <Alert
             message='Información!'
             description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
                           en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón azul Confirmar Dirección.
                           Esta funcionalidad permitirá autocompletar datos de UPZ, Localidad y Barrio para las direcciones de Bogotá D.C. y
                           estandarizar la dirección para el resto de ciudades.'
-            type='info'
-          />
+            type='info' />
         </div>
       </div>
-      <div className='form-row'>
-        <div className='form-group col-md-8 col-lg-8 text-center'>
-          <label htmlFor=''>
+      <div className='row mt-2'>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+          <label htmlFor='' className='mt-4 text'>
             Via Principal
-
           </label>
           <Form.Item label='' name=''>
             <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' disabled={enableField} />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2 text-center'>
-          <label htmlFor=''>Num</label>
-
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+          <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+            Num
+          </label>
           <Form.Item className='' label='' name='Num1' rules={[{ max: 3 }]}>
             <Input
+              className='form-control'
               disabled={enableField}
-              style={{ width: '100px' }} id='23' allowClear
+              id='23' allowClear
               type='text' placeholder='' autoComplete='off'
               maxLength={3}
+              style={{ marginLeft: '-30px' }}
               onKeyPress={(event) => {
                 if (!/[0-9]/.test(event.key)) {
                   event.preventDefault();
@@ -199,12 +199,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor='' style={{ marginLeft: '50px' }}>Letra</label>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+          <label htmlFor='' className='mt-4 text'>Letra</label>
           <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
             <SelectComponent
               disabled={enableField}
-              style={{ width: '127px', marginLeft: '50px' }}
+
               options={letras}
               optionPropkey='key'
               optionPropLabel='key'
@@ -215,13 +215,15 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </Form.Item>
         </div>
       </div>
-      <div className='form-row mt-2 text-center'>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor=''>BIS</label>
+      <div className='row mt-2'>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+          <label htmlFor='' className='mt-4 text'>
+            Bis
+          </label>
           <Form.Item label='' name='Bis' rules={[{ max: 3 }]}>
             <SelectComponent
               disabled={enableField}
-              style={{ width: '127px' }}
+              className='form-control'
               options={[
                 { key: 'Bis', value: 'Bis' },
                 { key: ' ', value: ' ' }
@@ -234,12 +236,15 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor=''>Card</label>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+          <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+            Card
+          </label>
           <Form.Item label='' name='card1' rules={[{ max: 4 }]}>
             <SelectComponent
+              style={{ marginLeft: '-30px' }}
               disabled={enableField}
-              style={{ width: '127px' }}
+              className='form-control'
               options={direcionOrienta}
               optionPropkey='key'
               optionPropLabel='key'
@@ -249,12 +254,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor=''>Num</label>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+          <label htmlFor='' className='mt-4 text'>Num</label>
           <Form.Item label='' name='Num2' rules={[{ max: 3 }]}>
             <Input
               disabled={enableField}
-              style={{ width: '127px' }}
+              className='form-control'
               allowClear
               type='text'
               placeholder=''
@@ -274,28 +279,33 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor=''>Letra</label>
-          <Form.Item label='' name='letra2' rules={[{ max: 1 }]}>
+      </div>
+      <div className='row mt-2'>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+          <label htmlFor='' className='mt-4 text'>Letra</label>
+          <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
             <SelectComponent
               disabled={enableField}
-              style={{ width: '127px' }}
+
               options={letras}
               optionPropkey='key'
               optionPropLabel='key'
               onChange={(event) => {
-                buildDirection(6, event);
+                buildDirection(2, event);
               }}
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor=''>Placa</label>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+          <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+            Placa
+          </label>
           <Form.Item label='' name='placa' rules={[{ max: 2 }]}>
             <Input
               disabled={enableField}
-              style={{ width: '127px' }}
+              className='form-control'
               allowClear
+              style={{ marginLeft: '-30px' }}
               placeholder=''
               autoComplete='off'
               maxLength={2}
@@ -314,12 +324,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-2 col-lg-2'>
-          <label htmlFor=''>Card</label>
+        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+          <label htmlFor='' className='mt-4 text'>Card</label>
           <Form.Item label='' name='card2'>
             <SelectComponent
               disabled={enableField}
-              style={{ width: '127px' }}
               options={direcionOrienta}
               optionPropkey='key'
               optionPropLabel='key'
@@ -330,20 +339,20 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </Form.Item>
         </div>
       </div>
-      <div className='form-row mt-4 text-center align-items-end'>
-        <div className='form-group col-md-6'>
-          <div>
-            <label> Dirección Completa </label>
-            <Form.Item className='my-0 py-0' name='direccionCompletaUbicacion'>
-              <Input style={{ width: '395px' }} type='text' disabled={true} />
-            </Form.Item>
-          </div>
+      <div className="row mt-5">
+        <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <label className='text'> Dirección Completa </label>
+          <Form.Item className='my-0 py-0' name='direccionCompletaUbicacion'>
+            <Input style={{ width: '395px' }} type='text' disabled={true} />
+          </Form.Item>
         </div>
-        <div className='form-group col-md-6'>
+        <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
           <Button
-            className='my-0 py-0'
             type='primary'
-            style={{ width: '395px', display: stateDisplayButton }}
+            style={{
+              width: '395px', display: stateDisplayButton, marginTop: '30px',
+              marginLeft: '-20px'
+            }}
             disabled={true}
             onClick={onGeocoding}
           >
@@ -351,7 +360,6 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </Button>
         </div>
       </div>
-
 
       <div className='form-row' style={{ display: stateDisplayBox }}>
         <Alert
@@ -362,14 +370,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         />
       </div>
 
-
-
-      <div className='form-row mt-4 text-center'>
-        <div className='form-group col-md-6'>
-          <label htmlFor=''>Zona</label>
-          <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
+      <div className="row mt-5">
+        <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <label className='text'> Zona   <span className='required'>(*)</span></label>
           <Form.Item label='' name='zonaUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
+
               disabled={enableField}
               style={{ width: '395px' }}
               options={listZonas}
@@ -378,13 +384,16 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-6'>
-          <label htmlFor=''>Localidad</label>
-          <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
+        <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <label className='text' style={{ marginLeft: '-20px' }}> Localidad   <span className='required'>(*)</span></label>
           <Form.Item label='' name='localidadUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
+              className='form-control'
               disabled={enableField}
-              style={{ width: '395px' }}
+              style={{
+                width: '395px',
+                marginLeft: '-20px'
+              }}
               options={listLocalidades}
               optionPropkey='nombre'
               optionPropLabel='nombre'
@@ -392,10 +401,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           </Form.Item>
         </div>
       </div>
-      <div className='form-row mt-4 text-center'>
-        <div className='form-group col-md-6'>
-          <label htmlFor=''>Upz</label>
-          <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
+      <div className="row">
+        <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <label className='text mt-3'> Upz   <span className='required'>(*)</span></label>
           <Form.Item label='' name='upzUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
               disabled={enableField}
@@ -406,13 +414,15 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             />
           </Form.Item>
         </div>
-        <div className='form-group col-md-6'>
-          <label htmlFor=''>Barrio</label>
-          <span className='ml-2' style={{ color: '#FF6341' }}>(*)</span>
+        <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <label className='text mt-3 ' style={{ marginLeft: '-20px' }}> Barrio   <span className='required'>(*)</span></label>
           <Form.Item label='' name='barrioUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
             <SelectComponent
               disabled={enableField}
-              style={{ width: '395px' }}
+              style={{
+                width: '395px',
+                marginLeft: '-20px'
+              }}
               options={listBarrios}
               optionPropkey='nombre_barrio'
               optionPropLabel='nombre_barrio'

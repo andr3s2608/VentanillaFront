@@ -207,7 +207,7 @@ export class ApiService {
   postLicencia = (payload: any) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
 
-  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '1' });
+  postprueba = (payload: any) => post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddRquest', payload, id: '0' });
 
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
@@ -264,6 +264,12 @@ export class ApiService {
 
   GetEstadoSolicitudNuevoCambio = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllSolicitudByIdUser/${this.oid}`, id: '0' });
+
+  Getconsecutivolicencia = (payload: any) =>
+    post<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `v1/ConsecutivoLicInhCrms`, payload, id: '1' });
+
+  updatelicenciaAzure = (payload: any) =>
+    put<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/UpdateLicenciaResumen`, payload, id: '1' });
 
   updatelicencia = (solicitud: string) =>
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
@@ -585,7 +591,7 @@ export class ApiService {
       endpoint: REACT_APP_ENDPOINTV1 as string,
       url: `NumeracionTramites`,
       payload,
-      id: '0'
+      id: '1'
     });
 
   //////////////////////////
@@ -601,8 +607,8 @@ export class ApiService {
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
 
-  AddObservaciones = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddObservaciones', payload, id: '0' });
+  AddObservaciones = (payload: any, id: string) =>
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddObservaciones', payload, id: id });
 
   getObservacionesList = (idsolicitud: string) =>
     get<any>({
@@ -628,7 +634,7 @@ export class ApiService {
     put({
       endpoint: REACT_APP_AGUAS as string,
       url: `Request/CambiarEstadoSolicitud/${idsolicitud}/${idestado}/${idtipo}`,
-      id: '0'
+      id: '1'
     });
 
   GetSolicitudesUsuarioSubred = () =>

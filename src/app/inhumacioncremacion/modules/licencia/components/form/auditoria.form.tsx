@@ -68,6 +68,7 @@ export const Auditoria = () => {
 
     setdata(listaauditoria);
     setdatosUsuario(listaauditoria);
+    setUrlPdfLicence('');
     setLicencia(true);
   }
 
@@ -199,7 +200,7 @@ export const Auditoria = () => {
           title: 'DOCUMENTO NO ENCONTRADO',
           confirmButtonColor: '#b6e5ef',
           text:
-            'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+            'El documento que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
         });
       }
 
@@ -210,7 +211,7 @@ export const Auditoria = () => {
         title: 'DOCUMENTO NO ENCONTRADO',
         confirmButtonColor: '#b6e5ef',
         text:
-          'El documeto que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
+          'El documento que intenta visualizar no se encuentra. Por favor comuníquese con el area de soporte para informar el caso y vuelva a intentarlo mas tarde.'
       });
     }
 
@@ -258,7 +259,7 @@ export const Auditoria = () => {
       width: 200,
       render: (_: any, row: any, index: any) => {
 
-        if (row.numeroLicencia !== null) {
+        if (row.numeroLicencia !== '') {
           return (<Form.Item label='' name=''>
             <FilePdfOutlined
               onClick={() => onClickVisualizarPDF(row)}
@@ -280,9 +281,9 @@ export const Auditoria = () => {
       dataIndex: 'fechaSolicitud',
       width: 200,
       key: 'fechaSolicitud',
-      render: (Text: string) => (
+      render: (Text: any) => (
         <Form.Item label='' name=''>
-          <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
+          <text>{moment(Text.toString().substring(0, Text.toString().indexOf(' '))).format('DD-MM-YYYY')}</text>
         </Form.Item>
       )
     },
@@ -290,7 +291,13 @@ export const Auditoria = () => {
       title: 'Numero de Licencia',
       dataIndex: 'numeroLicencia',
       width: 200,
-      key: 'numeroLicencia'
+      key: 'numeroLicencia',
+      defaultSortOrder: 'descend',
+      sorter: {
+        compare: (a: { numeroLicencia: string; }, b: { numeroLicencia: string; }) =>
+          a.numeroLicencia > b.numeroLicencia ? 1 : -1,
+        multiple: 1,
+      }
 
     },
     {
@@ -388,7 +395,7 @@ export const Auditoria = () => {
         }
       ],
       filterSearch: true,
-      onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
+      onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
 
 
       render: (Text: string) => {

@@ -23,6 +23,7 @@ const { TabPane } = Tabs;
 
 const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [grid, setGrid] = useState<any[]>([]);
+  const [espera, setespera] = useState<any>();
   const [allData, setAllData] = useState<any[]>([]);
 
   const { accountIdentifier } = authProvider.getAccount();
@@ -197,22 +198,22 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   async function busquedaFun() {
     var input = false;
     var filtroFecha = null;
+    setVisibleGrid('none');
+    setespera(undefined);
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
 
 
       const resp: any = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
         moment(dateSelectedFinal).format('YYYY-MM-DD'));
 
-      console.log(resp)
+
 
 
 
 
       filtroFecha = resp.filter(function (f: { fechaSolicitud: string | number | Date; fechaLicencia: string | number | Date; }) {
         var fecha = new Date(moment(f.fechaSolicitud).format('DD-MM-YYYY HH:mm:ssss') + "");
-        console.log(f.fechaSolicitud);
-        console.log(fecha);
-        console.log(moment(f.fechaSolicitud));
+
         if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
           return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
         }
@@ -222,8 +223,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
         }
 
       });
-      filtroFecha = resp
-      console.log(filtroFecha)
+      //filtroFecha = resp
+
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
@@ -274,10 +275,11 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       }
     }
     if (filtroFecha != null) {
-      console.log(filtroFecha);
+
       const dataFIN = filtroFecha != undefined ? filtroFecha : null;
       if (dataFIN != null) {
         setGrid(dataFIN);
+        setespera('');
         Swal.fire({
           title: 'Resultados encontrados',
           text: 'Señor usuario con los filtros de busqueda se encontraron ' + dataFIN.length + ' resultados.',
@@ -407,8 +409,10 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
             <div className='col-lg-12 col-sm-12 col-md-12'>
               <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
 
+
                 <Tabs style={{ border: 'none' }} className='mt-3'>
-                  <TablaReportes data={grid} />
+                  {espera != undefined && (<TablaReportes data={grid} />)}
+
                 </Tabs>
 
                 <section>

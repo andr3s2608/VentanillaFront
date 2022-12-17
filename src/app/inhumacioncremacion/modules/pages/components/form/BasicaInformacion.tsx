@@ -71,9 +71,9 @@ export const BasicaInformacion: React.FC<any> = (props) => {
           setTipodocumento('NIT');
         } else {
           if (valor == '4') {
-            setLongitudminima(15);
-            setLongitudmaxima(15);
-            setTipocampo('[0-9]{15,15}');
+            setLongitudminima(6);
+            setLongitudmaxima(18);
+            setTipocampo('[0-9]{6,18}');
             setTipocampovalidacion(/[0-9]/);
             setCampo('Numéricos');
             setTipodocumento('Permiso Especial de Permanencia');

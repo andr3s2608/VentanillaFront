@@ -44,6 +44,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
       const sec = await api.GetSeccionales();
       setlseccionales(sec);
       setListaTipoDocumento(tiposjson);
+      if (obj != undefined && obj?.instType === '04e0913b-5d86-4c48-8904-0f504fedb3fd') {
+        setIsMedicinaLegal(true);
+      }
+      else {
+        setIsMedicinaLegal(false);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -51,12 +57,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   useEffect(() => {
     getListas();
-    if (obj?.instType === '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') {
-      setIsMedicinaLegal(false);
-    }
-    else {
-      setIsMedicinaLegal(false);
-    }
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -111,20 +112,20 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
         prop(10, 'deathinst');
       } else {
         if (valorupper === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
-          setLongitudminima(15);
-          setLongitudmaxima(15);
-          setTipocampo('[0-9]{15,15}');
+          setLongitudminima(6);
+          setLongitudmaxima(18);
+          setTipocampo('[0-9]{6,18}');
           setTipocampovalidacion(/[0-9]/);
           setCampo('Numéricos');
           setTipodocumento('Permiso Especial de Permanencia');
-          prop(15, 'deathinst');
+          prop(6, 'deathinst');
         } else {
           if (valorupper === 'FFE88939-06D5-486C-887C-E52D50B7F35D' ||
             valorupper === '71F659BE-9D6B-4169-9EE2-E70BF0D65F92' ||
             valorupper === '97F5657D-D8EC-48EF-BBE3-1BABEFECB1A4') {
             setLongitudminima(10);
-            setLongitudmaxima(11);
-            setTipocampo('[a-zA-Z0-9]{10,11}');
+            setLongitudmaxima(15);
+            setTipocampo('[a-zA-Z0-9]{10,15}');
             setTipocampovalidacion(/[a-zA-Z0-9]/);
             setCampo('AlfaNuméricos(Numéros y letras)');
             setTipodocumento('Registro Civil de Nacimiento , Numero único de identificacíon personal y Carné Diplomatico');
@@ -151,19 +152,19 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
               }
               else {
                 if (valorupper === 'C532C358-56AE-4F93-8B9B-344DDF1256B7') {
-                  setLongitudminima(9);
-                  setLongitudmaxima(9);
-                  setTipocampo('[a-zA-Z0-9]{9,9}');
+                  setLongitudminima(6);
+                  setLongitudmaxima(18);
+                  setTipocampo('[a-zA-Z0-9]{6,18}');
                   setTipocampovalidacion(/[a-zA-Z0-9]/);
                   setCampo('AlfaNumérico(Numéros y letras)');
                   setTipodocumento('Salvoconducto');
-                  prop(9, 'deathinst');
+                  prop(6, 'deathinst');
                 }
                 else {
                   if (valorupper === '6AE7E477-2DE5-4149-8C93-12ACA6668FF0') {
                     setLongitudminima(5);
-                    setLongitudmaxima(11);
-                    setTipocampo('[a-zA-Z0-9]{5,11}');
+                    setLongitudmaxima(15);
+                    setTipocampo('[a-zA-Z0-9]{5,15}');
                     setTipocampovalidacion(/[a-zA-Z0-9]/);
                     setCampo('AlfaNumérico(Numéros y letras)');
                     setTipodocumento('Adulto Sin Identificar');
@@ -173,8 +174,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   else {
                     if (valorupper === '5FA5BF3F-B342-4596-933F-0956AE4B9109') {
                       setLongitudminima(5);
-                      setLongitudmaxima(12);
-                      setTipocampo('[a-zA-Z0-9]{5,12}');
+                      setLongitudmaxima(15);
+                      setTipocampo('[a-zA-Z0-9]{5,15}');
                       setTipocampovalidacion(/[a-zA-Z0-9]/);
                       setCampo('AlfaNumérico(Numéros y letras)');
                       setTipodocumento('Menor Sin Identificar');
@@ -197,7 +198,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                         setTipocampovalidacion(/[a-zA-Z0-9]/);
                         setCampo('AlfaNuméricos(Numéros y letras)');
                         setTipodocumento('Pasaporte , Cédula de Extranjería y  Tarjeta de Extranjería ');
-                        prop(6, 'deathinst');
+                        prop(4, 'deathinst');
                       }
 
                     }

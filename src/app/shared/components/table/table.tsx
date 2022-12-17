@@ -138,19 +138,14 @@ export const Gridview = (props: IDataSource) => {
             setfechafiltro(e);
             if (e != null) {
               let fecha: any = '';
-              if (Tipo.rol !== 'Ciudadano') {
-                fecha = moment(e).format('YYYY-MM-DD');
-              }
-              else {
-                fecha = moment(e).format('DD-MM-YYYY');
-              }
+              fecha = moment(e).format('YYYY-MM-DD');
+
 
               setfechafiltro(fecha);
 
               if (idtramite === '') {
                 const filteredDataUsuario: any = data.filter((datos: any) => {
                   const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
-
                   return (
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
@@ -345,7 +340,7 @@ export const Gridview = (props: IDataSource) => {
         value={documento}
         style={{ width: 200 }}
         onKeyPress={(event) => {
-          if (!/[a-zA-Z0-9 ]/.test(event.key)) {
+          if (!/[a-zA-Z0-9ñÑ ]/.test(event.key)) {
             event.preventDefault();
           }
         }}
@@ -505,9 +500,9 @@ export const Gridview = (props: IDataSource) => {
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
           with: 600,
-          render: (Text: string) => (
+          render: (Text: any) => (
             <Form.Item label='' name=''>
-              <text>{Text.toString().substring(0, Text.toString().indexOf('T'))}</text>
+              <text>{moment(Text.toString().substring(0, Text.toString().indexOf(' '))).format('DD-MM-YYYY')}</text>
             </Form.Item>
           )
         },
@@ -680,9 +675,9 @@ export const Gridview = (props: IDataSource) => {
           dataIndex: 'fechaSolicitud',
           with: 600,
           key: 'fechaSolicitud',
-          render: (Text: string) => (
+          render: (Text: any) => (
             <Form.Item label='' name=''>
-              <text>{Text.toString().substring(0, Text.toString().indexOf(' '))}</text>
+              <text>{moment(Text.toString().substring(0, Text.toString().indexOf(' '))).format('DD-MM-YYYY')}</text>
             </Form.Item>
           )
         },
@@ -905,7 +900,7 @@ export const Gridview = (props: IDataSource) => {
   async function onClickVisualizarPDF(row: any): Promise<void> {
     try {
       const solicitud = await api.getLicencia(row.idSolicitud);
-      const resumenSolicitud = await api.GetResumenSolicitud(row.idSolicitud);
+      const resumenSolicitud: any = await api.GetResumenSolicitud(row.idSolicitud);
 
       const idContenedor = solicitud[0]['idTramite'];
 

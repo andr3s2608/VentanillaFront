@@ -452,6 +452,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
       const segui = values.validFunctionaltype;
 
+
       if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
         if (
           DatosDocumento.at(0) == '1' &&
@@ -489,6 +490,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
 
       if (not >= 1) {
+
         /////////////////////////Guardar status//////////////////////////
         let aux = 0;
         for (let index = 0; index < documentos.length; index++) {
@@ -531,8 +533,30 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         }
         let observacion = '';
         if (not == 2) {
-          if (objJosn.numerolicencia == null) {
-            const update = await api.updatelicencia(objJosn?.idSolicitud);
+
+          if (objJosn.numerolicencia === null) {
+
+
+            const codigotramite = { codigoTramite: '13' };
+
+            const consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
+
+            const fechalicencia = consecutivolicencia.fecha
+
+
+
+            const actualizacionresumen = {
+              idSolicitud: objJosn?.idSolicitud,
+              numeroLicencia: consecutivolicencia.consecutivo,
+              fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
+              idTramite: objJosn.idTramite,
+              tipoTramite: valor,
+              iD_Control_Tramite: objJosn.idControlTramite
+            }
+
+            const update = await api.updatelicenciaAzure(actualizacionresumen);
+            //const update = await api.updatelicencia(objJosn?.idSolicitud);
+
             observacion = 'generación licencia';
           }
           else { observacion = 'aprobación actualización'; }
@@ -669,7 +693,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             formData.append('containerName', contenedor);
             formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
             await api.uploadFiles(formData);
-            //console.log(file);
+
           })();
         } else {
           let datosDinamicosGenericos = [
@@ -1092,19 +1116,29 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
 
     let fechaActualizacion = null;
+    let HoraActualizacion = null;
     let fechaActual = null;
-    const format = "MM-DD-YYYY HH:mm:ss";
+    let HoraActual = null;
+    const format = "DD-MM-YYYY";
+    const formathours = "HH:mm:ss";
+
 
     if (bandera) {
 
       //Generacion de licencia
 
-      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+      HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       fechaActualizacion = fechaActual;
+      HoraActualizacion = HoraActual;
 
       if (objJosn.numerolicencia != null) {
         //Se comprueba que sea para segunda vez o mas
-        fechaActualizacion = new Date();
+        const fechaActualizacionlocal = new Date();
+        fechaActualizacion = moment(fechaActualizacionlocal).format(format);
+        HoraActualizacion = moment(fechaActualizacionlocal).format(formathours);
+
       }
 
     } else {
@@ -1112,13 +1146,23 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       if (objJosn.numerolicencia === null) {
 
         //Se comprueba que sea primera vez
-        fechaActual = new Date();
+        const fechaActualLocal = new Date();
+        fechaActual = moment(fechaActualLocal).format(format);
+        HoraActual = moment(fechaActualLocal).format(formathours);
+
       } else {
         //Se comprueba que sea para segunda vez o mas
-        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+
+        fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+        HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       }
-      fechaActualizacion = new Date();
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
+
     }
+
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
 
@@ -1133,13 +1177,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~firma_aprobador~:~", "~:~nombre_completo_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
-    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
-    nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
-    Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
-    fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
-    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
-    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+    const values = [fechaActualizacion, HoraActualizacion, fechaActual, HoraActual, numeroLicencia,
+      Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
+      nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
+      Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
+      fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
+      nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
+      firmaAprobador['firma'],nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
@@ -1355,19 +1399,30 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
 
     let fechaActualizacion = null;
+    let HoraActualizacion = null;
     let fechaActual = null;
-    const format = "MM-DD-YYYY HH:mm:ss";
+    let HoraActual = null;
+    const format = "DD-MM-YYYY";
+    const formathours = "HH:mm:ss";
+
+
 
     if (bandera) {
 
       //Generacion de licencia
 
-      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+      HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       fechaActualizacion = fechaActual;
+      HoraActualizacion = HoraActual;
 
       if (objJosn.numerolicencia != null) {
         //Se comprueba que sea para segunda vez o mas
-        fechaActualizacion = new Date();
+        const fechaActualizacionlocal = new Date();
+        fechaActualizacion = moment(fechaActualizacionlocal).format(format);
+        HoraActualizacion = moment(fechaActualizacionlocal).format(formathours);
+
       }
 
     } else {
@@ -1375,12 +1430,21 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       if (objJosn.numerolicencia === null) {
 
         //Se comprueba que sea primera vez
-        fechaActual = new Date();
+        const fechaActualLocal = new Date();
+        fechaActual = moment(fechaActualLocal).format(format);
+        HoraActual = moment(fechaActualLocal).format(formathours);
+
       } else {
         //Se comprueba que sea para segunda vez o mas
-        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+
+        fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+        HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       }
-      fechaActualizacion = new Date();
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
+
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
@@ -1400,16 +1464,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~hora_fallecido_2~:~", "~:~fecha_fallecido_2~:~"];
 
 
-    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
-    nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
-    Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
-    fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
-    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
-    nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(), autorizadorCremacion['numeroIdentificacion'],
-    parentesco['descripcion'].toLocaleUpperCase(), otroParentesco.toLocaleUpperCase(), fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
-    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
-    Solicitud[0]["hora"], formatDates(fechaDefuncion)];
+    const values = [fechaActualizacion, HoraActualizacion, fechaActual, HoraActual, numeroLicencia,
+      Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
+      nombreFallecido.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(), formatDates(fechaDefuncion),
+      Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacionFallecido['descripcion'].toLocaleUpperCase(),
+      fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
+      nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
+      nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(), autorizadorCremacion['numeroIdentificacion'],
+      parentesco['descripcion'].toLocaleUpperCase(), otroParentesco.toLocaleUpperCase(), fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
+      firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
+      Solicitud[0]["hora"], formatDates(fechaDefuncion)];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
@@ -1634,20 +1698,32 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
     const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
 
+
     let fechaActualizacion = null;
+    let HoraActualizacion = null;
     let fechaActual = null;
-    const format = "MM-DD-YYYY HH:mm:ss";
+    let HoraActual = null;
+    const format = "DD-MM-YYYY";
+    const formathours = "HH:mm:ss";
+
+
 
     if (bandera) {
 
       //Generacion de licencia
 
-      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+      HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       fechaActualizacion = fechaActual;
+      HoraActualizacion = HoraActual;
 
       if (objJosn.numerolicencia != null) {
         //Se comprueba que sea para segunda vez o mas
-        fechaActualizacion = new Date();
+        const fechaActualizacionlocal = new Date();
+        fechaActualizacion = moment(fechaActualizacionlocal).format(format);
+        HoraActualizacion = moment(fechaActualizacionlocal).format(formathours);
+
       }
 
     } else {
@@ -1655,12 +1731,21 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       if (objJosn.numerolicencia === null) {
 
         //Se comprueba que sea primera vez
-        fechaActual = new Date();
+        const fechaActualLocal = new Date();
+        fechaActual = moment(fechaActualLocal).format(format);
+        HoraActual = moment(fechaActualLocal).format(formathours);
+
       } else {
         //Se comprueba que sea para segunda vez o mas
-        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+
+        fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+        HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       }
-      fechaActualizacion = new Date();
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
+
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
@@ -1682,16 +1767,16 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
 
 
-    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
-    nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
-    genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
-    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
-    nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(),
-    autorizadorCremacion['numeroIdentificacion'], parentesco['descripcion'].toLocaleUpperCase(), otroParentesco.toLocaleUpperCase(),
+    const values = [fechaActualizacion, HoraActualizacion, fechaActual, HoraActual, numeroLicencia,
+      Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
+      nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
+      genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
+      nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
+      nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(),
+      autorizadorCremacion['numeroIdentificacion'], parentesco['descripcion'].toLocaleUpperCase(), otroParentesco.toLocaleUpperCase(),
       fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
-    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
-    Solicitud[0]["hora"], formatDates(fechaDefuncion)];
+      firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
+      Solicitud[0]["hora"], formatDates(fechaDefuncion)];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
@@ -1871,20 +1956,32 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
 
 
+
     let fechaActualizacion = null;
+    let HoraActualizacion = null;
     let fechaActual = null;
-    const format = "MM-DD-YYYY HH:mm:ss";
+    let HoraActual = null;
+    const format = "DD-MM-YYYY";
+    const formathours = "HH:mm:ss";
+
+
 
     if (bandera) {
 
       //Generacion de licencia
 
-      fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+      fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+      HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       fechaActualizacion = fechaActual;
+      HoraActualizacion = HoraActual;
 
       if (objJosn.numerolicencia != null) {
         //Se comprueba que sea para segunda vez o mas
-        fechaActualizacion = new Date();
+        const fechaActualizacionlocal = new Date();
+        fechaActualizacion = moment(fechaActualizacionlocal).format(format);
+        HoraActualizacion = moment(fechaActualizacionlocal).format(formathours);
+
       }
 
     } else {
@@ -1892,12 +1989,20 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       if (objJosn.numerolicencia === null) {
 
         //Se comprueba que sea primera vez
-        fechaActual = new Date();
+        const fechaActualLocal = new Date();
+        fechaActual = moment(fechaActualLocal).format(format);
+        HoraActual = moment(fechaActualLocal).format(formathours);
+
       } else {
         //Se comprueba que sea para segunda vez o mas
-        fechaActual = new Date(moment(resumenSolicitud[0]['fechaLicencia']).format(format));
+
+        fechaActual = moment(resumenSolicitud[0]['fechaLicencia']).format(format);
+        HoraActual = moment(resumenSolicitud[0]['fechaLicencia']).format(formathours);
+
       }
-      fechaActualizacion = new Date();
+      const fechaActualizacionLocal = new Date();
+      fechaActualizacion = moment(fechaActualizacionLocal).format(format);
+      HoraActualizacion = moment(fechaActualizacionLocal).format(formathours);
     }
 
     nombreSolicitante = resumenSolicitud[0]['nombreSolicitante'] + " " + resumenSolicitud[0]['apellidoSolicitante'];
@@ -1913,12 +2018,12 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~firma_aprobador~:~", "~:~nombre_completo_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
-    const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
-    Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
-    nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
-    genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
-    nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
-    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+    const values = [fechaActualizacion, HoraActualizacion, fechaActual, HoraActual, numeroLicencia,
+      Solicitud[0]["numeroCertificado"], funeraria[0]["funeraria"], nombreSolicitante.toString().toLocaleUpperCase(),
+      nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
+      genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
+      nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
+      firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
