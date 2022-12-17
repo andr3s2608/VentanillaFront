@@ -1089,6 +1089,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
 
+    const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
+
     let fechaActualizacion = null;
     let fechaActual = null;
     const format = "MM-DD-YYYY HH:mm:ss";
@@ -1128,7 +1130,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~hora_fallecido~:~", "~:~sexo_fallecido~:~", "~:~tipo_identificacion_fallecido~:~",
       "~:~numero_identificacion_fallecido~:~", "~:~tipo_muerte~:~", "~:~edad_fallecido~:~",
       "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~", "~:~causa~:~", "~:~observacion_causa~:~",
-      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+      "~:~firma_aprobador~:~", "~:~nombre_completo_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
     const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
@@ -1137,7 +1139,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
     fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
-    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
@@ -1349,6 +1351,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
+    const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
 
 
     let fechaActualizacion = null;
@@ -1393,7 +1396,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~tipo_identificacion_autorizador_cremacion~:~", "~:~numero_identificacion_autorizador_cremacion~:~",
       "~:~parentesco~:~", "~:~parentesco_otro~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
       "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
-      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~",
+      "~:~firma_aprobador~:~", "~:~nombre_completo_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~",
       "~:~hora_fallecido_2~:~", "~:~fecha_fallecido_2~:~"];
 
 
@@ -1405,7 +1408,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
     nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(), autorizadorCremacion['numeroIdentificacion'],
     parentesco['descripcion'].toLocaleUpperCase(), otroParentesco.toLocaleUpperCase(), fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
-    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
+    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
     Solicitud[0]["hora"], formatDates(fechaDefuncion)];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
@@ -1629,6 +1632,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
+    const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
 
     let fechaActualizacion = null;
     let fechaActual = null;
@@ -1673,7 +1677,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~tipo_identificacion_autorizador_cremacion~:~", "~:~numero_identificacion_autorizador_cremacion~:~",
       "~:~parentesco~:~", "~:~parentesco_otro~:~", "~:~autorizador_cremacion_fiscal~:~", "~:~numero_fiscal~:~", "~:~oficio_med_legal~:~",
       "~:~label_autorizador_cremacion_fiscal~:~", "~:~label_numero_fiscal~:~", "~:~label_oficio_med_legal~:~",
-      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~",
+      "~:~firma_aprobador~:~", "~:~nombre_completo_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~",
       "~:~hora_fallecido_2~:~", "~:~fecha_fallecido_2~:~"];
 
 
@@ -1686,7 +1690,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     nombreAutorizadorCremacion.toLocaleUpperCase(), tipoIdentificacionAutorizador['descripcion'].toLocaleUpperCase(),
     autorizadorCremacion['numeroIdentificacion'], parentesco['descripcion'].toLocaleUpperCase(), otroParentesco.toLocaleUpperCase(),
       fiscalia1, fiscalia2, fiscalia3, labelFiscalia1, labelFiscalia2, labelFiscalia3,
-    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
+    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion,
     Solicitud[0]["hora"], formatDates(fechaDefuncion)];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
@@ -1864,6 +1868,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const firmaAprobador: any = await api.obtenerFirma("4BEF1010-1896-472E-A9E6-D0B8ACCFCD93");
     const firmaValidador: any = await api.obtenerFirma(idUsuario);
+    const nombreAprobador = await api.getCostante('88CFA0CE-7BB0-4B0C-D7EF-02DAA1635794');
 
 
     let fechaActualizacion = null;
@@ -1905,7 +1910,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       "~:~sexo_fallecido~:~", "~:~fecha_fallecido~:~",
       "~:~hora_fallecido~:~", "~:~tipo_muerte~:~",
       "~:~nombre_completo_medico1~:~", "~:~nombre_completo_medico2~:~", "~:~cementerio~:~",
-      "~:~firma_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
+      "~:~firma_aprobador~:~", "~:~nombre_completo_aprobador~:~", "~:~nombre_completo_validador~:~", "~:~firma_validador~:~", "~:~codigo_verificacion~:~"];
 
 
     const values = [formatDates(fechaActualizacion), formatDateHours(fechaActualizacion), formatDates(fechaActual), formatDateHours(fechaActual), numeroLicencia,
@@ -1913,7 +1918,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     nombreFallecido.toLocaleUpperCase(), nombreMadre.toLocaleUpperCase(), nacionalidad[0]['descripcion'].toString().toLocaleUpperCase(),
     genero[0]['Descripcion'].toLocaleUpperCase(), formatDates(fechaDefuncion), Solicitud[0]["hora"], tipoMuerte['descripcion'].toLocaleUpperCase(),
     nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(),
-    firmaAprobador['firma'], info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+    firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
