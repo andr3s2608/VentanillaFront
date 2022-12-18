@@ -759,6 +759,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           title: 'Solicitud gestionada',
           text: 'La Solicitud ha sido gestionada exitosamente'
         });
+        localStorage.removeItem(objJosn.idSolicitud);
         history.push('/tramites-servicios');
         store.dispatch(SetResetViewLicence());
       }
@@ -1127,7 +1128,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let HoraActualizacion = null;
     let fechaActual = null;
     let HoraActual = null;
-    const format = "DD-MM-YYYY";
+    const format = "DD/MM/YYYY";
     const formathours = "HH:mm:ss";
 
 
@@ -1410,7 +1411,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let HoraActualizacion = null;
     let fechaActual = null;
     let HoraActual = null;
-    const format = "DD-MM-YYYY";
+    const format = "DD/MM/YYYY";
     const formathours = "HH:mm:ss";
 
 
@@ -1711,7 +1712,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let HoraActualizacion = null;
     let fechaActual = null;
     let HoraActual = null;
-    const format = "DD-MM-YYYY";
+    const format = "DD/MM/YYYY";
     const formathours = "HH:mm:ss";
 
 
@@ -1969,7 +1970,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let HoraActualizacion = null;
     let fechaActual = null;
     let HoraActual = null;
-    const format = "DD-MM-YYYY";
+    const format = "DD/MM/YYYY";
     const formathours = "HH:mm:ss";
 
 
