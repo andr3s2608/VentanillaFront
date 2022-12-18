@@ -86,6 +86,7 @@ function registerValidSW(swUrl: string, config?: Config) {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                   window.close();
+                  window.close();
                   window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
                 }
               });
@@ -109,6 +110,7 @@ function registerValidSW(swUrl: string, config?: Config) {
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
+                  window.close();
                   window.close();
                   window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
                 }

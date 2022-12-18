@@ -89,7 +89,22 @@ const ModulePage = () => {
   //Funcion que permite aumentar o disminuir el tamaño de la
   const onCancel = (): void => { };
 
+  const prueba = (): void => {
 
+    Swal.fire({
+      icon: 'info',
+      title: 'Contenido desactualizado',
+      confirmButtonColor: '#04bbd3',
+      text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        window.close();
+        window.close();
+        window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
+      }
+    });
+  };
   return (
 
     <div className='fadeInTop container-fluid ' style={{ position: 'relative' }}>
@@ -121,7 +136,7 @@ const ModulePage = () => {
       ) : null}
 
       <PageHeaderComponent
-        title={`Texto de prueba/a ${validacioninfo}!`}
+        title={`Texto de prueba final/a ${validacioninfo}!`}
         subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
         backIcon={null}
       />
