@@ -97,7 +97,10 @@ const ModulePage = () => {
   const onCancel = (): void => { };
 
   const prueba = (): void => {
+    window.close();
 
+    // window.location.replace(process.env.REACT_APP_REDIRECT_TO + "")
+    window.close();
 
 
   };
@@ -134,7 +137,7 @@ const ModulePage = () => {
         ) : null}
 
         <PageHeaderComponent
-          title={`Texto pruebaaaaa/a ${validacioninfo}!`}
+          title={`Bienvenido/a ${validacioninfo}!`}
           subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
           backIcon={null}
         />

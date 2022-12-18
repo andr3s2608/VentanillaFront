@@ -43,6 +43,7 @@ export function register(config?: Config) {
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
+
         checkValidServiceWorker(swUrl, config);
 
         // Add some additional logging to localhost, pointing developers to the
@@ -81,11 +82,10 @@ function registerValidSW(swUrl: string, config?: Config) {
                 icon: 'info',
                 title: 'Contenido desactualizado',
                 confirmButtonColor: '#04bbd3',
-                text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
+                text: 'La plataforma ha detectado  una nueva actualización, porfavor limpie cache y cierre todas las paginas antes de realizar alguna opcion'
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  window.location.replace(process.env.REACT_APP_REDIRECT_TO + '');
                   // window.close();
                   //window.close();
                   //window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
@@ -102,17 +102,17 @@ function registerValidSW(swUrl: string, config?: Config) {
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.');
-              console.log('x');
+
               Swal.fire({
                 icon: 'info',
                 title: 'Contenido desactualizado',
                 confirmButtonColor: '#04bbd3',
-                text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
+                text: 'La plataforma ha detectado una nueva actualización, porfavor limpie cache antes de realizar alguna opcion'
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  window.location.replace(process.env.REACT_APP_REDIRECT_TO + '');
+                  //window.location.replace(process.env.REACT_APP_REDIRECT_TO + '');
                   // window.close();
                   //window.close();
                   //window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');

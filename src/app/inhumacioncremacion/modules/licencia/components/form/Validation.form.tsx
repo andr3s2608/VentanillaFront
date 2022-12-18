@@ -158,7 +158,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
         const data = await api.getLicencia(objJosn?.idSolicitud);
 
-
         if (data[0].estadoSolicitud === 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'
           || data[0].estadoSolicitud === '31a45854-bf40-44b6-2645-08da64f23b8e'
           || data[0].estadoSolicitud === '40a8ac96-6513-42ae-9e44-a5c0e47ac6d8'
@@ -535,35 +534,44 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         if (not == 2) {
 
           if (objJosn.numerolicencia === null) {
+            const licenciacache = localStorage.getItem(objJosn?.idSolicitud)
+
+            if (licenciacache === null) {
 
 
-            const codigotramite = { codigoTramite: '13' };
+              const codigotramite = { codigoTramite: '13' };
 
-            const consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
+              const consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
 
-            const fechalicencia = consecutivolicencia.fecha
+              const fechalicencia = consecutivolicencia.fecha
 
 
 
-            const actualizacionresumen = {
-              idSolicitud: objJosn?.idSolicitud,
-              numeroLicencia: consecutivolicencia.consecutivo,
-              fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
-              idTramite: objJosn.idTramite,
-              tipoTramite: valor,
-              iD_Control_Tramite: objJosn.idControlTramite
+              const actualizacionresumen = {
+                idSolicitud: objJosn?.idSolicitud,
+                numeroLicencia: consecutivolicencia.consecutivo,
+                fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
+                idTramite: objJosn.idTramite,
+                tipoTramite: valor,
+                iD_Control_Tramite: objJosn.idControlTramite
+              }
+              localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
+
+
+              const update = await api.updatelicenciaAzure(actualizacionresumen);
+              //const update = await api.updatelicencia(objJosn?.idSolicitud);
             }
 
-            const update = await api.updatelicenciaAzure(actualizacionresumen);
-            //const update = await api.updatelicencia(objJosn?.idSolicitud);
 
             observacion = 'generación licencia';
           }
           else { observacion = 'aprobación actualización'; }
 
-
-
         }
+
+
+
+
         /////////////////////////Enviar Notificacion//////////////////////////
         let tipoSeguimiento: string = values.validFunctionaltype;
         let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
@@ -1183,7 +1191,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       Solicitud[0]["hora"], genero[0]['Descripcion'].toLocaleUpperCase(), tipoIdentificacion['descripcion'].toLocaleUpperCase(),
       fallecido['numeroIdentificacion'], tipoMuerte['descripcion'].toLocaleUpperCase(), edad,
       nombreMedico1.toLocaleUpperCase(), nombreMedico2.toLocaleUpperCase(), nombreCementerio.toLocaleUpperCase(), label, resumenSolicitud[0]['observacionCausa'],
-      firmaAprobador['firma'],nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
+      firmaAprobador['firma'], nombreAprobador.valor.toString().toLocaleUpperCase(), info.fullName.toLocaleUpperCase(), firmaValidador['firma'], codigoVerificacion];
 
     //------------------------------ Reemplazo de llaves por valores en el formato HTML  --------------------------
 
