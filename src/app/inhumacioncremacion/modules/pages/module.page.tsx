@@ -121,7 +121,7 @@ const ModulePage = () => {
       ) : null}
 
       <PageHeaderComponent
-        title={`¡Bienvenido/a ${validacioninfo}!`}
+        title={`Texto de prueba/a ${validacioninfo}!`}
         subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
         backIcon={null}
       />
