@@ -85,9 +85,10 @@ function registerValidSW(swUrl: string, config?: Config) {
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  window.close();
-                  window.close();
-                  window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
+                  window.location.replace(process.env.REACT_APP_REDIRECT_TO + '');
+                  // window.close();
+                  //window.close();
+                  //window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
                 }
               });
 
@@ -109,10 +110,12 @@ function registerValidSW(swUrl: string, config?: Config) {
                 text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
+                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                  window.close();
-                  window.close();
-                  window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
+                  window.location.replace(process.env.REACT_APP_REDIRECT_TO + '');
+                  // window.close();
+                  //window.close();
+                  //window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
                 }
               });
               // Execute callback

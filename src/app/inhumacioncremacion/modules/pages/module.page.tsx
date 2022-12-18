@@ -26,6 +26,7 @@ const ModulePage = () => {
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [banderaPolicaSeguridad, setBanderaPolicaSeguridad] = useState<boolean>(false);
+  const [pruebacerradopagina, setpruebacerradopagina] = useState<boolean>(true);
 
 
   //Cambiar de tema oscuro y claro
@@ -74,14 +75,20 @@ const ModulePage = () => {
           setvalidacioninfo(infouser.fullName);
         }
       }
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-
+  const closeTab = () => {
+    window.opener = null;
+    window.open(process.env.REACT_APP_REDIRECT_TO, "_self");
+    window.close();
+  };
   //const getMenu = UpdateMenu();
 
   useEffect(() => {
+
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -91,85 +98,82 @@ const ModulePage = () => {
 
   const prueba = (): void => {
 
-    Swal.fire({
-      icon: 'info',
-      title: 'Contenido desactualizado',
-      confirmButtonColor: '#04bbd3',
-      text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        window.close();
-        window.close();
-        window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
-      }
-    });
+
+
   };
   return (
+    <>
 
-    <div className='fadeInTop container-fluid ' style={{ position: 'relative' }}>
-      {roles?.length === 0 ? (
-        <ModalComponent
-          visible={true}
-          title={`Registro ventanilla única`}
-          cancelButtonProps={{ hidden: true }}
-          okButtonProps={{ hidden: true }}
-          onCancel={onCancel}
-          closable={false}
-        >
-          <PageHeaderComponent
-            title={''}
-            subTitle={`Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el
+
+      <div className='fadeInTop container-fluid ' style={{ position: 'relative' }}>
+        {roles?.length === 0 ? (
+          <ModalComponent
+            visible={true}
+            title={`Registro ventanilla única`}
+            cancelButtonProps={{ hidden: true }}
+            okButtonProps={{ hidden: true }}
+            onCancel={onCancel}
+            closable={false}
+          >
+            <PageHeaderComponent
+              title={''}
+              subTitle={`Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el
             REGISTRO DEL CIUDADANO (persona natural o jurídica),
             el cual servirá para la realización de trámites posteriores ante la Secretaría Distrital de Salud.`}
-            backIcon={null}
-          />
-          <div className='d-flex justify-content-between'>
-            <Button type='primary' htmlType='button' onClick={onPersonNatural}>
-              Registro persona natural
-            </Button>
-            <Button type='primary' htmlType='submit' onClick={onPersonJuridica}>
-              Registro persona juridica
-            </Button>
-          </div>
-        </ModalComponent>
-      ) : null}
+              backIcon={null}
+            />
+            <div className='d-flex justify-content-between'>
+              <Button type='primary' htmlType='button' onClick={onPersonNatural}>
+                Registro persona natural
+              </Button>
+              <Button type='primary' htmlType='submit' onClick={onPersonJuridica}>
+                Registro persona juridica
+              </Button>
+            </div>
+          </ModalComponent>
+        ) : null}
 
-      <PageHeaderComponent
-        title={`Texto de prueba final/a ${validacioninfo}!`}
-        subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
-        backIcon={null}
-      />
-
-
+        <PageHeaderComponent
+          title={`Texto /a ${validacioninfo}!`}
+          subTitle={`Bienvenido a la aplicación ${projectInfo.name} desarrollada para ${projectInfo.developTo}.`}
+          backIcon={null}
+        />
 
 
-      <div className='card card-body' >
-        <span ><h4 className='app-subtitle mt-3'><span>Tramites y Servicios</span></h4></span>
 
 
-        <p className="mt-2">
-          <span >
-            La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
-            la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
-            con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez
-            y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los
-            principios de seguridad de la información.
-          </span>
-        </p>
+        <div className='card card-body' >
+          <span ><h4 className='app-subtitle mt-3'><span>Tramites y Servicios</span></h4></span>
 
-        <p>
-          <span >
-            Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
-            <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
-            ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
-            sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;<br />
-            <a className="enlace_inicio" href='mailto:contactenos@saludcapital.gov.co'><span >contactenos@saludcapital.gov.co</span></a>.
-          </span>
-        </p>
+
+          <p className="mt-2">
+            <span >
+              La Secretaría Distrital de Salud, en concordancia con la Política de Gobierno Digital, ha dispuesto para la ciudadanía,
+              la ventanilla única de trámites en línea, con el fin de hacer más ágil y efectiva la interacción de nuestra institución
+              con los ciudadanos. A través de esta ventanilla, cualquier ciudadano o institución podrá igualmente consultar la validez
+              y veracidad de los actos administrativos que se generen por cada trámite, respaldando la gestión de la SDS bajo los
+              principios de seguridad de la información.
+            </span>
+          </p>
+
+          <p>
+            <span >
+              Tenga en cuenta, que para realizar nuestros trámites en línea, es obligatorio diligenciar previamente el &nbsp;
+              <b>REGISTRO DEL CIUDADANO (persona natural o jurídica)</b>, el cual servirá para la realización de trámites posteriores
+              ante la Secretaría Distrital de Salud. Cualquier información adicional, consulta o dificultad frente a la realización de
+              sus trámites en línea, podrá escribirnos al correo electrónico &nbsp;<br />
+              <a className="enlace_inicio" href='mailto:contactenos@saludcapital.gov.co'><span >contactenos@saludcapital.gov.co</span></a>.
+            </span>
+          </p>
+        </div>
+
       </div>
 
-    </div>
+    </>
+
+
+
+
 
   );
 };
