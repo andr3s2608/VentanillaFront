@@ -157,7 +157,7 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
       inf_fallecido['idSexo'] + ''
     ]);
 
-    if (obj.tipopersona == '01f64f02-373b-49d4-8cb1-cb677f74292c') {
+    if (obj.tipopersona === '01f64f02-373b-49d4-8cb1-cb677f74292c' && obj.IDNumber != null && obj.IDNumber != '') {
       const fallecidosduplicados = await api.GetDuplicadosFallecido(obj.idControlTramite, obj.IDNumber);
 
       if (fallecidosduplicados.length > 0) {
