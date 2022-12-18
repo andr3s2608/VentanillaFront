@@ -1,7 +1,9 @@
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
+import { info } from 'console';
 import { useHistory } from 'react-router';
+import Swal from 'sweetalert2';
 
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
@@ -74,9 +76,21 @@ function registerValidSW(swUrl: string, config?: Config) {
               console.log(
                 'New content is available and will be used when all tabs for this page are closed. See https://cra.link/PWA.'
               );
-              console.log('x');
 
-              window.location.reload();
+              Swal.fire({
+                icon: 'info',
+                title: 'Contenido desactualizado',
+                confirmButtonColor: '#04bbd3',
+                text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                  window.close();
+                  window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
+                }
+              });
+
+              //window.location.reload();
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
@@ -87,7 +101,18 @@ function registerValidSW(swUrl: string, config?: Config) {
               // "Content is cached for offline use." message.
               console.log('Content is cached for offline use.');
               console.log('x');
-              window.location.reload();
+              Swal.fire({
+                icon: 'info',
+                title: 'Contenido desactualizado',
+                confirmButtonColor: '#04bbd3',
+                text: 'La plataforma ha detectado una nueva actualizacion, porfavor limpie cache antes de realizar alguna opcion'
+              }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                  window.close();
+                  window.open(process.env.REACT_APP_REDIRECT_TO, '_blank', 'noopener,noreferrer');
+                }
+              });
               // Execute callback
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
