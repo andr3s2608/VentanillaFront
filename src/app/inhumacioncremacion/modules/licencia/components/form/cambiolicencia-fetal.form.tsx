@@ -366,7 +366,13 @@ export const CambioLicencia = ({ props }: any) => {
 
 
 
-
+              let nacionalidad = '';
+              if (values.nationalidadmother === '1') {
+                nacionalidad = '1e05f64f-5e41-4252-862c-5505dbc3931c'
+              }
+              else {
+                nacionalidad = values.nationalidadmother;
+              }
               if (cambioacremacion || cambioainhumacion) {
                 if (obj.idTramite === 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060') {
 
@@ -384,7 +390,7 @@ export const CambioLicencia = ({ props }: any) => {
                         segundoApellido: values.secondSurnamemother ?? '',
                         fechaNacimiento: values.dateOfBirth,
                         hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                        nacionalidad: values.nationalidadmother,
+                        nacionalidad: nacionalidad,
                         estado: true,
                         segundanacionalidad: '00000000-0000-0000-0000-000000000000',
                         otroParentesco: null,
@@ -436,7 +442,7 @@ export const CambioLicencia = ({ props }: any) => {
                         segundoApellido: values.secondSurnamemother ?? '',
                         fechaNacimiento: obj.dateOfBirth,
                         hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                        nacionalidad: values.nationalidadmother,
+                        nacionalidad: nacionalidad,
                         estado: true,
                         segundanacionalidad: '00000000-0000-0000-0000-000000000000',
                         otroParentesco: null,
@@ -488,7 +494,7 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoApellido: values.secondSurnamemother ?? '',
                       fechaNacimiento: obj.dateOfBirth,
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                      nacionalidad: values.nationalidadmother,
+                      nacionalidad: nacionalidad,
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
                       otroParentesco: null,
                       estado: true,
@@ -542,7 +548,7 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoApellido: values.secondSurnamemother ?? '',
                       fechaNacimiento: obj.dateOfBirth,
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                      nacionalidad: values.nationalidadmother[0],
+                      nacionalidad: nacionalidad,
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
                       otroParentesco: null,
                       estado: true,
@@ -569,7 +575,7 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoApellido: values.secondSurname ?? '',
                       fechaNacimiento: obj.dateOfBirth,
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-                      nacionalidad: values.nationalidadmother,
+                      nacionalidad: nacionalidad,
                       estado: true,
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
                       otroParentesco: null,

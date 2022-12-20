@@ -309,6 +309,13 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
         break;
     }
 
+    let nacionalidad = '';
+    if (values.nationalidadmother === '1') {
+      nacionalidad = '1e05f64f-5e41-4252-862c-5505dbc3931c'
+    }
+    else {
+      nacionalidad = values.nationalidadmother;
+    }
     if (tipoLicencia === 'Inhumación') {
       persona = [
         //madre
@@ -322,7 +329,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurnamemother ?? '',
           fechaNacimiento: values.date,
           hora: '',
-          nacionalidad: values.nationalidadmother,
+          nacionalidad: nacionalidad,
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
           idEstadoCivil: values.civilStatusmother,
@@ -372,7 +379,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurnamemother ?? '',
           fechaNacimiento: values.date,
           hora: '',
-          nacionalidad: values.nationalidadmother,
+          nacionalidad: nacionalidad,
           segundanacionalidad: segunda,
           otroParentesco: parentesco,
           idEstadoCivil: values.civilStatusmother,

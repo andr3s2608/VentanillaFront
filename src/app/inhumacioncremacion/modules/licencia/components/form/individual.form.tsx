@@ -321,6 +321,14 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
     }
     let persona: any[] = [];
 
+    let nacionalidad = '';
+    if (values.nationalidad === '1') {
+      nacionalidad = '1e05f64f-5e41-4252-862c-5505dbc3931c'
+    }
+    else {
+      nacionalidad = values.nationalidad;
+    }
+
     if (tipoLicencia === 'Inhumación') {
       persona = [
         //fallecido
@@ -333,7 +341,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-          nacionalidad: values.nationalidad,
+          nacionalidad: nacionalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
@@ -381,7 +389,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
           segundoApellido: values.secondSurname ?? '',
           fechaNacimiento: values.dateOfBirth,
           hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
-          nacionalidad: values.nationalidad,
+          nacionalidad: nacionalidad,
           segundanacionalidad: segunda,
           otroParentesco: null,
           idEstadoCivil: values.civilStatus,
