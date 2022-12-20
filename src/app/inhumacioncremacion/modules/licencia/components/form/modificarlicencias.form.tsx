@@ -1433,6 +1433,17 @@ export const ModificarLicencia = ({ props }: any) => {
 
         }
 
+        const idUsuario = await api.getIdUsuario();
+        const seguimiento = {
+          fechaRegistro: new Date(),
+          usuario: idUsuario,
+          estado: 'Administrador',
+          idSolicitud: obj.idSolicitud,
+          observacion: 'Actualizacion Administrador'
+
+        }
+        await api.addSeguimiento(seguimiento);
+
 
         Swal.fire({
           icon: 'success',
