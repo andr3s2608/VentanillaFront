@@ -241,6 +241,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     if (otroCementerio != id) {
       setiscementerio(true);
       setnuevootro(form.getFieldValue('otrositio'));
+      setotroCementerio(form.getFieldValue('otrositio'));
     }
     else {
       setiscementerio(false);
@@ -254,6 +255,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
         setotroCementerio('');
       }
       else {
+        setnuevootro('sin cambio')
         setotroCementerio(undefined);
       }
       setiscementerio(true);
@@ -272,6 +274,11 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     form.resetFields(['municipio'])
 
     if (departamentoCementerio != id) {
+      if (id != '1029c7b3-e8c7-46e6-8275-3e568e06e03c') {
+        setotroCementerio(undefined);
+        setnuevootro('sin cambio');
+      }
+
       setiscementerio(true);
       setnuevodepartamento(form.getFieldValue('departamento'));
     }
@@ -297,6 +304,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
     }
   };
   const onClickModFuneraria = async () => {
+
     if (nuevafuneraria == undefined) {
       Swal.fire({
         icon: 'error',
@@ -355,6 +363,7 @@ export const InformacionSolicitanteSeccion = ({ obj }: any) => {
 
 
     if (nuevocorreo === '' || nuevaciudad === '' || nuevootro === '' || nuevomunicipio === 'cambio' || otroCementerio === '') {
+
       Swal.fire({
         icon: 'error',
 
