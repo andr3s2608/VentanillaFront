@@ -1282,7 +1282,9 @@ export const ModificarLicencia = ({ props }: any) => {
               correoSolicitante: values.emailsolicitudadd.toString().toLowerCase(),
               correoMedico: '',
               cumpleCausa: banderaCausa,
-              observacionCausa: observacionCausaMuerte
+              observacionCausa: observacionCausaMuerte,
+              numeroLicencia: obj.numerolicencia
+
             },
 
             institucionCertificaFallecimiento: {
