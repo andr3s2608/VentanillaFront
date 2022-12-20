@@ -1251,7 +1251,7 @@ export const ModificarLicencia = ({ props }: any) => {
               enBogota: values.cementerioLugar === 'Dentro de Bogotá',
               fueraBogota: values.cementerioLugar === 'Fuera de Bogotá',
               fueraPais: values.cementerioLugar === 'Fuera del País',
-              cementerio: values.cementerioBogota ?? 'Fuera de Bogotá',
+              cementerio: values.cementerioBogota ?? values.cementerioLugar,
               otroSitio: values.otrositio,
               ciudad: values.cementerioCiudad,
               idPais: values.cementerioPais,
