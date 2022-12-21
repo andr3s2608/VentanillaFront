@@ -27,6 +27,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const [espera, setespera] = useState<any>();
   const [selectedOption, setSelectedOption] = useState<String>();
   const [selectedOptionEstado, setSelectedOptionEstado] = useState<String>();
   const [visibleGrid, setVisibleGrid] = useState<String>();
@@ -43,10 +44,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
   const getListas = useCallback(
     async () => {
-      const resp = await api.getallReports();
 
-      setGrid(resp);
-      setAllData(resp);
       setVisibleGrid('none');
 
       setVisiblePicker('none');
@@ -361,10 +359,28 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
   }
 
-  function busquedaFun() {
+  async function busquedaFun() {
     var input = false;
-    var filtroFecha = null;
+    var filtroFecha: any = null;
+    setespera(undefined);
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
+      const fechainicio = moment(dateSelectedInicial).format('YYYY-MM-DD')
+      const fechaFIN = moment(dateSelectedFinal).format('YYYY-MM-DD')
+      if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
+
+        const resp = await api.getallReports(fechainicio, fechaFIN, 'solicitud');
+        setGrid(resp);
+        setAllData(resp);
+        filtroFecha = resp;
+      }
+      else {
+        const resp = await api.getallReports(fechainicio, fechaFIN, 'licencia');
+        setGrid(resp);
+        setAllData(resp);
+        filtroFecha = resp;
+      }
+
+      /*
       filtroFecha = allData.filter(function (f) {
         // var fecha = new Date(dateSelectedPicker == undefined ? new Date() : dateSelectedPicker.toString());
         if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
@@ -376,6 +392,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
         }
 
       });
+      */
       input = true;
     } else {
       setTextAlert('Fecha no seleccionada hasta el momento, por favor seleccione una.');
@@ -388,20 +405,20 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       setVisibleAlert(true);
     }
     if (input == true && FilterTextID != undefined && FilterTextID != '') {
-      filtroFecha = filtroFecha?.filter(function (f) {
+      filtroFecha = filtroFecha?.filter(function (f: { consecutivo: String; }) {
         return f.consecutivo == FilterTextID;
       });
     }
 
     if (input == true && FilterTextDoc != undefined && FilterTextDoc != '') {
-      filtroFecha = filtroFecha?.filter(function (f) {
+      filtroFecha = filtroFecha?.filter(function (f: { noIdentificacionSolicitante: undefined; }) {
         var filtro = FilterTextDoc != undefined ? FilterTextDoc : '';
         var solicitud = f.noIdentificacionSolicitante != undefined ? f.noIdentificacionSolicitante : '';
         return solicitud.toUpperCase().trim().includes(filtro.toUpperCase().trim());
       });
     }
     if (input == true && FilterTextFun != undefined && FilterTextFun != '') {
-      filtroFecha = filtroFecha?.filter(function (f) {
+      filtroFecha = filtroFecha?.filter(function (f: { razonSocialSolicitante: undefined; }) {
         var filtro = FilterTextFun != undefined ? FilterTextFun : '';
         var solicitud = f.razonSocialSolicitante != undefined ? f.razonSocialSolicitante : '';
         return solicitud.toUpperCase().trim().includes(filtro.toUpperCase().trim());
@@ -410,25 +427,25 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     if (selectedOption && input) {
       switch (selectedOption) {
         case 'inhuIndi':
-          filtroFecha = filtroFecha?.filter(function (f) {
-            return f.idTramite == 'a289c362-e576-4962-962b-1c208afa0273';
+          filtroFecha = filtroFecha?.filter(function (f: { idTramite: string; }) {
+            return f.idTramite.toLocaleLowerCase() == 'a289c362-e576-4962-962b-1c208afa0273';
           });
           break;
         case 'inhuFetal':
-          filtroFecha = filtroFecha?.filter(function (f) {
-            return f.idTramite == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060';
+          filtroFecha = filtroFecha?.filter(function (f: { idTramite: string; }) {
+            return f.idTramite.toLocaleLowerCase() == 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060';
           });
 
           break;
         case 'cremInd':
-          filtroFecha = filtroFecha?.filter(function (f) {
-            return f.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020';
+          filtroFecha = filtroFecha?.filter(function (f: { idTramite: string; }) {
+            return f.idTramite.toLocaleLowerCase() == 'e69bda86-2572-45db-90dc-b40be14fe020';
           });
 
           break;
         case 'cremFetal':
-          filtroFecha = filtroFecha?.filter(function (f) {
-            return f.idTramite == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e';
+          filtroFecha = filtroFecha?.filter(function (f: { idTramite: string; }) {
+            return f.idTramite.toLocaleLowerCase() == 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e';
           });
 
           break;
@@ -441,12 +458,12 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     if (selectedOptionEstado && input) {
       switch (selectedOptionEstado) {
         case 'registroExt':
-          filtroFecha = filtroFecha?.filter(function (f) {
+          filtroFecha = filtroFecha?.filter(function (f: { estadoString: string; }) {
             return f.estadoString == 'Registro Usuario Externo';
           });
           break;
         case 'aprobado':
-          filtroFecha = filtroFecha?.filter(function (f) {
+          filtroFecha = filtroFecha?.filter(function (f: { estadoString: string; }) {
             return f.estadoString == 'Aprobado validador de documentos';
           });
 
@@ -466,6 +483,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
           icon: 'info'
         });
+        setespera('');
         setVisibleGrid('contents');
       } else {
         setVisibleGrid('none');
@@ -649,7 +667,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
               <div className='mt-3' style={{ display: visibleGrid == 'none' ? 'none' : 'contents' }}>
 
                 <Tabs style={{ border: 'none' }} className='mt-3'>
-                  <TablaReportes data={grid} />
+                  {espera != undefined && (<TablaReportes data={grid} />)}
+
                 </Tabs>
 
                 <section>

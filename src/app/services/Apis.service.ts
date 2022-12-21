@@ -271,9 +271,10 @@ export class ApiService {
   updatelicenciaAzure = (payload: any) =>
     put<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/UpdateLicenciaResumen`, payload, id: '1' });
 
+  /*
   updatelicencia = (solicitud: string) =>
     post<any>({ endpoint: this.endpoint, url: `v2/Persona/SetApprovalInhumacionQuery/${solicitud}`, id: '1' });
-
+*/
   GetResumenSolicitud = (solicitud: string) =>
     get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetResumenSolicitud/${solicitud}`, id: '0' });
   GetFunerariasAzure = (solicitud: string) =>
@@ -282,7 +283,12 @@ export class ApiService {
   getallbyEstado = (solicitud: string) =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
 
-  getallReports = () => get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequestToGestion`, id: '0' });
+  getallReports = (fechainicio: string, fechafin: string, tipo: string) =>
+    get<[]>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/GetAllRequestToGestion/${fechainicio}/${fechafin}/${tipo}`,
+      id: '0'
+    });
 
   //correccion
   getallrequesttovalidate = () =>

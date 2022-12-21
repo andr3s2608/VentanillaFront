@@ -68,13 +68,22 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   const history = useHistory();
   const [valor, setvalor] = useState<string>('');
-  const [htmlFinal, sethtmlFinal] = useState<string>('');
+  const [Licenciapdf, setLicenciapdf] = useState<string>('');
+  const [seguimientosolicitud, setseguimiento] = useState<string>('');
+  const [licencia, setlicencia] = useState<any>();
+  const [ObservacionesValidador, setObservacionesValidador] = useState<string>('');
+  const [Observaciones, setObservaciones] = useState<string>('');
   const [cambiar, setcambio] = useState<string>('');
   const [idcontrol, setidcontrol] = useState<string>('');
   const [idConsecutivo, setidConsecutivo] = useState<string>('');
   const [isnull, setisnull] = useState<boolean>(false);
   const [gestionada, setgestionada] = useState<boolean>(false);
   const [gestionada2, setgestionada2] = useState<boolean>(false);
+  const [esguardar, setesguardar] = useState<boolean>(false);
+
+  const [iddocumentovalidacion, setiddocumentovalidacion] = useState<string>('');
+  const [pathdocumentovalidacion, setpathdocumentovalidacion] = useState<string>('');
+  const [documentosvalidacion, setdocumentosvalidacion] = useState<any[]>([]);
 
   const [solicitante, setsolicitante] = useState<[]>();
   const [idUsuario, setidUsuario] = useState<string>('');
@@ -359,410 +368,525 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   }
 
   const onSubmit = async (values: any) => {
+
+
     let bandera = await api.validarFirmaFuncionario(idUsuario);
 
     if (bandera) {
-      setStatus(undefined);
-      const idPersonaVentanilla = localStorage.getItem(accountIdentifier);
-      const formatDate = 'MM-DD-YYYY';
-      const estadoSolicitud = 'fdcea488-2ea7-4485-b706-a2b96a86ffdf'; //estado?.estadoSolicitud;
-
-      let resp = await api.getSupportDocuments(objJosn?.idSolicitud);
-      var documentos: any = [];
-      switch (objJosn.idTramite) {
-        case 'a289c362-e576-4962-962b-1c208afa0273':
-          /*El contenedor es de inhumacion indivual */
-
-          for (let index = 0; index < arrayinhind.length; index++) {
-            const documento: string = arrayinhind[index];
-
-            for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
-              const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
-              if (bd.toUpperCase() == documento) {
-                documentos.push(resp[indexinterno]);
-                break;
-              }
-            }
-          }
-
-          break;
-
-        case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-          /*El contenedor es de inhumacion fetal */
-
-          for (let index = 0; index < arrayinhfet.length; index++) {
-            const documento: string = arrayinhfet[index];
-
-            for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
-              const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
-              if (bd.toUpperCase() == documento) {
-                documentos.push(resp[indexinterno]);
-                break;
-              }
-            }
-          }
-
-          break;
-
-        case 'e69bda86-2572-45db-90dc-b40be14fe020':
-          /*El contenedor es de cremacion individual */
-
-          for (let index = 0; index < arraycremind.length; index++) {
-            const documento: string = arraycremind[index];
-
-            for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
-              const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
-              if (bd.toUpperCase() == documento) {
-                documentos.push(resp[indexinterno]);
-                break;
-              }
-            }
-          }
-          break;
-
-        case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-          /*El contenedor es de cremacionfetal */
-
-          for (let index = 0; index < arraycremfet.length; index++) {
-            const documento: string = arraycremfet[index];
-
-            for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
-              const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
-              if (bd.toUpperCase() == documento) {
-                documentos.push(resp[indexinterno]);
-                break;
-              }
-            }
-          }
-
-          break;
-      }
-
-      // let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
-
-      var iddocumento: string = documentos.reduce((result: any, item: any) => {
-        return `${result}${item.idDocumentoSoporte}|`;
-      }, '');
-      var pathdocumento: string = documentos.reduce((result: any, item: any) => {
-        return `${result}${item.path}|`;
-      }, '');
-
-      var not = 1;
-
-      const segui = values.validFunctionaltype;
-
-
-      if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
-        if (
-          DatosDocumento.at(0) == '1' &&
-          DatosDocumento.at(1) == '1' &&
-          DatosDocumento.at(2) == '1' &&
-          DatosDocumento.at(3) == '1' &&
-          DatosDocumento.at(4) == '1' &&
-          DatosDocumento.at(5) == '1' &&
-          DatosDocumento.at(6) == '1' &&
-          DatosDocumento.at(7) == '1' &&
-          DatosDocumento.at(8) == '1'
-        ) {
-          not = 2;
-        } else {
-          alert('Todos los documentos deben de cumplir en caso de aprobacion');
-          not = 0;
-        }
-      }
-      if (segui == 'fe691637-be8a-425f-a309-e2032221553f') {
-        if (
-          DatosDocumento.at(0) == '2' ||
-          DatosDocumento.at(1) == '2' ||
-          DatosDocumento.at(2) == '2' ||
-          DatosDocumento.at(3) == '2' ||
-          DatosDocumento.at(4) == '2' ||
-          DatosDocumento.at(5) == '2' ||
-          DatosDocumento.at(6) == '2' ||
-          DatosDocumento.at(7) == '2' ||
-          DatosDocumento.at(8) == '2'
-        ) {
-        } else {
-          alert('Debe indicar almenos un Documento que no Cumpla');
-          not = 0;
-        }
-      }
-
-      if (not >= 1) {
-
-        /////////////////////////Guardar status//////////////////////////
-        let aux = 0;
-        for (let index = 0; index < documentos.length; index++) {
-          //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
-          var posicioninicialid = 0;
-          var posicionfinalid = iddocumento.indexOf('|');
-          var id = iddocumento.substring(posicioninicialid, posicionfinalid);
-          var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
-
-          var posicioninicialpath = 0;
-          var posicionfinalpath = pathdocumento.indexOf('/');
-          var nuevopath = pathdocumento.indexOf('|');
-          var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
-          var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
-
-          var datos = DatosDocumento.at(index);
-
-          if (datos == '1') {
-            datos = 'Cumple';
-          } else {
-            datos = 'No Cumple';
-          }
-
-          const json: IGestionTramite<any> = {
-            estado: {
-              idSolicitud: objJosn?.idSolicitud,
-              idDocumentoSoporte: id,
-              Path: documento,
-              Estado_Documento: datos,
-              tipoSeguimiento: values.validFunctionaltype,
-              Observaciones: values.observations
-            }
-          };
-
-          const resp = await api.AddGestion(json, aux + '');
-          aux = 1;
-        }
-        if (documentos.length == 0) {
-          const resp = await api.updateStateRequest(objJosn?.idSolicitud, values.validFunctionaltype);
-        }
-        let observacion = '';
-        if (not == 2) {
-
-          if (objJosn.numerolicencia === null) {
-            const licenciacache = localStorage.getItem(objJosn?.idSolicitud)
-
-            if (licenciacache === null) {
-
-
-              const codigotramite = { codigoTramite: '13' };
-
-              const consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
-
-              const fechalicencia = consecutivolicencia.fecha
-
-
-
-              const actualizacionresumen = {
-                idSolicitud: objJosn?.idSolicitud,
-                numeroLicencia: consecutivolicencia.consecutivo,
-                fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
-                idTramite: objJosn.idTramite,
-                tipoTramite: valor,
-                iD_Control_Tramite: objJosn.idControlTramite
-              }
-              localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
-
-
-              const update = await api.updatelicenciaAzure(actualizacionresumen);
-              //const update = await api.updatelicencia(objJosn?.idSolicitud);
-            }
-
-
-            observacion = 'generación licencia';
-          }
-          else { observacion = 'aprobación actualización'; }
-
-        }
 
 
 
 
-        /////////////////////////Enviar Notificacion//////////////////////////
-        let tipoSeguimiento: string = values.validFunctionaltype;
-        let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-        let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-        let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
+      Swal.fire({
+        title: 'Validacion de Solicitud',
+        text: `Esta a punto de ${values.validFunctionaltype === '3cd0ed61-f26b-4cc0-9015-5b497673d275'
+          ? 'realizar una Aprobacion a la Solicitud (recuerde que una vez aceptado se generara un numero de licencia)'
+          : (values.validFunctionaltype === 'fe691637-be8a-425f-a309-e2032221553f'
+            ? 'solicitar una actualización por Documentos Inconsistentes ' : (values.validFunctionaltype === 'c21f9037-8adb-4353-bead-bdbbe0adc2c9'
+              ? 'realizar una Anulación a la Solicitud' : 'realizar una Negación a la Solicitud'))}, ¿Está seguro de continuar?`,
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Aceptar',
+        denyButtonText: `Cancelar`,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        },
+        icon: 'info'
+      }).then(async (result) => {
 
-        let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
-        let idTramite = objJosn?.idTramite;
-        let cementerio = solicitud[0]['datosCementerio']['cementerio'];
-        let date = new Date();
-        let emailSolicitante = resumenSolicitud[0]['correoFuneraria'];
-        let emailFamiliarContratante = resumenSolicitud[0]['correoSolicitante'];
+        if (result.isConfirmed) {
 
-        if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
-          //alert('aprobacion');
 
-          //const infouser: any = localStorage.getItem('infouser');
-          //const info: any = JSON.parse(infouser);
 
-          //const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-          const tipotramite: string = objJosn.idTramite;
 
-          //-----------------------------------------
+          setStatus(undefined);
 
-          let respuesta: any = '';
-          switch (tipotramite) {
+
+          let resp = await api.getSupportDocuments(objJosn?.idSolicitud);
+          var documentos: any = [];
+          switch (objJosn.idTramite) {
             case 'a289c362-e576-4962-962b-1c208afa0273':
-              //Inhumación Individual;
-              respuesta = await htmlInhumacionIndividual(true);
+              /*El contenedor es de inhumacion indivual */
+
+              for (let index = 0; index < arrayinhind.length; index++) {
+                const documento: string = arrayinhind[index];
+
+                for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+                  const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+                  if (bd.toUpperCase() == documento) {
+                    documentos.push(resp[indexinterno]);
+                    break;
+                  }
+                }
+              }
+
               break;
+
             case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-              //Inhumacion fetal
-              respuesta = await htmlInhumacionFetal(true);
+              /*El contenedor es de inhumacion fetal */
+
+              for (let index = 0; index < arrayinhfet.length; index++) {
+                const documento: string = arrayinhfet[index];
+
+                for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+                  const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+                  if (bd.toUpperCase() == documento) {
+                    documentos.push(resp[indexinterno]);
+                    break;
+                  }
+                }
+              }
+
               break;
+
             case 'e69bda86-2572-45db-90dc-b40be14fe020':
-              //Cremacion individual
-              respuesta = await htmlCremacionIndividual(true);
+              /*El contenedor es de cremacion individual */
+
+              for (let index = 0; index < arraycremind.length; index++) {
+                const documento: string = arraycremind[index];
+
+                for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+                  const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+                  if (bd.toUpperCase() == documento) {
+                    documentos.push(resp[indexinterno]);
+                    break;
+                  }
+                }
+              }
               break;
+
             case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-              //Cremacionfetal
-              respuesta = await htmlCremacionFetal(true);
-              break;
-            default:
+              /*El contenedor es de cremacionfetal */
+
+              for (let index = 0; index < arraycremfet.length; index++) {
+                const documento: string = arraycremfet[index];
+
+                for (let indexinterno = 0; indexinterno < resp.length; indexinterno++) {
+                  const bd: string = await resp[indexinterno].idTipoDocumentoSoporte;
+                  if (bd.toUpperCase() == documento) {
+                    documentos.push(resp[indexinterno]);
+                    break;
+                  }
+                }
+              }
+
               break;
           }
 
-          //const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-          //const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+          // let documentos = await api.getSupportDocuments(objJosn?.idSolicitud);
 
-          const licencia: any = await api.ObtenerPDFShared({
-            html: respuesta.plantillaLicenciaGen
-          });
+          var iddocumento: string = documentos.reduce((result: any, item: any) => {
+            return `${result}${item.idDocumentoSoporte}|`;
+          }, '');
+          var pathdocumento: string = documentos.reduce((result: any, item: any) => {
+            return `${result}${item.path}|`;
+          }, '');
+
+          var not = 1;
+
+          const segui = values.validFunctionaltype;
 
 
-          //const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
+          if (segui == '3cd0ed61-f26b-4cc0-9015-5b497673d275') {
+            if (
+              DatosDocumento.at(0) == '1' &&
+              DatosDocumento.at(1) == '1' &&
+              DatosDocumento.at(2) == '1' &&
+              DatosDocumento.at(3) == '1' &&
+              DatosDocumento.at(4) == '1' &&
+              DatosDocumento.at(5) == '1' &&
+              DatosDocumento.at(6) == '1' &&
+              DatosDocumento.at(7) == '1' &&
+              DatosDocumento.at(8) == '1'
+            ) {
+              not = 2;
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Validacion Erronea',
+                confirmButtonColor: '#04bbd3',
+                text:
+                  'Todos los documentos deben de cumplir en caso de aprobacion'
+              });
 
-          let datosDinamicosAprobacion = [
-            solicitud[0]['razonSocialSolicitante'],
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            idConsecutivo,
-            fechaSolicitud.substring(0, 10),
-            getDescripcionTramite(idTramite.toLocaleUpperCase())
-          ];
+              not = 0;
+            }
+          }
+          if (segui == 'fe691637-be8a-425f-a309-e2032221553f') {
+            if (
+              DatosDocumento.at(0) == '2' ||
+              DatosDocumento.at(1) == '2' ||
+              DatosDocumento.at(2) == '2' ||
+              DatosDocumento.at(3) == '2' ||
+              DatosDocumento.at(4) == '2' ||
+              DatosDocumento.at(5) == '2' ||
+              DatosDocumento.at(6) == '2' ||
+              DatosDocumento.at(7) == '2' ||
+              DatosDocumento.at(8) == '2'
+            ) {
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Validacion Erronea',
+                confirmButtonColor: '#04bbd3',
+                text:
+                  'Debe indicar almenos un Documento que no Cumpla'
+              });
 
-          let emailCementerio = resumenSolicitud[0]['correoCementerio'];
-          let datosDinamicosCementerio = [
-            cementerio,
-            resumenSolicitud[0]['numeroLicencia'],
-            date.toLocaleDateString(),
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            getDescripcionTramite(idTramite.toLocaleUpperCase())
-          ];
+              not = 0;
+            }
+          }
 
-          let emailFuneraria = resumenSolicitud[0]['correoFuneraria'];
-          let datosDinamicosFuneraria = [
-            funeraria[0]['funeraria'],
-            resumenSolicitud[0]['numeroLicencia'],
-            date.toLocaleDateString(),
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            getDescripcionTramite(idTramite.toLocaleUpperCase())
-          ];
+          setiddocumentovalidacion(iddocumento);
+          setpathdocumentovalidacion(pathdocumento);
+          setdocumentosvalidacion(documentos);
 
-          notificar(
-            values.validFunctionaltype,
-            datosDinamicosAprobacion,
-            emailFamiliarContratante,
-            licencia,
-            resumenSolicitud[0]['numeroLicencia']
-          );
-          notificarCementerio(datosDinamicosCementerio, emailCementerio, licencia, resumenSolicitud[0]['numeroLicencia']);
-          notificarFuneraria(datosDinamicosFuneraria, emailFuneraria, licencia, resumenSolicitud[0]['numeroLicencia']);
 
-          const urlToFile = async (url: string, filename: string, mimeType: any) => {
-            const res = await fetch(url);
-            const buf = await res.arrayBuffer();
-            return new File([buf], filename, { type: mimeType });
-          };
 
-          (async () => {
-            const file = await urlToFile('data:application/pdf;base64,' + licencia, 'licencia', 'application/pdf');
+          if (not >= 1) {
 
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append(
-              'nameFile',
-              'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia']
-            );
+            /////////////////////////Guardar status//////////////////////////
 
+
+            let nombrearchivo = '';
             let contenedor: string = 'contenedor';
+            let file: any = '';
+            if (not == 2) {
 
-            switch (valor) {
-              case 'Inhumación Individual':
-                contenedor = 'inhumacionindividual';
-                break;
-              case 'Inhumación Fetal':
-                contenedor = 'inhumacionfetal';
-                break;
-              case 'Cremación Individual':
-                contenedor = 'cremacionindividual';
-                break;
-              case 'Cremación Fetal':
-                contenedor = 'cremacionfetal';
-                break;
+              if (objJosn.numerolicencia === null) {
+                const licenciacache = localStorage.getItem(objJosn?.idSolicitud)
+
+                if (licenciacache === null) {
+
+                  const consultarlicencia: any = api.GetResumenSolicitud(objJosn?.idSolicitud);
+
+                  if (consultarlicencia.numeroLicencia === null) {
+
+                    const codigotramite = { codigoTramite: '13' };
+
+                    let consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
+                    let actualizacionresumen = {
+                      idSolicitud: objJosn?.idSolicitud,
+                      numeroLicencia: consecutivolicencia.consecutivo,
+                      fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
+                      idTramite: objJosn.idTramite,
+                      tipoTramite: valor,
+                      iD_Control_Tramite: objJosn.idControlTramite
+                    }
+                    localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
+
+                    const listaauditoria: any = await api.Auditoria(consecutivolicencia.consecutivo, 'licencia');
+
+                    while (listaauditoria.length > 0) {
+
+                      consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
+                      actualizacionresumen = {
+                        idSolicitud: objJosn?.idSolicitud,
+                        numeroLicencia: consecutivolicencia.consecutivo,
+                        fechaLicencia: moment(new Date(consecutivolicencia.fecha)).format('MM/DD/YYYY HH:mm:ss'),
+                        idTramite: objJosn.idTramite,
+                        tipoTramite: valor,
+                        iD_Control_Tramite: objJosn.idControlTramite
+                      }
+                      localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
+                    }
+
+                    const update = await api.updatelicenciaAzure(actualizacionresumen);
+
+                  }
+
+
+                  //const update = await api.updatelicencia(objJosn?.idSolicitud);
+                }
+
+
+                setObservaciones('generación licencia')
+              }
+              else { setObservaciones('aprobación actualización'); }
+
             }
 
-            formData.append('containerName', contenedor);
-            formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
-            await api.uploadFiles(formData);
 
-          })();
-        } else {
-          let datosDinamicosGenericos = [
-            solicitud[0]['razonSocialSolicitante'],
-            getDescripcionTramite(idTramite.toLocaleUpperCase()),
-            idConsecutivo,
-            fechaSolicitud.substring(0, 10),
-            values.observations
-          ];
 
-          notificar(values.validFunctionaltype, datosDinamicosGenericos, emailSolicitante, null, null);
+
+            /////////////////////////Enviar Notificacion//////////////////////////
+            let tipoSeguimiento: string = values.validFunctionaltype;
+            setseguimiento(tipoSeguimiento);
+            let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+            let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+            let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
+
+            let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
+            let idTramite = objJosn?.idTramite;
+            let cementerio = solicitud[0]['datosCementerio']['cementerio'];
+            let date = new Date();
+            let emailSolicitante = resumenSolicitud[0]['correoFuneraria'];
+            let emailFamiliarContratante = resumenSolicitud[0]['correoSolicitante'];
+
+
+            if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
+              //alert('aprobacion');
+
+              //const infouser: any = localStorage.getItem('infouser');
+              //const info: any = JSON.parse(infouser);
+
+              //const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
+
+              const tipotramite: string = objJosn.idTramite;
+
+              //-----------------------------------------
+
+              let respuesta: any = '';
+              switch (tipotramite) {
+                case 'a289c362-e576-4962-962b-1c208afa0273':
+                  //Inhumación Individual;
+                  respuesta = await htmlInhumacionIndividual(true);
+                  break;
+                case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+                  //Inhumacion fetal
+                  respuesta = await htmlInhumacionFetal(true);
+                  break;
+                case 'e69bda86-2572-45db-90dc-b40be14fe020':
+                  //Cremacion individual
+                  respuesta = await htmlCremacionIndividual(true);
+                  break;
+                case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+                  //Cremacionfetal
+                  respuesta = await htmlCremacionFetal(true);
+                  break;
+                default:
+                  break;
+              }
+
+              //const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+              //const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+
+              const licencia: any = await api.ObtenerPDFShared({
+                html: respuesta.plantillaLicenciaGen
+              });
+              setsolicitante(respuesta.nombreSolicitante);
+              setlicencia(licencia);
+
+              //const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
+
+
+              const urlToFile = async (url: string, filename: string, mimeType: any) => {
+                const res = await fetch(url);
+                const buf = await res.arrayBuffer();
+                return new File([buf], filename, { type: mimeType });
+              };
+
+
+
+              (async () => {
+                file = await urlToFile('data:application/pdf;base64,' + licencia, 'licencia', 'application/pdf');
+
+
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append(
+                  'nameFile',
+                  'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia']
+                );
+
+                nombrearchivo = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
+
+
+                switch (valor) {
+                  case 'Inhumación Individual':
+                    contenedor = 'inhumacionindividual';
+                    break;
+                  case 'Inhumación Fetal':
+                    contenedor = 'inhumacionfetal';
+                    break;
+                  case 'Cremación Individual':
+                    contenedor = 'cremacionindividual';
+                    break;
+                  case 'Cremación Fetal':
+                    contenedor = 'cremacionfetal';
+                    break;
+                }
+
+
+
+                formData.append('containerName', contenedor);
+                formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
+                const subida = await api.uploadFiles(formData);
+
+
+
+
+                let path = contenedor + "/" + objJosn.idusuarioseg + "/" + nombrearchivo;
+
+                let respuesta: any = null;
+                try {
+                  respuesta = await api.GetBlobAzureV2(path);
+                  if (respuesta != null) {
+                    const urlPDF = await api.GetUrlPdf(path);
+                    setesguardar(true);
+
+                    setUrlPdfLicence(urlPDF);
+
+                    setIsModalVisiblePdf(true);
+                  }
+                  else {
+
+                    let contador = 0;
+                    while (respuesta === null && contador < 3) {
+
+
+                      try {
+
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        formData.append(
+                          'nameFile',
+                          nombrearchivo
+                        );
+                        formData.append('containerName', contenedor);
+                        formData.append('oid', objJosn.idusuarioseg);
+                        await api.uploadFiles(formData);
+
+
+
+
+
+                        respuesta = await api.GetBlobAzureV2(path);
+                        contador++;
+                        if (respuesta != null) {
+
+
+
+
+                          const urlPDF = await api.GetUrlPdf(path);
+
+                          setesguardar(true);
+                          setUrlPdfLicence(urlPDF);
+
+                          setIsModalVisiblePdf(true);
+                        }
+
+
+                      } catch (error) {
+                        contador++;
+                      }
+
+
+                    }
+                  }
+                }
+                catch (excep) {
+
+                  let contador = 0;
+                  while (respuesta === null && contador < 3) {
+
+
+                    try {
+
+                      const formData = new FormData();
+                      formData.append('file', file);
+                      formData.append(
+                        'nameFile',
+                        nombrearchivo
+                      );
+                      formData.append('containerName', contenedor);
+                      formData.append('oid', objJosn.idusuarioseg);
+                      await api.uploadFiles(formData);
+
+
+
+
+
+                      respuesta = await api.GetBlobAzureV2(path);
+                      contador++;
+                      if (respuesta != null) {
+
+
+
+
+                        const urlPDF = await api.GetUrlPdf(path);
+
+                        setesguardar(true);
+                        setUrlPdfLicence(urlPDF);
+
+                        setIsModalVisiblePdf(true);
+                      }
+
+
+                    } catch (error) {
+                      contador++;
+                    }
+
+
+                  }
+                }
+
+                if (respuesta === null) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Ha Ocurrido un Error',
+                    confirmButtonColor: '#04bbd3',
+                    text:
+                      'Ha ocurrido un error, porfavor contacte con el administrador, Error:503'
+                  });
+                }
+
+              })();
+            }
+            else {
+
+              let observacion = '';
+              if (tipoSeguimiento.toLocaleUpperCase() === 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9') {
+                if (objJosn.numerolicencia == null) {
+                  observacion = 'anulación' + (documentos.length === 0 ? '/' + values.observations : '');
+                  setObservaciones('anulación' + (documentos.length === 0 ? '/' + values.observations : ''));
+                }
+                else {
+                  observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');
+                  setObservaciones('anulación actualización' + (documentos.length === 0 ? '/' + values.observations : ''));
+                }
+
+              }
+              if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
+                if (objJosn.numerolicencia == null) {
+                  observacion = 'negación';
+                  setObservaciones('negación')
+                }
+                else {
+                  observacion = 'negación actualización';
+                  setObservaciones('negación actualización')
+
+                }
+
+              }
+              if (tipoSeguimiento.toLocaleUpperCase() === 'FE691637-BE8A-425F-A309-E2032221553F') {
+
+                if (objJosn.numerolicencia == null) {
+                  observacion = 'documentos inconsistentes';
+                  setObservaciones('documentos inconsistentes')
+
+                }
+                else {
+                  observacion = 'documentos inconsistentes actualización';
+                  setObservaciones('documentos inconsistentes actualización')
+
+                }
+
+              }
+
+
+              NotificacionFinal(observacion, values.observations, tipoSeguimiento, documentos, iddocumento, pathdocumento);
+            }
+            setObservacionesValidador(values.observations)
+
+          }
         }
 
-        if (tipoSeguimiento.toLocaleUpperCase() === 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9') {
-          if (objJosn.numerolicencia == null) {
-            observacion = 'anulación' + (documentos.length === 0 ? '/' + values.observations : '');
-          }
-          else {
-            observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');;
-          }
-
-        }
-        if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
-          if (objJosn.numerolicencia == null) {
-            observacion = 'negación';
-          }
-          else {
-            observacion = 'negación actualización';
-          }
-
-        }
-        if (tipoSeguimiento.toLocaleUpperCase() === 'FE691637-BE8A-425F-A309-E2032221553F') {
-          if (objJosn.numerolicencia == null) {
-            observacion = 'documentos inconsistentes';
-          }
-          else {
-            observacion = 'documentos inconsistentes actualización';
-
-          }
-
-        }
-        const idUsuario = await api.getIdUsuario();
-        const seguimiento = {
-          fechaRegistro: objJosn.fechasol,
-          usuario: idUsuario,
-          estado: observacion,
-          idSolicitud: objJosn.idSolicitud,
-          observacion: values.observations ?? ''
-
-        }
-
-        await api.addSeguimiento(seguimiento);
-        Swal.fire({
-          icon: 'success',
-          title: 'Solicitud gestionada',
-          text: 'La Solicitud ha sido gestionada exitosamente'
-        });
-        localStorage.removeItem(objJosn.idSolicitud);
-        history.push('/tramites-servicios');
-        store.dispatch(SetResetViewLicence());
-      }
+      });
     } else {
       Swal.fire({
         imageUrl: firmaNoEncontrada,
@@ -773,7 +897,152 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
           'Su firma no se encuentra registrada. Por favor comuníquese con la administración para el proceso de registro y vuelva a intentarlo mas tarde.'
       });
     }
+
   };
+
+  const Reintentar = async () => {
+    setIsModalVisiblePdf(false)
+    form.submit();
+  }
+
+  const NotificacionFinal = async (observacion: string, observacionvali: string, seguimientosol: string,
+    documentos: any[], iddocumento: string, pathdocumento: string) => {
+
+
+    let seguimiento: any = {};
+    if (seguimientosolicitud.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
+
+      documentos = documentosvalidacion;
+      iddocumento = iddocumentovalidacion;
+      pathdocumento = pathdocumentovalidacion;
+
+      let datosDinamicosAprobacion = [
+        objJosn.razonsocialsolicitantesolicitud,
+        getDescripcionTramite(objJosn.idTramite),
+        idConsecutivo,
+        objJosn.fechasol.substring(0, 10),
+        getDescripcionTramite(objJosn.idTramite.toLocaleUpperCase())
+      ];
+      const date = new Date();
+      let emailCementerio = objJosn.correocementerio;
+      let datosDinamicosCementerio = [
+        objJosn.cementerioBogota,
+        Licenciapdf,
+        date.toLocaleDateString(),
+        getDescripcionTramite(objJosn.idTramite.toLocaleUpperCase()),
+        getDescripcionTramite(objJosn.idTramite.toLocaleUpperCase())
+      ];
+
+      let emailFuneraria = objJosn.correofuneraria;
+      let datosDinamicosFuneraria = [
+        objJosn.funeraria,
+        Licenciapdf,
+        date.toLocaleDateString(),
+        getDescripcionTramite(objJosn.idTramite.toLocaleUpperCase()),
+        getDescripcionTramite(objJosn.idTramite.toLocaleUpperCase())
+      ];
+
+      notificar(
+        seguimientosolicitud,
+        datosDinamicosAprobacion,
+        objJosn.correosolicitante,
+        licencia,
+        Licenciapdf
+      );
+
+      notificarCementerio(datosDinamicosCementerio, emailCementerio, licencia, Licenciapdf);
+      notificarFuneraria(datosDinamicosFuneraria, emailFuneraria, licencia, Licenciapdf);
+      seguimiento = {
+        fechaRegistro: objJosn.fechasol,
+        usuario: idUsuario,
+        estado: Observaciones,
+        idSolicitud: objJosn.idSolicitud,
+        observacion: ObservacionesValidador ?? ''
+
+      }
+
+    }
+    else {
+
+      let datosDinamicosGenericos = [
+        objJosn.razonsocialsolicitantesolicitud,
+        getDescripcionTramite(objJosn.idTramite.toLocaleUpperCase()),
+        idConsecutivo,
+        objJosn.fechasol.substring(0, 10),
+        observacionvali
+      ];
+
+      notificar(seguimientosol, datosDinamicosGenericos, objJosn.correosolicitante, null, null);
+      seguimiento = {
+        fechaRegistro: objJosn.fechasol,
+        usuario: idUsuario,
+        estado: observacion,
+        idSolicitud: objJosn.idSolicitud,
+        observacion: observacionvali ?? ''
+
+      }
+    }
+
+
+
+    for (let index = 0; index < documentos.length; index++) {
+      //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
+      var posicioninicialid = 0;
+      var posicionfinalid = iddocumento.indexOf('|');
+      var id = iddocumento.substring(posicioninicialid, posicionfinalid);
+      var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
+
+      var posicioninicialpath = 0;
+      var posicionfinalpath = pathdocumento.indexOf('/');
+      var nuevopath = pathdocumento.indexOf('|');
+      var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
+      var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
+
+      var datos = DatosDocumento.at(index);
+
+      if (datos == '1') {
+        datos = 'Cumple';
+      } else {
+        datos = 'No Cumple';
+      }
+
+      const json: IGestionTramite<any> = {
+        estado: {
+          idSolicitud: objJosn?.idSolicitud,
+          idDocumentoSoporte: id,
+          Path: documento,
+          Estado_Documento: datos,
+          tipoSeguimiento: seguimientosol,
+          Observaciones: observacionvali
+        }
+      };
+
+      const resp = await api.AddGestion(json, 1 + '');
+
+    }
+    if (documentos.length == 0) {
+      const resp = await api.updateStateRequest(objJosn?.idSolicitud, seguimientosol);
+    }
+
+
+
+    setIsModalVisiblePdf(false);
+
+    await api.addSeguimiento(seguimiento);
+    Swal.fire({
+      icon: 'success',
+      title: 'Solicitud gestionada',
+      text: 'La Solicitud ha sido gestionada exitosamente'
+    });
+    localStorage.removeItem(objJosn.idSolicitud);
+    history.push('/tramites-servicios');
+    store.dispatch(SetResetViewLicence());
+
+
+  };
+
+
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -877,21 +1146,24 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
   const Actions = () => (
     <div className='container-fluid'>
       <div className='row'>
-        <Form.Item {...layoutWrapper} className='mb-0 mt-4'>
+        <Form.Item {...layoutWrapper} >
           <div className='d-flex justify-content-between'>
-            <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>
-              Guardar
-            </Button>
-
-            <Button
-              type='dashed'
-              htmlType='button'
-              onClick={() => {
-                history.push('/tramites-servicios');
-              }}
-            >
-              Volver atrás
-            </Button>
+            <div className='col-1'>
+              <Button type='primary' htmlType='submit' disabled={isDisabledElement} className='align-self-start'>
+                Guardar
+              </Button>
+            </div>
+            <div className='col-1'>
+              <Button
+                type='dashed'
+                htmlType='button'
+                onClick={() => {
+                  history.push('/tramites-servicios');
+                }}
+              >
+                Volver atrás
+              </Button>
+            </div>
           </div>
 
         </Form.Item>
@@ -1092,6 +1364,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (resumenSolicitud[0]['numeroLicencia'] != null) {
       numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+      setLicenciapdf(numeroLicencia)
     }
 
 
@@ -1369,6 +1642,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (resumenSolicitud[0]['numeroLicencia'] != null) {
       numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+      setLicenciapdf(numeroLicencia)
     }
 
     //Se obtienen descripciones por id Guid
@@ -1681,6 +1955,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (resumenSolicitud[0]['numeroLicencia'] != null) {
       numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+      setLicenciapdf(numeroLicencia)
     }
 
     //Se obtienen descripciones por id Guid
@@ -1948,6 +2223,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     if (resumenSolicitud[0]['numeroLicencia'] != null) {
       numeroLicencia = resumenSolicitud[0]['numeroLicencia'].toString();
+      setLicenciapdf(numeroLicencia)
     }
 
     //Se obtienen descripciones por id Guid
@@ -2054,6 +2330,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     //-----------------------------------------
 
+    setesguardar(false);
     let bandera = await api.validarFirmaFuncionario(idUsuario);
 
     if (bandera) {
@@ -2348,18 +2625,39 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                             <Modal
                               title={
                                 <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
-                                  Visualización de la licencia
+                                  {esguardar ? 'Vista final de la licencia' : ' Visualización de la licencia'}
                                 </p>
                               }
                               visible={isModalVisiblePdf}
                               onCancel={() => setIsModalVisiblePdf(false)}
                               width={1000}
+                              closable={!esguardar}
                               okButtonProps={{ hidden: true }}
                               cancelText='Cerrar'
                             >
-                              <div className='col-lg-12 text-center'>
-                                <p>Nombre del Solicitante : {solicitante} </p>
-                              </div>
+                              {!esguardar && (
+                                <div className='col-lg-12 text-center'>
+                                  <p>Nombre del Solicitante : {solicitante} </p>
+                                </div>
+                              )}
+
+                              {esguardar && (
+                                <>
+                                  <div className='row justify-content-md-center'>
+                                    <div className='col-2'>
+                                      <Button type='primary' style={{ width: 120 }} onClick={Reintentar}>
+                                        Reintentar
+                                      </Button>
+                                    </div>
+                                    <div className='col-2'>
+                                      <Button type='primary' style={{ width: 120 }} onClick={() => NotificacionFinal('', '', '', [], '', '')}>
+                                        Finalizar y Notificar
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+
                               <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
                             </Modal>
 
@@ -2473,6 +2771,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     licencia: any,
     numeroLicencia: any
   ) {
+
     const { accountIdentifier } = authProvider.getAccount();
     const api = new ApiService(accountIdentifier);
 

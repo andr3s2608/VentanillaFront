@@ -120,9 +120,9 @@ export const TablaReportes = (props: IDataSource) => {
           }
         ],
         filterSearch: true,
-        onFilter: (value: string, record: { idTramite: string }) => record.idTramite.toString().includes(value),
+        onFilter: (value: string, record: { idTramite: string }) => record.idTramite.toString().includes(value.toLocaleUpperCase()),
         render: (Text: string) => {
-          switch (Text) {
+          switch (Text.toLowerCase()) {
             case 'a289c362-e576-4962-962b-1c208afa0273':
               return <Form.Item label='' name=''>
                 <text>{'Inhumación Individual'}</text>
@@ -484,10 +484,19 @@ export const TablaReportes = (props: IDataSource) => {
         dataIndex: 'fechaActaInstitucionRep',
         key: 'fechaActaInstitucionRep',
         render: (Text: any) => {
-          const fecha = moment(Text + "").format('DD-MM-YYYY')
-          return <Form.Item label='' name=''>
-            <text>{fecha}</text>
-          </Form.Item>
+          if (Text != '') {
+            const fecha = moment(Text + "").format('DD-MM-YYYY')
+            return <Form.Item label='' name=''>
+              <text>{fecha}</text>
+            </Form.Item>
+
+          }
+          else {
+            return <Form.Item label='' name=''>
+              <text>{ }</text>
+            </Form.Item>
+          }
+
 
         }
       },
