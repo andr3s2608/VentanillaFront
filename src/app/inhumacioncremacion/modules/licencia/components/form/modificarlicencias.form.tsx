@@ -914,6 +914,7 @@ export const ModificarLicencia = ({ props }: any) => {
         else {
           nacionalidadmother = values.nationalidadmother;
         }
+
         if (contenedor === 'inhumacionindividual') {
           persona = [
             //fallecido
@@ -1141,9 +1142,9 @@ export const ModificarLicencia = ({ props }: any) => {
               idPersona: obj.idpersonamedico,
               tipoIdentificacion: values.medicalSignatureIDType,
               numeroIdentificacion: values.medicalSignatureIDNumber,
-              primerNombre: values.medicalSignatureName,
+              primerNombre: values.medicalSignatureName ?? '',
               segundoNombre: values.medicalSignatureSecondName ?? '',
-              primerApellido: values.medicalSignatureSurname,
+              primerApellido: values.medicalSignatureSurname ?? '',
               segundoApellido: values.medicalSignatureSecondSurname ?? '',
               fechaNacimiento: null,
               hora: '',
@@ -1438,7 +1439,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
         const idUsuario = await api.getIdUsuario();
         const seguimiento = {
-          fechaRegistro: new Date(),
+          fechaRegistro: obj.fechasol,
           usuario: idUsuario,
           estado: 'Administrador',
           idSolicitud: obj.idSolicitud,

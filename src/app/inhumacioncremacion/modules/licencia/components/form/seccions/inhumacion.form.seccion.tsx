@@ -1314,6 +1314,8 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
               optionPropkey='id'
               optionPropLabel='descripcion'
             />
+
+
           </Form.Item>
           <Form.Item label='Segunda Nacionalidad' name='nationalidad2' rules={[{ required: false }]}>
             <SelectComponent

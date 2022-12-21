@@ -111,7 +111,7 @@ const formatObjJson = (obj: any) => {
     secondNamemother: madre.segundoNombre,
     surnamemother: madre.primerApellido,
     secondSurnamemother: madre.segundoApellido,
-    nationalidadmother: [madre.nacionalidad],
+    nationalidadmother: madre.nacionalidad,
     dateOfBirth: madre.fechaNacimiento,
     IDType: madre.tipoIdentificacion,
     IDNumber: madre.numeroIdentificacion,
