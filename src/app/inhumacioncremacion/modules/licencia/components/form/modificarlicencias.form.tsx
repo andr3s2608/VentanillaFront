@@ -892,6 +892,9 @@ export const ModificarLicencia = ({ props }: any) => {
           case 'Otro':
             parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
             break;
+          case undefined:
+            parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+            break;
         }
 
         let persona: any[] = [];
@@ -906,10 +909,10 @@ export const ModificarLicencia = ({ props }: any) => {
 
         let nacionalidadmother = '';
         if (values.nationalidadmother === '1') {
-          nacionalidad = '1e05f64f-5e41-4252-862c-5505dbc3931c'
+          nacionalidadmother = '1e05f64f-5e41-4252-862c-5505dbc3931c'
         }
         else {
-          nacionalidad = values.nationalidadmother;
+          nacionalidadmother = values.nationalidadmother;
         }
         if (contenedor === 'inhumacionindividual') {
           persona = [
@@ -1283,7 +1286,7 @@ export const ModificarLicencia = ({ props }: any) => {
               correoMedico: '',
               cumpleCausa: banderaCausa,
               observacionCausa: observacionCausaMuerte,
-              numeroLicencia: obj.numerolicencia
+              numeroLicencia: obj?.numerolicencia
 
             },
 

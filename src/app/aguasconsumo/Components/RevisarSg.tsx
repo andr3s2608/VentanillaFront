@@ -40,7 +40,7 @@ export const RevisarSg = () => {
 
   const getListas = useCallback(
     async () => {
-      console.log("este elemento solo debe visualizarse para una revisión, algo que no se edita ");
+
       const rolesstorage: any = localStorage.getItem('roles');
 
       const [permiso] = JSON.parse(rolesstorage);

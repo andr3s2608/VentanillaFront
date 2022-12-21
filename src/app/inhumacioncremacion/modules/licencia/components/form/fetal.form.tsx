@@ -307,6 +307,9 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
       case 'Otro':
         parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
         break;
+      case undefined:
+        parentesco = 'e819b729-799c-4644-b62c-74bff07bf622';
+        break;
     }
 
     let nacionalidad = '';
