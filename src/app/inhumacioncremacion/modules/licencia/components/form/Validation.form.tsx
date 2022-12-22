@@ -564,7 +564,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
                   const consultarlicencia: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
 
-                  if (consultarlicencia.numeroLicencia === null) {
+                  if (consultarlicencia[0].numeroLicencia === null) {
 
                     const codigotramite = { codigoTramite: '13' };
 
