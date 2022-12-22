@@ -705,10 +705,10 @@ export const CambioLicencia = ({ props }: any) => {
                     seccionalFiscalia: razonSocialins !== 'Otros' ? values?.SecFiscalAct : '',
                     noFiscal: razonSocialins !== 'Otros' ? values?.NoFiscAct : '',
                     idTipoInstitucion: values?.instType,
-                    NombreFiscal: razonSocialins !== 'Otros' ? values?.fiscalianombreDC : '',
-                    ApellidoFiscal: razonSocialins !== 'Otros' ? values?.fiscaliaapellidoDC : '',
-                    NumeroOficio: razonSocialins !== 'Otros' ? values?.fiscalianumeroDC : '',
-                    NoFiscalMedicinaLegal: razonSocialins !== 'Otros' ? values?.NoFiscalDC : '',
+                    NombreFiscal: razonSocialins !== 'Otros' ? (values?.fiscalianombreDC ?? '') : '',
+                    ApellidoFiscal: razonSocialins !== 'Otros' ? (values?.fiscaliaapellidoDC ?? '') : '',
+                    NumeroOficio: razonSocialins !== 'Otros' ? (values?.fiscalianumeroDC ?? '') : '',
+                    NoFiscalMedicinaLegal: razonSocialins !== 'Otros' ? (values?.NoFiscalDC ?? '') : '',
                     FechaOficio: razonSocialins !== 'Otros' ? (values?.fiscaliafechaDC ? moment(values?.fiscaliafechaDC).format(formatDate) : null) : null
                   }
                   // documentosSoporte: generateFormFiel(values.instType)
