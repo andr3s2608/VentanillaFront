@@ -364,6 +364,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     var filtroFecha: any = null;
     setespera(undefined);
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
+
       const fechainicio = moment(dateSelectedInicial).format('YYYY-MM-DD')
       const fechaFIN = moment(dateSelectedFinal).format('YYYY-MM-DD')
       if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
@@ -535,7 +536,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 className='form-control'
                 onChange={(date) => {
                   setVisibleAlert(false);
-                  setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                  setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                 }}
               />
             </div>
