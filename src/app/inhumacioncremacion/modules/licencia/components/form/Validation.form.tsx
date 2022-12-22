@@ -920,6 +920,9 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       documentos = documentosvalidacion;
       iddocumento = iddocumentovalidacion;
       pathdocumento = pathdocumentovalidacion;
+      seguimientosol = seguimientosolicitud;
+      observacion = Observaciones;
+      observacionvali = ObservacionesValidador;
 
       let datosDinamicosAprobacion = [
         objJosn.razonsocialsolicitantesolicitud,
