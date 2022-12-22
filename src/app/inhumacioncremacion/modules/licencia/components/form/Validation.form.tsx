@@ -562,7 +562,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
                 if (licenciacache === null) {
 
-                  const consultarlicencia: any = api.GetResumenSolicitud(objJosn?.idSolicitud);
+                  const consultarlicencia: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
 
                   if (consultarlicencia.numeroLicencia === null) {
 
@@ -596,15 +596,20 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                     }
 
                     const update = await api.updatelicenciaAzure(actualizacionresumen);
-
+                    setObservaciones('generación licencia')
                   }
-
+                  else {
+                    setObservaciones('aprobación actualización');
+                  }
 
                   //const update = await api.updatelicencia(objJosn?.idSolicitud);
                 }
+                else {
+                  setObservaciones('aprobación actualización');
+                }
 
 
-                setObservaciones('generación licencia')
+
               }
               else { setObservaciones('aprobación actualización'); }
 
