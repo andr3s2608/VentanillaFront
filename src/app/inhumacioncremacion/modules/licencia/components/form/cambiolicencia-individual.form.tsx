@@ -226,7 +226,7 @@ export const CambioLicencia = ({ props }: any) => {
 
         let cambiodatos = false;
 
-        if (longitudreconocido != -1 && values.namemother.toString().toUpperCase() != 'N' && values.surnamemother.toString().toUpperCase() != 'N') {
+        if (longitudreconocido != -1 && values.name.toString().toUpperCase() != 'N' && values.surname.toString().toUpperCase() != 'N') {
           cambiodatos = true;
         }
         if (longitudreconocido === -1) {
