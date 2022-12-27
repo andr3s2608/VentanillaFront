@@ -23,6 +23,7 @@ const formatObjJson = (obj: any) => {
   const autorizadorcremacion: any = [];
   if (cremador != undefined) {
     autorizadorcremacion.push({
+      id: cremador.idPersona,
       name: cremador.primerNombre,
       secondName: cremador.segundoNombre,
       surname: cremador.primerApellido,
