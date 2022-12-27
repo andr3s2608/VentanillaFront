@@ -980,7 +980,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
         observacionvali
       ];
 
-      notificar(seguimientosol, datosDinamicosGenericos, objJosn.correosolicitante, null, null);
+      notificar(seguimientosol, datosDinamicosGenericos, objJosn.correofuneraria, null, null);
       seguimiento = {
         fechaRegistro: objJosn.fechasol,
         usuario: idUsuario,
