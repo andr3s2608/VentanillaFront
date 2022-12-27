@@ -970,6 +970,7 @@ export const Gridview = (props: IDataSource) => {
     const data = await api.getLicencia(idSolicitud);
 
     localStorage.setItem('register', JSON.stringify(data));
+    localStorage.removeItem(idSolicitud);
     store.dispatch(SetResetViewLicence());
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };

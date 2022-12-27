@@ -555,6 +555,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
             let nombrearchivo = '';
             let contenedor: string = 'contenedor';
             let file: any = '';
+            let validacion = true;
             if (not == 2) {
 
               if (objJosn.numerolicencia === null) {
@@ -577,13 +578,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                       tipoTramite: valor,
                       iD_Control_Tramite: objJosn.idControlTramite
                     }
-                    localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
 
-                    const listaauditoria: any = await api.Auditoria(consecutivolicencia.consecutivo, 'licencia');
 
-                    while (listaauditoria.length > 0) {
+                    let listaauditoria: any = await api.Auditoria(consecutivolicencia.consecutivo, 'licencia');
+                    let contador = 0;
+                    while (listaauditoria.length > 0 && contador < 3) {
 
                       consecutivolicencia = await api.Getconsecutivolicencia(codigotramite);
+
                       actualizacionresumen = {
                         idSolicitud: objJosn?.idSolicitud,
                         numeroLicencia: consecutivolicencia.consecutivo,
@@ -592,11 +594,34 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
                         tipoTramite: valor,
                         iD_Control_Tramite: objJosn.idControlTramite
                       }
-                      localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
+                      contador++;
+                      listaauditoria = await api.Auditoria(consecutivolicencia.consecutivo, 'licencia');
+
                     }
 
-                    const update = await api.updatelicenciaAzure(actualizacionresumen);
-                    setObservaciones('generación licencia')
+
+                    listaauditoria = await api.Auditoria(consecutivolicencia.consecutivo, 'licencia');
+                    if (listaauditoria.length > 0) {
+                      validacion = false
+                    }
+                    if (validacion === true) {
+                      localStorage.setItem(objJosn?.idSolicitud, consecutivolicencia.consecutivo)
+                      const update = await api.updatelicenciaAzure(actualizacionresumen);
+                      setObservaciones('generación licencia')
+                    }
+                    else {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Ha Ocurrido un Error',
+                        confirmButtonColor: '#04bbd3',
+                        text:
+                          'Ha ocurrido un error, porfavor contacte con el administrador, Error:503 Licencia'
+                      });
+
+
+                      // event.preventDefault();
+                    }
+
                   }
                   else {
                     setObservaciones('aprobación actualización');
@@ -617,128 +642,176 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
 
 
-
-            /////////////////////////Enviar Notificacion//////////////////////////
-            let tipoSeguimiento: string = values.validFunctionaltype;
-            setseguimiento(tipoSeguimiento);
-            let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
-            let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-            let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
-
-            let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
-            let idTramite = objJosn?.idTramite;
-            let cementerio = solicitud[0]['datosCementerio']['cementerio'];
-            let date = new Date();
-            let emailSolicitante = resumenSolicitud[0]['correoFuneraria'];
-            let emailFamiliarContratante = resumenSolicitud[0]['correoSolicitante'];
+            if (validacion) {
 
 
-            if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
-              //alert('aprobacion');
+              /////////////////////////Enviar Notificacion//////////////////////////
+              let tipoSeguimiento: string = values.validFunctionaltype;
+              setseguimiento(tipoSeguimiento);
+              let solicitud = await api.GetSolicitud(objJosn?.idSolicitud);
+              let resumenSolicitud = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+              let funeraria = await api.GetFunerariasAzure(objJosn?.idSolicitud);
 
-              //const infouser: any = localStorage.getItem('infouser');
-              //const info: any = JSON.parse(infouser);
-
-              //const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
-
-              const tipotramite: string = objJosn.idTramite;
-
-              //-----------------------------------------
-
-              let respuesta: any = '';
-              switch (tipotramite) {
-                case 'a289c362-e576-4962-962b-1c208afa0273':
-                  //Inhumación Individual;
-                  respuesta = await htmlInhumacionIndividual(true);
-                  break;
-                case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
-                  //Inhumacion fetal
-                  respuesta = await htmlInhumacionFetal(true);
-                  break;
-                case 'e69bda86-2572-45db-90dc-b40be14fe020':
-                  //Cremacion individual
-                  respuesta = await htmlCremacionIndividual(true);
-                  break;
-                case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
-                  //Cremacionfetal
-                  respuesta = await htmlCremacionFetal(true);
-                  break;
-                default:
-                  break;
-              }
-
-              //const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
-              //const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
-
-              const licencia: any = await api.ObtenerPDFShared({
-                html: respuesta.plantillaLicenciaGen
-              });
-              setsolicitante(respuesta.nombreSolicitante);
-              setlicencia(licencia);
-
-              //const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
+              let fechaSolicitud: string = solicitud[0]['fechaSolicitud'];
+              let idTramite = objJosn?.idTramite;
+              let cementerio = solicitud[0]['datosCementerio']['cementerio'];
+              let date = new Date();
+              let emailSolicitante = resumenSolicitud[0]['correoFuneraria'];
+              let emailFamiliarContratante = resumenSolicitud[0]['correoSolicitante'];
 
 
-              const urlToFile = async (url: string, filename: string, mimeType: any) => {
-                const res = await fetch(url);
-                const buf = await res.arrayBuffer();
-                return new File([buf], filename, { type: mimeType });
-              };
+              if (tipoSeguimiento.toLocaleUpperCase() == '3CD0ED61-F26B-4CC0-9015-5B497673D275') {
+                //alert('aprobacion');
 
+                //const infouser: any = localStorage.getItem('infouser');
+                //const info: any = JSON.parse(infouser);
 
+                //const codigo = await api.ObtenerCodigoVerificacion(objJosn.idControlTramite + '');
 
-              (async () => {
-                file = await urlToFile('data:application/pdf;base64,' + licencia, 'licencia', 'application/pdf');
+                const tipotramite: string = objJosn.idTramite;
 
+                //-----------------------------------------
 
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append(
-                  'nameFile',
-                  'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia']
-                );
-
-                nombrearchivo = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
-
-
-                switch (valor) {
-                  case 'Inhumación Individual':
-                    contenedor = 'inhumacionindividual';
+                let respuesta: any = '';
+                switch (tipotramite) {
+                  case 'a289c362-e576-4962-962b-1c208afa0273':
+                    //Inhumación Individual;
+                    respuesta = await htmlInhumacionIndividual(true);
                     break;
-                  case 'Inhumación Fetal':
-                    contenedor = 'inhumacionfetal';
+                  case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
+                    //Inhumacion fetal
+                    respuesta = await htmlInhumacionFetal(true);
                     break;
-                  case 'Cremación Individual':
-                    contenedor = 'cremacionindividual';
+                  case 'e69bda86-2572-45db-90dc-b40be14fe020':
+                    //Cremacion individual
+                    respuesta = await htmlCremacionIndividual(true);
                     break;
-                  case 'Cremación Fetal':
-                    contenedor = 'cremacionfetal';
+                  case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
+                    //Cremacionfetal
+                    respuesta = await htmlCremacionFetal(true);
+                    break;
+                  default:
                     break;
                 }
 
+                //const resumenSolicitud: any = await api.GetResumenSolicitud(objJosn?.idSolicitud);
+                //const htmlFinal: string = resumenSolicitud[0]['plantillaLicenciaGen'];
+
+                const licencia: any = await api.ObtenerPDFShared({
+                  html: respuesta.plantillaLicenciaGen
+                });
+                setsolicitante(respuesta.nombreSolicitante);
+                setlicencia(licencia);
+
+                //const licencia = await api.generarPDF(objJosn?.idSolicitud, idUsuario, info.fullName, codigo, true);
 
 
-                formData.append('containerName', contenedor);
-                formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
-                const subida = await api.uploadFiles(formData);
+                const urlToFile = async (url: string, filename: string, mimeType: any) => {
+                  const res = await fetch(url);
+                  const buf = await res.arrayBuffer();
+                  return new File([buf], filename, { type: mimeType });
+                };
 
 
 
+                (async () => {
+                  file = await urlToFile('data:application/pdf;base64,' + licencia, 'licencia', 'application/pdf');
 
-                let path = contenedor + "/" + objJosn.idusuarioseg + "/" + nombrearchivo;
 
-                let respuesta: any = null;
-                try {
-                  respuesta = await api.GetBlobAzureV2(path);
-                  if (respuesta != null) {
-                    const urlPDF = await api.GetUrlPdf(path);
-                    setesguardar(true);
+                  const formData = new FormData();
+                  formData.append('file', file);
+                  formData.append(
+                    'nameFile',
+                    'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia']
+                  );
 
-                    setUrlPdfLicence(urlPDF);
+                  nombrearchivo = 'LICENCIA_' + valor.replace(' ', '_').toLocaleUpperCase() + '_' + 'N°' + resumenSolicitud[0]['numeroLicencia'];
 
-                    setIsModalVisiblePdf(true);
+
+                  switch (valor) {
+                    case 'Inhumación Individual':
+                      contenedor = 'inhumacionindividual';
+                      break;
+                    case 'Inhumación Fetal':
+                      contenedor = 'inhumacionfetal';
+                      break;
+                    case 'Cremación Individual':
+                      contenedor = 'cremacionindividual';
+                      break;
+                    case 'Cremación Fetal':
+                      contenedor = 'cremacionfetal';
+                      break;
                   }
-                  else {
+
+
+
+                  formData.append('containerName', contenedor);
+                  formData.append('oid', solicitud[0]['idUsuarioSeguridad']);
+                  const subida = await api.uploadFiles(formData);
+
+
+
+
+                  let path = contenedor + "/" + objJosn.idusuarioseg + "/" + nombrearchivo;
+
+                  let respuesta: any = null;
+                  try {
+                    respuesta = await api.GetBlobAzureV2(path);
+                    if (respuesta != null) {
+                      const urlPDF = await api.GetUrlPdf(path);
+                      setesguardar(true);
+
+                      setUrlPdfLicence(urlPDF);
+
+                      setIsModalVisiblePdf(true);
+                    }
+                    else {
+
+                      let contador = 0;
+                      while (respuesta === null && contador < 3) {
+
+
+                        try {
+
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          formData.append(
+                            'nameFile',
+                            nombrearchivo
+                          );
+                          formData.append('containerName', contenedor);
+                          formData.append('oid', objJosn.idusuarioseg);
+                          await api.uploadFiles(formData);
+
+
+
+
+
+                          respuesta = await api.GetBlobAzureV2(path);
+                          contador++;
+                          if (respuesta != null) {
+
+
+
+
+                            const urlPDF = await api.GetUrlPdf(path);
+
+                            setesguardar(true);
+                            setUrlPdfLicence(urlPDF);
+
+                            setIsModalVisiblePdf(true);
+                          }
+
+
+                        } catch (error) {
+                          contador++;
+                        }
+
+
+                      }
+                    }
+                  }
+                  catch (excep) {
 
                     let contador = 0;
                     while (respuesta === null && contador < 3) {
@@ -783,111 +856,66 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
                     }
                   }
+
+                  if (respuesta === null) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Ha Ocurrido un Error',
+                      confirmButtonColor: '#04bbd3',
+                      text:
+                        'Ha ocurrido un error, porfavor contacte con el administrador, Error:503'
+                    });
+                  }
+
+                })();
+              }
+              else {
+
+                let observacion = '';
+                if (tipoSeguimiento.toLocaleUpperCase() === 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9') {
+                  if (objJosn.numerolicencia == null) {
+                    observacion = 'anulación' + (documentos.length === 0 ? '/' + values.observations : '');
+                    setObservaciones('anulación' + (documentos.length === 0 ? '/' + values.observations : ''));
+                  }
+                  else {
+                    observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');
+                    setObservaciones('anulación actualización' + (documentos.length === 0 ? '/' + values.observations : ''));
+                  }
+
                 }
-                catch (excep) {
-
-                  let contador = 0;
-                  while (respuesta === null && contador < 3) {
-
-
-                    try {
-
-                      const formData = new FormData();
-                      formData.append('file', file);
-                      formData.append(
-                        'nameFile',
-                        nombrearchivo
-                      );
-                      formData.append('containerName', contenedor);
-                      formData.append('oid', objJosn.idusuarioseg);
-                      await api.uploadFiles(formData);
-
-
-
-
-
-                      respuesta = await api.GetBlobAzureV2(path);
-                      contador++;
-                      if (respuesta != null) {
-
-
-
-
-                        const urlPDF = await api.GetUrlPdf(path);
-
-                        setesguardar(true);
-                        setUrlPdfLicence(urlPDF);
-
-                        setIsModalVisiblePdf(true);
-                      }
-
-
-                    } catch (error) {
-                      contador++;
-                    }
-
+                if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
+                  if (objJosn.numerolicencia == null) {
+                    observacion = 'negación';
+                    setObservaciones('negación')
+                  }
+                  else {
+                    observacion = 'negación actualización';
+                    setObservaciones('negación actualización')
 
                   }
+
+                }
+                if (tipoSeguimiento.toLocaleUpperCase() === 'FE691637-BE8A-425F-A309-E2032221553F') {
+
+                  if (objJosn.numerolicencia == null) {
+                    observacion = 'documentos inconsistentes';
+                    setObservaciones('documentos inconsistentes')
+
+                  }
+                  else {
+                    observacion = 'documentos inconsistentes actualización';
+                    setObservaciones('documentos inconsistentes actualización')
+
+                  }
+
                 }
 
-                if (respuesta === null) {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Ha Ocurrido un Error',
-                    confirmButtonColor: '#04bbd3',
-                    text:
-                      'Ha ocurrido un error, porfavor contacte con el administrador, Error:503'
-                  });
-                }
 
-              })();
+                NotificacionFinal(observacion, values.observations, tipoSeguimiento, documentos, iddocumento, pathdocumento);
+              }
+              setObservacionesValidador(values.observations)
+
             }
-            else {
-
-              let observacion = '';
-              if (tipoSeguimiento.toLocaleUpperCase() === 'C21F9037-8ADB-4353-BEAD-BDBBE0ADC2C9') {
-                if (objJosn.numerolicencia == null) {
-                  observacion = 'anulación' + (documentos.length === 0 ? '/' + values.observations : '');
-                  setObservaciones('anulación' + (documentos.length === 0 ? '/' + values.observations : ''));
-                }
-                else {
-                  observacion = 'anulación actualización' + (documentos.length === 0 ? '/' + values.observations : '');
-                  setObservaciones('anulación actualización' + (documentos.length === 0 ? '/' + values.observations : ''));
-                }
-
-              }
-              if (tipoSeguimiento.toLocaleUpperCase() === 'FA183116-BE8A-425F-A309-E2032221553F') {
-                if (objJosn.numerolicencia == null) {
-                  observacion = 'negación';
-                  setObservaciones('negación')
-                }
-                else {
-                  observacion = 'negación actualización';
-                  setObservaciones('negación actualización')
-
-                }
-
-              }
-              if (tipoSeguimiento.toLocaleUpperCase() === 'FE691637-BE8A-425F-A309-E2032221553F') {
-
-                if (objJosn.numerolicencia == null) {
-                  observacion = 'documentos inconsistentes';
-                  setObservaciones('documentos inconsistentes')
-
-                }
-                else {
-                  observacion = 'documentos inconsistentes actualización';
-                  setObservaciones('documentos inconsistentes actualización')
-
-                }
-
-              }
-
-
-              NotificacionFinal(observacion, values.observations, tipoSeguimiento, documentos, iddocumento, pathdocumento);
-            }
-            setObservacionesValidador(values.observations)
-
           }
         }
 
@@ -904,6 +932,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     }
 
   };
+
+
 
   const Reintentar = async () => {
     setIsModalVisiblePdf(false)
