@@ -146,6 +146,9 @@ export const ModificarLicencia = ({ props }: any) => {
     setdatosUsuario(listasolicitudes);
     setmostrartabla(true);
     setlicenciaseleccionada(false);
+    setobj(undefined);
+    form.resetFields();
+    form.setFieldsValue({ numero: numero });
 
   }
 

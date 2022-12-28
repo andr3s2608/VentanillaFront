@@ -182,7 +182,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
         <Form.Item
           label='Sexo'
           name='sex'
-          initialValue={obj?.idSexo ? obj?.idSexo : '11c463f3-8135-4545-b58f-3fc748edde94'}
+          initialValue={obj?.sex ? obj?.sex : '11c463f3-8135-4545-b58f-3fc748edde94'}
           rules={[{ required: true }]}
         >
           <Radio.Group>
