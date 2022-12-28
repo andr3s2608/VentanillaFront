@@ -139,14 +139,18 @@ export const ModificarLicencia = ({ props }: any) => {
   }, []);
 
   const BuscarSolicitud = async () => {
+
     const numero: string = form.getFieldValue('numero');
     const listasolicitudes: any = await api.ConsultarLicenciasAdministrador(numero, valores);
+
 
     setdata(listasolicitudes);
     setdatosUsuario(listasolicitudes);
     setmostrartabla(true);
     setlicenciaseleccionada(false);
-
+    setobj(undefined);
+    form.resetFields();
+    form.setFieldsValue({ numero: numero });
   }
 
   const onClickModificar = async (solicitud: any) => {
