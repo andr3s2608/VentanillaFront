@@ -229,53 +229,79 @@ const App: React.FC<valores> = (props) => {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {
-        setVisible(true);
-        swal.fire({
-          title: 'Horario de atención',
-          text: MensajeFinal,
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-          },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          },
-          icon: 'info'
-        }).then((result) => {
 
-          if (origen === 'solicitud') {
-            history.push('/');
-          }
-          else {
-            metodo(false);
-          }
+        if (origen === 'solicitudfinal') {
+          swal.fire({
+            icon: 'success',
 
-        });
+            title: 'Solicitud Creada',
+            text: `Se ha creado la Solicitud exitosamente con número de tramite ${metodo + ''} ,pero debido a que ha sido creada
+            fuera del horario permitido sera tramitada el dia de mañana`
+          });
+        }
+        else {
+          setVisible(true);
+          swal.fire({
+            title: 'Horario de atención',
+            text: MensajeFinal,
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            icon: 'info'
+          }).then((result) => {
+
+            if (origen === 'solicitud') {
+              history.push('/');
+            }
+            else {
+              metodo(false);
+            }
+
+          });
+        }
+
+
 
       }
     } else {
       if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
         setVisible(false);
       } else {
-        setVisible(true);
-        swal.fire({
-          title: 'Horario de atención',
-          text: MensajeFinal,
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-          },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          },
-          icon: 'info'
-        }).then((result) => {
-          if (origen === 'solicitud') {
-            history.push('/');
-          }
-          else {
-            metodo(false);
-          }
-        });
+        if (origen === 'solicitudfinal') {
+          swal.fire({
+            icon: 'success',
 
+            title: 'Solicitud Creada',
+            text: `Se ha creado la Solicitud exitosamente con número de tramite ${metodo + ''} ,pero debido a que ha sido creada
+            fuera del horario permitido sera tramitada el dia de mañana`
+          });
+        }
+        else {
+          setVisible(true);
+          swal.fire({
+            title: 'Horario de atención',
+            text: MensajeFinal,
+            showClass: {
+              popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+              popup: 'animate__animated animate__fadeOutUp'
+            },
+            icon: 'info'
+          }).then((result) => {
+
+            if (origen === 'solicitud') {
+              history.push('/');
+            }
+            else {
+              metodo(false);
+            }
+
+          });
+        }
       }
     }
   };
