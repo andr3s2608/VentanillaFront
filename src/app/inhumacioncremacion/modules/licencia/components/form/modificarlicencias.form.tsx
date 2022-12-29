@@ -1316,7 +1316,7 @@ export const ModificarLicencia = ({ props }: any) => {
           }
         }
 
-        console.log(json)
+
 
         const insercion: any = await api.UpdateLicenciaAdmin(json, '1');
 

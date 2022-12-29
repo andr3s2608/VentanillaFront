@@ -143,7 +143,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             Swal.fire({
               icon: 'error',
               title: 'Datos Invalidos',
-              text: 'El caudal debe ser manor a los 100 L/S'
+              text: 'El caudal debe ser menor a los 100 L/S'
             });
           }
           else {

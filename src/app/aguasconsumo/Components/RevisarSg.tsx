@@ -190,26 +190,30 @@ export const RevisarSg = () => {
     if (rol === 'Subdirector') {
 
       const typeNotificationSeleted = values.seguimiento.toLocaleUpperCase();
-
+      let observacionbd = '';
       switch (typeNotificationSeleted) {
         /** Para el caso que seleccione Aprobada */
         case '2E8808AF-A294-4CDE-8E9C-9A78B5172119':
           notificacion = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
+          observacionbd = 'autorización tramite'
           break;
 
         /** Para el caso que seleccione Desistimiento */
         case '7E2EAA50-F22F-4798-840D-5B98048D38A9':
           notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
+          observacionbd = 'Desistimiento'
           break;
 
         /** Para el caso que seleccione Subsanación */
         case '96D00032-4B60-4027-AFEA-0CC7115220B4':
           notificacion = '8B6AB818-A560-4825-8C82-2CF4B9C58914';
+          observacionbd = 'Subsanacion'
           break;
 
         /** Para el caso que seleccione No aprobado */
         case '2A31EB34-2AA0-428B-B8EF-A86683D8BB8D':
           notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
+          observacionbd = 'No aprobado'
           break;
       }
 
@@ -218,7 +222,7 @@ export const RevisarSg = () => {
           idObservacion: '00000000-0000-0000-0000-000000000000',
           idSolicitud: objJson.idsolicitud,
           idSubred: objJson.idSubred,
-          observacion: 'radicación solicitud',
+          observacion: observacionbd,
           fechaObservacion: null
         }
       )

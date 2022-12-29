@@ -29,25 +29,35 @@ export const Gridview = (props: IDataSource) => {
   const { accountIdentifier } = authProvider.getAccount();
   const [fechasolicitud, setfechasolicitud] = useState<any>();
   const [mostrar, setmostrar] = useState<boolean>(false);
-  const [Validacion, setValidacion] = useState<string>('0');
+
+
+  const [colores, setcolores] = useState<any[]>([]);
   const [roles, setroles] = useState<IRoles[]>([]);
   const api = new ApiService(accountIdentifier);
   const Paginas: number = 10;
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
 
+  const [carguedata, setcarguedata] = useState<boolean>(false);
+  const [habilitar, sethabilitar] = useState<boolean>(false);
+
 
   const [datosUsuario, setdatosUsuario] = useState<any>([]);
   const [fechafiltro, setfechafiltro] = useState<any>();
   const [funerariafiltro, setfunerariafiltro] = useState<any>('');
   const [idtramite, setidtramite] = useState<any>('');
+  const [idcontrol, setidcontrol] = useState<any>('');
   const [documento, setdocumento] = useState<any>('');
+
 
   const [HIA_LV, setHIA_LV] = useState<string[]>(['0', '0', '0']);
   const [HFA_LV, setHFA_LV] = useState<string[]>(['23', '5', '9']);
   const [HIA_SD, setHIA_SD] = useState<string[]>(['0', '0', '0']);
   const [HFA_SD, setHFA_SD] = useState<string[]>(['23', '5', '9']);
 
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataTable, setDataTable] = useState<[]>();
 
 
 
@@ -57,6 +67,7 @@ export const Gridview = (props: IDataSource) => {
 
       const rolesstorage: any = localStorage.getItem('roles');
 
+      const [Tipo] = JSON.parse(rolesstorage);
       let HoraInicioAtencion_LV = await api.getCostante('5DF03735-503B-4D22-8169-E4FCDD19DA26');
       let HoraFinAtencion_LV = await api.getCostante('818AA32D-C90D-45D0-975F-486D069F7CB1');
       let HoraInicioAtencion_SD = await api.getCostante('CE62162E-5E79-4E05-AEDE-276B6C89D886');
@@ -78,14 +89,56 @@ export const Gridview = (props: IDataSource) => {
         resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
       }
 */
+      /*
 
-      const datostabla: any = localStorage.getItem('tablainhcrem');
-      const datosjson = JSON.parse(datostabla)
+           if (Tipo.rol != 'Ciudadano' && Tipo.rol != 'MedicinaLegal') {
+
+
+
+
+             let contador = 0;
+             for (let index = 0; index <= data[0].iD_Control_Tramite; index++) {
+               if (contador != 0) {
+                 console.log('index ', index,)
+                 for (let index2 = 0; index2 < data.length; index2++) {
+                   if (index === data[index2].iD_Control_Tramite || index + '' === data[index2].iD_Control_Tramite) {
+
+                     colores.push(onChangeColor(data[index2], aux2, aux4));
+
+                     //contador = data[index2].iD_Control_Tramite;
+                     colores.push(undefined);
+                     break;
+                   }
+
+                 }
+                 if (contador != index) {
+                   colores.push(undefined);
+                 }
+
+               }
+               else {
+
+                 console.log('index ', index,)
+                 if (index === data[data.length - 1].iD_Control_Tramite || index + '' === data[data.length - 1].iD_Control_Tramite) {
+
+                   // colores.push(onChangeColor(data[data.length - 1], aux2, aux4));
+                   colores.push(undefined);
+                   contador++;
+                 }
+                 else {
+                   colores.push(undefined);
+                 }
+               }
+             }
+           }
+           */
 
 
 
       setroles(JSON.parse(rolesstorage));
-      setValidacion('1');
+      setdatosUsuario(data);
+      setcarguedata(true);
+      sethabilitar(true);
 
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +147,6 @@ export const Gridview = (props: IDataSource) => {
 
   useEffect(() => {
     getListas();
-    setdatosUsuario(data);
 
 
   }, []);
@@ -149,7 +201,7 @@ export const Gridview = (props: IDataSource) => {
                   return (
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
-
+                    datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                     datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
@@ -161,6 +213,7 @@ export const Gridview = (props: IDataSource) => {
                   return (
                     datos.fechaSolicitud.toString().includes(fecha) &&
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                     (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
                     datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
@@ -177,6 +230,7 @@ export const Gridview = (props: IDataSource) => {
                   return (
 
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                     datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
                 });
@@ -188,6 +242,7 @@ export const Gridview = (props: IDataSource) => {
                   return (
 
                     funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                    datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                     (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
                     datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                   );
@@ -226,13 +281,14 @@ export const Gridview = (props: IDataSource) => {
               if (idtramite === '') {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
-
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
               else {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
@@ -243,6 +299,7 @@ export const Gridview = (props: IDataSource) => {
               if (idtramite === '') {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
@@ -251,6 +308,79 @@ export const Gridview = (props: IDataSource) => {
                 return (
                   funeraria.toString().includes(currValue.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+
+            }
+          });
+          setdatosUsuario(filteredDataUsuario);
+
+        }}
+      />
+
+    );
+
+  }
+  const FilterByNameInputidcontrol = () => {
+
+    return (
+
+      <Input
+        placeholder='N° Solicitud'
+        value={idcontrol}
+        style={{ width: 140 }}
+        onKeyPress={(event) => {
+          if (!/[0-9]/.test(event.key)) {
+            event.preventDefault();
+          }
+        }}
+
+        onChange={(e) => {
+          const currValue: string = e.target.value;
+          setidcontrol(currValue);
+
+          const filteredDataUsuario: any = data.filter((datos: any) => {
+            const funeraria: string = datos.razonSocialSolicitante.toUpperCase();
+            if (fechafiltro === null || fechafiltro === undefined) {
+              if (idtramite === '') {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(currValue.toUpperCase()) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(currValue.toUpperCase()) &&
+                  (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+
+
+            }
+            else {
+              if (idtramite === '') {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.iD_Control_Tramite.toString().includes(currValue.toUpperCase()) &&
+                  datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
+                );
+              }
+              else {
+
+                return (
+                  funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.fechaSolicitud.toString().includes(fechafiltro) &&
+                  datos.iD_Control_Tramite.toString().includes(currValue.toUpperCase()) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(idtramite)) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
@@ -291,6 +421,7 @@ export const Gridview = (props: IDataSource) => {
 
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
               }
@@ -298,6 +429,7 @@ export const Gridview = (props: IDataSource) => {
 
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
@@ -310,6 +442,7 @@ export const Gridview = (props: IDataSource) => {
 
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
                 );
@@ -318,6 +451,7 @@ export const Gridview = (props: IDataSource) => {
 
                 return (
                   funeraria.toString().includes(funerariafiltro.toUpperCase()) &&
+                  datos.iD_Control_Tramite.toString().includes(idcontrol.toUpperCase()) &&
                   datos.fechaSolicitud.toString().includes(fechafiltro) &&
                   (datos.consecutivo === null ? '' : datos.consecutivo.toString().includes(currValue.toUpperCase())) &&
                   datos.noIdentificacionFallecido.toString().includes(documento.toUpperCase())
@@ -392,88 +526,311 @@ export const Gridview = (props: IDataSource) => {
   }
 
 
+  const festivos = [
+    {
+      fecha: {
+        mes: 1,
+        dia: 1
+      },
+      nombre: 'Año nuevo'
+    },
+    {
+      fecha: {
+        mes: 5,
+        dia: 1
+      },
+      nombre: 'Día del Trabajo'
+    },
+    {
+      fecha: {
+        mes: 7,
+        dia: 20
+      },
+      nombre: 'Día de la Independencia de Colombia'
+    },
+    {
+      fecha: {
+        mes: 8,
+        dia: 7
+      },
+      nombre: 'Batalla de Boyacá'
+    },
+    {
+      fecha: {
+        mes: 12,
+        dia: 8
+      },
+      nombre: 'Día de la Inmaculada Concepción'
+    },
+    {
+      fecha: {
+        mes: 12,
+        dia: 25
+      },
+      nombre: 'Navidad'
+    }
+  ];
+
+  function isHoliday(fechasolicitud: any): boolean {
+    let bandera = false;
+
+    if (fechasolicitud !== null) {
+      for (let index = 0; index < festivos.length; index++) {
+        if (festivos[index].fecha.mes - 1 == fechasolicitud.getMonth() && festivos[index].fecha.dia == fechasolicitud.getDate()) {
+          bandera = true;
+        }
+      }
+    }
+    else {
+      let hoy = new Date();
+
+      for (let index = 0; index < festivos.length; index++) {
+        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
+          bandera = true;
+        }
+      }
+    }
+
+    return bandera;
+  }
+
+  const onChangeColor = (solicitud: any, hfa_lv: any, hfa_sd: any) => {
+
+
+
+    const fechaactual = new Date()
+    const fechasolicitud = new Date(solicitud.fechaSolicitud);
+    const horasolicitud = moment(solicitud.fechaSolicitud).format('HH');
+    const minutosolicitud = moment(solicitud.fechaSolicitud).format('mm');
+
+
+    let horabd = '';
+    let minutobd = '';
+    if ((fechasolicitud.getDay() != 0 && fechasolicitud.getDay() != 6) && !isHoliday(fechasolicitud)) {
+      horabd = hfa_lv[0];
+      minutobd = hfa_lv[1] + hfa_lv[2];
+    }
+    else {
+      horabd = hfa_sd[0];
+      minutobd = hfa_sd[1] + hfa_sd[2];
+    }
+
+    const fechaprueb2 = moment(fechasolicitud.setHours(0, 0, 0));
+
+    const diaspasados = moment(fechaactual.setHours(0, 0, 0)).diff(fechaprueb2, 'days');
+
+
+
+    if (diaspasados >= -1 && diaspasados <= 1 && solicitud.estadoString === 'Registro Usuario Externo') {
+      if (Number.parseInt(horasolicitud + '') > Number.parseInt(horabd)) {
+
+
+        return 'yellow'
+
+      }
+      else {
+        if (Number.parseInt(horasolicitud + '') === Number.parseInt(horabd)) {
+          if (Number.parseInt(minutosolicitud + '') > Number.parseInt(minutobd)) {
+
+
+            return 'yellow'
+          }
+          else {
+
+
+            return 'white'
+          }
+        }
+        else {
+
+          if (Number.parseInt(horasolicitud + '') > Number.parseInt(horabd)) {
+
+            return 'yellow'
+          }
+          else {
+
+            return 'white'
+          }
+        }
+      }
+    }
+    else {
+
+      return 'white'
+    }
+
+
+  }
+
+
+  const onClickSeguimiento = async (solicitud: any) => {
+    //const solicitante = await api.GetResumenSolicitud(idSolicitud);
+
+    const seguimiento: any = await api.getSeguimientoporSolicitud(solicitud.idSolicitud);
+
+
+    const strAscending: any = [...seguimiento].sort((a, b) =>
+      a.fechaActualizacion > b.fechaActualizacion ? 1 : -1,
+    )
+
+    setDataTable(strAscending);
+    showModal();
+  };
+
+
 
 
   let structureColumns: any = [];
 
 
-  if (Validacion == '1') {
+
+  if (carguedata) {
+
+
     if (Tipo.rol !== 'Ciudadano'
       && Tipo.rol !== 'MedicinaLegal'
       //  && Tipo.rol !== 'AdminTI'
     ) {
 
       structureColumns = [
+        /*
+        {
+          title: FilterByNameInputidcontrol(),
+          dataIndex: 'iD_Control_Tramite',
+          key: 'iD_Control_Tramite',
+          width: 300,
 
+          sorter: {
+            compare: (a: { iD_Control_Tramite: string; }, b: { iD_Control_Tramite: string; }) =>
+              a.iD_Control_Tramite > b.iD_Control_Tramite ? 1 : -1,
+            multiple: 4,
+          },
+
+          render(Text: any, row: any) {
+
+            return {
+              props: {
+                style: { background: ("" + colores[row.iD_Control_Tramite]) }
+              },
+              children: <div>{Text}</div>
+            };
+          }
+        },
+        */
         {
           title: 'Validar Tramite',
           key: 'Acciones',
           width: 200,
-          render: (_: any, row: any, index: any) => {
-            const [permiso] = roles;
+          render(_: any, row: any, index: any, text: any) {
+
             if (row.estadoString === 'Cambio de Licencia' || row.estadoString === 'Registro Usuario Externo'
               || row.estadoString === 'Actualización Documentos' || row.estadoString === 'Actualización Solicitud') {
-              return (<Form.Item label='' name=''>
-                <Button
-                  type='primary'
-                  key={`vali-${index}`}
-                  onClick={() => onClickValidarInformacion(row)}
-                  style={{ marginLeft: '5px' }}
-                  icon={<CheckOutlined />}
-                >
-                  Validar Información
-                </Button>
-              </Form.Item>)
+              return {
+                props: {
+                  style: { background: colores[row.iD_Control_Tramite] }
+                },
+                children: <Form.Item label='' name=''>
+                  <Button
+                    type='primary'
+                    key={`vali-${index}`}
+                    onClick={() => onClickValidarInformacion(row)}
+                    style={{ marginLeft: '5px' }}
+                    icon={<CheckOutlined />}
+                  >
+                    Validar Información
+                  </Button>
+                </Form.Item>
+              };
             }
+
           }
         },
         {
           title: 'Visualizar PDF',
           key: 'Acciones',
           width: 200,
-          render: (_: any, row: any, index: any) => {
+          render(_: any, row: any, index: any, text: any) {
             const [permiso] = roles;
             if (row.estadoString === 'Aprobado validador de documentos') {
-              return (<Form.Item label='' name=''>
-                <FilePdfOutlined
-                  onClick={() => onClickVisualizarPDF(row)}
-                  style={{ fontSize: '30px' }}
-                />
-              </Form.Item>)
+              return {
+                props: {
+                  style: { background: colores[row.iD_Control_Tramite] }
+                },
+                children: <Form.Item label='' name=''>
+                  <FilePdfOutlined
+                    onClick={() => onClickVisualizarPDF(row)}
+                    style={{ fontSize: '30px' }}
+                  />
+                </Form.Item>
+              };
+            }
+            else {
+              return {
+                props: {
+                  style: { background: colores[row.iD_Control_Tramite] }
+                },
+                children: <div></div>
+              };
             }
           }
+
         },
+
         {
           title: FilterByNameInputid(),
           dataIndex: 'consecutivo',
           key: 'consecutivo',
-          defaultSortOrder: 'descend',
+
           sorter: {
             compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
               a.consecutivo > b.consecutivo ? 1 : -1,
             multiple: 3,
+          },
+          render(text: any, row: any) {
+            return {
+              props: {
+                style: { background: colores[row.iD_Control_Tramite] }
+              },
+              children: <div>{text}</div>
+            };
           }
         },
         {
           title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionFallecido',
           key: 'numeroDocumento',
-          defaultSortOrder: 'descend',
+
           sorter: {
             compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
               a.noIdentificacionFallecido - b.noIdentificacionFallecido,
             multiple: 2,
+          },
+          render(text: any, row: any) {
+            return {
+              props: {
+                style: { background: colores[row.iD_Control_Tramite] }
+              },
+              children: <div>{text}</div>
+            };
           }
         },
         {
           title: FilterByNameInputfuneraria(),
           dataIndex: 'razonSocialSolicitante',
           key: 'nombreCompleto',
-
           sorter: {
             compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
               a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
             multiple: 1,
+          },
+          render(text: any, row: any) {
+
+            return {
+              props: {
+                style: { background: colores[row.iD_Control_Tramite] }
+              },
+              children: <div>{text}</div>
+            };
           }
         },
         {
@@ -493,6 +850,14 @@ export const Gridview = (props: IDataSource) => {
           ],
           filterSearch: true,
           onFilter: (value: string, record: { institucionCertifica: string }) => record.institucionCertifica.toString().includes(value),
+          render(text: any, row: any) {
+            return {
+              props: {
+                style: { background: colores[row.iD_Control_Tramite] }
+              },
+              children: <div>{text}</div>
+            };
+          }
         },
 
         {
@@ -500,11 +865,16 @@ export const Gridview = (props: IDataSource) => {
           dataIndex: 'fechaSolicitud',
           key: 'fechaSolicitud',
           with: 600,
-          render: (Text: any) => (
-            <Form.Item label='' name=''>
-              <text>{moment(Text.toString().substring(0, Text.toString().indexOf(' '))).format('DD-MM-YYYY')}</text>
-            </Form.Item>
-          )
+          render(Text: any, row: any) {
+            return {
+              props: {
+                style: { background: colores[row.iD_Control_Tramite] }
+              },
+              children: <Form.Item label='' name=''>
+                <text>{moment(Text.toString().substring(0, Text.toString().indexOf(' '))).format('DD-MM-YYYY')}</text>
+              </Form.Item>
+            };
+          }
         },
         {
           title: 'Estado Tramite',
@@ -537,30 +907,47 @@ export const Gridview = (props: IDataSource) => {
           ],
           filterSearch: true,
           onFilter: (value: string, record: { estadoString: string }) => record.estadoString.toString().includes(value),
-
-
-          render: (Text: string) => {
-
+          render(Text: string, row: any) {
             if (Text === 'Cambio de Licencia') {
-              return (<Form.Item label='' name=''>
-                <text>{'Cambio tipo de licencia'}</text>
-              </Form.Item>)
+              return {
+                props: {
+                  style: { background: colores[row.iD_Control_Tramite] }
+                },
+                children: <Form.Item label='' name=''>
+                  <text>{'Cambio tipo de licencia'}</text>
+                </Form.Item>
+              };
+
             }
             else {
               if (Text === 'Registro Usuario Externo') {
-                return (<Form.Item label='' name=''>
-                  <text>{'En Tramite'}</text>
-                </Form.Item>)
+                return {
+                  props: {
+                    style: { background: colores[row.iD_Control_Tramite] }
+                  },
+                  children: <Form.Item label='' name=''>
+                    <text>{'En Tramite'}</text>
+                  </Form.Item>
+                };
+
               }
               else {
-                return (<Form.Item label='' name=''>
-                  <text>{Text}</text>
-                </Form.Item>)
+                return {
+                  props: {
+                    style: { background: colores[row.iD_Control_Tramite] }
+                  },
+                  children: <Form.Item label='' name=''>
+                    <text>{Text}</text>
+                  </Form.Item>
+                };
+
               }
 
             }
 
           }
+
+
         },
         {
           title: 'Tipo Solicitud',
@@ -587,30 +974,58 @@ export const Gridview = (props: IDataSource) => {
           ],
           filterSearch: true,
           onFilter: (value: string, record: { idTramite: string }) => record.idTramite.toString().includes(value),
-          render: (Text: string) => {
+          render(Text: string, row: any) {
             switch (Text) {
               case 'a289c362-e576-4962-962b-1c208afa0273':
-                return <Form.Item label='' name=''>
-                  <text>{'Inhumación Individual'}</text>
-                </Form.Item>
+                return {
+                  props: {
+                    style: { background: colores[row.iD_Control_Tramite] }
+                  },
+                  children: < Form.Item label='' name='' >
+                    <text>{'Inhumación Individual'}</text>
+                  </Form.Item >
+                };
+                break;
+
 
               case 'ad5ea0cb-1fa2-4933-a175-e93f2f8c0060':
                 //inhumacion fetal
-                return <Form.Item label='' name=''>
-                  <text>{'Inhumación Fetal'}</text>
-                </Form.Item>
+                return {
+                  props: {
+                    style: { background: colores[row.iD_Control_Tramite] }
+                  },
+                  children: <Form.Item label='' name=''>
+                    <text>{'Inhumación Fetal'}</text>
+                  </Form.Item>
+                };
+                break;
+
 
               case 'e69bda86-2572-45db-90dc-b40be14fe020':
                 //cremacion individual
-                return <Form.Item label='' name=''>
-                  <text>{'Cremación Individual'}</text>
-                </Form.Item>
+                return {
+                  props: {
+                    style: { background: colores[row.iD_Control_Tramite] }
+                  },
+                  children: <Form.Item label='' name=''>
+                    <text>{'Cremación Individual'}</text>
+                  </Form.Item>
 
+                };
+                break;
               case 'f4c4f874-1322-48ec-b8a8-3b0cac6fca8e':
                 //cremacionfetal
-                return <Form.Item label='' name=''>
-                  <text>{'Cremación Fetal '}</text>
-                </Form.Item>
+                return {
+                  props: {
+                    style: { background: colores[row.iD_Control_Tramite] }
+                  },
+                  children: <Form.Item label='' name=''>
+                    <text>{'Cremación Fetal '}</text>
+                  </Form.Item>
+
+                };
+                break;
+
 
 
             }
@@ -624,18 +1039,40 @@ export const Gridview = (props: IDataSource) => {
           title: FilterByNameInputid(),
           dataIndex: 'consecutivo',
           key: 'consecutivo',
-          defaultSortOrder: 'descend',
+
           sorter: {
             compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
               a.consecutivo > b.consecutivo ? 1 : -1,
-            multiple: 1,
+            multiple: 3,
           }
         },
+        /*
+        {
+          title: 'Observaciones',
+          dataIndex: '',
+          key: 'observaciones',
+          render: (_: any, row: any, index: any) => {
+            return (
+              <Button
+                type='primary'
+                style={{ marginLeft: '5px' }}
+                icon={<CheckOutlined />}
+                onClick={() => onClickSeguimiento(row)}
+              >
+                Ver seguimiento
+              </Button>
+            );
+
+          }
+
+
+        },
+        */
         {
           title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionFallecido',
           key: 'noIdentificacionFallecido',
-          defaultSortOrder: 'descend',
+
           sorter: {
             compare: (a: { noIdentificacionFallecido: number; }, b: { noIdentificacionFallecido: number; }) =>
               a.noIdentificacionFallecido - b.noIdentificacionFallecido,
@@ -649,7 +1086,7 @@ export const Gridview = (props: IDataSource) => {
           sorter: {
             compare: (a: { razonSocialSolicitante: string; }, b: { razonSocialSolicitante: string; }) =>
               a.razonSocialSolicitante > b.razonSocialSolicitante ? 1 : -1,
-            multiple: 3,
+            multiple: 1,
           }
         },
         {
@@ -855,7 +1292,7 @@ export const Gridview = (props: IDataSource) => {
           key: 'Acciones',
           width: 200,
           render: (_: any, row: any, index: any) => {
-            const [permiso] = roles;
+
             if (row.solicitud === 'Aprobado validador de documentos') {
               return (<Form.Item label='' name=''>
                 <FilePdfOutlined
@@ -891,11 +1328,11 @@ export const Gridview = (props: IDataSource) => {
       }
 
 
-      ;
+
     }
   }
 
-  let tramite = 'En tramite';
+
 
   async function onClickVisualizarPDF(row: any): Promise<void> {
     try {
@@ -970,6 +1407,7 @@ export const Gridview = (props: IDataSource) => {
     const data = await api.getLicencia(idSolicitud);
 
     localStorage.setItem('register', JSON.stringify(data));
+    localStorage.removeItem(idSolicitud);
     store.dispatch(SetResetViewLicence());
     history.push('/tramites-servicios/licencia/gestion-inhumacion');
   };
@@ -1275,65 +1713,10 @@ export const Gridview = (props: IDataSource) => {
     );
   }
 
+
+
   function mostrarPopUp(): boolean {
     let bandera = true;
-
-    const festivos = [
-      {
-        fecha: {
-          mes: 1,
-          dia: 1
-        },
-        nombre: 'Año nuevo'
-      },
-      {
-        fecha: {
-          mes: 5,
-          dia: 1
-        },
-        nombre: 'Día del Trabajo'
-      },
-      {
-        fecha: {
-          mes: 7,
-          dia: 20
-        },
-        nombre: 'Día de la Independencia de Colombia'
-      },
-      {
-        fecha: {
-          mes: 8,
-          dia: 7
-        },
-        nombre: 'Batalla de Boyacá'
-      },
-      {
-        fecha: {
-          mes: 12,
-          dia: 8
-        },
-        nombre: 'Día de la Inmaculada Concepción'
-      },
-      {
-        fecha: {
-          mes: 12,
-          dia: 25
-        },
-        nombre: 'Navidad'
-      }
-    ];
-
-    function isHoliday(): boolean {
-      let bandera = false;
-      let hoy = new Date();
-
-      for (let index = 0; index < festivos.length; index++) {
-        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
-          bandera = true;
-        }
-      }
-      return bandera;
-    }
 
     let ahora = new Date();
     let dia = ahora.getDate();
@@ -1355,6 +1738,8 @@ export const Gridview = (props: IDataSource) => {
       Number.parseInt(HFA_LV[1] + HFA_LV[2]),
       Number.parseInt('0')
     );
+
+
     const horaInicialFinSemana = new Date(
       año,
       mes,
@@ -1374,7 +1759,11 @@ export const Gridview = (props: IDataSource) => {
     );
 
 
-    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday()) {
+
+
+
+
+    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday(null)) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         bandera = false;
       } else {
@@ -1391,77 +1780,154 @@ export const Gridview = (props: IDataSource) => {
 
     return bandera;
   }
-  const RefrescarBandeja = async () => {
+  const columnFake = [
 
-    window.location.reload();
+    {
+      title: 'Fecha de Solicitud',
+      dataIndex: 'fechaRegistro',
+      key: 'fechaRegistro',
+      render: (Text: any) => {
+        const fecha: Date = new Date(Text)
+        const horas: number = fecha.getHours() - 5;
+        fecha.setHours(horas)
+        const fechaparseada = moment(fecha).format('DD-MM-YYYY HH:mm');
+        return (<Form.Item label='' name=''>
+          <text>{fechaparseada.toString()}</text>
+        </Form.Item>)
+      }
 
-    //history.push('/tramites-servicios');
+    },
+    {
+      title: 'Estado',
+      dataIndex: 'estado',
+      key: 'estado'
+    },
+    {
+      title: 'Observación',
+      dataIndex: 'observacion',
+      key: 'Observacion'
+    },
+    {
+      title: 'Fecha de Actualización',
+      dataIndex: 'fechaActualizacion',
+      key: 'FechaActualizacion',
+      render: (Text: any) => {
+        const fecha: Date = new Date(Text)
+        const horas: number = fecha.getHours() - 5;
+        fecha.setHours(horas)
+        const fechaparseada = moment(fecha).format('DD-MM-YYYY HH:mm');
+        return (<Form.Item label='' name=''>
+          <text>{fechaparseada.toString()}</text>
+        </Form.Item>)
+      }
+    },
+    {
+      title: 'Nombre Completo',
+      dataIndex: 'usuarioName',
+      key: 'usuarioName'
+    }
+  ];
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
 
   return (
-    <div className='container-fluid'>
-      <div className='card'>
-        <div className='card-body'>
-          <div className='row'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
+    <>
+      {habilitar && (
+        <>
+          <div className='container-fluid'>
+            <div className='card'>
+              <div className='card-body'>
+                <div className='row'>
+                  <div className='col-lg-12 col-sm-12 col-md-12'>
 
-              <Modal
-                title={
-                  <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
-                    Visualización de la licencia
-                  </p>
-                }
-                visible={isModalVisiblePdf}
-                onCancel={() => setIsModalVisiblePdf(false)}
-                width={1000}
-                okButtonProps={{ hidden: true }}
-                cancelText='Cerrar'
-              >
-                <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-              </Modal>
+                    <Modal
+                      title={
+                        <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                          Visualización de la licencia
+                        </p>
+                      }
+                      visible={isModalVisiblePdf}
+                      onCancel={() => setIsModalVisiblePdf(false)}
+                      width={1000}
+                      okButtonProps={{ hidden: true }}
+                      cancelText='Cerrar'
+                    >
+                      <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                    </Modal>
 
-              <Table
-                id='tableGen'
-                dataSource={datosUsuario}
-                columns={structureColumns}
-                scroll={{ x: 1200 }}
-                pagination={{ pageSize: Paginas }}
-              />
+                    <Table
+                      id='tableGen'
+                      dataSource={datosUsuario}
+                      columns={structureColumns}
+
+                      style={{ outline: 'none' }}
+                      scroll={{ x: 1200 }}
+                      pagination={{ pageSize: Paginas }}
+                    />
+                  </div>
+                </div>
+                <Modal
+                  title={
+                    <p className='text-center text-dark text-uppercase mb-0 titulo'>
+                      Ventana de seguimiento y auditoria
+                    </p>
+                  }
+                  visible={isModalVisible}
+                  onCancel={handleCancel}
+                  width={1500}
+                  okButtonProps={{ hidden: true }}
+                  cancelText='Cerrar'
+                >
+                  <Table
+                    // className='text-center table'
+                    dataSource={dataTable}
+                    columns={columnFake}
+                    scroll={{ x: 1200 }}
+                    pagination={{ hideOnSinglePage: true }}
+                  />
+                </Modal>
+                <div className='row'>
+                  {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
+                  <Modal
+                    title={<p className='text-center'>Gestión de Documentos</p>}
+                    visible={isVisibleDocumentoGestion}
+                    width={800}
+                    onCancel={() => setVisibleDocumentoGestion(false)}
+                    footer={[]}
+                  >
+                    <div className='row'>
+                      <div className='col-gl-12 col-sm-12 col-md-12'>
+                        <label>Observaciones:</label>
+                        <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
+                      </div>
+                    </div>
+                    <div className='row  justify-content-md-center'>
+                      <label className='mt-3'>Lista de documentos:</label>
+                      <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
+                        <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+                {mostrar && <App origen={'bandeja'} metodo={llamadadevueltahorario}></App>}
+
+              </div>
+
+
+
             </div>
           </div>
-          -
-          <div className='row'>
-            {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
-            <Modal
-              title={<p className='text-center'>Gestión de Documentos</p>}
-              visible={isVisibleDocumentoGestion}
-              width={800}
-              onCancel={() => setVisibleDocumentoGestion(false)}
-              footer={[]}
-            >
-              <div className='row'>
-                <div className='col-gl-12 col-sm-12 col-md-12'>
-                  <label>Observaciones:</label>
-                  <Input.TextArea defaultValue='default' value={observacion} rows={5} disabled={true} />
-                </div>
-              </div>
-              <div className='row  justify-content-md-center'>
-                <label className='mt-3'>Lista de documentos:</label>
-                <div className='col-lg-12 col-sm-12 col-md-12 float-right'>
-                  <ComponentUpdateDocument listDocument={listadoDocumento} tipoSolicitud={tipoSolicitud} />
-                </div>
-              </div>
-            </Modal>
-          </div>
-          {mostrar && <App origen={'bandeja'} metodo={llamadadevueltahorario}></App>}
-
-        </div>
+        </>)}
+    </>
 
 
-
-      </div>
-    </div>
   );
 };
 
