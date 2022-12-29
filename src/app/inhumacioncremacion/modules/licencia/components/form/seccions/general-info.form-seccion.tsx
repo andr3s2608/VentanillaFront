@@ -32,6 +32,9 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
 
   const getListas = useCallback(async () => {
 
+
+
+
     if (obj?.time != undefined) {
       const causamuerte = await api.GetResumenSolicitud(obj?.idSolicitud)
 

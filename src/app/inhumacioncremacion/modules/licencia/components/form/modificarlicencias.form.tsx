@@ -139,8 +139,10 @@ export const ModificarLicencia = ({ props }: any) => {
   }, []);
 
   const BuscarSolicitud = async () => {
+
     const numero: string = form.getFieldValue('numero');
     const listasolicitudes: any = await api.ConsultarLicenciasAdministrador(numero, valores);
+
 
     setdata(listasolicitudes);
     setdatosUsuario(listasolicitudes);
@@ -149,7 +151,6 @@ export const ModificarLicencia = ({ props }: any) => {
     setobj(undefined);
     form.resetFields();
     form.setFieldsValue({ numero: numero });
-
   }
 
   const onClickModificar = async (solicitud: any) => {
@@ -1315,7 +1316,7 @@ export const ModificarLicencia = ({ props }: any) => {
           }
         }
 
-        console.log(json)
+
 
         const insercion: any = await api.UpdateLicenciaAdmin(json, '1');
 

@@ -1,0 +1,38 @@
+Plugins:
+Bundled analyzers:
+  - Python Code Quality and Security 3.21.0.10628 (python)
+  - Go Code Quality and Security 1.11.0.3905 (go)
+  - JaCoCo 1.1.1.1157 (jacoco)
+  - Kotlin Code Quality and Security 2.12.0.1956 (kotlin)
+  - IaC Code Quality and Security 1.9.2.2279 (iac)
+  - JavaScript/TypeScript/CSS Code Quality and Security 9.12.0.20319 (javascript)
+  - Ruby Code Quality and Security 1.11.0.3905 (ruby)
+  - Scala Code Quality and Security 1.11.0.3905 (sonarscala)
+  - C# Code Quality and Security 8.50.0.58025 (csharp)
+  - Java Code Quality and Security 7.15.0.30507 (java)
+  - HTML Code Quality and Security 3.7.1.3306 (web)
+  - Flex Code Quality and Security 2.8.0.3166 (flex)
+  - XML Code Quality and Security 2.6.1.3686 (xml)
+  - PHP Code Quality and Security 3.25.0.9077 (php)
+  - Text file Code Quality and Security 1.2.0.510 (text)
+  - VB.NET Code Quality and Security 8.50.0.58025 (vbnet)
+  - Configuration detection fot Code Quality and Security 1.2.0.267 (config)
+Global server settings:
+  - sonar.core.id=147B411E-AYVaLnFPNEWnzVry5Cjh
+  - sonar.core.startTime=2022-12-28T14:21:07-0500
+  - sonar.forceAuthentication=true
+Project server settings:
+Project scanner properties:
+  - sonar.exclusions=src/utils/constants/*.js, src/lib/**.*, src/assets/**.*, src/registerServiceWorker.js, src/**/*.spec.js, src/**/index.js
+  - sonar.host.url=http://localhost:9000
+  - sonar.javascript.lcov.reportPaths=coverage/lcov.info
+  - sonar.login=******
+  - sonar.password=******
+  - sonar.projectBaseDir=F:\repositorios\Inhumacion\prueba\TramitesVentanillaFront
+  - sonar.projectKey=react-inhumacion-key
+  - sonar.projectName=inhumacionproject
+  - sonar.projectVersion=1.0.0
+  - sonar.scanner.app=ScannerCli
+  - sonar.scanner.appVersion=3.1.0.1141
+  - sonar.sourceEncoding=UTF-8
+  - sonar.working.directory=F:\repositorios\Inhumacion\prueba\TramitesVentanillaFront\.scannerwork

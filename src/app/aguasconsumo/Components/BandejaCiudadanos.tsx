@@ -31,8 +31,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
 
   const getListas = useCallback(
     async () => {
-      const subredes = await api.getSubredes();
-      localStorage.setItem('subredes', JSON.stringify(subredes));
+
       setDataInter(data);
       setDataSolucionado(datossolucionados);
     },
@@ -101,8 +100,9 @@ export const BandejaCiudadanos = (props: IDataSource) => {
     }
   }
 
-  const onClickValidarInformacion = (datos: any) => {
-    localStorage.setItem('register', JSON.stringify(datos));
+  const onClickValidarInformacion = async (datos: any) => {
+    const data = await api.getSolicitudbyidAguas(datos.idSolicitud);
+    localStorage.setItem('register', JSON.stringify(data));
     history.push('/tramites-servicios-aguas/Revision/primera-vez');
   };
 

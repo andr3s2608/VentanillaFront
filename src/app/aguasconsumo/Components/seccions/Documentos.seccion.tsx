@@ -27,6 +27,7 @@ import { SetSeguimientoDocumentos } from 'app/redux/seguimientoDocumentos/seguim
 import { SetResetViewLicence, SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import { Button, Radio, Table, Upload } from 'antd';
 import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
 import { arch } from 'os';
 import { stringify } from 'querystring';
 import { SeguimientoDocumentosReducer } from 'app/redux/seguimientoDocumentos/seguimientoDocumentos.reducer';
@@ -316,59 +317,71 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const insertarArchivo = async () => {
     const archivo = archivocargado;
 
-    const array: any[] = [];
-    const arraytabla: any[] = [];
+    if (archivo !== null && archivo !== undefined) {
 
-    var posicion: number = 1;
-    for (let index = 0; index < archivos.length; index++) {
-      props.form.resetFields([`checkbox${index}`]);
-      if (archivos[index] == '1') {
-        if (guardararchivos[index] != undefined) {
-          array.push(guardararchivos[index]);
-          arraytabla.push(guardararchivos[index]);
+      const array: any[] = [];
+      const arraytabla: any[] = [];
+
+      var posicion: number = 1;
+      for (let index = 0; index < archivos.length; index++) {
+        props.form.resetFields([`checkbox${index}`]);
+        if (archivos[index] == '1') {
+          if (guardararchivos[index] != undefined) {
+            array.push(guardararchivos[index]);
+            arraytabla.push(guardararchivos[index]);
+          } else {
+            array.push({
+              posicion: posicion,
+              nombre: acueducto[index].nombre,
+              valor: acueducto[index].valor,
+              path: '/' + acueducto[index].nombre + '_',
+              id: acueducto[index].id,
+              archivo: archivo,
+              esValido: true,
+              iddocumento: '00000000-0000-0000-0000-000000000000',
+              subida: 'local'
+            });
+            arraytabla.push({
+              posicion: posicion,
+              nombre: acueducto[index].nombre,
+              valor: acueducto[index].valor,
+              path: '/' + acueducto[index].nombre + '_',
+              id: acueducto[index].id,
+              archivo: archivo,
+              subida: 'local'
+            });
+          }
         } else {
-          array.push({
-            posicion: posicion,
-            nombre: acueducto[index].nombre,
-            valor: acueducto[index].valor,
-            path: '/' + acueducto[index].nombre + '_',
-            id: acueducto[index].id,
-            archivo: archivo,
-            esValido: true,
-            iddocumento: '00000000-0000-0000-0000-000000000000',
-            subida: 'local'
-          });
-          arraytabla.push({
-            posicion: posicion,
-            nombre: acueducto[index].nombre,
-            valor: acueducto[index].valor,
-            path: '/' + acueducto[index].nombre + '_',
-            id: acueducto[index].id,
-            archivo: archivo,
-            subida: 'local'
-          });
+          if (guardararchivos[index] != undefined) {
+            array.push(guardararchivos[index]);
+            arraytabla.push(guardararchivos[index]);
+          } else {
+            array.push(guardararchivos[index]);
+          }
         }
-      } else {
-        if (guardararchivos[index] != undefined) {
-          array.push(guardararchivos[index]);
-          arraytabla.push(guardararchivos[index]);
-        } else {
-          array.push(guardararchivos[index]);
-        }
+
+        posicion++;
       }
 
-      posicion++;
+      setguardararchivos(array);
+      setguardararchivostabla(arraytabla);
+      setconsultararchivos(arraytabla);
+      if (prop != null) {
+        prop(array);
+      }
+      setacueductos([]);
+      setarchivos(['0', '0', '0', '0', '0', '0', '0']);
+      cargardatos();
     }
-
-    setguardararchivos(array);
-    setguardararchivostabla(arraytabla);
-    setconsultararchivos(arraytabla);
-    if (prop != null) {
-      prop(array);
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Archivo Vacio',
+        confirmButtonColor: '#04bbd3',
+        text:
+          'Debe de subir un archivo antes de adicionar'
+      });
     }
-    setacueductos([]);
-    setarchivos(['0', '0', '0', '0', '0', '0', '0']);
-    cargardatos();
   };
 
 

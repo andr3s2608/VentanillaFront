@@ -198,7 +198,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
             numeroRadicado: responseSolicitudDTO.numeroRadicado,
             fechaSolicitud: moment(Date()).format(formatDate),
             idEstado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
-            estado: '96D00032-4B60-4027-AFEA-0CC7115220B4',
+            estado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
             idFuente: '00000000-0000-0000-0000-000000000000',
             idUbicacion: '00000000-0000-0000-0000-000000000000',
             idSubred: '00000000-0000-0000-0000-000000000000',
@@ -337,6 +337,32 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           if (supportDocumentsRejected.length > 0) {
             await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
           }
+          let observaciones: any = [{
+            idObservacion: '00000000-0000-0000-0000-000000000000',
+            idSolicitud: responseSolicitudDTO.idSolicitud,
+            idSubred: null,
+            observacion: 'radicación solicitud',
+            fechaObservacion: null
+          }];
+
+          const jsonobservacion: IObservaciones<any> = {
+
+            idSolicitud: responseSolicitudDTO.idSolicitud,
+            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+            observaciones: observaciones,
+
+            citacion: {
+              idCitacion: '00000000-0000-0000-0000-000000000000',
+              fechaCitacion: '',
+              observacion: 'No_aplica',
+              fechaRegistro: '',
+              idSolicitud: responseSolicitudDTO.idSolicitud,
+              idUsuario: '00000000-0000-0000-0000-000000000000'
+            }
+
+          };
+
+          await api.AddObservaciones(jsonobservacion, '0');
 
 
           await api.AddSolicitudConsecion(json);

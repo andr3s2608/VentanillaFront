@@ -486,7 +486,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                 <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Localización de la bocatoma latitud
-                    <Form.Item label='' name='tipoCoordenadaLatitud' >
+                    <Form.Item label='' name='tipoCoordenadaLatitudfuente' >
                       <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
                         <Radio value='decimal'>Decimal</Radio>
                         <Radio value='sexagesimal'>Sexagesimal</Radio>
@@ -525,7 +525,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   <div className='col-md-6 col-lg-6 col-sm-12'>
                     <span className='required'>*</span>Longitud de la bocatoma longitud
 
-                    <Form.Item label='' name='tipoCoordenadaLongitud' >
+                    <Form.Item label='' name='tipoCoordenadaLongitudFuente' >
                       <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
                         <Radio value='decimal'>Decimal</Radio>
                         <Radio value='sexagesimal'>Sexagesimal</Radio>

@@ -56,7 +56,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         zonaUbicacion: obj.sector,
         barrioUbicacion: obj.barrio,
         upzUbicacion: obj.upz,
-        localidadUbicacion: obj.localidad
+        localidadUbicacion: obj.localidad,
+        direccionCompletaUbicacion: obj.direccion
+
       });
     }
   });
@@ -143,202 +145,206 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   return (
     <div className="container-fluid">
-      <div className="row info-tramite">
-        <div className='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
-          <p style={{ fontSize: '18px', fontWeight: 'bold', marginLeft: '-20px' }}>
-            Información del lugar de la localización del sistema de abastecimiento<br />
-            <small style={{ color: ' #000' }}>
-              <span className='required'>* </span> Campos Obligatorios
-            </small>
-          </p>
+      {!enableField && (<>
+        <div className="row info-tramite">
+          <div className='col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+            <p style={{ fontSize: '18px', fontWeight: 'bold', marginLeft: '-20px' }}>
+              Información del lugar de la localización del sistema de abastecimiento<br />
+              <small style={{ color: ' #000' }}>
+                <span className='required'>* </span> Campos Obligatorios
+              </small>
+            </p>
+          </div>
         </div>
-      </div>
-      <div className='row' style={{ marginLeft: '-20px' }}>
-        <div className="col-sm-12 col-md-10 col-lg-10 col-xl-10">
-          <Alert
-            message='Información!'
-            description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
+        <div className='row' style={{ marginLeft: '-20px' }}>
+          <div className="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+            <Alert
+              message='Información!'
+              description='Por favor registre su dirección de residencia tal como aparece en el recibo público,
                           en las casillas indicadas para esto. Una vez completado los datos, favor dar clic sobre el botón azul Confirmar Dirección.
                           Esta funcionalidad permitirá autocompletar datos de UPZ, Localidad y Barrio para las direcciones de Bogotá D.C. y
                           estandarizar la dirección para el resto de ciudades.'
-            type='info' />
+              type='info' />
+          </div>
         </div>
-      </div>
-      <div className='row mt-2'>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-          <label htmlFor='' className='mt-4 text'>
-            Via Principal
-          </label>
-          <Form.Item label='' name=''>
-            <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' disabled={enableField} />
-          </Form.Item>
-        </div>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-          <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
-            Num
-          </label>
-          <Form.Item className='' label='' name='Num1' rules={[{ max: 3 }]}>
-            <Input
-              className='form-control'
-              disabled={enableField}
-              id='23' allowClear
-              type='text' placeholder='' autoComplete='off'
-              maxLength={3}
-              style={{ marginLeft: '-30px' }}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
+        <div className='row mt-2'>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+            <label htmlFor='' className='mt-4 text'>
+              Via Principal
+            </label>
+            <Form.Item label='' name=''>
+              <SelectComponent options={nomesclatura} onChange={cambioavenida} optionPropkey='key' optionPropLabel='key' disabled={enableField} />
+            </Form.Item>
+          </div>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+            <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+              Num
+            </label>
+            <Form.Item className='' label='' name='Num1' rules={[{ max: 3 }]}>
+              <Input
+                className='form-control'
+                disabled={enableField}
+                id='23' allowClear
+                type='text' placeholder='' autoComplete='off'
+                maxLength={3}
+                style={{ marginLeft: '-30px' }}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
                   event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-              onChange={(event) => {
-                buildDirection(1, event.target.value);
-              }}
-            />
-          </Form.Item>
-        </div>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
-          <label htmlFor='' className='mt-4 text'>Letra</label>
-          <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
-            <SelectComponent
-              disabled={enableField}
+                }}
+                onChange={(event) => {
+                  buildDirection(1, event.target.value);
+                }}
+              />
+            </Form.Item>
+          </div>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+            <label htmlFor='' className='mt-4 text'>Letra</label>
+            <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
+              <SelectComponent
+                disabled={enableField}
 
-              options={letras}
-              optionPropkey='key'
-              optionPropLabel='key'
-              onChange={(event) => {
-                buildDirection(2, event);
-              }}
-            />
-          </Form.Item>
+                options={letras}
+                optionPropkey='key'
+                optionPropLabel='key'
+                onChange={(event) => {
+                  buildDirection(2, event);
+                }}
+              />
+            </Form.Item>
+          </div>
         </div>
-      </div>
-      <div className='row mt-2'>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-          <label htmlFor='' className='mt-4 text'>
-            Bis
-          </label>
-          <Form.Item label='' name='Bis' rules={[{ max: 3 }]}>
-            <SelectComponent
-              disabled={enableField}
-              className='form-control'
-              options={[
-                { key: 'Bis', value: 'Bis' },
-                { key: ' ', value: ' ' }
-              ]}
-              optionPropkey='key'
-              optionPropLabel='value'
-              onChange={(event) => {
-                buildDirection(3, event);
-              }}
-            />
-          </Form.Item>
-        </div>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-          <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
-            Card
-          </label>
-          <Form.Item label='' name='card1' rules={[{ max: 4 }]}>
-            <SelectComponent
-              style={{ marginLeft: '-30px' }}
-              disabled={enableField}
-              className='form-control'
-              options={direcionOrienta}
-              optionPropkey='key'
-              optionPropLabel='key'
-              onChange={(event) => {
-                buildDirection(4, event);
-              }}
-            />
-          </Form.Item>
-        </div>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
-          <label htmlFor='' className='mt-4 text'>Num</label>
-          <Form.Item label='' name='Num2' rules={[{ max: 3 }]}>
-            <Input
-              disabled={enableField}
-              className='form-control'
-              allowClear
-              type='text'
-              placeholder=''
-              autoComplete='off'
-              maxLength={3}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
+        <div className='row mt-2'>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+            <label htmlFor='' className='mt-4 text'>
+              Bis
+            </label>
+            <Form.Item label='' name='Bis' rules={[{ max: 3 }]}>
+              <SelectComponent
+                disabled={enableField}
+                className='form-control'
+                options={[
+                  { key: 'Bis', value: 'Bis' },
+                  { key: ' ', value: ' ' }
+                ]}
+                optionPropkey='key'
+                optionPropLabel='value'
+                onChange={(event) => {
+                  buildDirection(3, event);
+                }}
+              />
+            </Form.Item>
+          </div>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+            <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+              Card
+            </label>
+            <Form.Item label='' name='card1' rules={[{ max: 4 }]}>
+              <SelectComponent
+                style={{ marginLeft: '-30px' }}
+                disabled={enableField}
+                className='form-control'
+                options={direcionOrienta}
+                optionPropkey='key'
+                optionPropLabel='key'
+                onChange={(event) => {
+                  buildDirection(4, event);
+                }}
+              />
+            </Form.Item>
+          </div>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+            <label htmlFor='' className='mt-4 text'>Num</label>
+            <Form.Item label='' name='Num2' rules={[{ max: 3 }]}>
+              <Input
+                disabled={enableField}
+                className='form-control'
+                allowClear
+                type='text'
+                placeholder=''
+                autoComplete='off'
+                maxLength={3}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
                   event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-              onChange={(event) => {
-                buildDirection(5, event.target.value);
-              }}
-            />
-          </Form.Item>
+                }}
+                onChange={(event) => {
+                  buildDirection(5, event.target.value);
+                }}
+              />
+            </Form.Item>
+          </div>
         </div>
-      </div>
-      <div className='row mt-2'>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-          <label htmlFor='' className='mt-4 text'>Letra</label>
-          <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
-            <SelectComponent
-              disabled={enableField}
+        <div className='row mt-2'>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+            <label htmlFor='' className='mt-4 text'>Letra</label>
+            <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
+              <SelectComponent
+                disabled={enableField}
 
-              options={letras}
-              optionPropkey='key'
-              optionPropLabel='key'
-              onChange={(event) => {
-                buildDirection(2, event);
-              }}
-            />
-          </Form.Item>
-        </div>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-          <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
-            Placa
-          </label>
-          <Form.Item label='' name='placa' rules={[{ max: 2 }]}>
-            <Input
-              disabled={enableField}
-              className='form-control'
-              allowClear
-              style={{ marginLeft: '-30px' }}
-              placeholder=''
-              autoComplete='off'
-              maxLength={2}
-              type='text'
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
+                options={letras}
+                optionPropkey='key'
+                optionPropLabel='key'
+                onChange={(event) => {
+                  buildDirection(2, event);
+                }}
+              />
+            </Form.Item>
+          </div>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+            <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+              Placa
+            </label>
+            <Form.Item label='' name='placa' rules={[{ max: 2 }]}>
+              <Input
+                disabled={enableField}
+                className='form-control'
+                allowClear
+                style={{ marginLeft: '-30px' }}
+                placeholder=''
+                autoComplete='off'
+                maxLength={2}
+                type='text'
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                onPaste={(event) => {
                   event.preventDefault();
-                }
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-              }}
-              onChange={(event) => {
-                buildDirection(7, event.target.value);
-              }}
-            />
-          </Form.Item>
+                }}
+                onChange={(event) => {
+                  buildDirection(7, event.target.value);
+                }}
+              />
+            </Form.Item>
+          </div>
+          <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+            <label htmlFor='' className='mt-4 text'>Card</label>
+            <Form.Item label='' name='card2'>
+              <SelectComponent
+                disabled={enableField}
+                options={direcionOrienta}
+                optionPropkey='key'
+                optionPropLabel='key'
+                onChange={(event) => {
+                  buildDirection(8, event);
+                }}
+              />
+            </Form.Item>
+          </div>
         </div>
-        <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
-          <label htmlFor='' className='mt-4 text'>Card</label>
-          <Form.Item label='' name='card2'>
-            <SelectComponent
-              disabled={enableField}
-              options={direcionOrienta}
-              optionPropkey='key'
-              optionPropLabel='key'
-              onChange={(event) => {
-                buildDirection(8, event);
-              }}
-            />
-          </Form.Item>
-        </div>
-      </div>
+
+      </>)}
+
       <div className="row mt-5">
         <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
           <label className='text'> Dirección Completa </label>

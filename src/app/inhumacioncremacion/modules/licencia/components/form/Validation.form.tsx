@@ -933,8 +933,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
   };
 
-
-
   const Reintentar = async () => {
     setIsModalVisiblePdf(false)
     form.submit();
@@ -1021,8 +1019,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
     }
 
-
-
     for (let index = 0; index < documentos.length; index++) {
       //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
       var posicioninicialid = 0;
@@ -1058,6 +1054,52 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       const resp = await api.AddGestion(json, 1 + '');
 
     }
+
+    /*
+        const json: any[] = [];
+        for (let index = 0; index < documentos.length; index++) {
+          //se saca la informacion de cada uno de los documentos para insertarlos por separado en la bd
+          var posicioninicialid = 0;
+          var posicionfinalid = iddocumento.indexOf('|');
+          var id = iddocumento.substring(posicioninicialid, posicionfinalid);
+          var iddocumento = iddocumento.substring(posicionfinalid + 1, iddocumento.length);
+
+          var posicioninicialpath = 0;
+          var posicionfinalpath = pathdocumento.indexOf('/');
+          var nuevopath = pathdocumento.indexOf('|');
+          var documento = pathdocumento.substring(posicioninicialpath, posicionfinalpath);
+          var pathdocumento = pathdocumento.substring(nuevopath + 1, pathdocumento.length);
+
+          var datos = DatosDocumento.at(index);
+
+          if (datos == '1') {
+            datos = 'Cumple';
+          } else {
+            datos = 'No Cumple';
+          }
+
+          json.push(
+            {
+              idEstadoDocumento: '00000000-0000-0000-0000-000000000000',
+              idSolicitud: objJosn?.idSolicitud,
+              idDocumentoSoporte: id,
+              path: documento,
+              estado_Documento: datos,
+              tipoSeguimiento: seguimientosol,
+              observaciones: observacionvali
+
+            }
+          );
+
+
+
+        }
+        console.log(json);
+        const estadoSoporte: any = { estadoSoporte: json };
+        const resp = await api.AddGestion(estadoSoporte, 1 + '');
+
+        await api.updateStateRequest(objJosn?.idSolicitud, seguimientosol);
+    */
     if (documentos.length == 0) {
       const resp = await api.updateStateRequest(objJosn?.idSolicitud, seguimientosol);
     }

@@ -61,28 +61,36 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
 
+  const [colores, setcolores] = useState<any[]>([]);
+
+  const [coloresusuario, setcoloresusuario] = useState<any[]>([]);
+
+  const [coloresnotificacion, setcoloresnotificacion] = useState<any[]>([]);
+
   //////filtros
 
   ///////////
   const getListas = useCallback(
     async () => {
       const rolesstorage: any = localStorage.getItem('roles');
-      const subredes = await api.getSubredes();
-      localStorage.setItem('subredes', JSON.stringify(subredes));
 
       const mysRoles = JSON.parse(rolesstorage);
       const [permiso] = mysRoles;
 
+      let rol = '';
       if (
         permiso?.rol === 'Coordinador'
         //|| permiso?.rol === 'AdminTI'
       ) {
         setcoordinador('Coordinador');
+        rol = 'Coordinador';
       } else {
         if (permiso?.rol === 'Funcionario' || permiso?.rol === 'AdminTI') {
           setcoordinador('Funcionario');
+          rol = 'Funcionario';
         } else {
           setcoordinador('Subdirector');
+          rol = 'Subdirector';
         }
       }
 
@@ -91,9 +99,41 @@ export const BandejaFuncionarios = (props: IDataSource) => {
       array.push(await api.getConstantesAguas('557E18FD-C9A6-492D-AEF6-07BDB43A7BE0'));
       array.push(await api.getConstantesAguas('B4CE8B3A-24FF-4653-BEDC-05F29BB99303'));
 
+
+
       setdias(array);
+
+
+      if (rol == 'Funcionario') {
+
+        setcoloresusuario(colorearbandejas(coloresusuario, datosusuario, array));
+      } else {
+
+        setcolores(colorearbandejas(colores, data, array));
+
+
+        setcoloresusuario(colorearbandejas(coloresusuario, datosusuario, array));
+
+
+        setcoloresnotificacion(colorearbandejas(coloresnotificacion, notificaciones, array));
+
+      }
+
+
+
+
+
       setroles(permiso.rol);
       setmostrar(true);
+
+
+
+
+
+
+
+
+
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -108,6 +148,61 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     sethistoriconotificaciones(historico);
     getListas();
   }, []);
+
+  const colorearbandejas = (arrayaguardar: any, arrayarecorrer: any, dias: any) => {
+
+    let contador = 0;
+
+    if (arrayarecorrer.length > 0) {
+      for (let index = 0; index <= arrayarecorrer[0].numeroRadicado; index++) {
+
+        if (contador != 0) {
+
+          for (let index2 = 0; index2 < arrayarecorrer.length; index2++) {
+            if (index === arrayarecorrer[index2].numeroRadicado || index + '' === arrayarecorrer[index2].numeroRadicado) {
+
+              arrayaguardar.push(onChangeColor(arrayarecorrer[index2], dias));
+
+              contador = arrayarecorrer[index2].numeroRadicado;
+              break;
+            }
+
+          }
+          if (contador != index) {
+            arrayaguardar.push(undefined);
+          }
+
+        }
+        else {
+
+
+          if (index === arrayarecorrer[arrayarecorrer.length - 1].numeroRadicado ||
+            index + '' === arrayarecorrer[arrayarecorrer.length - 1].numeroRadicado) {
+
+            arrayaguardar.push(onChangeColor(arrayarecorrer[arrayarecorrer.length - 1], dias));
+            contador++;
+          }
+          else {
+            arrayaguardar.push(undefined);
+          }
+        }
+      }
+    }
+
+    return (arrayaguardar)
+
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   function onClickFiltrar(datos: String) {
 
@@ -237,39 +332,60 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
   const onClickSubirArchivo = async () => {
 
-    const archivo = form.getFieldValue('cargarvisita')
+    Swal.fire({
+      title: 'Guardar Archivo',
+      text: 'Esta seguro de que desea continuar?',
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: 'Guardar',
+      denyButtonText: `Cancelar`,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      icon: 'info'
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
 
+        const archivo = form.getFieldValue('cargarvisita')
+        const supportDocumentsEdit: any[] = [];
+        const formData = new FormData();
 
-    const supportDocumentsEdit: any[] = [];
-    const formData = new FormData();
+        formData.append('file', archivo.file);
+        formData.append('nameFile', 'Documento_revision' + '_' + solicitudaguardar.idSolicitud);
 
-    formData.append('file', archivo.file);
-    formData.append('nameFile', 'Documento_revision' + '_' + solicitudaguardar.idSolicitud);
+        supportDocumentsEdit.push({
+          idSolicitud: solicitudaguardar.idSolicitud,
+          idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
+          path: `${solicitudaguardar.idUsuario}/Documento_revision_${solicitudaguardar.idSolicitud}`,
+          idUsuario: solicitudaguardar.idUsuario,
+          idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+          esValido: true
+        });
 
-    supportDocumentsEdit.push({
-      idSolicitud: solicitudaguardar.idSolicitud,
-      idTipoDocumentoAdjunto: '3C9CF345-E37D-4AB0-BACA-C803DBB5380B',
-      path: `${solicitudaguardar.idUsuario}/Documento_revision_${solicitudaguardar.idSolicitud}`,
-      idUsuario: solicitudaguardar.idUsuario,
-      idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
-      esValido: true
+        formData.append('containerName', 'aguahumanos');
+        formData.append('oid', solicitudaguardar.idUsuario);
+
+        await api.uploadFiles(formData);
+        await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+
+        setVisibleDocumentoGestion(false);
+
+        await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4',
+          '8CA363C0-66AA-4273-8E63-CE3EAC234857');
+
+        window.location.reload();
+      }
     });
 
-    formData.append('containerName', 'aguahumanos');
-    formData.append('oid', solicitudaguardar.idUsuario);
 
-    await api.uploadFiles(formData);
-    await api.AddSupportDocumentsAguas(supportDocumentsEdit);
-
-    setVisibleDocumentoGestion(false);
-
-    await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4',
-      '8CA363C0-66AA-4273-8E63-CE3EAC234857');
-    history.push('/tramites-servicios-aguas');
   };
 
   const onClickValidarInformacion = async (datos: any) => {
-    const data = datos;
+    const data = await api.getSolicitudbyidAguas(datos.idSolicitud);
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
@@ -285,160 +401,52 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   };
 
   let color = 'blue';
-  const onChangeColor = (datos: any) => {
-    let array: any[] = [];
-    let arrayusuario: any[] = [];
-    let arraynotificacion: any[] = [];
-    if (coordinador == 'Funcionario') {
-      array = datosusuario;
+  const onChangeColor = (datos: any, arraydias: any[]) => {
+
+
+    let diasproceso = 0;
+    if (datos.tipodeSolicitud == 'Proceso de Citacion') {
+
+      diasproceso = arraydias[0].valorConstante;
     } else {
-      array = data;
-      arrayusuario = datosusuario;
-      arraynotificacion = notificaciones;
+      if (datos.tipodeSolicitud == 'Gestion Validador' || datos.tipodeSolicitud == 'Gestion Coordinador') {
+        diasproceso = arraydias[1].valorConstante;
 
-    }
-
-    if (arraynotificacion.length > 0) {
-      for (let index = 0; index < arraynotificacion.length; index++) {
-        if (arraynotificacion[index].numeroRadicado == datos) {
-          let diasproceso = 0;
-          if (arraynotificacion[index].tipodeSolicitud == 'Proceso de Citacion') {
-            diasproceso = dias[0].valorConstante;
-          } else {
-            if (
-              arraynotificacion[index].tipodeSolicitud == 'Gestion Validador' ||
-              arraynotificacion[index].tipodeSolicitud == 'Gestion Coordinador'
-            ) {
-              diasproceso = dias[1].valorConstante;
-            } else {
-              if (arraynotificacion[index].tipodeSolicitud == 'Gestion Subdirector') {
-                diasproceso = dias[2].valorConstante;
-              } else {
-                color = 'white';
-                return 'white';
-              }
-            }
-          }
-
-          const fechaactual = new Date();
-          const fechamod = arraynotificacion[index].fechaSolicitud;
-          const fechaprueb2 = moment(fechamod);
-          const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
-
-
-          if (diaspasados < diasproceso / 2 - 1) {
-            color = 'lightgreen';
-            return 'lightgreen';
-          }
-          if (diaspasados >= diasproceso || diaspasados > diasproceso / 2 + 1) {
-            color = 'salmon ';
-            return 'salmon ';
-          }
-          if (diaspasados >= diasproceso / 2 - 1 && diaspasados <= diasproceso / 2 + 1) {
-            color = 'yellow';
-            return 'yellow';
-          }
-
-          break;
-        }
-      }
-    }
-
-    if (arrayusuario.length > 0) {
-      for (let index = 0; index < arrayusuario.length; index++) {
-        if (arrayusuario[index].numeroRadicado == datos) {
-          let diasproceso = 0;
-          if (arrayusuario[index].tipodeSolicitud == 'Proceso de Citacion') {
-            diasproceso = dias[0].valorConstante;
-          } else {
-            if (
-              arrayusuario[index].tipodeSolicitud == 'Gestion Validador' ||
-              arrayusuario[index].tipodeSolicitud == 'Gestion Coordinador'
-            ) {
-              diasproceso = dias[1].valorConstante;
-            } else {
-              if (arrayusuario[index].tipodeSolicitud == 'Gestion Subdirector') {
-                diasproceso = dias[2].valorConstante;
-              } else {
-                color = 'white';
-                return 'white';
-                break;
-              }
-            }
-          }
-
-          const fechaactual = new Date();
-          const fechamod = arrayusuario[index].fechaSolicitud;
-          const fechaprueb2 = moment(fechamod);
-          const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
-
-          if (diaspasados < diasproceso / 2 - 1) {
-            color = 'lightgreen';
-            return 'lightgreen';
-          }
-          if (diaspasados >= diasproceso || diaspasados > diasproceso / 2 + 1) {
-            color = 'salmon ';
-            return 'salmon ';
-          }
-          if (diaspasados >= diasproceso / 2 - 1 && diaspasados <= diasproceso / 2 + 1) {
-            color = 'yellow';
-            return 'yellow';
-          }
-
-          break;
-        }
-      }
-    }
-
-    for (let index = 0; index < array.length; index++) {
-      if (array[index].numeroRadicado == datos) {
-        let diasproceso = 0;
-        if (array[index].tipodeSolicitud == 'Proceso de Citacion') {
-          diasproceso = dias[0].valorConstante;
-        } else {
-          if (array[index].tipodeSolicitud == 'Gestion Validador' || array[index].tipodeSolicitud == 'Gestion Coordinador') {
-            diasproceso = dias[1].valorConstante;
-          } else {
-            if (array[index].tipodeSolicitud == 'Gestion Subdirector') {
-              diasproceso = dias[2].valorConstante;
-            } else {
-              color = 'white';
-              return 'white';
-              break;
-            }
-          }
-        }
-
-        const fechaactual = new Date();
-        let fechamod = array[index].fechaModificacion;
-        if (fechamod == undefined) {
-          fechamod = array[index].fechaSolicitud;
-        }
-        const fechaprueb2 = moment(fechamod);
-        const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
-
-
-        if (diaspasados < diasproceso / 2 - 1) {
-          color = 'lightgreen';
-          return 'lightgreen';
-        }
-        if (diaspasados >= diasproceso || diaspasados > diasproceso / 2 + 1) {
-          color = 'salmon ';
-          return 'salmon ';
-        }
-        if (diaspasados >= diasproceso / 2 - 1 && diaspasados <= diasproceso / 2 + 1) {
-          color = 'yellow';
-          return 'yellow';
-        }
-
-        break;
       } else {
-        if (index == array.length - 1) {
+        if (datos.tipodeSolicitud == 'Gestion Subdirector') {
+          diasproceso = arraydias[2].valorConstante;
+
+        } else {
+
           color = 'white';
           return 'white';
+
         }
       }
     }
+
+    const fechaactual = new Date();
+    let fechamod = datos.fechaModificacion;
+    if (fechamod == undefined) {
+      fechamod = datos.fechaSolicitud;
+    }
+    const fechaprueb2 = moment(fechamod);
+    const diaspasados = moment(fechaactual).diff(fechaprueb2, 'days');
+
+
+    if (diaspasados < diasproceso / 2 - 1) {
+      color = 'lightgreen';
+      return 'lightgreen';
+    }
+    if (diaspasados >= diasproceso || diaspasados > diasproceso / 2 + 1) {
+      color = 'salmon ';
+      return 'salmon ';
+    }
+    if (diaspasados >= diasproceso / 2 - 1 && diaspasados <= diasproceso / 2 + 1) {
+      color = 'yellow';
+      return 'yellow';
+    }
+
   };
 
   const resetfecha = () => {
@@ -637,15 +645,23 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         dataIndex: 'numeroRadicado',
         key: 'nroradicado',
         width: 200,
-        defaultSortOrder: 'descend',
+
         sorter: {
           compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
           multiple: 1,
         },
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
+
+          if (coordinador == 'Funcionario' || coordinador == 'Coordinador') {
+
+          }
+          else {
+
+
+          }
           return {
             props: {
-              style: { background: onChangeColor(text) }
+              style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -654,15 +670,24 @@ export const BandejaFuncionarios = (props: IDataSource) => {
       {
         title: 'Visualizar PDF',
         key: 'visualizarPDF',
-        render: (_: any, row: any, index: any) => {
+        render(_: any, row: any, index: any, text: any) {
           if (row.estado == 'Aprobada') {
-            return (
-              <FilePdfOutlined
+            return {
+              props: {
+                style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
+              },
+              children: <FilePdfOutlined
                 onClick={() => onClickVisualizarPDF(row)}
                 style={{ fontSize: '30px' }}
-              />);
+              />
+            };
           } else {
-            return null;
+            return {
+              props: {
+                style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
+              },
+              children: <div>{text}</div>
+            };
           }
         }
       },
@@ -677,10 +702,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             a.tipodeTramite > b.tipodeTramite ? 1 : -1,
           multiple: 1,
         },
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -691,17 +716,17 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         dataIndex: 'fechaSolicitud',
         key: 'fechaSolicitud',
         width: 230,
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
         }
       },
       {
-        title: 'Estados ',
+        title: 'Estado ',
         dataIndex: 'estado',
         key: 'estado',
         width: 230,
@@ -730,10 +755,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         filterSearch: true,
 
         onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -771,10 +796,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
         onFilter: (value: string, record: { actividadActualSolicitud: string }) =>
           record.actividadActualSolicitud.toString().includes(value),
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: (coordinador == 'Funcionario' || coordinador == 'Coordinador') ? coloresusuario[row.numeroRadicado] : colores[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -831,15 +856,15 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         title: FilterByNameInput('notificacion'),
         dataIndex: 'numeroRadicado',
         key: 'nroradicado',
-        defaultSortOrder: 'descend',
+
         sorter: {
           compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
           multiple: 1,
         },
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: onChangeColor(text) }
+              style: { background: coloresnotificacion[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -856,10 +881,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             a.tipodeTramite > b.tipodeTramite ? 1 : -1,
           multiple: 1,
         },
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: coloresnotificacion[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -895,10 +920,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         filterSearch: true,
 
         onFilter: (value: string, record: { estado: string }) => record.estado.toString().includes(value),
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: coloresnotificacion[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -909,10 +934,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         dataIndex: 'fechaSolicitud',
         key: 'fechaSolicitud',
         width: 200,
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: coloresnotificacion[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -944,10 +969,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         filterSearch: true,
 
         onFilter: (value: string, record: { nombreSubred: string }) => record.nombreSubred.toString().includes(value),
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: coloresnotificacion[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -999,10 +1024,10 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         filterSearch: true,
 
         onFilter: (value: string, record: any) => record.tipodeSolicitud.toString().includes(value),
-        render(text: any, record: any) {
+        render(text: any, row: any, record: any) {
           return {
             props: {
-              style: { background: color }
+              style: { background: coloresnotificacion[row.numeroRadicado] }
             },
             children: <div>{text}</div>
           };
@@ -1317,7 +1342,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                         style={{ width: 300 }}
                                         className='form-control'
                                         onChange={(date) => {
-                                          setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                          setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                                         }}
                                       />
                                     </Form.Item>
@@ -1399,7 +1424,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                             style={{ width: 300 }}
                                             className='form-control'
                                             onChange={(date) => {
-                                              setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                              setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                                             }}
                                           />
                                         </Form.Item>
@@ -1468,7 +1493,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                                 style={{ width: 300 }}
                                                 className='form-control'
                                                 onChange={(date) => {
-                                                  setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                                  setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                                                 }}
                                               />
                                             </Form.Item>
@@ -1578,7 +1603,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                             style={{ width: 300 }}
                                             className='form-control'
                                             onChange={(date) => {
-                                              setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                                              setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                                             }}
                                           />
                                         </Form.Item>
