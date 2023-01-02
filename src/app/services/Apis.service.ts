@@ -212,6 +212,10 @@ export class ApiService {
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
 
+  /*
+  AddGestion = (payload: any, idvalidacion: string) =>
+    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/AddGestion', payload, id: idvalidacion });
+*/
   UpdateProfesionalesSalud = (payload: any, id: string) =>
     put({
       endpoint: REACT_APP_SHARED as string,
@@ -387,6 +391,14 @@ export class ApiService {
       id: '0'
     });
 
+  /*
+   getSeguimientoporSolicitud = (idSolicitud: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Seguimiento/GetSeguimientoBySolicitud/${idSolicitud}/${this.oid}`,
+      id: '0'
+    });
+*/
   getCostante = (idConstante: string) =>
     get<any>({
       endpoint: REACT_APP_INHCREMACION as string,
@@ -626,13 +638,27 @@ export class ApiService {
   AddSolicitudConsecion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/RenovarSolicitud', payload, id: '1' });
 
+  getSolicitudbyidAguas = (idsolicitud: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/GetSolicitudbyid/${idsolicitud}`,
+      id: '0'
+    });
+
   getSolicitudesUsuario = () =>
     get<any>({
       endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyUser/${this.oid}`,
       id: '0'
     });
-
+  /*
+  getSolicitudesUsuario = (numero: string, tipo: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/GetSolicitudesbyUser/${numero}/${tipo}`,
+      id: '0'
+    });
+*/
   AsignarSubred = (idsubred: string, idsolicitud: string) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idsubred}/${idsolicitud}`, id: '0' });
 
@@ -641,27 +667,6 @@ export class ApiService {
       endpoint: REACT_APP_AGUAS as string,
       url: `Request/CambiarEstadoSolicitud/${idsolicitud}/${idestado}/${idtipo}`,
       id: '1'
-    });
-
-  GetSolicitudesUsuarioSubred = () =>
-    get<any>({
-      endpoint: REACT_APP_AGUAS as string,
-      url: `Request/getSolicitudbyIdUserSubRed/${this.oid}`,
-      id: '0'
-    });
-
-  getSolicitudesUsuarioAsignado = () =>
-    get<any>({
-      endpoint: REACT_APP_AGUAS as string,
-      url: `Request/GetSolicitudesbyUsuarioAsignado/${this.oid}`,
-      id: '0'
-    });
-
-  getSolicitudesByTipoSolicitud = (idestado: string) =>
-    get<any>({
-      endpoint: REACT_APP_AGUAS as string,
-      url: `Request/GetSolicitudesbyidTipo/${idestado}`,
-      id: '0'
     });
 
   getTipoFuente = () =>

@@ -20,8 +20,11 @@ const InhumacionIndividualPage = () => {
   const [HIA_SD, setHIA_SD] = useState<string[]>(['0', '0', '0']);
   const [HFA_SD, setHFA_SD] = useState<string[]>(['23', '5', '9']);
 
+
   const getListas = useCallback(async () => {
     await GetValidateRol();
+    localStorage.setItem('horario', 'habilitar')
+
   }, []);
 
   function obtenerHora(hora: string): string[] {
@@ -190,7 +193,7 @@ const InhumacionIndividualPage = () => {
       <Tabs>
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Inhumación' tramite='a289c362-e576-4962-962b-1c208afa0273' />
-          {mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>}
+          {localStorage.getItem('horario') === 'habilitar' && (mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>)}
         </TabPane>
       </Tabs>
     </div>

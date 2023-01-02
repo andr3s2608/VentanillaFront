@@ -22,6 +22,7 @@ const InhumacionFetalPage = () => {
 
   const getListas = useCallback(async () => {
     await GetValidateRol();
+    localStorage.setItem('horario', 'habilitar')
   }, []);
 
   function obtenerHora(hora: string): string[] {
@@ -196,7 +197,7 @@ const InhumacionFetalPage = () => {
         </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <FetalForm tipoLicencia='Inhumación' tramite='ad5ea0cb-1fa2-4933-a175-e93f2f8c0060' />
-          {mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>}
+          {localStorage.getItem('horario') === 'habilitar' && (mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>)}
         </TabPane>
       </Tabs>
     </div>

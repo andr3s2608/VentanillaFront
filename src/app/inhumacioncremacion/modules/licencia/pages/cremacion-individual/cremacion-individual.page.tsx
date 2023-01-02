@@ -22,6 +22,7 @@ const CremacionIndividualPage = () => {
 
   const getListas = useCallback(async () => {
     await GetValidateRol();
+    localStorage.setItem('horario', 'habilitar')
   }, []);
 
   function obtenerHora(hora: string): string[] {
@@ -199,7 +200,7 @@ const CremacionIndividualPage = () => {
         </TabPane> */}
         <TabPane tab='Registro' key='1'>
           <IndividualForm tipoLicencia='Cremación' tramite='e69bda86-2572-45db-90dc-b40be14fe020' />
-          {mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>}
+          {localStorage.getItem('horario') === 'habilitar' && (mostrarPopUp() && <App origen={'solicitud'} metodo={null}></App>)}
         </TabPane>
       </Tabs>
     </div>
