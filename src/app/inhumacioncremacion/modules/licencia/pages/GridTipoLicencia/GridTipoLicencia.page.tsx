@@ -63,7 +63,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
 
       const resp: any = await api.GetEstadoSolicitudNuevoCambio();
 
-      localStorage.setItem('tablainhcrem', JSON.stringify(resp));
+      //localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setGrid(resp);
       setespera(resp);
       setAllData(resp);
@@ -73,7 +73,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       // const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
       const resp = await api.getallrequesttovalidate();
 
-      localStorage.setItem('tablainhcrem', JSON.stringify(resp));
+      //localStorage.setItem('tablainhcrem', JSON.stringify(resp));
       setmostrar(true);
       setGrid(resp);
       setespera(resp);

@@ -79,8 +79,8 @@ export const Gridview = (props: IDataSource) => {
       }
 */
 
-      const datostabla: any = localStorage.getItem('tablainhcrem');
-      const datosjson = JSON.parse(datostabla)
+      //const datostabla: any = localStorage.getItem('tablainhcrem');
+      //const datosjson = JSON.parse(datostabla)
 
 
 
