@@ -228,7 +228,6 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
 
   //#endregion
-
   const arrayinhind: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     '9C4E62A4-EE76-4BA1-8DBE-8BE172E23788',
@@ -267,6 +266,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     'ABE33C1D-9370-4189-9E81-597E5B643481',
     '242A2E58-46B5-4C45-97BA-881A383F2CBB'
   ];
+
 
   const getArray = async (values: any) => {
     const resp = values;
