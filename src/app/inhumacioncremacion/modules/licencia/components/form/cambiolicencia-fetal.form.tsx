@@ -913,7 +913,7 @@ export const CambioLicencia = ({ props }: any) => {
 
                     supportDocumentsEdit.push({
                       idSolicitud: obj.idSolicitud,
-                      idTipoDocumentoSoporte: 'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+                      idTipoDocumentoSoporte: 'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
                       path: `${obj.idusuarioseg}/Autorizacion_del_fiscal_para_cremar_${obj.idSolicitud}`,
                       idUsuario: obj.idusuarioseg,
                       esValido: true
