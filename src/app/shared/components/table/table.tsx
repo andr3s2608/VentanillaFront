@@ -1244,6 +1244,15 @@ export const Gridview = (props: IDataSource) => {
         /** GUID que corresponde a Oficio de Medicinal Legal al fiscal para cremar */
         case '1266f06c-0bc1-4cf8-ba51-5e889d5e8178':
           return 'OML';
+
+        case '242a2e58-46b5-4c45-97ba-881a383f2cbb':
+          return 'JCL';
+
+        case 'fa808621-d345-43c7-88b0-e0b9ff56a24d':
+          return 'JI';
+
+        case '6e57212b-2266-4854-9c13-f805bb4bbcf8':
+          return 'DQA';
       }
       return 'default';
     }
