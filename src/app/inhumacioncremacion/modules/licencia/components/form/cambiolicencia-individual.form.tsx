@@ -43,7 +43,6 @@ export const CambioLicencia = ({ props }: any) => {
   const obj: any = EditInhumacion('0');
 
 
-  const date = moment(obj.dateOfBirth);
 
 
 
@@ -358,7 +357,7 @@ export const CambioLicencia = ({ props }: any) => {
                         segundoNombre: values.secondName ?? '',
                         primerApellido: values.surname,
                         segundoApellido: values.secondSurname ?? '',
-                        fechaNacimiento: values.dateOfBirth,
+                        fechaNacimiento: values.dateOfBirth ?? '00-00-0000',
                         hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
                         nacionalidad: nacionalidad,
                         estado: true,
@@ -409,7 +408,7 @@ export const CambioLicencia = ({ props }: any) => {
                         segundoNombre: values.secondName ?? '',
                         primerApellido: values.surname,
                         segundoApellido: values.secondSurname ?? '',
-                        fechaNacimiento: values.dateOfBirth,
+                        fechaNacimiento: values.dateOfBirth ?? '00-00-0000',
                         hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
                         nacionalidad: nacionalidad,
                         estado: true,
@@ -461,7 +460,7 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoNombre: values.secondName ?? '',
                       primerApellido: values.surname,
                       segundoApellido: values.secondSurname ?? '',
-                      fechaNacimiento: values.dateOfBirth,
+                      fechaNacimiento: values.dateOfBirth ?? '00-00-0000',
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
                       nacionalidad: nacionalidad,
                       segundanacionalidad: '00000000-0000-0000-0000-000000000000',
@@ -514,7 +513,7 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoNombre: values.secondName ?? '',
                       primerApellido: values.surname,
                       segundoApellido: values.secondSurname ?? '',
-                      fechaNacimiento: values.dateOfBirth,
+                      fechaNacimiento: values.dateOfBirth ?? '00-00-0000',
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
                       nacionalidad: nacionalidad,
                       estado: true,
@@ -541,7 +540,7 @@ export const CambioLicencia = ({ props }: any) => {
                       segundoNombre: values.secondName ?? '',
                       primerApellido: values.surname,
                       segundoApellido: values.secondSurname ?? '',
-                      fechaNacimiento: values.dateOfBirth,
+                      fechaNacimiento: values.dateOfBirth ?? '00-00-0000',
                       hora: values?.timenac ? moment(values.timenac).format('LT') : 'Sin información',
                       nacionalidad: nacionalidad,
                       estado: true,
@@ -1189,89 +1188,92 @@ export const CambioLicencia = ({ props }: any) => {
   //validacion fecha de nacimiento
   const FechaNacimiento = () => {
     const valorfecha = obj?.dateOfBirth;
+    if (valorfecha != undefined) {
+      const fecha = moment(valorfecha);
+      const time = obj.hourOfBirth;
+      let time2 = undefined;
+      if (time != 'Sin información') {
+        time2 = moment(time).format('LT');
+      }
 
-    const fecha = moment(valorfecha);
-    const time = obj.hourOfBirth;
-    let time2 = undefined;
-    if (time != 'Sin información') {
-      time2 = moment(time).format('LT');
-    }
+      const timedef = form.getFieldValue('time');
+      let timedef2 = undefined;
+      if (timedef != undefined) {
+        timedef2 = moment(timedef).format('LT');
+      }
 
-    const timedef = form.getFieldValue('time');
-    let timedef2 = undefined;
-    if (timedef != undefined) {
-      timedef2 = moment(timedef).format('LT');
-    }
+      let tiempo = '';
 
-    let tiempo = '';
+      let valor = form.getFieldValue('date');
+      let fechadef = moment(valor);
 
-    let valor = form.getFieldValue('date');
-    let fechadef = moment(valor);
+      if (timedef2 != undefined) {
 
-    if (timedef2 != undefined) {
-
-      if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
-        if (time2 != undefined) {
-          if (fecha.day() === fechadef.day()) {
+        if (tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e') {
+          if (time2 != undefined) {
+            if (fecha.day() === fechadef.day()) {
 
 
-            const posicion1 = time2.indexOf(':');
-            const posicion2 = timedef2.indexOf(':');
+              const posicion1 = time2.indexOf(':');
+              const posicion2 = timedef2.indexOf(':');
 
-            const horanac1 = time2.substring(0, posicion1);
-            const horanac2 = time2.substring(posicion1 + 1, time2.length);
+              const horanac1 = time2.substring(0, posicion1);
+              const horanac2 = time2.substring(posicion1 + 1, time2.length);
 
-            const horadef1 = timedef2.substring(0, posicion2);
-            const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
+              const horadef1 = timedef2.substring(0, posicion2);
+              const horadef2 = timedef2.substring(posicion2 + 1, timedef2.length);
 
-            if (parseInt(horanac1) < parseInt(horadef1)) {
+              if (parseInt(horanac1) < parseInt(horadef1)) {
 
-              tiempo = 'es valida';
-            } else {
-              if (parseInt(horanac1) == parseInt(horadef1)) {
-                if (parseInt(horanac2) <= parseInt(horadef2)) {
+                tiempo = 'es valida';
+              } else {
+                if (parseInt(horanac1) == parseInt(horadef1)) {
+                  if (parseInt(horanac2) <= parseInt(horadef2)) {
 
-                  tiempo = 'es valida';
+                    tiempo = 'es valida';
+                  } else {
+
+                    tiempo = 'es invalida';
+                  }
                 } else {
 
                   tiempo = 'es invalida';
                 }
-              } else {
-
-                tiempo = 'es invalida';
               }
             }
-          }
 
+          }
         }
+      }
+
+      if (!fecha.isBefore(fechadef)) {
+        if (tiempo == 'es valida') {
+          setdatecorrect(true);
+        } else {
+          if (tiempo == 'es invalida') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: `La Hora de fallecimiento debe ser mayor a: ${time2}`
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: `La fecha de fallecimiento debe ser mayor a: ${fecha.calendar()}`
+            });
+          }
+          setdatecorrect(false);
+        }
+
+
+      } else {
+        setdatecorrect(true);
       }
     }
-
-    if (!fecha.isBefore(fechadef)) {
-      if (tiempo == 'es valida') {
-        setdatecorrect(true);
-      } else {
-        if (tiempo == 'es invalida') {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `La Hora de fallecimiento debe ser mayor a: ${time2}`
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Datos inválidos',
-            text: `La fecha de fallecimiento debe ser mayor a: ${fecha.calendar()}`
-          });
-        }
-        setdatecorrect(false);
-      }
-
-
-    } else {
+    else {
       setdatecorrect(true);
     }
-
   };
 
   const getDataSolicitante = (solicitante: any) => { };

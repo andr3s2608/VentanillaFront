@@ -63,7 +63,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
   const idDepartamentoBogota = '31b870aa-6cd0-4128-96db-1f08afad7cdd';
   //fetales
 
-  const date = obj?.dateOfBirth !== undefined ? moment(obj?.dateOfBirth) : null;
+  const date = obj?.dateOfBirth !== undefined ? (obj?.dateOfBirth === '00-00-0000' ? 'vacio' : moment(obj?.dateOfBirth)) : null;
 
   const [[l_paises, l_tipos_documento, l_estado_civil, l_nivel_educativo, l_etnia, l_regimen, l_tipo_muerte], setListas] =
     useState<IDominio[][]>([]);
@@ -917,8 +917,8 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
               label='Fecha de Nacimiento'
               style={{ width: tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' ? 400 : 750 }}
               name='dateOfBirth'
-              rules={[{ required: true }]}
-              initialValue={date}
+              rules={[{ required: (date != 'vacio') }]}
+              initialValue={date != 'vacio' ? date : undefined}
             >
               <DatepickerComponent
                 picker='date'
@@ -926,7 +926,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
                 dateDisabledType='before'
                 dateFormatType='default'
                 style={{ width: tipodocumentohoranacimiento == '0d69523b-4676-4e3d-8a3d-c6800a3acf3e' ? 200 : 530 }}
-                value={date}
+                value={date != 'vacio' ? date : undefined}
               />
             </Form.Item>
           </div>

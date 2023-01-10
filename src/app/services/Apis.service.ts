@@ -294,6 +294,13 @@ export class ApiService {
       id: '0'
     });
 
+  getReportesFuneraria = (fechainicio: string, fechafin: string) =>
+    get<[]>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Request/GetAllRequestFuneraria/${fechainicio}/${fechafin}/${this.oid}`,
+      id: '0'
+    });
+
   //correccion
   getallrequesttovalidate = () =>
     get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetAllRequesttoValidate`, id: '0' });
@@ -408,7 +415,7 @@ export class ApiService {
 
   //consulta informacion adicional del fallecido
   GetInformacionFallecido = (solicitud: string) =>
-    get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
+    get<any>({ endpoint: REACT_APP_LOCAL as string, url: `Request/GetInfoFallecido/${solicitud}`, id: '0' });
 
   //consulta fallecidos con nro de id duplicados
   GetDuplicadosFallecido = (nrotramite: string, id: string) =>
@@ -640,25 +647,20 @@ export class ApiService {
 
   getSolicitudbyidAguas = (idsolicitud: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudbyid/${idsolicitud}`,
       id: '0'
     });
 
-  getSolicitudesUsuario = () =>
-    get<any>({
-      endpoint: REACT_APP_AGUAS as string,
-      url: `Request/GetSolicitudesbyUser/${this.oid}`,
-      id: '0'
-    });
-  /*
+
+  
   getSolicitudesUsuario = (numero: string, tipo: string) =>
     get<any>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Request/GetSolicitudesbyUser/${numero}/${tipo}`,
       id: '0'
     });
-*/
+
   AsignarSubred = (idsubred: string, idsolicitud: string) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: `Request/AsignarUsuario/${idsubred}/${idsolicitud}`, id: '0' });
 

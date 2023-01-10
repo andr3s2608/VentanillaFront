@@ -639,7 +639,7 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
       },
       {
         title: 'Fecha de nacimiento',
-        describe: < DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={fechaNacimiento} disabled />
+        describe: < DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={obj.dateOfBirth === '00-00-0000' ? null : fechaNacimiento} disabled />
       },
       {
         title: 'Hora de fallecimiento',

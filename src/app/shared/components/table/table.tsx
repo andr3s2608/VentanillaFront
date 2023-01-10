@@ -1480,7 +1480,7 @@ export const Gridview = (props: IDataSource) => {
 
 
   const getNamesAndBlobForm = (values: any, tipoSolitudIN: string) => {
-    let { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML } = values;
+    let { CD, DM, OD, ANFI, DFALL, ACF, DFAMI, AFC, OML, JCL, JI, DQA } = values;
     const Objs = [];
 
     /*if (tipoSolitudIN == 'Cremacion Fetal' || tipoSolitudIN == 'Inhumacion Fetal') {
@@ -1496,6 +1496,9 @@ export const Gridview = (props: IDataSource) => {
     Objs.push({ file: DFAMI, name: 'Documento_del_familiar' });
     Objs.push({ file: AFC, name: 'Autorizacion_del_fiscal_para_cremar' });
     Objs.push({ file: OML, name: 'Oficio_de_medicina_legal_al_fiscal_para_cremar' });
+    Objs.push({ file: JCL, name: 'Justificación_del_cambio_de_licencia' });
+    Objs.push({ file: JI, name: 'Justificación_de_inhumación' });
+    Objs.push({ file: DQA, name: 'Documento_de_quien_autoriza' });
 
     const filesLoaded = Objs.filter((item: { file: any; name: string }) => item.file !== undefined);
     const files: Blob[] = filesLoaded.map((item) => {
@@ -1678,6 +1681,17 @@ export const Gridview = (props: IDataSource) => {
         /** GUID que corresponde a Oficio de Medicinal Legal al fiscal para cremar */
         case '1266f06c-0bc1-4cf8-ba51-5e889d5e8178':
           return 'OML';
+
+
+
+        case '242a2e58-46b5-4c45-97ba-881a383f2cbb':
+          return 'JCL';
+
+        case 'fa808621-d345-43c7-88b0-e0b9ff56a24d':
+          return 'JI';
+
+        case '6e57212b-2266-4854-9c13-f805bb4bbcf8':
+          return 'DQA';
       }
       return 'default';
     }

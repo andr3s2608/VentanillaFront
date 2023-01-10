@@ -1464,10 +1464,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
 
-    const edad = await api.ObtenerEdad({
-      fechaNacimiento: fechaNacimiento,
-      fechaDefuncion: fechaDefuncion
-    })
+    var edad = 'Sin Definir';
+    if (fallecido['fechaNacimiento'] != '00-00-0000') {
+      edad = await api.ObtenerEdad({
+        fechaNacimiento: fechaNacimiento,
+        fechaDefuncion: fechaDefuncion
+      })
+    }
+
 
 
     const ifGenero: string = Solicitud[0]['idSexo'];
@@ -1741,11 +1745,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
 
-    const edad = await api.ObtenerEdad({
-      fechaNacimiento: fechaNacimiento,
-      fechaDefuncion: fechaDefuncion
-    })
-
+    var edad = 'Sin Definir';
+    if (fallecido['fechaNacimiento'] != '00-00-0000') {
+      edad = await api.ObtenerEdad({
+        fechaNacimiento: fechaNacimiento,
+        fechaDefuncion: fechaDefuncion
+      })
+    }
     const ifGenero: string = Solicitud[0]['idSexo'];
 
     const genero: any = generos.filter((i: { id: string }) => i.id == ifGenero.toLocaleUpperCase());

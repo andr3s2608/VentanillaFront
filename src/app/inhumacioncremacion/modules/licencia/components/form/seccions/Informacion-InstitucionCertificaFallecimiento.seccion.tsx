@@ -45,19 +45,21 @@ export const InformacionInstitucionCertificaFallecimientoseccion = ({ obj }: any
     const tipos: any = localStorage.getItem('tipoid');
     const tiposjson: any = JSON.parse(tipos);
 
+
     setl_tipos_documento(tiposjson);
     if (obj != undefined) {
 
-      setNombres([
-        obj.reconocidocomo[0].name,
-        obj.reconocidocomo[0].secondName,
-        obj.reconocidocomo[0].surname,
-        obj.reconocidocomo[0].secondSurname,
-        obj.reconocidocomo[0].numeroid,
-        obj.reconocidocomo[0].tipoid
-      ]);
+      if (obj.reconocidocomo.length > 0) {
+        setNombres([
+          obj.reconocidocomo[0].name,
+          obj.reconocidocomo[0].secondName,
+          obj.reconocidocomo[0].surname,
+          obj.reconocidocomo[0].secondSurname,
+          obj.reconocidocomo[0].numeroid,
+          obj.reconocidocomo[0].tipoid
+        ]);
 
-
+      }
     }
   }, []);
 
