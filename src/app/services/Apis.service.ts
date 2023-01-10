@@ -232,7 +232,7 @@ export class ApiService {
   UpdateLicenciaAdmin = (payload: any, validacion: string) =>
     put({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/UpdateRequestAdministrador', payload, id: validacion });
 
-  ModificarConstante = (constante: string, valor: string, validacion: string) =>
+  ModificarConstante = (constante: string, valor: any, validacion: string) =>
     put({
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/UpdateConstante/${constante}/${valor}`,

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Card, Form, Input, Select } from 'antd';
 import form from 'antd/es/form';
 import { RangePickerProps } from 'antd/lib/date-picker';
 import { DatepickerComponent } from 'app/shared/components/inputs/datepicker.component';
@@ -12,18 +12,14 @@ import fechaNoAgregada from '../../../../../../assets/images/inhumacioncremacion
 import fechaGuardada from '../../../../../../assets/images/inhumacioncremacion/fechaGuardada.png';
 import { authProvider } from 'app/shared/utils/authprovider.util';
 import { ApiService } from 'app/services/Apis.service';
+import ListaFestivos from './ListaFestivos';
 
 
 export const HorariosFestivos = ({ props }: any) => {
 
   const [form] = Form.useForm<any>();
   const [festivos, setFestivos] = useState<string>('');
-  const [festivosConsultados, setfestivosConsultados] = useState<string>('');
-  const [actualizar, setAcualizar] = useState<boolean>(false);
-  const [actualizarText, setActualizarText] = useState<boolean>(false);
-  const format = "DD-MM-YYYY";
   const [value, setValue] = useState<any>(null);
-  const [cantidadConsultas, setCantidadConsultas] = useState<number>(0);
   const [fechas, setfechas] = useState<any>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
@@ -59,101 +55,6 @@ export const HorariosFestivos = ({ props }: any) => {
     return festivos;
   };
 
-  const Actualizar = (bandera: boolean) => {
-    switch (bandera) {
-      case true:
-        return (
-          <Button style={{ marginLeft: '10px', marginRight: '10px' }} type='primary' htmlType='button' className='add' onClick={async () => {
-            //console.log(obtenerFestivosString(festivosConsultados.replaceAll('/', ';')));
-            //console.log(cantidadConsultas);
-            if (obtenerFestivosString(festivosConsultados.replaceAll('/', ';')).length < cantidadConsultas || (obtenerFestivosString(festivosConsultados.replaceAll('/', ';')).length == cantidadConsultas && festivosConsultados[festivosConsultados.length - 1] === ' ')) {
-              await api.ModificarConstante('4AF03735-503B-4D22-8169-E4FCDD19DB28', festivosConsultados.replaceAll('/', ';').trim(), '1');
-              Swal.fire({
-                imageUrl: fechaGuardada,
-                background: '#fcfcfc',
-                imageHeight: 150,
-                title: 'ACTUALIZACION EXITOSA',
-                confirmButtonColor: '#ec0b0a ',
-                text:
-                  'Se han actualizado los dias festivos'
-              });
-              setAcualizar(false);
-              setActualizarText(false);
-              // await api.ModificarConstante('4AF03735-503B-4D22-8169-E4FCDD19DB28', e.replace('/', ';'), '1');
-            } else {
-              Swal.fire({
-                imageUrl: fechaNoAgregada,
-                background: '#fcfcfc',
-                imageHeight: 150,
-                title: 'ACTUALIZACION DENEGADA',
-                confirmButtonColor: '#ec0b0a ',
-                text:
-                  'Para registrar una fecha vaya al apartado superior: '
-              });
-            }
-          }
-          }>
-            Actualizar
-          </Button >
-        );
-        break;
-      default:
-        return <></>;
-        break;
-    }
-  };
-
-  const actualizarFestivos = (e: string) => {
-    setAcualizar(true);
-    setfestivosConsultados(e);
-
-  };
-
-  const FestivosConsultados = (bandera: boolean) => {
-    switch (bandera) {
-      case true:
-        return (
-          <div className='col-lg-6 col-md-6 col-sm-12 '>
-            <Form.Item
-              label='Festivos consultados'
-              name='festivosConsultados'
-            >
-              <Input.TextArea
-                allowClear
-                maxLength={250}
-                placeholder='No hay festivos consultados...'
-                autoSize={{ minRows: 4, maxRows: 8 }}
-                onChange={(e) => actualizarFestivos(e.target.value)}
-              //value={festivos}
-              />
-            </Form.Item>
-          </div>
-        );
-        break;
-      default:
-        return (
-          <div className='col-lg-6 col-md-6 col-sm-12 '>
-            <Form.Item
-              label='Festivos consultados'
-              name='festivosConsultados'
-            >
-              <Input.TextArea
-                allowClear
-                maxLength={250}
-                placeholder='No hay festivos consultados...'
-                autoSize={{ minRows: 4, maxRows: 8 }}
-                disabled
-              //value={festivos}
-              />
-            </Form.Item>
-          </div>
-        );
-        break;
-    }
-  };
-
-
-
   const onSubmit = async (values: any) => {
 
     if (festivos != '') {
@@ -166,12 +67,13 @@ export const HorariosFestivos = ({ props }: any) => {
 
       const festivosRegistrados: string[] = validarFestivosRegistrados(festivosBD, festivosRegistrarBD);
 
-      //console.log(festivosRegistrados);
-      //console.log(festivosBD);
-      //console.log(festivosRegistrarBD);
       if (festivosRegistrados.length == 0) {
 
-        await api.ModificarConstante('4AF03735-503B-4D22-8169-E4FCDD19DB28', festivosDB.valor + festivos, '1');
+        if (festivosDB.valor != "null") {
+          await api.ModificarConstante('4AF03735-503B-4D22-8169-E4FCDD19DB28', festivosDB.valor + festivos, '1');
+        } else {
+          await api.ModificarConstante('4AF03735-503B-4D22-8169-E4FCDD19DB28', festivos, '1');
+        }
         Swal.fire({
           imageUrl: fechaGuardada,
           background: '#fcfcfc',
@@ -261,17 +163,9 @@ export const HorariosFestivos = ({ props }: any) => {
                     rules={[{ required: true }]}
                   >
                     <DatePicker mapDays={({ date }) => {
-                      //console.log(date.day);
                       const aux: any = date;
                       const fechacalendario = new Date(aux)
-
-                      console.log('calendario: ' + fechacalendario);
-                      console.log('actual' + moment(new Date()));
                       let esantes = (moment((moment(fechacalendario)).format('MM DD YYYY'))).isBefore(moment(moment(new Date()).format('MM DD YYYY')));
-
-                      console.log('validacion ' + esantes);
-
-
                       if (esantes) return {
                         disabled: true,
                         style: { color: "#ccc" },
@@ -324,36 +218,15 @@ export const HorariosFestivos = ({ props }: any) => {
             <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
               <div className='row justify-content-center'>
                 <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center mb-4'>
-                  <p
-                    style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
-                    className='text-uppercase font-weight-bold'
-                  >
-                    Festivos Registrados
-                  </p>
                 </div>
 
-                {FestivosConsultados(actualizarText)}
-
-                <div style={{ display: 'inline-block', width: '50%', paddingLeft: '60px' }}>
-                  <Button style={{ marginLeft: '10px', marginRight: '10px' }} type='primary' htmlType='button' className='add' onClick={async () => {
-                    const festivosDB = await api.getCostante('4AF03735-503B-4D22-8169-E4FCDD19DB28');
-                    const cantidadConsultas: string[] = obtenerFestivosString(festivosDB.valor);
-                    setCantidadConsultas(cantidadConsultas.length);
-                    form.setFieldsValue({ festivosConsultados: festivosDB.valor.replaceAll(";", "/") });
-                    Swal.fire({
-                      imageUrl: fechaGuardada,
-                      background: '#fcfcfc',
-                      imageHeight: 150,
-                      title: 'RESULTADO DE LA CONSULTA',
-                      confirmButtonColor: '#ec0b0a ',
-                      text:
-                        'Se han encontrado ' + ((cantidadConsultas.length) - 1) + ' festivos'
-                    });
-                    setActualizarText(true);
-                  }}>
-                    Consultar
-                  </Button>
-                  {Actualizar(actualizar)}
+                <div style={{ border: '0px solid black' }}>
+                  <div style={{ border: '1px solid #eeeeee', padding: '10px', textAlign: 'center', textTransform: 'uppercase' }}>
+                    <h4>Festivos registrados</h4>
+                  </div>
+                  <div style={{ background: '#ffffff', border: '1px solid #eeeeee' }}>
+                    <ListaFestivos />
+                  </div>
                 </div>
               </div>
             </Form>

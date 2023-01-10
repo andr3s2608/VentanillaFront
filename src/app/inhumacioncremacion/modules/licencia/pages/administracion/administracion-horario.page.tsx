@@ -66,6 +66,30 @@ const PruebaPage = () => {
               </div>
             </div>
           </div>
+          <div id='accordion' className='mt-3'>
+            <div className='card'>
+              <div className='card-header' id='heading-2'>
+                <h5 className='mb-0'>
+                  <a
+                    className='collapsed'
+                    role='button'
+                    data-toggle='collapse'
+                    href='#collapse-3'
+                    aria-expanded='false'
+                    aria-controls='collapse-2'
+                  >
+                    Gestión de festivos
+                  </a>
+                </h5>
+              </div>
+              <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
+                <div className='fadeInRight d-block'>
+                  <HorariosFestivos />;
+
+                </div>
+              </div>
+            </div>
+          </div>
         </TabPane>
       </Tabs>
     </div>

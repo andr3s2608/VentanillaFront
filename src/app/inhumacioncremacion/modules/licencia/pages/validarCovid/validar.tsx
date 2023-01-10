@@ -4,6 +4,8 @@ import { useHistory } from 'react-router';
 import swal from 'sweetalert2';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
+import { Console } from 'console';
+import moment from 'moment';
 
 const App: React.FC<valores> = (props) => {
   const { origen, metodo } = props;
@@ -11,6 +13,7 @@ const App: React.FC<valores> = (props) => {
   const api = new ApiService(accountIdentifier);
   const [visible, setVisible] = React.useState(true);
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const formatDate = 'DD-MM-YYYY';
 
   const getListas = useCallback(
     async () => {
@@ -95,14 +98,28 @@ const App: React.FC<valores> = (props) => {
     setVisible(false);
   };
 
+  const obtenerFestivosString = (cadena: string): string[] => {
+    let festivos: string[] = [];
+    festivos = cadena.split(';');
+    return festivos;
+  };
   const isNotCovid = async () => {
-    function isHoliday(): boolean {
-      let bandera = false;
-      let hoy = new Date();
+    async function isHoliday() {
 
-      for (let index = 0; index < festivos.length; index++) {
-        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
-          bandera = true;
+      let bandera: boolean = false;
+
+      const festivosDB = await api.getCostante('4AF03735-503B-4D22-8169-E4FCDD19DB28');
+      const festivos: string[] = obtenerFestivosString(festivosDB.valor);
+
+      if (festivos.length > 0) {
+        const fechaActual = moment(new Date()).format(formatDate).toString();
+        console.log(fechaActual);
+        for (let index = 0; index < festivos.length; index++) {
+
+          if (festivos[index] === fechaActual) {
+            bandera = true;
+            break;
+          }
         }
       }
       return bandera;
@@ -222,10 +239,10 @@ const App: React.FC<valores> = (props) => {
 
     }
 
+    let holyDay = await isHoliday();
 
 
-
-    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday()) {
+    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !holyDay) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
         setVisible(false);
       } else {
@@ -270,6 +287,7 @@ const App: React.FC<valores> = (props) => {
       if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
         setVisible(false);
       } else {
+        //alert("es fin de semana");
         if (origen === 'solicitudfinal') {
           swal.fire({
             icon: 'success',

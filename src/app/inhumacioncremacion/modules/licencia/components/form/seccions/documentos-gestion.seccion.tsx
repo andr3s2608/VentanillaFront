@@ -448,7 +448,7 @@ export const InformacionDocumentosGestion: React.FC<documentosgestion> = (props)
             </Form.Item>
           </>)}
 
-          {(instTypebd === 'Otros' && instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
+          {(instType != '80d7f664-5bdd-48eb-8b2c-93c1bd648cc8') && (<>
             <Form.Item label='Autorización de cremacion del fiscal' name='fileAuthFiscalCremacion' rules={[{ required: true }]}>
               <Upload
                 name='fileAuthFiscalCremacion'
