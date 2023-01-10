@@ -14,7 +14,7 @@ export const notificacion = '/notificacion';
 export const updatepath = '/modificar';
 export const validaciondoc = '/validardocumento';
 
-export const tramiteServiceReport = '/reportes/rayosx';
+export const tramiteServiceReport = '/reportes';
 
 // LazyLoad Pages
 const LicenciaPruebaPage = lazy(() => import('./pages/gestion-tramite/gestion-inhumacion.page'));
@@ -41,7 +41,8 @@ const LicenciaInhumacionIndividualPage = lazy(() => import('./pages/inhumacion-i
 const LicenciaCremacionFetalPage = lazy(() => import('./pages/cremacion-fetal/cremacion-fetal.page'));
 const LicenciaInhumacionFetalPage = lazy(() => import('./pages/inhumacion-fetal/inhumacion-fetal.page'));
 const MaestroPage = lazy(() => import('./pages/GridTipoLicencia/GridTipoLicencia.page'));
-const ReportPage = lazy(() => import('./pages/report/report.page'));
+const ReportPage = lazy(() => import('./pages/report/reportes.page'));
+const ReportesFuneraria = lazy(() => import('./pages/report/Funerarias-reportes.page'));
 const SeguimientoPage = lazy(() => import('./pages/seguimiento/seguimiento.page'));
 //////Aguas////
 const BandejaAguas = lazy(() => import('../../../aguasconsumo/pages/bandejas/RedireccionarBandeja.page'));
@@ -95,7 +96,11 @@ export const LicenciaRoutes: IRouteProps[] = [
     component: MaestroPage
   },
   {
-    path: `${tramiteServiceReport}`,
+    path: `${tramiteServiceReport}/funeraria`,
+    component: ReportesFuneraria
+  },
+  {
+    path: `${tramiteServiceReport}/rayosx`,
     component: ReportPage
   },
   {

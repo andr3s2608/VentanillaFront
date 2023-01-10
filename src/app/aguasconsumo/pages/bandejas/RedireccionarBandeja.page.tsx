@@ -48,9 +48,9 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
     ) {
 
       const resp = await api.getSolicitudesUsuario(usuario, 'usuario');
-
+      ///const resp = await api.getSolicitudesUsuario();
       const datossolucionados: any = await api.getSolicitudesUsuario(usuario, 'usuario');
-
+      // const datossolucionados: any = await api.getSolicitudesUsuario();
       const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
         return (
           f.idEstado == '2e8808af-a294-4cde-8e9c-9a78b5172119' || //aprobado
@@ -79,8 +79,8 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
         }
 
         const datos = await api.getSolicitudesUsuario(subred !== null ? subred : '00000000-0000-0000-0000-000000000000', 'subred');
-
-
+        // const datos = await api.getSolicitudesUsuario();
+        //const datossolucionados: any = await api.getSolicitudesUsuario();
         const datossolucionados: any = await api.getSolicitudesUsuario(subred !== null ? subred : '00000000-0000-0000-0000-000000000000', 'subred');
 
         const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
@@ -108,6 +108,9 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
         ) {
           const datos = await api.getSolicitudesUsuario(usuario, 'asignado');
           const datossolucionados: any = await api.getSolicitudesUsuario(usuario, 'asignado');
+
+          //const datos = await api.getSolicitudesUsuario();
+          //const datossolucionados: any = await api.getSolicitudesUsuario();
 
           const filtrado = datossolucionados.filter(function (f: { idEstado: string }) {
             return (
@@ -140,11 +143,12 @@ const RedireccionarBandeja: React.FC<any> = (props: any) => {
           setdatosusuario(filtradodatos);
 
           const resp = await api.getSolicitudesUsuario('B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9', 'tipo');
+          //const resp = await api.getSolicitudesUsuario();
 
           setGrid(resp);
         } else {
           const resp = await api.getSolicitudesUsuario('5290025A-0967-417A-9737-FA5EAE85D97B', 'tipo');
-
+          //const resp = await api.getSolicitudesUsuario();
           setGrid(resp);
         }
       }

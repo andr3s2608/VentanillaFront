@@ -212,6 +212,10 @@ export class ApiService {
   AddGestion = (payload: any, idvalidacion: string) =>
     post({ endpoint: REACT_APP_INHCREMACION as string, url: 'Request/AddGestion', payload, id: idvalidacion });
 
+  /*
+  AddGestion = (payload: any, idvalidacion: string) =>
+    post({ endpoint: REACT_APP_LOCAL as string, url: 'Request/AddGestion', payload, id: idvalidacion });
+*/
   UpdateProfesionalesSalud = (payload: any, id: string) =>
     put({
       endpoint: REACT_APP_SHARED as string,
@@ -287,6 +291,13 @@ export class ApiService {
     get<[]>({
       endpoint: REACT_APP_INHCREMACION as string,
       url: `Request/GetAllRequestToGestion/${fechainicio}/${fechafin}/${tipo}`,
+      id: '0'
+    });
+
+  getReportesFuneraria = (fechainicio: string, fechafin: string) =>
+    get<[]>({
+      endpoint: REACT_APP_INHCREMACION as string,
+      url: `Request/GetAllRequestFuneraria/${fechainicio}/${fechafin}/${this.oid}`,
       id: '0'
     });
 
@@ -387,6 +398,14 @@ export class ApiService {
       id: '0'
     });
 
+  /*
+   getSeguimientoporSolicitud = (idSolicitud: string) =>
+    get<any>({
+      endpoint: REACT_APP_LOCAL as string,
+      url: `Seguimiento/GetSeguimientoBySolicitud/${idSolicitud}/${this.oid}`,
+      id: '0'
+    });
+*/
   getCostante = (idConstante: string) =>
     get<any>({
       endpoint: REACT_APP_INHCREMACION as string,

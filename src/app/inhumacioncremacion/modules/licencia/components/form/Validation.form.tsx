@@ -228,18 +228,21 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
 
   //#endregion
-
   const arrayinhind: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     '9C4E62A4-EE76-4BA1-8DBE-8BE172E23788',
     '79320AF6-943C-43BF-87D1-847B625F6203',
-    'ABE33C1D-9370-4189-9E81-597E5B643481'
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+    '6E57212B-2266-4854-9C13-F805BB4BBCF8'
   ];
   const arrayinhfet: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
     'D2D3ABA7-3B92-446A-AA8C-80A75DE246A7',
     '79320AF6-943C-43BF-87D1-847B625F6203',
-    'ABE33C1D-9370-4189-9E81-597E5B643481'
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    'FA808621-D345-43C7-88B0-E0B9FF56A24D',
+    '6E57212B-2266-4854-9C13-F805BB4BBCF8'
   ];
   const arraycremind: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
@@ -249,7 +252,8 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     'D6524742-E32D-4548-AB21-7A9CBB367926',
     'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
     '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
-    'ABE33C1D-9370-4189-9E81-597E5B643481'
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '242A2E58-46B5-4C45-97BA-881A383F2CBB'
   ];
   const arraycremfet: any = [
     '19A11490-261C-4114-9152-23C2B991CB36',
@@ -259,8 +263,10 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     'D6524742-E32D-4548-AB21-7A9CBB367926',
     'C659A063-E8A3-4F23-9A61-575AFB1E1C2B',
     '1266F06C-0BC1-4CF8-BA51-5E889D5E8178',
-    'ABE33C1D-9370-4189-9E81-597E5B643481'
+    'ABE33C1D-9370-4189-9E81-597E5B643481',
+    '242A2E58-46B5-4C45-97BA-881A383F2CBB'
   ];
+
 
   const getArray = async (values: any) => {
     const resp = values;
@@ -1458,10 +1464,14 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
 
-    const edad = await api.ObtenerEdad({
-      fechaNacimiento: fechaNacimiento,
-      fechaDefuncion: fechaDefuncion
-    })
+    var edad = 'Sin Definir';
+    if (fallecido['fechaNacimiento'] != '00-00-0000') {
+      edad = await api.ObtenerEdad({
+        fechaNacimiento: fechaNacimiento,
+        fechaDefuncion: fechaDefuncion
+      })
+    }
+
 
 
     const ifGenero: string = Solicitud[0]['idSexo'];
@@ -1735,11 +1745,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
 
-    const edad = await api.ObtenerEdad({
-      fechaNacimiento: fechaNacimiento,
-      fechaDefuncion: fechaDefuncion
-    })
-
+    var edad = 'Sin Definir';
+    if (fallecido['fechaNacimiento'] != '00-00-0000') {
+      edad = await api.ObtenerEdad({
+        fechaNacimiento: fechaNacimiento,
+        fechaDefuncion: fechaDefuncion
+      })
+    }
     const ifGenero: string = Solicitud[0]['idSexo'];
 
     const genero: any = generos.filter((i: { id: string }) => i.id == ifGenero.toLocaleUpperCase());
