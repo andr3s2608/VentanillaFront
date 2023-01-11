@@ -23,6 +23,7 @@ export const HorariosFestivos = ({ props }: any) => {
   const [fechas, setfechas] = useState<any>([]);
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   const guardarfecha = (values: any) => {
     const fecha: any[] = [];
@@ -142,14 +143,14 @@ export const HorariosFestivos = ({ props }: any) => {
 
   return (
     <>
-      <div className='container-fluid' style={{ height: '400px' }}>
+      <div className='container-fluid' style={{ height: '280px' }}>
         <div className='card'>
           <div className='card-body'>
             <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
               <div className='row justify-content-center'>
                 <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center mb-4'>
                   <p
-                    style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto' }}
+                    style={{ fontSize: '18px', color: '#3366cc', fontFamily: ' Roboto' }}
                     className='text-uppercase font-weight-bold'
                   >
                     Registrar Festivos
@@ -157,37 +158,50 @@ export const HorariosFestivos = ({ props }: any) => {
                 </div>
 
                 <div className='col-lg-6 col-md-6 col-sm-12 '>
-                  <Form.Item
-                    label='Festivos: '
-                    name='festivos'
-                    rules={[{ required: true }]}
-                  >
-                    <DatePicker mapDays={({ date }) => {
-                      const aux: any = date;
-                      const fechacalendario = new Date(aux)
-                      let esantes = (moment((moment(fechacalendario)).format('MM DD YYYY'))).isBefore(moment(moment(new Date()).format('MM DD YYYY')));
-                      if (esantes) return {
-                        disabled: true,
-                        style: { color: "#ccc" },
-                      }
-                    }} multiple value={value} onChange={guardarfecha} format="MM DD YYYY" plugins={[
-                      <DatePanel />
-                    ]} />
-                  </Form.Item>
+                  <div style={{ display: 'grid', gridTemplateColumns: '32% 68%', marginBottom: '10px' }}>
+                    <div style={{ gridColumn: 1, display: 'flex', alignItems: 'center' }}>
+                      <h4 style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto', textTransform: 'uppercase' }}>Festivos:</h4>
+                    </div>
+                    <div style={{ gridColumn: 2, fontSize: '12px', color: '#3366cc', fontFamily: ' Roboto' }}>
+                      <Form.Item
+                        name='festivos'
+                        rules={[{ required: true }]}
+                      >
+                        <DatePicker months={meses} mapDays={({ date }) => {
+                          const aux: any = date;
+                          const fechacalendario = new Date(aux)
+                          let esantes = (moment((moment(fechacalendario)).format('MM DD YYYY'))).isBefore(moment(moment(new Date()).format('MM DD YYYY')));
+                          if (esantes) return {
+                            disabled: true,
+                            style: { color: "#ccc" },
+                          }
+                        }} multiple value={value} onChange={guardarfecha} format="MM DD YYYY" plugins={[
+                          <DatePanel />
+                        ]} />
+                      </Form.Item>
+                    </div>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '32% 68%' }}>
+                    <div style={{ gridColumn: 1, display: 'flex', alignItems: 'center' }}>
+                      <h4 style={{ fontSize: '16px', color: '#3366cc', fontFamily: ' Roboto', textTransform: 'uppercase' }}>Festivos agregados:</h4>
+                    </div>
+                    <div style={{ gridColumn: 2, fontSize: '12px', color: '#3366cc', fontFamily: ' Roboto' }}>
+                      <Form.Item
+                        name='festivosAgregados'
+                      >
+                        <Input.TextArea
+                          allowClear
+                          maxLength={250}
+                          placeholder='No hay festivos agregados...'
+                          autoSize={{ minRows: 4, maxRows: 8 }}
+                          disabled
+                        //value={festivos}
+                        />
+                      </Form.Item>
+                    </div>
+                  </div>
 
-                  <Form.Item
-                    label='Festivos agregados'
-                    name='festivosAgregados'
-                  >
-                    <Input.TextArea
-                      allowClear
-                      maxLength={250}
-                      placeholder='No hay festivos agregados...'
-                      autoSize={{ minRows: 4, maxRows: 8 }}
-                      disabled
-                    //value={festivos}
-                    />
-                  </Form.Item>
+
                 </div>
 
                 <div style={{ display: 'inline-block', width: '50%', paddingLeft: '60px' }}>
@@ -222,7 +236,7 @@ export const HorariosFestivos = ({ props }: any) => {
 
                 <div style={{ border: '0px solid black' }}>
                   <div style={{ border: '1px solid #eeeeee', padding: '10px', textAlign: 'center', textTransform: 'uppercase' }}>
-                    <h4>Festivos registrados</h4>
+                    <h4 style={{ fontFamily: ' Roboto', fontSize: '18px' }}>Festivos registrados</h4>
                   </div>
                   <div style={{ background: '#ffffff', border: '1px solid #eeeeee' }}>
                     <ListaFestivos />
