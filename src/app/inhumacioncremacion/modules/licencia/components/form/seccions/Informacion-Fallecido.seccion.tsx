@@ -449,6 +449,8 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
     ];
     data = datanueva;
   } else {
+
+
     //en caso de ser una licencia individual
     const datanueva = [
       {
@@ -637,32 +639,66 @@ export const InformacionFallecidoSeccion = ({ obj, licencia, props }: any) => {
         title: 'Edad',
         describe: edad
       },
-      {
-        title: 'Fecha de nacimiento',
-        describe: < DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={obj.dateOfBirth === '00-00-0000' ? null : fechaNacimiento} disabled />
-      },
-      {
-        title: 'Hora de fallecimiento',
-        describe: horaFallecido
-      },
-      {
-        title: 'Genero',
-        describe: genero?.toLowerCase()
-      },
 
-      {
-        title: 'Nacionalidad',
-        describe: nacionalidad?.toLowerCase()
-      },
 
-      {
-        title: 'Tipo de Muerte',
-        describe: (
-          <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' value={tipo} disabled={!licencia} />
-        )
-      }
     ];
     data = datanueva;
+    if (obj.dateOfBirth != '00-00-0000') {
+      data.push(
+        {
+          title: 'Fecha de nacimiento',
+          describe: < DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' value={fechaNacimiento} disabled />
+        });
+      data.push(
+        {
+          title: 'Hora de fallecimiento',
+          describe: horaFallecido
+        })
+      data.push(
+        {
+          title: 'Genero',
+          describe: genero?.toLowerCase()
+        })
+      data.push(
+        {
+          title: 'Nacionalidad',
+          describe: nacionalidad?.toLowerCase()
+        })
+      data.push(
+        {
+          title: 'Tipo de Muerte',
+          describe: (
+            <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' value={tipo} disabled={!licencia} />
+          )
+        })
+
+
+    }
+    else {
+      data.push(
+        {
+          title: 'Hora de fallecimiento',
+          describe: horaFallecido
+        })
+      data.push(
+        {
+          title: 'Genero',
+          describe: genero?.toLowerCase()
+        })
+      data.push(
+        {
+          title: 'Nacionalidad',
+          describe: nacionalidad?.toLowerCase()
+        })
+      data.push(
+        {
+          title: 'Tipo de Muerte',
+          describe: (
+            <SelectComponent options={l_tipo_muerte} optionPropkey='id' optionPropLabel='descripcion' value={tipo} disabled={!licencia} />
+          )
+        })
+    }
+
   }
 
 
