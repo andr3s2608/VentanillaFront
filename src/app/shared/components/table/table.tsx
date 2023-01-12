@@ -29,6 +29,7 @@ export const Gridview = (props: IDataSource) => {
   const { accountIdentifier } = authProvider.getAccount();
   const [fechasolicitud, setfechasolicitud] = useState<any>();
   const [mostrar, setmostrar] = useState<boolean>(false);
+  const [modificacion, setmodificacion] = useState<string>('');
 
 
   const [colores, setcolores] = useState<any[]>([]);
@@ -57,6 +58,8 @@ export const Gridview = (props: IDataSource) => {
 
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [festivosDB, setfestivosDB] = useState<any>();
+
   const [dataTable, setDataTable] = useState<[]>();
 
 
@@ -68,6 +71,9 @@ export const Gridview = (props: IDataSource) => {
       const rolesstorage: any = localStorage.getItem('roles');
 
       const [Tipo] = JSON.parse(rolesstorage);
+
+      const festivos = await api.getCostante('4AF03735-503B-4D22-8169-E4FCDD19DB28');
+
       let HoraInicioAtencion_LV = await api.getCostante('5DF03735-503B-4D22-8169-E4FCDD19DA26');
       let HoraFinAtencion_LV = await api.getCostante('818AA32D-C90D-45D0-975F-486D069F7CB1');
       let HoraInicioAtencion_SD = await api.getCostante('CE62162E-5E79-4E05-AEDE-276B6C89D886');
@@ -80,6 +86,7 @@ export const Gridview = (props: IDataSource) => {
       setHFA_LV(aux2);
       setHIA_SD(aux3);
       setHFA_SD(aux4);
+      setfestivosDB(festivos.valor);
       /*
       let resp: any = [];
       if (rolesstorage.rol === 'Ciudadano') {
@@ -571,26 +578,27 @@ export const Gridview = (props: IDataSource) => {
     }
   ];
 
+  const obtenerFestivosString = (cadena: string): string[] => {
+    let festivos: string[] = [];
+    festivos = cadena.split(';');
+    return festivos;
+  };
   function isHoliday(fechasolicitud: any): boolean {
     let bandera = false;
 
-    if (fechasolicitud !== null) {
+    const festivos: string[] = obtenerFestivosString(festivosDB);
+
+    if (festivos.length > 0) {
+      const fechaActual = moment(fechasolicitud).format('DD-MM-YYYY').toString();
+      console.log(fechaActual);
       for (let index = 0; index < festivos.length; index++) {
-        if (festivos[index].fecha.mes - 1 == fechasolicitud.getMonth() && festivos[index].fecha.dia == fechasolicitud.getDate()) {
+
+        if (festivos[index] === fechaActual) {
           bandera = true;
+          break;
         }
       }
     }
-    else {
-      let hoy = new Date();
-
-      for (let index = 0; index < festivos.length; index++) {
-        if (festivos[index].fecha.mes - 1 == hoy.getMonth() && festivos[index].fecha.dia == hoy.getDate()) {
-          bandera = true;
-        }
-      }
-    }
-
     return bandera;
   }
 
@@ -1414,64 +1422,67 @@ export const Gridview = (props: IDataSource) => {
 
   const onClickCambiarLicencia = async (fila: any) => {
 
+    localStorage.setItem('fila', JSON.stringify(fila));
+    setmodificacion('licencia');
+    setmostrar(true)
 
-    const horario = mostrarPopUp()
-    if (horario) {
 
-      setmostrar(true)
-    }
-    else {
 
-      setmostrar(false)
+
+  };
+  const llamadadevueltahorario = async (estado: boolean) => {
+    setmostrar(false)
+    if (estado === false) {
+      const fila = JSON.parse(localStorage.getItem('fila') + '');
+
       const data = await api.getLicencia(fila.idSolicitud);
 
       localStorage.setItem('register', JSON.stringify(data));
       store.dispatch(SetResetViewLicence());
-      if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
-        history.push('/modificar/Cambiar-Tipo-Licencia-Individual');
+      if (modificacion === 'licencia') {
+
+
+        if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+          history.push('/modificar/Cambiar-Tipo-Licencia-Individual');
+        }
+        else {
+          history.push('/modificar/Cambiar-Tipo-Licencia-Fetal');
+        }
+      }
+      else if (modificacion === 'actualizacion') {
+        if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
+
+          history.push('/modificar/Actualizar-Datos-Individual');
+        }
+        else {
+
+          history.push('/modificar/Actualizar-Datos-Fetal');
+        }
       }
       else {
-        history.push('/modificar/Cambiar-Tipo-Licencia-Fetal');
+        const resultResponse: Array<Document> = await api.getDocumentosRechazados(fila.idSolicitud);
+
+        setfechasolicitud(fila.fechaSolicitud);
+        setObservacion(resultResponse[0].observaciones);
+        setTipoSolicitud(fila.tramite);
+        setListadoDocumento(resultResponse);
+        setVisibleDocumentoGestion(true);
       }
+
+
+      localStorage.removeItem('fila');
     }
-
-    //setmostrar(false)
-
-
-  };
-  const llamadadevueltahorario = (estado: boolean) => {
-
-    setmostrar(estado);
 
   }
 
 
   const onClickModificarSolicitud = async (fila: any) => {
 
-    const horario = mostrarPopUp()
-    if (horario) {
-
-      setmostrar(true)
-    }
-    else {
-
-      setmostrar(false)
-      const data = await api.getLicencia(fila.idSolicitud);
-
-      localStorage.setItem('register', JSON.stringify(data));
-      store.dispatch(SetResetViewLicence());
 
 
-      if (fila.idTramite == 'a289c362-e576-4962-962b-1c208afa0273' || fila.idTramite == 'e69bda86-2572-45db-90dc-b40be14fe020') {
-
-        history.push('/modificar/Actualizar-Datos-Individual');
-      }
-      else {
-
-        history.push('/modificar/Actualizar-Datos-Fetal');
-      }
-
-    }
+    localStorage.setItem('fila', JSON.stringify(fila));
+    setmodificacion('actualizacion');
+    setmostrar(true)
 
 
   };
@@ -1519,25 +1530,9 @@ export const Gridview = (props: IDataSource) => {
 
   /** Evento que se ejecuta cuando se da click en el boton de gestionar */
   const onGestionarDocumento = async (solicitud: Solicitud) => {
-
-
-
-    const resultResponse: Array<Document> = await api.getDocumentosRechazados(solicitud.idSolicitud);
-
-    const horario = mostrarPopUp();
-    if (horario) {
-
-      setmostrar(true);
-    }
-    else {
-
-      setmostrar(false);
-      setfechasolicitud(solicitud.fechaSolicitud);
-      setObservacion(resultResponse[0].observaciones);
-      setTipoSolicitud(solicitud.tramite);
-      setListadoDocumento(resultResponse);
-      setVisibleDocumentoGestion(true);
-    }
+    localStorage.setItem('fila', JSON.stringify(solicitud));
+    setmodificacion('documentos')
+    setmostrar(true);
 
 
   };
@@ -1728,72 +1723,6 @@ export const Gridview = (props: IDataSource) => {
   }
 
 
-
-  function mostrarPopUp(): boolean {
-    let bandera = true;
-
-    let ahora = new Date();
-    let dia = ahora.getDate();
-    let mes = ahora.getMonth();
-    let año = ahora.getFullYear();
-    const horaInicialSemana = new Date(
-      año,
-      mes,
-      dia,
-      Number.parseInt(HIA_LV[0]),
-      Number.parseInt(HIA_LV[1] + HIA_LV[2]),
-      Number.parseInt('0')
-    );
-    const horaFinalSemana = new Date(
-      año,
-      mes,
-      dia,
-      Number.parseInt(HFA_LV[0]),
-      Number.parseInt(HFA_LV[1] + HFA_LV[2]),
-      Number.parseInt('0')
-    );
-
-
-    const horaInicialFinSemana = new Date(
-      año,
-      mes,
-      dia,
-      Number.parseInt(HIA_SD[0]),
-      Number.parseInt(HIA_SD[1] + HIA_SD[2]),
-      Number.parseInt('0')
-    );
-
-    const horaFinalFinSemana = new Date(
-      año,
-      mes,
-      dia,
-      Number.parseInt(HFA_SD[0]),
-      Number.parseInt(HFA_SD[1] + HFA_SD[2]),
-      Number.parseInt('0')
-    );
-
-
-
-
-
-
-    if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !isHoliday(null)) {
-      if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
-        bandera = false;
-      } else {
-
-        bandera = true;
-      }
-    } else {
-      if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
-        bandera = false;
-      } else {
-        bandera = true;
-      }
-    }
-
-    return bandera;
-  }
   const columnFake = [
 
     {

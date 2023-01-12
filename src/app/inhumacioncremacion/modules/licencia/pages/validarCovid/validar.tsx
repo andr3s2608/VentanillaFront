@@ -113,7 +113,7 @@ const App: React.FC<valores> = (props) => {
 
       if (festivos.length > 0) {
         const fechaActual = moment(new Date()).format(formatDate).toString();
-        console.log(fechaActual);
+
         for (let index = 0; index < festivos.length; index++) {
 
           if (festivos[index] === fechaActual) {
@@ -244,19 +244,39 @@ const App: React.FC<valores> = (props) => {
 
     if ((ahora.getDay() != 0 && ahora.getDay() != 6) && !holyDay) {
       if (ahora.getTime() >= horaInicialSemana.getTime() && ahora.getTime() <= horaFinalSemana.getTime()) {
-        setVisible(false);
-      } else {
 
+        setVisible(false);
         if (origen === 'solicitudfinal') {
+          const consecutivo = localStorage.getItem('consecutivo');
           swal.fire({
             icon: 'success',
 
             title: 'Solicitud Creada',
-            text: `Se ha creado la Solicitud exitosamente con número de tramite ${metodo + ''} ,pero debido a que ha sido creada
-            fuera del horario permitido sera tramitada el dia de mañana`
+            text: `Se ha creado la Solicitud exitosamente con número de tramite ${consecutivo + ''}`
           });
         }
         else {
+          if (metodo != null) {
+            metodo(false);
+          }
+        }
+        localStorage.setItem('horariovalido', 'true');
+      } else {
+        localStorage.setItem('horariovalido', 'false');
+        if (origen === 'solicitudfinal') {
+          const consecutivo = localStorage.getItem('consecutivo');
+          swal.fire({
+            icon: 'success',
+
+            title: 'Solicitud Creada',
+            text: `Se ha creado la Solicitud exitosamente con número de tramite ${consecutivo + ''} ,pero debido a que ha sido creada
+                    fuera del horario permitido sera tramitada el dia de mañana`
+          });
+        }
+        else {
+          if (metodo != null) {
+            metodo(true);
+          }
           setVisible(true);
           swal.fire({
             title: 'Horario de atención',
@@ -272,9 +292,6 @@ const App: React.FC<valores> = (props) => {
 
             if (origen === 'solicitud') {
               history.push('/');
-            }
-            else {
-              metodo(false);
             }
 
           });
@@ -285,19 +302,43 @@ const App: React.FC<valores> = (props) => {
       }
     } else {
       if (ahora.getTime() >= horaInicialFinSemana.getTime() && ahora.getTime() <= horaFinalFinSemana.getTime()) {
+        localStorage.setItem('horariovalido', 'true');
+
         setVisible(false);
-      } else {
-        //alert("es fin de semana");
+
         if (origen === 'solicitudfinal') {
+          const consecutivo = localStorage.getItem('consecutivo');
           swal.fire({
             icon: 'success',
 
             title: 'Solicitud Creada',
-            text: `Se ha creado la Solicitud exitosamente con número de tramite ${metodo + ''} ,pero debido a que ha sido creada
-            fuera del horario permitido sera tramitada el dia de mañana`
+            text: `Se ha creado la Solicitud exitosamente con número de tramite ${consecutivo + ''}`
           });
         }
         else {
+          if (metodo != null) {
+            metodo(false);
+          }
+
+        }
+      } else {
+        localStorage.setItem('horariovalido', 'false');
+        //alert("es fin de semana");
+        if (origen === 'solicitudfinal') {
+          const consecutivo = localStorage.getItem('consecutivo');
+          swal.fire({
+            icon: 'success',
+
+            title: 'Solicitud Creada',
+            text: `Se ha creado la Solicitud exitosamente con número de tramite ${consecutivo + ''} ,pero debido a que ha sido creada
+                    fuera del horario permitido sera tramitada el dia de mañana`
+          });
+        }
+        else {
+          if (metodo != null) {
+            metodo(true);
+          }
+
           setVisible(true);
           swal.fire({
             title: 'Horario de atención',
@@ -314,9 +355,7 @@ const App: React.FC<valores> = (props) => {
             if (origen === 'solicitud') {
               history.push('/');
             }
-            else {
-              metodo(false);
-            }
+
 
           });
         }
