@@ -989,7 +989,7 @@ export const ModificarLicencia = ({ props }: any) => {
               idEstadoCivil: values.civilStatus,
               idNivelEducativo: values.educationLevel,
               idEtnia: values.etnia,
-              idRegimen: values.regime,
+              idRegimen: values.regimen,
               idTipoPersona: '01f64f02-373b-49d4-8cb1-cb677f74292c',
               idParentesco: parentesco,
               idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
@@ -1062,7 +1062,7 @@ export const ModificarLicencia = ({ props }: any) => {
               idEstadoCivil: values.civilStatusmother,
               idNivelEducativo: values.educationLevelmother,
               idEtnia: values.etnia,
-              idRegimen: obj.regime,
+              idRegimen: values.regimen,
               idTipoPersona: '342d934b-c316-46cb-a4f3-3aac5845d246',
               idParentesco: parentesco,
               idLugarExpedicion: '00000000-0000-0000-0000-000000000000'
