@@ -1464,6 +1464,26 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
 
     const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
 
+    let Horadef: any = 0;
+
+    let Horanac: any = 0;
+    if (Solicitud[0]['hora'] != 'Sin información' && Solicitud[0]['hora'] != null) {
+      Horadef = Solicitud[0]['hora'];
+      Horadef = Horadef.substring(0, Horadef.lastIndexOf(':'));
+      let minutodef = Horadef.substring(Horadef.lastIndexOf(':'), Horadef.length);
+      fechaDefuncion.setHours(Number.parseInt(Horadef), Number.parseInt(minutodef), 0);
+    }
+    if (fallecido['hora'] != 'Sin información' && fallecido['hora'] != null) {
+      Horanac = fallecido['hora'];
+      Horanac = Horanac.substring(0, Horanac.lastIndexOf(':'));
+      let minutonac = Horanac.substring(Horanac.lastIndexOf(':'), Horanac.length);
+      fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0);
+    }
+    else {
+      fechaNacimiento.setHours(0, 0, 0);
+    }
+
+
     var edad = 'Sin Definir';
     if (fallecido['fechaNacimiento'] != '00-00-0000') {
       edad = await api.ObtenerEdad({
@@ -1744,6 +1764,25 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     const fechaDefuncion: Date = new Date(Solicitud[0]['fechaDefuncion']);
 
     const fechaNacimiento: Date = new Date(fallecido['fechaNacimiento']);
+
+    let Horadef: any = 0;
+
+    let Horanac: any = 0;
+    if (Solicitud[0]['hora'] != 'Sin información' && Solicitud[0]['hora'] != null) {
+      Horadef = Solicitud[0]['hora'];
+      Horadef = Horadef.substring(0, Horadef.lastIndexOf(':'));
+      let minutodef = Horadef.substring(Horadef.lastIndexOf(':'), Horadef.length);
+      fechaDefuncion.setHours(Number.parseInt(Horadef), Number.parseInt(minutodef), 0);
+    }
+    if (fallecido['hora'] != 'Sin información' && fallecido['hora'] != null) {
+      Horanac = fallecido['hora'];
+      Horanac = Horanac.substring(0, Horanac.lastIndexOf(':'));
+      let minutonac = Horanac.substring(Horanac.lastIndexOf(':'), Horanac.length);
+      fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0);
+    }
+    else {
+      fechaNacimiento.setHours(0, 0, 0);
+    }
 
     var edad = 'Sin Definir';
     if (fallecido['fechaNacimiento'] != '00-00-0000') {
