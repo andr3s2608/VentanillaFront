@@ -1480,7 +1480,13 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0);
     }
     else {
-      fechaNacimiento.setHours(0, 0, 0);
+      if (fallecido['hora'] === null) {
+
+      }
+      else {
+
+        fechaNacimiento.setHours(0, 0, 0);
+      }
     }
 
 

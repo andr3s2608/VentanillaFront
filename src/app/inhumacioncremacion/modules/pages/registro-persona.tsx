@@ -340,7 +340,8 @@ const RegistroPage: React.FC<any> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-      // const algo = api.geocoding(XML);
+      //const algo = api.geocoding(XML);
+      //console.log(algo);
 
       let idZona = 4;
       let idLocalidad = 10;
