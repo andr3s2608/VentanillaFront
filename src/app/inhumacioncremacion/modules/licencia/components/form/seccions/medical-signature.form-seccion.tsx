@@ -76,13 +76,26 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
         prop(4, 'medico');
       }
       else {
-        setLongitudminima(4);
-        setLongitudmaxima(10);
-        setTipocampo('[0-9]{4,10}');
-        setTipocampovalidacion(/[0-9]/);
-        setCampo('Numéricos');
-        setTipodocumento('Cédula de Ciudadanía');
-        prop(4, 'medico');
+        if (valor.toUpperCase() === '2491BC4B-8A60-408F-9FD1-136213F1E4FB') {
+          setLongitudminima(6);
+          setLongitudmaxima(18);
+          setTipocampo('[0-9]{6,18}');
+          setTipocampovalidacion(/[0-9]/);
+          setCampo('Numéricos');
+          setTipodocumento('Permiso Especial de Permanencia');
+
+          prop(6, 'medico');
+        }
+        else {
+          setLongitudminima(4);
+          setLongitudmaxima(10);
+          setTipocampo('[0-9]{4,10}');
+          setTipocampovalidacion(/[0-9]/);
+          setCampo('Numéricos');
+          setTipodocumento('Cédula de Ciudadanía');
+          prop(4, 'medico');
+        }
+
       }
 
     }
@@ -103,7 +116,8 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
               'a4ee4462-f837-4dff-a800-5495c33ac3ce',
               'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
               '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
-              'e927b566-7b8e-4b4d-ae26-14454705cb5e'
+              'e927b566-7b8e-4b4d-ae26-14454705cb5e',
+              '2491bc4b-8a60-408f-9fd1-136213f1e4fb'
             ].includes(i.id)
           )}
           onChange={cambiodocumento}
