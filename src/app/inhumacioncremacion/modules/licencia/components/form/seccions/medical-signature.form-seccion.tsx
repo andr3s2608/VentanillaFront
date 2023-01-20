@@ -66,13 +66,25 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
       setTipodocumento('Pasaporte y Cédula de Extranjería ');
       prop(4, 'medico');
     } else {
-      setLongitudminima(4);
-      setLongitudmaxima(10);
-      setTipocampo('[0-9]{4,10}');
-      setTipocampovalidacion(/[0-9]/);
-      setCampo('Numéricos');
-      setTipodocumento('Cédula de Ciudadanía');
-      prop(4, 'medico');
+      if (valor.toUpperCase() === 'E927B566-7B8E-4B4D-AE26-14454705CB5E') {
+        setLongitudminima(4);
+        setLongitudmaxima(18);
+        setTipocampo('[a-zA-Z0-9]{4,18}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNumérico(Numéros y letras)');
+        setTipodocumento('Permiso de Protección Temporal');
+        prop(4, 'medico');
+      }
+      else {
+        setLongitudminima(4);
+        setLongitudmaxima(10);
+        setTipocampo('[0-9]{4,10}');
+        setTipocampovalidacion(/[0-9]/);
+        setCampo('Numéricos');
+        setTipodocumento('Cédula de Ciudadanía');
+        prop(4, 'medico');
+      }
+
     }
   };
   return (
@@ -90,7 +102,8 @@ export const MedicalSignatureFormSeccion: React.FC<IMedicalSignatureProps<any>> 
             [
               'a4ee4462-f837-4dff-a800-5495c33ac3ce',
               'f1b570ee-f628-4438-a47f-6d7bff1f06d7',
-              '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'
+              '7c96a4d3-a0cb-484e-a01b-93bc39c2552e',
+              'e927b566-7b8e-4b4d-ae26-14454705cb5e'
             ].includes(i.id)
           )}
           onChange={cambiodocumento}
