@@ -162,7 +162,7 @@ export const RevisarSg = () => {
     if (rol === 'Coordinador') {
       if (tiposolicitud === '') {
         tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
-        estadosolicitud = '96D00032-4B60-4027-AFEA-0CC7115220B4';
+        estadosolicitud = '6A5913B7-5790-4E11-BF32-D327B98C2E0F';
       }
 
 
@@ -259,11 +259,12 @@ export const RevisarSg = () => {
     let date: Date = new Date();
 
     if (documentos.length > 0) {
+
       documentos.forEach((item: any, i: number) => {
         if (documentos[i] != undefined) {
           const archivo = documentos[i];
 
-          formData.append('file', archivo.archivo.file);
+          formData.append('file', archivo.archivo);
           formData.append('nameFile', 'Documentos_Asociados' + '_' + objJson.idsolicitud);
 
           supportDocumentsEdit.push({
@@ -400,7 +401,14 @@ export const RevisarSg = () => {
   const onSubmitFailed = () => setStatus('error');
 
   const adddocumentos = (value: any) => {
-    setdocumentos(value);
+    for (let index = 0; index < value.length; index++) {
+      if (value[index].nombre === 'Documentacion asociada a la revision') {
+
+        setdocumentos([value[index]]);
+      }
+
+    }
+
   };
 
   const onChange = (value: string) => {

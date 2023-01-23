@@ -82,7 +82,7 @@ function registerValidSW(swUrl: string, config?: Config) {
                 icon: 'info',
                 title: 'Contenido desactualizado',
                 confirmButtonColor: '#04bbd3',
-                text: 'La plataforma ha detectado  una nueva actualización, porfavor limpie cache y cierre todas las paginas antes de realizar alguna opcion'
+                text: 'La plataforma ha detectado  una nueva actualización, por favor limpie cache y cierre todas las paginas antes de realizar alguna opcion'
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
@@ -107,7 +107,7 @@ function registerValidSW(swUrl: string, config?: Config) {
                 icon: 'info',
                 title: 'Contenido desactualizado',
                 confirmButtonColor: '#04bbd3',
-                text: 'La plataforma ha detectado una nueva actualización, porfavor limpie cache antes de realizar alguna opcion'
+                text: 'La plataforma ha detectado una nueva actualización, por favor limpie cache antes de realizar alguna opcion'
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 /* Read more about isConfirmed, isDenied below */

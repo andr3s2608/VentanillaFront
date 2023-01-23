@@ -43,8 +43,24 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   const [disableFilter, setDisableFilter] = useState<Boolean>();
   const [textAlerta, setTextAlert] = useState<String>();
   const [visibleAlerta, setVisibleAlert] = useState<Boolean>();
+  const [rol, setrol] = useState<String>('');
+  const [usuario, setusuario] = useState<any>();
+  const [subredes, setsubredes] = useState<any>();
   const getListas = useCallback(
+
+
     async () => {
+      const usuario = await api.getIdUsuario();
+      setusuario(usuario)
+      const rol: any = JSON.parse(localStorage.getItem('roles') + '');
+
+      const subred = await api.getSubredes();
+      setsubredes(subred);
+
+
+
+      setrol(rol[0].rol)
+
       setVisibleGrid('none');
 
       setVisiblePicker('none');
@@ -94,52 +110,108 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     let datatable = [];
     let opciones = {};
     if (datos && datos.length > 0) {
+
       for (let i in datos) {
+        let ob;
+        if (rol === 'Subdirector') {
+          ob = {
+            'Numero de Radicado': datos[i].numeroRadicado,
+            'Nombre persona Natural': datos[i].nombre,
+            'Persona Juridica ': datos[i].razonSocial,
+            'Tipo Identificacion': datos[i].tipoIdentificacion,
+            'Numero de documento': datos[i].numeroIdentificacion,
+            'NIT': datos[i].nit,
+            'RUT': datos[i].rut,
+            'Fecha de Solicitud': datos[i].fechaSolicitud != '' ? moment(datos[i].fechaSolicitud).format('DD-MM-YYYY') : '',
+            'Fecha de Autorizacion': datos[i].fechaAutorizacion != '' ? moment(datos[i].fechaAutorizacion).format('DD-MM-YYYY') : '',
+            'Responsable':
+              (datos[i].etapa === 'Visita de Revision' ||
+                datos[i].etapa === 'Gestion Subred') ? datos[i].responsablesub :
+                (datos[i].etapa === 'Gestion Coordinador' ? datos[i].responsableus :
+                  ''),
+            'Etapa': datos[i].etapa,
+            'Estado': datos[i].estado
 
-        let ob = {
-          'Numero de Radicado': datos[i].numeroRadicado,
-          'Tipo Identificacion': datos[i].tipoIdentificacion,
-          'Nombre persona Natural': datos[i].nombre,
-          'Persona juridica razon social': datos[i].RazonSocial,
-          'Tipo de documento': datos[i].TipoDocumentoRazon,
-          'Numero de documento': datos[i].NumeroIdentificacion,
-          'RUT': datos[i].Rut,
-          'NIT': datos[i].Nit,
-          'Fecha de Autorizacion': datos[i].fechaAutorizacion,
-          'Estado': datos[i].estado
+          }
+        }
+        else {
 
+
+
+          ob = {
+            'Numero de Radicado': datos[i].numeroRadicado,
+            'Nombre persona Natural': datos[i].nombre,
+            'Persona Juridica ': datos[i].razonSocial,
+            'Tipo Identificacion': datos[i].tipoIdentificacion,
+            'Numero de documento': datos[i].numeroIdentificacion,
+            'NIT': datos[i].nit,
+            'RUT': datos[i].rut,
+            'Fecha de Solicitud': datos[i].fechaSolicitud != '' ? moment(datos[i].fechaSolicitud).format('DD-MM-YYYY') : '',
+            'Fecha de Autorizacion': datos[i].fechaAutorizacion != '' ? moment(datos[i].fechaAutorizacion).format('DD-MM-YYYY') : '',
+            'Estado': datos[i].estado
+          }
         }
         datatable.push(ob);
       }
 
       opciones = {
         fileName: 'Reporte de Aguas',
-        datas: [
+        datas: (rol === 'Subdirector' ? [
           {
             sheetData: datatable,
             sheetName: 'Historial solicitudes',
             sheetFilter: ['Numero de Radicado',
-              'Tipo Identificacion',
               'Nombre persona Natural',
-              'Persona juridica razon social',
-              'Tipo de documento',
+              'Persona Juridica ',
+              'Tipo Identificacion',
               'Numero de documento',
-              'RUT',
               'NIT',
+              'RUT',
+              'Fecha de Solicitud',
+              'Fecha de Autorizacion',
+              'Responsable',
+              'Etapa',
+              'Estado'],
+            sheetHeader: ['Numero de Radicado',
+              'Nombre persona Natural',
+              'Persona Juridica ',
+              'Tipo Identificacion',
+              'Numero de documento',
+              'NIT',
+              'RUT',
+              'Fecha de Solicitud',
+              'Fecha de Autorizacion',
+              'Responsable',
+              'Etapa',
+              'Estado']
+          }
+
+        ] : [
+          {
+            sheetData: datatable,
+            sheetName: 'Historial solicitudes',
+            sheetFilter: ['Numero de Radicado',
+              'Nombre persona Natural',
+              'Persona Juridica ',
+              'Tipo Identificacion',
+              'Numero de documento',
+              'NIT',
+              'RUT',
+              'Fecha de Solicitud',
               'Fecha de Autorizacion',
               'Estado'],
             sheetHeader: ['Numero de Radicado',
-              'Tipo Identificacion',
               'Nombre persona Natural',
-              'Persona juridica razon social',
-              'Tipo de documento',
+              'Persona Juridica ',
+              'Tipo Identificacion',
               'Numero de documento',
-              'RUT',
               'NIT',
+              'RUT',
+              'Fecha de Solicitud',
               'Fecha de Autorizacion',
               'Estado']
           }
-        ]
+        ])
       };
 
       //downloadPDF(datatable);
@@ -177,9 +249,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
       showConfirmButton: true,
       showDenyButton: true,
       confirmButtonText: 'xlsx',
-      denyButtonText: 'txt',
       confirmButtonColor: 'green',
-      denyButtonColor: 'blue',
       showClass: {
         popup: 'animate_animated animate_fadeInDown'
       },
@@ -202,27 +272,44 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
     setespera(undefined);
     if (dateSelectedInicial != undefined && dateSelectedFinal != undefined && dateSelectedInicial.toString() != 'Invalid Date' && dateSelectedFinal.toString() != 'Invalid Date') {
 
-
-      const resp: any = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
-        moment(dateSelectedFinal).format('YYYY-MM-DD'));
+      let resp: any[] = [];
 
 
+      let subred: any = null;
+      for (let index = 0; index < subredes.length; index++) {
 
-
-
-
-      filtroFecha = resp.filter(function (f: { fechaSolicitud: string | number | Date; fechaLicencia: string | number | Date; }) {
-        var fecha = new Date(moment(f.fechaSolicitud).format('DD-MM-YYYY HH:mm:ssss') + "");
-
-        if (busquedaseleccionada === 'solicitud' || busquedaseleccionada === 'todos') {
-          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
-        }
-        else {
-          return new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal;
+        if (usuario === subredes[index].idUsuario) {
+          subred = subredes[index].idSubRed;
+          break;
 
         }
+      }
 
-      });
+      if (rol === 'Subdirector' || rol === 'AdminFuncional') {
+        resp = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
+          moment(dateSelectedFinal).format('YYYY-MM-DD'), ' ', 'subdirector');
+      }
+
+      if (rol === 'Ciudadano' || rol === 'Funeraria' || rol === 'MedicinaLegal') {
+        resp = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
+          moment(dateSelectedFinal).format('YYYY-MM-DD'), usuario + '', 'usuario');
+      }
+      if (rol === 'Coordinador') {
+        resp = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
+          moment(dateSelectedFinal).format('YYYY-MM-DD'), usuario + '', 'asignado');
+      }
+      if (rol === 'Funcionario' || rol === 'AdminTI') {
+        resp = await api.getallReportsAguas(moment(dateSelectedInicial).format('YYYY-MM-DD'),
+          moment(dateSelectedFinal).format('YYYY-MM-DD'), subred != null ? subred + '' : '00000000-0000-0000-0000-000000000000', 'subred');
+      }
+
+
+
+
+
+      filtroFecha = resp;
+
+
       //filtroFecha = resp
 
       input = true;
@@ -317,7 +404,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 placeholder='Fecha Inicial'
                 dateDisabledType='before'
                 dateFormatType='default'
-                style={{ display: 'block' }}
+                style={{ display: 'block', width: 400 }}
                 className='form-control'
                 onChange={(date) => {
                   setVisibleAlert(false);
@@ -333,56 +420,17 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                 placeholder='Fecha Final'
                 dateDisabledType='before'
                 dateFormatType='default'
-                style={{ display: 'block' }}
+                style={{ display: 'block', width: 400 }}
                 className='form-control'
                 onChange={(date) => {
                   setVisibleAlert(false);
-                  setDateFin(new Date(moment(date).add(1, 'day').format('MM/DD/YYYY')));
+                  setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                 }}
               />
             </div>
           </div>
-          <div className='row mt-3 justify-content-center text-center'>
-            <div className='col-lg-12 col-sm-12 col-md-12'>
-              <p style={{ fontSize: '16px', color: '#000', fontFamily: ' Roboto' }}>Buscar por:</p>
-              <Radio.Group onChange={onChangefecha} defaultValue={'solicitud'}>
-                <Radio value='solicitud'>Fecha de Solicitud</Radio>
-                <Radio value='aprobada'>Fecha de Aprobacion</Radio>
-                <Radio value='todos'>Todos</Radio>
-              </Radio.Group>
-            </div>
-          </div>
 
           <div className='row mt-5' style={{ marginLeft: '2px' }}>
-            <div className='col-md-12 col-lg-12 col-sm-12 mt-3'>
-              <label>Ingrese los valores que desea buscar</label>
-            </div>
-
-            <div className='col-lg-12 col-sm-12 co-md-12'>
-              <div className='form-group row mt-3'>
-                <label className='col-sm-2 col-form-label'>Id Tramite</label>
-                <div className='col-sm-10'>
-                  <Form.Item name='' rules={[{ required: false }]}>
-                    <Input id='tramiteID' placeholder='ID Tramite' className='form-control ml-1' onChange={onChangeFilterID} />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
-            <div className='col-lg-12 col-sm-12 co-md-12'>
-              <div className='form-group row'>
-                <label className='col-sm-2 col-form-label'>No. Documento Fallecido</label>
-                <div className='col-sm-10'>
-                  <Form.Item name='' rules={[{ required: false }]}>
-                    <Input
-                      id='docFallecido'
-                      placeholder='No. documento'
-                      className='form-control ml-1'
-                      onChange={onChangeFilterDoc}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            </div>
 
 
             <section>
@@ -414,8 +462,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
                   {espera != undefined && (<TablaReportes data={grid} />)}
 
                 </Tabs>
-
-                <section>
+                {espera != undefined && (<section>
                   <div className='container-fluid'>
                     <div className='row'>
                       <div className="col-lg-15 col-sm-15 col-md-15 col-xl-15">
@@ -434,7 +481,8 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
                     </div>
                   </div>
-                </section>
+                </section>)}
+
               </div>
 
 

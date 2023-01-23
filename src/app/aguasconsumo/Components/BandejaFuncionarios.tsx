@@ -374,7 +374,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
         setVisibleDocumentoGestion(false);
 
-        await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4',
+        await api.CambiarEstadoSolicitudAguas(solicitudaguardar.idSolicitud, '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
           '8CA363C0-66AA-4273-8E63-CE3EAC234857');
 
         window.location.reload();
@@ -389,7 +389,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
     localStorage.setItem('register', JSON.stringify(data));
     store.dispatch(SetResetViewLicence());
-    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Gestion Validador') {
+    if (data.tipodeSolicitud == 'Primer Registro' || data.tipodeSolicitud == 'Gestion Subred') {
       history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
     }
     if (
@@ -409,7 +409,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
       diasproceso = arraydias[0].valorConstante;
     } else {
-      if (datos.tipodeSolicitud == 'Gestion Validador' || datos.tipodeSolicitud == 'Gestion Coordinador') {
+      if (datos.tipodeSolicitud == 'Gestion Subred' || datos.tipodeSolicitud == 'Gestion Coordinador') {
         diasproceso = arraydias[1].valorConstante;
 
       } else {
@@ -985,40 +985,35 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         width: 200,
         filters: [
           {
-            text: 'Abierta',
-            value: 'Abierta'
+            text: 'Primer Registro',
+            value: 'Primer Registro'
           },
           {
-            text: 'Adición Documentos',
-            value: 'Adicion Documentos'
+            text: 'Gestion Subred',
+            value: 'Gestion Subred'
+          },
+          ,
+          {
+            text: 'Visita de Revision',
+            value: 'Visita de Revision'
           },
           {
-            text: 'Desistimiento',
-            value: 'Desistimiento'
+            text: 'Gestion Coordinador',
+            value: 'Gestion Coordinador'
           },
+          {
+            text: 'Gestion Subdirector',
+            value: 'Gestion Subdirector'
+          },
+
           {
             text: 'Finalizado',
             value: 'Finalizado'
           },
-          {
-            text: 'Gestion Validador',
-            value: 'Gestion Validador'
-          },
-          {
-            text: 'Primera vez',
-            value: 'Primera vez'
-          },
-          {
-            text: 'Proceso de Citacion',
-            value: 'Proceso de Citacion'
-          },
+
           {
             text: 'Subsanacion',
             value: 'Subsanacion'
-          },
-          {
-            text: 'Visita de Revision',
-            value: 'Visita de Revision'
           }
         ],
         filterSearch: true,
