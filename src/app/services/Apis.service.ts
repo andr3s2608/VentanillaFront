@@ -625,7 +625,7 @@ export class ApiService {
 
   getallReportsAguas = (fechainicio: any, fechafin: any, idusuario: string, tipo: string) =>
     get<[]>({
-      endpoint: REACT_APP_LOCAL as string,
+      endpoint: REACT_APP_AGUAS as string,
       url: `Report/getReportAgua/${fechainicio}/${fechafin}/${idusuario}/${tipo}`,
       id: '0'
     });
