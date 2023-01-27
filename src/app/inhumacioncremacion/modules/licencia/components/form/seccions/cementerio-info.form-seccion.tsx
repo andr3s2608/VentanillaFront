@@ -255,7 +255,7 @@ export const CementerioInfoFormSeccion: React.FC<ICementerioInfoProps<any>> = (p
         {renderForm(lugar)}
       </div>
       {(obj === undefined || modificacion === true) && (<>
-        <Form.Item label='Email Cementerio' name='emailcementerio' initialValue={obj?.correocementerio} rules={[{ required: true, type: 'email', max: 50 }]}>
+        <Form.Item label='Correo Cementerio' name='emailcementerio' initialValue={obj?.correocementerio} rules={[{ required: true, type: 'email', max: 50 }]}>
           <Input
             allowClear
             placeholder='email@example.com'

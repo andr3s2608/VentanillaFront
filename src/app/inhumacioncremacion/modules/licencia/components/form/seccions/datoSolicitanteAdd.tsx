@@ -314,7 +314,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           <>
             <Form.Item
               className='fadeInRight mt-4'
-              label='Funeraria de Bogotá D.C. y/o Solicitante'
+              label='Funeraria Bogotá / Institución y/o Solicitante'
               name='funerariaBogota'
               initialValue={validacionfuneraria ? valorfuneraria : (obj === undefined ? 'PARTICULAR' : obj?.funeraria)}
               rules={[{ required: true }]}
@@ -342,7 +342,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
         <>
 
           <Form.Item
-            label='Tipo documento'
+            label='Tipo de documento del trabajador de la Funeraria'
             initialValue={obj?.tipodocsolicitante ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
             rules={[{ required: true }]}
             name='fiscalia'
@@ -350,7 +350,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             <SelectComponent style={{ width: '90%' }} options={l_tipo_documento} onChange={cambiodocumento} optionPropkey='id' optionPropLabel='descripcion' />
           </Form.Item>
 
-          <Form.Item label='Numero documento' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
+          <Form.Item label='Número de documento del trabajador de la Funeraria' initialValue={obj?.nrosolicitante} required={!sininformacion} name='ndoc'>
             <Input
               allowClear
               type='text'
@@ -386,7 +386,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             />
           </Form.Item>
 
-          <Form.Item label='Nombres' initialValue={obj?.nombresolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
+          <Form.Item label='Nombres del trabajador de la Funeraria' initialValue={obj?.nombresolicitante ?? null} rules={[{ required: true, max: 100 }]} name='namesolicitudadd'>
             <Input
               allowClear
               placeholder='Nombres'
@@ -404,7 +404,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
             />
           </Form.Item>
 
-          <Form.Item label='Apellidos' initialValue={obj?.apellidosolicitante ?? null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
+          <Form.Item label='Apellidos del trabajador de la Funeraria' initialValue={obj?.apellidosolicitante ?? null} rules={[{ required: true, max: 100 }]} name='lastnamesolicitudadd'>
             <Input
               allowClear
               placeholder='Apellidos'
@@ -452,7 +452,7 @@ export const DatoSolicitanteAdd: React.FC<any> = (props: any) => {
           {setearCampos() && (
             <>
               <Form.Item
-                label='Email Funeraria y/o solicitante'
+                label='Correo Funeraria / Institución y/o Solicitante'
                 name='emailfuneraria'
                 initialValue={obj?.correofuneraria ?? correofun}
                 rules={[{ required: true, type: 'email', max: 50 }]}

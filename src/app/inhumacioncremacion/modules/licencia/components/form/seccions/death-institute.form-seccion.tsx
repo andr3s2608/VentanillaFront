@@ -418,12 +418,12 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
             </Form.Item>
             {tipoLicencia === 'Cremación' && (
               <>
-                <Divider orientation='right'>DATOS DE CREMACIÓN DEL FISCAL Y MEDICINA LEGAL</Divider>
+                <Divider orientation='right'>DATOS DE AUTORIZACIÓN DE CREMACIÓN FISCAL Y MEDICINA LEGAL</Divider>
 
-                <Form.Item label='Nombre' initialValue={obj?.instNombreFiscal} rules={[{ required: true }]} name='fiscalianombreDC'>
+                <Form.Item label='Nombres del Fiscal' initialValue={obj?.instNombreFiscal} rules={[{ required: true }]} name='fiscalianombreDC'>
                   <Input
                     allowClear
-                    placeholder='Nombre'
+                    placeholder='Nombres del Fiscal'
                     autoComplete='off'
                     maxLength={100}
                     onKeyPress={(event) => {
@@ -437,10 +437,10 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Apellido' initialValue={obj?.instApellidoFiscal} rules={[{ required: true }]} name='fiscaliaapellidoDC'>
+                <Form.Item label='Apellidos del Fiscal' initialValue={obj?.instApellidoFiscal} rules={[{ required: true }]} name='fiscaliaapellidoDC'>
                   <Input
                     allowClear
-                    placeholder='Apellido'
+                    placeholder='Apellidos del Fiscal'
                     autoComplete='off'
                     maxLength={100}
                     onKeyPress={(event) => {
@@ -454,10 +454,28 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Número de oficio de medicina legal' initialValue={obj?.instNumeroOficio} rules={[{ required: true }]} name='fiscalianumeroDC'>
+                <Form.Item label='Número de Fiscal' initialValue={obj?.instNoFiscalMedicinaLegal}
+                  rules={[{ required: true }]} name='NoFiscalDC'>
                   <Input
                     allowClear
-                    placeholder='Número de oficio de medicina legal'
+                    placeholder='Número de Fiscal'
+                    autoComplete='off'
+                    maxLength={7}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item label='Número de oficio de Medicina legal' initialValue={obj?.instNumeroOficio} rules={[{ required: true }]} name='fiscalianumeroDC'>
+                  <Input
+                    allowClear
+                    placeholder='Número de oficio de Medicina legal'
                     autoComplete='off'
                     maxLength={10}
                     onKeyPress={(event) => {
@@ -471,26 +489,8 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Fecha del Oficio' initialValue={moment(obj?.instFechaOficio)} rules={[{ required: true }]} name='fiscaliafechaDC'>
+                <Form.Item label='Fecha del oficio' initialValue={moment(obj?.instFechaOficio)} rules={[{ required: true }]} name='fiscaliafechaDC'>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
-                </Form.Item>
-
-                <Form.Item label='No. Fiscal' initialValue={obj?.instNoFiscalMedicinaLegal}
-                  rules={[{ required: true }]} name='NoFiscalDC'>
-                  <Input
-                    allowClear
-                    placeholder='numberFiscal'
-                    autoComplete='off'
-                    maxLength={7}
-                    onKeyPress={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-                    onPaste={(event) => {
-                      event.preventDefault();
-                    }}
-                  />
                 </Form.Item>
               </>
             )}
