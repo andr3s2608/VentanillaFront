@@ -103,6 +103,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
   function downloadFileExcel() {
 
 
+
     // FALTA AGREGAR LOS NUEVOS CAMPOS DE LA GRILLA AL DOCUMENTO QUE SE VA A DESCARGAR
 
     const ExportJsonExcel = require('js-export-excel');
