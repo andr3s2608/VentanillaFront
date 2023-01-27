@@ -22,14 +22,16 @@ import { SelectComponent } from 'app/shared/components/inputs/select.component';
 import { store } from 'app/redux/app.reducers';
 import { SetViewLicence } from 'app/redux/controlViewLicence/controlViewLicence.action';
 import '../../../../css/estilos.css';
-import { Button, Table, Upload } from 'antd';
+import { Button, Modal, Table, Upload } from 'antd';
 import { ApiService } from 'app/services/Apis.service';
 import { authProvider } from 'app/shared/utils/authprovider.util';
-import { CheckOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckOutlined, FilePdfOutlined, UploadOutlined } from '@ant-design/icons';
 export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   const { tipo, obj, prop } = props;
   const [archivocargado, setarchivocargado] = useState<any>();
   const [subioarchivo, setsubioarchivo] = useState<boolean>(false);
+  const [urlPdfDocumento, setUrlPdfDocumento] = useState<string>('default');
+  const [enableModalViewDocument, setEnableModalViewDocument] = useState<boolean>(false);
 
 
 
@@ -49,12 +51,34 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
         setsubioarchivo(true);
       }
 
-      const filter = documentos.filter(
-        (i: { idTipoDocumentoAdjunto: string }) => i.idTipoDocumentoAdjunto == '81c98a3c-730c-457a-bba1-877b737a9847'
-      );
+      const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
+        return (
+          f.idTipoDocumentoAdjunto === '81c98a3c-730c-457a-bba1-877b737a9847' ||
+          f.idTipoDocumentoAdjunto === '96d00032-4b60-4027-afea-0cc7115220b4' ||
+          f.idTipoDocumentoAdjunto === '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' ||
+          f.idTipoDocumentoAdjunto === '3c9cf345-e37d-4ab0-baca-c803dbb5380b'
+        );
+      });
+
+
       const array: any[] = [];
       for (let index = 0; index < filter.length; index++) {
-        array.push({ posicion: index, nombre: 'Documentacion asociada a la revision', archivo: filter[0] });
+        const path = filter[index].path;
+        let posicion_ = 0;
+
+        const posicioninicial = filter[index].path.indexOf('/');
+
+        for (let index2 = 0; index2 < path.length; index2++) {
+          if (path.substring(index2, index2 + 1) == '_') {
+            posicion_ = index2;
+          }
+        }
+
+        var cadena = path.substring(posicioninicial + 1, posicion_);
+
+        array.push({
+          posicion: index, nombre: cadena, archivo: filter[0], cargado: 1, subida: 'nube', path: path
+        });
       }
       setarchivocargado(array);
     },
@@ -68,25 +92,31 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
   }, []);
 
   const subida = (value: any) => {
-    if (archivocargado.length === 0) {
-      let posicion = 1;
 
-      const array: any[] = [];
-      if (archivocargado.length > 0) {
-        for (let index = 0; index < archivocargado.length; index++) {
-          array.push(archivocargado[index]);
-          posicion++;
-        }
-        array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
-        setarchivocargado(array);
-        prop(array);
-      } else {
-        array.push({ posicion: posicion, nombre: value.file.name, archivo: value.file });
-        setarchivocargado(array);
-        prop(array);
+    let posicion = 0;
+
+    const array: any[] = [];
+    if (archivocargado.length > 0) {
+      for (let index = 0; index < archivocargado.length; index++) {
+        array.push(archivocargado[index]);
+        posicion++;
       }
-      setsubioarchivo(true);
+      array.push({
+        posicion: posicion, nombre: 'Documentacion asociada a la revision', archivo: value.file, cargado: 0,
+        subida: 'local', path: '/Documentacion_asociada_a_la_revision/'
+      });
+      setarchivocargado(array);
+      prop(array);
+    } else {
+      array.push({
+        posicion: posicion, nombre: 'Documentacion asociada a la revision', archivo: value.file, cargado: 0,
+        subida: 'local', path: '/Documentacion_asociada_a_la_revision/'
+      });
+      setarchivocargado(array);
+      prop(array);
     }
+    setsubioarchivo(true);
+
   };
 
   const onClickValidarInformacion = async (datos: any) => {
@@ -108,6 +138,22 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
 
+
+  const viewPDF = async (DocumentsSupport: any) => {
+    let pdfUrl: string = '';
+
+    if (DocumentsSupport.subida === 'nube') {
+      const pdfBlob = await api.GetBlobAzure(DocumentsSupport.path + '.pdf');
+      pdfUrl = URL.createObjectURL(pdfBlob as Blob);
+    } else if (DocumentsSupport.subida === 'local') {
+      const pdfFile = DocumentsSupport.archivo;
+      pdfUrl = URL.createObjectURL(pdfFile as File);
+    }
+
+    setUrlPdfDocumento(pdfUrl);
+    setEnableModalViewDocument(true);
+  };
+
   const tabla = [
     {
       title: 'No. ',
@@ -125,17 +171,31 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
       align: 'center' as 'center',
 
       render: (_: any, row: any, index: any) => {
-        return (
-          <Button
-            type='primary'
-            className='fa-solid fa-circle-xmark'
-            onClick={() => onClickValidarInformacion(row)}
-            style={{ fontSize: '30xp', color: 'white' }}
-            icon={<CheckOutlined />}
-          >
-            Eliminar
-          </Button>
-        );
+        if (row.cargado === 0) {
+          return (
+            <>
+              <Button
+                type='primary'
+                className='fa-solid fa-circle-xmark'
+                onClick={() => onClickValidarInformacion(row)}
+                style={{ fontSize: '30xp', color: 'white' }}
+                icon={<CheckOutlined />}
+              >
+                Eliminar
+              </Button>
+              <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />{' '}
+            </>
+          );
+        }
+        else {
+          return (
+            <>
+              <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />{' '}
+            </>
+          );
+
+        }
+
       }
     }
   ];
@@ -159,7 +219,7 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
                   <Button
                     className='float-right button btn btn-default'
                     icon={<UploadOutlined />}
-                    disabled={subioarchivo}
+                    disabled={(subioarchivo)}
                     style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                   >
                     Cargar archivo
@@ -180,6 +240,16 @@ export const DocumentacionAsociada: React.FC<Documentacion<any>> = (props) => {
                 <br />
               </div>
             </div>
+            <Modal
+              title={<p className='text-center'> Visualización de Documento </p>}
+              visible={enableModalViewDocument}
+              width={1000}
+              okButtonProps={{ hidden: true }}
+              onCancel={() => setEnableModalViewDocument(false)}
+              cancelText='Cerrar'
+            >
+              <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+            </Modal>
           </div>
         </div>
       </section>

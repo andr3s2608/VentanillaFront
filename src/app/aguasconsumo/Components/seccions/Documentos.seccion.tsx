@@ -55,10 +55,11 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     '9EDCE704-F1D9-4F9D-8764-A980BDFE5FF0', //'Plan_de_cumplimiento_o_el_plan_de_acción'
     '3C9CF345-E37D-4AB0-BACA-C803DBB8850B', //'Manual_de_operación_y_mantenimiento'
     'B54F609C-02A3-42A0-B43C-02E055447EF7', //'Plan_de_contingencia_de_los_sistemas_de_suministro'
-    'E9057F6C-9DBB-458E-9F5E-15D8F1677C66' //'Documento_de_la_identificación_del_riesgos'
+    'E9057F6C-9DBB-458E-9F5E-15D8F1677C66',//'Documento_de_la_identificación_del_riesgos'
+    '2AD08695-BC6F-43CE-B6EA-013ECF0C2758' //Otro_documento
   ]);
-  const [archivos, setarchivos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0']);
-  const [tamanofila, settamanofila] = useState<any[]>([2, 0, 3, 0, 0, 0, 0]);
+  const [archivos, setarchivos] = useState<any[]>(['0', '0', '0', '0', '0', '0', '0', '0']);
+  const [tamanofila, settamanofila] = useState<any[]>([2, 0, 3, 0, 0, 0, 0, 0]);
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
   const [rechazados, setrechazados] = useState<any[]>([]);
@@ -84,10 +85,10 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
         const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
           return (
-            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' &&
-            f.idTipoDocumentoAdjunto != '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' &&
-            f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4' &&
-            f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'
+            f.idTipoDocumentoAdjunto != '3c9cf345-e37d-4ab0-baca-c803dbb5380b' && //documento visita revision
+            f.idTipoDocumentoAdjunto != '9edce821-f1d9-4f9d-8764-a436bdfe5ff0' && //resolucion renovacion
+            f.idTipoDocumentoAdjunto != '96d00032-4b60-4027-afea-0cc7115220b4' &&//documentacion asociada  actual
+            f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'    //documento extra validador vieja
           );
         });
 
@@ -287,6 +288,14 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       tipo: 'Análisis de riesgos',
       id: 'E9057F6C-9DBB-458E-9F5E-15D8F1677C66'
     });
+    //Otro Documento
+    prueba.push({
+      check: false,
+      nombre: 'Otro Documento',
+      valor: 'Otro_documeto',
+      tipo: '',
+      id: '2AD08695-BC6F-43CE-B6EA-013ECF0C2758'
+    });
     setacueductos(prueba);
   };
 
@@ -370,7 +379,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         prop(array);
       }
       setacueductos([]);
-      setarchivos(['0', '0', '0', '0', '0', '0', '0']);
+      setarchivos(['0', '0', '0', '0', '0', '0', '0', '0']);
       cargardatos();
     }
     else {
@@ -531,7 +540,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   ];
   var tabla2: any[] = [];
 
-  if (obj?.tipodeSolicitud != 'Primera vez') {
+  if (obj?.tipodeSolicitud != 'Primera vez' && obj?.tipodeSolicitud != 'Subsanacion') {
     tabla2 = [
       {
         title: 'No. ',

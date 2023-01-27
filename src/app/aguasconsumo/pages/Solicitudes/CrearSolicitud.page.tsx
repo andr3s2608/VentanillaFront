@@ -432,13 +432,19 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
         'email', 'zonaUbicacion', 'barrioUbicacion', 'upzUbicacion', 'localidadUbicacion', 'direccionCompletaUbicacion'
       ]);
 
-      if (form.getFieldValue('localidadUbicacion') != 'SELECCIONAR' && form.getFieldValue('barrioUbicacion') != 'SELECCIONAR' && form.getFieldValue('upzUbicacion') != 'SELECCIONAR' && form.getFieldValue('zonaUbicacion') != 'SELECCIONAR') {
+      if (form.getFieldValue('localidadUbicacion') != 'SELECCIONAR' &&
+        form.getFieldValue('barrioUbicacion') != 'SELECCIONAR' &&
+        form.getFieldValue('upzUbicacion') != 'SELECCIONAR' &&
+        form.getFieldValue('zonaUbicacion') != 'SELECCIONAR' &&
+        form.getFieldValue('direccionCompletaUbicacion') != '' &&
+        form.getFieldValue('direccionCompletaUbicacion') != undefined) {
+
         onNextStep();
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Datos Incompletos',
-          text: 'Los campos de Zona, Localidad, Upz y Barrios no debe tener valores predeterminados'
+          text: 'Los campos de Zona, Localidad, Upz , Barrios y direccion no debe tener valores predeterminados'
         });
       }
 

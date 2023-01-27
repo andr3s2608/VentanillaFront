@@ -623,8 +623,12 @@ export class ApiService {
   //Apis Aguas
   /////////////////////////
 
-  getallReportsAguas = (fechainicio: any, fechafin: any) =>
-    get<[]>({ endpoint: REACT_APP_AGUAS as string, url: `Report/getReportAgua/${fechainicio}/${fechafin}`, id: '0' });
+  getallReportsAguas = (fechainicio: any, fechafin: any, idusuario: string, tipo: string) =>
+    get<[]>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `Report/getReportAgua/${fechainicio}/${fechafin}/${idusuario}/${tipo}`,
+      id: '0'
+    });
 
   AddSolicitudPrimera = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
