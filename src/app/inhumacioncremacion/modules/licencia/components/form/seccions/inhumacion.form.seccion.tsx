@@ -879,7 +879,7 @@ export const InhumacionSeccion: React.FC<IndividualProps<any>> = (props) => {
           <Form.Item
             label='Nacionalidad'
             name='nationalidad'
-            initialValue={obj?.nacionalidad ? obj?.nacionalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c'}
+            initialValue={obj?.nationalidad ? obj?.nationalidad : '1e05f64f-5e41-4252-862c-5505dbc3931c'}
             rules={[{ required: true }]}
           >
             <SelectComponent
