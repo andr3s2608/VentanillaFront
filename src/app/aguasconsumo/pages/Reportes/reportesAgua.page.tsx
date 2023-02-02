@@ -116,7 +116,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
         let ob;
         if (rol === 'Subdirector') {
           ob = {
-            'Numero de Radicado': datos[i].numeroRadicado,
+            'Consecutivo': datos[i].consecutivo,
             'Nombre persona Natural': datos[i].nombre,
             'Persona Juridica ': datos[i].razonSocial,
             'Tipo Identificacion': datos[i].tipoIdentificacion,
@@ -140,7 +140,7 @@ const GridTipoLicenciaReportes: React.FC<any> = (props: any) => {
 
 
           ob = {
-            'Numero de Radicado': datos[i].numeroRadicado,
+            'Consecutivo': datos[i].consecutivo,
             'Nombre persona Natural': datos[i].nombre,
             'Persona Juridica ': datos[i].razonSocial,
             'Tipo Identificacion': datos[i].tipoIdentificacion,

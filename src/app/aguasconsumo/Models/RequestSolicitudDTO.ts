@@ -4,6 +4,7 @@ export interface RequestSolicitudDTO {
   idUsuario: string;
   temporal: boolean;
   persona: Persona;
+  consecutivo: string;
   ubicacion: Ubicacion;
 }
 

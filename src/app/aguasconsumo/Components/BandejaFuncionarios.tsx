@@ -233,7 +233,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         }
         else {
           return (
-            f.numeroRadicado.toString().includes(value) &&
+            f.consecutivo.toString().includes(value) &&
             (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
           );
         }
@@ -245,7 +245,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         }
         else {
           return (
-            f.numeroRadicado.toString().includes(value) &&
+            f.consecutivo.toString().includes(value) &&
             (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
           );
         }
@@ -511,7 +511,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
 
     return (
       <Input
-        placeholder='Nro. de Radicado'
+        placeholder='Consecutivo'
         value={value}
         style={{ width: 200, marginTop: 4, marginRight: 4 }}
         onChange={(e) => {
@@ -526,13 +526,13 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             const filteredData: any = array.filter((datos: any) => {
               if (fecha) {
                 return (
-                  datos.numeroRadicado.toString().includes(currValue) &&
+                  datos.consecutivo.toString().includes(currValue) &&
                   (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
                 );
 
               }
               else {
-                return datos.numeroRadicado.toString().includes(currValue);
+                return datos.consecutivo.toString().includes(currValue);
               }
             });
 
@@ -542,13 +542,13 @@ export const BandejaFuncionarios = (props: IDataSource) => {
               const filteredData3: any = arrayusuario.filter((datos: any) => {
                 if (fecha) {
                   return (
-                    datos.numeroRadicado.toString().includes(currValue) &&
+                    datos.consecutivo.toString().includes(currValue) &&
                     (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
                   );
 
                 }
                 else {
-                  return datos.numeroRadicado.toString().includes(currValue);
+                  return datos.consecutivo.toString().includes(currValue);
                 }
 
               });
@@ -559,13 +559,13 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             const filteredData2: any = arraysolucionados.filter((datos: any) => {
               if (fecha) {
                 return (
-                  datos.numeroRadicado.toString().includes(currValue) &&
+                  datos.consecutivo.toString().includes(currValue) &&
                   (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
                 );
 
               }
               else {
-                return datos.numeroRadicado.toString().includes(currValue);
+                return datos.consecutivo.toString().includes(currValue);
               }
 
             });
@@ -575,13 +575,13 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             const filteredDatanotificacion: any = notificaciones.filter((datos: any) => {
               if (fecha) {
                 return (
-                  datos.numeroRadicado.toString().includes(currValue) &&
+                  datos.consecutivo.toString().includes(currValue) &&
                   (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
                 );
 
               }
               else {
-                return datos.numeroRadicado.toString().includes(currValue);
+                return datos.consecutivo.toString().includes(currValue);
               }
             });
             setnotificaciones(filteredDatanotificacion);
@@ -640,15 +640,16 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   let structureColumnsnotificacionhistorico: any[] = [];
   if (mostrar) {
     structureColumns = [
+
       {
         title: FilterByNameInput('normal'),
-        dataIndex: 'numeroRadicado',
-        key: 'nroradicado',
+        dataIndex: 'consecutivo',
+        key: 'consecutivo',
         width: 200,
 
         sorter: {
-          compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
-          multiple: 1,
+          compare: (a: { consecutivo: number; }, b: { consecutivo: number; }) => a.consecutivo - b.consecutivo,
+          multiple: 2,
         },
         render(text: any, row: any, record: any) {
 
@@ -852,14 +853,15 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     ];
     //////notificaciones
     structureColumnsnotificacion = [
+
       {
         title: FilterByNameInput('notificacion'),
-        dataIndex: 'numeroRadicado',
-        key: 'nroradicado',
+        dataIndex: 'consecutivo',
+        key: 'consecutivo',
 
         sorter: {
-          compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
-          multiple: 1,
+          compare: (a: { consecutivo: number; }, b: { consecutivo: number; }) => a.consecutivo - b.consecutivo,
+          multiple: 2,
         },
         render(text: any, row: any, record: any) {
           return {
@@ -1049,6 +1051,19 @@ export const BandejaFuncionarios = (props: IDataSource) => {
     ];
     ///historico
     structureColumnsnotificacionhistorico = [
+      {
+        title: 'Consecutivo',
+        dataIndex: 'consecutivo',
+        key: 'consecutivo',
+        width: 230,
+
+        sorter: {
+          compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+            a.consecutivo > b.consecutivo ? 1 : -1,
+          multiple: 3,
+        }
+
+      },
       {
         title: 'Tipo de trámite',
         dataIndex: 'tipodeTramite',

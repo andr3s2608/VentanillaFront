@@ -75,7 +75,7 @@ export const TablaReportes = (props: IDataSource) => {
           const filteredDataUsuario: any = data.filter((datos: any) => {
             const razon: string = datos.razonSocial.toUpperCase();
             const nombre: string = datos.nombre.toUpperCase();
-            const nrosolicitud: string = datos.numeroRadicado.toUpperCase();
+            const nrosolicitud: string = datos.consecutivo.toUpperCase();
             return (
               nombre.toString().includes(nombrepersona.toUpperCase()) &&
               razon.toString().includes(nombrerazon.toUpperCase()) &&
@@ -105,7 +105,7 @@ export const TablaReportes = (props: IDataSource) => {
           setnroradicado(currValue);
           const filteredDataUsuario: any = data.filter((datos: any) => {
             const razon: string = datos.razonSocial.toUpperCase();
-            const nrosolicitud: string = datos.numeroRadicado.toUpperCase();
+            const nrosolicitud: string = datos.consecutivo.toUpperCase();
             const nombre: string = datos.nombre.toUpperCase();
             return (
               nombre.toString().includes(nombrepersona.toUpperCase()) &&
@@ -137,7 +137,7 @@ export const TablaReportes = (props: IDataSource) => {
           const filteredDataUsuario: any = data.filter((datos: any) => {
             const razon: string = datos.razonSocial.toUpperCase();
             const nombre: string = datos.nombre.toUpperCase();
-            const nrosolicitud: string = datos.numeroRadicado.toUpperCase();
+            const nrosolicitud: string = datos.consecutivo.toUpperCase();
             return (
               nombre.toString().includes(currValue.toUpperCase()) &&
               razon.toString().includes(nombrerazon.toUpperCase()) &&
@@ -168,7 +168,7 @@ export const TablaReportes = (props: IDataSource) => {
           const filteredDataUsuario: any = data.filter((datos: any) => {
             const razon: string = datos.razonSocial.toUpperCase();
             const nombre: string = datos.nombre.toUpperCase();
-            const nrosolicitud: string = datos.numeroRadicado.toUpperCase();
+            const nrosolicitud: string = datos.consecutivo.toUpperCase();
             return (
               nombre.toString().includes(nombrepersona.toUpperCase()) &&
               razon.toString().includes(currValue.toUpperCase()) &&
@@ -192,14 +192,15 @@ export const TablaReportes = (props: IDataSource) => {
 
 
       structureColumns = [
+
         {
           title: FilterById(),
-          dataIndex: 'numeroRadicado',
-          key: 'numeroRadicado',
+          dataIndex: 'consecutivo',
+          key: 'consecutivo',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { numeroRadicado: string; }, b: { numeroRadicado: string; }) =>
-              a.numeroRadicado > b.numeroRadicado ? 1 : -1,
+            compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+              a.consecutivo > b.consecutivo ? 1 : -1,
             multiple: 6,
           }
         },
@@ -425,14 +426,15 @@ export const TablaReportes = (props: IDataSource) => {
     }
     else {
       structureColumns = [
+
         {
           title: FilterById(),
-          dataIndex: 'numeroRadicado',
-          key: 'numeroRadicado',
+          dataIndex: 'consecutivo',
+          key: 'consecutivo',
           defaultSortOrder: 'descend',
           sorter: {
-            compare: (a: { numeroRadicado: string; }, b: { numeroRadicado: string; }) =>
-              a.numeroRadicado > b.numeroRadicado ? 1 : -1,
+            compare: (a: { consecutivo: string; }, b: { consecutivo: string; }) =>
+              a.consecutivo > b.consecutivo ? 1 : -1,
             multiple: 6,
           }
         },
