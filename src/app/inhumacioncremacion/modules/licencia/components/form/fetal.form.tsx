@@ -710,12 +710,12 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
         }
         await api.addSeguimiento(seguimiento)
-        /*
-         /*
-        setmostrar(true);
-       localStorage.setItem('consecutivo', consecutivoventanilla.consecutivo+'')
 
-        */
+        localStorage.setItem('consecutivo', consecutivoventanilla.consecutivo + '')
+        setmostrar(true);
+
+
+
 
         Swal.fire({
           icon: 'success',
