@@ -87,6 +87,10 @@ export const Gridview = (props: IDataSource) => {
       setHIA_SD(aux3);
       setHFA_SD(aux4);
       setfestivosDB(festivos.valor);
+
+      localStorage.setItem('festivos', festivos.valor);
+
+
       let resp: any = [];
       if (rolesstorage.rol === 'Ciudadano') {
         resp = await api.GetEstadoSolicitudNuevoCambio();
@@ -100,17 +104,18 @@ export const Gridview = (props: IDataSource) => {
 
 
 
+
         let contador = 0;
         for (let index = 0; index <= data[0].iD_Control_Tramite; index++) {
           if (contador != 0) {
-            console.log('index ', index,)
+
             for (let index2 = 0; index2 < data.length; index2++) {
               if (index === data[index2].iD_Control_Tramite || index + '' === data[index2].iD_Control_Tramite) {
 
                 colores.push(onChangeColor(data[index2], aux2, aux4));
 
-                //contador = data[index2].iD_Control_Tramite;
-                colores.push(undefined);
+                contador = data[index2].iD_Control_Tramite;
+                //colores.push(undefined);
                 break;
               }
 
@@ -122,7 +127,6 @@ export const Gridview = (props: IDataSource) => {
           }
           else {
 
-            console.log('index ', index,)
             if (index === data[data.length - 1].iD_Control_Tramite || index + '' === data[data.length - 1].iD_Control_Tramite) {
 
               // colores.push(onChangeColor(data[data.length - 1], aux2, aux4));
@@ -134,7 +138,9 @@ export const Gridview = (props: IDataSource) => {
             }
           }
         }
+
       }
+
 
 
 
@@ -582,11 +588,11 @@ export const Gridview = (props: IDataSource) => {
   function isHoliday(fechasolicitud: any): boolean {
     let bandera = false;
 
-    const festivos: string[] = obtenerFestivosString(festivosDB);
+    const festivos: string[] = obtenerFestivosString(localStorage.getItem('festivos') + "");
 
     if (festivos.length > 0) {
       const fechaActual = moment(fechasolicitud).format('DD-MM-YYYY').toString();
-      console.log(fechaActual);
+
       for (let index = 0; index < festivos.length; index++) {
 
         if (festivos[index] === fechaActual) {
@@ -597,6 +603,7 @@ export const Gridview = (props: IDataSource) => {
     }
     return bandera;
   }
+
 
   const onChangeColor = (solicitud: any, hfa_lv: any, hfa_sd: any) => {
 
@@ -610,14 +617,18 @@ export const Gridview = (props: IDataSource) => {
 
     let horabd = '';
     let minutobd = '';
-    if ((fechasolicitud.getDay() != 0 && fechasolicitud.getDay() != 6)) {
+    if ((fechasolicitud.getDay() != 0 && fechasolicitud.getDay() != 6) && !isHoliday(fechasolicitud)) {
+
       horabd = hfa_lv[0];
       minutobd = hfa_lv[1] + hfa_lv[2];
+
     }
     else {
+
       horabd = hfa_sd[0];
       minutobd = hfa_sd[1] + hfa_sd[2];
     }
+
 
     const fechaprueb2 = moment(fechasolicitud.setHours(0, 0, 0));
 
@@ -626,6 +637,7 @@ export const Gridview = (props: IDataSource) => {
 
 
     if (diaspasados >= -1 && diaspasados <= 1 && solicitud.estadoString === 'Registro Usuario Externo') {
+
       if (Number.parseInt(horasolicitud + '') > Number.parseInt(horabd)) {
 
 
@@ -633,7 +645,9 @@ export const Gridview = (props: IDataSource) => {
 
       }
       else {
+
         if (Number.parseInt(horasolicitud + '') === Number.parseInt(horabd)) {
+
           if (Number.parseInt(minutosolicitud + '') > Number.parseInt(minutobd)) {
 
 
@@ -697,7 +711,7 @@ export const Gridview = (props: IDataSource) => {
     ) {
 
       structureColumns = [
-        /*
+
         {
           title: FilterByNameInputidcontrol(),
           dataIndex: 'iD_Control_Tramite',
@@ -712,6 +726,7 @@ export const Gridview = (props: IDataSource) => {
 
           render(Text: any, row: any) {
 
+
             return {
               props: {
                 style: { background: ("" + colores[row.iD_Control_Tramite]) }
@@ -720,7 +735,7 @@ export const Gridview = (props: IDataSource) => {
             };
           }
         },
-        */
+
         {
           title: 'Validar Tramite',
           key: 'Acciones',
@@ -1050,7 +1065,7 @@ export const Gridview = (props: IDataSource) => {
             multiple: 3,
           }
         },
-        /*
+
         {
           title: 'Observaciones',
           dataIndex: '',
@@ -1071,7 +1086,7 @@ export const Gridview = (props: IDataSource) => {
 
 
         },
-        */
+
         {
           title: FilterByNameInputdocumento(),
           dataIndex: 'noIdentificacionFallecido',

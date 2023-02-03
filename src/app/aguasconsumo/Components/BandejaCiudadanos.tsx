@@ -67,7 +67,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
         }
         else {
           return (
-            f.numeroRadicado.toString().includes(value) &&
+            f.consecutivo.toString().includes(value) &&
             (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
           );
         }
@@ -79,7 +79,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
         }
         else {
           return (
-            f.numeroRadicado.toString().includes(value) &&
+            f.consecutivo.toString().includes(value) &&
             (new Date(f.fechaSolicitud) >= dateSelectedInicial && new Date(f.fechaSolicitud) < dateSelectedFinal)
           );
         }
@@ -179,7 +179,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
 
     return (
       <Input
-        placeholder='Nro. de Radicado'
+        placeholder='Consecutivo'
         style={{ width: 200, marginTop: 4, marginRight: 4 }}
         value={value}
         onChange={(e) => {
@@ -188,13 +188,13 @@ export const BandejaCiudadanos = (props: IDataSource) => {
           const filteredData: any = data.filter((datos: any) => {
             if (fecha) {
               return (
-                datos.numeroRadicado.toString().includes(currValue) &&
+                datos.consecutivo.toString().includes(currValue) &&
                 (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
               );
 
             }
             else {
-              return datos.numeroRadicado.toString().includes(currValue);
+              return datos.consecutivo.toString().includes(currValue);
             }
           });
           setDataInter(filteredData);
@@ -202,13 +202,13 @@ export const BandejaCiudadanos = (props: IDataSource) => {
           const filteredData2: any = datossolucionados.filter((datos: any) => {
             if (fecha) {
               return (
-                datos.numeroRadicado.toString().includes(currValue) &&
+                datos.consecutivo.toString().includes(currValue) &&
                 (new Date(datos.fechaSolicitud) >= fechain && new Date(datos.fechaSolicitud) < fechafin)
               );
 
             }
             else {
-              return datos.numeroRadicado.toString().includes(currValue);
+              return datos.consecutivo.toString().includes(currValue);
             }
 
           });
@@ -227,11 +227,11 @@ export const BandejaCiudadanos = (props: IDataSource) => {
   structureColumns = [
     {
       title: FilterByNameInput(),
-      dataIndex: 'numeroRadicado',
-      key: 'nroradicado',
+      dataIndex: 'consecutivo',
+      key: 'consecutivo',
       width: 200,
       sorter: {
-        compare: (a: { numeroRadicado: number; }, b: { numeroRadicado: number; }) => a.numeroRadicado - b.numeroRadicado,
+        compare: (a: { consecutivo: number; }, b: { consecutivo: number; }) => a.consecutivo - b.consecutivo,
         multiple: 1,
       },
     },

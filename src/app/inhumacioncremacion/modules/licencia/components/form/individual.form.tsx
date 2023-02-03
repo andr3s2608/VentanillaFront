@@ -679,8 +679,10 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
 
 
 
-        localStorage.setItem('consecutivo', consecutivoventanilla.consecutivo + '');
+        localStorage.setItem('consecutivo', consecutivoventanilla.consecutivo + '')
         setmostrar(true);
+
+
 
         Swal.fire({
           icon: 'success',

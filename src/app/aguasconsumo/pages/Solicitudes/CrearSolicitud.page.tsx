@@ -39,7 +39,11 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
 
   const onSubmit = async (values: any) => {
 
-    const idUsuario = api.getIdUsuario();
+    const idUsuario = await api.getIdUsuario();
+
+
+    let codigotramite = { codigotramite: '3' };
+    const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
 
     const archivo = values.cargarresolucion;
     let validacion = false;
@@ -154,6 +158,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           const dataSolicitud: RequestSolicitudDTO = {
             idTipoTramite: values.tipotramite,
             idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+            consecutivo: consecutivoventanilla.consecutivo + '',
             idUsuario: idUsuario,
             temporal: false,
             persona: {
@@ -371,7 +376,7 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           Swal.fire({
             icon: 'success',
             title: 'Solicitud Creada',
-            text: `Se ha creado la Solicitud exitosamente con número de radicado ${responseSolicitudDTO.numeroRadicado}`
+            text: `Se ha creado la Solicitud exitosamente con número de radicado ${consecutivoventanilla.consecutivo}`
           });
 
           history.push('/tramites-servicios-aguas');
