@@ -87,7 +87,6 @@ export const Gridview = (props: IDataSource) => {
       setHIA_SD(aux3);
       setHFA_SD(aux4);
       setfestivosDB(festivos.valor);
-      /*
       let resp: any = [];
       if (rolesstorage.rol === 'Ciudadano') {
         resp = await api.GetEstadoSolicitudNuevoCambio();
@@ -95,50 +94,47 @@ export const Gridview = (props: IDataSource) => {
       else {
         resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
       }
-*/
-      /*
 
-           if (Tipo.rol != 'Ciudadano' && Tipo.rol != 'MedicinaLegal') {
+      if (Tipo.rol != 'Ciudadano' && Tipo.rol != 'MedicinaLegal') {
 
 
 
 
-             let contador = 0;
-             for (let index = 0; index <= data[0].iD_Control_Tramite; index++) {
-               if (contador != 0) {
-                 console.log('index ', index,)
-                 for (let index2 = 0; index2 < data.length; index2++) {
-                   if (index === data[index2].iD_Control_Tramite || index + '' === data[index2].iD_Control_Tramite) {
+        let contador = 0;
+        for (let index = 0; index <= data[0].iD_Control_Tramite; index++) {
+          if (contador != 0) {
+            console.log('index ', index,)
+            for (let index2 = 0; index2 < data.length; index2++) {
+              if (index === data[index2].iD_Control_Tramite || index + '' === data[index2].iD_Control_Tramite) {
 
-                     colores.push(onChangeColor(data[index2], aux2, aux4));
+                colores.push(onChangeColor(data[index2], aux2, aux4));
 
-                     //contador = data[index2].iD_Control_Tramite;
-                     colores.push(undefined);
-                     break;
-                   }
+                //contador = data[index2].iD_Control_Tramite;
+                colores.push(undefined);
+                break;
+              }
 
-                 }
-                 if (contador != index) {
-                   colores.push(undefined);
-                 }
+            }
+            if (contador != index) {
+              colores.push(undefined);
+            }
 
-               }
-               else {
+          }
+          else {
 
-                 console.log('index ', index,)
-                 if (index === data[data.length - 1].iD_Control_Tramite || index + '' === data[data.length - 1].iD_Control_Tramite) {
+            console.log('index ', index,)
+            if (index === data[data.length - 1].iD_Control_Tramite || index + '' === data[data.length - 1].iD_Control_Tramite) {
 
-                   // colores.push(onChangeColor(data[data.length - 1], aux2, aux4));
-                   colores.push(undefined);
-                   contador++;
-                 }
-                 else {
-                   colores.push(undefined);
-                 }
-               }
-             }
-           }
-           */
+              // colores.push(onChangeColor(data[data.length - 1], aux2, aux4));
+              colores.push(undefined);
+              contador++;
+            }
+            else {
+              colores.push(undefined);
+            }
+          }
+        }
+      }
 
 
 
@@ -614,7 +610,7 @@ export const Gridview = (props: IDataSource) => {
 
     let horabd = '';
     let minutobd = '';
-    if ((fechasolicitud.getDay() != 0 && fechasolicitud.getDay() != 6) && !isHoliday(fechasolicitud)) {
+    if ((fechasolicitud.getDay() != 0 && fechasolicitud.getDay() != 6)) {
       horabd = hfa_lv[0];
       minutobd = hfa_lv[1] + hfa_lv[2];
     }
