@@ -70,7 +70,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
       setmostrar(true);
       setVisibleGrid('contents');
     } else {
-      // const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
+
       const resp = await api.getallrequesttovalidate();
 
       //localStorage.setItem('tablainhcrem', JSON.stringify(resp));
@@ -82,14 +82,7 @@ const GridTipoLicencia: React.FC<any> = (props: any) => {
     }
     setVisiblePicker('none');
     setVisibleAlert(false);
-    /*
-    if (permiso?.rol === 'Funcionario') {
-      let arraydatos = [];
-      const resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
 
-      setGrid(resp);
-    }
-    */
   };
   const selectChange = (event: any) => {
     const value = event;

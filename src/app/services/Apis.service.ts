@@ -284,9 +284,6 @@ export class ApiService {
   GetFunerariasAzure = (solicitud: string) =>
     get<any>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetFunerariabyidSolicitud/${solicitud}`, id: '0' });
 
-  getallbyEstado = (solicitud: string) =>
-    get<[]>({ endpoint: REACT_APP_INHCREMACION as string, url: `Request/GetRequestByIdEstado/${solicitud}`, id: '0' });
-
   getallReports = (fechainicio: string, fechafin: string, tipo: string) =>
     get<[]>({
       endpoint: REACT_APP_INHCREMACION as string,
