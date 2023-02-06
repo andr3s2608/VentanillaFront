@@ -1475,10 +1475,10 @@ export const ModificarLicencia = ({ props }: any) => {
       let bandera = false;
 
 
-      if (values.numerocert == obj.numeroCertificado) {
+      if (values.certificado == obj.numeroCertificado) {
         bandera = true;
       } else {
-        const busquedacertificado = await api.ComprobarCertificado(values.numerocert + '');
+        const busquedacertificado = await api.ComprobarCertificado(values.certificado + '');
         if (busquedacertificado == null) {
           bandera = true;
         } else {
