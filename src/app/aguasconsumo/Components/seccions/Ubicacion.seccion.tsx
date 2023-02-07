@@ -25,6 +25,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
   const [listLocalidades, setListLocalidades] = useState<Array<Object>>([]);
 
   const [enableField, setEnableField] = useState<boolean>(false);
+  const [esadmin, setesadmin] = useState<boolean>(false);
 
   const getListas = useCallback(
     async () => {
@@ -37,6 +38,14 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       /** Configuración para el estado inicial de la dirección */
       const initialDirection = ['', '', '', '', '', '', '', '', ''];
       sessionStorage.setItem('directionToSave', JSON.stringify(initialDirection));
+      const rolesstorage: any = localStorage.getItem('roles');
+
+      const [Tipo] = JSON.parse(rolesstorage);
+
+      if (Tipo.rol != 'AdminTI') {
+        setesadmin(true);
+      }
+
 
       if (vista == 'revision') {
         setEnableField(true);
@@ -122,8 +131,8 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         </soap12:Body>
       </soap12:Envelope>`;
 
-    //const algo = api.geocoding(XML);
-
+    const algo = api.geocoding(XML);
+    console.log(algo)
     let idZona = 4;
     let idLocalidad = 10;
     let idUPZ = 74;
@@ -349,7 +358,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
           <label className='text'> Dirección Completa </label>
           <Form.Item className='my-0 py-0' name='direccionCompletaUbicacion'>
-            <Input style={{ width: '395px' }} type='text' disabled={true} />
+            <Input style={{ width: '395px' }} type='text' disabled={!esadmin} />
           </Form.Item>
         </div>
         <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
