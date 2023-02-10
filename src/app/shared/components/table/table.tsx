@@ -91,14 +91,6 @@ export const Gridview = (props: IDataSource) => {
       localStorage.setItem('festivos', festivos.valor);
 
 
-      let resp: any = [];
-      if (rolesstorage.rol === 'Ciudadano') {
-        resp = await api.GetEstadoSolicitudNuevoCambio();
-      }
-      else {
-        resp = await api.getallbyEstado('FDCEA488-2EA7-4485-B706-A2B96A86FFDF');
-      }
-
       if (Tipo.rol != 'Ciudadano' && Tipo.rol != 'MedicinaLegal') {
 
 
