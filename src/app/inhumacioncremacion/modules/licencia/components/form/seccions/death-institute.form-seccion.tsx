@@ -427,7 +427,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     autoComplete='off'
                     maxLength={100}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -444,7 +444,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                     autoComplete='off'
                     maxLength={100}
                     onKeyPress={(event) => {
-                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ]/.test(event.key)) {
+                      if (!/[a-zA-ZñÑáéíóúÁÉÍÓÚ ]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
