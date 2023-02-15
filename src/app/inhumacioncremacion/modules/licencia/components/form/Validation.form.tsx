@@ -1467,17 +1467,20 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     let Horadef: any = 0;
 
     let Horanac: any = 0;
+
     if (Solicitud[0]['hora'] != 'Sin información' && Solicitud[0]['hora'] != null) {
       Horadef = Solicitud[0]['hora'];
       Horadef = Horadef.substring(0, Horadef.lastIndexOf(':'));
-      let minutodef = Horadef.substring(Horadef.lastIndexOf(':'), Horadef.length);
-      fechaDefuncion.setHours(Number.parseInt(Horadef), Number.parseInt(minutodef), 0);
+      let minutodef = Solicitud[0]['hora'];
+      minutodef = minutodef.substring((minutodef.lastIndexOf(':') + 1), minutodef.length);
+      fechaDefuncion.setHours(Number.parseInt(Horadef), Number.parseInt(minutodef), 0, 0);
     }
     if (fallecido['hora'] != 'Sin información' && fallecido['hora'] != null) {
       Horanac = fallecido['hora'];
       Horanac = Horanac.substring(0, Horanac.lastIndexOf(':'));
-      let minutonac = Horanac.substring(Horanac.lastIndexOf(':'), Horanac.length);
-      fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0);
+      let minutonac = fallecido['hora'];
+      minutonac = minutonac.substring((minutonac.lastIndexOf(':') + 1), minutonac.length);
+      fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0, 0);
     }
     else {
       if (fallecido['hora'] === null) {
@@ -1485,7 +1488,7 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
       }
       else {
 
-        fechaNacimiento.setHours(0, 0, 0);
+        fechaNacimiento.setHours(0, 0, 0, 0);
       }
     }
 
@@ -1777,17 +1780,19 @@ export const ValidationForm: React.FC<ITipoLicencia> = (props) => {
     if (Solicitud[0]['hora'] != 'Sin información' && Solicitud[0]['hora'] != null) {
       Horadef = Solicitud[0]['hora'];
       Horadef = Horadef.substring(0, Horadef.lastIndexOf(':'));
-      let minutodef = Horadef.substring(Horadef.lastIndexOf(':'), Horadef.length);
-      fechaDefuncion.setHours(Number.parseInt(Horadef), Number.parseInt(minutodef), 0);
+      let minutodef = Solicitud[0]['hora'];
+      minutodef = minutodef.substring((minutodef.lastIndexOf(':') + 1), minutodef.length);
+      fechaDefuncion.setHours(Number.parseInt(Horadef), Number.parseInt(minutodef), 0, 0);
     }
     if (fallecido['hora'] != 'Sin información' && fallecido['hora'] != null) {
       Horanac = fallecido['hora'];
       Horanac = Horanac.substring(0, Horanac.lastIndexOf(':'));
-      let minutonac = Horanac.substring(Horanac.lastIndexOf(':'), Horanac.length);
-      fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0);
+      let minutonac = fallecido['hora'];
+      minutonac = minutonac.substring((minutonac.lastIndexOf(':') + 1), minutonac.length);
+      fechaNacimiento.setHours(Number.parseInt(Horanac), Number.parseInt(minutonac), 0, 0);
     }
     else {
-      fechaNacimiento.setHours(0, 0, 0);
+      fechaNacimiento.setHours(0, 0, 0, 0);
     }
 
     var edad = 'Sin Definir';
