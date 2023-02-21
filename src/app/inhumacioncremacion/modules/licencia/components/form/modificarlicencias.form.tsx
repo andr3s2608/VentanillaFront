@@ -1470,6 +1470,7 @@ export const ModificarLicencia = ({ props }: any) => {
 
 
   const Guardar = async (values: any) => {
+
     if (generales) {
 
       let bandera = false;
@@ -1505,6 +1506,9 @@ export const ModificarLicencia = ({ props }: any) => {
           if (result.isConfirmed) {
 
             Modificar(values);
+          }
+          if (result.isDenied) {
+            setCurrent(0);
           }
         });
       }
@@ -1546,6 +1550,7 @@ export const ModificarLicencia = ({ props }: any) => {
           title: 'Datos inválidos',
           text: `El Número de Identificación debe tener mínimo ${longitud} Dígitos o Caracteres`
         });
+        setCurrent(0);
       }
 
 
@@ -1555,6 +1560,9 @@ export const ModificarLicencia = ({ props }: any) => {
   if (current === 1) {
 
     const values = form.getFieldsValue();
+    if (generales) {
+      setCurrent(2);
+    }
     Guardar(values);
 
   }
