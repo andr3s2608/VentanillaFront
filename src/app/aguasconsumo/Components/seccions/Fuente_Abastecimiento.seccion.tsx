@@ -71,6 +71,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           sub = await api.getSubcategoriasFuente(
             obj?.fuenteabastecimientojson[0].idtipofuente ?? 'E0B6C517-2504-4050-8A05-B1083A9E8FE6'
           );
+          setl_subcategorias(sub);
           if (obj?.renovafuentejson[0]) {
             const date = obj.renovafuentejson[0].fechaResolucion;
             setdatos([
@@ -104,6 +105,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
           }
         } else {
           sub = await api.getSubcategoriasFuente('E0B6C517-2504-4050-8A05-B1083A9E8FE6');
+          setl_subcategorias(sub);
         }
       }
 
