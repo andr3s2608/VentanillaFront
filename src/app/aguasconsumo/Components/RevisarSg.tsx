@@ -98,7 +98,7 @@ export const RevisarSg = () => {
           idSolicitud: item.idSolicitud,
           idDocumentoSoporte: item.idDocumentoSoporte,
           path: item.path,
-          observaciones: 'defualt',
+          observaciones: values.observacionesSubsanacion + '',
           estado_Documento: item.estadoDocumento,
           tipoSeguimiento: item.tipoSeguimiento
         });

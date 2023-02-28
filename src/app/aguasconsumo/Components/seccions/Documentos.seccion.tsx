@@ -47,6 +47,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
   const [mostrar, setmostrar] = useState<boolean>(false);
   const [acueducto, setacueductos] = useState<any[]>([]);
+  const [observacionvalidador, setobservacion] = useState<any>();
 
   const [orden, setorden] = useState<any[]>([
     '79572C8A-FFFE-440B-BE57-049B42B655A1', //caracterizacion de agua cruda
@@ -63,6 +64,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const [archivocargado, setarchivocargado] = useState<any>();
   const [guardararchivos, setguardararchivos] = useState<any[]>([]);
   const [rechazados, setrechazados] = useState<any[]>([]);
+  const [rechazadosfaltantes, setrechazadosfaltantes] = useState<number>(0);
   const [consultararchivos, setconsultararchivos] = useState<any[]>([]);
   const [guardararchivostabla, setguardararchivostabla] = useState<any[]>([]);
 
@@ -79,8 +81,12 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
       if (obj?.fuenteabastecimientojson !== undefined) {
         documentosrechazados = await api.GetRejectedDocumentoSoporte(obj.idsolicitud);
+
         setrechazados(documentosrechazados);
-        let documentos = await api.getSupportDocumentsAguas(obj.idsolicitud);
+
+
+        let documentos: any = await api.getSupportDocumentsAguas(obj.idsolicitud);
+
 
 
         const filter = documentos.filter(function (f: { idTipoDocumentoAdjunto: string }) {
@@ -91,6 +97,56 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
             f.idTipoDocumentoAdjunto != '81c98a3C-730c-457a-bba1-877b737a9847'    //documento extra validador vieja
           );
         });
+        let docsubsanar = 0;
+        for (let index = 0; index < filter.length; index++) {
+          for (let index2 = 0; index2 < documentosrechazados.length; index2++) {
+
+            if (documentosrechazados[index2].idDocumentoAdjunto === filter[index].idDocumentoAdjunto) {
+              docsubsanar++;
+              break;
+            }
+          }
+        }
+
+        setrechazadosfaltantes(docsubsanar);
+
+
+        //obtener mas reciente
+        let documentoreciente = filter[0];
+        for (let index = 0; index < filter.length; index++) {
+          if (filter[index].esValido) {
+            documentoreciente = filter[index];
+            break;
+          }
+
+        }
+
+        for (let index = 1; index < filter.length; index++) {
+          let fechadoc = new Date(documentoreciente.fechaModificacion);
+          let fechaacomparara = new Date(filter[index].fechaModificacion);
+
+          if (fechadoc < fechaacomparara && filter[index].esValido) {
+
+            documentoreciente = filter[index];
+          }
+          else {
+
+            if (fechadoc == fechaacomparara && filter[index].esValido) {
+
+              documentoreciente = filter[index];
+            }
+          }
+
+        }
+        let observaciones = await api.getObservacionesDocumento(obj.idsolicitud)
+        for (let index = 0; index < observaciones.length; index++) {
+          if (documentoreciente.idDocumentoAdjunto === observaciones[index].idDocumentoSoporte) {
+
+            setobservacion(observaciones[index].observaciones)
+
+          }
+
+        }
 
 
         const ordenadotabla: any[] = [];
@@ -203,7 +259,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         setguardararchivos(array);
         if (prop != null) {
 
-          prop(array);
+          prop(array, docsubsanar);
         }
         setguardararchivostabla(arraytabla);
 
@@ -376,7 +432,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       setguardararchivostabla(arraytabla);
       setconsultararchivos(arraytabla);
       if (prop != null) {
-        prop(array);
+        prop(array, rechazadosfaltantes);
       }
       setacueductos([]);
       setarchivos(['0', '0', '0', '0', '0', '0', '0', '0']);
@@ -395,6 +451,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
 
   const documentosrechazados = (id: string) => {
+
     let esrechazado = false;
     for (let index = 0; index < rechazados.length; index++) {
       if (id === rechazados[index].idTipoDocumentoAdjunto) {
@@ -448,7 +505,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
     setguardararchivos(array);
     setguardararchivostabla(arraytabla);
-    prop(array);
+    setrechazadosfaltantes(rechazadosfaltantes - 1);
+    prop(array, rechazadosfaltantes - 1);
+
 
     //history.push('/tramites-servicios-aguas/Revision/revisar-solicitud');
   };
@@ -578,11 +637,15 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
+
           if (obj?.tipodeSolicitud === 'Subsanacion') {
+
+            const rechazado = documentosrechazados(row.id);
+
             return (
               <>
                 <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
-                {documentosrechazados(row.id) && (
+                {rechazado && (
                   <>
                     <Button
                       type='primary'
@@ -626,19 +689,35 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
+
+          if (obj?.tipodeSolicitud === 'Subsanacion') {
+
+            const rechazado = documentosrechazados(row.id);
+
+            return (
+              <>
+                <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
+                {rechazado && (
+                  <>
+                    <Button
+                      type='primary'
+                      className='fa-solid fa-circle-xmark'
+                      key={`vali-${index}`}
+                      onClick={() => onClickValidarInformacion(row)}
+                      style={{ fontSize: '30xp', color: 'white' }}
+                      icon={<CheckOutlined />}
+                    >
+                      Eliminar
+                    </Button>
+                  </>
+                )}
+              </>
+            );
+          }
           return (
             <>
               <FilePdfOutlined onClick={() => viewPDF(row)} style={{ fontSize: '30px' }} />
-              <Button
-                type='primary'
-                className='fa-solid fa-circle-xmark'
-                key={`vali-${index}`}
-                onClick={() => onClickValidarInformacion(row)}
-                style={{ fontSize: '30xp', color: 'white' }}
-                icon={<CheckOutlined />}
-              >
-                Eliminar
-              </Button>
+
             </>
           );
         }
@@ -745,7 +824,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                   <>
                     <div className='col-lg-12 col-md-12 col-sm-12' >
                       <label htmlFor=''>Observaciones</label>
-                      <Form.Item label='' name='observacionesSubsanacion'>
+                      <Form.Item label='' name='observacionesSubsanacion' initialValue={(obj?.tipodeSolicitud === 'Gestion Coordinador' ?
+                        observacionvalidador : (obj?.tipodeSolicitud === 'Gestion Subdirector' ? observacionvalidador : null)
+                      )}>
                         <Input.TextArea rows={5} maxLength={500} className='textarea' disabled={editable}
                         />
                       </Form.Item>

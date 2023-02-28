@@ -90,6 +90,17 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
             usofuente: usofuente[0].nombre
           });
         }
+
+        props.form.setFieldsValue({
+          localidad: array[0].localidad,
+          latituduso: array[0].latitud + '',
+          longituduso: array[0].longitud + '',
+          descripcionotrouso: array[0].descripcion + '',
+          caudal: array[0].caudal + '',
+          usofuente: array[0].usofuente
+        });
+
+
       }
 
 
@@ -224,6 +235,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
     }
   };
   const onClickLlenarInformacion = async (datos: any) => {
+
 
     props.form.setFieldsValue({
       localidad: acueducto[datos.posicion - 1].localidad,

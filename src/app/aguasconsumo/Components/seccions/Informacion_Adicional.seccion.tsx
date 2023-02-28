@@ -59,6 +59,48 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
           pob2: obj.sistematratamientojson[index].poblacionRurales
         });
       }
+
+
+      props.form.setFieldsValue({
+        caudaldesign: array[0].caudaldesign + '',
+        caudaltratado: array[0].caudaltratado + '',
+        descripcion: array[0].descrip + '',
+        numero1: array[0].num1 + '',
+        numero2: array[0].num2 + '',
+        poblacion1: array[0].pob1 + '',
+        poblacion2: array[0].pob2 + ''
+      });
+
+      setcampos([
+        array[0].sed == true ? '1' : '0',
+        array[0].mezr == true ? '1' : '0',
+        array[0].mezl == true ? '1' : '0',
+        array[0].oxi == true ? '1' : '0',
+        array[0].flocula == true ? '1' : '0',
+        array[0].filt == true ? '1' : '0',
+        array[0].desin == true ? '1' : '0',
+        array[0].alma == true ? '1' : '0',
+        array[0].torre == true ? '1' : '0',
+        array[0].preclo == true ? '1' : '0',
+        array[0].desarenador == true ? '1' : '0',
+        array[0].otra == true ? '1' : '0'
+      ]);
+      setlista([
+        array[0].sed,
+        array[0].mezr,
+        array[0].mezl,
+        array[0].oxi,
+        array[0].flocula,
+        array[0].filt,
+        array[0].desin,
+        array[0].alma,
+        array[0].torre,
+        array[0].preclo,
+        array[0].desarenador,
+        array[0].otra
+      ]);
+
+
     }
 
     setsistema(array);
@@ -76,7 +118,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
     const caudaltra = props.form.getFieldValue('caudaltratado');
 
     if (caudalde != undefined && caudaltra != undefined && caudalde != '' && caudaltra != '') {
-      if (parseInt(caudalde) > parseInt(caudaltra)) {
+      if (parseInt(caudaltra) > parseInt(caudalde)) {
         Swal.fire({
           icon: 'info',
 
@@ -232,11 +274,6 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       sistema[datos.posicion - 1].otra
     ]);
 
-    props.form.getFieldValue('descripcion');
-    props.form.getFieldValue('numero1');
-    props.form.getFieldValue('numero2');
-    props.form.getFieldValue('poblacion1');
-    props.form.getFieldValue('poblacion2');
   };
 
   const onClickValidarInformacion = async (datos: any) => {

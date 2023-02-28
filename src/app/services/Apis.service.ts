@@ -628,7 +628,7 @@ export class ApiService {
     });
 
   AddSolicitudPrimera = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
 
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });
@@ -747,7 +747,12 @@ export class ApiService {
       url: `SupportDocuments/GetAllSuportByRequestId/${solicitud}`,
       id: '0'
     });
-
+  getObservacionesDocumento = (id: string) =>
+    get<any>({
+      endpoint: REACT_APP_AGUAS as string,
+      url: `EstadoDocumentoSoporte/GetObservacionesdoc/${id}`,
+      id: '0'
+    });
   getTipoTramites = () =>
     get<any>({
       endpoint: REACT_APP_AGUAS as string,

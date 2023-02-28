@@ -283,7 +283,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   rules={[{ required: true }]}
                 >
                   <SelectComponent
-                    options={l_tramites}
+                    options={l_tramites} disabled={modificar}
                     defaultValue={'301d61c3-7685-4151-9dc5-1bdf5a88831a'} optionPropkey='idTipoTramite'
                     optionPropLabel='descripcion' className='mr-5 option'
                   />
@@ -305,7 +305,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               {tipoSolicitante && (<div className='col-lg-6'>
                 <p className='text'>RUT</p>
                 <Form.Item name='rut' >
-                  <Input placeholder='NÚMERO DE RUT' type='text' className='form-control gov-co-form-control' maxLength={8}
+                  <Input placeholder='NÚMERO DE RUT' type='text' className='form-control gov-co-form-control' maxLength={8} disabled={modificar}
 
                     onKeyPress={(event) => {
                       if (!/[0-9]/.test(event.key)) {
@@ -375,7 +375,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   <span className='required'>*</span> Nombre de la entidad
                 </p>
                 <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
-                  <Input placeholder='NOMBRE DE LA IDENTIDAD' type='text' className='form-control gov-co-form-control'
+                  <Input placeholder='Nombre De La Entidad' type='text' className='form-control gov-co-form-control'
                     maxLength={50} disabled={modificar}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-0- ]/.test(event.key)) {
@@ -591,18 +591,75 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-            {!tipoSolicitante ? (
-              <>
-                <div className='form-row'>
-                  <div className='col'>
-                    <Input type='text' className='form-control' placeholder='First name'></Input>
-                  </div>
-                  <div className='col'>
-                    <Input type='text' className='form-control' placeholder='Last name'></Input>
-                  </div>
-                </div>
-              </>
-            ) : null}
+            {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <p className='text'>
+                  <span className='required'>*</span> Tipo de documento
+                </p>
+                <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
+                  <SelectComponent
+                    className='text'
+                    options={l_tipos_documentoRazon}
+                    onChange={cambiodocumentoRazon}
+                    optionPropkey='id'
+                    optionPropLabel='descripcion'
+                    disabled={true}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <p className='text'>
+                  <span className='required'>*</span> Número de documento
+                </p>
+                <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
+                  <Input
+                    allowClear
+                    type='text'
+                    placeholder='Número Identificación'
+                    autoComplete='off'
+                    pattern={tipocampoRazon}
+                    maxLength={longitudmaximaRazon}
+                    disabled={true}
+                    onKeyPress={(event) => {
+                      if (!tipocampovalidacionRazon.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+
+                    onInvalid={() => {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Datos inválidos',
+                        text:
+                          'recuerde que para el tipo de documento: ' +
+                          tipodocumentoRazon +
+                          ' solo se admiten valores ' +
+                          campoRazon +
+                          ' de longitud entre ' +
+                          longitudminimaRazon +
+                          ' y ' +
+                          longitudmaximaRazon
+                      });
+                    }}
+                  />
+                </Form.Item>
+              </div>
+              <div className='col-lg-6 col-md-6 col-sm-12'>
+                <p className='text'>
+                  <span className='required'>*</span> Nombre de la entidad
+                </p>
+                <Form.Item initialValue={obj?.razonSocial} rules={[{ required: true }]} name='nombreEntidad'>
+                  <Input placeholder='Nombre De La Entidad' type='text' className='form-control gov-co-form-control'
+                    maxLength={50} disabled={true}
+                    onKeyPress={(event) => {
+                      if (!/[a-zA-Z0-0- ]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>)}
             <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>

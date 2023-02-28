@@ -75,7 +75,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 Número de radicado
               </p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
+                <Form.Item initialValue={obj?.consecutivo} name='numeroradicado' required={false}>
                   <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
                 </Form.Item>
               </div>
@@ -150,33 +150,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
           </div>
 
           <div className='row prueba_tramite'>
-            {tipousuario != 'validacion' && (
-              <div className='col-lg-6 col-md-6 col-sm-12 ' >
-                <p className='text'>
-                  <span className='required'>*</span> Actividad Siguiente
-                </p>
-                <div className='form-group gov-co-form-group'>
-                  <Form.Item
-                    initialValue={obj?.actividadSiguienteSolicitud}
-                    name='actsiguiente'
-                    rules={[{ required: false }]}
-                  >
-                    <Input
-                      type='text'
-                      className='form-control gov-co-form-control'
-                      onKeyPress={(event) => {
-                        if (!/[a-zA-Z ]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                      onPaste={(event) => {
-                        event.preventDefault();
-                      }}
-                    />
-                  </Form.Item>
-                </div>
-              </div>
-            )}
+
 
             {tipousuario == 'coordinador' && (
               <div className='col-lg-6 col-md-6 col-sm-12 '>
@@ -226,7 +200,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                   Número de radicado
                 </p>
                 <div className='form-group gov-co-form-group'>
-                  <Form.Item initialValue={obj?.numeroradicado} name='numeroradicado' required={false}>
+                  <Form.Item initialValue={obj?.consecutivo} name='numeroradicado' required={false}>
                     <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
                   </Form.Item>
                 </div>
@@ -303,38 +277,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 </div>
               </div>
             </div>
-            {tipousuario != 'validacion' && (
-              <>
-                <div className='row'>
-                  <div className='col-lg-6 col-md-6 col-sm-12 '>
-                    <p className='text'>
-                      <span className='required'>*</span> Actividad Siguiente
-                    </p>
-                    <div className='form-group gov-co-form-group'>
-                      <Form.Item
-                        initialValue={obj?.actividadSiguienteSolicitud}
-                        name='actsiguiente'
-                        rules={[{ required: false }]}
-                      >
-                        <Input
-                          type='text'
-                          className='form-control gov-co-form-control'
-                          disabled={true}
-                          onKeyPress={(event) => {
-                            if (!/[a-zA-Z ]/.test(event.key)) {
-                              event.preventDefault();
-                            }
-                          }}
-                          onPaste={(event) => {
-                            event.preventDefault();
-                          }}
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
+
 
             {tipousuario == 'coordinador' && (
               <>

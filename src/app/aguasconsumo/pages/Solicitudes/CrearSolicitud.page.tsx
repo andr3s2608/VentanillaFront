@@ -24,26 +24,37 @@ import { IObservaciones } from 'app/aguasconsumo/Components/Models/IObservacione
 const CrearSolicitud: React.FC<any> = (props: any) => {
   const { TabPane } = Tabs;
 
+
   const history = useHistory();
   const [form] = Form.useForm<any>();
-  //const objJson: any = EditAguas();
-  const objJson: any = [];
+  const objJson: any = EditAguas();
+
+
 
   const { accountIdentifier } = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const { current, setCurrent, status, setStatus, onNextStep, onPrevStep } = useStepperForm<any>(form);
   const [validaciondocumento, setvalidacion] = useState<boolean>(false);
   const [acueducto, setacueducto] = useState<any[]>([]);
+  const [rechazados, setrechazados] = useState<number>(0);
   const [informacion, setinformacion] = useState<any[]>([]);
   const [documento, setdocumento] = useState<any[]>([]);
 
   const onSubmit = async (values: any) => {
 
     const idUsuario = await api.getIdUsuario();
-
-
     let codigotramite = { codigotramite: '3' };
-    const consecutivoventanilla: any = await api.GetConsecutivoVentanilla(codigotramite);
+    let consecutivoventanilla: any = '';
+    if (objJson.idsolicitud !== undefined) {
+
+    }
+    else {
+
+      let codigotramite = { codigotramite: '3' };
+      consecutivoventanilla = await api.GetConsecutivoVentanilla(codigotramite);
+    }
+
+
 
     const archivo = values.cargarresolucion;
     let validacion = false;
@@ -64,14 +75,16 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
         Coo_lat_cy: acueducto[index].latitud ?? '',
         idUsoFuente: acueducto[index].usofuente,
         sector: '',
-        descripcionOtroUso: acueducto[index].descripcion ?? '',
+        descripcionOtroUso: acueducto[index].descripcion === null ? '' : acueducto[index].descripcion,
         caudalTotal: acueducto[index].caudal ?? '',
-        idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
+        idFuenteAbastecimiento: objJson.idFuente ?? '00000000-0000-0000-0000-000000000000',
         idDepartamento: acueducto[index].departamento,
         idLocalidad: acueducto[index].localidad
       });
     }
+
     if (values.formradio == '1' || values.formradio == undefined) {
+
       if (informacion.length < 1) {
         Swal.fire({
           icon: 'error',
@@ -125,263 +138,282 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
           }
         }
         if (aguacruda > 0 && descripcionsistema > 0 && analisisriesgo > 0) {
-          for (let index = 0; index < informacion.length; index++) {
-            sis.push({
-              idSistemaTratamiento: '00000000-0000-0000-0000-000000000000',
-              idFuente: '00000000-0000-0000-0000-000000000000',
-              sedimentador: informacion[index].sed,
-              mezclaRapido: informacion[index].mezr,
-              mezclaLento: informacion[index].mezl,
-              oxidacion: informacion[index].oxi,
-              floculador: informacion[index].flocula,
-              filtracion: informacion[index].filt,
-              desinfeccion: informacion[index].desin,
-              almacenamiento: informacion[index].alma,
-              torreAireacion: informacion[index].torre,
-              precloracion: informacion[index].preclo,
-              desarenador: informacion[index].desarenador,
-              otra: informacion[index].otra,
-              descripcionOtro: informacion[index].descrip ?? '',
-              numUsuarioUrbanos: informacion[index].num1 ?? '',
-              numUsuariosRurales: informacion[index].num2 ?? '',
-              poblacionUrbanos: informacion[index].pob1 ?? '',
-              poblacionRurales: informacion[index].pob2 ?? '',
-              caudalDiseno: informacion[index].caudaldesign ?? '',
-              caudalTratado: informacion[index].caudaltratado ?? ''
-            });
-          }
-          sistemajson = sis;
-          acueductojson = ac;
-          const formatDate = 'MM-DD-YYYY';
-
-          /** Código nuevo */
-          const dataSolicitud: RequestSolicitudDTO = {
-            idTipoTramite: values.tipotramite,
-            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-            consecutivo: consecutivoventanilla.consecutivo + '',
-            idUsuario: idUsuario,
-            temporal: false,
-            persona: {
-              tipoIdentificacion: values.IDType,
-              rut: values?.rut ?? '',
-              numeroIdentificacion: values.IDNumber,
-              primerNombre: values.name,
-              segundoNombre: values?.secondname ?? '',
-              primerApellido: values.surname,
-              segundoApellido: values?.secondsurname ?? '',
-              telefonoContacto: values.telefono,
-              celularContacto: values?.telefono2 ?? '',
-              correoElectronico: values.email.toString().toLowerCase(),
-              idTipoPersona: values.persona,
-              tipoDocumentoRazon: values?.IDTypeRazon ?? '',
-              nit: values?.IDNumberRazon ?? '',
-              razonSocial: values?.nombreEntidad ?? ''
-            },
-            ubicacion: {
-              direccion: values?.direccionCompletaUbicacion ?? '',
-              departamento: '00000000-0000-0000-0000-000000000000',
-              municipio: '00000000-0000-0000-0000-000000000000',
-              localidad: values?.localidadUbicacion ?? '',
-              vereda: '',
-              sector: values?.zonaUbicacion ?? '',
-              upz: values?.upzUbicacion ?? '',
-              barrio: values?.barrioUbicacion ?? '',
-              observacion: ''
+          if (rechazados <= 0) {
+            for (let index = 0; index < informacion.length; index++) {
+              sis.push({
+                idSistemaTratamiento: '00000000-0000-0000-0000-000000000000',
+                idFuente: objJson.idFuente ?? '00000000-0000-0000-0000-000000000000',
+                sedimentador: informacion[index].sed,
+                mezclaRapido: informacion[index].mezr,
+                mezclaLento: informacion[index].mezl,
+                oxidacion: informacion[index].oxi,
+                floculador: informacion[index].flocula,
+                filtracion: informacion[index].filt,
+                desinfeccion: informacion[index].desin,
+                almacenamiento: informacion[index].alma,
+                torreAireacion: informacion[index].torre,
+                precloracion: informacion[index].preclo,
+                desarenador: informacion[index].desarenador,
+                otra: informacion[index].otra,
+                descripcionOtro: informacion[index].descrip === null ? '' : informacion[index].descrip,
+                numUsuarioUrbanos: informacion[index].num1 === null ? '' : informacion[index].num1,
+                numUsuariosRurales: informacion[index].num2 === null ? '' : informacion[index].num2,
+                poblacionUrbanos: informacion[index].pob1 === null ? '' : informacion[index].pob1,
+                poblacionRurales: informacion[index].pob2 === null ? '' : informacion[index].pob2,
+                caudalDiseno: informacion[index].caudaldesign === null ? '' : informacion[index].caudaldesign,
+                caudalTratado: informacion[index].caudaltratado === null ? '' : informacion[index].caudaltratado
+              });
             }
-          };
+            sistemajson = sis;
+            acueductojson = ac;
+            const formatDate = 'MM-DD-YYYY';
+
+            /** Código nuevo */
+            const dataSolicitud: RequestSolicitudDTO = {
+              idTipoTramite: values.tipotramite,
+              idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+              consecutivo: objJson.idsolicitud === undefined ? (consecutivoventanilla.consecutivo + '') : objJson.idsolicitud,
+              idUsuario: idUsuario,
+              temporal: objJson.idsolicitud === undefined ? false : true,
+              persona: {
+                tipoIdentificacion: values.IDType,
+                rut: values?.rut ?? '',
+                numeroIdentificacion: values.IDNumber,
+                primerNombre: values.name,
+                segundoNombre: values?.secondname ?? '',
+                primerApellido: values.surname,
+                segundoApellido: values?.secondsurname ?? '',
+                telefonoContacto: values.telefono,
+                celularContacto: values?.telefono2 ?? '',
+                correoElectronico: values.email.toString().toLowerCase(),
+                idTipoPersona: values.persona,
+                tipoDocumentoRazon: values?.IDTypeRazon ?? '',
+                nit: values?.IDNumberRazon ?? '',
+                razonSocial: values?.nombreEntidad ?? ''
+              },
+              ubicacion: {
+                direccion: values?.direccionCompletaUbicacion ?? '',
+                departamento: '00000000-0000-0000-0000-000000000000',
+                municipio: '00000000-0000-0000-0000-000000000000',
+                localidad: values?.localidadUbicacion ?? '',
+                vereda: '',
+                sector: values?.zonaUbicacion ?? '',
+                upz: values?.upzUbicacion ?? '',
+                barrio: values?.barrioUbicacion ?? '',
+                observacion: ''
+              }
+            };
 
 
-          const responseSolicitudDTO: ResponseSolicitudDTO = await api.AddSolicitudPrimera(dataSolicitud) as ResponseSolicitudDTO;
+            const responseSolicitudDTO: ResponseSolicitudDTO = await api.AddSolicitudPrimera(dataSolicitud) as ResponseSolicitudDTO;
 
 
 
-          const json: IConsesion<any> = {
-            idSolicitud: responseSolicitudDTO.idSolicitud,
-            idPersona: idUsuario,
-            idTipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-            tipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-            numeroRadicado: responseSolicitudDTO.numeroRadicado,
-            fechaSolicitud: moment(Date()).format(formatDate),
-            idEstado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
-            estado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
-            idFuente: '00000000-0000-0000-0000-000000000000',
-            idUbicacion: '00000000-0000-0000-0000-000000000000',
-            idSubred: '00000000-0000-0000-0000-000000000000',
-            idActividadActualSolicitud: '2CA42F7E-8D8B-4550-B3EB-974A302CB449',
-            actividadActualSolicitud: '00000000-0000-0000-0000-000000000000',
-            actividadSiguienteSolicitud: '00000000-0000-0000-0000-000000000000',
-            idTipodeTramite: '00000000-0000-0000-0000-000000000000',
-            tipodeTramite: values.tipotramite,
-            idUsuario: '00000000-0000-0000-0000-000000000000',
-            idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
-            idCitacionRevision: '00000000-0000-0000-0000-000000000000',
-            idFuenteAbastecimiento: '00000000-0000-0000-0000-000000000000',
-            temporal: true,
-            persona: {
-              idPersona: '00000000-0000-0000-0000-000000000000',
-              numeroResolucion: values.nroresolucion,
-              fechaResolucion: moment(values.dateresolucion).format(formatDate),
-              tipoIdentificacion: values.IDType,
-              numeroIdentificacion: values.IDNumber,
-              primerNombre: values.name,
-              segundoNombre: values.secondname,
-              primerApellido: values.surname,
-              segundoApellido: values.secondsurname,
-              telefonoContacto: values.telefono,
-              celularContacto: values.telefono2,
-              correoElectronico: values.email,
-              idTipoPersona: values.persona,
-              tipoDocumentoRazon: values.IDTypeRazon,
-              nit: values.IDNumberRazon,
-              razonSocial: values.nombreEntidad
-            },
-            FuenteAbastecimiento: {
+            const json: IConsesion<any> = {
+              idSolicitud: responseSolicitudDTO.idSolicitud,
+              idPersona: idUsuario,
+              idTipodeSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+              tipodeSolicitud: objJson.idFuente ? 'D33FBB9C-9F47-4015-BBE6-96FF43F0DDE4' : 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+              numeroRadicado: responseSolicitudDTO.numeroRadicado,
+              fechaSolicitud: moment(Date()).format(formatDate),
+              idEstado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
+              estado: '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
               idFuente: '00000000-0000-0000-0000-000000000000',
-              idTipoFuente: values.tipofuente,
-              idSubCategoriaFuente: values.subcategoria,
-              idAutoridadAmbiental: values.autoridad,
-              bocatoma_long_cx: values.longitud,
-              bocatoma_lat_cy: values.latitud,
-              nombre: values.nombrefuente,
-              descripcionFuente: values.descripcionfuente,
-              descripcionOtraFuente: values.descripcionotra,
-              tienePlanta: planta,
-              acueductosFuente: acueductojson,
-              sistemaTratamiento: sistemajson
-            }
-          };
+              idUbicacion: '00000000-0000-0000-0000-000000000000',
+              idSubred: '00000000-0000-0000-0000-000000000000',
+              idActividadActualSolicitud: '2CA42F7E-8D8B-4550-B3EB-974A302CB449',
+              actividadActualSolicitud: '00000000-0000-0000-0000-000000000000',
+              actividadSiguienteSolicitud: '00000000-0000-0000-0000-000000000000',
+              idTipodeTramite: '00000000-0000-0000-0000-000000000000',
+              tipodeTramite: values.tipotramite,
+              idUsuario: '00000000-0000-0000-0000-000000000000',
+              idUsuarioAsignado: '00000000-0000-0000-0000-000000000000',
+              idCitacionRevision: '00000000-0000-0000-0000-000000000000',
+              idFuenteAbastecimiento: objJson.idFuente ?? '00000000-0000-0000-0000-000000000000',
+              temporal: true,
+              persona: {
+                idPersona: '00000000-0000-0000-0000-000000000000',
+                numeroResolucion: values.nroresolucion,
+                fechaResolucion: moment(values.dateresolucion).format(formatDate),
+                tipoIdentificacion: values.IDType,
+                numeroIdentificacion: values.IDNumber,
+                primerNombre: values.name,
+                segundoNombre: values.secondname,
+                primerApellido: values.surname,
+                segundoApellido: values.secondsurname,
+                telefonoContacto: values.telefono,
+                celularContacto: values.telefono2,
+                correoElectronico: values.email,
+                idTipoPersona: values.persona,
+                tipoDocumentoRazon: values.IDTypeRazon,
+                nit: values.IDNumberRazon,
+                razonSocial: values.nombreEntidad
+              },
+              FuenteAbastecimiento: {
+                idFuente: objJson.idFuente ?? '00000000-0000-0000-0000-000000000000',
+                idTipoFuente: values.tipofuente,
+                idSubCategoriaFuente: values.subcategoria,
+                idAutoridadAmbiental: values.autoridad,
+                bocatoma_long_cx: values.longitud,
+                bocatoma_lat_cy: values.latitud,
+                nombre: values.nombrefuente,
+                descripcionFuente: values.descripcionfuente,
+                descripcionOtraFuente: values.descripcionotra,
+                tienePlanta: planta,
+                acueductosFuente: acueductojson,
+                sistemaTratamiento: sistemajson
+              }
+            };
 
 
 
-          const supportDocumentsEdit: any[] = [];
-          const formData = new FormData();
+            const supportDocumentsEdit: any[] = [];
+            const formData = new FormData();
 
-          const documentosiniciales: any = localStorage.getItem('documentosiniciales');
-          const documentosjson = JSON.parse(documentosiniciales);
-
-
-
-          const supportDocumentsRejected: any[] = [];
-          if (documentosjson != null) {
+            const documentosiniciales: any = localStorage.getItem('documentosiniciales');
+            const documentosjson = JSON.parse(documentosiniciales);
 
 
-            for (let index = 0; index < documentosjson.length; index++) {
-              if (documentosjson[index] != null) {
-                let cargo = false;
 
-                for (let index2 = 0; index2 < documento.length; index2++) {
+            const supportDocumentsRejected: any[] = [];
+            if (documentosjson != null) {
 
-                  if (documento[index2] != undefined) {
 
-                    if (documento[index2].iddocumento.toUpperCase() === documentosjson[index].iddocumento.toUpperCase()) {
+              for (let index = 0; index < documentosjson.length; index++) {
+                if (documentosjson[index] != null) {
+                  let cargo = false;
 
-                      cargo = true;
-                      break;
+                  for (let index2 = 0; index2 < documento.length; index2++) {
+
+                    if (documento[index2] != undefined) {
+
+                      if (documento[index2].iddocumento.toUpperCase() === documentosjson[index].iddocumento.toUpperCase()) {
+
+                        cargo = true;
+                        break;
+                      }
                     }
+
                   }
+                  if (cargo == false) {
 
+                    supportDocumentsRejected.push({
+                      idSolicitud: responseSolicitudDTO.idSolicitud,
+                      idTipoDocumentoAdjunto: documentosjson[index].id,
+                      path: `${idUsuario}/${documentosjson[index].valor}_${responseSolicitudDTO.idSolicitud}`,
+                      idUsuario: idUsuario,
+                      idDocumentoAdjunto: documentosjson[index].iddocumento,
+                      esValido: false
+                    });
+                  }
                 }
-                if (cargo == false) {
 
-                  supportDocumentsRejected.push({
+
+              }
+            }
+
+
+
+            documento.forEach((item: any, i: number) => {
+
+              if (documento[i] != undefined) {
+                const archivo = documento[i];
+                if (archivo.subida == 'local') {
+                  formData.append('file', archivo.archivo.file);
+                  formData.append('nameFile', archivo.valor + '_' + responseSolicitudDTO.idSolicitud);
+
+                  supportDocumentsEdit.push({
                     idSolicitud: responseSolicitudDTO.idSolicitud,
-                    idTipoDocumentoAdjunto: documentosjson[index].id,
-                    path: `${idUsuario}/${documentosjson[index].valor}_${responseSolicitudDTO.idSolicitud}`,
+                    idTipoDocumentoAdjunto: archivo.id,
+                    path: `${idUsuario}/${archivo.valor}_${responseSolicitudDTO.idSolicitud}`,
                     idUsuario: idUsuario,
-                    idDocumentoAdjunto: documentosjson[index].iddocumento,
-                    esValido: false
+                    idDocumentoAdjunto: archivo.iddocumento != null ? archivo.iddocumento : '00000000-0000-0000-0000-000000000000',
+                    esValido: true
                   });
                 }
               }
+            });
+            if (values?.cargarresolucion) {
+              formData.append('file', values.cargarresolucion.file);
+              formData.append('nameFile', 'Resolucion_renovacion' + '_' + responseSolicitudDTO.idSolicitud);
 
-
+              supportDocumentsEdit.push({
+                idSolicitud: responseSolicitudDTO.idSolicitud,
+                idTipoDocumentoAdjunto: '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0',
+                path: `${idUsuario}/Resolucion_renovacion_${responseSolicitudDTO.idSolicitud}`,
+                idUsuario: idUsuario,
+                idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+                esValido: true
+              });
             }
-          }
+
+            formData.append('containerName', 'aguahumanos');
+            formData.append('oid', idUsuario);
+
+            await api.uploadFiles(formData);
+            await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
 
 
-          documento.forEach((item: any, i: number) => {
-
-            if (documento[i] != undefined) {
-              const archivo = documento[i];
-              if (archivo.subida == 'local') {
-                formData.append('file', archivo.archivo.file);
-                formData.append('nameFile', archivo.valor + '_' + responseSolicitudDTO.idSolicitud);
-
-                supportDocumentsEdit.push({
-                  idSolicitud: responseSolicitudDTO.idSolicitud,
-                  idTipoDocumentoAdjunto: archivo.id,
-                  path: `${idUsuario}/${archivo.valor}_${responseSolicitudDTO.idSolicitud}`,
-                  idUsuario: idUsuario,
-                  idDocumentoAdjunto: archivo.iddocumento != null ? archivo.iddocumento : '00000000-0000-0000-0000-000000000000',
-                  esValido: true
-                });
-              }
+            if (supportDocumentsRejected.length > 0) {
+              await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
             }
-          });
-          if (values?.cargarresolucion) {
-            formData.append('file', values.cargarresolucion.file);
-            formData.append('nameFile', 'Resolucion_renovacion' + '_' + responseSolicitudDTO.idSolicitud);
-
-            supportDocumentsEdit.push({
+            let observaciones: any = [{
+              idObservacion: '00000000-0000-0000-0000-000000000000',
               idSolicitud: responseSolicitudDTO.idSolicitud,
-              idTipoDocumentoAdjunto: '9EDCE821-F1D9-4F9D-8764-A436BDFE5FF0',
-              path: `${idUsuario}/Resolucion_renovacion_${responseSolicitudDTO.idSolicitud}`,
-              idUsuario: idUsuario,
-              idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
-              esValido: true
+              idSubred: null,
+              observacion: objJson.idsolicitud === undefined ? 'radicación solicitud' : 'Subsanacion de Solicitud',
+              fechaObservacion: null
+            }];
+
+            const jsonobservacion: IObservaciones<any> = {
+
+              idSolicitud: responseSolicitudDTO.idSolicitud,
+              idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
+              observaciones: observaciones,
+
+              citacion: {
+                idCitacion: '00000000-0000-0000-0000-000000000000',
+                fechaCitacion: '',
+                observacion: 'No_aplica',
+                fechaRegistro: '',
+                idSolicitud: responseSolicitudDTO.idSolicitud,
+                idUsuario: '00000000-0000-0000-0000-000000000000'
+              }
+
+            };
+
+            await api.AddObservaciones(jsonobservacion, '1');
+
+
+            await api.AddSolicitudConsecion(json);
+
+
+            if (objJson.idsolicitud === undefined) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Solicitud Creada',
+                text: `Se ha creado la Solicitud exitosamente con número de radicado ${consecutivoventanilla.consecutivo}`
+              });
+            }
+            else {
+              Swal.fire({
+                icon: 'success',
+                title: 'Solicitud Subsanada',
+                text: `Se ha Subsanado la Solicitud Exitosamente`
+              });
+            }
+
+
+            history.push('/tramites-servicios-aguas');
+
+            localStorage.removeItem('register');
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos Incorrectos',
+              text: 'No debe de existir ningun documento por subsanar'
             });
           }
-
-          formData.append('containerName', 'aguahumanos');
-          formData.append('oid', idUsuario);
-
-          await api.uploadFiles(formData);
-          await api.UpdateSupportDocumentsAguas(supportDocumentsEdit);
-
-
-          if (supportDocumentsRejected.length > 0) {
-            await api.UpdateSupportDocumentsAguas(supportDocumentsRejected);
-          }
-          let observaciones: any = [{
-            idObservacion: '00000000-0000-0000-0000-000000000000',
-            idSolicitud: responseSolicitudDTO.idSolicitud,
-            idSubred: null,
-            observacion: 'radicación solicitud',
-            fechaObservacion: null
-          }];
-
-          const jsonobservacion: IObservaciones<any> = {
-
-            idSolicitud: responseSolicitudDTO.idSolicitud,
-            idTipoSolicitud: 'B1BA9304-C16B-43F0-9AFA-E92D7B7F3DF9',
-            observaciones: observaciones,
-
-            citacion: {
-              idCitacion: '00000000-0000-0000-0000-000000000000',
-              fechaCitacion: '',
-              observacion: 'No_aplica',
-              fechaRegistro: '',
-              idSolicitud: responseSolicitudDTO.idSolicitud,
-              idUsuario: '00000000-0000-0000-0000-000000000000'
-            }
-
-          };
-
-          await api.AddObservaciones(jsonobservacion, '0');
-
-
-          await api.AddSolicitudConsecion(json);
-
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Solicitud Creada',
-            text: `Se ha creado la Solicitud exitosamente con número de radicado ${consecutivoventanilla.consecutivo}`
-          });
-
-          history.push('/tramites-servicios-aguas');
-
-          localStorage.removeItem('register');
         } else {
           Swal.fire({
             icon: 'error',
@@ -396,16 +428,20 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
   const onSubmitFailed = () => setStatus('error');
 
   const addacueducto = (value: any) => {
+
     setacueducto(value);
   };
 
   const addinfo = (value: any) => {
+
     setinformacion(value);
   };
 
-  const adddocumento = (value: any) => {
+  const adddocumento = (value: any, reject: number) => {
 
+    setrechazados(reject);
     let va = 0;
+
     setdocumento(value);
     for (let index = 0; index < value.length; index++) {
       if (value[index] != undefined) {
@@ -513,11 +549,11 @@ const CrearSolicitud: React.FC<any> = (props: any) => {
                       </div>
                     </div>
                     <div className='row primeros_campos'>
-                      <DatosSolicitante form={form} obj={null} tipo={'coordinador'} habilitar={true} />
+                      <DatosSolicitante form={form} obj={objJson} tipo={'coordinador'} habilitar={true} />
                     </div>
                     <div className='row mt-5 ml-2 '>
                       <div className='col-lg-12 col-sm-12 col-md-12 contenedor_ubi'>
-                        <UbicacionPersona form={form} obj={null} tipo={null} vista={'servicios'} />
+                        <UbicacionPersona form={form} obj={objJson} tipo={null} vista={'servicios'} />
                       </div>
                     </div>
                     <div className='row mt-5 justify-content-md-center'>

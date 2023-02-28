@@ -121,7 +121,7 @@ export const VisitaRu = () => {
                     <div className='panel-search'>
                       <p>Número de radicado</p>
                       <div className='form-group gov-co-form-group'>
-                        <Form.Item initialValue={objJson?.numeroradicado} name='numeroRadicado'>
+                        <Form.Item initialValue={objJson?.consecutivo} name='numeroRadicado'>
                           <Input
                             type='text'
                             className='form-control gov-co-form-control'

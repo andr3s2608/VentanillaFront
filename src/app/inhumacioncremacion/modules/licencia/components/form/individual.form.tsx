@@ -161,11 +161,11 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
   );
 
   useEffect(() => {
+
+    localStorage.removeItem('register');
     getListas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    return () => {
-      localStorage.removeItem('register');
-    };
+
   }, []);
 
 

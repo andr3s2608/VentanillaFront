@@ -106,6 +106,17 @@ export const RevisarSv = () => {
       )
 
     }
+    if (values.observacionesSubsanacion != undefined && values.observacionesSubsanacion != '') {
+      observaciones.push(
+        {
+          idObservacion: '00000000-0000-0000-0000-000000000000',
+          idSolicitud: objJson.idsolicitud,
+          idSubred: objJson.idSubred,
+          observacion: values.observacionesSubsanacion,
+          fechaObservacion: null
+        }
+      )
+    }
     let subsanacion = false;
     let tipo = 'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6';
     if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
@@ -116,7 +127,7 @@ export const RevisarSv = () => {
           idSolicitud: item.idSolicitud,
           idDocumentoSoporte: item.idDocumentoSoporte,
           path: item.path,
-          observaciones: 'default',
+          observaciones: values.observacionesSubsanacion + '',
           estado_Documento: item.estadoDocumento,
           tipoSeguimiento: item.tipoSeguimiento
         });
@@ -127,16 +138,6 @@ export const RevisarSv = () => {
       });
 
       if (subsanacion) {
-
-        observaciones.push(
-          {
-            idObservacion: '00000000-0000-0000-0000-000000000000',
-            idSolicitud: objJson.idsolicitud,
-            idSubred: objJson.idSubred,
-            observacion: values.observacionesSubsanacion,
-            fechaObservacion: null
-          }
-        )
 
         tipo = '9124A97B-C2BD-46A0-A8B3-1AC702A06C82';
         //await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '96D00032-4B60-4027-AFEA-0CC7115220B4', '9124A97B-C2BD-46A0-A8B3-1AC702A06C82');
@@ -237,7 +238,7 @@ export const RevisarSv = () => {
       icon: 'success',
 
       title: 'Citación Agendada',
-      text: `Se ha agendado la citación para el solicitud con número de radicado:${objJson.numeroradicado}
+      text: `Se ha agendado la citación para la solicitud con el Número de Radicación:${objJson.consecutivo}
        para el dia ${moment(values.date).format(formatDate)}`
     });
 

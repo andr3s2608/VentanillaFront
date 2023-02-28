@@ -7,11 +7,8 @@ export const EditAguas = () => {
 
     return formatObjJson(obj);
   } else {
-    return {
-      isLugar: () => {
-        return 'Dentro de Bogotá';
-      }
-    };
+    return [];
+
   }
 };
 
@@ -119,6 +116,7 @@ const formatObjJson = (obj: any) => {
   }
 
   jsonDt = {
+    consecutivo: obj.consecutivo,
     idsolicitud: obj.idSolicitud,
     numeroradicado: obj.numeroRadicado,
     fechaSolicitud: obj.fechaSolicitud,

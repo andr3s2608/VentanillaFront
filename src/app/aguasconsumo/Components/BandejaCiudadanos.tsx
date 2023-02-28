@@ -100,10 +100,15 @@ export const BandejaCiudadanos = (props: IDataSource) => {
     }
   }
 
-  const onClickValidarInformacion = async (datos: any) => {
+  const onClickValidarInformacion = async (datos: any, tipo: any) => {
     const data = await api.getSolicitudbyidAguas(datos.idSolicitud);
     localStorage.setItem('register', JSON.stringify(data));
-    history.push('/tramites-servicios-aguas/Revision/primera-vez');
+    if (tipo == 'tramite') {
+      history.push('/tramites-servicios-aguas/Revision/Crear-Solicitud');
+    } else {
+      history.push('/tramites-servicios-aguas/Revision/visita-revision');
+    }
+
   };
 
   const onClickVisualizarPDF = async (row: any) => {
@@ -332,17 +337,48 @@ export const BandejaCiudadanos = (props: IDataSource) => {
       title: 'Validar Tramite',
       key: 'Acciones',
       render: (_: any, row: any, index: any) => {
-        return (
-          <Button
-            type='primary'
-            key={`vali`}
-            onClick={() => onClickValidarInformacion(row)}
-            style={{ marginRight: '8px' }}
-            icon={<CheckOutlined />}
-          >
-            Revisar Solicitud
-          </Button>
-        )
+
+        if (
+          row.estado != 'Aprobada' &&
+          row.estado != 'Cerrada' &&
+          row.estado != 'Anulada' &&
+          row.tipodeSolicitud != 'Primer Registro' &&
+          row.tipodeSolicitud != 'Proceso de Citacion' &&
+          row.tipodeSolicitud != 'Gestion Validador' &&
+          row.tipodeSolicitud != 'Gestion Coordinador' &&
+          row.tipodeSolicitud != 'Gestion Subdirector'
+        ) {
+          return (
+            <>
+              {row.tipodeSolicitud === 'Subsanacion' && (
+                <Button
+                  type='primary'
+                  key={`vali`}
+                  onClick={() => onClickValidarInformacion(row, 'tramite')}
+                  style={{ marginRight: '8px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Subsanar Solicitud
+                </Button>
+              )}
+              <br></br>
+              {row.tipodeSolicitud == 'Visita de Revision' && (
+                <Button
+                  type='primary'
+                  key={`vali`}
+                  onClick={() => onClickValidarInformacion(row, 'visita')}
+                  style={{ marginRight: '8px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Visualizar Revision
+                </Button>
+              )}
+            </>
+          )
+        }
+
+
+
       }
     }
   ];

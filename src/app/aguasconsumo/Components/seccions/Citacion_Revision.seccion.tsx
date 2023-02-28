@@ -61,7 +61,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               <p className='text'>
                 <span className='required'>*</span> Fecha de citación
               </p>
-              <Form.Item initialValue={fecha} name='date' rules={[{ required: !modificar }]}>
+              <Form.Item initialValue={modificar ? fecha : null} name='date' rules={[{ required: !modificar }]}>
                 <DatepickerComponent
                   picker='date'
                   dateDisabledType='after'
@@ -114,7 +114,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
             </p>
 
             <div className='form-group gov-co-form-group'>
-              <Form.Item initialValue={observacion} name='observationsCitacion' rules={[{ required: false }]}>
+              <Form.Item initialValue={modificar ? observacion : ''} name='observationsCitacion' rules={[{ required: false }]}>
                 <Input.TextArea
                   disabled={modificar}
                   defaultValue={observacion}

@@ -370,6 +370,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
           <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <Button
               type='primary'
+              hidden={!enableField}
               style={{
                 width: '395px', display: stateDisplayButton, marginTop: '30px',
                 marginLeft: '-20px'
