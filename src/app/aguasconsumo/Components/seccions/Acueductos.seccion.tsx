@@ -560,389 +560,394 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
   if (habilitar) {
     return (
       <>
-        <section style={{ width: '100%' }}>
-          <div className='container-fluid'>
-            <div className='form-row' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-md-6'>
-                <label className='text'>
-                  <span className='required'>* </span> Departamento
-                </label>
-                <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
-                  <SelectComponent options={l_departamentos} optionPropkey='idDepartamento' optionPropLabel='descripcion' />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6'>
-                <label className='text'>
-                  <span className='required'>* </span> Localidad o vereda
-                </label>
-                <Form.Item name='localidad' rules={[{ required: false }]}>
-                  <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
-                </Form.Item>
-              </div>
+
+        <div className='container-fluid'>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <label className='text'>
+                <span className='required'>* </span> Departamento
+              </label>
+              <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
+                <SelectComponent options={l_departamentos} optionPropkey='idDepartamento' optionPropLabel='descripcion' />
+              </Form.Item>
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Municipio
-                </label>
-                <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_municipios}
-                    optionPropkey='idMunicipio'
-                    optionPropLabel='descripcion'
-                    value={idBogotac}
-                    searchValue={idBogotac}
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-
-                <label className='text'>
-                  <span className='required'>* </span> Coordenadas de captación Latitud
-                </label>
-                <Form.Item label='' name='tipoCoordenadaLatitud' >
-                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
-                    <Radio value='decimal'>Decimal</Radio>
-                    <Radio value='sexagesimal'>Sexagesimal</Radio>
-                  </Radio.Group>
-                </Form.Item>
-
-                {latituddec ?
-                  (<Form.Item name='latituduso'>
-                    <Input
-                      name='latituduso'
-                      className='form-control gov-co-form-control'
-                      maxLength={10}
-                      onKeyPress={(event) => {
-                        if (!/[0-9-.]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                    />
-                  </Form.Item>) :
-                  <Form.Item name='latituduso'>
-                    <Input
-                      name='latituduso'
-                      className='form-control gov-co-form-control'
-                      maxLength={13}
-                      onChange={onChangeFormat}
-                      onKeyPress={(event) => {
-                        if (!/[0-9'"°NS]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                    />
-                  </Form.Item>}
-
-
-
-              </div>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <label className='text'>
+                <span className='required'>* </span> Localidad o vereda
+              </label>
+              <Form.Item name='localidad' rules={[{ required: false }]}>
+                <SelectComponent options={l_localidades} optionPropkey='idLocalidad' optionPropLabel='descripcion' />
+              </Form.Item>
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Coordenadas de captación  Longitud
-                </label>
-                <Form.Item label='' name='tipoCoordenadaLongitud' >
-                  <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
-                    <Radio value='decimal'>Decimal</Radio>
-                    <Radio value='sexagesimal'>Sexagesimal</Radio>
-                  </Radio.Group>
-                </Form.Item>
-                {longituddec ?
-                  (<Form.Item name='longituduso'>
-                    <Input
-                      className='form-control gov-co-form-control'
-                      maxLength={10}
-                      onKeyPress={(event) => {
-                        if (!/[0-9-.]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                    />
-                  </Form.Item>) :
-                  <Form.Item name='longituduso'>
-                    <Input
-                      className='form-control gov-co-form-control'
-                      maxLength={13}
-
-                      onChange={onChangeFormatLongitud}
-                      onKeyPress={(event) => {
-                        if (!/[0-9'"°EO]/.test(event.key)) {
-                          event.preventDefault();
-                        }
-                      }}
-                    />
-                  </Form.Item>}
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Uso de la fuente
-                </label>
-                <Form.Item name='usofuente' rules={[{ required: false }]}>
-                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
-                </Form.Item>
-              </div>
+          </div>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <label className='text'>
+                <span className='required'>* </span> Municipio
+              </label>
+              <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  value={idBogotac}
+                  searchValue={idBogotac}
+                />
+              </Form.Item>
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Descripción de otro uso
-                </label>
-                <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+
+              <label className='text'>
+                <span className='required'>* </span> Coordenadas de captación Latitud
+              </label>
+              <Form.Item label='' name='tipoCoordenadaLatitud' >
+                <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLatitud}>
+                  <Radio value='decimal'>Decimal</Radio>
+                  <Radio value='sexagesimal'>Sexagesimal</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {latituddec ?
+                (<Form.Item name='latituduso'>
                   <Input
-                    type='text'
+                    name='latituduso'
                     className='form-control gov-co-form-control'
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Caudal total(L/S)
-                </label>
-                <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
-                  <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    maxLength={4}
+                    maxLength={10}
                     onKeyPress={(event) => {
-
-                      const caudalprueba = props.form.getFieldValue('caudal');
-
-                      let caudal: string = ValorCaudal(event.key);
-                      let count = 0;
-                      let posicion = -1;
-                      for (let index = 0; index < caudal.length; index++) {
-                        if (caudal.substring(index, index + 1) == ',') {
-                          if (posicion == -1) {
-                            posicion = index;
-                          }
-                          count++;
-                        }
-
-                      }
-
-                      if (count == 2 && event.key == ',') {
-
-                        event.preventDefault();
-                      }
-                      caudal = caudal.substring(0, caudal.length - 1)
-
-                      if (posicion != -1 &&
-                        caudal.substring(posicion, caudal.length).length > 2) {
-                        event.preventDefault();
-                      }
-
-
-                      if (!/[0-9,]/.test(event.key)) {
+                      if (!/[0-9-.]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
-
                   />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              {tipoSolicitud === 'primera-vez' && (
-                <>
-                  <div className='col-lg-10 col-md-10 col-sm-12'>
+                </Form.Item>) :
+                <Form.Item name='latituduso'>
+                  <Input
+                    name='latituduso'
+                    className='form-control gov-co-form-control'
+                    maxLength={13}
+                    onChange={onChangeFormat}
+                    onKeyPress={(event) => {
+                      if (!/[0-9'"°NS]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                  />
+                </Form.Item>}
 
-                    <Button
-                      className='fa-solid fa-circle-plus'
-                      style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
-                      type='primary'
-                      htmlType='button'
-                      onClick={() => {
-                        insertarAcueducto();
-                      }}
-                    >
 
-                      Adicionar
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
-            <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-12 col-md-12 col-sm-12'>
-                <Table
-                  id='tableGen'
-                  dataSource={acueductotabla}
-                  columns={structureColumns}
-                  pagination={{ pageSize: Paginas }}
-                  className='table_info'
-                />
-              </div>
+
             </div>
           </div>
-        </section>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <label className='text'>
+                <span className='required'>* </span> Coordenadas de captación  Longitud
+              </label>
+              <Form.Item label='' name='tipoCoordenadaLongitud' >
+                <Radio.Group defaultValue={'decimal'} onChange={onChangeTipoCoordenadaLongitud}>
+                  <Radio value='decimal'>Decimal</Radio>
+                  <Radio value='sexagesimal'>Sexagesimal</Radio>
+                </Radio.Group>
+              </Form.Item>
+              {longituddec ?
+                (<Form.Item name='longituduso'>
+                  <Input
+                    className='form-control gov-co-form-control'
+                    maxLength={10}
+                    onKeyPress={(event) => {
+                      if (!/[0-9-.]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                  />
+                </Form.Item>) :
+                <Form.Item name='longituduso'>
+                  <Input
+                    className='form-control gov-co-form-control'
+                    maxLength={13}
+
+                    onChange={onChangeFormatLongitud}
+                    onKeyPress={(event) => {
+                      if (!/[0-9'"°EO]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
+                  />
+                </Form.Item>}
+            </div>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <label className='text'>
+                <span className='required'>* </span> Uso de la fuente
+              </label>
+              <Form.Item name='usofuente' rules={[{ required: false }]}>
+                <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <label className='text'>
+                <span className='required'>* </span> Descripción de otro uso
+              </label>
+              <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
+                <Input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                />
+              </Form.Item>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Caudal total(L/S)
+              </label>
+              <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
+                <Input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  maxLength={4}
+                  onKeyPress={(event) => {
+
+                    const caudalprueba = props.form.getFieldValue('caudal');
+
+                    let caudal: string = ValorCaudal(event.key);
+                    let count = 0;
+                    let posicion = -1;
+                    for (let index = 0; index < caudal.length; index++) {
+                      if (caudal.substring(index, index + 1) == ',') {
+                        if (posicion == -1) {
+                          posicion = index;
+                        }
+                        count++;
+                      }
+
+                    }
+
+                    if (count == 2 && event.key == ',') {
+
+                      event.preventDefault();
+                    }
+                    caudal = caudal.substring(0, caudal.length - 1)
+
+                    if (posicion != -1 &&
+                      caudal.substring(posicion, caudal.length).length > 2) {
+                      event.preventDefault();
+                    }
+
+
+                    if (!/[0-9,]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            {tipoSolicitud === 'primera-vez' && (
+              <>
+                <div className='col-lg-6 col-md-6 col-sm-12'>
+
+                  <Button
+                    className='fa-solid fa-circle-plus'
+                    style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
+                    type='primary'
+                    htmlType='button'
+                    onClick={() => {
+                      insertarAcueducto();
+                    }}
+                  >
+
+                    Adicionar
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className='row'>
+            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+              <Table
+                scroll={{ x: 500 }}
+                id='tableGen'
+                dataSource={acueductotabla}
+                columns={structureColumns}
+                pagination={{ pageSize: Paginas }}
+                className='table_info'
+              />
+            </div>
+          </div>
+
+        </div>
+
       </>
     );
   } else {
     return (
       <>
-        <section style={{ width: '100%' }}>
-          <div className='container-fluid'>
-            <div className='form-row' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-md-6'>
-                <label className='text'>vereda
-                  <span className='required'>* </span> Departamento
-                </label>
-                <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_departamentos}
-                    optionPropkey='idDepartamento'
-                    optionPropLabel='descripcion'
-                    disabled={true}
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6'>
-                <label className='text'>
-                  <span className='required'>* </span> Localidad o vereda
-                </label>
-                <Form.Item name='localidad' rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_localidades}
-                    optionPropkey='idLocalidad'
-                    optionPropLabel='descripcion'
-                    disabled={true}
-                  />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Municipio
-                </label>
-                <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
-                  <SelectComponent
-                    options={l_municipios}
-                    optionPropkey='idMunicipio'
-                    optionPropLabel='descripcion'
-                    value={idBogotac}
-                    disabled={true}
-                    searchValue={idBogotac}
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Coordenadas de captación Latitud
-                </label>
-                <Form.Item name='latituduso' rules={[{ required: false }]}>
-                  <Input
 
-                    title='El formato no es el adecuado'
-                    className='form-control'
-                    maxLength={13}
-                    disabled={true}
-                    onChange={onChangeFormat}
-                  />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Coordenadas de captación Longitud
-                </label>
-
-                <Form.Item name='longituduso' rules={[{ required: false }]}>
-                  <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    disabled={true}
-                    maxLength={10}
-
-                    onKeyPress={(event) => {
-                      if (!/[0-9'"° -]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Uso de la fuente
-                </label>
-                <Form.Item name='usofuente' rules={[{ required: false }]}>
-                  <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' disabled={true} />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Descripción de otro uso
-                </label>
-                <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
-                  <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    disabled={true}
-                  />
-                </Form.Item>
-              </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
-                <label className='text'>
-                  <span className='required'>* </span> Caudal total(L/S)
-                </label>
-                <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
-                  <Input
-                    type='text'
-                    className='form-control gov-co-form-control'
-                    disabled={true}
-                    onKeyPress={(event) => {
-                      if (!/[0-9.]/.test(event.key)) {
-                        event.preventDefault();
-                      }
-                    }}
-
-                  />
-                </Form.Item>
-              </div>
-            </div>
-            <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              {tipoSolicitud === 'primera-vez' && (
-                <>
-                  <div className='col-lg-8 col-md-8 col-sm-12'>
-                    <a href='' style={{ textDecoration: 'none' }}>
-                      <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-                    </a>
-                    <Button
-                      className='fa-solid fa-circle-plus'
-                      disabled={true}
-                      style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
-                      type='primary'
-                      htmlType='button'
-                      onClick={() => {
-                        insertarAcueducto();
-                      }}
-                    >
-                      Enviar
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
-            <div className='form-row mt-3 ' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-12 col-md-12 col-sm-12'>
-                <Table
-                  id='tableGen'
-                  dataSource={acueductotabla}
-                  columns={structureColumns}
-                  pagination={{ pageSize: Paginas }}
-                  className='table_info'
+        <div className='container-fluid'>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>vereda
+                <span className='required'>* </span> Departamento
+              </label>
+              <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_departamentos}
+                  optionPropkey='idDepartamento'
+                  optionPropLabel='descripcion'
+                  disabled={true}
                 />
-              </div>
+              </Form.Item>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Localidad o vereda
+              </label>
+              <Form.Item name='localidad' rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_localidades}
+                  optionPropkey='idLocalidad'
+                  optionPropLabel='descripcion'
+                  disabled={true}
+                />
+              </Form.Item>
             </div>
           </div>
-        </section>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Municipio
+              </label>
+              <Form.Item name='municipio' initialValue={idBogotac} rules={[{ required: false }]}>
+                <SelectComponent
+                  options={l_municipios}
+                  optionPropkey='idMunicipio'
+                  optionPropLabel='descripcion'
+                  value={idBogotac}
+                  disabled={true}
+                  searchValue={idBogotac}
+                />
+              </Form.Item>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Coordenadas de captación Latitud
+              </label>
+              <Form.Item name='latituduso' rules={[{ required: false }]}>
+                <Input
+
+                  title='El formato no es el adecuado'
+                  className='form-control'
+                  maxLength={13}
+                  disabled={true}
+                  onChange={onChangeFormat}
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Coordenadas de captación Longitud
+              </label>
+
+              <Form.Item name='longituduso' rules={[{ required: false }]}>
+                <Input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={true}
+                  maxLength={10}
+
+                  onKeyPress={(event) => {
+                    if (!/[0-9'"° -]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+
+                />
+              </Form.Item>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Uso de la fuente
+              </label>
+              <Form.Item name='usofuente' rules={[{ required: false }]}>
+                <SelectComponent options={l_usofuente} optionPropkey='idUsoFuente' optionPropLabel='nombre' disabled={true} />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Descripción de otro uso
+              </label>
+              <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
+                <Input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={true}
+                />
+              </Form.Item>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-12'>
+              <label className='text'>
+                <span className='required'>* </span> Caudal total(L/S)
+              </label>
+              <Form.Item name='caudal' initialValue={''} rules={[{ required: false }]}>
+                <Input
+                  type='text'
+                  className='form-control gov-co-form-control'
+                  disabled={true}
+                  onKeyPress={(event) => {
+                    if (!/[0-9.]/.test(event.key)) {
+                      event.preventDefault();
+                    }
+                  }}
+
+                />
+              </Form.Item>
+            </div>
+          </div>
+          <div className='row mt-5' style={{ marginLeft: '-16px' }}>
+            {tipoSolicitud === 'primera-vez' && (
+              <>
+                <div className='col-lg-6 col-md-6 col-sm-12'>
+                  <a href='' style={{ textDecoration: 'none' }}>
+                    <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
+                  </a>
+                  <Button
+                    className='fa-solid fa-circle-plus'
+                    disabled={true}
+                    style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}
+                    type='primary'
+                    htmlType='button'
+                    onClick={() => {
+                      insertarAcueducto();
+                    }}
+                  >
+                    Enviar
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+          <div className='row'>
+            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+              <Table
+                scroll={{ x: 500 }}
+                id='tableGen'
+                dataSource={acueductotabla}
+                columns={structureColumns}
+                pagination={{ pageSize: Paginas }}
+                className='table_info'
+              />
+            </div>
+
+          </div>
+        </div>
+
       </>
     );
   }

@@ -192,7 +192,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </Form.Item>
             </div>
             <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-              <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+              <label htmlFor='' className='mt-4 text' >
                 Num
               </label>
               <Form.Item className='' label='' name='Num1' rules={[{ max: 3 }]}>
@@ -217,12 +217,12 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 />
               </Form.Item>
             </div>
-            <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+            <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' >
               <label htmlFor='' className='mt-4 text'>Letra</label>
               <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
                 <SelectComponent
                   disabled={enableField}
-
+                  style={{ marginLeft: '-30px' }}
                   options={letras}
                   optionPropkey='key'
                   optionPropLabel='key'
@@ -240,6 +240,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </label>
               <Form.Item label='' name='Bis' rules={[{ max: 3 }]}>
                 <SelectComponent
+                  style={{ marginLeft: '-30px' }}
                   disabled={enableField}
                   className='form-control'
                   options={[
@@ -255,7 +256,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </Form.Item>
             </div>
             <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-              <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+              <label htmlFor='' className='mt-4 text' >
                 Card
               </label>
               <Form.Item label='' name='card1' rules={[{ max: 4 }]}>
@@ -272,10 +273,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 />
               </Form.Item>
             </div>
-            <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+            <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' >
               <label htmlFor='' className='mt-4 text'>Num</label>
               <Form.Item label='' name='Num2' rules={[{ max: 3 }]}>
                 <Input
+                  style={{ marginLeft: '-30px' }}
                   disabled={enableField}
                   className='form-control'
                   allowClear
@@ -304,7 +306,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <Form.Item className='' label='' name='letra1' rules={[{ max: 1 }]}>
                 <SelectComponent
                   disabled={enableField}
-
+                  style={{ marginLeft: '-30px' }}
                   options={letras}
                   optionPropkey='key'
                   optionPropLabel='key'
@@ -315,7 +317,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               </Form.Item>
             </div>
             <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
-              <label htmlFor='' className='mt-4 text' style={{ marginLeft: '-30px' }}>
+              <label htmlFor='' className='mt-4 text' >
                 Placa
               </label>
               <Form.Item label='' name='placa' rules={[{ max: 2 }]}>
@@ -342,10 +344,11 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 />
               </Form.Item>
             </div>
-            <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' style={{ marginLeft: '-65px' }}>
+            <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4' >
               <label htmlFor='' className='mt-4 text'>Card</label>
               <Form.Item label='' name='card2'>
                 <SelectComponent
+                  style={{ marginLeft: '-30px' }}
                   disabled={enableField}
                   options={direcionOrienta}
                   optionPropkey='key'
@@ -361,10 +364,10 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
         </>)}
 
         <div className="row mt-5">
-          <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div className="col-sm-12 col-md-8 col-lg-8 col-xl-8">
             <label className='text'> Dirección Completa </label>
-            <Form.Item className='my-0 py-0' name='direccionCompletaUbicacion'>
-              <Input style={{ width: '395px' }} type='text' disabled={true} />
+            <Form.Item name='direccionCompletaUbicacion'>
+              <Input type='text' disabled={true} style={{ marginLeft: '-30px' }} />
             </Form.Item>
           </div>
           <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -372,7 +375,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               type='primary'
               hidden={!enableField}
               style={{
-                width: '395px', display: stateDisplayButton, marginTop: '30px',
+                display: stateDisplayButton, marginTop: '30px',
                 marginLeft: '-20px'
               }}
               disabled={!esadmin}
@@ -399,7 +402,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <SelectComponent
 
                 disabled={enableField}
-                style={{ width: '395px' }}
+                style={{
+                  marginLeft: '-30px'
+                }}
                 options={listZonas}
                 optionPropkey='nombre'
                 optionPropLabel='nombre'
@@ -413,8 +418,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
                 className='form-control'
                 disabled={enableField}
                 style={{
-                  width: '395px',
-                  marginLeft: '-20px'
+                  marginLeft: '-30px'
                 }}
                 options={listLocalidades}
                 optionPropkey='nombre'
@@ -429,7 +433,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
             <Form.Item label='' name='upzUbicacion' initialValue={'SELECCIONAR'} rules={[{ required: true }]}>
               <SelectComponent
                 disabled={enableField}
-                style={{ width: '395px' }}
+                style={{
+                  marginLeft: '-30px'
+                }}
                 options={listUPZs}
                 optionPropkey='nom_upz'
                 optionPropLabel='nom_upz'
@@ -442,8 +448,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
               <SelectComponent
                 disabled={enableField}
                 style={{
-                  width: '395px',
-                  marginLeft: '-20px'
+                  marginLeft: '-30px'
                 }}
                 options={listBarrios}
                 optionPropkey='nombre_barrio'

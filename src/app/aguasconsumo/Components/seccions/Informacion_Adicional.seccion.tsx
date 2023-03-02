@@ -407,33 +407,32 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
               </div>
             </div>
             <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              {tipoSolicitud === 'primera-vez' && (
-                <>
-                  <div className='col-lg-12 col-md-12 col-sm-12'>
-                    <a href='' style={{ textDecoration: 'none' }}>
-                      <i className='fa-solid fa-circle-plus' style={{ color: '#0FD7E0', fontSize: '30px', float: 'right' }}></i>
-                    </a>
-                  </div>
+              <div className='col-md-4 col-lg-4 col-sm-12'>
+                {tipoSolicitud === 'primera-vez' && (
+                  <>
 
-                  <Button
-                    className='fa-solid fa-circle-plus'
-                    style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
-                    type='primary'
-                    htmlType='button'
-                    onClick={() => {
-                      validacionCaudal();
 
-                    }}
-                  >
-                    Adicionar Caudal <span><i className="fa-solid fa-plus ml-3"></i></span>
+                    <Button
+                      className='fa-solid fa-circle-plus'
+                      style={{ color: '#fff', letterSpacing: '2px', float: 'right', textTransform: 'lowercase' }}
+                      type='primary'
+                      htmlType='button'
+                      onClick={() => {
+                        validacionCaudal();
 
-                  </Button>
-                </>
-              )}
+                      }}
+                    >
+                      Adicionar Caudal <span><i className="fa-solid fa-plus ml-3"></i></span>
+
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='row' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                 <Table
+                  scroll={{ x: 500 }}
                   id='tableGen'
                   dataSource={sistema}
                   columns={structureColumns}
@@ -733,9 +732,10 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 </>
               )}
             </div>
-            <div className='form-row mt-3' style={{ marginLeft: '-16px' }}>
-              <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='row' style={{ marginLeft: '-16px' }}>
+              <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                 <Table
+                  scroll={{ x: 500 }}
                   id='tableGen'
                   dataSource={sistema}
                   columns={structureColumns}

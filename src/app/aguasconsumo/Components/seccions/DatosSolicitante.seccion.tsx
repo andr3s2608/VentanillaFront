@@ -291,13 +291,13 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
               <div className='col-lg-6'>
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de Solicitantes
+                  <span className='required'>*</span> Tipo de Solicitante
                 </p>
                 <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
                     options={listTipoSolicitante} onChange={Onchangetipo} defaultValue={obj?.idTipoPersona ?? 'natural'}
-                    optionPropkey='key' optionPropLabel='value' disabled={modificar}
-                    style={{ width: '360px', marginLeft: '11px' }}
+                    optionPropkey='key' optionPropLabel='value' className='mr-5 option' disabled={modificar}
+
                   />
                 </Form.Item>
               </div>
@@ -396,7 +396,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   name='IDType'
                 >
                   <SelectComponent
-                    style={{ width: '360px' }} options={l_tipos_documento}
+                    options={l_tipos_documento}
                     onChange={cambiodocumento} optionPropkey='id'
                     optionPropLabel='descripcion' disabled={modificar}
                   />
@@ -552,7 +552,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item initialValue={obj?.correoElectronico} name='email' rules={[{ required: true }]}>
                   <Input
-                    placeholder='CORREO ELECTRÓNICO' style={{ width: '365px' }}
+                    placeholder='CORREO ELECTRÓNICO'
                     maxLength={50} disabled={modificar} type='text'
                     className='form-control gov-co-form-control'
                     onKeyPress={(event) => {
@@ -580,12 +580,12 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </p>
                 <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
-                    style={{ width: '296px' }}
                     options={listTipoSolicitante}
                     onChange={Onchangetipo}
                     defaultValue={obj?.idTipoPersona ?? 'natural'}
                     optionPropkey='key'
                     optionPropLabel='value'
+                    className='mr-5 option'
                     disabled={true}
                   />
                 </Form.Item>
@@ -860,7 +860,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 <Form.Item initialValue={obj?.correoElectronico} name='email' required={true}>
                   <Input
                     placeholder='CORREO ELECTRÓNICO'
-                    style={{ width: '296px' }}
+
                     maxLength={50}
                     disabled={true}
                     type='text'

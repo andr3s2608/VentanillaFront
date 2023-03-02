@@ -714,21 +714,20 @@ export const RevisarSg = () => {
                                 </h5>
                               </div>
                               <div id='collapse-11' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='col-lg-4 col-sm-4 col-md-4 mt-2'>
-                                  <div className='panel-search'>
-                                    <p style={{ marginLeft: '20px' }}>Seguimiento</p>
-                                    <div className='form-group gov-co-form-group'>
-                                      <Form.Item name='seguimiento' rules={[{ required: true }]}>
-                                        <SelectComponent
-                                          onChange={onChange}
-                                          style={{ marginLeft: '20px' }}
-                                          options={estados}
-                                          optionPropkey='idEstadoSolicitud'
-                                          optionPropLabel='nombre'
-                                        />
-                                      </Form.Item>
-                                    </div>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <p style={{ marginLeft: '20px' }}>Seguimiento</p>
+                                  <div className='form-group gov-co-form-group'>
+                                    <Form.Item name='seguimiento' rules={[{ required: true }]}>
+                                      <SelectComponent
+                                        onChange={onChange}
+
+                                        options={estados}
+                                        optionPropkey='idEstadoSolicitud'
+                                        optionPropLabel='nombre'
+                                      />
+                                    </Form.Item>
                                   </div>
+
                                 </div>
                                 <div className='card-body'>
                                   <div className='row mt-3'>

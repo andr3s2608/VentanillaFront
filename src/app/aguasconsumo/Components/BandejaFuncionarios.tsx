@@ -809,22 +809,24 @@ export const BandejaFuncionarios = (props: IDataSource) => {
       {
         title: 'Validar Tramite',
         key: 'Acciones',
-        width: 200,
+        width: 250,
         align: 'center' as 'center',
 
         render: (_: any, row: any, index: any) => {
 
           if (row.tipodeSolicitud === 'Visita de Revision') {
             return (
-              <Button
-                type='primary'
-                key={`vali-${index}`}
-                onClick={() => onClickValidarArchivo(row)}
-                style={{ marginRight: '8px' }}
-                icon={<CheckOutlined />}
-              >
-                Cargar Archivo
-              </Button>
+              <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                <Button
+                  type='primary'
+                  key={`vali-${index}`}
+                  onClick={() => onClickValidarArchivo(row)}
+                  style={{ marginRight: '8px' }}
+                  icon={<CheckOutlined />}
+                >
+                  Cargar Archivo
+                </Button>
+              </div>
             );
           }
           else {
@@ -835,15 +837,17 @@ export const BandejaFuncionarios = (props: IDataSource) => {
               row.actividadActualSolicitud != 'En visita de revisión'
             ) {
               return (
-                <Button
-                  type='primary'
-                  key={`vali-${index}`}
-                  onClick={() => onClickValidarInformacion(row)}
-                  style={{ marginRight: '8px' }}
-                  icon={<CheckOutlined />}
-                >
-                  Validar Información
-                </Button>
+                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                  <Button
+                    type='primary'
+                    key={`vali-${index}`}
+                    onClick={() => onClickValidarInformacion(row)}
+                    style={{ marginRight: '8px' }}
+                    icon={<CheckOutlined />}
+                  >
+                    Validar Información
+                  </Button>
+                </div>
               );
             }
             return null;
@@ -1033,18 +1037,20 @@ export const BandejaFuncionarios = (props: IDataSource) => {
       {
         title: 'Observaciones',
         dataIndex: '',
-        width: 200,
+        width: 250,
         key: '',
         render: (_: any, row: any, index: any) => {
           return (
-            <Button
-              onClick={() => Openmodal(row)}
-              type='primary'
-              style={{ marginRight: '8px' }}
-              icon={<CheckOutlined />}
-            >
-              Notificaciones
-            </Button>
+            <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+              <Button
+                onClick={() => Openmodal(row)}
+                type='primary'
+                style={{ marginRight: '8px' }}
+                icon={<CheckOutlined />}
+              >
+                Notificaciones
+              </Button>
+            </div>
           )
         }
       }
@@ -1180,506 +1186,233 @@ export const BandejaFuncionarios = (props: IDataSource) => {
       <div className='card'>
         <div className='card-body tarjeta h-100 card_tarjeta' >
           <Form form={form} {...layoutItems} layout='horizontal'>
-            <section className='info-panel'>
-              <div className='container'>
-                <div className='row mt-2 ml-2'>
-                  <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion'>
-                      <nav aria-label='breadcrumb'>
-                        <ol className='breadcrumb'>
-                          <li className='breadcrumb-item'>
-                            <a href='#' style={{ textDecoration: 'none' }}>
-                              Inicio
-                            </a>
-                          </li>
-                          <li className='breadcrumb-item'>
-                            <a href='#' style={{ textDecoration: 'none' }}>
-                              Bandeja de entrada
-                            </a>
-                          </li>
-                          <li className='breadcrumb-item active' aria-current='page'>
-                            Revisar solicitud
-                          </li>
-                        </ol>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='container-fluid mt-3'>
-                <div className='row'>
-                  <div className='col-lg-12 col-md-12 ml-4'>
-                    <div className='info-tramite mt-3 ml-1'>
-                      <p>Bandeja de entrada y gestión</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <div className='container-fluid'>
-                <div className='row' style={{ marginLeft: '18px' }}>
-                  <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
-                    <div id='accordion ' className='mt-3'>
-                      <div className='card'>
-                        <div className='card-header' id='heading-2'>
-                          <h5 className='mb-0'>
-                            <a
-                              className='bandeja'
-                              role='button'
-                              data-toggle='collapse'
-                              href='#collapse-2'
-                              aria-expanded='true'
-                              aria-controls='collapse-2'
-                              onClick={() => ocultarbandejas('bandeja')}
-                            >
-                              Bandeja de entrada
-                            </a>
-                          </h5>
-                        </div>
+            <div className='container'>
+              <div className='row mt-2 ml-2'>
+                <div className='col-lg-6 col-sm-12 col-md-6'>
+                  <div className='info-secion'>
+                    <nav aria-label='breadcrumb'>
+                      <ol className='breadcrumb'>
+                        <li className='breadcrumb-item'>
+                          <a href='#' style={{ textDecoration: 'none' }}>
+                            Inicio
+                          </a>
+                        </li>
+                        <li className='breadcrumb-item'>
+                          <a href='#' style={{ textDecoration: 'none' }}>
+                            Bandeja de entrada
+                          </a>
+                        </li>
+                        <li className='breadcrumb-item active' aria-current='page'>
+                          Revisar solicitud
+                        </li>
+                      </ol>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='container-fluid mt-3'>
+              <div className='row'>
+                <div className='col-lg-12 col-md-12 ml-4'>
+                  <div className='info-tramite mt-3 ml-1'>
+                    <p>Bandeja de entrada y gestión</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className='container-fluid'>
+              <div className='row' style={{ marginLeft: '18px' }}>
+                <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
+                  <div id='accordion ' className='mt-3'>
+                    <div className='card'>
+                      <div className='card-header' id='heading-2'>
+                        <h5 className='mb-0'>
+                          <a
+                            className='bandeja'
+                            role='button'
+                            data-toggle='collapse'
+                            href='#collapse-2'
+                            aria-expanded='true'
+                            aria-controls='collapse-2'
+                            onClick={() => ocultarbandejas('bandeja')}
+                          >
+                            Bandeja de entrada
+                          </a>
+                        </h5>
                       </div>
                     </div>
-                    {coordinador == 'Coordinador' && (
-                      <>
-                        <div id='accordion' className='mt-3'>
-                          <div className='card'>
-                            <div className='card-header' id='heading-2'>
-                              <h5 className='mb-0'>
-                                <a
-                                  className='collapsed notificacion'
-                                  role='button'
-                                  data-toggle='collapse'
-                                  href='#collapse-3'
-                                  onClick={() => ocultarbandejas('notificacion')}
-                                  aria-expanded='false'
-                                  aria-controls='collapse-2'
-                                >
-                                  Notificaciones
-                                </a>
-                              </h5>
-                            </div>
+                  </div>
+                  {coordinador == 'Coordinador' && (
+                    <>
+                      <div id='accordion' className='mt-3'>
+                        <div className='card'>
+                          <div className='card-header' id='heading-2'>
+                            <h5 className='mb-0'>
+                              <a
+                                className='collapsed notificacion'
+                                role='button'
+                                data-toggle='collapse'
+                                href='#collapse-3'
+                                onClick={() => ocultarbandejas('notificacion')}
+                                aria-expanded='false'
+                                aria-controls='collapse-2'
+                              >
+                                Notificaciones
+                              </a>
+                            </h5>
                           </div>
                         </div>
-                      </>
-                    )}
-                  </div>
-                  <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
-                    <div
-                      id='collapse-2'
-                      className={`${ocultarbandeja == true ? 'expanded' : 'collapsed'} `}
-                      hidden={ocultarbandeja}
-                      data-parent='#accordion'
-                      aria-labelledby='heading-2'
-                    >
-                      {mostrar && (
-                        <>
-                          <div className='col-lg-12 col-md-12 col-sm-12 bandeja_panel'>
-                            <ul className='nav nav-tabs  mr-4' role='tablist'>
-                              <li className='nav-item encabezados'>
-                                <a
-                                  className='nav-link active'
-                                  data-toggle='tab'
-                                  onClick={() => resetdata()}
-                                  href='#recientes'
-                                  role='tab'
-                                >
-                                  Recientes
-                                </a>
-                              </li>
-                              {coordinador != 'Subdirector' && (
-                                <>
-                                  <li className='nav-item encabezados'>
-                                    <a
-                                      className='nav-link'
-                                      data-toggle='tab'
-                                      onClick={() => resetdata()}
-                                      href='#solucionados'
-                                      role='tab'
-                                    >
-                                      Solucionados
-                                    </a>
-                                  </li>
-                                </>
-                              )}
-
-                              {coordinador == 'Coordinador' && (
-                                <>
-                                  <li className='nav-item encabezados'>
-                                    <a
-                                      className='nav-link'
-                                      data-toggle='tab'
-                                      onClick={() => resetdata()}
-                                      href='#prueba'
-                                      role='tab'
-                                    >
-                                      Usuario
-                                    </a>
-                                  </li>
-                                </>
-                              )}
-                            </ul>
-                            <div className='tab-content'>
-                              <div className='tab-pane active' id='recientes' role='tabpanel'>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                    <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                  </div>
-                                </div>
-                                <div className="row " style={{ marginLeft: '2px' }}>
-                                  <div className="col-lg-5">
-                                    <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                      <DatepickerComponent
-                                        id='datePicker1'
-                                        picker='date'
-                                        placeholder='Fecha Inicial'
-                                        dateDisabledType='default'
-                                        dateFormatType='default'
-                                        style={{ width: 300 }}
-                                        className='form-control'
-                                        onChange={(date) => {
-                                          setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                        }}
-                                      />
-                                    </Form.Item>
-                                  </div>
-                                  <div className="col-lg-5">
-                                    <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                      <DatepickerComponent
-                                        id='datePicker2'
-                                        picker='date'
-                                        placeholder='Fecha Final'
-                                        dateDisabledType='default'
-                                        dateFormatType='default'
-                                        style={{ width: 300 }}
-                                        className='form-control'
-                                        onChange={(date) => {
-                                          setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
-                                        }}
-                                      />
-                                    </Form.Item>
-                                  </div>
-                                  <div className="col-lg-2">
-                                    <Form.Item style={{ width: 400 }}>
-                                      <Button
-                                        type='primary'
-                                        key={`filtrarReciente`}
-                                        onClick={() => onClickFiltrar('reciente')}
-                                        style={{ marginRight: '8px' }}
-                                        icon={<CheckOutlined />}
-                                      >
-                                        Filtrar
-                                      </Button>
-                                    </Form.Item>
-                                  </div>
-                                </div>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                    {coordinador == 'Funcionario' && (
-                                      <>
-                                        <Table
-
-                                          id='tableGen'
-                                          scroll={{ x: 500 }}
-                                          dataSource={dataUsuario}
-                                          columns={structureColumns}
-                                          pagination={{ pageSize: Paginas }}
-                                          className='table_info'
-                                        />
-                                      </>
-                                    )}
-                                    {coordinador != 'Funcionario' && (
-                                      <>
-                                        <Table
-                                          scroll={{ x: 500 }}
-                                          id='tableGen'
-                                          dataSource={dataInter}
-                                          columns={structureColumns}
-                                          pagination={{ pageSize: Paginas }}
-                                          className='table_info'
-                                        />
-                                        <br />
-                                      </>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className='tab-pane' id='solucionados' role='tabpanel'>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                    <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                    <div className="row " style={{ marginLeft: '2px' }}>
-                                      <div className="col-lg-5">
-                                        <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                          <DatepickerComponent
-                                            id='datePicker1'
-                                            picker='date'
-                                            placeholder='Fecha Inicial'
-                                            dateDisabledType='default'
-                                            dateFormatType='default'
-                                            style={{ width: 300 }}
-                                            className='form-control'
-                                            onChange={(date) => {
-                                              setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                            }}
-                                          />
-                                        </Form.Item>
-                                      </div>
-                                      <div className="col-lg-5">
-                                        <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                          <DatepickerComponent
-                                            id='datePicker2'
-                                            picker='date'
-                                            placeholder='Fecha Final'
-                                            dateDisabledType='default'
-                                            dateFormatType='default'
-                                            style={{ width: 300 }}
-                                            className='form-control'
-                                            onChange={(date) => {
-                                              setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
-                                            }}
-                                          />
-                                        </Form.Item>
-                                      </div>
-                                      <div className="col-lg-2">
-                                        <Form.Item style={{ width: 400 }}>
-                                          <Button
-                                            type='primary'
-                                            key={`filtrarReciente`}
-                                            onClick={() => onClickFiltrar('reciente')}
-                                            style={{ marginRight: '8px' }}
-                                            icon={<CheckOutlined />}
-                                          >
-                                            Filtrar
-                                          </Button>
-                                        </Form.Item>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                    <Table
-                                      scroll={{ x: 500 }}
-                                      id='tableGen2'
-                                      dataSource={dataSolucionado}
-                                      columns={structureColumns}
-                                      pagination={{ pageSize: Paginas }}
-                                      className='table_info'
-                                    />{' '}
-                                    <br />
-                                  </div>
-                                </div>
-                              </div>
-                              {coordinador == 'Coordinador' && (
-                                <>
-                                  <div className='tab-pane ' id='prueba' role='tabpanel'>
-                                    <div className='row'>
-                                      <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                        <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                        <div className="row " style={{ marginLeft: '2px' }}>
-                                          <div className="col-lg-5">
-                                            <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                              <DatepickerComponent
-                                                id='datePicker1'
-                                                picker='date'
-                                                placeholder='Fecha Inicial'
-                                                dateDisabledType='default'
-                                                dateFormatType='default'
-                                                style={{ width: 300 }}
-                                                className='form-control'
-                                                onChange={(date) => {
-                                                  setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                                }}
-                                              />
-                                            </Form.Item>
-                                          </div>
-                                          <div className="col-lg-5">
-                                            <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                              <DatepickerComponent
-                                                id='datePicker2'
-                                                picker='date'
-                                                placeholder='Fecha Final'
-                                                dateDisabledType='default'
-                                                dateFormatType='default'
-                                                style={{ width: 300 }}
-                                                className='form-control'
-                                                onChange={(date) => {
-                                                  setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
-                                                }}
-                                              />
-                                            </Form.Item>
-                                          </div>
-                                          <div className="col-lg-2">
-                                            <Form.Item style={{ width: 400 }}>
-                                              <Button
-                                                type='primary'
-                                                key={`filtrarReciente`}
-                                                onClick={() => onClickFiltrar('reciente')}
-                                                style={{ marginRight: '8px' }}
-                                                icon={<CheckOutlined />}
-                                              >
-                                                Filtrar
-                                              </Button>
-                                            </Form.Item>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className='row'>
-                                      <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                        <Table
-                                          scroll={{ x: 500 }}
-                                          id='tableGen3'
-                                          dataSource={dataUsuario}
-                                          columns={structureColumns}
-                                          pagination={{ pageSize: Paginas }}
-                                          className='table_info'
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                    {coordinador == 'Coordinador' && (
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
+                  <div
+                    id='collapse-2'
+                    className={`${ocultarbandeja == true ? 'expanded' : 'collapsed'} `}
+                    hidden={ocultarbandeja}
+                    data-parent='#accordion'
+                    aria-labelledby='heading-2'
+                  >
+                    {mostrar && (
                       <>
-                        <div
-                          id='collapse-3'
-                          className={`${ocultarnotificacion == true ? 'expanded' : 'collapsed'} `}
-                          hidden={ocultarnotificacion}
-                          data-parent='#accordion'
-                          aria-labelledby='heading-2'
-                        >
-                          <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
-                            <ul className='nav nav-tabs' role='tablist'>
-                              <li className='nav-item encabezadosx'>
-                                <a
-                                  className='nav-link active'
-                                  data-toggle='tab'
-                                  href='#tabs-1'
-                                  onClick={() => resetdata()}
-                                  role='tab'
-                                  style={{ borderTop: '3px solid orange' }}
-                                >
-                                  Notificación de observaciones
-                                </a>
-                              </li>
-                              <li className='nav-item encabezadosx'>
-                                <a
-                                  className='nav-link'
-                                  data-toggle='tab'
-                                  href='#tabs-2'
-                                  onClick={() => resetdata()}
-                                  role='tab'
-                                  style={{ borderTop: '3px solid orange' }}
-                                >
-                                  Histórico notificaciones
-                                </a>
-                              </li>
-                            </ul>
-                            <div className='tab-content'>
-                              <div className='tab-pane active' id='tabs-1' role='tabpanel'>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                    <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                    <div className="row " style={{ marginLeft: '2px' }}>
-                                      <div className="col-lg-5">
-                                        <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                          <DatepickerComponent
-                                            id='datePicker1'
-                                            picker='date'
-                                            placeholder='Fecha Inicial'
-                                            dateDisabledType='default'
-                                            dateFormatType='default'
-                                            style={{ width: 300 }}
-                                            className='form-control'
-                                            onChange={(date) => {
-                                              setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                            }}
-                                          />
-                                        </Form.Item>
-                                      </div>
-                                      <div className="col-lg-5">
-                                        <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                          <DatepickerComponent
-                                            id='datePicker2'
-                                            picker='date'
-                                            placeholder='Fecha Final'
-                                            dateDisabledType='default'
-                                            dateFormatType='default'
-                                            style={{ width: 300 }}
-                                            className='form-control'
-                                            onChange={(date) => {
-                                              setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
-                                            }}
-                                          />
-                                        </Form.Item>
-                                      </div>
-                                      <div className="col-lg-2">
-                                        <Form.Item style={{ width: 400 }}>
-                                          <Button
-                                            type='primary'
-                                            key={`filtrarReciente`}
-                                            onClick={() => onClickFiltrar('reciente')}
-                                            style={{ marginRight: '8px' }}
-                                            icon={<CheckOutlined />}
-                                          >
-                                            Filtrar
-                                          </Button>
-                                        </Form.Item>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                    <Table
-                                      scroll={{ x: 500 }}
-                                      id='tablenot'
-                                      dataSource={datanotificaciones}
-                                      columns={structureColumnsnotificacion}
-                                      pagination={{ pageSize: Paginas }}
-                                      className='table_info'
-                                    />
-                                  </div>
-                                </div>
-                                <div className='row'>
-                                  <div className='col-lg-11 col-md-11 col-sm-12 mt-3'>
-                                    <p className='filtro'>
-                                      <span className='text-danger font-weight-bold mr-1 ml-3 '>*</span> Tipo de notificación
-                                    </p>
-                                    <div className='form-group gov-co-form-group ml-2'>
-                                      <div className='gov-co-dropdown'>
-                                        <select id='selector-simple' className='selectpicker form-control select' title='Escoger'>
-                                          <option>Oficio de notificación</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className='col-m-12 col-lg-12 col-sm-12 mt-3 ml-2 '>
-                                    <button
-                                      className='btn btn-default'
-                                      style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
-                                    >
-                                      Notificar
-                                    </button>
-                                    <button
-                                      className='btn btn-default mr-3'
-                                      style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
-                                    >
-                                      Ver vista previa
-                                    </button>
-                                  </div>
+                        <div className='col-lg-12 col-md-12 col-sm-12 bandeja_panel'>
+                          <ul className='nav nav-tabs  mr-4' role='tablist'>
+                            <li className='nav-item encabezados'>
+                              <a
+                                className='nav-link active'
+                                data-toggle='tab'
+                                onClick={() => resetdata()}
+                                href='#recientes'
+                                role='tab'
+                              >
+                                Recientes
+                              </a>
+                            </li>
+                            {coordinador != 'Subdirector' && (
+                              <>
+                                <li className='nav-item encabezados'>
+                                  <a
+                                    className='nav-link'
+                                    data-toggle='tab'
+                                    onClick={() => resetdata()}
+                                    href='#solucionados'
+                                    role='tab'
+                                  >
+                                    Solucionados
+                                  </a>
+                                </li>
+                              </>
+                            )}
+
+                            {coordinador == 'Coordinador' && (
+                              <>
+                                <li className='nav-item encabezados'>
+                                  <a
+                                    className='nav-link'
+                                    data-toggle='tab'
+                                    onClick={() => resetdata()}
+                                    href='#prueba'
+                                    role='tab'
+                                  >
+                                    Usuario
+                                  </a>
+                                </li>
+                              </>
+                            )}
+                          </ul>
+                          <div className='tab-content'>
+                            <div className='tab-pane active' id='recientes' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
                                 </div>
                               </div>
-                              <div className='tab-pane' id='tabs-2' role='tabpanel'>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-sm-12 col-md-12 '>
-                                    <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                    <div className='form-row ml-7'>
+                              <div className="row " style={{ marginLeft: '2px' }}>
+                                <div className="col-lg-5">
+                                  <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                    <DatepickerComponent
+                                      id='datePicker1'
+                                      picker='date'
+                                      placeholder='Fecha Inicial'
+                                      dateDisabledType='default'
+                                      dateFormatType='default'
+                                      style={{ width: 300 }}
+                                      className='form-control'
+                                      onChange={(date) => {
+                                        setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="col-lg-5">
+                                  <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                    <DatepickerComponent
+                                      id='datePicker2'
+                                      picker='date'
+                                      placeholder='Fecha Final'
+                                      dateDisabledType='default'
+                                      dateFormatType='default'
+                                      style={{ width: 300 }}
+                                      className='form-control'
+                                      onChange={(date) => {
+                                        setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <div className="col-lg-2">
+                                  <Form.Item style={{ width: 400 }}>
+                                    <Button
+                                      type='primary'
+                                      key={`filtrarReciente`}
+                                      onClick={() => onClickFiltrar('reciente')}
+                                      style={{ marginRight: '8px' }}
+                                      icon={<CheckOutlined />}
+                                    >
+                                      Filtrar
+                                    </Button>
+                                  </Form.Item>
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  {coordinador == 'Funcionario' && (
+                                    <>
+                                      <Table
+
+                                        id='tableGen'
+                                        scroll={{ x: 500 }}
+                                        dataSource={dataUsuario}
+                                        columns={structureColumns}
+                                        pagination={{ pageSize: Paginas }}
+                                        className='table_info'
+                                      />
+                                    </>
+                                  )}
+                                  {coordinador != 'Funcionario' && (
+                                    <>
+                                      <Table
+                                        scroll={{ x: 500 }}
+                                        id='tableGen'
+                                        dataSource={dataInter}
+                                        columns={structureColumns}
+                                        pagination={{ pageSize: Paginas }}
+                                        className='table_info'
+                                      />
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <div className='tab-pane' id='solucionados' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                  <div className="row " style={{ marginLeft: '2px' }}>
+                                    <div className="col-lg-5">
                                       <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
                                         <DatepickerComponent
                                           id='datePicker1'
@@ -1694,7 +1427,8 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                           }}
                                         />
                                       </Form.Item>
-                                      <br></br>
+                                    </div>
+                                    <div className="col-lg-5">
                                       <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
                                         <DatepickerComponent
                                           id='datePicker2'
@@ -1705,10 +1439,12 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                           style={{ width: 300 }}
                                           className='form-control'
                                           onChange={(date) => {
-                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
                                           }}
                                         />
                                       </Form.Item>
+                                    </div>
+                                    <div className="col-lg-2">
                                       <Form.Item style={{ width: 400 }}>
                                         <Button
                                           type='primary'
@@ -1723,44 +1459,313 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                     </div>
                                   </div>
                                 </div>
-                                <div className='row'>
-                                  <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                    <Table
-                                      scroll={{ x: 500 }}
-                                      id='tablehistnot'
-                                      dataSource={datahistoriconotificaciones}
-                                      columns={structureColumnsnotificacionhistorico}
-                                      pagination={{ pageSize: Paginas }}
-                                      className='table_info'
-                                    />
-                                  </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <Table
+                                    scroll={{ x: 500 }}
+                                    id='tableGen2'
+                                    dataSource={dataSolucionado}
+                                    columns={structureColumns}
+                                    pagination={{ pageSize: Paginas }}
+                                    className='table_info'
+                                  />{' '}
+                                  <br />
                                 </div>
                               </div>
                             </div>
+                            {coordinador == 'Coordinador' && (
+                              <>
+                                <div className='tab-pane ' id='prueba' role='tabpanel'>
+                                  <div className='row'>
+                                    <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                      <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                      <div className="row " style={{ marginLeft: '2px' }}>
+                                        <div className="col-lg-5">
+                                          <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                            <DatepickerComponent
+                                              id='datePicker1'
+                                              picker='date'
+                                              placeholder='Fecha Inicial'
+                                              dateDisabledType='default'
+                                              dateFormatType='default'
+                                              style={{ width: 300 }}
+                                              className='form-control'
+                                              onChange={(date) => {
+                                                setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                              }}
+                                            />
+                                          </Form.Item>
+                                        </div>
+                                        <div className="col-lg-5">
+                                          <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                            <DatepickerComponent
+                                              id='datePicker2'
+                                              picker='date'
+                                              placeholder='Fecha Final'
+                                              dateDisabledType='default'
+                                              dateFormatType='default'
+                                              style={{ width: 300 }}
+                                              className='form-control'
+                                              onChange={(date) => {
+                                                setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
+                                              }}
+                                            />
+                                          </Form.Item>
+                                        </div>
+                                        <div className="col-lg-2">
+                                          <Form.Item style={{ width: 400 }}>
+                                            <Button
+                                              type='primary'
+                                              key={`filtrarReciente`}
+                                              onClick={() => onClickFiltrar('reciente')}
+                                              style={{ marginRight: '8px' }}
+                                              icon={<CheckOutlined />}
+                                            >
+                                              Filtrar
+                                            </Button>
+                                          </Form.Item>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className='row'>
+                                    <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                      <Table
+                                        scroll={{ x: 500 }}
+                                        id='tableGen3'
+                                        dataSource={dataUsuario}
+                                        columns={structureColumns}
+                                        pagination={{ pageSize: Paginas }}
+                                        className='table_info'
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            )}
                           </div>
                         </div>
                       </>
                     )}
                   </div>
-                </div>
-                <div className='row'>
-                  <Modal
-                    title={
-                      <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
-                        Visualización de la licencia
-                      </p>
-                    }
-                    visible={isModalVisiblePdf}
-                    onCancel={() => setIsModalVisiblePdf(false)}
-                    width={1000}
-                    okButtonProps={{ hidden: true }}
-                    cancelText='Cerrar'
-                  >
-                    <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-                  </Modal>
+                  {coordinador == 'Coordinador' && (
+                    <>
+                      <div
+                        id='collapse-3'
+                        className={`${ocultarnotificacion == true ? 'expanded' : 'collapsed'} `}
+                        hidden={ocultarnotificacion}
+                        data-parent='#accordion'
+                        aria-labelledby='heading-2'
+                      >
+                        <div className='col-lg-12 col-md-12 col-sm-12 mt-3 bandeja_panel'>
+                          <ul className='nav nav-tabs' role='tablist'>
+                            <li className='nav-item encabezadosx'>
+                              <a
+                                className='nav-link active'
+                                data-toggle='tab'
+                                href='#tabs-1'
+                                onClick={() => resetdata()}
+                                role='tab'
+                                style={{ borderTop: '3px solid orange' }}
+                              >
+                                Notificación de observaciones
+                              </a>
+                            </li>
+                            <li className='nav-item encabezadosx'>
+                              <a
+                                className='nav-link'
+                                data-toggle='tab'
+                                href='#tabs-2'
+                                onClick={() => resetdata()}
+                                role='tab'
+                                style={{ borderTop: '3px solid orange' }}
+                              >
+                                Histórico notificaciones
+                              </a>
+                            </li>
+                          </ul>
+                          <div className='tab-content'>
+                            <div className='tab-pane active' id='tabs-1' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                  <div className="row " style={{ marginLeft: '2px' }}>
+                                    <div className="col-lg-5">
+                                      <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                        <DatepickerComponent
+                                          id='datePicker1'
+                                          picker='date'
+                                          placeholder='Fecha Inicial'
+                                          dateDisabledType='default'
+                                          dateFormatType='default'
+                                          style={{ width: 300 }}
+                                          className='form-control'
+                                          onChange={(date) => {
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                          }}
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                    <div className="col-lg-5">
+                                      <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                        <DatepickerComponent
+                                          id='datePicker2'
+                                          picker='date'
+                                          placeholder='Fecha Final'
+                                          dateDisabledType='default'
+                                          dateFormatType='default'
+                                          style={{ width: 300 }}
+                                          className='form-control'
+                                          onChange={(date) => {
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
+                                          }}
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                    <div className="col-lg-2">
+                                      <Form.Item style={{ width: 400 }}>
+                                        <Button
+                                          type='primary'
+                                          key={`filtrarReciente`}
+                                          onClick={() => onClickFiltrar('reciente')}
+                                          style={{ marginRight: '8px' }}
+                                          icon={<CheckOutlined />}
+                                        >
+                                          Filtrar
+                                        </Button>
+                                      </Form.Item>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <Table
+                                    scroll={{ x: 500 }}
+                                    id='tablenot'
+                                    dataSource={datanotificaciones}
+                                    columns={structureColumnsnotificacion}
+                                    pagination={{ pageSize: Paginas }}
+                                    className='table_info'
+                                  />
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-11 col-md-11 col-sm-12 mt-3'>
+                                  <p className='filtro'>
+                                    <span className='text-danger font-weight-bold mr-1 ml-3 '>*</span> Tipo de notificación
+                                  </p>
+                                  <div className='form-group gov-co-form-group ml-2'>
+                                    <div className='gov-co-dropdown'>
+                                      <select id='selector-simple' className='selectpicker form-control select' title='Escoger'>
+                                        <option>Oficio de notificación</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='col-m-12 col-lg-12 col-sm-12 mt-3 ml-2 '>
+                                  <button
+                                    className='btn btn-default'
+                                    style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
+                                  >
+                                    Notificar
+                                  </button>
+                                  <button
+                                    className='btn btn-default mr-3'
+                                    style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
+                                  >
+                                    Ver vista previa
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div className='tab-pane' id='tabs-2' role='tabpanel'>
+                              <div className='row'>
+                                <div className='col-lg-12 col-sm-12 col-md-12 '>
+                                  <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
+                                  <div className='form-row ml-7'>
+                                    <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                      <DatepickerComponent
+                                        id='datePicker1'
+                                        picker='date'
+                                        placeholder='Fecha Inicial'
+                                        dateDisabledType='default'
+                                        dateFormatType='default'
+                                        style={{ width: 300 }}
+                                        className='form-control'
+                                        onChange={(date) => {
+                                          setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                        }}
+                                      />
+                                    </Form.Item>
+                                    <br></br>
+                                    <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                      <DatepickerComponent
+                                        id='datePicker2'
+                                        picker='date'
+                                        placeholder='Fecha Final'
+                                        dateDisabledType='default'
+                                        dateFormatType='default'
+                                        style={{ width: 300 }}
+                                        className='form-control'
+                                        onChange={(date) => {
+                                          setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
+                                        }}
+                                      />
+                                    </Form.Item>
+                                    <Form.Item style={{ width: 400 }}>
+                                      <Button
+                                        type='primary'
+                                        key={`filtrarReciente`}
+                                        onClick={() => onClickFiltrar('reciente')}
+                                        style={{ marginRight: '8px' }}
+                                        icon={<CheckOutlined />}
+                                      >
+                                        Filtrar
+                                      </Button>
+                                    </Form.Item>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className='row'>
+                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
+                                  <Table
+                                    scroll={{ x: 500 }}
+                                    id='tablehistnot'
+                                    dataSource={datahistoriconotificaciones}
+                                    columns={structureColumnsnotificacionhistorico}
+                                    pagination={{ pageSize: Paginas }}
+                                    className='table_info'
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
-            </section>
+              <div className='row'>
+                <Modal
+                  title={
+                    <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+                      Visualización de la licencia
+                    </p>
+                  }
+                  visible={isModalVisiblePdf}
+                  onCancel={() => setIsModalVisiblePdf(false)}
+                  width={1000}
+                  okButtonProps={{ hidden: true }}
+                  cancelText='Cerrar'
+                >
+                  <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+                </Modal>
+              </div>
+            </div>
+
             <div className='row'>
               {/** Modal que se despliega cuando se quiere gestionar una solicitud por parte del ciudadano */}
               <Modal

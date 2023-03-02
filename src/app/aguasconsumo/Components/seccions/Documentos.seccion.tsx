@@ -138,6 +138,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           }
 
         }
+        /*
         let observaciones = await api.getObservacionesDocumento(obj.idsolicitud)
         for (let index = 0; index < observaciones.length; index++) {
           if (documentoreciente.idDocumentoAdjunto === observaciones[index].idDocumentoSoporte) {
@@ -147,7 +148,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           }
 
         }
-
+*/
 
         const ordenadotabla: any[] = [];
         const ordenadocompleto: any[] = [];
@@ -728,125 +729,113 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     <>
       {
         mostrar && (<>
-          <section style={{ width: '100%' }}>
-            <div className='container-fluid'>
-              <div className='row mt-2'>
-                <div className='col-lg-12 col-md-12 col-sm-12'>
-                  <div className='check_d'>
-                    <Table
 
-                      scroll={{ y: 240 }}
-                      id='tableGen'
-                      dataSource={acueducto}
-                      bordered
-                      columns={tabla1}
-                      size='large'
-                      pagination={{ pageSize: Paginas }}
-                      className='table_info'
-                    />{' '}
-                    <br />
-                  </div>
+          <div className='container-fluid'>
+            <div className='row mt-2'>
+              <div className='col-lg-12 col-md-12 col-sm-12'>
+                <div className='check_d'>
+                  <Table
+
+                    scroll={{ y: 240, x: 500 }}
+                    id='tableGen'
+                    dataSource={acueducto}
+                    bordered
+                    columns={tabla1}
+                    size='large'
+                    pagination={{ pageSize: Paginas }}
+                    className='table_info'
+                  />{' '}
+                  <br />
                 </div>
-
               </div>
-              <div className="row mt-3">
-                <div className='col-md-12 col-sm-12 col-lg-12' style={{ marginLeft: '160px' }}>
-                  {tipo != 'gestion' && (
-                    <>
-                      <div id='accordion' className='mt-3'>
-                        <Button
-                          className='button btn btn-default '
-                          type='primary'
-                          htmlType='button'
-                          style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                          onClick={() => {
-                            insertarArchivo();
-                          }}
-                        >
-                          Adicionar
-                        </Button>
-                      </div>
-                    </>
-                  )}
 
-                  <div id='accordion' className='mt-3'>
+            </div>
+            {tipo != 'gestion' && (
+              <>
+                <div className="row mt-3">
+                  <div className='col-sm-12 col-md-4 col-lg-4 col-xl-4'>
+
+
+
                     <Button
-                      className=' button btn btn-default float-right'
+                      className='button btn btn-default '
                       type='primary'
                       htmlType='button'
-                      style={{ width: '100px', backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      onClick={() => {
+                        insertarArchivo();
+                      }}
                     >
-                      ver archivo
+                      Adicionar
                     </Button>
                   </div>
-                </div>
-              </div>
-              <div className='row mt-3'>
-                {tipo != 'gestion' && (
-                  <>
-                    <div className='col-lg-8 col-sm-12 col-md-8'>
-                      <Upload
-                        name='cargarArchivo'
-                        onChange={subia}
-                        maxCount={1}
-                        beforeUpload={() => false}
-                        listType='text'
-                        accept='application/pdf'
+                  <div className='col-lg-8 col-sm-12 col-md-8'>
+                    <Upload
+                      name='cargarArchivo'
+                      onChange={subia}
+                      maxCount={1}
+                      beforeUpload={() => false}
+                      listType='text'
+                      accept='application/pdf'
+                    >
+                      <Button
+                        className='float-right button btn btn-default'
+                        icon={<UploadOutlined />}
+                        style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                       >
-                        <Button
-                          className='float-right button btn btn-default'
-                          icon={<UploadOutlined />}
-                          style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                        >
-                          Cargar archivo
-                        </Button>
-                      </Upload>
-                    </div>
-                  </>
-                )}
-
-                <div className='row mt-2' style={{ marginLeft: '-28px' }}>
-                  <div className={`col-lg-7  col-md-7 ${tipo === 'gestion' ? 'col-xl-6' : 'col-xl-9'}  col-sm-12 mt-3 `}
-                  >
-                    <Table
-                      id='tableGen2'
-                      dataSource={guardararchivostabla}
-                      columns={tabla2}
-                      pagination={{ pageSize: Paginas }}
-
-                    />{' '}
-                    <br />
+                        Cargar archivo
+                      </Button>
+                    </Upload>
                   </div>
+
+
+
                 </div>
-                <small className='mt-1'>* Espacio del ciudadano para incluir documentación adicionar de ser requerido</small>
+              </>
+            )}
 
-                {tipo == 'gestion' && (
-                  <>
-                    <div className='col-lg-12 col-md-12 col-sm-12' >
-                      <label htmlFor=''>Observaciones</label>
-                      <Form.Item label='' name='observacionesSubsanacion' initialValue={(obj?.tipodeSolicitud === 'Gestion Coordinador' ?
-                        observacionvalidador : (obj?.tipodeSolicitud === 'Gestion Subdirector' ? observacionvalidador : null)
-                      )}>
-                        <Input.TextArea rows={5} maxLength={500} className='textarea' disabled={editable}
-                        />
-                      </Form.Item>
-                    </div>
-                  </>
-                )}
+
+            <div className='row ' >
+              <div className={`col-lg-12  col-md-12 ${tipo === 'gestion' ? 'col-xl-6' : 'col-xl-12'}  col-sm-12  ml-2`}>
+                <Table
+                  scroll={{ x: 500 }}
+                  id='tableGen2'
+                  dataSource={guardararchivostabla}
+                  columns={tabla2}
+                  pagination={{ pageSize: Paginas }}
+
+                />
               </div>
-
-              <Modal
-                title={<p className='text-center'> Visualización de Documento </p>}
-                visible={enableModalViewDocument}
-                width={1000}
-                okButtonProps={{ hidden: true }}
-                onCancel={() => setEnableModalViewDocument(false)}
-                cancelText='Cerrar'
-              >
-                <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
-              </Modal>
             </div>
-          </section>
+            <small className='mt-1'>* Espacio del ciudadano para incluir documentación adicionar de ser requerido</small>
+
+            {tipo == 'gestion' && (
+              <>
+                <div className='col-lg-12 col-md-12 col-sm-12' >
+                  <label htmlFor=''>Observaciones</label>
+                  <Form.Item label='' name='observacionesSubsanacion' initialValue={(obj?.tipodeSolicitud === 'Gestion Coordinador' ?
+                    observacionvalidador : (obj?.tipodeSolicitud === 'Gestion Subdirector' ? observacionvalidador : null)
+                  )}>
+                    <Input.TextArea rows={5} maxLength={500} className='textarea' disabled={editable}
+                    />
+                  </Form.Item>
+                </div>
+              </>
+            )}
+
+
+            <Modal
+              title={<p className='text-center'> Visualización de Documento </p>}
+              visible={enableModalViewDocument}
+              width={1000}
+              okButtonProps={{ hidden: true }}
+              onCancel={() => setEnableModalViewDocument(false)}
+              cancelText='Cerrar'
+            >
+              <iframe src={urlPdfDocumento} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+            </Modal>
+          </div>
+
         </>)
       }
 

@@ -104,6 +104,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
     const data = await api.getSolicitudbyidAguas(datos.idSolicitud);
     localStorage.setItem('register', JSON.stringify(data));
     if (tipo == 'tramite') {
+      localStorage.setItem('subsanacion', 'true');
       history.push('/tramites-servicios-aguas/Revision/Crear-Solicitud');
     } else {
       history.push('/tramites-servicios-aguas/Revision/visita-revision');
