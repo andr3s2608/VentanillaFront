@@ -138,7 +138,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           }
 
         }
-        /*
+
         let observaciones = await api.getObservacionesDocumento(obj.idsolicitud)
         for (let index = 0; index < observaciones.length; index++) {
           if (documentoreciente.idDocumentoAdjunto === observaciones[index].idDocumentoSoporte) {
@@ -148,7 +148,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
           }
 
         }
-*/
+
 
         const ordenadotabla: any[] = [];
         const ordenadocompleto: any[] = [];
