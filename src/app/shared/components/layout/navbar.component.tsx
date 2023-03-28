@@ -86,17 +86,17 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
   return (
     <Header
       {...basicProps}
-      className='d-flex justify-content-between app-bg-transparent border-bottom shadow w-100 fixed-top px-0'
+      className='text-muted d-flex justify-content-between app-bg-transparent border-bottom shadow w-100 fixed-top px-0 top_header'
       style={{ zIndex: 1003 }}
     >
-      <div className='d-flex'>
+      <div className='d-flex align-items-center order-1'>
         <b className='text-primary px-3 d-none d-md-flex align-items-center' style={{ lineHeight: 1, maxWidth: 288 }}>
           {projectInfo.name}
         </b>
-        <Menu className='bg-transparent w-35' theme='dark' mode='horizontal'>
+        <Menu className='bg-transparent' theme='dark' mode='horizontal'>
           <Menu.Item className='bg-transparent' key='1' onClick={toggleSidenav} title='Mostrar / Ocultar menú'>
             {React.createElement(sidenav ? MenuFoldOutlined : MenuUnfoldOutlined, {
-              className: 'text-muted',
+              className: 'text-muted icono_menu',
               style: { fontSize: 18 }
             })}
           </Menu.Item>
@@ -104,24 +104,26 @@ export const NavbarComponent: React.FC<INavbarComponent> = (props) => {
         {props.children}
       </div>
 
-      <b className='text-primary px-3 d-flex d-md-none align-items-center text-center' style={{ lineHeight: 1 }}>
+      <b className='text-primary px-3 d-flex d-md-none align-items-center text-center order-2' style={{ lineHeight: 1 }}>
         {projectInfo.name}
       </b>
 
-      <div className='d-flex'>
-        <span className='app-navbar-user text-truncate d-none d-md-block' title={`${name} <${userName}>`}>
+      <div className='d-flex align-items-center justify-content-end order-3 exit'>
+        <span className='app-navbar-user d-none d-md-block' title={`${name} <${userName}>`}>
           <span className='h5'>
             <b className='text-primary'>{validacioninfo}</b>
-
           </span>
         </span>
         <Menu className='bg-transparent' theme='dark' mode='horizontal'>
           <Menu.Item className='bg-transparent' key='1' onClick={onLogout} title='Cerrar sesión'>
-            <LogoutOutlined className='text-muted' style={{ fontSize: 18 }} />
+            <LogoutOutlined className='text-muted off' style={{ fontSize: 18 }} />
           </Menu.Item>
         </Menu>
+
       </div>
     </Header>
+
+
   );
 };
 
