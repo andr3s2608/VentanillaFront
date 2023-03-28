@@ -30217,6 +30217,22 @@ div.ant-typography-edit-content.ant-typography-rtl {
     order: 1;
     flex-basis: 100%;
   }
+
+  .ant-divider-inner-text {
+    margin-right: 50px;
+  }
+
+  .ant-divider-inner-text #texto {
+    font-size: 11px !important;
+  }
+
+  .ant-picker {
+    width: 255px !important;
+  }
+
+  .date_individual {
+    margin-left: -20px;
+  }
 }
 
 .app-navbar-user {
