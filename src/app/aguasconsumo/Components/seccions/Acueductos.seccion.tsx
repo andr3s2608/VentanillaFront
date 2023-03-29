@@ -627,7 +627,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
                     maxLength={13}
                     onChange={onChangeFormat}
                     onKeyPress={(event) => {
-                      if (!/[0-9'"°NS]/.test(event.key)) {
+                      if (!/[0-9'"°NS.]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}
@@ -668,7 +668,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
 
                     onChange={onChangeFormatLongitud}
                     onKeyPress={(event) => {
-                      if (!/[0-9'"°EO]/.test(event.key)) {
+                      if (!/[0-9'"°EO.]/.test(event.key)) {
                         event.preventDefault();
                       }
                     }}

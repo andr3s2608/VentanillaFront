@@ -38,7 +38,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
 
   //validacion campos Razon
   const [longitudmaximaRazon, setLongitudmaximaRazon] = useState<number>(10);
-  const [longitudminimaRazon, setLongitudminimaRazon] = useState<number>(5);
+  const [longitudminimaRazon, setLongitudminimaRazon] = useState<number>(10);
   const [tipocampoRazon, setTipocampoRazon] = useState<string>('[0-9-]{10,10}');
   const [tipocampovalidacionRazon, setTipocampovalidacionRazon] = useState<any>(/[0-9-]/);
   const [tipodocumentoRazon, setTipodocumentoRazon] = useState<string>('Nit');
@@ -66,10 +66,13 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       const listDocument = tipoDocumentorazon.map((res: any) => {
         return { id: res.idTipoIdentificacion, descripcion: res.descripcion };
       });
-      if (obj != null) {
+
+      if (obj.length > 0) {
         if (obj.idTipoPersona == 'natural') {
+
           settipoSolicitante(true);
         } else {
+
           settipoSolicitante(false);
         }
       }
@@ -87,17 +90,17 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
   }, []);
 
   const Onchangetipo = (value: any) => {
-    if (value == 'juridica') {
-      settipoSolicitante(false);
-    } else {
+    if (value == 'natural') {
       settipoSolicitante(true);
+    } else {
+      settipoSolicitante(false);
     }
   };
 
   const cambiodocumentoRazon = (value: any) => {
     form.setFieldsValue({ IDNumberRazon: undefined });
     const valor: string = value;
-    if (valor == '1') {
+    if (valor === '1') {
       setLongitudminimaRazon(4);
       setLongitudmaximaRazon(10);
       setTipocampoRazon('[0-9]{4,10}');
@@ -105,12 +108,46 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
       setCampoRazon('Numéricos');
       setTipodocumentoRazon('Cédula de Ciudadanía');
     } else {
-      setLongitudminimaRazon(10);
-      setLongitudmaximaRazon(10);
-      setTipocampoRazon('[0-9-]{10,10}');
-      setTipocampovalidacionRazon(/[0-9-]/);
-      setCampoRazon('Numéricos y guion');
-      setTipodocumentoRazon('Nit');
+      if (valor === '2' || valor === '6') {
+        setLongitudminima(4);
+        setLongitudmaxima(16);
+        setTipocampo('[a-zA-Z0-9]{4,16}');
+        setTipocampovalidacion(/[a-zA-Z0-9]/);
+        setCampo('AlfaNuméricos(Numéros y letras)');
+        setTipodocumento('Pasaporte , Cédula de Extranjería');
+
+      } else {
+        if (valor === '3') {
+          setLongitudminimaRazon(10);
+          setLongitudmaximaRazon(11);
+          setTipocampoRazon('[0-9]{10,11}');
+          setTipocampovalidacionRazon(/[0-9]/);
+          setCampoRazon('Numéricos');
+          setTipodocumentoRazon('Tarjeta de Identidad ');
+        }
+        else {
+          if (valor === '4') {
+            setLongitudminimaRazon(6);
+            setLongitudmaximaRazon(18);
+            setTipocampoRazon('[0-9]{6,18}');
+            setTipocampovalidacionRazon(/[0-9]/);
+            setCampoRazon('Numéricos');
+            setTipodocumentoRazon('Permiso Especial de Permanencia');
+          }
+          else {
+            setLongitudminimaRazon(10);
+            setLongitudmaximaRazon(10);
+            setTipocampoRazon('[0-9-]{10,10}');
+            setTipocampovalidacionRazon(/[0-9-]/);
+            setCampoRazon('Numéricos y guion');
+            setTipodocumentoRazon('Nit');
+
+          }
+        }
+
+      }
+
+
     }
   };
 

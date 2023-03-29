@@ -599,8 +599,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     }
   ];
   var tabla2: any[] = [];
-
-  if (obj?.tipodeSolicitud != 'Primera vez' && obj?.tipodeSolicitud != 'Subsanacion') {
+  if (obj?.tipodeSolicitud != 'Primer Registro' && obj?.tipodeSolicitud != 'Subsanacion' && obj?.tipodeSolicitud != undefined) {
     tabla2 = [
       {
         title: 'No. ',

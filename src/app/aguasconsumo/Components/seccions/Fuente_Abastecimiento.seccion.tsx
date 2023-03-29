@@ -515,7 +515,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         maxLength={13}
                         onChange={onChangeFormat}
                         onKeyPress={(event) => {
-                          if (!/[0-9'"°NS]/.test(event.key)) {
+                          if (!/[0-9'"°NS.]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
@@ -552,7 +552,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                         maxLength={13}
                         onChange={onChangeFormatLongitud}
                         onKeyPress={(event) => {
-                          if (!/[0-9'"°EO]/.test(event.key)) {
+                          if (!/[0-9'"°EO.]/.test(event.key)) {
                             event.preventDefault();
                           }
                         }}
