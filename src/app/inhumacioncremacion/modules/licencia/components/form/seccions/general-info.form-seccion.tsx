@@ -132,7 +132,7 @@ export const GeneralInfoFormSeccion: React.FC<IGeneralInfoProps<any>> = (props) 
           />
         </Form.Item>
 
-        <Divider orientation='center'>Información General</Divider>
+        <Divider orientation='right'><span id="texto">Información General</span></Divider>
 
         <Form.Item label='Emergencia Sanitaria' name='causaMuerte'
           initialValue={Emergencia ? 'Si' : 'No'} rules={[{ required: true }]}>

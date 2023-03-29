@@ -1524,6 +1524,7 @@ export const IndividualForm: React.FC<ITipoLicencia> = (props) => {
                     initialValue={date}
                   >
                     <DatepickerComponent
+                      className="date_individual"
                       picker='date'
                       onChange={FechaNacimiento}
                       dateDisabledType='before'

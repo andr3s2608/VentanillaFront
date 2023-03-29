@@ -222,7 +222,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
 
   return (
     <>
-      <Divider orientation='right'>Institución que Certifica el Fallecimiento</Divider>
+      <Divider orientation='right'><span id="texto">Institución que Certifica el Fallecimiento</span></Divider>
       <Form.Item
         label='Tipo de Institución'
         name='instType'
