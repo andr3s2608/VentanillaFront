@@ -1183,8 +1183,8 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   return (
 
     <div className='container-fluid'>
-      <div className='card'>
-        <div className='card-body tarjeta h-100 card_tarjeta' >
+      <div className='card main'>
+        <div className='card-body tarjeta card_tarjeta' >
           <Form form={form} {...layoutItems} layout='horizontal'>
 
             <div className='container'>

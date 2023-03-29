@@ -7,6 +7,7 @@
   display: none;
 }
 
+
 [class^='ant-'],
 [class*='ant-'],
 [class^='ant-'] *,
@@ -30233,6 +30234,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
   .date_individual {
     margin-left: -20px;
   }
+
+
+
 }
 
 .app-navbar-user {
