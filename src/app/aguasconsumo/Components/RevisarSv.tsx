@@ -169,7 +169,8 @@ export const RevisarSv = () => {
 
     await api.AddObservaciones(json, '1');
 
-
+    await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, '6A5913B7-5790-4E11-BF32-D327B98C2E0F',
+      'B1BA9304-C16B-43F0-9AFA-E92D7B7F4DF6');
 
     const supportDocumentsEdit: any[] = [];
     const formData = new FormData();
