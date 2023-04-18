@@ -1214,9 +1214,9 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             </div>
             <div className='container-fluid mt-3'>
               <div className='row'>
-                <div className='col-lg-12 col-md-12 ml-4'>
-                  <div className='info-tramite mt-3 ml-1'>
-                    <p>Bandeja de entrada y gestión</p>
+                <div className='col-lg-12 col-md-12 '>
+                  <div className='info-tramite mt-3'>
+                    <p className="sub">Bandeja de entrada y gestión</p>
                   </div>
                 </div>
               </div>
@@ -1225,8 +1225,8 @@ export const BandejaFuncionarios = (props: IDataSource) => {
             <div className='container-fluid'>
               <div className='row' style={{ marginLeft: '18px' }}>
                 <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
-                  <div id='accordion ' className='mt-3'>
-                    <div className='card'>
+                  <div id='accordion ' className='mt-3 card_first'>
+                    <div className='card' id="card_content">
                       <div className='card-header' id='heading-2'>
                         <h5 className='mb-0'>
                           <a
@@ -1247,7 +1247,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                   {coordinador == 'Coordinador' && (
                     <>
                       <div id='accordion' className='mt-3'>
-                        <div className='card'>
+                        <div className='card' id="card_content">
                           <div className='card-header' id='heading-2'>
                             <h5 className='mb-0'>
                               <a
@@ -1268,7 +1268,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                     </>
                   )}
                 </div>
-                <div className='col-lg-9 col-m-9 col-sm-12 mt-1'>
+                <div className='col-lg-9 col-m-9 col-sm-12 mt-1 section_right'>
                   <div
                     id='collapse-2'
                     className={`${ocultarbandeja == true ? 'expanded' : 'collapsed'} `}

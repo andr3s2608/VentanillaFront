@@ -419,7 +419,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
                 <div className='row'>
                   <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
                     <div id='accordion' className='mt-3'>
-                      <div className='card'>
+                      <div className='card' id="card_content">
                         <div className='card-header' id='heading-2'>
                           <h5 className='mb-0'>
                             <a

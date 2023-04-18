@@ -5099,7 +5099,7 @@ a.ant-btn-sm {
 }
 
 .ant-card-head .ant-tabs-bar {
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid red;
 }
 
 .ant-card-extra {
@@ -18131,7 +18131,7 @@ textarea.ant-input-number {
 .ant-layout.ant-layout-has-sider>.ant-layout,
 .ant-layout.ant-layout-has-sider>.ant-layout-content {
   width: 0;
-  padding-left: 40px !important;
+  padding-left: 30px;
 }
 
 .ant-layout-header,
@@ -30207,6 +30207,17 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-weight: bold;
 }
 
+footer {
+  background-color: #004884;
+  color: #fff;
+}
+
+footer .container {
+  padding: 1rem;
+  margin-top: 5rem;
+}
+
+
 @media (max-width: 767px) {
   .order-1 {
     order: 2;
@@ -30243,4 +30254,44 @@ div.ant-typography-edit-content.ant-typography-rtl {
   white-space: nowrap;
   text-transform: capitalize;
   font-size: 18px;
+}
+
+
+
+
+.sub {
+  margin-left: -15px;
+}
+
+@media (max-width: 767px) {
+  .nav-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 70% !important;
+  }
+
+  .nav-tabs .nav-item {
+    margin-bottom: 8px;
+    width: 291px;
+    margin-left: -20px;
+    text-align: center;
+  }
+
+  .nav-tabs .nav-link {
+    display: flex;
+    justify-content: center;
+  }
+
+  .table_info {
+    width: 100%;
+    max-width: 300px !important;
+    margin-top: 30px !important;
+    margin-left: -20px !important;
+  }
+
+  hr {
+    display: none !important;
+  }
+
 }
