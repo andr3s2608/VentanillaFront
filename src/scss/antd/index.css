@@ -30268,13 +30268,14 @@ footer .container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 70% !important;
+    max-width: 290px !important;
   }
 
   .nav-tabs .nav-item {
     margin-bottom: 8px;
-    width: 291px;
-    margin-left: -20px;
+    width: 252px;
+    max-width: 320px !important;
+    margin-left: -39px;
     text-align: center;
   }
 
@@ -30287,11 +30288,44 @@ footer .container {
     width: 100%;
     max-width: 300px !important;
     margin-top: 30px !important;
-    margin-left: -20px !important;
+    margin-left: -70px !important;
   }
 
   hr {
     display: none !important;
+  }
+
+  #principal_card {
+    height: 1459px !important
+  }
+
+  .ant-table-pagination.ant-pagination {
+    margin-top: 12px !important;
+    margin-left: -60px !important;
+  }
+
+  #card_content {
+    margin-bottom: 8px;
+    width: 252px;
+    max-width: 320px !important;
+    margin-left: -30px;
+    text-align: center;
+  }
+
+  .sub {
+    margin-left: -30px;
+  }
+
+  .filterinput {
+    margin-left: -54px !important;
+  }
+
+  .filtertext {
+    margin-left: -59px !important
+  }
+
+  .actionbtn {
+    margin-left: -30px !important;
   }
 
 }

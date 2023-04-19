@@ -812,6 +812,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
         width: 250,
         align: 'center' as 'center',
 
+
         render: (_: any, row: any, index: any) => {
 
           if (row.tipodeSolicitud === 'Visita de Revision') {
@@ -839,6 +840,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
               return (
                 <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
                   <Button
+                    className='actionbtn'
                     type='primary'
                     key={`vali-${index}`}
                     onClick={() => onClickValidarInformacion(row)}
@@ -1183,7 +1185,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
   return (
 
     <div className='container-fluid'>
-      <div className='card main'>
+      <div className='card main' id="principal_card">
         <div className='card-body tarjeta card_tarjeta' >
           <Form form={form} {...layoutItems} layout='horizontal'>
 
@@ -1325,12 +1327,12 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                           </ul>
                           <div className='tab-content'>
                             <div className='tab-pane active' id='recientes' role='tabpanel'>
-                              <div className='row'>
+                              <div className='row filtertext'>
                                 <div className='col-lg-12 col-sm-12 col-md-12 '>
                                   <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
                                 </div>
                               </div>
-                              <div className="row " style={{ marginLeft: '2px' }}>
+                              <div className="row filterinput" style={{ marginLeft: '2px' }}>
                                 <div className="col-lg-5">
                                   <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
                                     <DatepickerComponent
