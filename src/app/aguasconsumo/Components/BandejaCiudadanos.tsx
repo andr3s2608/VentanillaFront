@@ -387,32 +387,34 @@ export const BandejaCiudadanos = (props: IDataSource) => {
 
   return (
     <div className='container-fluid'>
-      <div className='card'>
-        <div className='card-body tarjeta h-100 card_tarjeta'>
+      <div className='card main' id="principal_card">
+        <div className='card-body tarjeta card_tarjeta h-100'>
           <Form form={form} {...layoutItems} layout='horizontal'>
-            <section className='info-panel'>
-              <div className='container'>
-                <div className='row'>
-                  <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secciones'>
-                      <nav aria-label='breadcrumb' style={{ backgroundColor: '#fff ' }}>
-                        <ol className='breadcrumb'>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Inicio</a>
-                          </li>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Bandeja de entrada</a>
-                          </li>
-                          <li className='breadcrumb-item active' aria-current='page'>
-                            Revisar solicitud
-                          </li>
-                        </ol>
-                      </nav>
-                    </div>
+            <div className='container'>
+              <div className='row mt-2 ml-2'>
+                <div className='col-lg-6 col-sm-12 col-md-6'>
+                  <div className='info-secion'>
+                    <nav aria-label='breadcrumb'>
+                      <ol className='breadcrumb'>
+                        <li className='breadcrumb-item'>
+                          <a href='#' style={{ textDecoration: 'none' }}>
+                            Inicio
+                          </a>
+                        </li>
+                        <li className='breadcrumb-item'>
+                          <a href='#' style={{ textDecoration: 'none' }}>
+                            Bandeja de entrada
+                          </a>
+                        </li>
+                        <li className='breadcrumb-item active' aria-current='page'>
+                          Revisar solicitud
+                        </li>
+                      </ol>
+                    </nav>
                   </div>
                 </div>
               </div>
-            </section>
+            </div>
 
             <section className='inbox'>
               <div className='container'>

@@ -57,7 +57,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
         <div className='container-fluid'>
 
           <div className='row' >
-            <div className='col-lg-12 col-sm-12 col-md-12'>
+            <div className='col-lg-12 col-sm-12 col-md-12 contenedor_principal'>
               <div className='info-tramite mt-2 prueba_tramite'>
                 <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
                   Datos de la solicitud. <br />{' '}
@@ -75,7 +75,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
                 Número de radicado
               </p>
               <div className='form-group gov-co-form-group'>
-                <Form.Item initialValue={obj?.consecutivo} name='numeroradicado' required={false}>
+                <Form.Item className='campo' initialValue={obj?.consecutivo} name='numeroradicado' required={false}>
                   <Input type='text' className='form-control gov-co-form-control' disabled={true} defaultValue={''} />
                 </Form.Item>
               </div>

@@ -1410,7 +1410,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                               </div>
                             </div>
                             <div className='tab-pane' id='solucionados' role='tabpanel'>
-                              <div className='row'>
+                              <div className='row filtertext'>
                                 <div className='col-lg-12 col-sm-12 col-md-12 '>
                                   <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
                                   <div className="row " style={{ marginLeft: '2px' }}>
@@ -1479,7 +1479,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                             {coordinador == 'Coordinador' && (
                               <>
                                 <div className='tab-pane ' id='prueba' role='tabpanel'>
-                                  <div className='row'>
+                                  <div className='row filtertext'>
                                     <div className='col-lg-12 col-sm-12 col-md-12 '>
                                       <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
                                       <div className="row " style={{ marginLeft: '2px' }}>
@@ -1589,7 +1589,7 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                           </ul>
                           <div className='tab-content'>
                             <div className='tab-pane active' id='tabs-1' role='tabpanel'>
-                              <div className='row'>
+                              <div className='row filtertext'>
                                 <div className='col-lg-12 col-sm-12 col-md-12 '>
                                   <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
                                   <div className="row " style={{ marginLeft: '2px' }}>
@@ -1653,28 +1653,30 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                                   />
                                 </div>
                               </div>
-                              <div className='row'>
+                              <div className='row filtertext'>
                                 <div className='col-lg-11 col-md-11 col-sm-12 mt-3'>
-                                  <p className='filtro'>
+                                  <p className='filtro' id="text_content">
                                     <span className='text-danger font-weight-bold mr-1 ml-3 '>*</span> Tipo de notificación
                                   </p>
                                   <div className='form-group gov-co-form-group ml-2'>
                                     <div className='gov-co-dropdown'>
-                                      <select id='selector-simple' className='selectpicker form-control select' title='Escoger'>
+                                      <select id='selector-simple' className='selectpicker form-control select optiongroup' title='Escoger'
+                                        style={{ width: '735px !important;' }}>
                                         <option>Oficio de notificación</option>
                                       </select>
                                     </div>
                                   </div>
                                 </div>
-                                <div className='col-m-12 col-lg-12 col-sm-12 mt-3 ml-2 '>
+                                <div className='col-sm-12 col-lg-12 mt-3 ml-2 filcontent'>
                                   <button
-                                    className='btn btn-default'
+                                    className='btn btn-default btncenter'
                                     style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
                                   >
                                     Notificar
                                   </button>
                                   <button
-                                    className='btn btn-default mr-3'
+                                    id="btnright"
+                                    className='btn btn-default mr-3 btncenter'
                                     style={{ backgroundColor: ' #CBCBCB', float: 'right', marginTop: '25px' }}
                                   >
                                     Ver vista previa
@@ -1683,50 +1685,55 @@ export const BandejaFuncionarios = (props: IDataSource) => {
                               </div>
                             </div>
                             <div className='tab-pane' id='tabs-2' role='tabpanel'>
-                              <div className='row'>
+                              <div className='row filtertext'>
                                 <div className='col-lg-12 col-sm-12 col-md-12 '>
                                   <p className='mt-4 ml-2  filtro'>Filtrar por:</p>
-                                  <div className='form-row ml-7'>
-                                    <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
-                                      <DatepickerComponent
-                                        id='datePicker1'
-                                        picker='date'
-                                        placeholder='Fecha Inicial'
-                                        dateDisabledType='default'
-                                        dateFormatType='default'
-                                        style={{ width: 300 }}
-                                        className='form-control'
-                                        onChange={(date) => {
-                                          setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
-                                        }}
-                                      />
-                                    </Form.Item>
-                                    <br></br>
-                                    <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
-                                      <DatepickerComponent
-                                        id='datePicker2'
-                                        picker='date'
-                                        placeholder='Fecha Final'
-                                        dateDisabledType='default'
-                                        dateFormatType='default'
-                                        style={{ width: 300 }}
-                                        className='form-control'
-                                        onChange={(date) => {
-                                          setDateFin(new Date(moment(date).format('MM/DD/YYYY') + 1));
-                                        }}
-                                      />
-                                    </Form.Item>
-                                    <Form.Item style={{ width: 400 }}>
-                                      <Button
-                                        type='primary'
-                                        key={`filtrarReciente`}
-                                        onClick={() => onClickFiltrar('reciente')}
-                                        style={{ marginRight: '8px' }}
-                                        icon={<CheckOutlined />}
-                                      >
-                                        Filtrar
-                                      </Button>
-                                    </Form.Item>
+                                  <div className="row " style={{ marginLeft: '2px' }}>
+                                    <div className="col-lg-5">
+                                      <Form.Item name='fechainicial' style={{ width: 400 }} initialValue={null}>
+                                        <DatepickerComponent
+                                          id='datePicker1'
+                                          picker='date'
+                                          placeholder='Fecha Inicial'
+                                          dateDisabledType='default'
+                                          dateFormatType='default'
+                                          style={{ width: 300 }}
+                                          className='form-control'
+                                          onChange={(date) => {
+                                            setDateIni(new Date(moment(date).format('MM/DD/YYYY')));
+                                          }}
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                    <div className="col-lg-5">
+                                      <Form.Item name='fechafinal' style={{ width: 400 }} initialValue={null}>
+                                        <DatepickerComponent
+                                          id='datePicker2'
+                                          picker='date'
+                                          placeholder='Fecha Final'
+                                          dateDisabledType='default'
+                                          dateFormatType='default'
+                                          style={{ width: 300 }}
+                                          className='form-control'
+                                          onChange={(date) => {
+                                            setDateFin(new Date(moment(date).format('MM/DD/YYYY')));
+                                          }}
+                                        />
+                                      </Form.Item>
+                                    </div>
+                                    <div className="col-lg-2">
+                                      <Form.Item style={{ width: 400 }}>
+                                        <Button
+                                          type='primary'
+                                          key={`filtrarReciente`}
+                                          onClick={() => onClickFiltrar('reciente')}
+                                          style={{ marginRight: '8px' }}
+                                          icon={<CheckOutlined />}
+                                        >
+                                          Filtrar
+                                        </Button>
+                                      </Form.Item>
+                                    </div>
                                   </div>
                                 </div>
                               </div>

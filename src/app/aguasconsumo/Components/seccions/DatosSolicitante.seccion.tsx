@@ -328,7 +328,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
               <div className='col-lg-6'>
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de Solicitante
+                  <span className='required'>*</span> Tipo de Solicitantes
                 </p>
                 <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
                   <SelectComponent
@@ -357,7 +357,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documento
+                  <span className='required'>*</span> Tipo de documentosx
                 </p>
                 <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
                   <SelectComponent
@@ -372,7 +372,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
-                  <span className='required'>*</span> Número de documento
+                  <span className='required'>*</span> Número de documentos
                 </p>
                 <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
                   <Input
@@ -427,7 +427,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             <div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documento:
+                  <span className='required'>*</span> Tipo de documento:s
                 </p>
                 <Form.Item rules={[{ required: true }]} initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                   name='IDType'
@@ -611,27 +611,30 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
         <section style={{ width: '100%' }}>
           <div className='container-fluid'>
             <div className='form-row' style={{ marginLeft: '-20px' }}>
-              <div className='col-lg-12'>
-                <p className='text'>
-                  <span className='required'>*</span> Tipo de Solicitante
-                </p>
-                <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
-                  <SelectComponent
-                    options={listTipoSolicitante}
-                    onChange={Onchangetipo}
-                    defaultValue={obj?.idTipoPersona ?? 'natural'}
-                    optionPropkey='key'
-                    optionPropLabel='value'
-                    className='mr-5 option'
-                    disabled={true}
-                  />
-                </Form.Item>
+              <div className='col-lg-12 '>
+                <div className='section-input'>
+                  <p className='text'>
+                    <span className='required'>*</span> Tipo de Solicitante
+                  </p>
+                  <Form.Item name='persona' initialValue={obj?.idTipoPersona ?? 'natural'} rules={[{ required: true }]}>
+                    <SelectComponent
+
+                      options={listTipoSolicitante}
+                      onChange={Onchangetipo}
+                      defaultValue={obj?.idTipoPersona ?? 'natural'}
+                      optionPropkey='key'
+                      optionPropLabel='value'
+                      className='mr-5 option'
+                      disabled={true}
+                    />
+                  </Form.Item>
+                </div>
               </div>
             </div>
-            {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
+            {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }} id="option_">
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documento
+                  <span className='required'>*</span> Tipo de documentosx
                 </p>
                 <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
                   <SelectComponent
@@ -644,7 +647,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   />
                 </Form.Item>
               </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' id="option_">
                 <p className='text'>
                   <span className='required'>*</span> Número de documento
                 </p>
@@ -681,7 +684,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   />
                 </Form.Item>
               </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' id="option_">
                 <p className='text'>
                   <span className='required'>*</span> Nombre de la entidad
                 </p>
@@ -699,26 +702,28 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             </div>)}
             <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12'>
-                <p className='text'>
-                  {' '}
-                  <span className='required'>*</span> Tipo de documento:
-                </p>
-                <Form.Item
-                  rules={[{ required: true }]}
-                  initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
-                  name='IDType'
-                >
-                  <SelectComponent
-                    style={{ width: '296px' }}
-                    options={l_tipos_documento}
-                    onChange={cambiodocumento}
-                    optionPropkey='id'
-                    optionPropLabel='descripcion'
-                    disabled={true}
-                  />
-                </Form.Item>
+                <div className="section-input">
+                  <p className='text'>
+                    {' '}
+                    <span className='required'>*</span> Tipo de documentosaa:
+                  </p>
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
+                    name='IDType'
+                  >
+                    <SelectComponent
+                      style={{ width: '296px' }}
+                      options={l_tipos_documento}
+                      onChange={cambiodocumento}
+                      optionPropkey='id'
+                      optionPropLabel='descripcion'
+                      disabled={true}
+                    />
+                  </Form.Item>
+                </div>
               </div>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' id="option_">
                 <p className='text'>
                   <span className='required'>*</span> Número de documento
                 </p>
@@ -758,7 +763,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }} id="option_">
               <div className='col-lg-6 col-dm-6 col-sm-12'>
                 <p className='text'>
                   <span className='required'>*</span> Primer Nombre
@@ -779,7 +784,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   />
                 </Form.Item>
               </div>
-              <div className='col-lg-6 col-dm-6 col-sm-12'>
+              <div className='col-lg-6 col-dm-6 col-sm-12' id="option_">
                 <p className='text'>
                   <span className='text'></span> Segundo Nombre
                 </p>
@@ -801,7 +806,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
             </div>
 
-            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }} id="option_">
               <div className='col'>
                 <p className='text'>
                   <span className='required'>* </span> Primer Apellido
@@ -822,7 +827,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   />
                 </Form.Item>
               </div>
-              <div className='col'>
+              <div className='col' id="option_">
                 <p className='text'>
                   {' '}
                   <span className='text'> </span> Segundo Apellido
@@ -844,7 +849,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }} id="option_">
               <div className='col'>
                 <p className='text'>
                   {' '}
@@ -866,7 +871,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                   />
                 </Form.Item>
               </div>
-              <div className='col'>
+              <div className='col' id="option_">
                 <p className='text'>
                   <span className='text'> </span>
                   Teléfono de Contacto 2
@@ -888,7 +893,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
                 </Form.Item>
               </div>
             </div>
-            <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
+            <div className='form-row mt-4' style={{ marginLeft: '-20px' }} id="option_">
               <div className='col'>
                 <p className='text'>
                   <span className='required'>* </span>

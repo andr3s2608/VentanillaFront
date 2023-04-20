@@ -502,7 +502,7 @@ export const RevisarSg = () => {
                 <div className='row mt'>
                   <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
                     <div className='info-tramite mt-3'>
-                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano</p>
+                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humanos</p>
                     </div>
                   </div>
                 </div>

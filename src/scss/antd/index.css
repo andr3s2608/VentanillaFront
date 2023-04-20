@@ -30286,9 +30286,9 @@ footer .container {
 
   .table_info {
     width: 100%;
-    max-width: 300px !important;
+    max-width: 275px !important;
     margin-top: 30px !important;
-    margin-left: -70px !important;
+    margin-left: -60px !important;
   }
 
   hr {
@@ -30328,4 +30328,66 @@ footer .container {
     margin-left: -30px !important;
   }
 
+  .encabezadosx {
+    margin-top: 20px !important;
+  }
+
+  #text_content {
+    margin: 0 auto !important;
+  }
+
+  .optiongroup {
+    max-width: 240px !important;
+  }
+
+  .btncenter {
+    float: none !important;
+  }
+
+  #btnright {
+    margin-left: 40px;
+  }
+
+  .info-tramite {
+    margin-left: 20px;
+    max-width: 200px;
+  }
+
+  .prueba_tramite {
+    margin-left: -20px;
+    max-width: 200px;
+  }
+
+  .contenedor_principal {
+    margin-left: -38px;
+  }
+
+  .section-input {
+    margin-left: 5px;
+    max-width: 185px;
+  }
+
+  .ant-select-selector {
+    width: 180px !important;
+    margin-left: 10px !important;
+  }
+
+  .ant-form-item-control-input-content {
+    width: 180px !important;
+    margin-left: -10px !important;
+  }
+
+
+  .form-control {
+    width: 180px !important;
+  }
+
+  #direccionCompletaUbicacion {
+    width: 180px;
+    margin-left: -10px !important;
+  }
+
+  .colprueba {
+    margin-right: 950px !important;
+  }
 }

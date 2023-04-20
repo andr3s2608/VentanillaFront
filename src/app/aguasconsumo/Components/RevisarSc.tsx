@@ -191,7 +191,7 @@ export const RevisarSc = () => {
                 <div className='row'>
                   <div className='col-lg-12 col-md-12 mt-3'>
                     <div className='info-tramite'>
-                      <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
+                      <p style={{ marginLeft: '-11px' }}>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
                 </div>
@@ -204,10 +204,10 @@ export const RevisarSc = () => {
                 <div className='row mt-5 ml-2'>
                   <UbicacionPersona form={form} obj={objJson} tipo={objJson.tipodeSolicitud} vista={'revision'} />
                 </div>
-                <div className='row mt-3 '>
-                  <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
+                <div className='row mt-3 justify-content-center'>
+                  <div className='col-lg-8 col-md-12 col-sm-12 mt-4 text-center colprueba'>
                     <Button
-                      className='ml-3 float-right button btn btn-default'
+                      className='ml-3 float-right button btn btn-default send'
                       style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                       type='primary'
                       htmlType='submit'
@@ -216,7 +216,7 @@ export const RevisarSc = () => {
                     </Button>
 
                     <Button
-                      className='mr-3 float-right button btn btn-default'
+                      className='mr-3 float-right button btn btn-default send'
                       type='primary'
                       style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                       onClick={() => {
@@ -227,6 +227,7 @@ export const RevisarSc = () => {
                     </Button>
                   </div>
                 </div>
+
               </div>
             </section>
           </Form>
