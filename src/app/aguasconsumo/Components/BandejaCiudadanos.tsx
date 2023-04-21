@@ -421,10 +421,11 @@ export const BandejaCiudadanos = (props: IDataSource) => {
                 <div className='row'>
                   <div className='col-md-3 col-sm-12 col-lg-3 prueba'>
                     <div id='accordion' className='mt-3'>
-                      <div className='card' id="card_content">
+                      <div className='card' id="card_contents">
                         <div className='card-header' id='heading-2'>
                           <h5 className='mb-0'>
                             <a
+
                               className='bandeja '
                               role='button'
                               data-toggle='collapse'
@@ -443,10 +444,10 @@ export const BandejaCiudadanos = (props: IDataSource) => {
                     <div
                       id='collapse-2'
                     >
-                      <ul className='nav nav-tabs' role='tablist'>
+                      <ul className='nav nav-tabs' role='tablist' id="ulnav">
                         <li className='nav-item encabezados'>
                           <a
-                            className='nav-link active'
+                            className='nav-link active mainnav'
                             data-toggle='tab'
                             onClick={() => resetdata()}
                             href='#tabs-1'
@@ -526,7 +527,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
                                 dataSource={dataInter.length > 0 ? dataInter : data}
                                 columns={structureColumns}
                                 pagination={{ pageSize: Paginas }}
-                                className='table_info'
+                                className='table_infod'
                               />
                             </div>
                           </div>
@@ -593,7 +594,7 @@ export const BandejaCiudadanos = (props: IDataSource) => {
                                 dataSource={dataSolucionado}
                                 columns={structureColumns}
                                 pagination={{ pageSize: Paginas }}
-                                className='table_info'
+                                className='table_infod'
 
                               />
                             </div>

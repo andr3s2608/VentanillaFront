@@ -355,9 +355,9 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             </div>
 
             {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' id="documentype">
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documentosx
+                  <span className='required'>*</span> Tipo de documentobc:
                 </p>
                 <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
                   <SelectComponent
@@ -425,9 +425,9 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             </div>)}
 
             <div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' id="documentype">
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documento:s
+                  <span className='required'>*</span> Tipo de documentodd:
                 </p>
                 <Form.Item rules={[{ required: true }]} initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                   name='IDType'
@@ -634,7 +634,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }} id="option_">
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documentosx
+                  <span className='required'>*</span> Tipo de documentocs
                 </p>
                 <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
                   <SelectComponent
@@ -701,18 +701,21 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
             </div>)}
             <div className='form-row mt-4' style={{ marginLeft: '-20px' }}>
-              <div className='col-lg-6 col-md-6 col-sm-12'>
+              <div className='col-lg-6 col-md-6 col-sm-12' id="documentype">
                 <div className="section-input">
                   <p className='text'>
                     {' '}
-                    <span className='required'>*</span> Tipo de documentosaa:
+                    <span className='required'>*</span> Tipo de documento:
                   </p>
                   <Form.Item
+
+
                     rules={[{ required: true }]}
                     initialValue={obj?.tipoIdentificacion ?? '7c96a4d3-a0cb-484e-a01b-93bc39c2552e'}
                     name='IDType'
                   >
                     <SelectComponent
+                      className='selectcc'
                       style={{ width: '296px' }}
                       options={l_tipos_documento}
                       onChange={cambiodocumento}

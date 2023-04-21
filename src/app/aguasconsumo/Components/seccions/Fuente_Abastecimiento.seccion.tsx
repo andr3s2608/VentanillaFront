@@ -367,9 +367,10 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
             <>
               <div className='form-row' style={{ marginLeft: '-20px', marginRight: '-20px' }}>
                 <div className='col-lg-6 col-sm-12 col-md-6'>
-                  <span className='required'>*</span>Tipo de solicitud de consecion*
+                  <span className='required'>*</span>Tipo de solicitud de consecionxx*
                   <Form.Item name='tipo' initialValue={tiposol ?? 'primera'} rules={[{ required: true }]}>
                     <SelectComponent
+
                       options={[
                         { key: 'primera', value: 'Primera Vez' },
                         { key: 'renovacion', value: 'Renovacion' }
@@ -590,7 +591,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
   } else {
     return (
 
-      <div className='container-fluid'>
+      <div className='container-fluid' id="text_contn">
         <>
           {mostrar && (
             <>

@@ -59,7 +59,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
           <div className='row' >
             <div className='col-lg-12 col-sm-12 col-md-12 contenedor_principal'>
               <div className='info-tramite mt-2 prueba_tramite'>
-                <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                <p className="prueba" style={{ fontSize: '18px', fontWeight: 'bold' }} id="other">
                   Datos de la solicitud. <br />{' '}
                   <small style={{ color: ' #000' }}>
                     <span className='required '>*</span> Campos Obligatorios
@@ -184,7 +184,7 @@ export const DatosSolicitud: React.FC<DatosSolicitud<any>> = (props) => {
             <div className='row' style={{ marginLeft: '5px' }}>
               <div className='col-lg-12 col-sm-12 col-md-12'>
                 <div className='info-tramite mt-2 prueba_tramite'>
-                  <p style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                  <p style={{ fontSize: '18px', fontWeight: 'bold' }} id="other">
                     Datos de la solicitud. <br />{' '}
                     <small style={{ color: ' #000' }}>
                       <span className='required '>*</span> Campos Obligatorios

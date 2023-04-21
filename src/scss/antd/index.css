@@ -30291,6 +30291,14 @@ footer .container {
     margin-left: -60px !important;
   }
 
+  .table_infod {
+    width: 100%;
+    max-width: 275px !important;
+    margin-top: 30px !important;
+    margin-left: -20px !important;
+  }
+
+
   hr {
     display: none !important;
   }
@@ -30367,17 +30375,6 @@ footer .container {
     max-width: 185px;
   }
 
-  .ant-select-selector {
-    width: 180px !important;
-    margin-left: 10px !important;
-  }
-
-  .ant-form-item-control-input-content {
-    width: 180px !important;
-    margin-left: -10px !important;
-  }
-
-
   .form-control {
     width: 180px !important;
   }
@@ -30390,4 +30387,19 @@ footer .container {
   .colprueba {
     margin-right: 950px !important;
   }
+
+  #ulnav {
+    width: 252px;
+    max-width: 300px !important;
+    margin-left: 42px !important;
+  }
+
+  #card_contents {
+    margin-bottom: 8px;
+    width: 252px;
+    max-width: 300px !important;
+    margin-left: 5px;
+    text-align: center;
+  }
+
 }

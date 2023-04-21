@@ -306,7 +306,7 @@ export const RevisarSv = () => {
             <section className='info-panel'>
               <div className='container-fluid'>
                 <div className='row mt-2 ml-2'>
-                  <div className='col-lg-6 col-sm-12 col-md-6'>
+                  <div className='col-lg-6 col-sm-12  col-xs-12 col-md-6'>
                     <div className='info-secion'>
                       <nav aria-label='breadcrumb'>
                         <ol className='breadcrumb'>
@@ -329,8 +329,8 @@ export const RevisarSv = () => {
                   </div>
                 </div>
                 <div className='row mt-5'>
-                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
-                    <div className='info-tramite mt-3 ml-5'>
+                  <div className='col-lg-12 col-md-12 '>
+                    <div className='info-tramite mt-3'>
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humano.</p>
                     </div>
                   </div>
@@ -514,9 +514,10 @@ export const RevisarSv = () => {
                   <CitacionRevision form={form} obj={objJson} tipo={'Funcionario'} prop={AsinarSubred} />
                 </div>
                 <div className='row mt-3 '>
-                  <div className='col-lg-8 col-md-8 col-sm-12 mt-4'>
+                  <div className='col-lg-12 col-md-12 col-sm-12 mt-4'>
                     <div className='accion ml-4'>
                       <Button
+                        id="send"
                         className='ml-3 float-right button btn btn-default'
                         style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
                         type='primary'

@@ -25,14 +25,6 @@
   margin-left: -20px;
 }
 
-.info-tramite {
-  margin-left: 1px !important;
-}
-
-.tramite {
-  margin-left: 21px;
-}
-
 .primera_seccion {
   margin-left: 12px;
 }
@@ -114,6 +106,10 @@
   text-decoration: none;
   font-family: 'Roboto', sans-serif !important;
   margin-top: -25px !important;
+  margin-left: 14px !important;
+}
+
+#accordion {
   margin-left: 14px !important;
 }
 
@@ -341,6 +337,14 @@ a.nav-link.hero_b {
   margin-left: 31px !important;
 }
 
+#texttramite {
+  margin-left: -30px !important;
+}
+
+.accordiondiv {
+  margin-left: -30px !important;
+}
+
 .panel_menu {
   margin-left: 33px !important;
 }
@@ -412,41 +416,61 @@ th>.ant-table-cell {
   max-width: 1200px;
 }
 
-@media only screen and (max-width: 768px) {
-  .breadcrumb {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-bottom: 0;
+@media (max-width: 767px) {
+  .row {
+    margin-top: 1rem;
+    margin-left: 1rem;
   }
 
-  .breadcrumb li {
-    margin-bottom: 0.5rem;
+  .col-lg-6,
+  .col-md-6 {
+    width: 100%;
+  }
+
+  .breadcrumb-item {
+    white-space: nowrap;
+    width: 100%;
+    margin-left: -20px;
   }
 
   .info-tramite p {
-
-    margin-top: 20px;
+    margin-left: -34px;
+    width: 100%;
   }
 
-  .card {
-    width: 1200px;
-    /* establecer el ancho específico para pantallas grandes */
-    margin-left: 0;
-    /* Eliminar el margen izquierdo */
+  #accordion {
+    margin-left: -30px !important;
+    width: 230px !important;
+    font-size: 16px !important;
   }
 
-  #header_card,
-  .card_main {
-    width: 230px;
+  #accordion h5 {
+    font-size: 18px !important;
   }
 
-  .info-tramite {
-    margin-left: 21px !important;
+  .accion {
+    display: flex;
+    width: 100%;
+    margin-left: -15px !important;
   }
 
-  #header_card {
-    margin-left: 21px;
+  #send {
+    margin-right: 10px;
+  }
+
+  #other {
+    margin-left: -3px;
+  }
+
+  .selectcc {
+    width: 171px !important;
+  }
+
+  .personal {
+    width: 171px !important;
+  }
+
+  #text_contn {
+    font-size: 18px !important;
   }
 }
