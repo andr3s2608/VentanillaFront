@@ -910,7 +910,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   <Input
                     style={{ width: '350px', marginLeft: '-46px' }}
                     type='text'
-                    className='form-control gov-co-form-control'
+                    className='form-control gov-co-form-control otherinput'
                     disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {

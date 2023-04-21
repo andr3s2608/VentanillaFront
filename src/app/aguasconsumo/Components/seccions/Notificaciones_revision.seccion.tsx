@@ -398,9 +398,10 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
             </div>
           </Modal>
           <div className='form-row mt-3' style={{ marginLeft: '-120px' }}>
-            <div className='col-lg-6 col-md-6 col-sm-12 mt-2'>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2 colum_not' id="prueba">
               <Button
-                className='ml-3 float-right button btn btn-default'
+                id="button"
+                className='ml-3 float-right button btn btn-default btn_see'
                 style={{
                   backgroundColor: '#CBCBCB',
                   border: '2px solid #CBCBCB',
@@ -413,9 +414,10 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
                 Ver vista previa
               </Button>
             </div>
-            <div className='col-lg-6 col-md-6 col-sm-12 mt-2' style={{ marginLeft: '-240px' }}>
+            <div className='col-lg-6 col-md-6 col-sm-12 mt-2' style={{ marginLeft: '-240px' }} id="prueba">
               <Button
-                className='mr-3 float-right button btn btn-default'
+                id="button"
+                className='mr-3 float-right button btn btn-default colum_nots'
                 type='primary'
                 htmlType='button'
                 disabled={notificado}

@@ -502,6 +502,15 @@ th>.ant-table-cell {
   }
 
   .otherinput {
-    display: none;
+    margin-left: 28px !important;
   }
+
+  #prueba {
+    margin-left: 220px !important;
+  }
+
+  #prueba #button {
+    width: 60% !important;
+  }
+
 }
