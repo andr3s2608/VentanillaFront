@@ -63,6 +63,7 @@ export const CitacionRevision: React.FC<DatosCitacion<any>> = (props) => {
               </p>
               <Form.Item initialValue={modificar ? fecha : null} name='date' rules={[{ required: !modificar }]}>
                 <DatepickerComponent
+                  className='datepickercita'
                   picker='date'
                   dateDisabledType='after'
                   dateFormatType='default'

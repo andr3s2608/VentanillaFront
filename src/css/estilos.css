@@ -473,4 +473,14 @@ th>.ant-table-cell {
   #text_contn {
     font-size: 18px !important;
   }
+
+  .datepickercita {
+    width: 171px !important;
+  }
+
+  .table_info {
+    width: 100%;
+    max-width: 220px !important;
+    margin-top: 30px !important;
+  }
 }
