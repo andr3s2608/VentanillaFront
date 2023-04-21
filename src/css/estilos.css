@@ -483,4 +483,25 @@ th>.ant-table-cell {
     max-width: 220px !important;
     margin-top: 30px !important;
   }
+
+  .table_infod {
+    width: 100%;
+    max-width: 220px !important;
+    margin-top: 30px !important;
+  }
+
+
+  #column_right,
+  #column {
+    width: 100%;
+    margin-left: 5px !important;
+  }
+
+  .inputtext {
+    margin-left: 20px !important;
+  }
+
+  .otherinput {
+    display: none;
+  }
 }

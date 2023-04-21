@@ -447,10 +447,10 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                 <p>
                   Unidades principales que <br />
                   componen el sistema de <br />
-                  mantenimiento.*
+                  mantenimientosaaaa.*
                 </p>
               </div>
-              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }}>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }} id="column">
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox0' rules={[{ required: false }]}>
                     <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} />
@@ -489,7 +489,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   <label>Precloración</label>
                 </div>
               </div>
-              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }} id="column_right">
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox6' rules={[{ required: false }]}>
                     <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} />
@@ -565,7 +565,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                       <Input
                         style={{ width: '200px' }}
                         type='text'
-                        className='form-control gov-co-form-control'
+                        className='form-control gov-co-form-control inputtext'
                         onKeyPress={(event) => {
                           if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                             event.preventDefault();
@@ -610,7 +610,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                       <Input
                         style={{ width: '200px' }}
                         type='text'
-                        className='form-control gov-co-form-control'
+                        className='form-control gov-co-form-control otherinput'
                         onKeyPress={(event) => {
                           if (!/[a-zA-Z0-9 ]/.test(event.key)) {
                             event.preventDefault();
@@ -740,7 +740,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   dataSource={sistema}
                   columns={structureColumns}
                   pagination={{ pageSize: Paginas }}
-                  className='table_info'
+                  className='table_infod'
                 />
                 <br />
               </div>
@@ -753,7 +753,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   mantenimiento.*
                 </p>
               </div>
-              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }}>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '166px' }} id="column">
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox0' rules={[{ required: false }]}>
                     <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[0]} disabled={true} />
@@ -792,7 +792,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   <label>Precloración</label>
                 </div>
               </div>
-              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }}>
+              <div className='col-md-3 col-lg-3 col-sm-12' style={{ marginLeft: '-60px' }} id="column_right">
                 <div className='form-check form-check-inline'>
                   <Form.Item name='checkbox6' rules={[{ required: false }]}>
                     <Input className='form-check-input' onChange={onChange} type='checkbox' checked={lista[6]} disabled={true} />
@@ -867,7 +867,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
                   <Input
                     style={{ width: '350px', marginLeft: '-46px' }}
                     type='text'
-                    className='form-control gov-co-form-control'
+                    className='form-control gov-co-form-control inputtext'
                     disabled={true}
                     onKeyPress={(event) => {
                       if (!/[a-zA-Z0-9 ]/.test(event.key)) {
