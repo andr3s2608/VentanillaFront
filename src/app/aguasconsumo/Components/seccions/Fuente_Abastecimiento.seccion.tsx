@@ -689,7 +689,7 @@ export const DatosFuente: React.FC<DatosFuente<any>> = (props) => {
                   </Form.Item>
                 </div>
                 <div className='col-md-6 col-lg-6 col-sm-12'>
-                  <span className='required'>*</span>Descripción de otra fuente
+                  Descripción de otra fuente
                   <Form.Item name='descripcionotra' initialValue={descripcionotra}>
                     <Input
                       type='text'

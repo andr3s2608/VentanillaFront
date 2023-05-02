@@ -24,8 +24,9 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
   const getListas = useCallback(async () => {
     const array: any[] = [];
-
+    console.log(obj)
     if (obj?.sistematratamientojson !== undefined) {
+
       for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
 
         if (obj.fuenteabastecimientojson[0].tienePlanta === true) {
@@ -60,6 +61,8 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
         });
       }
 
+
+      console.log('aca ' + array)
 
       props.form.setFieldsValue({
         caudaldesign: array[0].caudaldesign + '',
