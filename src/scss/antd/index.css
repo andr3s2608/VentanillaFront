@@ -30274,7 +30274,7 @@ footer .container {
   .nav-tabs .nav-item {
     margin-bottom: 8px;
     width: 252px;
-    max-width: 320px !important;
+    max-width: 223px !important;
     margin-left: -39px;
     text-align: center;
   }
@@ -30314,10 +30314,10 @@ footer .container {
 
   #card_content {
     margin-bottom: 8px;
-    width: 252px;
-    max-width: 320px !important;
+    width: 215px;
+    max-width: 215px !important;
     margin-left: -30px;
-    text-align: center;
+    text-align: left;
   }
 
   .sub {
