@@ -687,7 +687,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <div className='row mt-5' style={{ marginLeft: '-16px' }}>
             <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
               <label className='text'>
-                <span className='required'>* </span> Descripción de otro uso
+                Descripción de otro uso
               </label>
               <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
                 <Input
@@ -881,7 +881,7 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
           <div className='row mt-5' style={{ marginLeft: '-16px' }}>
             <div className='col-lg-6 col-md-6 col-sm-12'>
               <label className='text'>
-                <span className='required'>* </span> Descripción de otro uso
+                Descripción de otro uso
               </label>
               <Form.Item name='descripcionotrouso' initialValue={''} rules={[{ required: false }]}>
                 <Input
