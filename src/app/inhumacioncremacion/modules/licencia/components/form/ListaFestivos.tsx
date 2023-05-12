@@ -101,10 +101,10 @@ export default function ListaFestivos() {
                 imageUrl: fechaGuardada,
                 background: '#fcfcfc',
                 imageHeight: 150,
-                title: 'ACTUALIZACION EXITOSA',
+                title: 'ELIMINACIÓN EXITOSA',
                 confirmButtonColor: '#ec0b0a ',
                 text:
-                  'Se han actualizado los dias festivos'
+                  'Se han eliminado los dias festivos seleccionados'
               });
               setValuesToUpdate([]);
             } else {
@@ -112,14 +112,14 @@ export default function ListaFestivos() {
                 imageUrl: fechaNoAgregada,
                 background: '#fcfcfc',
                 imageHeight: 150,
-                title: 'ACTUALIZACIÓN DENEGADA',
+                title: 'ELIMINACIÓN DENEGADA',
                 confirmButtonColor: '#ec0b0a ',
                 text:
                   'No ha seleccionado ninguna fecha para eliminar.'
               });
             }
           }}>
-            Actualizar
+            Eliminar
           </Button>
         </div>
       </div>
