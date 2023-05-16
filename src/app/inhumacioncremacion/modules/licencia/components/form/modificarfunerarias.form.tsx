@@ -72,70 +72,90 @@ export const ModificarFuneraria = ({ props }: any) => {
     getListas();
   }, []);
 
-  const BuscarCementerio = async () => {
+  const BuscarFunerarias = async () => {
     const funeraria: string = form.getFieldValue('funeraria');
     const id = form.getFieldValue('funerariaid');
 
-    if (funeraria == undefined && (id == undefined || id == '')) {
-      setselecciono(false);
-      Swal.fire({
-        icon: 'error',
-        title: 'Datos inválidos',
-        text: 'Debe seleccionar una funeraria o ingresar un numero de funeraria'
-      });
-    } else {
-      if (valores == 'Name') {
-        const valor: string = funeraria;
-        const all = await api.GetFunerarias();
-
-        const result = all.find((funeraria: any) => funeraria.RAZON_S == valor);
-        if (result) {
-          setFunerariaDatos([
-            result.TIPO_I + '',
-            result.NROIDENT + '',
-            result.DIRECCION + '',
-            result.TELEFONO_1 + '',
-            result.NOMBRE_REP + '',
-            result.TIPO_I_REP + '',
-            result.NROIDENT_REP + '',
-            result.NOMBRE_PROP + '',
-            result.TIPO_I_PROP + '',
-            result.NROIDENT_PROP + '',
-            result.NUM_SALAS + '',
-            result.TELEFONO_2 + ''
-          ]);
-          setselecciono(true);
-          setRazonC(result.RAZON_S + '');
-        }
-      } else {
-        const valor: string = id;
-        const all = await api.GetFunerarias();
-        const result = all.find((funeraria: any) => funeraria.NROIDENT == parseInt(valor));
-        if (result) {
-          setFunerariaDatos([
-            result.TIPO_I + '',
-            result.NROIDENT + '',
-            result.DIRECCION + '',
-            result.TELEFONO_1 + '',
-            result.NOMBRE_REP + '',
-            result.TIPO_I_REP + '',
-            result.NROIDENT_REP + '',
-            result.NOMBRE_PROP + '',
-            result.TIPO_I_PROP + '',
-            result.NROIDENT_PROP + '',
-            result.NUM_SALAS + '',
-            result.TELEFONO_2 + ''
-          ]);
-          setRazonC(result.RAZON_S + '');
-          setselecciono(true);
-        } else {
+      if (valores === 'Name') {
+        if (funeraria === undefined ) {
           setselecciono(false);
           Swal.fire({
             icon: 'error',
             title: 'Datos inválidos',
-            text: 'No se encontró la funeraria solicitada'
+            text: 'Debe seleccionar una funeraria'
           });
         }
+        else
+        {
+          const valor: string = funeraria;
+          const all = await api.GetFunerarias();
+
+          const result = all.find((funeraria: any) => funeraria.RAZON_S === valor);
+          if (result) {
+            setFunerariaDatos([
+              result.TIPO_I + '',
+              result.NROIDENT + '',
+              result.DIRECCION + '',
+              result.TELEFONO_1 + '',
+              result.NOMBRE_REP + '',
+              result.TIPO_I_REP + '',
+              result.NROIDENT_REP + '',
+              result.NOMBRE_PROP + '',
+              result.TIPO_I_PROP + '',
+              result.NROIDENT_PROP + '',
+              result.NUM_SALAS + '',
+              result.TELEFONO_2 + ''
+            ]);
+            setselecciono(true);
+            setRazonC(result.RAZON_S + '');
+          }
+
+        }
+
+
+      } else {
+        if (id === undefined || id === '') {
+          setselecciono(false);
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: 'Debe ingresar un numero de funeraria'
+          });
+        }
+        else
+        {
+          const valor: string = id;
+          const all = await api.GetFunerarias();
+          console.log(parseInt(valor));
+          const result = all.find((funeraria: any) => funeraria.NROIDENT === parseInt(valor));
+
+          if (result) {
+            setFunerariaDatos([
+              result.TIPO_I + '',
+              result.NROIDENT + '',
+              result.DIRECCION + '',
+              result.TELEFONO_1 + '',
+              result.NOMBRE_REP + '',
+              result.TIPO_I_REP + '',
+              result.NROIDENT_REP + '',
+              result.NOMBRE_PROP + '',
+              result.TIPO_I_PROP + '',
+              result.NROIDENT_PROP + '',
+              result.NUM_SALAS + '',
+              result.TELEFONO_2 + ''
+            ]);
+            setRazonC(result.RAZON_S + '');
+            setselecciono(true);
+          } else {
+            setselecciono(false);
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: 'No se encontró la funeraria solicitada'
+            });
+          }
+        }
+
       }
 
       form.resetFields([
@@ -151,16 +171,16 @@ export const ModificarFuneraria = ({ props }: any) => {
         'tiporep',
         'nrorep'
       ]);
-    }
+
   };
 
   const changeRadioButton = (values: any) => {
     setvalores(values.target.value);
-    if (values.target.value + '' == 'Name') {
+    if (values.target.value + '' === 'Name') {
       form.setFieldsValue({ funerariaid: undefined });
     }
 
-    if (values.target.value + '' == 'Id') {
+    if (values.target.value + '' === 'Id') {
       form.setFieldsValue({ funeraria: undefined });
     }
 
@@ -289,7 +309,7 @@ export const ModificarFuneraria = ({ props }: any) => {
 
             <div className='row ml-5 justify-content-center'>
               <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
-                <Button type='primary' onClick={BuscarCementerio}>
+                <Button type='primary' onClick={BuscarFunerarias}>
                   Buscar Funeraria
                 </Button>
               </div>

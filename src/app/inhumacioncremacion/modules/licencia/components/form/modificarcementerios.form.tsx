@@ -48,64 +48,80 @@ export const ModificarCementerio = ({ props }: any) => {
     const cementerio: string = form.getFieldValue('cementerio');
     const id = form.getFieldValue('cementerioid');
 
-    if (cementerio == undefined && (id == undefined || id == '')) {
-      setselecciono(false);
-      Swal.fire({
-        icon: 'error',
-        title: 'Datos inválidos',
-        text: 'Debe seleccionar un cementerio o ingresar un numero de cementerio'
-      });
-    } else {
-      if (valores == 'Name') {
-        const valor: string = cementerio;
-        const all = await api.GetAllcementerios();
-
-        const result = all.find((cementerio: any) => cementerio.RAZON_S == valor);
-        if (result) {
-          setCementerioDatos([
-            result.DIRECCION + '',
-            result.TIPO_I + '',
-            result.NROIDENT + '',
-            result.TELEFONO_1 + '',
-            result.NOMBRE_REP + '',
-            result.TIPO_I_REP + '',
-            result.NROIDENT_REP + '',
-            result.TELEFONO_2 + '',
-            result.CREMACION + ''
-          ]);
-          setselecciono(true);
-          setRazonC(result.RAZON_S + '');
-        }
-      } else {
-        const valor: string = id;
-        const all = await api.GetAllcementerios();
-        const result = all.find((cementerio: any) => cementerio.NROIDENT == parseInt(valor));
-        if (result) {
-          setCementerioDatos([
-            result.DIRECCION + '',
-            result.TIPO_I + '',
-            result.NROIDENT + '',
-            result.TELEFONO_1 + '',
-            result.NOMBRE_REP + '',
-            result.TIPO_I_REP + '',
-            result.NROIDENT_REP + '',
-            result.TELEFONO_2 + '',
-            result.CREMACION + ''
-          ]);
-          setRazonC(result.RAZON_S + '');
-          setselecciono(true);
-        } else {
+      if (valores === 'Name') {
+        if (cementerio === undefined ) {
           setselecciono(false);
           Swal.fire({
             icon: 'error',
             title: 'Datos inválidos',
-            text: 'No se encontró el cementerio solicitado'
+            text: 'Debe seleccionar un cementerio'
           });
         }
+        else
+        {
+          const valor: string = cementerio;
+          const all = await api.GetAllcementerios();
+
+          const result = all.find((cementerio: any) => cementerio.RAZON_S === valor);
+          if (result) {
+            setCementerioDatos([
+              result.DIRECCION + '',
+              result.TIPO_I + '',
+              result.NROIDENT + '',
+              result.TELEFONO_1 + '',
+              result.NOMBRE_REP + '',
+              result.TIPO_I_REP + '',
+              result.NROIDENT_REP + '',
+              result.TELEFONO_2 + '',
+              result.CREMACION + ''
+            ]);
+            setselecciono(true);
+            setRazonC(result.RAZON_S + '');
+          }
+        }
+
+      } else {
+        if (id === undefined || id === '') {
+          setselecciono(false);
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: 'Debe ingresar un numero de cementerio'
+          });
+        }
+        else
+        {
+          const valor: string = id;
+          const all = await api.GetAllcementerios();
+          const result = all.find((cementerio: any) => cementerio.NROIDENT === parseInt(valor));
+          if (result) {
+            setCementerioDatos([
+              result.DIRECCION + '',
+              result.TIPO_I + '',
+              result.NROIDENT + '',
+              result.TELEFONO_1 + '',
+              result.NOMBRE_REP + '',
+              result.TIPO_I_REP + '',
+              result.NROIDENT_REP + '',
+              result.TELEFONO_2 + '',
+              result.CREMACION + ''
+            ]);
+            setRazonC(result.RAZON_S + '');
+            setselecciono(true);
+          } else {
+            setselecciono(false);
+            Swal.fire({
+              icon: 'error',
+              title: 'Datos inválidos',
+              text: 'No se encontró el cementerio solicitado'
+            });
+          }
+        }
+
       }
 
       form.resetFields(['razon', 'direccion', 'telefono', 'nombrerep', 'tiporep', 'nrorep']);
-    }
+
   };
 
   const changeRadioButton = (values: any) => {
@@ -168,22 +184,19 @@ export const ModificarCementerio = ({ props }: any) => {
 
   const Actions = () => (
     <Form.Item {...layoutWrapper}>
-      <div className='container-fluid'>
-        <div className='row justify-content-center text-center'>
-          <div className='col-lg-12 col-sm-12 col-md-12 text-center mr-5'>
+
+        <div className='row col-lg-12 col-sm-12 col-md-12 text-center mr-5 justify-content-center align-content-center  text-center'>
             <Button type='primary' htmlType='submit' className='save'>
               Guardar o Modificar
             </Button>
-          </div>
         </div>
-      </div>
+
     </Form.Item>
   );
 
   return (
     <div className='container-fluid'>
-      <div className='card'>
-        <div className='card-body'>
+
           <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
             <div className='row justify-content-center'>
               <div className='col-lg-12 col-sm-12 col-md-12 justify-content-center text-center'>
@@ -228,16 +241,16 @@ export const ModificarCementerio = ({ props }: any) => {
               </div>
             </div>
 
-            <div className='row ml-5'>
+            <div className='row mt-3 ml-5'>
               <div className='col-lg-12 col-sm-12 col-md-12 text-center'>
                 <Button type='primary' onClick={BuscarCementerio}>
                   Buscar cementerio
                 </Button>
               </div>
             </div>
-
             {selecciono && (
               <>
+                <div className='row col-10'>
                 <Form.Item label='Razon S' initialValue={RazonC} rules={[{ required: true }]} name='razon'>
                   <Input
                     allowClear
@@ -348,12 +361,11 @@ export const ModificarCementerio = ({ props }: any) => {
                 <div>
                   <Actions />
                 </div>
+                </div>
               </>
             )}
           </Form>
         </div>
-      </div>
-    </div>
   );
 };
 interface modificarcementerios {
