@@ -58,7 +58,6 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
   useEffect(() => {
     getListas();
 
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -489,7 +488,7 @@ export const DeathInstituteFormSeccion: React.FC<IDeathInstituteProps<any>> = (p
                   />
                 </Form.Item>
 
-                <Form.Item label='Fecha del oficio' initialValue={moment(obj?.instFechaOficio)} rules={[{ required: true }]} name='fiscaliafechaDC'>
+                <Form.Item label='Fecha del oficio' initialValue={obj?.instFechaOficio == null ? null : moment(obj?.instFechaOficio)} rules={[{ required: true }]} name='fiscaliafechaDC'>
                   <DatepickerComponent picker='date' dateDisabledType='before' dateFormatType='default' />
                 </Form.Item>
               </>
