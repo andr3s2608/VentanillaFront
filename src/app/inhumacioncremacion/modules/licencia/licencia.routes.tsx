@@ -3,6 +3,20 @@ import { lazy } from 'react';
 // Interfaces
 import { IRouteProps } from 'app/shared/components/router/access.route';
 
+/**
+ * Roles en la plataforma
+ */
+
+const rol_ciudadano = '58EDA51F-7E19-47C4-947F-F359BD1FC732';
+const rol_adminFuncional = 'E18D4F05-123A-4290-A1BB-B63E8DD45FDD';
+const rol_adminTI = '1073CD7C-057D-4B02-B770-A849F58FA36A';
+const rol_funcionario = 'EFC7AB5B-5B58-4862-9BB1-4B1E0D7F0243';
+const rol_usuarioDeshabilitado = 'C4D854A5-3654-4B1A-86CC-48535DF9B4E1';
+const rol_Subdirector = '3EA40DA8-99B0-46A9-9F76-32FB5599A8E5';
+const rol_medicinaLegal = '9797BE80-300F-4F18-9C71-0146AF90CB36';
+const rol_coordinador = 'DAD11C31-3709-42CB-BCCE-4B52AE741935';
+
+
 /** Path principal del modulo. */
 export const licenciaPath = '/tramites-servicios/licencia';
 export const RevisionPath = '/tramites-servicios-aguas/Revision';
@@ -69,152 +83,273 @@ export const LicenciaRoutes: IRouteProps[] = [
 
   {
     path: `${tramiteAdmin}/auditoria`,
-    component: SeguimientoPage
+    component: SeguimientoPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${licenciaPath}/cremacion-individual`,
-    component: LicenciaCremacionIndividualPage
+    component: LicenciaCremacionIndividualPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_ciudadano,
+      rol_funcionario,
+      rol_medicinaLegal
+    ]
   },
   {
     path: `${licenciaPath}/gestion-inhumacion`,
-    component: LicenciaPruebaPage
+    component: LicenciaPruebaPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_funcionario
+    ]
   },
   {
     path: `${licenciaPath}/inhumacion-individual`,
-    component: LicenciaInhumacionIndividualPage
+    component: LicenciaInhumacionIndividualPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_ciudadano,
+      rol_funcionario,
+      rol_medicinaLegal
+    ]
   },
   {
     path: `${licenciaPath}/cremacion-fetal`,
-    component: LicenciaCremacionFetalPage
+    component: LicenciaCremacionFetalPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_ciudadano,
+      rol_funcionario,
+      rol_medicinaLegal
+    ],
   },
   {
     path: `${licenciaPath}/inhumacion-fetal`,
-    component: LicenciaInhumacionFetalPage
+    component: LicenciaInhumacionFetalPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_ciudadano,
+      rol_funcionario,
+      rol_medicinaLegal
+    ]
   },
   {
     path: `${tramiteServicePath}`,
-    component: MaestroPage
+    component: MaestroPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_ciudadano,
+      rol_funcionario,
+      rol_medicinaLegal
+    ]
   },
   {
     path: `${tramiteServiceReport}/funeraria`,
-    component: ReportesFuneraria
+    component: ReportesFuneraria,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${tramiteServiceReport}/rayosx`,
-    component: ReportPage
+    component: ReportPage,
+    rol: [""]
   },
   {
     path: `${tramiteAdmin}/firmas`,
-    component: AdministrationFirmasPage
+    component: AdministrationFirmasPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${tramiteAdmin}/gestion-variables`,
-    component: AdministrationHorarioPage
+    component: AdministrationHorarioPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${tramiteAdmin}/notificacion`,
-    component: AdministrationNotificacionPage
+    component: AdministrationNotificacionPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${tramiteAdmin}/reporte`,
-    component: AdministrationReportePage
+    component: AdministrationReportePage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${updatepath}/licencia`,
-    component: ModificarLicenciaPage
+    component: ModificarLicenciaPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${updatepath}/licencia-Oracle`,
-    component: ModificarLicenciaOraclePage
+    component: ModificarLicenciaOraclePage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   //cambiar tipo de licencias
   {
     path: `${updatepath}/Cambiar-Tipo-Licencia-Individual`,
-    component: CambiarTipoLicenciaIndividualPage
+    component: CambiarTipoLicenciaIndividualPage,
+    rol: [
+      rol_ciudadano,
+      rol_medicinaLegal
+    ]
   },
   {
     path: `${updatepath}/Cambiar-Tipo-Licencia-Fetal`,
-    component: CambiarTipoLicenciaFetalPage
+    component: CambiarTipoLicenciaFetalPage,
+    rol: [
+      rol_ciudadano,
+      rol_medicinaLegal
+    ]
   },
   //actualizar datos de solicitudes
   {
     path: `${updatepath}/Actualizar-Datos-Individual`,
-    component: ModificarLicenciaIndividualPage
+    component: ModificarLicenciaIndividualPage,
+    rol: [
+      rol_ciudadano,
+      rol_medicinaLegal
+    ]
   },
   {
     path: `${updatepath}/Actualizar-Datos-Fetal`,
-    component: ModificarLicenciaFetalPage
+    component: ModificarLicenciaFetalPage,
+    rol: [
+      rol_ciudadano,
+      rol_medicinaLegal
+    ]
   },
   ///////
   {
     path: `${updatepath}/funerarias`,
-    component: ModificarFunerariasPage
+    component: ModificarFunerariasPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${updatepath}/cementerios`,
-    component: ModificarCementeriosPage
+    component: ModificarCementeriosPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${updatepath}/medicos`,
-    component: ModificarMedicosPage
+    component: ModificarMedicosPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI
+    ]
   },
   {
     path: `${validaciondoc}`,
-    component: ValidarDocumentPage
+    component: ValidarDocumentPage,
+    rol: [
+      rol_adminFuncional,
+      rol_adminTI,
+      rol_ciudadano,
+      rol_funcionario,
+      rol_medicinaLegal
+    ]
   },
   /////////Aguas//////
   {
     path: `/reportes-aguas`,
-    component: ReportesAguas
+    component: ReportesAguas,
+    rol: [""]
   },
   {
     path: `${tramiteServiceAguasPath}`,
-    component: BandejaAguas
+    component: BandejaAguas,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/revisar-solicitud`,
-    component: RevisarCoordinador
+    component: RevisarCoordinador,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/gestionar-solicitud`,
-    component: RevisarGestion
+    component: RevisarGestion,
+    rol: [""]
   },
 
   {
     path: `${notificacion}`,
-    component: NotificacionUsuario
+    component: NotificacionUsuario,
+    rol: [""]
   },
   {
     path: `${notificacion}/Bandeja`,
-    component: NotificacionBandeja
+    component: NotificacionBandeja,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/Crear-Solicitud`,
-    component: CrearSolicitud
+    component: CrearSolicitud,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/visita-revision`,
-    component: VisitaRevision
+    component: VisitaRevision,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/primera-vez`,
-    component: CrearSolicitud
+    component: CrearSolicitud,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/segunda-vez`,
-    component: SegundaVez
+    component: SegundaVez,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/renovacion-primera-vez`,
-    component: RenovacionPrimeraVez
+    component: RenovacionPrimeraVez,
+    rol: [""]
   },
   {
     path: `${RevisionPath}/renovacion-segunda-vez`,
-    component: RenovacionSegundaVez
+    component: RenovacionSegundaVez,
+    rol: [""]
   },
   // SST
   {
     path: `${licenciaSSTPath}`,
-    component: TramiteSST
+    component: TramiteSST,
+    rol: [""]
   },
 ];

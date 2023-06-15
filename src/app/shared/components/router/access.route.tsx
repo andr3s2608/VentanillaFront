@@ -87,4 +87,5 @@ export const AccessRoute: React.FC<IRouteProps> = (props) => {
 
 export interface IRouteProps extends RouteProps {
   ignoreGuards?: boolean;
+  rol: string[];
 }

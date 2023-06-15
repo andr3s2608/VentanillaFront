@@ -92,7 +92,6 @@ export const ModuleLayout = (props: { logout: () => void }) => {
         setPrimerApellido(infouser.primerApellido.toLocaleUpperCase());
       }
 
-
       //Hasta que se publiquen las APIs
 
       const politicaSeguridad = await api.getPoliticaSeguridad(idUsuario);
