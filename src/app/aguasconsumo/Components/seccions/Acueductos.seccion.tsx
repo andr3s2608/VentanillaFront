@@ -789,7 +789,6 @@ export const DatosAcueducto: React.FC<DatosAcueducto<any>> = (props) => {
         <div className='container-fluid'>
           <div className='row mt-5' style={{ marginLeft: '-16px' }}>
             <div className='col-lg-6 col-md-6 col-sm-12'>
-              <label className='text'>vereda
                 <span className='required'>* </span> Departamento
               </label>
               <Form.Item name='departamento' initialValue={idDepartamentoBogota} rules={[{ required: false }]}>
