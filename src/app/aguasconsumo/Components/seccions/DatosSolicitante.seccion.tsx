@@ -357,7 +357,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
             {!tipoSolicitante && (<div className='form-row mt-4' style={{ marginLeft: '-18px' }}>
               <div className='col-lg-6 col-md-6 col-sm-12' id="documentype">
                 <p className='text'>
-                  <span className='required'>*</span> Tipo de documentobc:
+                  <span className='required'>*</span> Tipo de documento
                 </p>
                 <Form.Item initialValue={obj?.tipoDocumentoRazon ?? 5} rules={[{ required: true }]} name='IDTypeRazon'>
                   <SelectComponent
@@ -372,7 +372,7 @@ export const DatosSolicitante: React.FC<DatosSolicitante<any>> = (props) => {
               </div>
               <div className='col-lg-6 col-md-6 col-sm-12'>
                 <p className='text'>
-                  <span className='required'>*</span> Número de documentos
+                  <span className='required'>*</span> Número de documento
                 </p>
                 <Form.Item initialValue={obj?.nit} rules={[{ required: true }]} name='IDNumberRazon'>
                   <Input

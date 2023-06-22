@@ -46,6 +46,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
   const NO_CUMPLE_DOCUMENT = 'No Cumple';
 
   const [mostrar, setmostrar] = useState<boolean>(false);
+  const [editable, seteditable] = useState<boolean>(false);
   const [acueducto, setacueductos] = useState<any[]>([]);
   const [observacionvalidador, setobservacion] = useState<any>();
 
@@ -100,13 +101,13 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         let docsubsanar = 0;
         for (let index = 0; index < filter.length; index++) {
           for (let index2 = 0; index2 < documentosrechazados.length; index2++) {
-
             if (documentosrechazados[index2].idDocumentoAdjunto === filter[index].idDocumentoAdjunto) {
               docsubsanar++;
               break;
             }
           }
         }
+
 
         setrechazadosfaltantes(docsubsanar);
 
@@ -140,6 +141,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
         }
 
         let observaciones = await api.getObservacionesDocumento(obj.idsolicitud)
+
         for (let index = 0; index < observaciones.length; index++) {
           if (documentoreciente.idDocumentoAdjunto === observaciones[index].idDocumentoSoporte) {
 
@@ -270,6 +272,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
       }
 
       cargardatos();
+      if (obj.idtipodeSolicitud != "d33fbb9c-9f47-4015-bbe6-96ff43f0dde4") {
+        seteditable(true);
+      }
 
       setmostrar(true);
 
@@ -469,11 +474,9 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
     return posicionform;
   };
 
-  let editable = false;
 
-  if (obj.idtipodeSolicitud != "d33fbb9c-9f47-4015-bbe6-96ff43f0dde4") {
-    editable = true;
-  }
+
+
 
 
   const onClickValidarInformacion = (datos: any) => {
@@ -795,7 +798,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
 
 
             <div className='row ' >
-              <div className={`col-lg-12  col-md-12 ${tipo === 'gestion' ? 'col-xl-6' : 'col-xl-12'}  col-sm-12  ml-2`}>
+              <div className={`col-lg-12  col-md-12 'col-xl-12'  col-sm-12  ml-2`}>
                 <Table
                   scroll={{ x: 500 }}
                   id='tableGen2'
@@ -813,7 +816,7 @@ export const DatosDocumentos: React.FC<DatosDocumentos<any>> = (props) => {
                 <div className='col-lg-12 col-md-12 col-sm-12' >
                   <label htmlFor=''>Observaciones</label>
                   <Form.Item label='' name='observacionesSubsanacion' initialValue={(obj?.tipodeSolicitud === 'Gestion Coordinador' ?
-                    observacionvalidador : (obj?.tipodeSolicitud === 'Gestion Subdirector' ? observacionvalidador : null)
+                    observacionvalidador : (obj?.tipodeSolicitud === 'Gestion Subdirector' ? observacionvalidador : '')
                   )}>
                     <Input.TextArea rows={5} maxLength={500} className='textarea' disabled={editable}
                     />

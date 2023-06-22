@@ -1,38 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import logo from '../../../../src/assets/images/aguas/alcadia.png';
 import '../../../css/estilos.css';
 import profile from '../../../../src/assets/images/aguas/profile.png';
-import { Button, Modal } from 'antd';
-import { useHistory } from 'react-router';
-import { Form, Input } from 'antd';
-import { DatosFuente } from './seccions/Fuente_Abastecimiento.seccion';
-import { DatosSolicitante } from './seccions/DatosSolicitante.seccion';
-import { layoutItems } from '../../shared/utils/form-layout.util';
-import { useStepperForm } from '../../shared/hooks/stepper.hook';
-import { DatosAcueducto } from './seccions/Acueductos.seccion';
-import { DocumentacionAsociada } from './seccions/Documentacion_Asociada';
-import { DatosAdicionales } from './seccions/Informacion_Adicional.seccion';
-import { DatosDocumentos } from './seccions/Documentos.seccion';
-import { authProvider } from 'app/shared/utils/authprovider.util';
-import { ApiService } from 'app/services/Apis.service';
-import { EditAguas } from './edit/Aguas';
-import { TipoNotificacion } from './seccions/Notificaciones_revision.seccion';
-import { DatosSolicitud } from './seccions/Datos_Solicitud.seccion';
-import { SelectComponent } from 'app/shared/components/inputs/select.component';
-import { store } from 'app/redux/app.reducers';
+import {Button, Modal} from 'antd';
+import {useHistory} from 'react-router';
+import {Form, Input} from 'antd';
+import {DatosFuente} from './seccions/Fuente_Abastecimiento.seccion';
+import {DatosSolicitante} from './seccions/DatosSolicitante.seccion';
+import {layoutItems} from '../../shared/utils/form-layout.util';
+import {useStepperForm} from '../../shared/hooks/stepper.hook';
+import {DatosAcueducto} from './seccions/Acueductos.seccion';
+import {DocumentacionAsociada} from './seccions/Documentacion_Asociada';
+import {DatosAdicionales} from './seccions/Informacion_Adicional.seccion';
+import {DatosDocumentos} from './seccions/Documentos.seccion';
+import {authProvider} from 'app/shared/utils/authprovider.util';
+import {ApiService} from 'app/services/Apis.service';
+import {EditAguas} from './edit/Aguas';
+import {TipoNotificacion} from './seccions/Notificaciones_revision.seccion';
+import {DatosSolicitud} from './seccions/Datos_Solicitud.seccion';
+import {SelectComponent} from 'app/shared/components/inputs/select.component';
+import {store} from 'app/redux/app.reducers';
 import Swal from 'sweetalert2';
-import { IObservaciones } from './Models/IObservaciones';
+import {IObservaciones} from './Models/IObservaciones';
+import {content} from '@syncfusion/ej2-react-grids';
 
 export const RevisarSg = () => {
   const [form] = Form.useForm<any>();
-  const { setStatus } = useStepperForm<any>(form);
+  const {setStatus} = useStepperForm<any>(form);
   const history = useHistory();
   const [documentos, setdocumentos] = useState<any[]>([]);
   const [rol, setrol] = useState<any>();
   const [vistaPrevia, setVistaPrevia] = useState<boolean>(true);
   const [usuarionotificado, setusuarionotificado] = useState<boolean>(false);
+  const [subasanacion, setsubsanacion] = useState<boolean>(false);
   const [estados, setl_estados] = useState<any[]>([]);
-  const { accountIdentifier } = authProvider.getAccount();
+  const {accountIdentifier} = authProvider.getAccount();
   const api = new ApiService(accountIdentifier);
   const [urlPdfLicence, setUrlPdfLicence] = useState<any>('');
   const [isModalVisiblePdf, setIsModalVisiblePdf] = useState(false);
@@ -61,8 +63,11 @@ export const RevisarSg = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const notificado = () => {
+  const notificado = (tipo: any) => {
     setusuarionotificado(true);
+    if (tipo === 'Notificación de subsanación') {
+      setsubsanacion(true);
+    }
   };
 
   function formatDate(inputDate: Date): string {
@@ -87,7 +92,7 @@ export const RevisarSg = () => {
   const onSubmit = async (values: any) => {
 
     /** tener mucho ojo con este sección de código */
-    const { seguimientoDocumentos } = store.getState();
+    const {seguimientoDocumentos} = store.getState();
     let observaciones: any = [];
     if (seguimientoDocumentos && seguimientoDocumentos.length > 0) {
       let subsanacion = false;
@@ -126,6 +131,7 @@ export const RevisarSg = () => {
     }
 
     let tiposolicitud: string = values.notificacion;
+
     let notificacion = '';
     let estadosolicitud = '';
 
@@ -159,233 +165,239 @@ export const RevisarSg = () => {
 
     }
 
-    if (rol === 'Coordinador') {
-      if (tiposolicitud === '') {
-        tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
-        estadosolicitud = '6A5913B7-5790-4E11-BF32-D327B98C2E0F';
-      }
 
 
-      const json: IObservaciones<any> = {
-
-        idSolicitud: objJson.idsolicitud,
-        idTipoSolicitud: tiposolicitud,
-        observaciones: observaciones,
-
-        citacion: {
-          idCitacion: '00000000-0000-0000-0000-000000000000',
-          fechaCitacion: '',
-          observacion: 'No_aplica',
-          fechaRegistro: '',
-          idSolicitud: objJson.idsolicitud,
-          idUsuario: '00000000-0000-0000-0000-000000000000'
+      if (rol === 'Coordinador') {
+        if (tiposolicitud === '') {
+          tiposolicitud = '5290025A-0967-417A-9737-FA5EAE85D97B';
+          estadosolicitud = '6A5913B7-5790-4E11-BF32-D327B98C2E0F';
         }
 
-      };
 
-      await api.AddObservaciones(json, '0');
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
-    }
+        const json: IObservaciones<any> = {
 
-    if (rol === 'Subdirector') {
-
-      const typeNotificationSeleted = values.seguimiento.toLocaleUpperCase();
-      let observacionbd = '';
-      switch (typeNotificationSeleted) {
-        /** Para el caso que seleccione Aprobada */
-        case '2E8808AF-A294-4CDE-8E9C-9A78B5172119':
-          notificacion = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
-          observacionbd = 'autorización tramite'
-          break;
-
-        /** Para el caso que seleccione Desistimiento */
-        case '7E2EAA50-F22F-4798-840D-5B98048D38A9':
-          notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
-          observacionbd = 'Desistimiento'
-          break;
-
-        /** Para el caso que seleccione Subsanación */
-        case '96D00032-4B60-4027-AFEA-0CC7115220B4':
-          notificacion = '8B6AB818-A560-4825-8C82-2CF4B9C58914';
-          observacionbd = 'Subsanacion'
-          break;
-
-        /** Para el caso que seleccione No aprobado */
-        case '2A31EB34-2AA0-428B-B8EF-A86683D8BB8D':
-          notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
-          observacionbd = 'No aprobado'
-          break;
-      }
-
-      observaciones.push(
-        {
-          idObservacion: '00000000-0000-0000-0000-000000000000',
           idSolicitud: objJson.idsolicitud,
-          idSubred: objJson.idSubred,
-          observacion: observacionbd,
-          fechaObservacion: null
-        }
-      )
+          idTipoSolicitud: tiposolicitud,
+          observaciones: observaciones,
 
-
-      const json: IObservaciones<any> = {
-
-        idSolicitud: objJson.idsolicitud,
-        idTipoSolicitud: '2ED2F440-E976-4D92-B315-03276D9812F0',
-        observaciones: observaciones,
-
-        citacion: {
-          idCitacion: '00000000-0000-0000-0000-000000000000',
-          fechaCitacion: '',
-          observacion: 'No_aplica',
-          fechaRegistro: '',
-          idSolicitud: objJson.idsolicitud,
-          idUsuario: '00000000-0000-0000-0000-000000000000'
-        }
-
-      };
-
-
-      await api.AddObservaciones(json, '0');
-
-      await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, typeNotificationSeleted, '2ED2F440-E976-4D92-B315-03276D9812F0');
-    }
-
-
-
-    const supportDocumentsEdit: any[] = [];
-    const formData = new FormData();
-
-    let date: Date = new Date();
-
-    if (documentos.length > 0) {
-
-      documentos.forEach((item: any, i: number) => {
-        if (documentos[i] != undefined) {
-          const archivo = documentos[i];
-
-          formData.append('file', archivo.archivo);
-          formData.append('nameFile', 'Documentos_Asociados' + '_' + objJson.idsolicitud);
-
-          supportDocumentsEdit.push({
+          citacion: {
+            idCitacion: '00000000-0000-0000-0000-000000000000',
+            fechaCitacion: '',
+            observacion: 'No_aplica',
+            fechaRegistro: '',
             idSolicitud: objJson.idsolicitud,
-            idTipoDocumentoAdjunto: '96D00032-4B60-4027-AFEA-0CC7115220B4',
-            path: `${objJson.idusuario}/Documentos_Asociados_${objJson.idsolicitud}`,
-            idUsuario: objJson.idusuario,
-            idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
-            esValido: true
-          });
-        }
-      });
+            idUsuario: '00000000-0000-0000-0000-000000000000'
+          }
 
-      formData.append('containerName', 'aguahumanos');
-      formData.append('oid', objJson.idusuario);
+        };
 
-      await api.uploadFiles(formData);
-      await api.AddSupportDocumentsAguas(supportDocumentsEdit);
-    }
-
-
-    if (notificacion != '') {
-      const formato = await api.getFormatoAguas(notificacion);
-
-      const control: string = formato['asuntoNotificacion'];
-      switch (control) {
-        case 'Notificación de Desistimiento':
-          await api.sendEmail({
-            to: objJson.correoElectronico,
-            subject: 'Notificación de Desistimiento',
-            body: formato['cuerpo']
-          });
-          break;
-        case 'Notificación de subsanación':
-          await api.sendEmail({
-            to: objJson.correoElectronico,
-            subject: 'Notificación de subsanación',
-            body: formato['cuerpo']
-          });
-          break;
-
-        case 'Notificación Aprobación al Ciudadano':
-
-
-          const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
-          const emailCoordinadora = await api.getConstantesAguas('A508580A-1AE8-452E-A9D4-017DB0FDA188');
-
-          await api.sendEmailAttachment({
-            to: objJson.correoElectronico + ',' + emailCoordinadora['valorConstante'],
-            subject: 'Notificación Aprobación al Ciudadano',
-            body: agregarValoresDinamicos(
-              formato['cuerpo'],
-              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
-              [
-                objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                "numero de resolucion",//objJson.renovafuentejson[0].numeroResolucion,
-                formatDate(date)//objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
-              ]
-            ),
-            attachment: certificado,
-            AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
-          });
-
-          let autoridadesAmbientales: IAutoridadAmbientalDTO[] = await api.getAutoridadAmbiental();
-          let autoridadAmbiental = autoridadesAmbientales.find(aa => aa.idAutoridadAmbiental == objJson.fuenteabastecimientojson[0].idAutoridadAmbiental);
-          const formatoAutoridad = await api.getFormatoAguas("5A5076F6-7646-409E-A8CC-8CF8AAD60272");
-
-
-          await api.sendEmailAttachment({
-            to: autoridadAmbiental?.correo,
-            subject: 'Notificación Aprobación Autoridad Ambiental',
-            body: agregarValoresDinamicos(
-              formatoAutoridad['cuerpo'],
-              ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
-              [
-                objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
-                "numero de resolucion",//obj.renovafuentejson[0].numeroResolucion,
-                formatDate(date)
-              ]
-            ),
-            attachment: certificado,
-            AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
-          });
-          Swal.fire({
-            icon: 'success',
-            title: 'Notificación exitosa',
-            text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
-          });
-
-          const urlToFile = async (url: string, filename: string, mimeType: any) => {
-            const res = await fetch(url);
-            const buf = await res.arrayBuffer();
-            return new File([buf], filename, { type: mimeType });
-          };
-
-          (async () => {
-            const file = await urlToFile('data:application/pdf;base64,' + certificado, 'resolucion', 'application/pdf');
-
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append(
-              'nameFile',
-              'RESOLUCION_' + 'N°' + objJson.numeroradicado
-            );
-            formData.append('containerName', "aguahumanos");
-            formData.append('oid', objJson.idusuario);
-            await api.uploadFiles(formData);
-            //console.log(file);
-          })();
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Trámite aprobado',
-            text: 'Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano ' + objJson.primerNombre + ' ' + objJson.primerApellido + ', y a la autoridad ambiental ' + autoridadAmbiental?.nombre
-          });
-          break;
+        await api.AddObservaciones(json, '0');
+        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, estadosolicitud, tiposolicitud);
       }
-    }
 
-    history.push('/tramites-servicios-aguas');
-    localStorage.removeItem('register');
+      if (rol === 'Subdirector') {
+
+        const typeNotificationSeleted = values.seguimiento.toLocaleUpperCase();
+        let observacionbd = '';
+        switch (typeNotificationSeleted) {
+          /** Para el caso que seleccione Aprobada */
+          case '2E8808AF-A294-4CDE-8E9C-9A78B5172119':
+            notificacion = 'BFF184AD-107F-4ACD-8891-A0AF34793C0A';
+            observacionbd = 'autorización tramite'
+            break;
+
+          /** Para el caso que seleccione Desistimiento */
+          case '7E2EAA50-F22F-4798-840D-5B98048D38A9':
+            notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
+            observacionbd = 'Desistimiento'
+            break;
+
+          /** Para el caso que seleccione Subsanación */
+          case '96D00032-4B60-4027-AFEA-0CC7115220B4':
+            notificacion = '8B6AB818-A560-4825-8C82-2CF4B9C58914';
+            observacionbd = 'Subsanacion'
+            break;
+
+          /** Para el caso que seleccione No aprobado */
+          case '2A31EB34-2AA0-428B-B8EF-A86683D8BB8D':
+            notificacion = '655456F2-1B4D-4027-BE41-F9CE786B5380';
+            observacionbd = 'No aprobado'
+            break;
+        }
+
+        observaciones.push(
+          {
+            idObservacion: '00000000-0000-0000-0000-000000000000',
+            idSolicitud: objJson.idsolicitud,
+            idSubred: objJson.idSubred,
+            observacion: observacionbd,
+            fechaObservacion: null
+          }
+        )
+
+
+        const json: IObservaciones<any> = {
+
+          idSolicitud: objJson.idsolicitud,
+          idTipoSolicitud: '2ED2F440-E976-4D92-B315-03276D9812F0',
+          observaciones: observaciones,
+
+          citacion: {
+            idCitacion: '00000000-0000-0000-0000-000000000000',
+            fechaCitacion: '',
+            observacion: 'No_aplica',
+            fechaRegistro: '',
+            idSolicitud: objJson.idsolicitud,
+            idUsuario: '00000000-0000-0000-0000-000000000000'
+          }
+
+        };
+
+
+        await api.AddObservaciones(json, '0');
+
+        await api.CambiarEstadoSolicitudAguas(objJson.idsolicitud, typeNotificationSeleted, '2ED2F440-E976-4D92-B315-03276D9812F0');
+      }
+
+
+      const supportDocumentsEdit: any[] = [];
+      const formData = new FormData();
+
+      let date: Date = new Date();
+
+      if (documentos.length > 0) {
+
+        documentos.forEach((item: any, i: number) => {
+          if (documentos[i] != undefined) {
+            const archivo = documentos[i];
+
+            formData.append('file', archivo.archivo);
+            formData.append('nameFile', 'Documentos_Asociados' + '_' + objJson.idsolicitud);
+
+            supportDocumentsEdit.push({
+              idSolicitud: objJson.idsolicitud,
+              idTipoDocumentoAdjunto: '96D00032-4B60-4027-AFEA-0CC7115220B4',
+              path: `${objJson.idusuario}/Documentos_Asociados_${objJson.idsolicitud}`,
+              idUsuario: objJson.idusuario,
+              idDocumentoAdjunto: '00000000-0000-0000-0000-000000000000',
+              esValido: true
+            });
+          }
+        });
+
+        formData.append('containerName', 'aguahumanos');
+        formData.append('oid', objJson.idusuario);
+
+        await api.uploadFiles(formData);
+        await api.AddSupportDocumentsAguas(supportDocumentsEdit);
+      }
+
+
+      if (notificacion != '') {
+        if(!usuarionotificado)
+        {
+
+        const formato = await api.getFormatoAguas(notificacion);
+
+        const control: string = formato['asuntoNotificacion'];
+        switch (control) {
+          case 'Notificación de Desistimiento':
+            await api.sendEmail({
+              to: objJson.correoElectronico,
+              subject: 'Notificación de Desistimiento',
+              body: formato['cuerpo']
+            });
+            break;
+          case 'Notificación de subsanación':
+            await api.sendEmail({
+              to: objJson.correoElectronico,
+              subject: 'Notificación de subsanación',
+              body: formato['cuerpo']
+            });
+            break;
+
+          case 'Notificación Aprobación al Ciudadano':
+
+
+            const certificado = await api.getCertificadoAguas(objJson.idsolicitud);
+            const emailCoordinadora = await api.getConstantesAguas('A508580A-1AE8-452E-A9D4-017DB0FDA188');
+
+            await api.sendEmailAttachment({
+              to: objJson.correoElectronico + ',' + emailCoordinadora['valorConstante'],
+              subject: 'Notificación Aprobación al Ciudadano',
+              body: agregarValoresDinamicos(
+                formato['cuerpo'],
+                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+                [
+                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                  'numero de resolucion',//objJson.renovafuentejson[0].numeroResolucion,
+                  formatDate(date)//objJson.renovafuentejson[0].fechaResolucion.substring(0, 10)
+                ]
+              ),
+              attachment: certificado,
+              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+            });
+
+            let autoridadesAmbientales: IAutoridadAmbientalDTO[] = await api.getAutoridadAmbiental();
+            let autoridadAmbiental = autoridadesAmbientales.find(aa => aa.idAutoridadAmbiental == objJson.fuenteabastecimientojson[0].idAutoridadAmbiental);
+            const formatoAutoridad = await api.getFormatoAguas('5A5076F6-7646-409E-A8CC-8CF8AAD60272');
+
+
+            await api.sendEmailAttachment({
+              to: autoridadAmbiental?.correo,
+              subject: 'Notificación Aprobación Autoridad Ambiental',
+              body: agregarValoresDinamicos(
+                formatoAutoridad['cuerpo'],
+                ['~:~sistema-abastecimiento~:~', '~:~numero-resolucion~:~', '~:~fecha~:~'],
+                [
+                  objJson.fuenteabastecimientojson[0].nombrefuenteabastecimiento,
+                  'numero de resolucion',//obj.renovafuentejson[0].numeroResolucion,
+                  formatDate(date)
+                ]
+              ),
+              attachment: certificado,
+              AttachmentTitle: 'Autorización sanitaria para el tratamiento de aguas.pdf'
+            });
+            Swal.fire({
+              icon: 'success',
+              title: 'Notificación exitosa',
+              text: `Se ha realizado la notificación Aprobación Autoridad Ambiental`
+            });
+
+            const urlToFile = async (url: string, filename: string, mimeType: any) => {
+              const res = await fetch(url);
+              const buf = await res.arrayBuffer();
+              return new File([buf], filename, {type: mimeType});
+            };
+
+            (async () => {
+              const file = await urlToFile('data:application/pdf;base64,' + certificado, 'resolucion', 'application/pdf');
+
+              const formData = new FormData();
+              formData.append('file', file);
+              formData.append(
+                'nameFile',
+                'RESOLUCION_' + 'N°' + objJson.numeroradicado
+              );
+              formData.append('containerName', 'aguahumanos');
+              formData.append('oid', objJson.idusuario);
+              await api.uploadFiles(formData);
+              //console.log(file);
+            })();
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Trámite aprobado',
+              text: 'Se ha generado la resolución y se realizo la notificación de aprobación al ciudadano ' + objJson.primerNombre + ' ' + objJson.primerApellido + ', y a la autoridad ambiental ' + autoridadAmbiental?.nombre
+            });
+            break;
+        }
+      }
+      }
+
+      history.push('/tramites-servicios-aguas');
+      localStorage.removeItem('register');
+
   };
 
   function agregarValoresDinamicos(HTML: string, llavesAReemplazar: string[], valoresDinamicos: string[]): string {
@@ -422,7 +434,7 @@ export const RevisarSg = () => {
   const onPrevPDF = async () => {
 
     let certificado = await api.getCertificadoAguas(objJson.idsolicitud);
-    setUrlPdfLicence("data:application/pdf;base64," + certificado);
+    setUrlPdfLicence('data:application/pdf;base64,' + certificado);
     setIsModalVisiblePdf(true);
 
 
@@ -453,41 +465,41 @@ export const RevisarSg = () => {
   };
 
   return (
-    <div className='container-fluid'>
-      <div className='card'>
-        <div className='card-body'>
+    <div className="container-fluid">
+      <div className="card">
+        <div className="card-body">
           <Modal
             title={
-              <p className='text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable'>
+              <p className="text-center text-dark text-uppercase mb-0 titulo modal-dialog-scrollable">
                 Visualización de la resolución
               </p>
             }
             visible={isModalVisiblePdf}
             onCancel={() => setIsModalVisiblePdf(false)}
             width={1000}
-            okButtonProps={{ hidden: true }}
-            cancelText='Cerrar'
+            okButtonProps={{hidden: true}}
+            cancelText="Cerrar"
           >
-            <div className='col-lg-12 text-center'>
-              <p>Nombre del Solicitante: {objJson.primerNombre + " " + objJson.primerApellido}</p>
+            <div className="col-lg-12 text-center">
+              <p>Nombre del Solicitante: {objJson.primerNombre + ' ' + objJson.primerApellido}</p>
             </div>
-            <iframe src={urlPdfLicence} frameBorder='0' scrolling='auto' height='600vh' width='100%'></iframe>
+            <iframe src={urlPdfLicence} frameBorder="0" scrolling="auto" height="600vh" width="100%"></iframe>
           </Modal>
-          <Form form={form} {...layoutItems} layout='horizontal' onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
-            <section className='info-panel'>
-              <div className='container'>
-                <div className='row mt-2'>
-                  <div className='col-lg-6 col-sm-12 col-md-6'>
-                    <div className='info-secion prueba_seccion'>
-                      <nav aria-label='breadcrumb'>
-                        <ol className='breadcrumb'>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Inicio</a>
+          <Form form={form} {...layoutItems} layout="horizontal" onFinish={onSubmit} onFinishFailed={onSubmitFailed}>
+            <section className="info-panel">
+              <div className="container">
+                <div className="row mt-2">
+                  <div className="col-lg-6 col-sm-12 col-md-6">
+                    <div className="info-secion prueba_seccion">
+                      <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb">
+                          <li className="breadcrumb-item">
+                            <a href="#">Inicio</a>
                           </li>
-                          <li className='breadcrumb-item'>
-                            <a href='#'>Bandeja de entrada</a>
+                          <li className="breadcrumb-item">
+                            <a href="#">Bandeja de entrada</a>
                           </li>
-                          <li className='breadcrumb-item active' aria-current='page'>
+                          <li className="breadcrumb-item active" aria-current="page">
                             Revisar solicitud
                           </li>
                         </ol>
@@ -497,144 +509,146 @@ export const RevisarSg = () => {
                 </div>
               </div>
             </section>
-            <section className='panel-menu'>
-              <div className='container'>
-                <div className='row mt'>
-                  <div className='col-lg-12 col-md-12 tramite tramite_titulo'>
-                    <div className='info-tramite mt-3'>
+            <section className="panel-menu">
+              <div className="container">
+                <div className="row mt">
+                  <div className="col-lg-12 col-md-12 tramite tramite_titulo">
+                    <div className="info-tramite mt-3">
                       <p>Trámite: Autorización sanitaria para la concesión de aguas para el consumo humanos</p>
                     </div>
                   </div>
                 </div>
 
-                <div className='row mt-1 datos_validador '>
-                  <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} habilitar={false} />
+                <div className="row mt-1 datos_validador ">
+                  <DatosSolicitud form={form} obj={objJson} tipo={'validacion'} habilitar={false}/>
                 </div>
               </div>
             </section>
-            <section className='panel-solicitud mt-5 mb-5 datos_validadors'>
-              <div className='container'>
-                <div className='row'>
-                  <div className='col-lg-10 col-sm-12 col-md-10'>
-                    <div className='collapse-info'>
+            <section className="panel-solicitud mt-5 mb-5 datos_validadors">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-10 col-sm-12 col-md-10">
+                    <div className="collapse-info">
                       {rol != 'Subdirector' && (
                         <>
-                          <div id='accordion'>
-                            <div className='card'>
-                              <div className='card-header' id='heading-2'>
-                                <h5 className='mb-0'>
+                          <div id="accordion">
+                            <div className="card">
+                              <div className="card-header" id="heading-2">
+                                <h5 className="mb-0">
                                   <a
-                                    className='collapsed'
-                                    role='button'
-                                    data-toggle='collapse'
-                                    href='#collapse-2'
-                                    aria-expanded='false'
-                                    aria-controls='collapse-2'
+                                    className="collapsed"
+                                    role="button"
+                                    data-toggle="collapse"
+                                    href="#collapse-2"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-2"
                                   >
                                     Datos del solicitante
                                   </a>
                                 </h5>
                               </div>
-                              <div id='collapse-2' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='row mt-5 datos_validador'>
-                                  <DatosSolicitante form={form} obj={objJson} tipo={''} habilitar={false} />
+                              <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                <div className="row mt-5 datos_validador">
+                                  <DatosSolicitante form={form} obj={objJson} tipo={''} habilitar={false}/>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div id='accordion' className='mt-3'>
-                            <div className='card'>
-                              <div className='card-header' id='heading-2'>
-                                <h5 className='mb-0'>
+                          <div id="accordion" className="mt-3">
+                            <div className="card">
+                              <div className="card-header" id="heading-2">
+                                <h5 className="mb-0">
                                   <a
-                                    className='collapsed'
-                                    role='button'
-                                    data-toggle='collapse'
-                                    href='#collapse-3'
-                                    aria-expanded='false'
-                                    aria-controls='collapse-3'
+                                    className="collapsed"
+                                    role="button"
+                                    data-toggle="collapse"
+                                    href="#collapse-3"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-3"
                                   >
                                     Datos de la fuente de abastacemiento
                                   </a>
                                 </h5>
                               </div>
 
-                              <div id='collapse-3' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='row mt-5 ml-2'>
-                                  <DatosFuente form={form} obj={objJson} tipo={''} habilitar={false} />
+                              <div id="collapse-3" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                <div className="row mt-5 ml-2">
+                                  <DatosFuente form={form} obj={objJson} tipo={''} habilitar={false}/>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div id='accordion' className='mt-3'>
-                            <div className='card'>
-                              <div className='card-header' id='heading-2'>
-                                <h5 className='mb-0'>
+                          <div id="accordion" className="mt-3">
+                            <div className="card">
+                              <div className="card-header" id="heading-2">
+                                <h5 className="mb-0">
                                   <a
-                                    className='collapsed'
-                                    role='button'
-                                    data-toggle='collapse'
-                                    href='#collapse-4'
-                                    aria-expanded='false'
-                                    aria-controls='collapse-2'
+                                    className="collapsed"
+                                    role="button"
+                                    data-toggle="collapse"
+                                    href="#collapse-4"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-2"
                                   >
                                     Información de acueductos que captan la misma fuente
                                   </a>
                                 </h5>
                               </div>
-                              <div id='collapse-4' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='card-body'>
-                                  <DatosAcueducto form={form} tipoSolicitud="revision" obj={objJson} prop={null} habilitar={false} />
+                              <div id="collapse-4" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                <div className="card-body">
+                                  <DatosAcueducto form={form} tipoSolicitud="revision" obj={objJson} prop={null}
+                                                  habilitar={false}/>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div id='accordion' className='mt-3'>
-                            <div className='card'>
-                              <div className='card-header' id='heading-2'>
-                                <h5 className='mb-0'>
+                          <div id="accordion" className="mt-3">
+                            <div className="card">
+                              <div className="card-header" id="heading-2">
+                                <h5 className="mb-0">
                                   <a
-                                    className='collapsed'
-                                    role='button'
-                                    data-toggle='collapse'
-                                    href='#collapse-7'
-                                    aria-expanded='false'
-                                    aria-controls='collapse-2'
+                                    className="collapsed"
+                                    role="button"
+                                    data-toggle="collapse"
+                                    href="#collapse-7"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-2"
                                   >
                                     Información adicional de la fuente de abastecimiento
                                   </a>
                                 </h5>
                               </div>
-                              <div id='collapse-7' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='card-body'>
-                                  <DatosAdicionales form={form} tipoSolicitud='revision' obj={objJson} tipo={''} prop={null} habilitar={false} />
+                              <div id="collapse-7" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                <div className="card-body">
+                                  <DatosAdicionales form={form} tipoSolicitud="revision" obj={objJson} tipo={''} prop={null}
+                                                    habilitar={false}/>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div id='accordion' className='mt-3'>
-                            <div className='card'>
-                              <div className='card-header' id='heading-2'>
-                                <h5 className='mb-0'>
+                          <div id="accordion" className="mt-3">
+                            <div className="card">
+                              <div className="card-header" id="heading-2">
+                                <h5 className="mb-0">
                                   <a
-                                    className='collapsed'
-                                    role='button'
-                                    data-toggle='collapse'
-                                    href='#collapse-6'
-                                    aria-expanded='false'
-                                    aria-controls='collapse-2'
+                                    className="collapsed"
+                                    role="button"
+                                    data-toggle="collapse"
+                                    href="#collapse-6"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-2"
                                   >
                                     Documentación requisito
                                   </a>
                                 </h5>
                               </div>
-                              <div id='collapse-6' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='card-body'>
-                                  <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'gestion'} />
+                              <div id="collapse-6" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                <div className="card-body">
+                                  <DatosDocumentos form={form} obj={objJson} prop={null} tipo={'gestion'}/>
                                 </div>
                               </div>
                             </div>
@@ -643,53 +657,51 @@ export const RevisarSg = () => {
                       )}
 
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
+                      <div id="accordion" className="mt-3">
+                        <div className="card">
+                          <div className="card-header" id="heading-2">
+                            <h5 className="mb-0">
                               <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-8'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
+                                className="collapsed"
+                                role="button"
+                                data-toggle="collapse"
+                                href="#collapse-8"
+                                aria-expanded="false"
+                                aria-controls="collapse-2"
                               >
                                 Notificaciones generales de revisión
                               </a>
                             </h5>
                           </div>
-                          <div id='collapse-8' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='card-body'>
-                              <div className='card-body'>
-                                <div className='row mt-5 ml-2'>
-                                  <TipoNotificacion form={form} obj={objJson} prop={notificado} />
-                                </div>
-                              </div>
+                          <div id="collapse-8" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                            <div className="card-body">
+
+                              <TipoNotificacion form={form} obj={objJson} prop={notificado}/>
+
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      <div id='accordion' className='mt-3'>
-                        <div className='card'>
-                          <div className='card-header' id='heading-2'>
-                            <h5 className='mb-0'>
+                      <div id="accordion" className="mt-3">
+                        <div className="card">
+                          <div className="card-header" id="heading-2">
+                            <h5 className="mb-0">
                               <a
-                                className='collapsed'
-                                role='button'
-                                data-toggle='collapse'
-                                href='#collapse-16'
-                                aria-expanded='false'
-                                aria-controls='collapse-2'
+                                className="collapsed"
+                                role="button"
+                                data-toggle="collapse"
+                                href="#collapse-16"
+                                aria-expanded="false"
+                                aria-controls="collapse-2"
                               >
                                 Documentación asociada a la revisión
                               </a>
                             </h5>
                           </div>
-                          <div id='collapse-16' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                            <div className='row mt-5 ml-2'>
-                              <DocumentacionAsociada form={form} obj={objJson} tipo={''} prop={adddocumentos} />
+                          <div id="collapse-16" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                            <div className="row mt-5 ml-2">
+                              <DocumentacionAsociada form={form} obj={objJson} tipo={''} prop={adddocumentos}/>
                             </div>
                           </div>
                         </div>
@@ -697,52 +709,52 @@ export const RevisarSg = () => {
 
                       {rol == 'Subdirector' && (
                         <>
-                          <div id='accordion' className='mt-3'>
-                            <div className='card'>
-                              <div className='card-header' id='heading-2'>
-                                <h5 className='mb-0'>
+                          <div id="accordion" className="mt-3">
+                            <div className="card">
+                              <div className="card-header" id="heading-2">
+                                <h5 className="mb-0">
                                   <a
-                                    className='collapsed'
-                                    role='button'
-                                    data-toggle='collapse'
-                                    href='#collapse-11'
-                                    aria-expanded='false'
-                                    aria-controls='collapse-2'
+                                    className="collapsed"
+                                    role="button"
+                                    data-toggle="collapse"
+                                    href="#collapse-11"
+                                    aria-expanded="false"
+                                    aria-controls="collapse-2"
                                   >
                                     Generar acto administrativo de aprobación
                                   </a>
                                 </h5>
                               </div>
-                              <div id='collapse-11' className='collapse' data-parent='#accordion' aria-labelledby='heading-2'>
-                                <div className='col-lg-12 col-md-12 col-sm-12 ml-2'>
-                                  <p style={{ marginLeft: '20px' }}>Seguimiento</p>
-                                  <div className='form-group gov-co-form-group'>
-                                    <Form.Item name='seguimiento' rules={[{ required: true }]}>
+                              <div id="collapse-11" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                                <div className="col-lg-12 col-md-12 col-sm-12 ml-2">
+                                  <p style={{marginLeft: '20px'}}>Seguimiento</p>
+                                  <div className="form-group gov-co-form-group">
+                                    <Form.Item name="seguimiento" rules={[{required: true}]}>
                                       <SelectComponent
                                         onChange={onChange}
 
                                         options={estados}
-                                        optionPropkey='idEstadoSolicitud'
-                                        optionPropLabel='nombre'
+                                        optionPropkey="idEstadoSolicitud"
+                                        optionPropLabel="nombre"
                                       />
                                     </Form.Item>
                                   </div>
 
                                 </div>
-                                <div className='card-body'>
-                                  <div className='row mt-3'>
-                                    <div className='col-md-12 col-lg-12 col-sm-12'>
-                                      <div className='form-group gov-co-form-group'>
-                                        <Form.Item initialValue={''} name='observationsgestion' rules={[{ required: false }]}>
-                                          <Input.TextArea rows={5} maxLength={230} style={{ width: '300px', marginLeft: '10px' }} />
+                                <div className="card-body">
+                                  <div className="row mt-3">
+                                    <div className="col-md-12 col-lg-12 col-sm-12">
+                                      <div className="form-group gov-co-form-group">
+                                        <Form.Item initialValue={''} name="observationsgestion" rules={[{required: false}]}>
+                                          <Input.TextArea rows={5} maxLength={230} style={{width: '300px', marginLeft: '10px'}}/>
                                         </Form.Item>
                                       </div>
                                     </div>
                                   </div>
-                                  <div className='row mt-4'>
-                                    <div className='col-lg-12 col-md-12 col-sm-1'>
+                                  <div className="row mt-4">
+                                    <div className="col-lg-12 col-md-12 col-sm-1">
                                       <Button
-                                        className='btn btn-default'
+                                        className="btn btn-default"
                                         style={{
                                           backgroundColor: '#CBCBCB',
                                           float: 'right'
@@ -753,7 +765,7 @@ export const RevisarSg = () => {
                                         Ver vista previa
                                       </Button>
                                       <Button
-                                        className='mr-3 btn btn-default'
+                                        className="mr-3 btn btn-default"
                                         style={{
                                           backgroundColor: '#CBCBCB',
                                           float: 'right'
@@ -772,23 +784,23 @@ export const RevisarSg = () => {
                     </div>
                   </div>
                 </div>
-                <div className='row mt-4' style={{ marginLeft: '420px' }}>
-                  <div className='col-lg-8 col-md-8 col-sm-12 mt-2'>
+                <div className="row justify-content-center align-items-center">
+                  <div className="col-lg-3 col-md-3 col-sm-12 mt-3" style={{marginLeft: '50px'}}>
                     <Button
-                      className='ml-3 float-right button btn btn-default'
-                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
-                      type='primary'
-                      htmlType='submit'
+                      style={{backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000'}}
+                      type="primary"
+                      htmlType="submit"
                     >
                       Enviar
                     </Button>
+                  </div>
+                  <div className="col-lg-3 col-md-3 col-sm-12 mt-3">
                     <Button
-                      className='mr-3 float-right button btn btn-default'
-                      type='primary'
-                      htmlType='button'
-                      style={{ backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000' }}
+                      type="primary"
+                      htmlType="button"
+                      style={{backgroundColor: '#CBCBCB', border: '2px solid #CBCBCB', color: '#000'}}
                       onClick={() => {
-                        history.push('/tramites-servicios/Revision/aprobar-tramite');
+                        history.push('/tramites-servicios-aguas');
                       }}
                     >
                       Cancelar

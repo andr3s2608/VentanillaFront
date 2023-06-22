@@ -628,7 +628,7 @@ export class ApiService {
     });
 
   AddSolicitudPrimera = (payload: any) =>
-    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '0' });
+    post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/EnviarSolicitud', payload, id: '1' });
 
   AddSolicitudCitacion = (payload: any) =>
     post({ endpoint: REACT_APP_AGUAS as string, url: 'Request/AddSolicitudCitacion', payload, id: '0' });

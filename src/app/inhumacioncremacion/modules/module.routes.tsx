@@ -33,7 +33,7 @@ export const ModuleRoutes = () => {
         {
           rol != undefined ? routesSetting.map((i, idx) => (
             (i.rol.includes(rol[0].codigoRol.toUpperCase()) || i.rol.includes("")) ? < AccessRoute key={idx} exact {...i} /> : null
-          )) : console.log("00000000000000")
+          )) : console.log("")
         }
         <Redirect to='/' />
       </Switch>

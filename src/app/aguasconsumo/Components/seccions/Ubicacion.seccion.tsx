@@ -62,7 +62,9 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
 
   useEffect(() => {
     /** efecto que se ejecuta despues de renderizarse el componente, no antes */
-    if ((obj.length > 0) && (obj != undefined)) {
+
+    if (obj.idsolicitud !== undefined) {
+
 
       form.setFieldsValue({
         zonaUbicacion: obj.sector,
@@ -135,7 +137,7 @@ export const UbicacionPersona: React.FC<ubicacion<any>> = (props) => {
       </soap12:Envelope>`;
 
     const algo = api.geocoding(XML);
-    console.log(algo)
+
     let idZona = 4;
     let idLocalidad = 10;
     let idUPZ = 74;

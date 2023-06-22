@@ -24,7 +24,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
 
   const getListas = useCallback(async () => {
     const array: any[] = [];
-    console.log(obj)
+
     if (obj?.sistematratamientojson !== undefined) {
 
       for (let index = 0; index < obj?.sistematratamientojson.length; index++) {
@@ -62,7 +62,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
       }
 
 
-      console.log('aca ' + array)
+
 
       props.form.setFieldsValue({
         caudaldesign: array[0].caudaldesign + '',
@@ -126,7 +126,7 @@ export const DatosAdicionales: React.FC<DatosAdicionales<any>> = (props) => {
           icon: 'info',
 
           title: 'Caudal incorrecto',
-          text: `El caudal tratado no puede ser menor al caudal diseño`
+          text: `El caudal Diseño no puede ser menor al caudal diseño`
         });
       }
       else {
