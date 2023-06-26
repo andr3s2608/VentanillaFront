@@ -223,6 +223,9 @@ export const CambioLicencia = ({ props }: any) => {
 
   const Modificar = (values: any) => {
 
+    console.log("---------------------- Valores -------------------------------- ");
+    console.log(values);
+
     if (datecorrect) {
 
       let cambiodatos = false;
