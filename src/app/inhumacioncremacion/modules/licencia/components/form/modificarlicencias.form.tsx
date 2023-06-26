@@ -108,7 +108,7 @@ export const ModificarLicencia = ({ props }: any) => {
     const nuevalista = tiposjson.filter((i: { id: string }) => i.id != '7c96a4d3-a0cb-484e-a01b-93bc39c7902e');
     settiposautoriza(nuevalista);
 
-    const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+    const causa = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
     setCausaMuerte(causa['valor']);
 
     const typeList = await api.GetAllTypeValidation();

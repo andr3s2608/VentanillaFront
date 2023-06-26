@@ -137,7 +137,7 @@ export const FetalForm: React.FC<ITipoLicencia> = (props) => {
 
       setroles(JSON.parse(rolesstorage));
 
-      const causa = await api.getCostante('9124A97B-C2BD-46A0-A8B3-1AC7A0A06C82');
+      const causa = await api.getCostante('DD81B078-14F3-49D9-BB99-13A66EACC93F');
       setCausaMuerte(causa['valor']);
 
       setUser(userRes);
