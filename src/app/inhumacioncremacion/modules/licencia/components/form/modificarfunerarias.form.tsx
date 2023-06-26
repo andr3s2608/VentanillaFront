@@ -126,7 +126,7 @@ export const ModificarFuneraria = ({ props }: any) => {
         {
           const valor: string = id;
           const all = await api.GetFunerarias();
-          console.log(parseInt(valor));
+
           const result = all.find((funeraria: any) => funeraria.NROIDENT === parseInt(valor));
 
           if (result) {

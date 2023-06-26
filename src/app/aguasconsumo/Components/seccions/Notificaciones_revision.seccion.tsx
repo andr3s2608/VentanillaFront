@@ -46,7 +46,6 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
   const onChangeNotificacion = async (value: any) => {
     var x = l_tipoNotificacion.find((t) => t.idTipoNotificacion == value);
     setIdPlantilla(x['idPlantilla']);
-    props.form.setFieldsValue({ notificacion: undefined });
     const notificacion = await api.getTipoNotificaciones();
     setIsVistaPrevia(true);
     setlTipoModificacion(notificacion);
@@ -91,9 +90,11 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
       });
     } else {
       setnotificado(true);
-      prop();
+
       const formato = await api.getFormatoAguas(idPlantilla);
       const control: string = formato['asuntoNotificacion'];
+      prop(control);
+
       switch (control) {
         case 'Notificación de Desistimiento':
           await api.sendEmail({
@@ -273,10 +274,9 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
 
   return (
     <>
-      <section style={{ width: '100%' }}>
-        <div className='container-fluid'>
-          <div className='form-row' style={{ marginLeft: '-50px' }}>
-            <div className='col-lg-6 col-md-6 col-md-6'>
+        <div >
+          <div className='row col-12' >
+            <div className='col-lg-12 col-md-12 col-sm-12'>
               <label className='text'>
                 <span className='required'>* </span> Tipo de notificación
               </label>
@@ -289,15 +289,46 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
                 />
               </Form.Item>
             </div>
-          </div>
-          <div className='form-row mt-3' style={{ marginLeft: '-50px' }}>
-            <div className='col-lg-6 col-md-6 col-sm-12'>
+            <div className='col-lg-12 col-md-12 col-sm-12'>
               <label className='text'>
                 <span className='required'>* </span> Descripción de la notificacion
               </label>
               <Form.Item name='descripcionNotificacion' initialValue={''}>
                 <Input.TextArea maxLength={300} className='form-control gov-co-form-control' style={{ width: '300px' }} />
               </Form.Item>
+            </div>
+          </div>
+          <div className='row col-10' >
+            <div className='col-lg-6 col-md-6 col-sm-10  col-xs-10 mt-3' >
+              <Button
+                id="button1"
+                style={{
+                  backgroundColor: '#CBCBCB',
+                  border: '2px solid #CBCBCB',
+                  color: '#000'
+                }}
+                type='primary'
+                htmlType='button'
+                onClick={vistaPrevia}
+              >
+                Ver vista previa
+              </Button>
+            </div>
+            <div className='col-lg-6 col-md-6 col-sm-10  col-xs-10 mt-3' >
+              <Button
+                id="button2"
+                type='primary'
+                htmlType='button'
+                disabled={notificado}
+                style={{
+                  backgroundColor: '#CBCBCB',
+                  border: '2px solid #CBCBCB',
+                  color: '#000'
+                }}
+                onClick={notificar}
+              >
+                Notificar
+              </Button>
             </div>
           </div>
           <Modal
@@ -397,43 +428,8 @@ export const TipoNotificacion: React.FC<TipoNotificacion<any>> = (props) => {
               </footer>
             </div>
           </Modal>
-          <div className='form-row mt-3' style={{ marginLeft: '-120px' }}>
-            <div className='col-lg-6 col-md-6 col-sm-12 mt-2 colum_not' id="prueba">
-              <Button
-                id="button"
-                className='ml-3 float-right button btn btn-default btn_see'
-                style={{
-                  backgroundColor: '#CBCBCB',
-                  border: '2px solid #CBCBCB',
-                  color: '#000'
-                }}
-                type='primary'
-                htmlType='button'
-                onClick={vistaPrevia}
-              >
-                Ver vista previa
-              </Button>
-            </div>
-            <div className='col-lg-6 col-md-6 col-sm-12 mt-2' style={{ marginLeft: '-240px' }} id="prueba">
-              <Button
-                id="button"
-                className='mr-3 float-right button btn btn-default colum_nots'
-                type='primary'
-                htmlType='button'
-                disabled={notificado}
-                style={{
-                  backgroundColor: '#CBCBCB',
-                  border: '2px solid #CBCBCB',
-                  color: '#000'
-                }}
-                onClick={notificar}
-              >
-                Notificar
-              </Button>
-            </div>
-          </div>
         </div>
-      </section>
+
     </>
   );
 };
