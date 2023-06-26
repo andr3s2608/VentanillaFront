@@ -101,9 +101,9 @@ export const RevisarSv = () => {
       observaciones.push(
         {
           idObservacion: '00000000-0000-0000-0000-000000000000',
-          idSolicitud: 'Observaciones Notificacion:' + objJson.idsolicitud,
+          idSolicitud: objJson.idsolicitud,
           idSubred: objJson.idSubred,
-          observacion: values.descripcionNotificacion,
+          observacion: 'Observaciones Notificacion:' + values.descripcionNotificacion,
           fechaObservacion: null
         }
       )
@@ -113,9 +113,9 @@ export const RevisarSv = () => {
       observaciones.push(
         {
           idObservacion: '00000000-0000-0000-0000-000000000000',
-          idSolicitud: 'Observaciones Documentos:' + objJson.idsolicitud,
+          idSolicitud:  objJson.idsolicitud,
           idSubred: objJson.idSubred,
-          observacion: values.observacionesSubsanacion,
+          observacion: 'Observaciones Documentos:' +values.observacionesSubsanacion,
           fechaObservacion: null
         }
       )
